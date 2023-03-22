@@ -249,6 +249,14 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(CourseProgressViewModel.self) { r, courseID in
+            CourseProgressViewModel(
+                courseID: courseID,
+                interactor: r.resolve(CourseInteractorProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!
+            )
+        }
+        
         // MARK: Discussion
         container.register(DiscussionRepositoryProtocol.self) { r in
             DiscussionRepository(

@@ -50,6 +50,10 @@
 		0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */; };
 		0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */; };
 		0766DFD0299AB29000EBEF6A /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */; };
+		07DD19E829CB300F008CDBCA /* Data_ProgressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD19E729CB300F008CDBCA /* Data_ProgressResponse.swift */; };
+		07DD19EA29CB30A9008CDBCA /* CourseProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD19E929CB30A9008CDBCA /* CourseProgress.swift */; };
+		07DD19ED29CB3155008CDBCA /* CourseProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD19EC29CB3155008CDBCA /* CourseProgressView.swift */; };
+		07DD19EF29CB3172008CDBCA /* CourseProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD19EE29CB3172008CDBCA /* CourseProgressViewModel.swift */; };
 		197FB8EA8F92F00A8F383D82 /* Pods_App_Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */; };
 		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 /* End PBXBuildFile section */
@@ -110,6 +114,10 @@
 		0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeVideoPlayer.swift; sourceTree = "<group>"; };
 		0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedVideoPlayer.swift; sourceTree = "<group>"; };
 		0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		07DD19E729CB300F008CDBCA /* Data_ProgressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_ProgressResponse.swift; sourceTree = "<group>"; };
+		07DD19E929CB30A9008CDBCA /* CourseProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgress.swift; sourceTree = "<group>"; };
+		07DD19EC29CB3155008CDBCA /* CourseProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressView.swift; sourceTree = "<group>"; };
+		07DD19EE29CB3172008CDBCA /* CourseProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressViewModel.swift; sourceTree = "<group>"; };
 		2A444220A08C5035164B071F /* Pods-App-Course-CourseTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.releasedev.xcconfig"; sourceTree = "<group>"; };
 		3A55620C6018088BFF77F9AE /* Pods-App-CourseDetails.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debug.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debug.xcconfig"; sourceTree = "<group>"; };
 		418D00932369361311AEEBD3 /* Pods-App-Course-CourseTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debugprod.xcconfig"; sourceTree = "<group>"; };
@@ -193,9 +201,6 @@
 				02B6B3B528E1D10700232911 /* Domain */,
 				02EAE2CA28E1F0A700529644 /* Presentation */,
 				02B6B3B428E1C49400232911 /* Localizable.strings */,
-				02F3BFDC29252E900051930C /* CourseRouter.swift */,
-				02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */,
-				02280F5F294B50030032823A /* CoursePersistence.swift */,
 			);
 			path = Course;
 			sourceTree = "<group>";
@@ -223,6 +228,8 @@
 				02B6B3BF28E1DB8800232911 /* Model */,
 				02B6B3B928E1D13500232911 /* Network */,
 				02B6B3BB28E1D14F00232911 /* CourseRepository.swift */,
+				02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */,
+				02280F5F294B50030032823A /* CoursePersistence.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -242,6 +249,7 @@
 				027020FB28E7362100F54332 /* Data_CourseOutlineResponse.swift */,
 				022C64DB29ACFDEE000F532B /* Data_HandoutsResponse.swift */,
 				022C64DF29ADEA9B000F532B /* Data_UpdatesResponse.swift */,
+				07DD19E729CB300F008CDBCA /* Data_ProgressResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -276,6 +284,8 @@
 				02DFC65029ACC20A00EA4BB9 /* Handouts */,
 				070019A928F6F59D00D5FC78 /* Unit */,
 				070019AA28F6F79E00D5FC78 /* Video */,
+				07DD19EB29CB313D008CDBCA /* Progress */,
+				02F3BFDC29252E900051930C /* CourseRouter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -285,6 +295,7 @@
 			children = (
 				02B6B3C228E1DCD100232911 /* CourseDetails.swift */,
 				022C64E129ADEB83000F532B /* CourseUpdate.swift */,
+				07DD19E929CB30A9008CDBCA /* CourseProgress.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -374,6 +385,15 @@
 				0295B1D8297E6DF8003B0C65 /* CourseUnitViewModelTests.swift */,
 			);
 			path = Unit;
+			sourceTree = "<group>";
+		};
+		07DD19EB29CB313D008CDBCA /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				07DD19EC29CB3155008CDBCA /* CourseProgressView.swift */,
+				07DD19EE29CB3172008CDBCA /* CourseProgressViewModel.swift */,
+			);
+			path = Progress;
 			sourceTree = "<group>";
 		};
 		D52670044E8768425E23C627 /* Pods */ = {
@@ -614,6 +634,7 @@
 			files = (
 				022C64DA29ACEC50000F532B /* HandoutsViewModel.swift in Sources */,
 				022C64DE29AD167A000F532B /* HandoutsUpdatesDetailView.swift in Sources */,
+				07DD19EA29CB30A9008CDBCA /* CourseProgress.swift in Sources */,
 				0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */,
 				022C64E029ADEA9B000F532B /* Data_UpdatesResponse.swift in Sources */,
 				02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */,
@@ -641,10 +662,13 @@
 				022C64D829ACEC48000F532B /* HandoutsView.swift in Sources */,
 				0265B4B728E2141D00E6EAFD /* Strings.swift in Sources */,
 				02B6B3C128E1DBA100232911 /* Data_CourseDetailsResponse.swift in Sources */,
+				07DD19EF29CB3172008CDBCA /* CourseProgressViewModel.swift in Sources */,
 				0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */,
 				02E685BE28E4B60A000AE015 /* CourseDetailsView.swift in Sources */,
+				07DD19ED29CB3155008CDBCA /* CourseProgressView.swift in Sources */,
 				02B6B3BE28E1D15C00232911 /* CourseDetailsEndpoint.swift in Sources */,
 				02B6B3C328E1DCD100232911 /* CourseDetails.swift in Sources */,
+				07DD19E829CB300F008CDBCA /* Data_ProgressResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

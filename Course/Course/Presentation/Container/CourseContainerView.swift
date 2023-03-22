@@ -25,6 +25,7 @@ public struct CourseContainerView: View {
         case videos
         case discussion
         case handounds
+        case progress
     }
     
     public init(
@@ -105,6 +106,19 @@ public struct CourseContainerView: View {
                     }
                     .tag(CourseTab.handounds)
                     .hideNavigationBar()
+                    
+                    CourseProgressView(
+                        viewModel: Container.shared.resolve(CourseProgressViewModel.self, argument: courseID)!,
+                        title: title,
+                        courseBanner: courseBanner
+                    )
+                    .tabItem {
+                        Image(systemName: "chart.pie").renderingMode(.template)
+                        Text("Progress")
+                    }
+                    .tag(CourseTab.progress)
+                    .hideNavigationBar()
+
                 }
                 .navigationBarHidden(true)
                 .introspectViewController { vc in

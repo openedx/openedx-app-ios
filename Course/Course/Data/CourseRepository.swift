@@ -19,7 +19,7 @@ public protocol CourseRepositoryProtocol {
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
-
+    func getCourseProgress(courseID: String) async throws -> CourseProgress
 }
 
 public class CourseRepository: CourseRepositoryProtocol {
@@ -108,6 +108,12 @@ public class CourseRepository: CourseRepositoryProtocol {
         return try await api.requestData(CourseDetailsEndpoint.getUpdates(courseID: courseID))
             .mapResponse(DataLayer.CourseUpdates.self).map { $0.domain }
     }
+    
+    public func getCourseProgress(courseID: String) async throws -> CourseProgress {
+        return try await api.requestData(CourseDetailsEndpoint.getProgress(courseID: courseID))
+            .mapResponse(DataLayer.ProgressResponse.self).domain
+    }
+
     
     private func parseCourseStructure(blocks: [BECourseDetailIncoming]) -> CourseStructure {
         let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
@@ -266,6 +272,78 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     public  func blockCompletionRequest(courseID: String, blockID: String) {
         
     }
+    
+    func getCourseProgress(courseID: String) async throws -> CourseProgress {
+        CourseProgress(
+            sections: [
+                CourseProgress.Section(
+                    displayName: "Section 1",
+                    subsections: [
+                        CourseProgress.Subsection(
+                            earned: 3,
+                            total: 4,
+                            percentageString: "75%",
+                            displayName: "Subsection 1",
+                            score: [
+                                CourseProgress.Score(earned: 1, possible: 1),
+                                CourseProgress.Score(earned: 1, possible: 1),
+                                CourseProgress.Score(earned: 1, possible: 1),
+                                CourseProgress.Score(earned: 0, possible: 1)
+                            ],
+                            showGrades: true,
+                            graded: true,
+                            gradeType: "Final Exam"
+                        ),
+                        CourseProgress.Subsection(
+                            earned: 1,
+                            total: 2,
+                            percentageString: "50%",
+                            displayName: "Subsection 2",
+                            score: [
+                                CourseProgress.Score(earned: 1, possible: 1),
+                                CourseProgress.Score(earned: 0, possible: 1)
+                            ],
+                            showGrades: true,
+                            graded: false,
+                            gradeType: ""
+                        )
+                    ]
+                ),
+                CourseProgress.Section(
+                    displayName: "Section 2",
+                    subsections: [
+                        CourseProgress.Subsection(
+                            earned: 3,
+                            total: 4,
+                            percentageString: "75%",
+                            displayName: "Subsection 1",
+                            score: [
+                                CourseProgress.Score(earned: 1, possible: 1),
+                                CourseProgress.Score(earned: 1, possible: 1),
+                                CourseProgress.Score(earned: 1, possible: 1),
+                                CourseProgress.Score(earned: 0, possible: 1)
+                            ],
+                            showGrades: true,
+                            graded: true,
+                            gradeType: "Final Exam"
+                        ),
+                        CourseProgress.Subsection(
+                            earned: 0,
+                            total: 0,
+                            percentageString: "0%",
+                            displayName: "Subsection 2",
+                            score: [],
+                            showGrades: false,
+                            graded: false,
+                            gradeType: ""
+                        )
+                    ]
+                )
+            ],
+            progress: 35
+        )
+    }
+
     
     private func parseCourseStructure(blocks: [BECourseDetailIncoming]) -> CourseStructure {
         
