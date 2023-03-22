@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Discovery
+
+  Created by  Stepanok Ivan on 19.09.2022.
+  
+*/
+
+"TITLE" = "Всі курси";
+"SEARCH" = "Пошук";
+"HEADER.TITLE_1" = "Всі курси";
+"HEADER.TITLE_2" = "Давайте знайдемо нові курси для вас";
+
+"SEARCH.TITLE" = "Результати пошуку";
+"SEARCH.EMPTY_DESCRIPTION" = "Почніть вводити текст, щоб знайти курс";

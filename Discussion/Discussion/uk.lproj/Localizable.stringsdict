@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>searchResultsDescription</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@topics@</string>
+		<key>topics</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Знайдено %d постів</string>
+			<key>one</key>
+			<string>Знайдено %d пост</string>
+			<key>other</key>
+			<string>Знайдено %d постів</string>
+			<key>few</key>
+			<string>Знайдено %d пости</string>
+		</dict>
+	</dict>
+	<key>comments_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@comments@</string>
+		<key>comments</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Коментарів</string>
+			<key>one</key>
+			<string>Коментар</string>
+			<key>other</key>
+			<string>Коментарів</string>
+			<key>few</key>
+			<string>Коментарі</string>
+		</dict>
+	</dict>
+	<key>votes_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@votes@</string>
+		<key>votes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Голосів</string>
+			<key>one</key>
+			<string>Голос</string>
+			<key>other</key>
+			<string>Голосів</string>
+			<key>few</key>
+			<string>Голоси</string>
+		</dict>
+	</dict>
+	<key>responses_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@responses@</string>
+		<key>responses</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Відповідей</string>
+			<key>one</key>
+			<string>Відповідь</string>
+			<key>other</key>
+			<string>Відповідей</string>
+			<key>few</key>
+			<string>Відповіді</string>
+		</dict>
+	</dict>
+	<key>missed_posts_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@missed@</string>
+		<key>missed</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Непрочитаних постів</string>
+			<key>one</key>
+			<string>Непрочитаний пост</string>
+			<key>other</key>
+			<string>Непрочитаних постів</string>
+			<key>few</key>
+			<string>Непрочитаних пости</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

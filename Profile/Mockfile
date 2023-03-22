@@ -1,0 +1,17 @@
+sourceryCommand: null
+sourceryTemplate: null
+unit.tests.mock:
+  sources:
+    include:
+    - ./../Core
+    - ./Profile
+    exclude: []
+  output: ./ProfileTests/ProfileMock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - Profile
+  - Foundation
+  - SwiftUI
+  - Combine

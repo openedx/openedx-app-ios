@@ -1,0 +1,79 @@
+//
+//  DashboardRepository.swift
+//  Dashboard
+//
+//  Created by  Stepanok Ivan on 19.09.2022.
+//
+
+import Foundation
+import Core
+
+public protocol DashboardRepositoryProtocol {
+    func getMyCourses() async throws -> [CourseItem]
+    func getMyCoursesOffline() throws -> [CourseItem]
+}
+
+public class DashboardRepository: DashboardRepositoryProtocol {
+    
+    private let api: API
+    private let appStorage: AppStorage
+    private let config: Config
+    private let persistence: DashboardPersistenceProtocol
+    
+    public init(api: API, appStorage: AppStorage, config: Config, persistence: DashboardPersistenceProtocol) {
+        self.api = api
+        self.appStorage = appStorage
+        self.config = config
+        self.persistence = persistence
+    }
+    
+    public func getMyCourses() async throws -> [CourseItem] {
+        let result = try await api.requestData(
+            DashboardEndpoint.getMyCourses(username: appStorage.user?.username ?? "")
+        )
+        .mapResponse([DataLayer.MyCourse].self)
+        .map({ course in
+            course.domain(baseURL: config.baseURL.absoluteString)
+        })
+        persistence.saveMyCourses(items: result)
+
+        return result
+        
+    }
+    
+    public func getMyCoursesOffline() throws -> [CourseItem] {
+        return try persistence.loadMyCourses()
+    }
+    
+}
+
+// Mark - For testing and SwiftUI preview
+#if DEBUG
+class DashboardRepositoryMock: DashboardRepositoryProtocol {
+    func getMyCourses() async throws -> [CourseItem] {
+        var models: [CourseItem] = []
+        for i in 0...10 {
+            models.append(
+                CourseItem(
+                    name: "Course name \(i)",
+                    org: "Organization",
+                    shortDescription: "shortDescription",
+                    imageURL: "",
+                    isActive: true,
+                    courseStart: nil,
+                    courseEnd: nil,
+                    enrollmentStart: nil,
+                    enrollmentEnd: nil,
+                    courseID: "course_id_\(i)",
+                    certificate: nil,
+                    numPages: 1,
+                    coursesCount: 0
+                )
+            )
+        }
+        return models
+    }
+    
+    func getMyCoursesOffline() throws -> [CourseItem] { return [] }
+}
+#endif

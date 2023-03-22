@@ -1,0 +1,17 @@
+sourceryCommand: null
+sourceryTemplate: null
+unit.tests.mock:
+  sources:
+    include:
+    - ./../Core
+    - ./Course
+    exclude: []
+  output: ./CourseTests/CourseMock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - Course
+  - Foundation
+  - SwiftUI
+  - Combine

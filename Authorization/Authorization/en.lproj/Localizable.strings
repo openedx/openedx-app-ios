@@ -1,0 +1,30 @@
+/* 
+  Localizable.strings
+  Authorization
+
+  Created by Vladimir Chekyrta on 13.09.2022.
+  
+*/
+
+"SIGN_IN.LOG_IN_TITLE" = "Sign in";
+"SIGN_IN.WELCOME_BACK" = "Welcome back! Please authorize to continue.";
+"SIGN_IN.EMAIL" = "Email";
+"SIGN_IN.PASSWORD" = "Password";
+"SIGN_IN.REGISTER_BTN" = "Register";
+"SIGN_IN.FORGOT_PASS_BTN" = "Forgot password?";
+"SIGN_IN.LOG_IN_BTN" = "Sign in";
+
+"ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email address";
+"ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
+
+"SIGN_UP.TITLE" = "Sign up";
+"SIGN_UP.SUBTITLE" = "Create new account.";
+"SIGN_UP.CREATE_ACCOUNT_BTN" = "Create account";
+"SIGN_UP.HIDE_FIELDS" = "Hide optional Fields";
+"SIGN_UP.SHOW_FIELDS" = "Show optional Fields";
+
+
+"FORGOT.FORGOT_PASSWORD" = "Forgot your password?";
+"FORGOT.DESCRIPTION" = "Please enter the email you use to sign in to EDX.";
+"FORGOT.REQUEST" = "Request password reset";
+"FORGOT.BACK" = "Back to Sign in";

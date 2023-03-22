@@ -1,0 +1,18 @@
+strings:
+  inputs:
+    - Dashboard/en.lproj
+  outputs:
+    - templateName: structured-swift5
+      params:
+        publicAccess: true
+        enumName: DashboardLocalization
+      output: Dashboard/SwiftGen/Strings.swift
+#xcassets:
+#  inputs:
+#    - Authorization/Assets.xcassets
+#  outputs:
+#    templateName: swift5
+#    params:
+#        publicAccess: true
+#        enumName: AuthAssets
+#    output: Authorization/SwiftGen/Assets.swift

@@ -1,0 +1,17 @@
+sourceryCommand: null
+sourceryTemplate: null
+unit.tests.mock:
+  sources:
+    include:
+    - ./../Core
+    - ./Dashboard
+    exclude: []
+  output: ./DashboardTests/DashboardMock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - Dashboard
+  - Foundation
+  - SwiftUI
+  - Combine

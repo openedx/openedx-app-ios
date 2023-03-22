@@ -1,0 +1,70 @@
+/* 
+  Localizable.strings
+  Profile
+
+  Created by  Stepanok Ivan on 23.09.2022.
+  
+*/
+
+"TITLE" = "Profile";
+"INFO" = "Profile info";
+"EDIT_PROFILE" = "Edit profile";
+"YEAR_OF_BIRTH" = "Year of birth:";
+"BIO" = "Bio:";
+"SETTINGS" = "Settings";
+"SETTINGS_VIDEO" = "Video settings";
+"SUPPORT_INFO" = "Support info";
+"CONTACT" = "Contact support";
+"TERMS" = "Terms of use";
+"PRIVACY" = "Privacy and policy";
+"LOGOUT" = "Log out";
+"SWITCH_TO" = "Switch to";
+"FULL_PROFILE" = "full profile";
+"LIMITED_PROFILE" = "limited profile";
+
+"LOGOUT_ALERT.TITLE" = "Comfirm log out";
+"LOGOUT_ALERT.TEXT" = "Are you sure you want to log out?";
+
+"DELETE_ALERT.TITLE" = "Warning!";
+"DELETE_ALERT.TEXT" = "Do you really want to delete your account?";
+
+"UNSAVED_DATA_ALERT.TITLE" = "Leave profile?";
+"UNSAVED_DATA_ALERT.TEXT" = "Changes you have made may not be saved.";
+
+"EDIT.TOO_YONG_USER" = "You must be over 13 years old to have a profile with full access to information.";
+"EDIT.LIMITED_PROFILE_DESCRIPTION" = "A limited profile only shares your username and profile photo.";
+"EDIT.DELETE_ACCOUNT" = "Delete account";
+
+"EDIT.FIELDS.YEAR_OF_BIRTH" = "Year of birth";
+"EDIT.FIELDS.LOCATION" = "Location";
+"EDIT.FIELDS.SPOKEN_LANGUGAE" = "Spoken language";
+"EDIT.FIELDS.ABOUT_ME" = "About me:";
+
+"EDIT.BOTTOM_SHEET.TITLE" = "Change profile image";
+"EDIT.BOTTOM_SHEET.SELECT" = "Select from gallery";
+"EDIT.BOTTOM_SHEET.REMOVE" = "Remove photo";
+"EDIT.BOTTOM_SHEET.CANCEL" = "Cancel";
+
+"DELETE_ACCOUNT.TITLE" = "Delete account";
+"DELETE_ACCOUNT.ARE_YOU_SURE" = "Are you sure you want to ";
+"DELETE_ACCOUNT.WANT_TO_DELETE" = "delete your account?";
+"DELETE_ACCOUNT.DESCRIPTION" = "To confirm this action you need to enter you account password.";
+"DELETE_ACCOUNT.PASSWORD" = "Password";
+"DELETE_ACCOUNT.PASSWORD_DESCRIPTION" = "Enter password";
+"DELETE_ACCOUNT.COMFIRM" = "Yes, delete account";
+"DELETE_ACCOUNT.BACK_TO_PROFILE" = "Back to profile";
+"DELETE_ACCOUNT.INCORRECT_PASSWORD" = "The password is incorrect. Please try again.";
+
+"SETTINGS.VIDEO_SETTINGS_TITLE" = "Video settings";
+"SETTINGS.WIFI_TITLE" = "Wi-fi only download";
+"SETTINGS.WIFI_DESCRIPTION" = "Only download content when wi-fi is turned on";
+"SETTINGS.VIDEO_QUALITY_TITLE" = "Video download quality";
+"SETTINGS.VIDEO_QUALITY_DESCRIPTION" = "Auto (Recommended)";
+
+"SETTINGS.QUALITY_AUTO_TITLE" = "Auto";
+"SETTINGS.QUALITY_AUTO_DESCRIPTION" = "Recommended";
+"SETTINGS.QUALITY_360_TITLE" = "360p";
+"SETTINGS.QUALITY_360_DESCRIPTION" = "Smallest video quality";
+"SETTINGS.QUALITY_540_TITLE" = "540p";
+"SETTINGS.QUALITY_720_TITLE" = "720p";
+"SETTINGS.QUALITY_720_DESCRIPTION" = "Best quality";

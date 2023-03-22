@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "_93_Door_Exit_Logout_Out.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "_93_Door_Exit_Logout_Out-2.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

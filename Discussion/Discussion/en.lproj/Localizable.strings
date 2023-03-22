@@ -1,0 +1,55 @@
+/* 
+  Localizable.strings
+  Discussion
+
+  Created by  Stepanok Ivan on 12.10.2022.
+  
+*/
+
+"TITLE" = "Discussions";
+
+"TOPICS.SEARCH" = "Search all posts";
+"TOPICS.ALL_POSTS" = "All Posts";
+"TOPICS.POST_IM_FOLLOWING" = "Posts i'm following";
+"TOPICS.MAIN_CATEGORIES" = "Main categories";
+
+"POSTS.SORT.RECENT_ACTIVITY" = "Recent Activity";
+"POSTS.SORT.MOST_ACTIVITY" = "Most Activity";
+"POSTS.SORT.MOST_VOTES" = "Most Votes";
+
+"POSTS.FILTER.ALL_POSTS" = "All Posts";
+"POSTS.FILTER.UNREAD" = "Unread";
+"POSTS.FILTER.UNANSWERED" = "Unanswered";
+
+"POSTS.CREATE_NEW_POST" = "Create new post";
+"POSTS.ALERT.MAKE_SELECTION" = "Make a selection";
+
+"POST.LAST_POST" = "Last post:";
+
+"THREAD.ALERT.COMMENT_ADDED" = "Comment added";
+"THREAD.ADD_RESPONSE" = "Add a response";
+
+"CREATE_THREAD.NEW_POST" = "Create new post";
+"CREATE_THREAD.SELECT_POST_TYPE" = "Select post type";
+"CREATE_THREAD.TOPIC" = "Topic";
+"CREATE_THREAD.TITLE" = "Title";
+"CREATE_THREAD.FOLLOW_DISCUSSION" = "Follow this discussion";
+"CREATE_THREAD.FOLLOW_QUESTION" = "Follow this question";
+"CREATE_THREAD.CREATE_DISCUSSION" = "Create new discussion";
+"CREATE_THREAD.CREATE_QUESTION" = "Create new question";
+
+"COMMENT.REPORT" = "Report";
+"COMMENT.UNREPORT" = "Unreport";
+"COMMENT.FOLLOW" = "Follow";
+"COMMENT.UNFOLLOW" = "Unfollow";
+
+"RESPONSE.COMMENTS_RESPONSES" = "Comment";
+"RESPONSE.ALERT.COMMENT_ADDED" = "Comment added";
+"RESPONSE.ADD_COMMENT" = "Add a comment";
+
+"POST_TYPE.QUESTION" = "question";
+"POST_TYPE.DISCUSSION" = "discussion";
+
+"SEARCH" = "Search";
+"SEARCH.TITLE" = "Search results";
+"SEARCH.EMPTY_DESCRIPTION" = "Start typing to find the topics";

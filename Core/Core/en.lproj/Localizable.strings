@@ -1,0 +1,49 @@
+/* 
+  Localizable.strings
+  Core
+
+  Created by Vladimir Chekyrta on 13.09.2022.
+  
+*/
+
+"MAINSCREEN.DISCOVERY" = "Discover";
+"MAINSCREEN.DASHBOARD" = "Dashboard";
+"MAINSCREEN.IN_DEVELOPING" = "In developing";
+"MAINSCREEN.PROGRAMS" = "Programs";
+"MAINSCREEN.PROFILE" = "Profile";
+
+"VIEW.SNACKBAR.TRY_AGAIN_BTN" = "Try Again";
+
+"ERROR.INVALID_CREDENTIALS" = "Invalid credentials";
+"ERROR.SLOW_OR_NO_INTERNET_CONNECTION" = "Slow or no internet connection";
+"ERROR.NO_CACHED_DATA" = "No cached data for offline mode";
+"ERROR.USER_NOT_ACTIVE" = "User account is not activated. Please activate your account first.";
+"ERROR.UNKNOWN_ERROR" = "Something went wrong";
+"ERROR.WIFI" = "You can only download files over Wi-Fi. You can change this in the settings.";
+
+"DATE.ENDED" = "Ended";
+"DATE.START" = "Start";
+"DATE.STARTED" = "Started";
+"DATE.JUST_NOW" = "Just now";
+
+"ALERT.ACCEPT" = "ACCEPT";
+"ALERT.CANCEL" = "CANCEL";
+"ALERT.LOGOUT" = "Log out";
+"ALERT.LEAVE" = "Leave";
+"ALERT.KEEP_EDITING" = "Keep editing";
+
+"NO_INTERNET.OFFLINE" = "Offline";
+"NO_INTERNET.DISMISS" = "Dismiss";
+"NO_INTERNET.RELOAD" = "Reload";
+
+"DATE_FORMAT.MMMM_DD" = "MMMM dd";
+"DATE_FORMAT.MMM_DD_YYYY" = "MMM dd, yyyy";
+
+"DOWNLOAD_MANAGER.DOWNLOAD" = "Download";
+"DOWNLOAD_MANAGER.DOWNLOADED" = "Downloaded";
+"DOWNLOAD_MANAGER.COMPLETED" = "Completed";
+
+"DONE" = "Done";
+
+"PICKER.SEARCH" = "Search";
+"PICKER.ACCEPT" = "Accept";

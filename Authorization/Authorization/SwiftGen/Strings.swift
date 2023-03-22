@@ -1,0 +1,83 @@
+// swiftlint:disable all
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
+
+import Foundation
+
+// swiftlint:disable superfluous_disable_command file_length implicit_return prefer_self_in_static_references
+
+// MARK: - Strings
+
+// swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
+// swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
+public enum AuthLocalization {
+  public enum Error {
+    /// Invalid email address
+    public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
+    /// Invalid password lenght
+    public static let invalidPasswordLenght = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGHT", fallback: "Invalid password lenght")
+  }
+  public enum Forgot {
+    /// Back to Sign in
+    public static let back = AuthLocalization.tr("Localizable", "FORGOT.BACK", fallback: "Back to Sign in")
+    /// Please enter the email you use to sign in to EDX.
+    public static let description = AuthLocalization.tr("Localizable", "FORGOT.DESCRIPTION", fallback: "Please enter the email you use to sign in to EDX.")
+    /// Forgot your password?
+    public static let forgotPassword = AuthLocalization.tr("Localizable", "FORGOT.FORGOT_PASSWORD", fallback: "Forgot your password?")
+    /// Request password reset
+    public static let request = AuthLocalization.tr("Localizable", "FORGOT.REQUEST", fallback: "Request password reset")
+  }
+  public enum SignIn {
+    /// Email
+    public static let email = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL", fallback: "Email")
+    /// Forgot password?
+    public static let forgotPassBtn = AuthLocalization.tr("Localizable", "SIGN_IN.FORGOT_PASS_BTN", fallback: "Forgot password?")
+    /// Sign in
+    public static let logInBtn = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
+    /// Localizable.strings
+    ///   Authorization
+    /// 
+    ///   Created by Vladimir Chekyrta on 13.09.2022.
+    public static let logInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_TITLE", fallback: "Sign in")
+    /// Password
+    public static let password = AuthLocalization.tr("Localizable", "SIGN_IN.PASSWORD", fallback: "Password")
+    /// Register
+    public static let registerBtn = AuthLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
+    /// Welcome back! Please authorize to continue.
+    public static let welcomeBack = AuthLocalization.tr("Localizable", "SIGN_IN.WELCOME_BACK", fallback: "Welcome back! Please authorize to continue.")
+  }
+  public enum SignUp {
+    /// Create account
+    public static let createAccountBtn = AuthLocalization.tr("Localizable", "SIGN_UP.CREATE_ACCOUNT_BTN", fallback: "Create account")
+    /// Hide optional Fields
+    public static let hideFields = AuthLocalization.tr("Localizable", "SIGN_UP.HIDE_FIELDS", fallback: "Hide optional Fields")
+    /// Show optional Fields
+    public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
+    /// Create new account.
+    public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create new account.")
+    /// Sign up
+    public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
+  }
+}
+// swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
+// swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
+
+// MARK: - Implementation Details
+
+extension AuthLocalization {
+  private static func tr(_ table: String, _ key: String, _ args: CVarArg..., fallback value: String) -> String {
+    let format = BundleToken.bundle.localizedString(forKey: key, value: value, table: table)
+    return String(format: format, locale: Locale.current, arguments: args)
+  }
+}
+
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

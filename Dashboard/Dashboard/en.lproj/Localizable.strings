@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Dashboard
+
+  Created by  Stepanok Ivan on 20.09.2022.
+  
+*/
+
+"TITLE" = "Dashboard";
+"HEADER.COURSES" = "Courses";
+"HEADER.WELCOME_BACK" = "Welcome back. Let's keep learning.";
+
+"EMPTY.TITLE" = "It's empty";
+"EMPTY.SUBTITLE" = "You are not enrolled in any courses yet.";

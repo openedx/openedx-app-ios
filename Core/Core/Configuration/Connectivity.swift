@@ -1,0 +1,65 @@
+//
+//  Connectivity.swift
+//  NewEdX
+//
+//  Created by  Stepanok Ivan on 15.12.2022.
+//
+
+import Alamofire
+import Combine
+
+public enum InternetState {
+    case reachable
+    case notReachable
+}
+
+//sourcery: AutoMockable
+public protocol ConnectivityProtocol {
+    var isInternetAvaliable: Bool { get }
+    var isWifi: Bool { get }
+    var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
+}
+
+public class Connectivity: ConnectivityProtocol {
+    let networkManager = NetworkReachabilityManager()
+    
+    public var isInternetAvaliable: Bool {
+        //        false
+        networkManager?.isReachable ?? false
+    }
+    
+    public var isWifi: Bool {
+        if let networkManager {
+           return !networkManager.isReachableOnCellular && networkManager.isReachableOnEthernetOrWiFi
+        } else {
+            return false
+        }
+    }
+    
+    public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
+    
+    public init() {
+        checkInternet()
+    }
+    
+    func checkInternet() {
+        if let networkManager {
+            networkManager.startListening { status in
+                DispatchQueue.main.async {
+                    switch status {
+                    case .unknown:
+                        self.internetReachableSubject.send(InternetState.notReachable)
+                    case .notReachable:
+                        self.internetReachableSubject.send(InternetState.notReachable)
+                    case .reachable:
+                        self.internetReachableSubject.send(InternetState.reachable)
+                    }
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.internetReachableSubject.send(InternetState.notReachable)
+            }
+        }
+    }
+}

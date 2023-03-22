@@ -1,0 +1,170 @@
+//
+//  SearchViewModelTests.swift
+//  DiscoveryUnitTests
+//
+//  Created by Paul Maul on 14.02.2023.
+//
+
+import SwiftyMocky
+import XCTest
+@testable import Core
+@testable import Discovery
+import Alamofire
+import SwiftUI
+
+final class SearchViewModelTests: XCTestCase {
+
+    override func setUpWithError() throws {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+    
+    func testSearchSuccess() async throws {
+        let interactor = DiscoveryInteractorProtocolMock()
+        let connectivity = Connectivity()
+        let router = DiscoveryRouterMock()
+        let viewModel = SearchViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            router: router,
+            debounce: .test
+        )
+        
+        let items = [
+            CourseItem(name: "Test",
+                       org: "org",
+                       shortDescription: "",
+                       imageURL: "",
+                       isActive: true,
+                       courseStart: Date(),
+                       courseEnd: nil,
+                       enrollmentStart: Date(),
+                       enrollmentEnd: Date(),
+                       courseID: "123",
+                       certificate: nil,
+                       numPages: 2,
+                       coursesCount: 0),
+            CourseItem(name: "Test2",
+                       org: "org2",
+                       shortDescription: "",
+                       imageURL: "",
+                       isActive: true,
+                       courseStart: Date(),
+                       courseEnd: nil,
+                       enrollmentStart: Date(),
+                       enrollmentEnd: Date(),
+                       courseID: "1243",
+                       certificate: nil,
+                       numPages: 1,
+                       coursesCount: 0)
+        ]
+
+        Given(interactor, .search(page: 1, searchTerm: .any, willReturn: items))
+
+        viewModel.searchText = "Test"
+        
+        let exp = expectation(description: "Task Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+        
+        Verify(interactor, .search(page: 1, searchTerm: .any))
+
+        XCTAssertFalse(viewModel.showError)
+        XCTAssertFalse(viewModel.fetchInProgress)
+    }
+    
+    func testSearchEmptyQuerySuccess() async throws {
+        let interactor = DiscoveryInteractorProtocolMock()
+        let connectivity = Connectivity()
+        let router = DiscoveryRouterMock()
+        let viewModel = SearchViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            router: router,
+            debounce: .test
+        )
+
+        viewModel.searchText = ""
+
+        let exp = expectation(description: "Task Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+        
+        Verify(interactor, 0, .search(page: 1, searchTerm: .any))
+
+        XCTAssertFalse(viewModel.showError)
+        XCTAssertFalse(viewModel.fetchInProgress)
+    }
+    
+    func testSearchNoInternetError() async throws {
+        let interactor = DiscoveryInteractorProtocolMock()
+        let connectivity = Connectivity()
+        let router = DiscoveryRouterMock()
+        let viewModel = SearchViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            router: router,
+            debounce: .test
+        )
+
+        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
+
+        Given(interactor, .search(page: .any, searchTerm: .any, willThrow: noInternetError))
+        
+        viewModel.searchText = "Test"
+
+        let exp = expectation(description: "Task Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+        
+        Verify(interactor, 1, .search(page: 1, searchTerm: .any))
+
+        XCTAssertTrue(viewModel.showError)
+        XCTAssertFalse(viewModel.fetchInProgress)
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
+    }
+
+    func testSearchUnknownError() async throws {
+        let interactor = DiscoveryInteractorProtocolMock()
+        let connectivity = Connectivity()
+        let router = DiscoveryRouterMock()
+        let viewModel = SearchViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            router: router,
+            debounce: .test
+        )
+
+        let unknownError = AFError.sessionInvalidated(error: NSError())
+        
+        Given(interactor, .search(page: .any, searchTerm: .any, willThrow: unknownError))
+
+        viewModel.searchText = "Test"
+        
+        let exp = expectation(description: "Task Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1)
+
+        Verify(interactor, 1, .search(page: 1, searchTerm: .any))
+
+        XCTAssertTrue(viewModel.showError)
+        XCTAssertFalse(viewModel.fetchInProgress)
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
+    }
+
+}

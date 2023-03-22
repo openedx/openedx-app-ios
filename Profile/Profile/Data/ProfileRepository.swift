@@ -1,0 +1,215 @@
+//
+//  ProfileRepository.swift
+//  Profile
+//
+//  Created by  Stepanok Ivan on 22.09.2022.
+//
+
+import Foundation
+import Core
+import Alamofire
+
+public protocol ProfileRepositoryProtocol {
+    func getMyProfile() async throws -> UserProfile
+    func getMyProfileOffline() throws -> UserProfile
+    func logOut() async throws
+    func uploadProfilePicture(pictureData: Data) async throws
+    func deleteProfilePicture() async throws -> Bool
+    func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile
+    func getSpokenLanguages() -> [PickerFields.Option]
+    func getCountries() -> [PickerFields.Option]
+    func deleteAccount(password: String) async throws -> Bool
+    func getSettings() -> UserSettings
+    func saveSettings(_ settings: UserSettings)
+}
+
+public class ProfileRepository: ProfileRepositoryProtocol {
+    
+    private let api: API
+    private let appStorage: AppStorage
+    private let coreDataHandler: CoreDataHandlerProtocol
+    private let config: Config
+    
+    public init(api: API, appStorage: AppStorage, coreDataHandler: CoreDataHandlerProtocol, config: Config) {
+        self.api = api
+        self.appStorage = appStorage
+        self.coreDataHandler = coreDataHandler
+        self.config = config
+    }
+    
+    public func getMyProfile() async throws -> UserProfile {
+        let user =
+        try await api.requestData(
+            ProfileEndpoint.getUserProfile(username: appStorage.user?.username ?? "")
+        ).mapResponse(DataLayer.UserProfile.self)
+        appStorage.userProfile = user
+        return user.domain
+    }
+    
+    public func getMyProfileOffline() throws -> UserProfile {
+        if let user = appStorage.userProfile {
+            return user.domain
+        } else {
+            throw NoCachedDataError()
+        }
+    }
+    
+    public func logOut() async throws {
+        guard let refreshToken = appStorage.refreshToken else { return }
+        _ = try await api.request(
+            ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: config.oAuthClientId)
+        )
+        appStorage.clear()
+        coreDataHandler.clear()
+    }
+    
+    public func getSpokenLanguages() -> [PickerFields.Option] {
+        guard let url = Bundle.main.url(forResource: "languages", withExtension: "json")
+        else {
+            print("Json file not found")
+            return []
+        }
+        typealias SpokenLanguages = [[String: String]]
+        
+        let data = try? Data(contentsOf: url)
+        let spokenLanguages = try? JSONDecoder().decode(SpokenLanguages.self, from: data!)
+        let elements = spokenLanguages.flatMap {
+            $0.flatMap {
+                $0.map {
+                    PickerFields.Option(value: $0.key, name: $0.value, optionDefault: false)
+                }
+            }
+        } ?? []
+        return elements
+    }
+    
+    public func getCountries() -> [PickerFields.Option] {
+        guard let url = Bundle.main.url(forResource: "сountries", withExtension: "json")
+        else {
+            print("Json file not found")
+            return []
+        }
+        
+        let data = try? Data(contentsOf: url)
+        let users = try? JSONDecoder().decode([DataLayer.Option].self, from: data!)
+        let elements = users.flatMap {
+            $0.map {
+                PickerFields.Option(value: $0.value, name: $0.name, optionDefault: $0.optionDefault)
+            }
+        } ?? []
+        return elements
+    }
+    
+    public func uploadProfilePicture(pictureData: Data) async throws {
+           let response = try await api.request(
+                ProfileEndpoint.uploadProfilePicture(username: appStorage.user?.username ?? "",
+                                                     pictureData: pictureData))
+        if response.statusCode != 204 {
+            throw APIError.uploadError
+        }
+    }
+    
+    public func deleteProfilePicture() async throws -> Bool {
+           let response = try await api.request(
+                ProfileEndpoint.deleteProfilePicture(username: appStorage.user?.username ?? ""))
+        return response.statusCode == 204
+    }
+    
+    public func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile {
+        let response = try await api.requestData(
+            ProfileEndpoint.updateUserProfile(username: appStorage.user?.username ?? "",
+                                              parameters: parameters))
+            .mapResponse(DataLayer.UserProfile.self).domain
+        return response
+    }
+    
+    public func deleteAccount(password: String) async throws -> Bool {
+        let response = try await api.request(ProfileEndpoint.deleteAccount(password: password))
+        return response.statusCode == 204
+    }
+    
+    public func getSettings() -> UserSettings {
+        if let userSettings = appStorage.userSettings {
+            return userSettings
+        } else {
+            return UserSettings(wifiOnly: true, downloadQuality: VideoQuality.auto)
+        }
+    }
+    
+    public func saveSettings(_ settings: UserSettings) {
+        appStorage.userSettings = settings
+    }
+}
+
+// Mark - For testing and SwiftUI preview
+#if DEBUG
+class ProfileRepositoryMock: ProfileRepositoryProtocol {
+    func getMyProfileOffline() throws -> Core.UserProfile {
+        return UserProfile(
+            avatarUrl: "",
+            name: "John Lennon",
+            username: "John",
+            dateJoined: Date(),
+            yearOfBirth: 1940,
+            country: "USA",
+            shortBiography: """
+            John Winston Ono Lennon (born John Winston Lennon; 9 October 1940 – 8 December 1980) was an English singer,
+            songwriter, musician and peace activist who achieved worldwide fame as founder, co-songwriter, co-lead vocalist
+            and rhythm guitarist of the Beatles. Lennon's work was characterised by the rebellious nature and acerbic wit
+            of his music, writing and drawings, on film, and in interviews. His songwriting partnership with Paul McCartney
+            remains the most successful in history
+            """,
+            isFullProfile: true
+        )
+    }
+    
+    func getMyProfile() async throws -> UserProfile {
+        return UserProfile(
+            avatarUrl: "",
+            name: "John Lennon",
+            username: "John",
+            dateJoined: Date(),
+            yearOfBirth: 1940,
+            country: "USA",
+            shortBiography: """
+            John Winston Ono Lennon (born John Winston Lennon; 9 October 1940 – 8 December 1980) was an English singer,
+            songwriter, musician and peace activist who achieved worldwide fame as founder, co-songwriter, co-lead vocalist
+            and rhythm guitarist of the Beatles. Lennon's work was characterised by the rebellious nature and acerbic wit
+            of his music, writing and drawings, on film, and in interviews. His songwriting partnership with Paul McCartney
+            remains the most successful in history
+            """,
+            isFullProfile: true
+        )
+    }
+    
+    func logOut() async throws {}
+    
+    func getSpokenLanguages() -> [PickerFields.Option] { return [] }
+    
+    func getCountries() -> [PickerFields.Option] { return [] }
+    
+    func uploadProfilePicture(pictureData: Data) async throws {}
+    
+    public func deleteProfilePicture() async throws -> Bool { return true }
+    
+    func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile {
+        return UserProfile(
+            avatarUrl: "",
+            name: "John Smith",
+            username: "John",
+            dateJoined: Date(),
+            yearOfBirth: 1970,
+            country: "USA",
+            shortBiography: "Bio",
+            isFullProfile: true
+        )
+    }
+    
+    public func deleteAccount(password: String) async throws -> Bool { return false }
+    
+    public func getSettings() -> UserSettings {
+        return UserSettings(wifiOnly: true, downloadQuality: .auto)
+    }
+    public func saveSettings(_ settings: UserSettings) {}
+}
+#endif

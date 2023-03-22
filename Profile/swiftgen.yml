@@ -1,0 +1,18 @@
+strings:
+  inputs:
+    - Profile/en.lproj
+  outputs:
+    - templateName: structured-swift5
+      params:
+        publicAccess: true
+        enumName: ProfileLocalization
+      output: Profile/SwiftGen/Strings.swift
+#xcassets:
+#  inputs:
+#    - Authorization/Assets.xcassets
+#  outputs:
+#    templateName: swift5
+#    params:
+#        publicAccess: true
+#        enumName: AuthAssets
+#    output: Authorization/SwiftGen/Assets.swift

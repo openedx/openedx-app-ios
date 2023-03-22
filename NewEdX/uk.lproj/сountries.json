@@ -1,0 +1,1257 @@
+[
+  {
+    "value": "",
+    "name": "--",
+    "default": true
+  },
+  {
+    "value": "AF",
+    "name": "Афганістан",
+    "default": false
+  },
+  {
+    "value": "AX",
+    "name": "Аландські острови",
+    "default": false
+  },
+  {
+    "value": "AL",
+    "name": "Албанія",
+    "default": false
+  },
+  {
+    "value": "DZ",
+    "name": "Алжир",
+    "default": false
+  },
+  {
+    "value": "AS",
+    "name": "Американське Самоа",
+    "default": false
+  },
+  {
+    "value": "AD",
+    "name": "Андорра",
+    "default": false
+  },
+  {
+    "value": "AO",
+    "name": "Ангола",
+    "default": false
+  },
+  {
+    "value": "AI",
+    "name": "Англія",
+    "default": false
+  },
+  {
+    "value": "AQ",
+    "name": "Антарктида",
+    "default": false
+  },
+  {
+    "value": "AG",
+    "name": "Антигуа і Барбуда",
+    "default": false
+  },
+  {
+    "value": "AR",
+    "name": "Аргентина",
+    "default": false
+  },
+  {
+    "value": "AM",
+    "name": "Вірменія",
+    "default": false
+  },
+  {
+    "value": "AW",
+    "name": "Аруба",
+    "default": false
+  },
+  {
+    "value": "AU",
+    "name": "Австралія",
+    "default": false
+  },
+  {
+    "value": "AT",
+    "name": "Австрія",
+    "default": false
+  },
+  {
+    "value": "AZ",
+    "name": "Азербайджан",
+    "default": false
+  },
+  {
+    "value": "BS",
+    "name": "Багамські острови",
+    "default": false
+  },
+  {
+    "value": "BH",
+    "name": "Бахрейн",
+    "default": false
+  },
+  {
+    "value": "BD",
+    "name": "Бангладеш",
+    "default": false
+  },
+  {
+    "value": "BB",
+    "name": "Барбадос",
+    "default": false
+  },
+  {
+    "value": "BY",
+    "name": "Білорусь",
+    "default": false
+  },
+  {
+    "value": "BE",
+    "name": "Бельгія",
+    "default": false
+  },
+  {
+    "value": "BZ",
+    "name": "Беліз",
+    "default": false
+  },
+  {
+    "value": "BJ",
+    "name": "Бенін",
+    "default": false
+  },
+  {
+    "value": "BM",
+    "name": "Бермудські острови",
+    "default": false
+  },
+  {
+    "value": "BT",
+    "name": "Бутан",
+    "default": false
+  },
+  {
+    "value": "BO",
+    "name": "Болівія",
+    "default": false
+  },
+  {
+    "value": "BQ",
+    "name": "Бонайре, Сінт-Естатіус і Саба",
+    "default": false
+  },
+  {
+    "value": "BA",
+    "name": "Боснія і Герцеговина",
+    "default": false
+  },
+  {
+    "value": "BW",
+    "name": "Ботсвана",
+    "default": false
+  },
+  {
+    "value": "BV",
+    "name": "Острів Буве",
+    "default": false
+  },
+  {
+    "value": "BR",
+    "name": "Бразилія",
+    "default": false
+  },
+  {
+    "value": "IO",
+    "name": "Британська територія в Індійському океані",
+    "default": false
+  },
+  {
+    "value": "BN",
+    "name": "Бруней",
+    "default": false
+  },
+  {
+    "value": "BG",
+    "name": "Болгарія",
+    "default": false
+  },
+  {
+    "value": "BF",
+    "name": "Буркіна-Фасо",
+    "default": false
+  },
+  {
+    "value": "BI",
+    "name": "Бурунді",
+    "default": false
+  },
+  {
+    "value": "CV",
+    "name": "Кабо Верде",
+    "default": false
+  },
+  {
+    "value": "KH",
+    "name": "Камбоджа",
+    "default": false
+  },
+  {
+    "value": "CM",
+    "name": "Камерун",
+    "default": false
+  },
+  {
+    "value": "CA",
+    "name": "Канада",
+    "default": false
+  },
+  {
+    "value": "KY",
+    "name": "Кайманові острови",
+    "default": false
+  },
+  {
+    "value": "CF",
+    "name": "Центральноафриканська Республіка",
+    "default": false
+  },
+  {
+    "value": "TD",
+    "name": "Чад",
+    "default": false
+  },
+  {
+    "value": "CL",
+    "name": "Чилі",
+    "default": false
+  },
+  {
+    "value": "CN",
+    "name": "Китай",
+    "default": false
+  },
+  {
+    "value": "CX",
+    "name": "Острів Різдва",
+    "default": false
+  },
+  {
+    "value": "CC",
+    "name": "Кокосові (Кілінгові) острови",
+    "default": false
+  },
+  {
+    "value": "CO",
+    "name": "Колумбія",
+    "default": false
+  },
+  {
+    "value": "KM",
+    "name": " Коморські острови",
+    "default": false
+  },
+  {
+    "value": "CG",
+    "name": " Конго",
+    "default": false
+  },
+  {
+    "value": "CD",
+    "name": "Конго (Демократична Республіка)",
+    "default": false
+  },
+  {
+    "value": "CK",
+    "name": "Острови Кука",
+    "default": false
+  },
+  {
+    "value": "CR",
+    "name": "Коста-Ріка",
+    "default": false
+  },
+  {
+    "value": "CI",
+    "name": "Кот Дівуар",
+    "default": false
+  },
+  {
+    "value": "HR",
+    "name": " Хорватія",
+    "default": false
+  },
+  {
+    "value": "CU",
+    "name": " Куба",
+    "default": false
+  },
+  {
+    "value": "CW",
+    "name": "Кюрасао",
+    "default": false
+  },
+  {
+    "value": "CY",
+    "name": "Кіпр",
+    "default": false
+  },
+  {
+    "value": "CZ",
+    "name": "Чехія",
+    "default": false
+  },
+  {
+    "value": "DK",
+    "name": "Данія",
+    "default": false
+  },
+  {
+    "value": "DJ",
+    "name": " Джибуті",
+    "default": false
+  },
+  {
+    "value": "DM",
+    "name": "Домініка",
+    "default": false
+  },
+  {
+    "value": "DO",
+    "name": "Домініканська Республіка",
+    "default": false
+  },
+  {
+    "value": "EC",
+    "name": "Еквадор",
+    "default": false
+  },
+  {
+    "value": "EG",
+    "name": "Єгипет",
+    "default": false
+  },
+  {
+    "value": "SV",
+    "name": "Сальвадор",
+    "default": false
+  },
+  {
+    "value": "GQ",
+    "name": "Екваторіальна Гвінея",
+    "default": false
+  },
+  {
+    "value": "ER",
+    "name": "Еритрея",
+    "default": false
+  },
+  {
+    "value": "EE",
+    "name": "Естонія",
+    "default": false
+  },
+  {
+    "value": "SZ",
+    "name": "Есватіні",
+    "default": false
+  },
+  {
+    "value": "ET",
+    "name": "Ефіопія",
+    "default": false
+  },
+  {
+    "value": "FK",
+    "name": "Фолклендські (Мальвінські) острови",
+    "default": false
+  },
+  {
+    "value": "FO",
+    "name": "Фарерські острови",
+    "default": false
+  },
+  {
+    "value": "FJ",
+    "name": "Фіджі",
+    "default": false
+  },
+  {
+    "value": "FI",
+    "name": "Фінляндія",
+    "default": false
+  },
+  {
+    "value": "FR",
+    "name": "Франція",
+    "default": false
+  },
+  {
+    "value": "GF",
+    "name": "Французька Гвіана",
+    "default": false
+  },
+  {
+    "value": "PF",
+    "name": "Французька Полінезія",
+    "default": false
+  },
+  {
+    "value": "TF",
+    "name": "Французькі південні території",
+    "default": false
+  },
+  {
+    "value": "GA",
+    "name": "Габон",
+    "default": false
+  },
+  {
+    "value": "GM",
+    "name": "Гамбія",
+    "default": false
+  },
+  {
+    "value": "GE",
+    "name": "Грузія",
+    "default": false
+  },
+  {
+    "value": "DE",
+    "name": "Німеччина",
+    "default": false
+  },
+  {
+    "value": "GH",
+    "name": "Гана",
+    "default": false
+  },
+  {
+    "value": "GI",
+    "name": "Гібралтар",
+    "default": false
+  },
+  {
+    "value": "GR",
+    "name": "Греція",
+    "default": false
+  },
+  {
+    "value": "GL",
+    "name": "Гренландія",
+    "default": false
+  },
+  {
+    "value": "GD",
+    "name": "Гренада",
+    "default": false
+  },
+  {
+    "value": "GP",
+    "name": "Гваделупа",
+    "default": false
+  },
+  {
+    "value": "GU",
+    "name": "Гуам",
+    "default": false
+  },
+  {
+    "value": "GT",
+    "name": "Гватемала",
+    "default": false
+  },
+  {
+    "value": "GG",
+    "name": "Гернсі",
+    "default": false
+  },
+  {
+    "value": "GN",
+    "name": "Гвінея",
+    "default": false
+  },
+  {
+    "value": "GW",
+    "name": "Гвінея-Бісау",
+    "default": false
+  },
+  {
+    "value": "GY",
+    "name": "Гайана",
+    "default": false
+  },
+  {
+    "value": "HT",
+    "name": "Гаїті",
+    "default": false
+  },
+  {
+    "value": "HM",
+    "name": "Острів Херд і острови Макдональд",
+    "default": false
+  },
+  {
+    "value": "VA",
+    "name": "Святий Престол",
+    "default": false
+  },
+  {
+    "value": "HN",
+    "name": "Гондурас",
+    "default": false
+  },
+  {
+    "value": "HK",
+    "name": "Гонконг",
+    "default": false
+  },
+  {
+    "value": "HU",
+    "name": " Угорщина",
+    "default": false
+  },
+  {
+    "value": "IS",
+    "name": "Ісландія",
+    "default": false
+  },
+  {
+    "value": "IN",
+    "name": "Індія",
+    "default": false
+  },
+  {
+    "value": "ID",
+    "name": "Індонезія",
+    "default": false
+  },
+  {
+    "value": "IR",
+    "name": "Іран",
+    "default": false
+  },
+  {
+    "value": "IQ",
+    "name": "Ірак",
+    "default": false
+  },
+  {
+    "value": "IE",
+    "name": "Ірландія",
+    "default": false
+  },
+  {
+    "value": "IM",
+    "name": "Острів Мен",
+    "default": false
+  },
+  {
+    "value": "IL",
+    "name": "Ізраїль",
+    "default": false
+  },
+  {
+    "value": "IT",
+    "name": "Італія",
+    "default": false
+  },
+  {
+    "value": "JM",
+    "name": "Ямайка",
+    "default": false
+  },
+  {
+    "value": "JP",
+    "name": "Японія",
+    "default": false
+  },
+  {
+    "value": "JE",
+    "name": "Джерсі",
+    "default": false
+  },
+  {
+    "value": "JO",
+    "name": "Йорданія",
+    "default": false
+  },
+  {
+    "value": "KZ",
+    "name": "Казахстан",
+    "default": false
+  },
+  {
+    "value": "KE",
+    "name": "Кенія",
+    "default": false
+  },
+  {
+    "value": "KI",
+    "name": "Кірібаті",
+    "default": false
+  },
+  {
+    "value": "XK",
+    "name": "Косово",
+    "default": false
+  },
+  {
+    "value": "KW",
+    "name": "Кувейт",
+    "default": false
+  },
+  {
+    "value": "KG",
+    "name": "Киргизстан",
+    "default": false
+  },
+  {
+    "value": "LA",
+    "name": "Лаос",
+    "default": false
+  },
+  {
+    "value": "LV",
+    "name": "Латвія",
+    "default": false
+  },
+  {
+    "value": "LB",
+    "name": "Ліван",
+    "default": false
+  },
+  {
+    "value": "LS",
+    "name": "Лесото",
+    "default": false
+  },
+  {
+    "value": "LR",
+    "name": "Ліберія",
+    "default": false
+  },
+  {
+    "value": "LY",
+    "name": "Лівія",
+    "default": false
+  },
+  {
+    "value": "LI",
+    "name": "Ліхтенштейн",
+    "default": false
+  },
+  {
+    "value": "LT",
+    "name": "Литва",
+    "default": false
+  },
+  {
+    "value": "LU",
+    "name": "Люксембург",
+    "default": false
+  },
+  {
+    "value": "MO",
+    "name": "Макао",
+    "default": false
+  },
+  {
+    "value": "MG",
+    "name": "Мадагаскар",
+    "default": false
+  },
+  {
+    "value": "MW",
+    "name": "Малаві",
+    "default": false
+  },
+  {
+    "value": "MY",
+    "name": "Малайзія",
+    "default": false
+  },
+  {
+    "value": "MV",
+    "name": "Мальдіви",
+    "default": false
+  },
+  {
+    "value": "ML",
+    "name": "Малі",
+    "default": false
+  },
+  {
+    "value": "MT",
+    "name": "Мальта",
+    "default": false
+  },
+  {
+    "value": "MH",
+    "name": "Маршаллові острови",
+    "default": false
+  },
+  {
+    "value": "MQ",
+    "name": "Мартініка",
+    "default": false
+  },
+  {
+    "value": "MR",
+    "name": "Мавританія",
+    "default": false
+  },
+  {
+    "value": "MU",
+    "name": "Маврикій",
+    "default": false
+  },
+  {
+    "value": "YT",
+    "name": "Майотта",
+    "default": false
+  },
+  {
+    "value": "MX",
+    "name": "Мексика",
+    "default": false
+  },
+  {
+    "value": "FM",
+    "name": "Мікронезія (Федеративні Штати)",
+    "default": false
+  },
+  {
+    "value": "MD",
+    "name": "Молдова",
+    "default": false
+  },
+  {
+    "value": "MC",
+    "name": "Монако",
+    "default": false
+  },
+  {
+    "value": "MN",
+    "name": "Монголія",
+    "default": false
+  },
+  {
+    "value": "ME",
+    "name": "Чорногорія",
+    "default": false
+  },
+  {
+    "value": "MS",
+    "name": "Монсеррат",
+    "default": false
+  },
+  {
+    "value": "MA",
+    "name": "Марокко",
+    "default": false
+  },
+  {
+    "value": "MZ",
+    "name": "Мозамбік",
+    "default": false
+  },
+  {
+    "value": "MM",
+    "name": "М'янма",
+    "default": false
+  },
+  {
+    "value": "NA",
+    "name": "Намібія",
+    "default": false
+  },
+  {
+    "value": "NR",
+    "name": "Науру",
+    "default": false
+  },
+  {
+    "value": "NP",
+    "name": "Непал",
+    "default": false
+  },
+  {
+    "value": "NL",
+    "name": "Нідерланди",
+    "default": false
+  },
+  {
+    "value": "NC",
+    "name": "Нова Каледонія",
+    "default": false
+  },
+  {
+    "value": "NZ",
+    "name": "Нова Зеландія",
+    "default": false
+  },
+  {
+    "value": "NI",
+    "name": "Нікарагуа",
+    "default": false
+  },
+  {
+    "value": "NE",
+    "name": "Нігер",
+    "default": false
+  },
+  {
+    "value": "NG",
+    "name": "Нігерія",
+    "default": false
+  },
+  {
+    "value": "NU",
+    "name": "Ніуе",
+    "default": false
+  },
+  {
+    "value": "NF",
+    "name": "Острів Норфолк",
+    "default": false
+  },
+  {
+    "value": "KP",
+    "name": "Північна Корея",
+    "default": false
+  },
+  {
+    "value": "MK",
+    "name": "Північна Македонія",
+    "default": false
+  },
+  {
+    "value": "MP",
+    "name": "Північні Маріанські острови",
+    "default": false
+  },
+  {
+    "value": "NO",
+    "name": "Норвегія",
+    "default": false
+  },
+  {
+    "value": "OM",
+    "name": "Оман",
+    "default": false
+  },
+  {
+    "value": "PK",
+    "name": "Пакистан",
+    "default": false
+  },
+  {
+    "value": "PW",
+    "name": "Палау",
+    "default": false
+  },
+  {
+    "value": "PS",
+    "name": " Палестина",
+    "default": false
+  },
+  {
+    "value": "PA",
+    "name": "Панама",
+    "default": false
+  },
+  {
+    "value": "PG",
+    "name": "Папуа-Нова Гвінея",
+    "default": false
+  },
+  {
+    "value": "PY",
+    "name": "Парагвай",
+    "default": false
+  },
+  {
+    "value": "PE",
+    "name": "Перу",
+    "default": false
+  },
+  {
+    "value": "PH",
+    "name": "Філіппіни",
+    "default": false
+  },
+  {
+    "value": "PN",
+    "name": "Піткерн",
+    "default": false
+  },
+  {
+    "value": "PL",
+    "name": "Польща",
+    "default": false
+  },
+  {
+    "value": "PT",
+    "name": "Португалія",
+    "default": false
+  },
+  {
+    "value": "PR",
+    "name": "Пуерто-Ріко",
+    "default": false
+  },
+  {
+    "value": "QA",
+    "name": "Катар",
+    "default": false
+  },
+  {
+    "value": "RE",
+    "name": "Реюньон",
+    "default": false
+  },
+  {
+    "value": "RO",
+    "name": "Румунія",
+    "default": false
+  },
+  {
+    "value": "RU",
+    "name": "Росія",
+    "default": false
+  },
+  {
+    "value": "RW",
+    "name": "Руанда",
+    "default": false
+  },
+  {
+    "value": "BL",
+    "name": "Сен-Бартелемі",
+    "default": false
+  },
+  {
+    "value": "SH",
+    "name": "Святої Олени, Вознесіння і Трістан-да-Кунья",
+    "default": false
+  },
+  {
+    "value": "KN",
+    "name": "Сент-Кітс і Невіс",
+    "default": false
+  },
+  {
+    "value": "LC",
+    "name": "Сент-Люсія",
+    "default": false
+  },
+  {
+    "value": "MF",
+    "name": "Сен-Мартен (французька частина)",
+    "default": false
+  },
+  {
+    "value": "PM",
+    "name": "Сен-П'єр і Мікелон",
+    "default": false
+  },
+  {
+    "value": "VC",
+    "name": "Сент-Вінсент і Гренадини",
+    "default": false
+  },
+  {
+    "value": "WS",
+    "name": "Самоа",
+    "default": false
+  },
+  {
+    "value": "SM",
+    "name": "Сан-Марино",
+    "default": false
+  },
+  {
+    "value": "ST",
+    "name": "Сан-Томе і Принсіпі",
+    "default": false
+  },
+  {
+    "value": "SA",
+    "name": "Саудівська Аравія",
+    "default": false
+  },
+  {
+    "value": "SN",
+    "name": "Сенегал",
+    "default": false
+  },
+  {
+    "value": "RS",
+    "name": "Сербія",
+    "default": false
+  },
+  {
+    "value": "SC",
+    "name": "Сейшели",
+    "default": false
+  },
+  {
+    "value": "SL",
+    "name": "Сьєрра-Леоне",
+    "default": false
+  },
+  {
+    "value": "SG",
+    "name": "Сінгапур",
+    "default": false
+  },
+  {
+    "value": "SX",
+    "name": "Сінт-Мартен (голландська частина)",
+    "default": false
+  },
+  {
+    "value": "SK",
+    "name": "Словаччина",
+    "default": false
+  },
+  {
+    "value": "SI",
+    "name": "Словенія",
+    "default": false
+  },
+  {
+    "value": "SB",
+    "name": "Соломонові Острови",
+    "default": false
+  },
+  {
+    "value": "SO",
+    "name": "Сомалі",
+    "default": false
+  },
+  {
+    "value": "ZA",
+    "name": "Південна Африка",
+    "default": false
+  },
+  {
+    "value": "GS",
+    "name": "Південна Джорджія та Південні Сандвічеві острови",
+    "default": false
+  },
+  {
+    "value": "KR",
+    "name": "Південна Корея",
+    "default": false
+  },
+  {
+    "value": "SS",
+    "name": "Південний Судан",
+    "default": false
+  },
+  {
+    "value": "ES",
+    "name": "Іспанія",
+    "default": false
+  },
+  {
+    "value": "LK",
+    "name": "Шрі-Ланка",
+    "default": false
+  },
+  {
+    "value": "SD",
+    "name": "Судан",
+    "default": false
+  },
+  {
+    "value": "SR",
+    "name": "Суринам",
+    "default": false
+  },
+  {
+    "value": "SJ",
+    "name": "Шпіцберген і Ян-Майєн",
+    "default": false
+  },
+  {
+    "value": "SE",
+    "name": "Швеція",
+    "default": false
+  },
+  {
+    "value": "CH",
+    "name": "Швейцарія",
+    "default": false
+  },
+  {
+    "value": "SY",
+    "name": "Сирія",
+    "default": false
+  },
+  {
+    "value": "TW",
+    "name": "Тайвань",
+    "default": false
+  },
+  {
+    "value": "TJ",
+    "name": "Таджикистан",
+    "default": false
+  },
+  {
+    "value": "TZ",
+    "name": "Танзанія",
+    "default": false
+  },
+  {
+    "value": "TH",
+    "name": "Таїланд",
+    "default": false
+  },
+  {
+    "value": "TL",
+    "name": "Тимор-Лешті",
+    "default": false
+  },
+  {
+    "value": "TG",
+    "name": "Того",
+    "default": false
+  },
+  {
+    "value": "TK",
+    "name": "Токелау",
+    "default": false
+  },
+  {
+    "value": "TO",
+    "name": "Тонга",
+    "default": false
+  },
+  {
+    "value": "TT",
+    "name": "Тринідад і Тобаго",
+    "default": false
+  },
+  {
+    "value": "TN",
+    "name": "Туніс",
+    "default": false
+  },
+  {
+    "value": "TR",
+    "name": "Туреччина",
+    "default": false
+  },
+  {
+    "value": "TM",
+    "name": "Туркменістан",
+    "default": false
+  },
+  {
+    "value": "TC",
+    "name": "Острови Теркс і Кайкос",
+    "default": false
+  },
+  {
+    "value": "TV",
+    "name": "Тувалу",
+    "default": false
+  },
+  {
+    "value": "UG",
+    "name": "Уганда",
+    "default": false
+  },
+  {
+    "value": "UA",
+    "name": "Україна",
+    "default": false
+  },
+  {
+    "value": "AE",
+    "name": "Об'єднані Арабські Емірати",
+    "default": false
+  },
+  {
+    "value": "GB",
+    "name": "Об'єднане Королівство",
+    "default": false
+  },
+  {
+    "value": "UM",
+    "name": "Віддалені малі острови США",
+    "default": false
+  },
+  {
+    "value": "US",
+    "name": "Сполучені Штати Америки",
+    "default": false
+  },
+  {
+    "value": "UY",
+    "name": "Уругвай",
+    "default": false
+  },
+  {
+    "value": "UZ",
+    "name": "Узбекистан",
+    "default": false
+  },
+  {
+    "value": "VU",
+    "name": "Вануату",
+    "default": false
+  },
+  {
+    "value": "VE",
+    "name": "Венесуела",
+    "default": false
+  },
+  {
+    "value": "VN",
+    "name": "В'єтнам",
+    "default": false
+  },
+  {
+    "value": "VG",
+    "name": "Віргінські острови (Британські)",
+    "default": false
+  },
+  {
+    "value": "VI",
+    "name": "Віргінські острови (США)",
+    "default": false
+  },
+  {
+    "value": "WF",
+    "name": "Уолліс і Футуна",
+    "default": false
+  },
+  {
+    "value": "EH",
+    "name": "Західна Сахара",
+    "default": false
+  },
+  {
+    "value": "YE",
+    "name": "Ємен",
+    "default": false
+  },
+  {
+    "value": "ZM",
+    "name": "Замбія",
+    "default": false
+  },
+  {
+    "value": "ZW",
+    "name": "Зімбабве",
+    "default": false
+  }
+]

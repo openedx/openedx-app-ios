@@ -1,0 +1,49 @@
+/* 
+  Localizable.strings
+  Course
+
+  Created by  Stepanok Ivan on 26.09.2022.
+  
+*/
+
+"DETAILS.TITLE" = "Course details";
+"DETAILS.VIEW_COURSE" = "View course";
+"DETAILS.ENROLL_NOW" = "Enroll now";
+"DETAILS.ENROLLMENT_DATE_IS_OVER" = "You cannot enroll in this course because the enrollment date is over.";
+
+"OUTLINE.CONGRATULATIONS" = "Congratulations!";
+"OUTLINE.PASSED_THE_COURSE" = "You've passed the course";
+"OUTLINE.VIEW_CERTIFICATE" = "View certificate";
+"OUTLINE.CERTIFICATE" = "Certificate";
+"OUTLINE.COURSE_VIDEOS" = "Course videos";
+"OUTLINE.COURSE_HASNT_STARTED" = "This course hasn't started yet.";
+
+"COURSEWARE.COURSE_CONTENT" = "Course content";
+"COURSEWARE.COURSE_UNITS" = "Course units";
+"COURSEWARE.NEXT" = "Next";
+"COURSEWARE.PREVIOUS" = "Previous";
+"COURSEWARE.FINISH" = "Finish";
+"COURSEWARE.GOOD_WORK" = "Good Work!";
+"COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";
+"COURSEWARE.SECTION" = "Section";
+"COURSEWARE.IS_FINISHED" = "is finished.";
+
+"ERROR.NO_INTERNET" = "You are not connected to the Internet. Please check your Internet connection.";
+"ERROR.RELOAD" = "Reload";
+
+"ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
+
+"COURSE_CONTAINER.COURSE" =  "Course";
+"COURSE_CONTAINER.VIDEOS" =  "Videos";
+"COURSE_CONTAINER.DISCUSSION" =  "Discussion";
+"COURSE_CONTAINER.HANDOUTS" =  "Handouts";
+"COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
+
+"HANDOUTS_CELL_HANDOUTS.TITLE" = "Handouts";
+"HANDOUTS_CELL_ANNOUNCEMENTS.TITLE" = "Announcements";
+"HANDOUTS_CELL_HANDOUTS.DESCRIPTION" = "Find important course information";
+"HANDOUTS_CELL_ANNOUNCEMENTS.DESCRIPTION" = "Keep up with the latest news";
+
+"NOT_AVALIABLE.TITLE" = "This interactive component isn’t yet available";
+"NOT_AVALIABLE.DESCRIPTION" = "Explore other parts of this course or view this on web.";
+"NOT_AVALIABLE.BUTTON" = "Open in browser";

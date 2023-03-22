@@ -1,0 +1,17 @@
+sourceryCommand: null
+sourceryTemplate: null
+unit.tests.mock:
+  sources:
+    include:
+    - ./../Core
+    - ./Authorization
+    exclude: []
+  output: ./AuthorizationTests/AuthorizationMock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - Authorization
+  - Foundation
+  - SwiftUI
+  - Combine

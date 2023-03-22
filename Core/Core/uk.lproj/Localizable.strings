@@ -1,0 +1,48 @@
+/* 
+  Localizable.strings
+  Core
+
+  Created by Vladimir Chekyrta on 13.09.2022.
+  
+*/
+
+"MAINSCREEN.DISCOVERY" = "Всі курси";
+"MAINSCREEN.DASHBOARD" = "Мої курси";
+"MAINSCREEN.IN_DEVELOPING" = "В розробці";
+"MAINSCREEN.PROGRAMS" = "Програми";
+"MAINSCREEN.PROFILE" = "Профіль";
+
+"VIEW.SNACKBAR.TRY_AGAIN_BTN" = "Спробувати ще";
+
+"ERROR.INVALID_CREDENTIALS" = "Недійсні дані авторизації";
+"ERROR.SLOW_OR_NO_INTERNET_CONNECTION" = "Повільне або відсутнє з’єднання з Інтернетом";
+"ERROR.NO_CACHED_DATA" = "Немає збережених даних для автономного режиму";
+"ERROR.USER_NOT_ACTIVE" = "Обліковий запис користувача не активовано. Будь ласка, спочатку активуйте свій обліковий запис.";
+"ERROR.UNKNOWN_ERROR" = "Щось пішло не так";
+"ERROR.WIFI" = "Завантажувати файли можна лише через Wi-Fi. Ви можете змінити це в налаштуваннях.";
+
+"DATE.ENDED" = "Кінець";
+"DATE.START" = "Початок";
+"DATE.STARTED" = "Почався";
+"DATE.JUST_NOW" = "Прямо зараз";
+
+"ALERT.ACCEPT" = "ТАК";
+"ALERT.CANCEL" = "СКАСУВАТИ";
+"ALERT.LOGOUT" = "Вийти";
+"ALERT.LEAVE" = "Покинути";
+
+"NO_INTERNET.OFFLINE" = "Офлайн режим";
+"NO_INTERNET.DISMISS" = "Сховати";
+"NO_INTERNET.RELOAD" = "Перезавантажити";
+
+"DATE_FORMAT.MMMM_dd" = "dd MMMM";
+"DATE_FORMAT.MMM_DD_YYYY" = "dd MMMM yyyy";
+
+"DOWNLOAD_MANAGER.DOWNLOAD" = "Скачати";
+"DOWNLOAD_MANAGER.DOWNLOADED" = "Скачано";
+"DOWNLOAD_MANAGER.COMPLETED" = "Завершено";
+
+"DONE" = "Зберегти";
+
+"PICKER.SEARCH" = "Знайти";
+"PICKER.ACCEPT" = "Прийняти";

@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Discovery
+
+  Created by  Stepanok Ivan on 19.09.2022.
+  
+*/
+
+"TITLE" = "Discover";
+"SEARCH" = "Search";
+"HEADER.TITLE_1" = "Discover new";
+"HEADER.TITLE_2" = "Let's find new course for you.";
+
+"SEARCH.TITLE" = "Search results";
+"SEARCH.EMPTY_DESCRIPTION" = "Start typing to find the course";

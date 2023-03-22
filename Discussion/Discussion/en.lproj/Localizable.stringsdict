@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>comments_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@comments@</string>
+		<key>comments</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Comments</string>
+			<key>one</key>
+			<string>Comment</string>
+			<key>other</key>
+			<string>Comments</string>
+		</dict>
+	</dict>
+	<key>votes_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@votes@</string>
+		<key>votes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Votes</string>
+			<key>one</key>
+			<string>Vote</string>
+			<key>other</key>
+			<string>Votes</string>
+		</dict>
+	</dict>
+	<key>responses_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@responses@</string>
+		<key>responses</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Responses</string>
+			<key>one</key>
+			<string>Response</string>
+			<key>other</key>
+			<string>Responses</string>
+		</dict>
+	</dict>
+	<key>missed_posts_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@missed@</string>
+		<key>missed</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Missed posts</string>
+			<key>one</key>
+			<string>Missed post</string>
+			<key>other</key>
+			<string>Missed posts</string>
+		</dict>
+	</dict>
+	<key>searchResultsDescription</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@topics@</string>
+		<key>topics</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Found %d posts</string>
+			<key>one</key>
+			<string>Found %d post</string>
+			<key>other</key>
+			<string>Found %d posts</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Dashboard
+
+  Created by  Stepanok Ivan on 20.09.2022.
+  
+*/
+
+"TITLE" = "Мої курси";
+"HEADER.COURSES" = "Курси";
+"HEADER.WELCOME_BACK" = "З поверненням. Давайте продовжимо вчитись.";
+
+"EMPTY.TITLE" = "Нічого немає";
+"EMPTY.SUBTITLE" = "Ви не підписані на жодний курс.";

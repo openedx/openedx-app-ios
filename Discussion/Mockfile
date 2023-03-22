@@ -1,0 +1,17 @@
+sourceryCommand: null
+sourceryTemplate: null
+unit.tests.mock:
+  sources:
+    include:
+    - ./../Core
+    - ./Discussion
+    exclude: []
+  output: ./DiscussionTests/DiscussionMock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - Discussion
+  - Foundation
+  - SwiftUI
+  - Combine

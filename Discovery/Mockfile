@@ -1,0 +1,17 @@
+sourceryCommand: null
+sourceryTemplate: null
+unit.tests.mock:
+  sources:
+    include:
+    - ./../Core
+    - ./Discovery
+    exclude: []
+  output: ./DiscoveryTests/DiscoveryMock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - Discovery
+  - Foundation
+  - SwiftUI
+  - Combine
