@@ -13,3 +13,9 @@ public enum ThreadType {
     case nonCourseTopics
     case courseTopics(topicID: String)
 }
+
+public enum ThreadsFilter {
+    case allThreads
+    case unread
+    case unanswered
+}
