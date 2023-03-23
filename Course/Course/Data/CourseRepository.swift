@@ -110,11 +110,13 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getCourseProgress(courseID: String) async throws -> CourseProgress {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 1
         return try await api.requestData(CourseDetailsEndpoint.getProgress(courseID: courseID))
-            .mapResponse(DataLayer.ProgressResponse.self).domain
+            .mapResponse(DataLayer.ProgressResponse.self).domain(formatter: formatter)
     }
 
-    
     private func parseCourseStructure(blocks: [BECourseDetailIncoming]) -> CourseStructure {
         let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
         let descendants = course.descendants ?? []
@@ -280,28 +282,28 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                     displayName: "Section 1",
                     subsections: [
                         CourseProgress.Subsection(
-                            earned: 3,
-                            total: 4,
+                            earned: "3",
+                            total: "4",
                             percentageString: "75%",
                             displayName: "Subsection 1",
                             score: [
-                                CourseProgress.Score(earned: 1, possible: 1),
-                                CourseProgress.Score(earned: 1, possible: 1),
-                                CourseProgress.Score(earned: 1, possible: 1),
-                                CourseProgress.Score(earned: 0, possible: 1)
+                                CourseProgress.Score(earned: "1", possible: "1"),
+                                CourseProgress.Score(earned: "1", possible: "1"),
+                                CourseProgress.Score(earned: "1", possible: "1"),
+                                CourseProgress.Score(earned: "0", possible: "1")
                             ],
                             showGrades: true,
                             graded: true,
                             gradeType: "Final Exam"
                         ),
                         CourseProgress.Subsection(
-                            earned: 1,
-                            total: 2,
+                            earned: "1",
+                            total: "2",
                             percentageString: "50%",
                             displayName: "Subsection 2",
                             score: [
-                                CourseProgress.Score(earned: 1, possible: 1),
-                                CourseProgress.Score(earned: 0, possible: 1)
+                                CourseProgress.Score(earned: "1", possible: "1"),
+                                CourseProgress.Score(earned: "0", possible: "1")
                             ],
                             showGrades: true,
                             graded: false,
@@ -313,23 +315,23 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                     displayName: "Section 2",
                     subsections: [
                         CourseProgress.Subsection(
-                            earned: 3,
-                            total: 4,
+                            earned: "3",
+                            total: "4",
                             percentageString: "75%",
                             displayName: "Subsection 1",
                             score: [
-                                CourseProgress.Score(earned: 1, possible: 1),
-                                CourseProgress.Score(earned: 1, possible: 1),
-                                CourseProgress.Score(earned: 1, possible: 1),
-                                CourseProgress.Score(earned: 0, possible: 1)
+                                CourseProgress.Score(earned: "1", possible: "1"),
+                                CourseProgress.Score(earned: "1", possible: "1"),
+                                CourseProgress.Score(earned: "1", possible: "1"),
+                                CourseProgress.Score(earned: "0", possible: "1")
                             ],
                             showGrades: true,
                             graded: true,
                             gradeType: "Final Exam"
                         ),
                         CourseProgress.Subsection(
-                            earned: 0,
-                            total: 0,
+                            earned: "0",
+                            total: "0",
                             percentageString: "0%",
                             displayName: "Subsection 2",
                             score: [],

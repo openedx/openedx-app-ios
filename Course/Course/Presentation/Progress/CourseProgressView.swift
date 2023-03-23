@@ -1,3 +1,5 @@
+//Only for the tutorial, don't disable linter it in the real project.
+// swiftlint:disable all
 //
 //  CourseProgressView.swift
 //  Course
@@ -42,8 +44,36 @@ public struct CourseProgressView: View {
                 RefreshableScrollViewCompat(action: {
                     await viewModel.getProgress(withProgress: isIOS14)
                 }) {
-                    //Start implementation
-                    Text("Implementation here")
+                    ///A view that arranges its subviews in a vertical line.
+                    VStack(alignment: .leading) {
+                        //Start implementation
+                        Text("Implementation here")
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        
+                        //TODO Course banner
+                        
+                        //TODO ProgressBar
+                        
+                        if let progress = viewModel.progress {
+                            ///LazyVStack - VStack that doesn’t create items until it needs to render them onscreen.
+                            LazyVStack(alignment: .leading) {
+                                //TODO Overall course progress
+                                
+                                //TODO CourseProgressBar
+                                
+                                let sections = Array(progress.sections.enumerated())
+                                ///Use ForEach to provide views based on a RandomAccessCollection.
+                                ForEach(sections, id: \.offset) { _, section in
+                                    //TODO Section View
+                                    
+                                    let subsections = Array(section.subsections.enumerated())
+                                    ForEach(subsections, id: \.offset) { _, subsection in
+                                        //TODO Subsection View
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }.frameLimit()
                 .onRightSwipeGesture {

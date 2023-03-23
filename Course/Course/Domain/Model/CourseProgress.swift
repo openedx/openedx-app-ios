@@ -17,8 +17,8 @@ public struct CourseProgress {
     }
 
     struct Subsection {
-        let earned: Double
-        let total: Double
+        let earned: String
+        let total: String
         let percentageString: String
         let displayName: String
         let score: [Score]
@@ -28,7 +28,7 @@ public struct CourseProgress {
     }
 
     struct Score {
-        let earned: Double
-        let possible: Double
+        let earned: String
+        let possible: String
     }
 }

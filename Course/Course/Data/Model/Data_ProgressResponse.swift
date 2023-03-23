@@ -60,15 +60,15 @@ extension DataLayer {
 }
 
 extension DataLayer.ProgressResponse {
-    var domain: CourseProgress {
-        let sections = sections?.map { $0.domain } ?? []
+    func domain(formatter: NumberFormatter) -> CourseProgress {
+        let sections = sections?.map { $0.domain(formatter: formatter) } ?? []
         
         var earned: Double = 0
         var total: Double = 0
         for section in sections {
             for subsection in section.subsections where subsection.score.count != 0 {
-                earned += subsection.earned
-                total += subsection.total
+                earned += Double(subsection.earned) ?? 0
+                total += Double(subsection.total) ?? 0
             }
         }
         
@@ -85,22 +85,22 @@ extension DataLayer.ProgressResponse {
 }
 
 extension DataLayer.Section {
-    var domain: CourseProgress.Section {
+    func domain(formatter: NumberFormatter) -> CourseProgress.Section {
         CourseProgress.Section(
             displayName: displayName ?? "",
-            subsections: subsections?.map { $0.domain } ?? []
+            subsections: subsections?.map { $0.domain(formatter: formatter) } ?? []
         )
     }
 }
 
 extension DataLayer.Subsection {
-    var domain: CourseProgress.Subsection {
+    func domain(formatter: NumberFormatter) -> CourseProgress.Subsection {
         CourseProgress.Subsection(
-            earned: earned ?? 0,
-            total: total ?? 0,
+            earned: formatter.string(from: NSNumber(value: earned ?? 0)) ?? "0",
+            total: formatter.string(from: NSNumber(value: total ?? 0)) ?? "0",
             percentageString: percentageString ?? "",
             displayName: displayName ?? "",
-            score: score?.map { $0.domain } ?? [],
+            score: score?.map { $0.domain(formatter: formatter) } ?? [],
             showGrades: showGrades ?? false,
             graded: graded ?? false,
             gradeType: gradeType ?? ""
@@ -109,7 +109,10 @@ extension DataLayer.Subsection {
 }
 
 extension DataLayer.Score {
-    var domain: CourseProgress.Score {
-        CourseProgress.Score(earned: earned ?? 0, possible: possible ?? 0)
+    func domain(formatter: NumberFormatter) -> CourseProgress.Score {
+        CourseProgress.Score(
+            earned: formatter.string(from: NSNumber(value: earned ?? 0.0)) ?? "0",
+            possible: formatter.string(from: NSNumber(value: possible ?? 0.0)) ?? "0"
+        )
     }
 }
