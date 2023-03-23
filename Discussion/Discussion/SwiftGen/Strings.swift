@@ -10,6 +10,8 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum DiscussionLocalization {
+  /// Anonymous
+  public static let anonymous = DiscussionLocalization.tr("Localizable", "ANONYMOUS", fallback: "Anonymous")
   /// Plural format key: "%#@comments@"
   public static func commentsCount(_ p1: Int) -> String {
     return DiscussionLocalization.tr("Localizable", "comments_count", p1, fallback: "Plural format key: \"%#@comments@\"")

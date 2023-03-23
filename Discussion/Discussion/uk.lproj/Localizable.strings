@@ -49,3 +49,5 @@
 
 "POST_TYPE.QUESTION" = "питання";
 "POST_TYPE.DISCUSSION" = "дискусія";
+
+"ANONYMOUS" = "Анонім";
