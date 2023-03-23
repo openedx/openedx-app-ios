@@ -155,6 +155,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0208666A29CC6D8000BC05B2 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				02280F5F294B50030032823A /* CoursePersistence.swift */,
+				02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		023812E5297AC8EB0087098F /* CourseTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,9 +202,6 @@
 				02B6B3B528E1D10700232911 /* Domain */,
 				02EAE2CA28E1F0A700529644 /* Presentation */,
 				02B6B3B428E1C49400232911 /* Localizable.strings */,
-				02F3BFDC29252E900051930C /* CourseRouter.swift */,
-				02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */,
-				02280F5F294B50030032823A /* CoursePersistence.swift */,
 			);
 			path = Course;
 			sourceTree = "<group>";
@@ -220,6 +226,7 @@
 		02B6B3B828E1D12900232911 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				0208666A29CC6D8000BC05B2 /* Persistence */,
 				02B6B3BF28E1DB8800232911 /* Model */,
 				02B6B3B928E1D13500232911 /* Network */,
 				02B6B3BB28E1D14F00232911 /* CourseRepository.swift */,
@@ -276,6 +283,7 @@
 				02DFC65029ACC20A00EA4BB9 /* Handouts */,
 				070019A928F6F59D00D5FC78 /* Unit */,
 				070019AA28F6F79E00D5FC78 /* Video */,
+				02F3BFDC29252E900051930C /* CourseRouter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

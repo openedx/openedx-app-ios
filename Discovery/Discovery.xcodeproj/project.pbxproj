@@ -101,6 +101,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0208666829CC6CD600BC05B2 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				029737412949FB3B0051696B /* DiscoveryPersistence.swift */,
+				0297373E2949FB070051696B /* DiscoveryCoreModel.xcdatamodeld */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		022D04882976D7E100E0059B /* DiscoveryTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +124,7 @@
 			children = (
 				0284DBFA28D4832D00830893 /* Network */,
 				0284DC0228D4922900830893 /* DiscoveryRepository.swift */,
+				0208666829CC6CD600BC05B2 /* Persistence */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -150,6 +160,7 @@
 				0283347828D49A8700C828FC /* DiscoveryViewModel.swift */,
 				CFC849422996A5150055E497 /* SearchView.swift */,
 				CFC849442996A52A0055E497 /* SearchViewModel.swift */,
+				02F3BFDE29252F2F0051930C /* DiscoveryRouter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -182,11 +193,8 @@
 				0284DBF828D4831000830893 /* Data */,
 				0284DC0428D4996F00830893 /* Domain */,
 				070019A228F6EF2700D5FC78 /* Presentation */,
-				02F3BFDE29252F2F0051930C /* DiscoveryRouter.swift */,
 				02EF39D928D86A380058F6BD /* Localizable.strings */,
 				CFC8494E299A66080055E497 /* Localizable.stringsdict */,
-				0297373E2949FB070051696B /* DiscoveryCoreModel.xcdatamodeld */,
-				029737412949FB3B0051696B /* DiscoveryPersistence.swift */,
 			);
 			path = Discovery;
 			sourceTree = "<group>";

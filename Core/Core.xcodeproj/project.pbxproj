@@ -96,7 +96,7 @@
 		072787B628D37A0E002E9142 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072787B528D37A0E002E9142 /* Validator.swift */; };
 		07460FE1294B706200F70538 /* CollectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07460FE0294B706200F70538 /* CollectionExtension.swift */; };
 		07460FE3294B72D700F70538 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07460FE2294B72D700F70538 /* Notification.swift */; };
-		0770DE1928D0847D006D8A5D /* RouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE1828D0847D006D8A5D /* RouterProtocol.swift */; };
+		0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE1828D0847D006D8A5D /* BaseRouter.swift */; };
 		0770DE2528D08FBA006D8A5D /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2428D08FBA006D8A5D /* AppStorage.swift */; };
 		0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2928D0929E006D8A5D /* HTTPTask.swift */; };
 		0770DE2C28D092B3006D8A5D /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2B28D092B3006D8A5D /* NetworkLogger.swift */; };
@@ -215,7 +215,7 @@
 		07460FE0294B706200F70538 /* CollectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtension.swift; sourceTree = "<group>"; };
 		07460FE2294B72D700F70538 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		0770DE0828D07831006D8A5D /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0770DE1828D0847D006D8A5D /* RouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterProtocol.swift; sourceTree = "<group>"; };
+		0770DE1828D0847D006D8A5D /* BaseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRouter.swift; sourceTree = "<group>"; };
 		0770DE2428D08FBA006D8A5D /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
 		0770DE2928D0929E006D8A5D /* HTTPTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPTask.swift; sourceTree = "<group>"; };
 		0770DE2B28D092B3006D8A5D /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
@@ -351,6 +351,8 @@
 		02CF46C92954A42100A698EE /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */,
+				02A4833429B8A73400D33F33 /* CorePersistence.swift */,
 				02CF46C729546AA200A698EE /* NoCachedDataError.swift */,
 			);
 			path = Persistence;
@@ -360,7 +362,7 @@
 			isa = PBXGroup;
 			children = (
 				CFC84955299FAC4D0055E497 /* Combine */,
-				0770DE1828D0847D006D8A5D /* RouterProtocol.swift */,
+				0770DE1828D0847D006D8A5D /* BaseRouter.swift */,
 				0727876F28D23411002E9142 /* Config.swift */,
 				0231CDBD2922422D00032416 /* CSSInjector.swift */,
 				02280F5A294B4E6F0032823A /* Connectivity.swift */,
@@ -458,8 +460,6 @@
 				0770DE5D28D0B209006D8A5D /* Localizable.strings */,
 				0770DE5128D0ADFF006D8A5D /* Assets.xcassets */,
 				071009CF28D1E3A600344290 /* Constants.swift */,
-				02A4833429B8A73400D33F33 /* CorePersistence.swift */,
-				02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -796,7 +796,7 @@
 				0259104A29C4A5B6004B5A55 /* UserSettings.swift in Sources */,
 				021D925028DC89D100ACC565 /* UserProfile.swift in Sources */,
 				071009D028D1E3A600344290 /* Constants.swift in Sources */,
-				0770DE1928D0847D006D8A5D /* RouterProtocol.swift in Sources */,
+				0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */,
 				0284DBFE28D48C5300830893 /* CourseItem.swift in Sources */,
 				0248C92329C075EF00DC8402 /* CourseBlockModel.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
