@@ -1,22 +1,22 @@
 //
-//  DashboardPersistence.swift
-//  Dashboard
+//  DiscoveryPersistence.swift
+//  Discovery
 //
-//  Created by  Stepanok Ivan on 27.12.2022.
+//  Created by  Stepanok Ivan on 14.12.2022.
 //
 
 import CoreData
 import Core
 
-public protocol DashboardPersistenceProtocol {
-    func loadMyCourses() throws -> [CourseItem]
-    func saveMyCourses(items: [CourseItem])
+public protocol DiscoveryPersistenceProtocol {
+    func loadDiscovery() throws -> [CourseItem]
+    func saveDiscovery(items: [CourseItem])
     func clear()
 }
 
-public class DashboardPersistence: DashboardPersistenceProtocol {
+public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     
-    private let model = "DashboardCoreModel"
+    private let model = "DiscoveryCoreModel"
     
     private lazy var persistentContainer: NSPersistentContainer = {
         return createContainer()
@@ -28,13 +28,13 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     
     public init() {}
     
-    public func loadMyCourses() throws -> [CourseItem] {
+    public func loadDiscovery() throws -> [CourseItem] {
         let result = try? context.fetch(CDCourseItem.fetchRequest())
             .map { CourseItem(name: $0.name ?? "",
                               org: $0.org ?? "",
                               shortDescription: $0.desc ?? "",
                               imageURL: $0.imageURL ?? "",
-                              isActive: nil,
+                              isActive: $0.isActive,
                               courseStart: $0.courseStart,
                               courseEnd: $0.courseEnd,
                               enrollmentStart: $0.enrollmentStart,
@@ -50,7 +50,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
     
-    public func saveMyCourses(items: [CourseItem]) {
+    public func saveDiscovery(items: [CourseItem]) {
         for item in items {
             context.performAndWait {
                 let newItem = CDCourseItem(context: context)
@@ -59,6 +59,9 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.org = item.org
                 newItem.desc = item.shortDescription
                 newItem.imageURL = item.imageURL
+                if let isActive = item.isActive {
+                    newItem.isActive = isActive
+                }
                 newItem.courseStart = item.courseStart
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart
@@ -105,6 +108,11 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        let description = NSPersistentStoreDescription()
+        description.shouldInferMappingModelAutomatically = true
+        description.shouldMigrateStoreAutomatically = true
+        container.persistentStoreDescriptions = [description]
+        
         return container
     }
     
@@ -113,5 +121,4 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         context.automaticallyMergesChangesFromParent = true
         return context
     }
-    
 }

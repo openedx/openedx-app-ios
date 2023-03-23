@@ -1,12 +1,11 @@
+# EducationX iOS
 
-# NewEdX iOS
-
-Modern vision of the mobile application for Open EdX from Raccoon Gang.
+Modern vision of the mobile application for the Open EdX platform from Raccoon Gang.
 
 ## Building
 1. Check out the source code:
 
-        git clone https://github.com/raccoongang/new-edx-app-ios.git
+        git clone https://github.com/raccoongang/educationx-app-ios.git
 
 2. Navigate to the project folder and run ``pod install``.
 
@@ -35,4 +34,4 @@ Please feel welcome to develop any of the suggested features below and submit a 
 ## License
 The code in this repository is licensed under the AGPL v3 license unless otherwise noted.
 
-Please see [LICENSE](https://github.com/raccoongang/new-edx-app-ios/blob/main/LICENSE) file for details.
+Please see [LICENSE](https://github.com/raccoongang/educationx-app-ios/blob/main/LICENSE) file for details.
