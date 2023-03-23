@@ -92,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0208666929CC6D0F00BC05B2 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				02A48B19295ACE3D0033D5E0 /* DashboardPersistence.swift */,
+				02A48B16295ACE200033D5E0 /* DashboardCoreModel.xcdatamodeld */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		027DB33628D8D851002B6862 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +120,7 @@
 		027DB33A28D8DB45002B6862 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				0208666929CC6D0F00BC05B2 /* Persistence */,
 				027DB33728D8D9E3002B6862 /* Network */,
 				027DB33C28D8DB5E002B6862 /* DashboardRepository.swift */,
 			);
@@ -154,10 +164,7 @@
 				027DB33A28D8DB45002B6862 /* Data */,
 				027DB33628D8D851002B6862 /* Domain */,
 				02F6EF3F28D9ECA200835477 /* Presentation */,
-				02F3BFE029252FCB0051930C /* DashboardRouter.swift */,
 				02F6EF4528D9ECC500835477 /* Localizable.strings */,
-				02A48B16295ACE200033D5E0 /* DashboardCoreModel.xcdatamodeld */,
-				02A48B19295ACE3D0033D5E0 /* DashboardPersistence.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -165,18 +172,11 @@
 		02F6EF3F28D9ECA200835477 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				02F6EF4028D9ECAB00835477 /* Dashboard */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		02F6EF4028D9ECAB00835477 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
 				027DB33228D8BDBA002B6862 /* DashboardView.swift */,
 				027DB34428D8E9D2002B6862 /* DashboardViewModel.swift */,
+				02F3BFE029252FCB0051930C /* DashboardRouter.swift */,
 			);
-			path = Dashboard;
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		02F6EF4628D9ED0C00835477 /* SwiftGen */ = {

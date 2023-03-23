@@ -159,7 +159,6 @@
 				021D925328DC92E900ACC565 /* Domain */,
 				021D924428DC631800ACC565 /* Presentation */,
 				021D926128DDADE600ACC565 /* Localizable.strings */,
-				02F3BFE6292539850051930C /* ProfileRouter.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -171,6 +170,7 @@
 				0203DC3D29AE79F80017BD05 /* Profile */,
 				0203DC3C29AE79EB0017BD05 /* EditProfile */,
 				0262149029AE5793008BD75A /* DeleteAccount */,
+				02F3BFE6292539850051930C /* ProfileRouter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

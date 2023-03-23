@@ -121,6 +121,7 @@
 				020C31BD290AADA700D6DEA2 /* Base */,
 				071009C528D1D9FA00344290 /* Login */,
 				07169462296D93E000E3DED6 /* Registration */,
+				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -187,7 +188,6 @@
 				0770DE6F28D0C08E006D8A5D /* SwiftGen */,
 				071009CC28D1E24000344290 /* Presentation */,
 				0770DE6D28D0C035006D8A5D /* Localizable.strings */,
-				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
