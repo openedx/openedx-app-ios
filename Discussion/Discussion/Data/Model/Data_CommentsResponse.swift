@@ -28,7 +28,7 @@ public extension DataLayer {
     // MARK: - Comments
     struct Comments: Codable {
         public let id: String
-        public let author: String
+        public let author: String?
         public let authorLabel: String?
         public let createdAt: String
         public let updatedAt: String
@@ -75,7 +75,7 @@ public extension DataLayer {
             case users
         }
         
-        public init(id: String, author: String, authorLabel: String?, createdAt: String, updatedAt: String, rawBody: String,
+        public init(id: String, author: String?, authorLabel: String?, createdAt: String, updatedAt: String, rawBody: String,
                     renderedBody: String, abuseFlagged: Bool, voted: Bool, voteCount: Int, editableFields: [String],
                     canDelete: Bool, threadID: String, parentID: String?, endorsed: Bool, endorsedBy: String?,
                     endorsedByLabel: String?, endorsedAt: String?, childCount: Int, children: [String],
@@ -109,7 +109,7 @@ public extension DataLayer {
 public extension DataLayer.Comments {
     var domain: UserComment {
         UserComment(
-            authorName: author,
+            authorName: author ?? DiscussionLocalization.anonymous,
             authorAvatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
             postDate: Date(iso8601: createdAt),
             postTitle: "",

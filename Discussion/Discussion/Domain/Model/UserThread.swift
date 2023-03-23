@@ -86,7 +86,7 @@ public extension DataLayer.ThreadListsResponse {
     var domain: ThreadLists {
         let threadsReady = threads.map({
             UserThread(id: $0.id,
-                       author: $0.author,
+                       author: $0.author ?? DiscussionLocalization.anonymous,
                        authorLabel: $0.authorLabel ?? "",
                        createdAt: Date(iso8601: $0.createdAt),
                        updatedAt: Date(iso8601: $0.updatedAt),

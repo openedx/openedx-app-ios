@@ -11,7 +11,7 @@ import Core
 public extension DataLayer {
     struct CreatedComment: Codable {
         public let id: String
-        public let author: String
+        public let author: String?
         public let authorLabel: String?
         public let createdAt: String
         public let updatedAt: String
@@ -60,7 +60,7 @@ public extension DataLayer {
 
 public extension DataLayer.CreatedComment {
     var domain: Post {
-        Post(authorName: author,
+        Post(authorName: author ?? DiscussionLocalization.anonymous,
                      authorAvatar: "",
                      postDate: Date(iso8601: createdAt),
                      postTitle: "",

@@ -31,7 +31,7 @@ public extension DataLayer {
     // MARK: - Thread
     struct ThreadList: Codable {
         public let id: String
-        public let author: String
+        public let author: String?
         public let authorLabel: String?
         public let createdAt: String
         public let updatedAt: String

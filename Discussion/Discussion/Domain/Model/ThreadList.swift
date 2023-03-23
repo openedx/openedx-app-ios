@@ -10,7 +10,7 @@ import Core
 
 public extension DataLayer.ThreadList {
     var domain: UserComment {
-        UserComment(authorName: author,
+        UserComment(authorName: author ?? DiscussionLocalization.anonymous,
                     authorAvatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
                     postDate: Date(iso8601: createdAt),
                     postTitle: title,
