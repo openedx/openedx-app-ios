@@ -56,13 +56,17 @@ public class CourseDetailsViewModel: ObservableObject {
             if connectivity.isInternetAvaliable {
                 courseDetails = try await interactor.getCourseDetails(courseID: courseID)
                 async let enrolled = interactor.getEnrollments()
-                self.isEnrolled = try await enrolled.contains(where: { $0.courseID == courseID })
+                if let isEnrolled = courseDetails?.isEnrolled {
+                    self.isEnrolled = isEnrolled
+                }
                 self.certificate = try await enrolled.first(where: { $0.courseID == courseID })?.certificate
                 isShowProgress = false
             } else {
                 courseDetails = try await interactor.getCourseDetailsOffline(courseID: courseID)
                 async let enrolled = interactor.getEnrollmentsOffline()
-                self.isEnrolled = try await enrolled.contains(where: { $0.courseID == courseID })
+                if let isEnrolled = courseDetails?.isEnrolled {
+                    self.isEnrolled = isEnrolled
+                }
                 self.certificate = try await enrolled.first(where: { $0.courseID == courseID })?.certificate
                 isShowProgress = false
             }

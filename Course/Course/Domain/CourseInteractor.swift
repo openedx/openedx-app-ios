@@ -60,7 +60,9 @@ public class CourseInteractor: CourseInteractorProtocol {
             encodedVideo: course.encodedVideo,
             displayName: course.displayName,
             topicID: course.topicID,
-            childs: newChilds
+            childs: newChilds,
+            media: course.media,
+            certificate: course.certificate
         )
     }
     

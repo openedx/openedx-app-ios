@@ -8,27 +8,6 @@
 import Foundation
 
 public struct CourseStructure: Equatable {
-    public init(id: String,
-                graded: Bool,
-                completion: Double,
-                viewYouTubeUrl: String,
-                encodedVideo: String,
-                displayName: String,
-                topicID: String? = nil,
-                childs: [CourseChapter]) {
-        self.id = id
-        self.graded = graded
-        self.completion = completion
-        self.viewYouTubeUrl = viewYouTubeUrl
-        self.encodedVideo = encodedVideo
-        self.displayName = displayName
-        self.topicID = topicID
-        self.childs = childs
-    }
-    
-    public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
-        return lhs.id == rhs.id
-    }
     
     public let id: String
     public let graded: Bool
@@ -38,6 +17,35 @@ public struct CourseStructure: Equatable {
     public let displayName: String
     public let topicID: String?
     public let childs: [CourseChapter]
+    public let media: DataLayer.CourseMedia
+    public let certificate: Certificate?
+    
+    public init(id: String,
+                graded: Bool,
+                completion: Double,
+                viewYouTubeUrl: String,
+                encodedVideo: String,
+                displayName: String,
+                topicID: String? = nil,
+                childs: [CourseChapter],
+                media: DataLayer.CourseMedia,
+                certificate: Certificate?) {
+        self.id = id
+        self.graded = graded
+        self.completion = completion
+        self.viewYouTubeUrl = viewYouTubeUrl
+        self.encodedVideo = encodedVideo
+        self.displayName = displayName
+        self.topicID = topicID
+        self.childs = childs
+        self.media = media
+        self.certificate = certificate
+    }
+    
+    public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
 }
 
 public struct CourseChapter {

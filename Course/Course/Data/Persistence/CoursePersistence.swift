@@ -13,8 +13,8 @@ public protocol CoursePersistenceProtocol {
     func saveCourseDetails(course: CourseDetails)
     func loadEnrollments() throws -> [Core.CourseItem]
     func saveEnrollments(items: [Core.CourseItem])
-    func loadCourseStructure() throws -> [BECourseDetailIncoming]
-    func saveCourseStructure(structure: [BECourseDetailIncoming])
+    func loadCourseStructure() throws -> BECourseDetailBlocks
+    func saveCourseStructure(structure: BECourseDetailBlocks)
     func clear()
 }
 
@@ -44,6 +44,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                              courseEnd: courseDetails.courseEnd,
                              enrollmentStart: courseDetails.enrollmentStart,
                              enrollmentEnd: courseDetails.enrollmentEnd,
+                             isEnrolled: courseDetails.isEnrolled,
                              overviewHTML: courseDetails.overviewHTML ?? "",
                              courseBannerURL: courseDetails.courseBannerURL ?? "")
     }
@@ -60,6 +61,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newCourseDetails.courseEnd = course.courseEnd
             newCourseDetails.enrollmentStart = course.enrollmentStart
             newCourseDetails.enrollmentEnd = course.enrollmentEnd
+            newCourseDetails.isEnrolled = course.isEnrolled
             newCourseDetails.overviewHTML = course.overviewHTML
             newCourseDetails.courseBannerURL = course.courseBannerURL
             
@@ -124,8 +126,11 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func loadCourseStructure() throws -> [BECourseDetailIncoming] {
-            let result = try? context.fetch(CDCourseDetailIncoming.fetchRequest())
+    public func loadCourseStructure() throws -> BECourseDetailBlocks {
+        
+        let structure = try? context.fetch(CDCourseStructure.fetchRequest()).first
+        
+            let blocks = try? context.fetch(CDCourseDetailIncoming.fetchRequest())
                 .map({
                     let userViewData = BECourseDetailUserViewData(encodedVideo: BECourseDetailEncodedVideoData(
                         youTube: BECourseDetailYouTubeData(url: $0.youTubeUrl),
@@ -142,19 +147,34 @@ public class CoursePersistence: CoursePersistenceProtocol {
                                                   allSources: $0.allSources,
                                                   userViewData: userViewData)
                 })
-        if let result, !result.isEmpty {
-            return result
-        } else {
-            throw NoCachedDataError()
-        }
+        
+        let dictionary = blocks?.reduce(into: [:]) { result, block in
+            result[block.id] = block
+        } ?? [:]
+        
+        return BECourseDetailBlocks(rootItem: structure?.rootItem ?? "",
+                                    dict: dictionary,
+                                    id: structure?.id ?? "",
+                                    media: DataLayer.CourseMedia(image:
+                                                                    DataLayer.Image(raw: structure?.mediaRaw ?? "",
+                                                                                    small: structure?.mediaSmall ?? "",
+                                                                                    large: structure?.mediaLarge ?? "")),
+                                    certificate: Certificate(url: structure?.certificate))
     }
     
-    public func saveCourseStructure(structure: [BECourseDetailIncoming]) {
+    public func saveCourseStructure(structure: BECourseDetailBlocks) {
+        
         context.performAndWait {
-            for block in structure {
+            let newStructure = CDCourseStructure(context: context)
+            newStructure.certificate = structure.certificate?.url
+            newStructure.mediaSmall = structure.media.image.small
+            newStructure.mediaLarge = structure.media.image.large
+            newStructure.mediaRaw = structure.media.image.raw
+            newStructure.id = structure.id
+            newStructure.rootItem = structure.rootItem
+            
+            for block in Array(structure.dict.values) {
                 let courseDetail = CDCourseDetailIncoming(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                
                 courseDetail.allSources = block.allSources
                 courseDetail.descendants = block.descendants
                 courseDetail.graded = block.graded

@@ -22,11 +22,11 @@ enum CourseDetailsEndpoint: EndPointType {
     var path: String {
         switch self {
         case .getCourseDetail(let courseID):
-            return "/api/courses/v1/courses/\(courseID)"
+            return "/mobile_api_extensions/v1/courses/\(courseID)"
         case .getEnrollments(username: let username):
             return "/api/mobile/v1/users/\(username)/course_enrollments/"
         case .getCourseBlocks:
-            return "/api/courses/v1/blocks/"
+            return "/mobile_api_extensions/v1/blocks/"
         case .pageHTML(pageUrlString: let url):
             return "/xblock/\(url)"
         case .enrollToCourse:

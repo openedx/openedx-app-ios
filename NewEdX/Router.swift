@@ -174,9 +174,7 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
                                                 arguments: isActive, courseStart, courseEnd,
                                                 enrollmentStart, enrollmentEnd)!,
             courseID: courseID,
-            title: title,
-            courseBanner: courseBanner,
-            certificate: certificate
+            title: title
         )
 
         let controller = SwiftUIHostController(view: screensView)

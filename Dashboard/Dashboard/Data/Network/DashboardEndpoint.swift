@@ -15,7 +15,7 @@ enum DashboardEndpoint: EndPointType {
     var path: String {
         switch self {
         case .getMyCourses(let username):
-            return "/api/mobile/v1/users/\(username)/course_enrollments/"
+            return "/mobile_api_extensions/v1/users/\(username)/course_enrollments/"
         }
     }
 
@@ -33,7 +33,10 @@ enum DashboardEndpoint: EndPointType {
     var task: HTTPTask {
         switch self {
         case .getMyCourses:
-            return .request
+            let params: Parameters = [
+                "page": 1
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         }
     }
 }

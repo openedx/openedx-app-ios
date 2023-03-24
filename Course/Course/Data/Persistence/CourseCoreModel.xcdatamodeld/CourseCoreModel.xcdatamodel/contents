@@ -27,6 +27,7 @@
         <attribute name="courseTitle" attributeType="String"/>
         <attribute name="enrollmentEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="enrollmentStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isEnrolled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="org" attributeType="String"/>
         <attribute name="overviewHTML" attributeType="String"/>
         <uniquenessConstraints>
@@ -52,6 +53,19 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CDCourseStructure" representedClassName="CDCourseStructure" syncable="YES" codeGenerationType="class">
+        <attribute name="certificate" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="mediaLarge" optional="YES" attributeType="String"/>
+        <attribute name="mediaRaw" optional="YES" attributeType="String"/>
+        <attribute name="mediaSmall" optional="YES" attributeType="String"/>
+        <attribute name="rootItem" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
