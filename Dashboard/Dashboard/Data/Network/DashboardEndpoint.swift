@@ -10,11 +10,11 @@ import Core
 import Alamofire
 
 enum DashboardEndpoint: EndPointType {
-    case getMyCourses(username: String)
+    case getMyCourses(username: String, page: Int)
 
     var path: String {
         switch self {
-        case .getMyCourses(let username):
+        case let .getMyCourses(username, _):
             return "/mobile_api_extensions/v1/users/\(username)/course_enrollments/"
         }
     }
@@ -32,9 +32,9 @@ enum DashboardEndpoint: EndPointType {
 
     var task: HTTPTask {
         switch self {
-        case .getMyCourses:
+        case let .getMyCourses(_, page):
             let params: Parameters = [
-                "page": 1
+                "page": page
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         }

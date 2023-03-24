@@ -16,9 +16,7 @@ public protocol CourseRouter: BaseRouter {
                            courseEnd: Date?,
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
-                           title: String,
-                           courseBanner: String,
-                           certificate: Certificate?)
+                           title: String)
     
     func showCourseUnit(blockId: String,
                         courseID: String,
@@ -49,9 +47,7 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String,
-                                  courseBanner: String,
-                                  certificate: Certificate?) {}
+                                  title: String) {}
     
     public func showCourseUnit(blockId: String,
                                courseID: String,

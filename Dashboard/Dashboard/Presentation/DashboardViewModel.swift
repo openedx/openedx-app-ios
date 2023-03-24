@@ -12,8 +12,11 @@ import Combine
 
 public class DashboardViewModel: ObservableObject {
     
-    @Published private(set) var courses: [CourseItem] = []
-    @Published private(set) var isShowProgress = false
+    public var nextPage = 1
+    public var totalPages = 1
+    public private(set) var fetchInProgress = false
+    
+    @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {
@@ -37,24 +40,43 @@ public class DashboardViewModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
-                    await self.getMyCourses()
+                    await self.getMyCourses(page: self.nextPage)
                 }
             }
     }
     
     @MainActor
-    func getMyCourses(withProgress: Bool = true) async {
-        isShowProgress = withProgress
+    public func getMyCoursesPagination(index: Int, withProgress: Bool = true) async {
+        if !fetchInProgress {
+            if totalPages > 1 {
+                if index == courses.count - 3 {
+                    if totalPages != 1 {
+                        if nextPage <= totalPages {
+                            await getMyCourses(page: self.nextPage, withProgress: withProgress)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    public func getMyCourses(page: Int, withProgress: Bool = true) async {
         do {
             if connectivity.isInternetAvaliable {
-                courses = try await interactor.getMyCourses()
-                isShowProgress = false
+                courses += try await interactor.getMyCourses(page: page)
+                self.nextPage += 1
+                if !courses.isEmpty {
+                    totalPages = courses[0].numPages
+                }
+                fetchInProgress = false
             } else {
                 courses = try interactor.discoveryOffline()
-                isShowProgress = false
+                self.nextPage += 1
+                fetchInProgress = false
             }
         } catch let error {
-            isShowProgress = false
+            fetchInProgress = false
             if error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.noCachedData
             } else {

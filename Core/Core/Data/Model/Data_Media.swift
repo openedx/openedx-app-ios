@@ -20,10 +20,10 @@ public extension DataLayer {
     
     // MARK: - Media
     struct Media: Codable {
-        public let bannerImage: DataLayer.BannerImage
-        public let courseImage: DataLayer.CourseUrl
-        public let courseVideo: DataLayer.CourseUrl
-        public let image: DataLayer.Image
+        public let bannerImage: DataLayer.BannerImage?
+        public let courseImage: DataLayer.CourseUrl?
+        public let courseVideo: DataLayer.CourseUrl?
+        public let image: DataLayer.Image?
         
         enum CodingKeys: String, CodingKey {
             case bannerImage = "banner_image"

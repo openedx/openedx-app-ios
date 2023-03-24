@@ -124,7 +124,6 @@ struct CourseCellView_Previews: PreviewProvider {
         enrollmentStart: nil,
         enrollmentEnd: nil,
         courseID: "1",
-        certificate: nil,
         numPages: 1,
         coursesCount: 10)
     

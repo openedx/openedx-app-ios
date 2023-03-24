@@ -11,7 +11,6 @@ import Alamofire
 
 enum CourseDetailsEndpoint: EndPointType {
     case getCourseDetail(courseID: String)
-    case getEnrollments(username: String)
     case getCourseBlocks(courseID: String, userName: String)
     case pageHTML(pageUrlString: String)
     case enrollToCourse(courseID: String)
@@ -23,8 +22,6 @@ enum CourseDetailsEndpoint: EndPointType {
         switch self {
         case .getCourseDetail(let courseID):
             return "/mobile_api_extensions/v1/courses/\(courseID)"
-        case .getEnrollments(username: let username):
-            return "/api/mobile/v1/users/\(username)/course_enrollments/"
         case .getCourseBlocks:
             return "/mobile_api_extensions/v1/blocks/"
         case .pageHTML(pageUrlString: let url):
@@ -44,8 +41,6 @@ enum CourseDetailsEndpoint: EndPointType {
     var httpMethod: HTTPMethod {
         switch self {
         case .getCourseDetail:
-            return .get
-        case .getEnrollments:
             return .get
         case .getCourseBlocks:
             return .get
@@ -84,8 +79,6 @@ enum CourseDetailsEndpoint: EndPointType {
                 "block_counts": "video"
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
-        case .getEnrollments:
-            return .request
         case .pageHTML:
             return .request
         case .enrollToCourse(courseID: let courseID):

@@ -21,7 +21,6 @@ public class CourseDetailsViewModel: ObservableObject {
     @Published private(set) var isShowProgress = false
     @Published var isEnrolled: Bool = false
     @Published var showError: Bool = false
-    @Published var certificate: Certificate?
     @Published var isHorisontal: Bool = false
     var errorMessage: String? {
         didSet {
@@ -55,19 +54,16 @@ public class CourseDetailsViewModel: ObservableObject {
         do {
             if connectivity.isInternetAvaliable {
                 courseDetails = try await interactor.getCourseDetails(courseID: courseID)
-                async let enrolled = interactor.getEnrollments()
                 if let isEnrolled = courseDetails?.isEnrolled {
                     self.isEnrolled = isEnrolled
                 }
-                self.certificate = try await enrolled.first(where: { $0.courseID == courseID })?.certificate
+
                 isShowProgress = false
             } else {
                 courseDetails = try await interactor.getCourseDetailsOffline(courseID: courseID)
-                async let enrolled = interactor.getEnrollmentsOffline()
                 if let isEnrolled = courseDetails?.isEnrolled {
                     self.isEnrolled = isEnrolled
                 }
-                self.certificate = try await enrolled.first(where: { $0.courseID == courseID })?.certificate
                 isShowProgress = false
             }
         } catch let error {

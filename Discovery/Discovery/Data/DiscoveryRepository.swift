@@ -72,7 +72,7 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    certificate: nil, numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10
                 )
             )
         }
@@ -94,7 +94,7 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    certificate: nil, numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10
                 )
             )
         }
@@ -116,7 +116,6 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    certificate: nil,
                     numPages: 1,
                     coursesCount: 10
                 )

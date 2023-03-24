@@ -166,9 +166,7 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String,
-                                  courseBanner: String,
-                                  certificate: Certificate?) {
+                                  title: String) {
         let screensView = CourseContainerView(
             viewModel: Container.shared.resolve(CourseContainerViewModel.self,
                                                 arguments: isActive, courseStart, courseEnd,

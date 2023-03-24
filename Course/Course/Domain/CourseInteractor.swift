@@ -11,11 +11,9 @@ import Core
 //sourcery: AutoMockable
 public protocol CourseInteractorProtocol {
     func getCourseDetails(courseID: String) async throws -> CourseDetails
-    func getEnrollments() async throws -> [CourseItem]
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseVideoBlocks(fullStructure: CourseStructure) -> CourseStructure
     func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getEnrollmentsOffline() async throws -> [CourseItem]
     func getCourseBlocksOffline() async throws -> CourseStructure
     func enrollToCourse(courseID: String) async throws -> Bool
     func blockCompletionRequest(courseID: String, blockID: String) async throws
@@ -34,10 +32,6 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getCourseDetails(courseID: String) async throws -> CourseDetails {
         return try await repository.getCourseDetails(courseID: courseID)
-    }
-    
-    public func getEnrollments() async throws -> [CourseItem] {
-        return try await repository.getEnrollments()
     }
     
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
@@ -68,10 +62,6 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
         return try await repository.getCourseDetailsOffline(courseID: courseID)
-    }
-    
-    public func getEnrollmentsOffline() async throws -> [CourseItem] {
-        return try await repository.getEnrollmentsOffline()
     }
     
     public func getCourseBlocksOffline() async throws -> CourseStructure {

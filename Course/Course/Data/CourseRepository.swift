@@ -10,10 +10,8 @@ import Core
 
 public protocol CourseRepositoryProtocol {
     func getCourseDetails(courseID: String) async throws -> CourseDetails
-    func getEnrollments() async throws -> [CourseItem]
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getEnrollmentsOffline() async throws -> [CourseItem]
     func getCourseBlocksOffline() throws -> CourseStructure
     func enrollToCourse(courseID: String) async throws -> Bool
     func blockCompletionRequest(courseID: String, blockID: String) async throws
@@ -50,23 +48,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     public func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
         return try persistence.loadCourseDetails(courseID: courseID)
     }
-    
-    public func getEnrollments() async throws -> [CourseItem] {
-        let myCoursesResponse = try await api.requestData(
-            CourseDetailsEndpoint.getEnrollments(username: appStorage.user?.username ?? "")
-        )
-            .mapResponse([DataLayer.MyCourse].self)
-            .map({ course in
-                course.domain(baseURL: config.baseURL.absoluteString)
-            })
-        persistence.saveEnrollments(items: myCoursesResponse)
-        return myCoursesResponse
-    }
-    
-    public func getEnrollmentsOffline() async throws -> [CourseItem] {
-        return try persistence.loadEnrollments()
-    }
-    
+        
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         let structure = try await api.requestData(
             CourseDetailsEndpoint.getCourseBlocks(courseID: courseID, userName: appStorage.user?.username ?? "")
@@ -224,10 +206,6 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         )
     }
     
-    func getEnrollmentsOffline() async throws -> [Core.CourseItem] {
-        return []
-    }
-    
     func getCourseBlocksOffline() throws -> CourseStructure {
         let decoder = JSONDecoder()
         let jsonData = Data(courseStructureJson.utf8)
@@ -250,9 +228,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
             courseBannerURL: "courseBannerURL"
         )
     }
-    
-    func getEnrollments() async throws -> [CourseItem] { return [] }
-    
+        
     public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         do {
             let decoder = JSONDecoder()

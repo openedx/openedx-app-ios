@@ -106,9 +106,7 @@ public struct CourseDetailsView: View {
                                                             courseEnd: courseDetails.courseEnd,
                                                             enrollmentStart: courseDetails.enrollmentStart,
                                                             enrollmentEnd: courseDetails.enrollmentEnd,
-                                                            title: title,
-                                                            courseBanner: courseDetails.courseBannerURL,
-                                                            certificate: viewModel.certificate
+                                                            title: title
                                                         )
                                                         
                                                     })
@@ -181,9 +179,7 @@ public struct CourseDetailsView: View {
                                                     courseEnd: courseDetails.courseEnd,
                                                     enrollmentStart: courseDetails.enrollmentStart,
                                                     enrollmentEnd: courseDetails.enrollmentEnd,
-                                                    title: title,
-                                                    courseBanner: courseDetails.courseBannerURL,
-                                                    certificate: viewModel.certificate
+                                                    title: title
                                                 )
                                                 
                                             })

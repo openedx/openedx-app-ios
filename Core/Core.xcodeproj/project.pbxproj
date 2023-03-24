@@ -70,6 +70,7 @@
 		02B2B594295C5C7A00914876 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2B593295C5C7A00914876 /* Thread.swift */; };
 		02B3E3B32930198600A50475 /* AVPlayerViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */; };
 		02C2DC0829B63D6200F4445D /* WebViewHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2DC0729B63D6200F4445D /* WebViewHTML.swift */; };
+		02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */; };
 		02CF46C829546AA200A698EE /* NoCachedDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF46C729546AA200A698EE /* NoCachedDataError.swift */; };
 		02D800CC29348F460099CF16 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D800CB29348F460099CF16 /* ImagePicker.swift */; };
 		02E225B0291D29EB0067769A /* UrlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E225AF291D29EB0067769A /* UrlExtension.swift */; };
@@ -187,6 +188,7 @@
 		02B2B593295C5C7A00914876 /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerViewControllerExtension.swift; sourceTree = "<group>"; };
 		02C2DC0729B63D6200F4445D /* WebViewHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewHTML.swift; sourceTree = "<group>"; };
+		02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Dashboard.swift; sourceTree = "<group>"; };
 		02CF46C729546AA200A698EE /* NoCachedDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCachedDataError.swift; sourceTree = "<group>"; };
 		02D800CB29348F460099CF16 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		02E225AF291D29EB0067769A /* UrlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtension.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				0727877628D23847002E9142 /* DataLayer.swift */,
 				0727878428D31657002E9142 /* Data_User.swift */,
 				0283347C28D4D3DE00C828FC /* Data_Discovery.swift */,
+				02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */,
 				027DB33428D8C8FE002B6862 /* Data_MyCourse.swift */,
 				021D924728DC860C00ACC565 /* Data_UserProfile.swift */,
 				0259104929C4A5B6004B5A55 /* UserSettings.swift */,
@@ -773,6 +776,7 @@
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
+				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
 				027BD3B52909475900392132 /* KeyboardStateObserver.swift in Sources */,
 				0283347D28D4D3DE00C828FC /* Data_Discovery.swift in Sources */,

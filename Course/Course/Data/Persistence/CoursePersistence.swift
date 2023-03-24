@@ -86,7 +86,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
                            enrollmentStart: $0.enrollmentStart,
                            enrollmentEnd: $0.enrollmentEnd,
                            courseID: $0.courseID ?? "",
-                           certificate: Certificate(url: $0.certificate  ?? ""),
                            numPages: Int($0.numPages),
                            coursesCount: Int($0.courseCount))}
         if let result, !result.isEmpty {
@@ -112,7 +111,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart
                 newItem.enrollmentEnd = item.enrollmentEnd
-                newItem.certificate = item.certificate?.url
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
                 newItem.courseCount = Int32(item.coursesCount)

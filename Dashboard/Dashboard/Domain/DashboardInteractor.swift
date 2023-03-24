@@ -10,7 +10,7 @@ import Core
 
 //sourcery: AutoMockable
 public protocol DashboardInteractorProtocol {
-    func getMyCourses() async throws -> [CourseItem]
+    func getMyCourses(page: Int) async throws -> [CourseItem]
     func discoveryOffline() throws -> [CourseItem]
 }
 
@@ -23,8 +23,8 @@ public class DashboardInteractor: DashboardInteractorProtocol {
     }
     
     @discardableResult
-    public func getMyCourses() async throws -> [CourseItem] {
-        return try await repository.getMyCourses()
+    public func getMyCourses(page: Int) async throws -> [CourseItem] {
+        return try await repository.getMyCourses(page: page)
     }
     
     public func discoveryOffline() throws -> [CourseItem] {
