@@ -64,11 +64,14 @@ public struct CourseProgressView: View {
                                 let sections = Array(progress.sections.enumerated())
                                 ///Use ForEach to provide views based on a RandomAccessCollection.
                                 ForEach(sections, id: \.offset) { _, section in
-                                    //TODO Section View
-                                    
-                                    let subsections = Array(section.subsections.enumerated())
-                                    ForEach(subsections, id: \.offset) { _, subsection in
-                                        //TODO Subsection View
+                                    VStack(alignment: .leading) {
+                                        
+                                        //TODO Section View
+                                        
+                                        let subsections = Array(section.subsections.enumerated())
+                                        ForEach(subsections, id: \.offset) { _, subsection in
+                                            //TODO Subsection View
+                                        }
                                     }
                                 }
                             }
