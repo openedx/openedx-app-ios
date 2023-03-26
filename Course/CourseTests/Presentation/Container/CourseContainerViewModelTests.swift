@@ -81,7 +81,11 @@ final class CourseContainerViewModelTests: XCTestCase {
             encodedVideo: "",
             displayName: "",
             topicID: nil,
-            childs: childs
+            childs: childs,
+            media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
+                                                                small: "",
+                                                                large: "")),
+            certificate: nil
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -127,7 +131,11 @@ final class CourseContainerViewModelTests: XCTestCase {
                                               encodedVideo: "",
                                               displayName: "",
                                               topicID: nil,
-                                              childs: [])
+                                              childs: [],
+                                              media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
+                                                                                                  small: "",
+                                                                                                  large: "")),
+                                              certificate: nil)
         
         Given(interactor, .getCourseBlocksOffline(willReturn: courseStructure))
         Given(interactor, .getCourseVideoBlocks(fullStructure: .any,

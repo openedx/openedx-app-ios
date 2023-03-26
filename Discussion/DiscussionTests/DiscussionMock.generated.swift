@@ -1023,16 +1023,16 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
 
 
-    open func getThreadsList(courseID: String, type: ThreadType, page: Int) throws -> ThreadLists {
-        addInvocation(.m_getThreadsList__courseID_courseIDtype_typepage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<Int>.value(`page`)))
-		let perform = methodPerformValue(.m_getThreadsList__courseID_courseIDtype_typepage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<Int>.value(`page`))) as? (String, ThreadType, Int) -> Void
-		perform?(`courseID`, `type`, `page`)
+    open func getThreadsList(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int) throws -> ThreadLists {
+        addInvocation(.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`)))
+		let perform = methodPerformValue(.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`))) as? (String, ThreadType, ThreadsFilter, Int) -> Void
+		perform?(`courseID`, `type`, `filter`, `page`)
 		var __value: ThreadLists
 		do {
-		    __value = try methodReturnValue(.m_getThreadsList__courseID_courseIDtype_typepage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<Int>.value(`page`))).casted()
+		    __value = try methodReturnValue(.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, page: Int). Use given")
-			Failure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, page: Int). Use given")
+			onFatalFailure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int). Use given")
+			Failure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int). Use given")
 		} catch {
 		    throw error
 		}
@@ -1228,7 +1228,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
 
     fileprivate enum MethodType {
-        case m_getThreadsList__courseID_courseIDtype_typepage_page(Parameter<String>, Parameter<ThreadType>, Parameter<Int>)
+        case m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>, Parameter<ThreadType>, Parameter<ThreadsFilter>, Parameter<Int>)
         case m_getTopics__courseID_courseID(Parameter<String>)
         case m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(Parameter<String>, Parameter<String>, Parameter<Int>)
         case m_getDiscussionComments__threadID_threadIDpage_page(Parameter<String>, Parameter<Int>)
@@ -1245,10 +1245,11 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_getThreadsList__courseID_courseIDtype_typepage_page(let lhsCourseid, let lhsType, let lhsPage), .m_getThreadsList__courseID_courseIDtype_typepage_page(let rhsCourseid, let rhsType, let rhsPage)):
+            case (.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(let lhsCourseid, let lhsType, let lhsFilter, let lhsPage), .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(let rhsCourseid, let rhsType, let rhsFilter, let rhsPage)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFilter, rhs: rhsFilter, with: matcher), lhsFilter, rhsFilter, "filter"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPage, rhs: rhsPage, with: matcher), lhsPage, rhsPage, "page"))
 				return Matcher.ComparisonResult(results)
 
@@ -1334,7 +1335,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
         func intValue() -> Int {
             switch self {
-            case let .m_getThreadsList__courseID_courseIDtype_typepage_page(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_getTopics__courseID_courseID(p0): return p0.intValue
             case let .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_getDiscussionComments__threadID_threadIDpage_page(p0, p1): return p0.intValue + p1.intValue
@@ -1352,7 +1353,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         }
         func assertionName() -> String {
             switch self {
-            case .m_getThreadsList__courseID_courseIDtype_typepage_page: return ".getThreadsList(courseID:type:page:)"
+            case .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page: return ".getThreadsList(courseID:type:filter:page:)"
             case .m_getTopics__courseID_courseID: return ".getTopics(courseID:)"
             case .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber: return ".searchThreads(courseID:searchText:pageNumber:)"
             case .m_getDiscussionComments__threadID_threadIDpage_page: return ".getDiscussionComments(threadID:page:)"
@@ -1379,8 +1380,8 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         }
 
 
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, page: Parameter<Int>, willReturn: ThreadLists...) -> MethodStub {
-            return Given(method: .m_getThreadsList__courseID_courseIDtype_typepage_page(`courseID`, `type`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willReturn: ThreadLists...) -> MethodStub {
+            return Given(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getTopics(courseID: Parameter<String>, willReturn: Topics...) -> MethodStub {
             return Given(method: .m_getTopics__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1400,12 +1401,12 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         public static func addCommentTo(threadID: Parameter<String>, rawBody: Parameter<String>, parentID: Parameter<String?>, willReturn: Post...) -> MethodStub {
             return Given(method: .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(`threadID`, `rawBody`, `parentID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getThreadsList__courseID_courseIDtype_typepage_page(`courseID`, `type`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, page: Parameter<Int>, willProduce: (StubberThrows<ThreadLists>) -> Void) -> MethodStub {
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willProduce: (StubberThrows<ThreadLists>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getThreadsList__courseID_courseIDtype_typepage_page(`courseID`, `type`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (ThreadLists).self)
 			willProduce(stubber)
 			return given
@@ -1545,7 +1546,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getThreadsList__courseID_courseIDtype_typepage_page(`courseID`, `type`, `page`))}
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`))}
         public static func getTopics(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getTopics__courseID_courseID(`courseID`))}
         public static func searchThreads(courseID: Parameter<String>, searchText: Parameter<String>, pageNumber: Parameter<Int>) -> Verify { return Verify(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`))}
         public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`))}
@@ -1565,8 +1566,8 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, page: Parameter<Int>, perform: @escaping (String, ThreadType, Int) -> Void) -> Perform {
-            return Perform(method: .m_getThreadsList__courseID_courseIDtype_typepage_page(`courseID`, `type`, `page`), performs: perform)
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, perform: @escaping (String, ThreadType, ThreadsFilter, Int) -> Void) -> Perform {
+            return Perform(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), performs: perform)
         }
         public static func getTopics(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getTopics__courseID_courseID(`courseID`), performs: perform)

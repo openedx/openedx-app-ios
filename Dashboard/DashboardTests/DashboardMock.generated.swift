@@ -1023,16 +1023,16 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 
 
 
-    open func getMyCourses() throws -> [CourseItem] {
-        addInvocation(.m_getMyCourses)
-		let perform = methodPerformValue(.m_getMyCourses) as? () -> Void
-		perform?()
+    open func getMyCourses(page: Int) throws -> [CourseItem] {
+        addInvocation(.m_getMyCourses__page_page(Parameter<Int>.value(`page`)))
+		let perform = methodPerformValue(.m_getMyCourses__page_page(Parameter<Int>.value(`page`))) as? (Int) -> Void
+		perform?(`page`)
 		var __value: [CourseItem]
 		do {
-		    __value = try methodReturnValue(.m_getMyCourses).casted()
+		    __value = try methodReturnValue(.m_getMyCourses__page_page(Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getMyCourses(). Use given")
-			Failure("Stub return value not specified for getMyCourses(). Use given")
+			onFatalFailure("Stub return value not specified for getMyCourses(page: Int). Use given")
+			Failure("Stub return value not specified for getMyCourses(page: Int). Use given")
 		} catch {
 		    throw error
 		}
@@ -1057,12 +1057,15 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 
 
     fileprivate enum MethodType {
-        case m_getMyCourses
+        case m_getMyCourses__page_page(Parameter<Int>)
         case m_discoveryOffline
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_getMyCourses, .m_getMyCourses): return .match
+            case (.m_getMyCourses__page_page(let lhsPage), .m_getMyCourses__page_page(let rhsPage)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPage, rhs: rhsPage, with: matcher), lhsPage, rhsPage, "page"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_discoveryOffline, .m_discoveryOffline): return .match
             default: return .none
@@ -1071,13 +1074,13 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 
         func intValue() -> Int {
             switch self {
-            case .m_getMyCourses: return 0
+            case let .m_getMyCourses__page_page(p0): return p0.intValue
             case .m_discoveryOffline: return 0
             }
         }
         func assertionName() -> String {
             switch self {
-            case .m_getMyCourses: return ".getMyCourses()"
+            case .m_getMyCourses__page_page: return ".getMyCourses(page:)"
             case .m_discoveryOffline: return ".discoveryOffline()"
             }
         }
@@ -1092,18 +1095,18 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
         }
 
 
-        public static func getMyCourses(willReturn: [CourseItem]...) -> MethodStub {
-            return Given(method: .m_getMyCourses, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getMyCourses(page: Parameter<Int>, willReturn: [CourseItem]...) -> MethodStub {
+            return Given(method: .m_getMyCourses__page_page(`page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func discoveryOffline(willReturn: [CourseItem]...) -> MethodStub {
             return Given(method: .m_discoveryOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getMyCourses(willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getMyCourses, products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getMyCourses(page: Parameter<Int>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getMyCourses__page_page(`page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getMyCourses(willProduce: (StubberThrows<[CourseItem]>) -> Void) -> MethodStub {
+        public static func getMyCourses(page: Parameter<Int>, willProduce: (StubberThrows<[CourseItem]>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getMyCourses, products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getMyCourses__page_page(`page`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: ([CourseItem]).self)
 			willProduce(stubber)
 			return given
@@ -1123,7 +1126,7 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func getMyCourses() -> Verify { return Verify(method: .m_getMyCourses)}
+        public static func getMyCourses(page: Parameter<Int>) -> Verify { return Verify(method: .m_getMyCourses__page_page(`page`))}
         public static func discoveryOffline() -> Verify { return Verify(method: .m_discoveryOffline)}
     }
 
@@ -1131,8 +1134,8 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func getMyCourses(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_getMyCourses, performs: perform)
+        public static func getMyCourses(page: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_getMyCourses__page_page(`page`), performs: perform)
         }
         public static func discoveryOffline(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_discoveryOffline, performs: perform)
