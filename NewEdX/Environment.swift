@@ -25,7 +25,7 @@ class BuildConfiguration {
         case .debugDev, .releaseDev:
             return "https://example-dev.com"
         case .debugProd, .releaseProd:
-            return "https://example.com"
+            return "https://lms-rg-app-ios-stage.raccoongang.com"
         }
     }
     
@@ -34,7 +34,7 @@ class BuildConfiguration {
         case .debugDev, .releaseDev:
             return "DEBUG_CLIENT_ID"
         case .debugProd, .releaseProd:
-            return "PROD_CLIENT_ID"
+            return "pblW0oJkVAovYeUh9Wf7yTvoNRuAH6TDL5hoWVsq"
         }
     }
     
