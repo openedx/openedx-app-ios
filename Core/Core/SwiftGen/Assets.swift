@@ -24,6 +24,8 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum CoreAssets {
+  public static let authBackground = ImageAsset(name: "authBackground")
+  public static let checkEmail = ImageAsset(name: "checkEmail")
   public static let accentColor = ColorAsset(name: "AccentColor")
   public static let alert = ColorAsset(name: "Alert")
   public static let avatarStroke = ColorAsset(name: "AvatarStroke")
@@ -92,7 +94,6 @@ public enum CoreAssets {
   public static let appLogo = ImageAsset(name: "appLogo")
   public static let arrowLeft = ImageAsset(name: "arrowLeft")
   public static let arrowRight16 = ImageAsset(name: "arrowRight16")
-  public static let authBackground = ImageAsset(name: "authBackground")
   public static let certificate = ImageAsset(name: "certificate")
   public static let check = ImageAsset(name: "check")
   public static let clearInput = ImageAsset(name: "clearInput")

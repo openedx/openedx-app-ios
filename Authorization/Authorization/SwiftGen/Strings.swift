@@ -17,14 +17,16 @@ public enum AuthLocalization {
     public static let invalidPasswordLenght = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGHT", fallback: "Invalid password lenght")
   }
   public enum Forgot {
-    /// Back to Sign in
-    public static let back = AuthLocalization.tr("Localizable", "FORGOT.BACK", fallback: "Back to Sign in")
-    /// Please enter the email you use to sign in to EDX.
-    public static let description = AuthLocalization.tr("Localizable", "FORGOT.DESCRIPTION", fallback: "Please enter the email you use to sign in to EDX.")
-    /// Forgot your password?
-    public static let forgotPassword = AuthLocalization.tr("Localizable", "FORGOT.FORGOT_PASSWORD", fallback: "Forgot your password?")
-    /// Request password reset
-    public static let request = AuthLocalization.tr("Localizable", "FORGOT.REQUEST", fallback: "Request password reset")
+    /// We have sent a password recover instructions to your email 
+    public static let checkDescription = AuthLocalization.tr("Localizable", "FORGOT.CHECK_Description", fallback: "We have sent a password recover instructions to your email ")
+    /// Check your email
+    public static let checkTitle = AuthLocalization.tr("Localizable", "FORGOT.CHECK_TITLE", fallback: "Check your email")
+    /// Please enter your log-in or recovery email address below and we will send you an email with instructions.
+    public static let description = AuthLocalization.tr("Localizable", "FORGOT.DESCRIPTION", fallback: "Please enter your log-in or recovery email address below and we will send you an email with instructions.")
+    /// Reset password
+    public static let request = AuthLocalization.tr("Localizable", "FORGOT.REQUEST", fallback: "Reset password")
+    /// Forgot password
+    public static let title = AuthLocalization.tr("Localizable", "FORGOT.TITLE", fallback: "Forgot password")
   }
   public enum SignIn {
     /// Email

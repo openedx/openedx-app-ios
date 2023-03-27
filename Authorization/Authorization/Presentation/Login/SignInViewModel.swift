@@ -71,15 +71,15 @@ public class SignInViewModel: ObservableObject {
     }
     
     @MainActor
-    func resetPassword(email: String, isRecoveryPassord: Binding<Bool>) async {
+    func resetPassword(email: String, isRecovered: Binding<Bool>) async {
         guard validator.isValidEmail(email) else {
             errorMessage = AuthLocalization.Error.invalidEmailAddress
             return
         }
         isShowProgress = true
         do {
-            alertMessage = try await interactor.resetPassword(email: email).responseText.hideHtmlTagsAndUrls()
-            isRecoveryPassord.wrappedValue.toggle()
+            _ = try await interactor.resetPassword(email: email).responseText.hideHtmlTagsAndUrls()
+            isRecovered.wrappedValue.toggle()
             isShowProgress = false
         } catch {
             isShowProgress = false

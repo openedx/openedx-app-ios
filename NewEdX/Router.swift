@@ -117,6 +117,12 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showForgotPasswordScreen() {
+        let view = ResetPasswordView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+        let controller = SwiftUIHostController(view: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     public func showCourseDetais(courseID: String,
                                  title: String) {
         let view = CourseDetailsView(viewModel: Container.shared.resolve(CourseDetailsViewModel.self)!,

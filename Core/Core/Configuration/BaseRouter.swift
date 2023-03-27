@@ -27,6 +27,8 @@ public protocol BaseRouter {
 
     func showRegisterScreen()
     
+    func showForgotPasswordScreen()
+    
     func presentAlert(
         alertTitle: String,
         alertMessage: String,
@@ -74,6 +76,8 @@ open class BaseRouterMock: BaseRouter {
     public func showLoginScreen() {}
 
     public func showRegisterScreen() {}
+    
+    public func showForgotPasswordScreen() {}
     
     public func backToRoot(animated: Bool) {}
         
