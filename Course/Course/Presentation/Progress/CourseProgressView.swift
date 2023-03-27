@@ -46,34 +46,70 @@ public struct CourseProgressView: View {
                 }) {
                     ///A view that arranges its subviews in a vertical line.
                     VStack(alignment: .leading) {
-                        //Start implementation
-                        Text("Implementation here")
-                            .frame(maxWidth: .infinity, alignment: .center)
+                        //Course banner
+                        KFImage(URL(string: courseBanner))
+                            .onFailureImage(CoreAssets.noCourseImage.image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxHeight: 250)
+                            .cornerRadius(12)
+                            .padding(.horizontal, 6)
+                            .padding(.top, 7)
+                            .fixedSize(horizontal: false, vertical: true)
                         
-                        //TODO Course banner
-                        
-                        //TODO ProgressBar
+                        //ProgressBar
+                        if viewModel.isShowProgress {
+                            ProgressBar(size: 40, lineWidth: 8)
+                                .padding(.top, 50)
+                                .frame(maxWidth: .infinity)
+                        }
                         
                         if let progress = viewModel.progress {
                             ///LazyVStack - VStack that doesn’t create items until it needs to render them onscreen.
                             LazyVStack(alignment: .leading) {
-                                //TODO Overall course progress
+                                //Overall course progress
+                                HStack {
+                                    Text("Overall course progress")
+                                        .font(Theme.Fonts.titleMedium)
+                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                    
+                                    Spacer()
+                                    
+                                    Text("\(progress.progress)%")
+                                        .font(Theme.Fonts.titleMedium)
+                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                }.padding(.horizontal, 20)
+                                    .padding(.top, 20)
                                 
-                                //TODO CourseProgressBar
+                                //CourseProgressBar
+                                CourseProgressBar(progress: progress.progress)
+                                    .frame(height: 20)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 20)
                                 
                                 let sections = Array(progress.sections.enumerated())
                                 ///Use ForEach to provide views based on a RandomAccessCollection.
                                 ForEach(sections, id: \.offset) { _, section in
+                                    //Section View
                                     VStack(alignment: .leading) {
-                                        
-                                        //TODO Section View
+                                        Text(section.displayName)
+                                            .font(Theme.Fonts.bodyLarge)
+                                            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(.horizontal, 20)
+                                            .padding(.vertical, 5)
+                                            .background(CoreAssets.accentColor.swiftUIColor.opacity(0.5))
                                         
                                         let subsections = Array(section.subsections.enumerated())
                                         ForEach(subsections, id: \.offset) { _, subsection in
-                                            //TODO Subsection View
-                                        }
+                                            //Subsection View
+                                            CourseSubsectionView(subsection: subsection)
+                                        }.padding(.horizontal, 20)
                                     }
                                 }
+                                
+                                Spacer()
+                                    .frame(height: 20)
                             }
                         }
                     }

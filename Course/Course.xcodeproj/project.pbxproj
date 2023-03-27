@@ -51,6 +51,7 @@
 		0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */; };
 		0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */; };
 		0766DFD0299AB29000EBEF6A /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */; };
+		077F2C6A29D1EE2800995D5D /* CourseSubsectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077F2C6929D1EE2800995D5D /* CourseSubsectionView.swift */; };
 		07DD19E829CB300F008CDBCA /* Data_ProgressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD19E729CB300F008CDBCA /* Data_ProgressResponse.swift */; };
 		07DD19EA29CB30A9008CDBCA /* CourseProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD19E929CB30A9008CDBCA /* CourseProgress.swift */; };
 		07DD19ED29CB3155008CDBCA /* CourseProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD19EC29CB3155008CDBCA /* CourseProgressView.swift */; };
@@ -116,6 +117,7 @@
 		0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeVideoPlayer.swift; sourceTree = "<group>"; };
 		0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedVideoPlayer.swift; sourceTree = "<group>"; };
 		0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		077F2C6929D1EE2800995D5D /* CourseSubsectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseSubsectionView.swift; sourceTree = "<group>"; };
 		07DD19E729CB300F008CDBCA /* Data_ProgressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_ProgressResponse.swift; sourceTree = "<group>"; };
 		07DD19E929CB30A9008CDBCA /* CourseProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgress.swift; sourceTree = "<group>"; };
 		07DD19EC29CB3155008CDBCA /* CourseProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressView.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				07DD19EC29CB3155008CDBCA /* CourseProgressView.swift */,
 				07DD19EE29CB3172008CDBCA /* CourseProgressViewModel.swift */,
 				07265FCC29CB89E20048558C /* CourseProgressBar.swift */,
+				077F2C6929D1EE2800995D5D /* CourseSubsectionView.swift */,
 			);
 			path = Progress;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 				022C64E029ADEA9B000F532B /* Data_UpdatesResponse.swift in Sources */,
 				02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */,
 				02280F60294B50030032823A /* CoursePersistence.swift in Sources */,
+				077F2C6A29D1EE2800995D5D /* CourseSubsectionView.swift in Sources */,
 				07265FCD29CB89E20048558C /* CourseProgressBar.swift in Sources */,
 				02280F5E294B4FDA0032823A /* CourseCoreModel.xcdatamodeld in Sources */,
 				0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */,
