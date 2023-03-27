@@ -23,18 +23,18 @@ class BuildConfiguration {
     var baseURL: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "https://lms-rg-app-ios-dev.raccoongang.com"
+            return "https://example-dev.com"
         case .debugProd, .releaseProd:
-            return "https://lms-rg-app-ios-stage.raccoongang.com"
+            return "https://example.com"
         }
     }
     
     var clientId: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "T7od4OFlYni7hTMnepfQuF1XUoqsESjEClltL40T"
+            return "DEBUG_CLIENT_ID"
         case .debugProd, .releaseProd:
-            return "kHDbLaYlc1lpY1obmyAAEp9dX9qPqeDrBiVGQFIy"
+            return "PROD_CLIENT_ID"
         }
     }
     
