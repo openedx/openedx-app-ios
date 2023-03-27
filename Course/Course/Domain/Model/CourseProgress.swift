@@ -25,6 +25,10 @@ public struct CourseProgress {
         let showGrades: Bool
         let graded: Bool
         let gradeType: String
+        
+        var title: String {
+            "\(displayName) (\(earned)/\(total))"
+        }
     }
 
     struct Score {
