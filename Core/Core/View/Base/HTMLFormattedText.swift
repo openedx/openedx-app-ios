@@ -12,10 +12,12 @@ public struct HTMLFormattedText: UIViewRepresentable {
     
     let text: String
     let isScrollEnabled: Bool
+    @Binding var textViewHeight: CGFloat?
     
-    public init(_ content: String, isScrollEnabled: Bool = false) {
+    public init(_ content: String, isScrollEnabled: Bool = false, textViewHeight: Binding<CGFloat?> = .constant(nil)) {
         self.text = content
         self.isScrollEnabled = isScrollEnabled
+        self._textViewHeight = textViewHeight
     }
     
     public func makeUIView(context: UIViewRepresentableContext<Self>) -> UITextView {
@@ -25,21 +27,31 @@ public struct HTMLFormattedText: UIViewRepresentable {
         textView.isEditable = false
         textView.isScrollEnabled = isScrollEnabled
         textView.backgroundColor = .clear
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.delegate = context.coordinator
         return textView
     }
     
     public func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<Self>) {
         uiView.setContentHuggingPriority(.defaultHigh, for: .vertical)
-                uiView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-                uiView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-                uiView.setContentCompressionResistancePriority(.required, for: .vertical)
-        DispatchQueue.main.async {
-            if let attributeText = self.convertHTML(text: text) {
-                uiView.attributedText = attributeText
-            } else {
-                uiView.text = ""
+        uiView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        uiView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        uiView.setContentCompressionResistancePriority(.required, for: .vertical)
+        
+        if let attributeText = self.convertHTML(text: text) {
+            uiView.attributedText = attributeText
+            DispatchQueue.main.async {
+                self.textViewHeight = uiView.contentSize.height
             }
+
+        } else {
+            uiView.text = ""
         }
+    }
+    
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
     
     private func convertHTML(text: String) -> NSAttributedString? {
@@ -50,8 +62,18 @@ public struct HTMLFormattedText: UIViewRepresentable {
                                                             .documentType: NSAttributedString.DocumentType.html,
                                                             .characterEncoding: String.Encoding.utf8.rawValue
                                                           ], documentAttributes: nil) {
-            return attributedString//.trimmedAttributedString()
-        } else { return nil }
+            return attributedString
+        } else {
+            return nil
+        }
+    }
+    
+    public class Coordinator: NSObject, UITextViewDelegate {
+        let parent: HTMLFormattedText
+        
+        init(_ parent: HTMLFormattedText) {
+            self.parent = parent
+        }
     }
 }
 
