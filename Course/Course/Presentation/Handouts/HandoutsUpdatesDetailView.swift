@@ -18,6 +18,7 @@ public struct HandoutsUpdatesDetailView: View {
     private var handouts: String?
     private var announcements: [CourseUpdate]?
     private let title: String
+    @State private var height: [Int: CGFloat] = [:]
     
     public init(handouts: String?, announcements: [CourseUpdate]?, router: CourseRouter, cssInjector: CSSInjector) {
         if handouts != nil {
@@ -70,6 +71,8 @@ public struct HandoutsUpdatesDetailView: View {
                     
                     // MARK: - Page Body
                     VStack(alignment: .leading) {
+                        
+                        // MARK: - Handouts
                         if let handouts {
                             let formattedHandouts = cssInjector.injectCSS(colorScheme: colorScheme,
                                                                           html: handouts,
@@ -79,6 +82,8 @@ public struct HandoutsUpdatesDetailView: View {
                             
                             WebViewHtml(fixBrokenLinks(in: formattedHandouts))
                         } else if let announcements {
+                            
+                            // MARK: - Announcements
                             ScrollView {
                                 ForEach(Array(announcements.enumerated()), id: \.offset) { index, ann in
                                     
@@ -88,16 +93,16 @@ public struct HandoutsUpdatesDetailView: View {
                                                                                        html: ann.content,
                                                                                        type: .discovery,
                                                                                        screenWidth: reader.size.width)
-                                    HTMLFormattedText(fixBrokenLinks(in: formattedAnnouncements))
-                                    
+                                    HTMLFormattedText(fixBrokenLinks(in: formattedAnnouncements),
+                                                      isScrollEnabled: true,
+                                                      textViewHeight: $height[index])
+                                    .frame(height: height[index])
+                                                                        
                                     if index != announcements.count - 1 {
                                         Divider()
                                     }
                                 }
-                            }.frame(minWidth: 0,
-                                    maxWidth: .infinity,
-                                    minHeight: 0,
-                                    maxHeight: .infinity)
+                            }.frame(height: reader.size.height - 60)
                         }
                     }.padding(.horizontal, 32)
                         .frame(
@@ -122,46 +127,19 @@ public struct HandoutsUpdatesDetailView: View {
 struct HandoutsUpdatesDetailView_Previews: PreviewProvider {
     static var previews: some View {
         
-        var handouts = """
-<style>
-@font-face {
-  font-family: "San Francisco";
-  font-weight: 400;
-  src: url("https://applesocial.s3.amazonaws.com/assets//fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
-}
-.header {
-font-size: 150%;
-font-family: -apple-system, system-ui, BlinkMacSystemFont;
-  background-color: clear;
-  color: black;
-max-width: infpx;
-}
-img {max-width: infpx;
-  width: auto;
-  height: auto;
-}
-</style>
-<table class="header">
-<tr>
-<td><h3>Essential Documents:</h3>
-<ul style="list-style-type: disc; font-size: 1.1em;">
-<li><a title="Download Syllabus PDF"
-href="google.com"
-target="_blank">Certificate Syllabus</a></li>
-<li><a title="Download UW Start Learning Guide PDF" href="facebook.com">Learning Platform Guide</a></li>
-
-  <div style="background-color: #ffeed2; margin: 30px; padding: 30px; border: thin solid black;"><p><span class="fa
-fa-warning" title="warning icon">&nbsp;</span> <span class="sr">warning Icon</span> This is a reminder that the University
-of Washington is requiring all students, including students enrolled in fully online programs, to be vaccinated against
-COVID-19 or declare an exemption by <strong>September 29, 2021</strong>.<p>You can verify your vaccination status or claim
-an exemption through a <a href="https://www.washington.edu/coronavirus/vaccination-requirement/">secure vaccination
-attestation form</a>. You must submit the form by <strong>November 5, 2021</strong>, or there will be a hold placed
-on your account preventing you from registering for your next course.</p></div>
-<hr style="border-bottom: thin solid #ddd;" title="Next announcement"
+        let handouts = """
+Hi! Welcome to the demonstration course. We built this to help you become more familiar with taking a course on this site prior to your first day of class. \n<br>\n<br>\nIn a live course, this section is where all of the latest course announcements and updates would be. To get started with this demo course, view the \n\n\n\n<a href=\"/courses/course-v1:ios+1+2023/courseware/d8a6192ade314473a78242dfeedfbf5b/edx_introduction/\">courseware page</a> and click &#8220;Example Week 1&#8221; in the left hand navigation.  \n\n\n\n\n<br>\n<br>\nWe tried to make this both fun and informative. We hope you like it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.\n\n\n
 """
         
-        HandoutsUpdatesDetailView(handouts: handouts,
-                                  announcements: [],
+        let loremIpsumHtml = """
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollitia animi, id est laborum.
+"""
+        
+        HandoutsUpdatesDetailView(handouts: nil,
+                                  announcements: [CourseUpdate(id: 1, date: "1 march",
+                                                               content: handouts, status: "done"),
+                                                  CourseUpdate(id: 2, date: "3 april",
+                                                               content: loremIpsumHtml, status: "nice")],
                                   router: CourseRouterMock(),
                                   cssInjector: CSSInjectorMock())
     }
