@@ -118,7 +118,7 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     }
     
     public func showForgotPasswordScreen() {
-        let view = ResetPasswordView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+        let view = ResetPasswordView(viewModel: Container.shared.resolve(ResetPasswordViewModel.self)!)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }

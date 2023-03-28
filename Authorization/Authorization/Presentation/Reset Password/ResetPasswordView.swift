@@ -15,9 +15,9 @@ public struct ResetPasswordView: View {
     @State private var isRecovered: Bool = false
     
     @ObservedObject
-    private var viewModel: SignInViewModel
+    private var viewModel: ResetPasswordViewModel
     
-    public init(viewModel: SignInViewModel) {
+    public init(viewModel: ResetPasswordViewModel) {
         self.viewModel = viewModel
     }
     
@@ -39,7 +39,7 @@ public struct ResetPasswordView: View {
                 
                 ScrollView {
                     VStack {
-                        if !isRecovered {
+                        if isRecovered {
                             ZStack {
                                 VStack {
                                     CoreAssets.checkEmail.swiftUIImage
@@ -156,7 +156,7 @@ public struct ResetPasswordView: View {
 #if DEBUG
 struct ResetPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = SignInViewModel(
+        let vm = ResetPasswordViewModel(
             interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
             validator: Validator()
