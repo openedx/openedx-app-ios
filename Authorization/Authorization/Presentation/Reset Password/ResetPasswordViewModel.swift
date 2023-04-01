@@ -1,16 +1,14 @@
 //
-//  SignInViewModel.swift
+//  ResetPasswordViewModel.swift
 //  Authorization
 //
-//  Created by Vladimir Chekyrta on 14.09.2022.
+//  Created by  Stepanok Ivan on 28.03.2023.
 //
 
-import Foundation
-import Core
 import SwiftUI
-import Alamofire
+import Core
 
-public class SignInViewModel: ObservableObject {
+public class ResetPasswordViewModel: ObservableObject {
     
     @Published private(set) var isShowProgress = false
     @Published private(set) var showError: Bool = false
@@ -39,26 +37,22 @@ public class SignInViewModel: ObservableObject {
         self.router = router
         self.validator = validator
     }
-     
+    
     @MainActor
-    func login(username: String, password: String) async {
-        guard validator.isValidEmail(username) else {
+    func resetPassword(email: String, isRecovered: Binding<Bool>) async {
+        guard validator.isValidEmail(email) else {
             errorMessage = AuthLocalization.Error.invalidEmailAddress
             return
         }
-        guard validator.isValidPassword(password) else {
-            errorMessage = AuthLocalization.Error.invalidPasswordLenght
-            return
-        }
-        
         isShowProgress = true
         do {
-            try await interactor.login(username: username, password: password)
-            router.showMainScreen()
-        } catch let error {
+            _ = try await interactor.resetPassword(email: email).responseText.hideHtmlTagsAndUrls()
+            isRecovered.wrappedValue.toggle()
+            isShowProgress = false
+        } catch {
             isShowProgress = false
             if let validationError = error.validationError,
-               let value = validationError.data?["error_description"] as? String {
+               let value = validationError.data?["value"] as? String {
                 errorMessage = value
             } else if case APIError.invalidGrant = error {
                 errorMessage = CoreLocalization.Error.invalidCredentials
@@ -70,3 +64,4 @@ public class SignInViewModel: ObservableObject {
         }
     }
 }
+
