@@ -32,6 +32,10 @@ public extension DataLayer {
     // MARK: - Certificate
     struct Certificate: Codable {
         public let url: String?
+        
+        public init(url: String?) {
+            self.url = url
+        }
     }
     
     // MARK: - Course

@@ -9,38 +9,40 @@ import Foundation
 import CoreData
 import Core
 
-public struct BECourseDetailBlocks: Decodable {
-    let rootItem: String
-    typealias Blocks = [String: BECourseDetailIncoming]
-    var dict: Blocks
-    let id: String
-    let media: DataLayer.CourseMedia
-    let certificate: Certificate?
-    
-    enum CodingKeys: String, CodingKey {
-        case blocks
-        case rootItem = "root"
-        case id
-        case media
-        case certificate
-    }
-    
-    init(rootItem: String, dict: Blocks, id: String, media: DataLayer.CourseMedia, certificate: Certificate?) {
-        self.rootItem = rootItem
-        self.dict = dict
-        self.id = id
-        self.media = media
-        self.certificate = certificate
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
+public extension DataLayer {
+    struct CourseStructure: Decodable {
+        let rootItem: String
+        typealias Blocks = [String: BECourseDetailIncoming]
+        var dict: Blocks
+        let id: String
+        let media: DataLayer.CourseMedia
+        let certificate: Certificate?
         
-        dict = try values.decode(Blocks.self, forKey: .blocks)
-        rootItem = try values.decode(String.self, forKey: .rootItem)
-        id = try values.decode(String.self, forKey: .id)
-        media = try values.decode(DataLayer.CourseMedia.self, forKey: .media)
-        certificate = try values.decode(Certificate.self, forKey: .certificate)
+        enum CodingKeys: String, CodingKey {
+            case blocks
+            case rootItem = "root"
+            case id
+            case media
+            case certificate
+        }
+        
+        init(rootItem: String, dict: Blocks, id: String, media: DataLayer.CourseMedia, certificate: Certificate?) {
+            self.rootItem = rootItem
+            self.dict = dict
+            self.id = id
+            self.media = media
+            self.certificate = certificate
+        }
+        
+        public init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            
+            dict = try values.decode(Blocks.self, forKey: .blocks)
+            rootItem = try values.decode(String.self, forKey: .rootItem)
+            id = try values.decode(String.self, forKey: .id)
+            media = try values.decode(DataLayer.CourseMedia.self, forKey: .media)
+            certificate = try values.decode(Certificate.self, forKey: .certificate)
+        }
     }
 }
 

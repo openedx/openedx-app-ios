@@ -13,8 +13,8 @@ public protocol CoursePersistenceProtocol {
     func saveCourseDetails(course: CourseDetails)
     func loadEnrollments() throws -> [Core.CourseItem]
     func saveEnrollments(items: [Core.CourseItem])
-    func loadCourseStructure() throws -> BECourseDetailBlocks
-    func saveCourseStructure(structure: BECourseDetailBlocks)
+    func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure
+    func saveCourseStructure(structure: DataLayer.CourseStructure)
     func clear()
 }
 
@@ -33,8 +33,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
     }()
     
     public func loadCourseDetails(courseID: String) throws -> CourseDetails {
-            let request = CDCourseDetails.fetchRequest()
-            request.predicate = NSPredicate(format: "courseID = %@", courseID)
+        let request = CDCourseDetails.fetchRequest()
+        request.predicate = NSPredicate(format: "courseID = %@", courseID)
         guard let courseDetails = try? context.fetch(request).first else { throw NoCachedDataError() }
         return CourseDetails(courseID: courseDetails.courseID ?? "",
                              org: courseDetails.org ?? "",
@@ -52,7 +52,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
     public func saveCourseDetails(course: CourseDetails) {
         context.performAndWait {
             let newCourseDetails = CDCourseDetails(context: context)
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             newCourseDetails.courseID = course.courseID
             newCourseDetails.org = course.org
             newCourseDetails.courseTitle = course.courseTitle
@@ -99,7 +98,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
         context.performAndWait {
             for item in items {
                 let newItem = CDCourseItem(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.name = item.name
                 newItem.org = item.org
                 newItem.desc = item.shortDescription
@@ -124,44 +122,47 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func loadCourseStructure() throws -> BECourseDetailBlocks {
+    public func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure {
+        let request = CDCourseStructure.fetchRequest()
+        request.predicate = NSPredicate(format: "id = %@", courseID)
+        guard let structure = try? context.fetch(request).first else { throw NoCachedDataError() }
         
-        let structure = try? context.fetch(CDCourseStructure.fetchRequest()).first
+        let requestBlocks = CDCourseDetailIncoming.fetchRequest()
+        requestBlocks.predicate = NSPredicate(format: "courseID = %@", courseID)
         
-            let blocks = try? context.fetch(CDCourseDetailIncoming.fetchRequest())
-                .map({
-                    let userViewData = BECourseDetailUserViewData(encodedVideo: BECourseDetailEncodedVideoData(
-                        youTube: BECourseDetailYouTubeData(url: $0.youTubeUrl),
-                        fallback: BECourseDetailYouTubeData(url: $0.fallbackUrl)
-                    ), topicID: "")
-                    return BECourseDetailIncoming(blockId: $0.blockId ?? "",
-                                                  id: $0.id ?? "",
-                                                  graded: $0.graded,
-                                                  completion: $0.completion,
-                                                  studentUrl: $0.studentUrl ?? "",
-                                                  type: $0.type ?? "",
-                                                  displayName: $0.displayName ?? "",
-                                                  descendants: $0.descendants,
-                                                  allSources: $0.allSources,
-                                                  userViewData: userViewData)
-                })
+        let blocks = try? context.fetch(requestBlocks).map {
+            let userViewData = BECourseDetailUserViewData(
+                encodedVideo: BECourseDetailEncodedVideoData(
+                    youTube: BECourseDetailYouTubeData(url: $0.youTubeUrl),
+                    fallback: BECourseDetailYouTubeData(url: $0.fallbackUrl)
+                ), topicID: "")
+            return BECourseDetailIncoming(blockId: $0.blockId ?? "",
+                                          id: $0.id ?? "",
+                                          graded: $0.graded,
+                                          completion: $0.completion,
+                                          studentUrl: $0.studentUrl ?? "",
+                                          type: $0.type ?? "",
+                                          displayName: $0.displayName ?? "",
+                                          descendants: $0.descendants,
+                                          allSources: $0.allSources,
+                                          userViewData: userViewData)
+        }
         
         let dictionary = blocks?.reduce(into: [:]) { result, block in
             result[block.id] = block
         } ?? [:]
         
-        return BECourseDetailBlocks(rootItem: structure?.rootItem ?? "",
-                                    dict: dictionary,
-                                    id: structure?.id ?? "",
-                                    media: DataLayer.CourseMedia(image:
-                                                                    DataLayer.Image(raw: structure?.mediaRaw ?? "",
-                                                                                    small: structure?.mediaSmall ?? "",
-                                                                                    large: structure?.mediaLarge ?? "")),
-                                    certificate: Certificate(url: structure?.certificate))
+        return DataLayer.CourseStructure(rootItem: structure.rootItem ?? "",
+                                         dict: dictionary,
+                                         id: structure.id ?? "",
+                                         media: DataLayer.CourseMedia(image:
+                                                                        DataLayer.Image(raw: structure.mediaRaw ?? "",
+                                                                                        small: structure.mediaSmall ?? "",
+                                                                                        large: structure.mediaLarge ?? "")),
+                                         certificate: DataLayer.Certificate(url: structure.certificate))
     }
     
-    public func saveCourseStructure(structure: BECourseDetailBlocks) {
-        
+    public func saveCourseStructure(structure: DataLayer.CourseStructure) {
         context.performAndWait {
             let newStructure = CDCourseStructure(context: context)
             newStructure.certificate = structure.certificate?.url
@@ -177,6 +178,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 courseDetail.descendants = block.descendants
                 courseDetail.graded = block.graded
                 courseDetail.blockId = block.blockId
+                courseDetail.courseID = structure.id
                 courseDetail.displayName = block.displayName
                 courseDetail.id = block.id
                 courseDetail.studentUrl = block.studentUrl
@@ -233,6 +235,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
     
     private func createContext() -> NSManagedObjectContext {
         let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.automaticallyMergesChangesFromParent = true
         return context
     }

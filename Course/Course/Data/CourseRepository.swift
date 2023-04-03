@@ -12,7 +12,7 @@ public protocol CourseRepositoryProtocol {
     func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getCourseBlocksOffline() throws -> CourseStructure
+    func getCourseBlocksOffline(courseID: String) throws -> CourseStructure
     func enrollToCourse(courseID: String) async throws -> Bool
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
@@ -52,14 +52,14 @@ public class CourseRepository: CourseRepositoryProtocol {
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         let structure = try await api.requestData(
             CourseDetailsEndpoint.getCourseBlocks(courseID: courseID, userName: appStorage.user?.username ?? "")
-        ).mapResponse(BECourseDetailBlocks.self)
+        ).mapResponse(DataLayer.CourseStructure.self)
         persistence.saveCourseStructure(structure: structure)
         let parsedStructure = parseCourseStructure(structure: structure)
         return parsedStructure
     }
     
-    public func getCourseBlocksOffline() throws -> CourseStructure {
-        let localData = try persistence.loadCourseStructure()
+    public func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
+        let localData = try persistence.loadCourseStructure(courseID: courseID)
         return parseCourseStructure(structure: localData)
     }
     
@@ -91,7 +91,7 @@ public class CourseRepository: CourseRepositoryProtocol {
             .mapResponse(DataLayer.CourseUpdates.self).map { $0.domain }
     }
     
-    private func parseCourseStructure(structure: BECourseDetailBlocks) -> CourseStructure {
+    private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
         let blocks = Array(structure.dict.values)
         let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
         let descendants = course.descendants ?? []
@@ -110,7 +110,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                                topicID: course.userViewData?.topicID,
                                childs: childs,
                                media: structure.media,
-                               certificate: structure.certificate)
+                               certificate: structure.certificate?.domain)
     }
     
     private func parseChapters(id: String, blocks: [BECourseDetailIncoming]) -> CourseChapter {
@@ -206,10 +206,10 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         )
     }
     
-    func getCourseBlocksOffline() throws -> CourseStructure {
+    func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
         let decoder = JSONDecoder()
         let jsonData = Data(courseStructureJson.utf8)
-        let courseBlocks = try decoder.decode(BECourseDetailBlocks.self, from: jsonData)// else { throw NoCachedDataError() }
+        let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)// else { throw NoCachedDataError() }
         return parseCourseStructure(courseBlocks: courseBlocks)
     }
     
@@ -233,7 +233,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         do {
             let decoder = JSONDecoder()
             let jsonData = Data(courseStructureJson.utf8)
-            let courseBlocks = try decoder.decode(BECourseDetailBlocks.self, from: jsonData)
+            let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
             return parseCourseStructure(courseBlocks: courseBlocks)
         } catch {
             throw error
@@ -248,7 +248,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         
     }
     
-    private func parseCourseStructure(courseBlocks: BECourseDetailBlocks) -> CourseStructure {
+    private func parseCourseStructure(courseBlocks: DataLayer.CourseStructure) -> CourseStructure {
         let blocks = Array(courseBlocks.dict.values)
         let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
         let descendants = course.descendants ?? []
@@ -267,7 +267,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                                topicID: course.userViewData?.topicID,
                                childs: childs,
                                media: courseBlocks.media,
-                               certificate: courseBlocks.certificate)
+                               certificate: courseBlocks.certificate?.domain)
     }
     
     private func parseChapters(id: String, blocks: [BECourseDetailIncoming]) -> CourseChapter {
