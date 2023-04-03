@@ -53,3 +53,5 @@
 "SEARCH" = "Search";
 "SEARCH.TITLE" = "Search results";
 "SEARCH.EMPTY_DESCRIPTION" = "Start typing to find the topics";
+
+"ANONYMOUS" = "Anonymous";

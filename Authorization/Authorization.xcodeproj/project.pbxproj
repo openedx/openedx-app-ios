@@ -12,6 +12,8 @@
 		020C31CB290BF49900D6DEA2 /* FieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020C31CA290BF49900D6DEA2 /* FieldsView.swift */; };
 		022D0482297442BA00E0059B /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D0481297442BA00E0059B /* SignUpViewModelTests.swift */; };
 		022D04962976DA6500E0059B /* AuthorizationMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */; };
+		025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */; };
+		025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */; };
 		02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE4292533720051930C /* AuthorizationRouter.swift */; };
 		071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C628D1DA4F00344290 /* SignInViewModel.swift */; };
 		07169458296D913400E3DED6 /* Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE3B28D0A319006D8A5D /* Authorization.framework */; platformFilter = ios; };
@@ -41,6 +43,8 @@
 		020C31CA290BF49900D6DEA2 /* FieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsView.swift; sourceTree = "<group>"; };
 		022D0481297442BA00E0059B /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
 		022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationMock.generated.swift; sourceTree = "<group>"; };
+		025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
+		025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
 		02ED50CC29A64B90008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F3BFE4292533720051930C /* AuthorizationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRouter.swift; sourceTree = "<group>"; };
 		071009C628D1DA4F00344290 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
@@ -106,6 +110,15 @@
 			path = Register;
 			sourceTree = "<group>";
 		};
+		025F40DE29D1C1350064C183 /* Reset Password */ = {
+			isa = PBXGroup;
+			children = (
+				025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */,
+				025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */,
+			);
+			path = "Reset Password";
+			sourceTree = "<group>";
+		};
 		071009C528D1D9FA00344290 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +134,7 @@
 				020C31BD290AADA700D6DEA2 /* Base */,
 				071009C528D1D9FA00344290 /* Login */,
 				07169462296D93E000E3DED6 /* Registration */,
+				025F40DE29D1C1350064C183 /* Reset Password */,
 				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
 			);
 			path = Presentation;
@@ -440,7 +454,9 @@
 			files = (
 				02066B442906D72400F4307E /* SignUpView.swift in Sources */,
 				0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */,
+				025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */,
 				02066B462906D72F00F4307E /* SignUpViewModel.swift in Sources */,
+				025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */,
 				020C31CB290BF49900D6DEA2 /* FieldsView.swift in Sources */,
 				0770DE4E28D0A677006D8A5D /* SignInView.swift in Sources */,
 				02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */,

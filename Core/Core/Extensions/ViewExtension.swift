@@ -103,12 +103,13 @@ public extension View {
         
     }
     
-    func titleSettings(top: CGFloat? = 10, bottom: CGFloat? = 20) -> some View {
+    func titleSettings(top: CGFloat? = 10, bottom: CGFloat? = 20,
+                       color: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
         return self
             .lineLimit(1)
             .truncationMode(.tail)
             .font(Theme.Fonts.titleMedium)
-            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+            .foregroundColor(color)
             .padding(.top, top)
             .padding(.bottom, bottom)
             .padding(.horizontal, 48)

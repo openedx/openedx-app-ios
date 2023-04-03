@@ -17,12 +17,14 @@ public struct NavigationBar: View {
     private let title: String
     private let leftButton: Bool
     private let leftButtonColor: Color
+    private let titleColor: Color
     private let leftButtonAction: (() -> Void)?
     private let rightButtonType: ButtonType?
     private let rightButtonAction: (() -> Void)?
     @Binding private var rightButtonIsActive: Bool
     
     public init(title: String,
+                titleColor: Color = CoreAssets.textPrimary.swiftUIColor,
                 leftButtonColor: Color = CoreAssets.accentColor.swiftUIColor,
                 leftButtonAction: (() -> Void)? = nil,
                 rightButtonType: ButtonType? = nil,
@@ -30,6 +32,7 @@ public struct NavigationBar: View {
                 rightButtonIsActive: Binding<Bool> = .constant(true)
     ) {
         self.title = title
+        self.titleColor = titleColor
         self.leftButton = leftButtonAction != nil
         self.leftButtonColor = leftButtonColor
         self.leftButtonAction = leftButtonAction
@@ -42,7 +45,7 @@ public struct NavigationBar: View {
         ZStack {
             HStack {
                 Text(title)
-                    .titleSettings()
+                    .titleSettings(color: titleColor)
             }
             .padding(.horizontal, 24)
             if leftButton {
@@ -51,7 +54,7 @@ public struct NavigationBar: View {
                         leftButtonAction?()
                     }, label: {
                         CoreAssets.arrowLeft.swiftUIImage
-                            .backButtonStyle()
+                            .backButtonStyle(color: leftButtonColor)
                     })
                     .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                     

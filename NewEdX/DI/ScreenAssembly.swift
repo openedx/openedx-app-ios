@@ -59,6 +59,13 @@ class ScreenAssembly: Assembly {
                 validator: r.resolve(Validator.self)!
             )
         }
+        container.register(ResetPasswordViewModel.self) { r in
+            ResetPasswordViewModel(
+                interactor: r.resolve(AuthInteractorProtocol.self)!,
+                router: r.resolve(AuthorizationRouter.self)!,
+                validator: r.resolve(Validator.self)!
+            )
+        }
         
         // MARK: Discovery
         container.register(DiscoveryPersistenceProtocol.self) { _ in
