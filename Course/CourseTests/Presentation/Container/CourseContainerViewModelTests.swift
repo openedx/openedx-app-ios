@@ -81,7 +81,11 @@ final class CourseContainerViewModelTests: XCTestCase {
             encodedVideo: "",
             displayName: "",
             topicID: nil,
-            childs: childs
+            childs: childs,
+            media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
+                                                                small: "",
+                                                                large: "")),
+            certificate: nil
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -127,15 +131,19 @@ final class CourseContainerViewModelTests: XCTestCase {
                                               encodedVideo: "",
                                               displayName: "",
                                               topicID: nil,
-                                              childs: [])
+                                              childs: [],
+                                              media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
+                                                                                                  small: "",
+                                                                                                  large: "")),
+                                              certificate: nil)
         
-        Given(interactor, .getCourseBlocksOffline(willReturn: courseStructure))
+        Given(interactor, .getCourseBlocksOffline(courseID: .any, willReturn: courseStructure))
         Given(interactor, .getCourseVideoBlocks(fullStructure: .any,
                                                 willReturn: courseStructure))
         
         await viewModel.getCourseBlocks(courseID: "123")
         
-        Verify(interactor, .getCourseBlocksOffline())
+        Verify(interactor, .getCourseBlocksOffline(courseID: .any))
         Verify(interactor, .getCourseVideoBlocks(fullStructure: .any))
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.showError)

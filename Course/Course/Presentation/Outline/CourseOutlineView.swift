@@ -13,8 +13,6 @@ public struct CourseOutlineView: View {
     
     @ObservedObject private var viewModel: CourseContainerViewModel
     private let title: String
-    private let courseBanner: String
-    private let certificate: Certificate?
     private let courseID: String
     private let isVideo: Bool
     
@@ -23,15 +21,11 @@ public struct CourseOutlineView: View {
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
-        courseBanner: String,
-        certificate: Certificate?,
         courseID: String,
         isVideo: Bool
     ) {
         self.title = title
         self.viewModel = viewModel
-        self.courseBanner = courseBanner
-        self.certificate = certificate
         self.courseID = courseID
         self.isVideo = isVideo
     }
@@ -52,14 +46,17 @@ public struct CourseOutlineView: View {
                         VStack(alignment: .leading) {
                             ZStack {
                                 // MARK: - Course Banner
-                                KFImage(URL(string: self.courseBanner))
-                                    .onFailureImage(CoreAssets.noCourseImage.image)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+                                if let banner = viewModel.courseStructure?.media.image.raw
+                                    .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                                        .onFailureImage(CoreAssets.noCourseImage.image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+                                }
                                 
                                 // MARK: - Course Certificate
-                                if let certificate {
+                                if let certificate = viewModel.courseStructure?.certificate {
                                     if let url = certificate.url, url.count > 0 {
                                         CoreAssets.certificateForeground.swiftUIColor
                                         VStack(alignment: .center, spacing: 8) {
@@ -243,8 +240,6 @@ struct CourseOutlineView_Previews: PreviewProvider {
             CourseOutlineView(
                 viewModel: viewModel,
                 title: "Course title",
-                courseBanner: "",
-                certificate: Certificate(url: "cert_url"),
                 courseID: "",
                 isVideo: false
             )
@@ -254,8 +249,6 @@ struct CourseOutlineView_Previews: PreviewProvider {
             CourseOutlineView(
                 viewModel: viewModel,
                 title: "Course title",
-                courseBanner: "",
-                certificate: Certificate(url: "cert_url"),
                 courseID: "",
                 isVideo: false
             )

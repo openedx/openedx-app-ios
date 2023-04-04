@@ -38,7 +38,6 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "123",
-                       certificate: nil,
                        numPages: 2,
                        coursesCount: 2),
             CourseItem(name: "Test2",
@@ -51,7 +50,6 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "1243",
-                       certificate: nil,
                        numPages: 1,
                        coursesCount: 2)
         ]
@@ -84,7 +82,6 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "123",
-                       certificate: nil,
                        numPages: 2,
                        coursesCount: 0),
             CourseItem(name: "Test2",
@@ -97,7 +94,6 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "1243",
-                       certificate: nil,
                        numPages: 1,
                        coursesCount: 0)
         ]
@@ -129,7 +125,6 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "123",
-                       certificate: nil,
                        numPages: 2,
                        coursesCount: 2),
             CourseItem(name: "Test2",
@@ -142,7 +137,6 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "1243",
-                       certificate: nil,
                        numPages: 1,
                        coursesCount: 2)
         ]

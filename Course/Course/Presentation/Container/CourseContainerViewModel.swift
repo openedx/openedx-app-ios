@@ -79,7 +79,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     if connectivity.isInternetAvaliable {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                     } else {
-                        courseStructure = try await interactor.getCourseBlocksOffline()
+                        courseStructure = try await interactor.getCourseBlocksOffline(courseID: courseID)
                     }
                     courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
                     setDownloadsStates()

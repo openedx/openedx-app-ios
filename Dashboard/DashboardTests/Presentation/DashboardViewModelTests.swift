@@ -30,7 +30,6 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "123",
-                       certificate: nil,
                        numPages: 2,
                        coursesCount: 2),
             CourseItem(name: "Test2",
@@ -43,21 +42,19 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "1243",
-                       certificate: nil,
                        numPages: 1,
                        coursesCount: 2)
         ]
 
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyCourses(willReturn: items))
+        Given(interactor, .getMyCourses(page: .any, willReturn: items))
 
-        await viewModel.getMyCourses()
+        await viewModel.getMyCourses(page: 1)
 
-        Verify(interactor, 1, .getMyCourses())
+        Verify(interactor, 1, .getMyCourses(page: .value(1)))
 
         XCTAssertTrue(viewModel.courses == items)
         XCTAssertNil(viewModel.errorMessage)
-        XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.showError)
     }
     
@@ -77,7 +74,6 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "123",
-                       certificate: nil,
                        numPages: 2,
                        coursesCount: 2),
             CourseItem(name: "Test2",
@@ -90,7 +86,6 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "1243",
-                       certificate: nil,
                        numPages: 1,
                        coursesCount: 2)
         ]
@@ -98,13 +93,12 @@ final class DashboardViewModelTests: XCTestCase {
         Given(connectivity, .isInternetAvaliable(getter: false))
         Given(interactor, .discoveryOffline(willReturn: items))
         
-        await viewModel.getMyCourses()
+        await viewModel.getMyCourses(page: 1)
         
         Verify(interactor, 1, .discoveryOffline())
         
         XCTAssertTrue(viewModel.courses == items)
         XCTAssertNil(viewModel.errorMessage)
-        XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.showError)
     }
     
@@ -114,15 +108,14 @@ final class DashboardViewModelTests: XCTestCase {
         let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyCourses(willThrow: NoCachedDataError()) )
+        Given(interactor, .getMyCourses(page: .any, willThrow: NoCachedDataError()) )
         
-        await viewModel.getMyCourses()
+        await viewModel.getMyCourses(page: 1)
         
-        Verify(interactor, 1, .getMyCourses())
+        Verify(interactor, 1, .getMyCourses(page: .value(1)))
         
         XCTAssertTrue(viewModel.courses.isEmpty)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.noCachedData)
-        XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
     }
     
@@ -132,15 +125,14 @@ final class DashboardViewModelTests: XCTestCase {
         let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyCourses(willThrow: NSError()) )
+        Given(interactor, .getMyCourses(page: .any, willThrow: NSError()) )
         
-        await viewModel.getMyCourses()
+        await viewModel.getMyCourses(page: 1)
         
-        Verify(interactor, 1, .getMyCourses())
+        Verify(interactor, 1, .getMyCourses(page: .value(1)))
         
         XCTAssertTrue(viewModel.courses.isEmpty)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
-        XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
     }
 }

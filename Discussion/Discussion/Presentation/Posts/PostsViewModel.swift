@@ -10,7 +10,25 @@ import SwiftUI
 import Combine
 import Core
 
+public extension ThreadsFilter {
+    
+    var localizedValue: String {
+        switch self {
+        case .allThreads:
+            return DiscussionLocalization.Posts.Filter.allPosts
+        case .unread:
+            return DiscussionLocalization.Posts.Filter.unread
+        case .unanswered:
+            return DiscussionLocalization.Posts.Filter.unanswered
+        }
+    }
+}
+
 public class PostsViewModel: ObservableObject {
+    
+    public var nextPage = 1
+    public var totalPages = 1
+    public private(set) var fetchInProgress = false
     
     public enum ButtonType {
         case sort
@@ -34,30 +52,24 @@ public class PostsViewModel: ObservableObject {
         }
     }
     
-    public enum FilterType {
-        case allPosts
-        case unread
-        case unanswered
-        
-        var localizedValue: String {
-            switch self {
-            case .allPosts:
-                return DiscussionLocalization.Posts.Filter.allPosts
-            case .unread:
-                return DiscussionLocalization.Posts.Filter.unread
-            case .unanswered:
-                return DiscussionLocalization.Posts.Filter.unanswered
-            }
-        }
-    }
-    
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var filteredPosts: [DiscussionPost] = []
-    @Published var filterTitle: FilterType = .allPosts
+    @Published var filterTitle: ThreadsFilter = .allThreads {
+        willSet {
+            if let courseID {
+              resetPosts()
+                Task {
+                    _ = await getPosts(courseID: courseID, pageNumber: 1)
+                }
+            }
+        }
+    }
     @Published var sortTitle: SortType = .recentActivity
     
     @Published var filterButtons: [ActionSheet.Button] = []
+    
+    public var courseID: String?
     
     var errorMessage: String? {
         didSet {
@@ -103,6 +115,14 @@ public class PostsViewModel: ObservableObject {
             })
     }
     
+    public func resetPosts() {
+        filteredPosts = []
+        discussionPosts = []
+        threads.threads = []
+        nextPage = 1
+        totalPages = 1
+    }
+    
     public func generateButtons(type: ButtonType) {
         switch type {
         case .sort:
@@ -124,7 +144,7 @@ public class PostsViewModel: ObservableObject {
         case .filter:
             self.filterButtons = [
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.allPosts)) {
-                    self.filterTitle = .allPosts
+                    self.filterTitle = .allThreads
                     self.sortPosts()
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.unread)) {
@@ -155,18 +175,21 @@ public class PostsViewModel: ObservableObject {
     }
     
     @MainActor
-    func getPostsPagination(courseID: String, withProgress: Bool = true) async -> Bool {
-        self.threads.threads = []
-        guard await getPosts(courseID: courseID, pageNumber: 1, withProgress: withProgress) else { return false }
-        if !threads.threads.isEmpty {
-            if threads.threads[0].numPages > 1 {
-                for i in 2...threads.threads[0].numPages {
-                    guard await getPosts(courseID: courseID, pageNumber: i, withProgress: withProgress) else { return false }
+    func getPostsPagination(courseID: String, index: Int, withProgress: Bool = true) async {
+        print(">>>>>> INDEX", index)
+        if !fetchInProgress {
+            if totalPages > 1 {
+                if index == threads.threads.count - 3 {
+                    if totalPages != 1 {
+                        if nextPage <= totalPages {
+                            _ = await getPosts(courseID: courseID,
+                                               pageNumber: self.nextPage,
+                                               withProgress: withProgress)
+                        }
+                    }
                 }
             }
         }
-        
-        return true
     }
     
     @MainActor
@@ -178,22 +201,34 @@ public class PostsViewModel: ObservableObject {
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .allPosts,
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .followingPosts:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .followingPosts,
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .nonCourseTopics:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .nonCourseTopics,
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .courseTopics(topicID: let topicID):
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .courseTopics(topicID: topicID),
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .none:
                 isShowProgress = false
                 return false
@@ -216,14 +251,6 @@ public class PostsViewModel: ObservableObject {
     
     private func sortPosts() {
         self.filteredPosts = self.discussionPosts
-        switch filterTitle {
-        case .allPosts:
-            break
-        case .unread:
-            self.filteredPosts = self.filteredPosts.filter({ $0.unreadCommentCount > 0 })
-        case .unanswered:
-            self.filteredPosts = self.filteredPosts.filter({ $0.type == .question && !$0.hasEndorsed })
-        }
         switch sortTitle {
         case .recentActivity:
             self.filteredPosts = self.filteredPosts.sorted(by: { $0.lastPostDate > $1.lastPostDate })

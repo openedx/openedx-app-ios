@@ -8,9 +8,9 @@
 import Foundation
 
 public struct Certificate: Codable, Hashable {
-    public let url: String
+    public let url: String?
     
-    public init(url: String) {
+    public init(url: String?) {
         self.url = url
     }
 }

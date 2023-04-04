@@ -16,7 +16,7 @@ public enum InternetState {
 //sourcery: AutoMockable
 public protocol ConnectivityProtocol {
     var isInternetAvaliable: Bool { get }
-    var isWifi: Bool { get }
+    var isMobileData: Bool { get }
     var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
 }
 
@@ -28,9 +28,9 @@ public class Connectivity: ConnectivityProtocol {
         networkManager?.isReachable ?? false
     }
     
-    public var isWifi: Bool {
+    public var isMobileData: Bool {
         if let networkManager {
-           return !networkManager.isReachableOnCellular && networkManager.isReachableOnEthernetOrWiFi
+           return !networkManager.isReachableOnCellular && networkManager.isReachableOnCellular
         } else {
             return false
         }

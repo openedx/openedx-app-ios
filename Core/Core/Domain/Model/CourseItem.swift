@@ -18,7 +18,6 @@ public struct CourseItem: Hashable {
     public let enrollmentStart: Date?
     public let enrollmentEnd: Date?
     public let courseID: String
-    public let certificate: Certificate?
     public let numPages: Int
     public let coursesCount: Int
     
@@ -32,7 +31,6 @@ public struct CourseItem: Hashable {
                 enrollmentStart: Date?,
                 enrollmentEnd: Date?,
                 courseID: String,
-                certificate: Certificate?,
                 numPages: Int,
                 coursesCount: Int) {
         self.name = name
@@ -45,7 +43,6 @@ public struct CourseItem: Hashable {
         self.enrollmentStart = enrollmentStart
         self.enrollmentEnd = enrollmentEnd
         self.courseID = courseID
-        self.certificate = certificate
         self.numPages = numPages
         self.coursesCount = coursesCount
     }

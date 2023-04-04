@@ -27,10 +27,11 @@ public struct PostsView: View {
         self.router = router
         self.showTopMenu = showTopMenu
         self.viewModel = viewModel
+        self.viewModel.courseID = courseID
         self.viewModel.topics = topics
         viewModel.type = type
         Task {
-            await viewModel.getPostsPagination(courseID: courseID)
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1,   withProgress: true)
         }
     }
     
@@ -40,9 +41,10 @@ public struct PostsView: View {
         self.router = router
         self.viewModel = viewModel
         Task {
-            await viewModel.getPostsPagination(courseID: courseID)
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1,   withProgress: true)
         }
         self.showTopMenu = true
+        self.viewModel.courseID = courseID
     }
     
     public var body: some View {
@@ -94,13 +96,15 @@ public struct PostsView: View {
                                     }.frameLimit()
                                     RefreshableScrollViewCompat(action: {
                                         listAnimation = nil
-                                        _ = await viewModel.getPostsPagination(courseID: courseID,
-                                                                               withProgress: isIOS14)
+                                        viewModel.resetPosts()
+                                        _ = await viewModel.getPosts(courseID: courseID,
+                                                                     pageNumber: 1,
+                                                                     withProgress: isIOS14)
                                     }) {
                                         VStack {
                                             VStack {}.frame(height: 1)
                                                 .id(1)
-                                            let posts = viewModel.filteredPosts
+                                            let posts = Array(viewModel.filteredPosts.enumerated())
                                             HStack {
                                                 Text(title)
                                                     .font(Theme.Fonts.titleLarge)
@@ -109,9 +113,14 @@ public struct PostsView: View {
                                                     .padding(.top, 12)
                                                 Spacer()
                                             }
-                                            ForEach(posts, id: \.id) { post in
+                                            ForEach(posts, id: \.offset) { index, post in
                                                 PostCell(post: post).padding(24)
-                                                if posts.last != post {
+                                                    .onAppear {
+                                                        Task {
+                                                            await viewModel.getPostsPagination(courseID: self.courseID, index: index)
+                                                        }
+                                                    }
+                                                if posts.last?.element != post {
                                                     Divider().padding(.horizontal, 24)
                                                 }
                                             }
@@ -178,7 +187,11 @@ public struct PostsView: View {
     @MainActor
     private func reloadPage(onSuccess: @escaping () -> Void) {
         Task {
-            guard await viewModel.getPostsPagination(courseID: courseID) else { return }
+            listAnimation = nil
+            viewModel.resetPosts()
+            _ = await viewModel.getPosts(courseID: courseID,
+                                         pageNumber: 1,
+                                         withProgress: isIOS14)
             onSuccess()
         }
     }

@@ -16,6 +16,7 @@ public struct CourseDetails {
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
+    var isEnrolled: Bool
     var overviewHTML: String
     let courseBannerURL: String
     
@@ -27,6 +28,7 @@ public struct CourseDetails {
                 courseEnd: Date?,
                 enrollmentStart: Date?,
                 enrollmentEnd: Date?,
+                isEnrolled: Bool,
                 overviewHTML: String,
                 courseBannerURL: String) {
         self.courseID = courseID
@@ -37,6 +39,7 @@ public struct CourseDetails {
         self.courseEnd = courseEnd
         self.enrollmentStart = enrollmentStart
         self.enrollmentEnd = enrollmentEnd
+        self.isEnrolled = isEnrolled
         self.overviewHTML = overviewHTML
         self.courseBannerURL = courseBannerURL
     }

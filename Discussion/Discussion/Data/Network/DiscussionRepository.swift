@@ -10,7 +10,7 @@ import Core
 import Combine
 
 public protocol DiscussionRepositoryProtocol {
-    func getThreads(courseID: String, type: ThreadType, page: Int) async throws -> ThreadLists
+    func getThreads(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int) async throws -> ThreadLists
     func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists
     func getTopics(courseID: String) async throws -> Topics
     func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Int)
@@ -43,9 +43,9 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         self.router = router
     }
     
-    public func getThreads(courseID: String, type: ThreadType, page: Int) async throws -> ThreadLists {
+    public func getThreads(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int) async throws -> ThreadLists {
         let threads = try await api.requestData(DiscussionEndpoint
-            .getThreads(courseID: courseID, type: type, page: page))
+            .getThreads(courseID: courseID, type: type, filter: filter, page: page))
         
         return try await renameThreadUser(data: threads).domain
     }
@@ -205,7 +205,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                         abuseFlagged: false)
         ]
     
-    public func getThreads(courseID: String, type: ThreadType, page: Int) async throws -> ThreadLists {
+    public func getThreads(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int) async throws -> ThreadLists {
         ThreadLists(
             threads: [
                 UserThread(id: "", author: "Peter",
