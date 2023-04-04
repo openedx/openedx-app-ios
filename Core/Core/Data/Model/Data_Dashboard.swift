@@ -48,7 +48,6 @@ public extension DataLayer {
     struct Result: Codable {
         public let auditAccessExpires: String?
         public let created: String
-        //        public let mode: Mode
         public let isActive: Bool
         public let course: Course
         public let certificate: Certificate
@@ -56,7 +55,6 @@ public extension DataLayer {
         enum CodingKeys: String, CodingKey {
             case auditAccessExpires = "audit_access_expires"
             case created = "created"
-            //            case mode = "mode"
             case isActive = "is_active"
             case course = "course"
             case certificate = "certificate"
@@ -66,7 +64,6 @@ public extension DataLayer {
                     isActive: Bool, course: Course, certificate: Certificate) {
             self.auditAccessExpires = auditAccessExpires
             self.created = created
-            //            self.mode = mode
             self.isActive = isActive
             self.course = course
             self.certificate = certificate

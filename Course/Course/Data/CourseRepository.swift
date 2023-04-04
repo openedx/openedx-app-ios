@@ -209,7 +209,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
         let decoder = JSONDecoder()
         let jsonData = Data(courseStructureJson.utf8)
-        let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)// else { throw NoCachedDataError() }
+        let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
         return parseCourseStructure(courseBlocks: courseBlocks)
     }
     
