@@ -58,23 +58,21 @@ public struct CourseUnitView: View {
                                         Spacer()
                                     }.background(CoreAssets.background.swiftUIColor)
                                 case let .video(encodedUrl, blockID):
-                                    if let encodedUrl {
-                                        Text(viewModel.selectedLesson().displayName)
-                                            .font(Theme.Fonts.titleLarge)
-                                            .padding(.horizontal, 24)
-                                        EncodedVideoPlayer(
-                                            url: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
-                                            isViewed: { [weak viewModel] isViewed in
-                                                if isViewed {
-                                                    Task {
-                                                        await viewModel?.blockCompletionRequest(blockID: blockID)
-                                                    }
+                                    Text(viewModel.selectedLesson().displayName)
+                                        .font(Theme.Fonts.titleLarge)
+                                        .padding(.horizontal, 24)
+                                    EncodedVideoPlayer(
+                                        url: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
+                                        isViewed: { [weak viewModel] isViewed in
+                                            if isViewed {
+                                                Task {
+                                                    await viewModel?.blockCompletionRequest(blockID: blockID)
                                                 }
-                                            },
-                                            killPlayer: $viewModel.killPlayer
-                                        )
-                                        Spacer()
-                                    }
+                                            }
+                                        },
+                                        killPlayer: $viewModel.killPlayer
+                                    )
+                                    Spacer()
                                 case .web(let url):
                                     VStack {
                                         WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
