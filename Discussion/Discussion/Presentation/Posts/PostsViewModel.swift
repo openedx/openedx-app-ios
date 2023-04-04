@@ -26,6 +26,10 @@ public extension ThreadsFilter {
 
 public class PostsViewModel: ObservableObject {
     
+    public var nextPage = 1
+    public var totalPages = 1
+    public private(set) var fetchInProgress = false
+    
     public enum ButtonType {
         case sort
         case filter
@@ -54,8 +58,9 @@ public class PostsViewModel: ObservableObject {
     @Published var filterTitle: ThreadsFilter = .allThreads {
         willSet {
             if let courseID {
+              resetPosts()
                 Task {
-                    await getPostsPagination(courseID: courseID)
+                    _ = await getPosts(courseID: courseID, pageNumber: 1)
                 }
             }
         }
@@ -110,6 +115,14 @@ public class PostsViewModel: ObservableObject {
             })
     }
     
+    public func resetPosts() {
+        filteredPosts = []
+        discussionPosts = []
+        threads.threads = []
+        nextPage = 1
+        totalPages = 1
+    }
+    
     public func generateButtons(type: ButtonType) {
         switch type {
         case .sort:
@@ -162,19 +175,21 @@ public class PostsViewModel: ObservableObject {
     }
     
     @MainActor
-    func getPostsPagination(courseID: String, withProgress: Bool = true) async -> Bool {
-        self.courseID = courseID
-        self.threads.threads = []
-        guard await getPosts(courseID: courseID, pageNumber: 1, withProgress: withProgress) else { return false }
-        if !threads.threads.isEmpty {
-            if threads.threads[0].numPages > 1 {
-                for i in 2...threads.threads[0].numPages {
-                    guard await getPosts(courseID: courseID, pageNumber: i, withProgress: withProgress) else { return false }
+    func getPostsPagination(courseID: String, index: Int, withProgress: Bool = true) async {
+        print(">>>>>> INDEX", index)
+        if !fetchInProgress {
+            if totalPages > 1 {
+                if index == threads.threads.count - 3 {
+                    if totalPages != 1 {
+                        if nextPage <= totalPages {
+                            _ = await getPosts(courseID: courseID,
+                                               pageNumber: self.nextPage,
+                                               withProgress: withProgress)
+                        }
+                    }
                 }
             }
         }
-        
-        return true
     }
     
     @MainActor
@@ -188,24 +203,32 @@ public class PostsViewModel: ObservableObject {
                                     type: .allPosts,
                                     filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .followingPosts:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .followingPosts,
                                     filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .nonCourseTopics:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .nonCourseTopics,
                                     filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .courseTopics(topicID: let topicID):
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .courseTopics(topicID: topicID),
                                     filter: filterTitle,
                                     page: pageNumber).threads
+                self.totalPages = threads.threads[0].numPages
+                self.nextPage += 1
             case .none:
                 isShowProgress = false
                 return false

@@ -127,16 +127,16 @@ public class CoursePersistence: CoursePersistenceProtocol {
         request.predicate = NSPredicate(format: "id = %@", courseID)
         guard let structure = try? context.fetch(request).first else { throw NoCachedDataError() }
         
-        let requestBlocks = CDCourseDetailIncoming.fetchRequest()
+        let requestBlocks = CDCourseBlock.fetchRequest()
         requestBlocks.predicate = NSPredicate(format: "courseID = %@", courseID)
         
         let blocks = try? context.fetch(requestBlocks).map {
-            let userViewData = BECourseDetailUserViewData(
-                encodedVideo: BECourseDetailEncodedVideoData(
-                    youTube: BECourseDetailYouTubeData(url: $0.youTubeUrl),
-                    fallback: BECourseDetailYouTubeData(url: $0.fallbackUrl)
+            let userViewData = DataLayer.CourseDetailUserViewData(
+                encodedVideo: DataLayer.CourseDetailEncodedVideoData(
+                    youTube: DataLayer.CourseDetailYouTubeData(url: $0.youTubeUrl),
+                    fallback: DataLayer.CourseDetailYouTubeData(url: $0.fallbackUrl)
                 ), topicID: "")
-            return BECourseDetailIncoming(blockId: $0.blockId ?? "",
+            return DataLayer.CourseBlock(blockId: $0.blockId ?? "",
                                           id: $0.id ?? "",
                                           graded: $0.graded,
                                           completion: $0.completion,
@@ -173,7 +173,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.rootItem = structure.rootItem
             
             for block in Array(structure.dict.values) {
-                let courseDetail = CDCourseDetailIncoming(context: context)
+                let courseDetail = CDCourseBlock(context: context)
                 courseDetail.allSources = block.allSources
                 courseDetail.descendants = block.descendants
                 courseDetail.graded = block.graded

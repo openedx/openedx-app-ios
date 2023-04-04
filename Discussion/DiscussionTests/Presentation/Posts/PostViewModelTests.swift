@@ -109,27 +109,27 @@ final class PostViewModelTests: XCTestCase {
         Given(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any, willReturn: threads))
 
         viewModel.type = .allPosts
-        result = await viewModel.getPostsPagination(courseID: "1")
+        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertTrue(result)
         result = false
         
         viewModel.type = .courseTopics(topicID: "")
-        result = await viewModel.getPostsPagination(courseID: "1")
+        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertTrue(result)
         result = false
         
         viewModel.type = .followingPosts
-        result = await viewModel.getPostsPagination(courseID: "1")
+        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertTrue(result)
         result = false
         
         viewModel.type = .nonCourseTopics
-        result = await viewModel.getPostsPagination(courseID: "1")
+        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertTrue(result)
         result = false
         
         viewModel.type = .none
-        result = await viewModel.getPostsPagination(courseID: "1")
+        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertFalse(result)
 
         Verify(interactor, 4, .getThreadsList(courseID: .value("1"), type: .any, filter: .any, page: .value(1)))
@@ -151,7 +151,7 @@ final class PostViewModelTests: XCTestCase {
         Given(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any, willThrow: noInternetError))
 
         viewModel.type = .allPosts
-        result = await viewModel.getPostsPagination(courseID: "1")
+        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
 
         Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any))
         
@@ -171,7 +171,7 @@ final class PostViewModelTests: XCTestCase {
         Given(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any, willThrow: NSError()))
 
         viewModel.type = .allPosts
-        result = await viewModel.getPostsPagination(courseID: "1")
+        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
 
         Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any))
         
@@ -191,18 +191,18 @@ final class PostViewModelTests: XCTestCase {
                                           willReturn: threads))
         viewModel.type = .allPosts
         viewModel.sortTitle = .mostActivity
-        _ = await viewModel.getPostsPagination(courseID: "1")
+        _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertTrue(viewModel.filteredPosts[0].title == "4")
         
         viewModel.filterTitle = .unread
         viewModel.sortTitle = .recentActivity
-        _ = await viewModel.getPostsPagination(courseID: "1")
+        _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertTrue(viewModel.filteredPosts[0].title == "2")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: {$0.unreadCommentCount == 4}))
         
         viewModel.filterTitle = .unanswered
         viewModel.sortTitle = .mostVotes
-        _ = await viewModel.getPostsPagination(courseID: "1")
+        _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertTrue(viewModel.filteredPosts[0].title == "3")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: { $0.hasEndorsed }))
         

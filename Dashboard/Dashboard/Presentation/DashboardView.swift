@@ -44,11 +44,9 @@ public struct DashboardView: View {
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {
-                        viewModel.courses = []
-                        viewModel.totalPages = 1
-                        viewModel.nextPage = 1
                         await viewModel.getMyCourses(page: 1,
-                                                     withProgress: isIOS14)
+                                                     withProgress: isIOS14,
+                                                     refresh: true)
                     }) {
                         if viewModel.courses.isEmpty {
                             EmptyPageIcon()
@@ -106,11 +104,9 @@ public struct DashboardView: View {
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
                                 reloadAction: {
-                viewModel.courses = []
-                viewModel.totalPages = 1
-                viewModel.nextPage = 1
                 await viewModel.getMyCourses( page: 1,
-                                              withProgress: isIOS14)
+                                              withProgress: isIOS14,
+                                              refresh: true)
             })
             
             // MARK: - Error Alert

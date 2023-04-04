@@ -41,7 +41,7 @@ enum DiscussionEndpoint: EndPointType {
         case let .getCommentResponses(commentID, _):
             return "/api/discussion/v1/comments/\(commentID)"
         case .addCommentTo:
-            return "/api/discussion/v1/comments/"
+            return "/mobile_api_extensions/discussion/v1/comments/"
         case let .voteThread(_, threadID):
             return "/api/discussion/v1/threads/\(threadID)/"
         case let .voteResponse(_, responseID):

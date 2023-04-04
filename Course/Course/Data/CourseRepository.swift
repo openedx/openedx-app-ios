@@ -113,7 +113,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                                certificate: structure.certificate?.domain)
     }
     
-    private func parseChapters(id: String, blocks: [BECourseDetailIncoming]) -> CourseChapter {
+    private func parseChapters(id: String, blocks: [DataLayer.CourseBlock]) -> CourseChapter {
         let chapter = blocks.first(where: {$0.id == id })!
         let descendants = chapter.descendants ?? []
         var childs: [CourseSequential] = []
@@ -129,7 +129,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         
     }
     
-    private func parseSequential(id: String, blocks: [BECourseDetailIncoming]) -> CourseSequential {
+    private func parseSequential(id: String, blocks: [DataLayer.CourseBlock]) -> CourseSequential {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseVertical] = []
@@ -145,7 +145,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                                 childs: childs)
     }
     
-    private func parseVerticals(id: String, blocks: [BECourseDetailIncoming]) -> CourseVertical {
+    private func parseVerticals(id: String, blocks: [DataLayer.CourseBlock]) -> CourseVertical {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseBlock] = []
@@ -161,7 +161,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                                 childs: childs)
     }
     
-    private func parseBlock(id: String, blocks: [BECourseDetailIncoming]) -> CourseBlock {
+    private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
         return CourseBlock(blockId: block.blockId,
                            id: block.id,
@@ -270,8 +270,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                                certificate: courseBlocks.certificate?.domain)
     }
     
-    private func parseChapters(id: String, blocks: [BECourseDetailIncoming]) -> CourseChapter {
-        
+    private func parseChapters(id: String, blocks: [DataLayer.CourseBlock]) -> CourseChapter {
         let chapter = blocks.first(where: {$0.id == id })!
         let descendants = chapter.descendants ?? []
         var childs: [CourseSequential] = []
@@ -284,11 +283,9 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                              displayName: chapter.displayName,
                              type: BlockType(rawValue: chapter.type) ?? .unknown,
                              childs: childs)
-        
     }
     
-    private func parseSequential(id: String, blocks: [BECourseDetailIncoming]) -> CourseSequential {
-        
+    private func parseSequential(id: String, blocks: [DataLayer.CourseBlock]) -> CourseSequential {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseVertical] = []
@@ -304,8 +301,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                                 childs: childs)
     }
     
-    private func parseVerticals(id: String, blocks: [BECourseDetailIncoming]) -> CourseVertical {
-        
+    private func parseVerticals(id: String, blocks: [DataLayer.CourseBlock]) -> CourseVertical {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseBlock] = []
@@ -321,8 +317,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                                 childs: childs)
     }
     
-    private func parseBlock(id: String, blocks: [BECourseDetailIncoming]) -> CourseBlock {
-        
+    private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
         return CourseBlock(blockId: block.blockId,
                            id: block.id,

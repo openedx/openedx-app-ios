@@ -31,6 +31,7 @@ public extension DataLayer {
         public let childCount: Int
         public let children: [String]
         public let abuseFlaggedAnyUser: String?
+        public let profileImage: ProfileImage
 
         enum CodingKeys: String, CodingKey {
             case id = "id"
@@ -54,6 +55,7 @@ public extension DataLayer {
             case childCount = "child_count"
             case children = "children"
             case abuseFlaggedAnyUser = "abuse_flagged_any_user"
+            case profileImage = "profile_image"
         }
     }
 }
@@ -61,7 +63,7 @@ public extension DataLayer {
 public extension DataLayer.CreatedComment {
     var domain: Post {
         Post(authorName: author ?? DiscussionLocalization.anonymous,
-                     authorAvatar: "",
+             authorAvatar: profileImage.imageURLSmall?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "",
                      postDate: Date(iso8601: createdAt),
                      postTitle: "",
                      postBodyHtml: renderedBody,

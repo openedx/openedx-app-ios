@@ -40,32 +40,23 @@ public class DashboardViewModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
-                    await self.getMyCourses(page: self.nextPage)
+                    await self.getMyCourses(page: 1)
                 }
             }
     }
     
     @MainActor
-    public func getMyCoursesPagination(index: Int, withProgress: Bool = true) async {
-        if !fetchInProgress {
-            if totalPages > 1 {
-                if index == courses.count - 3 {
-                    if totalPages != 1 {
-                        if nextPage <= totalPages {
-                            await getMyCourses(page: self.nextPage, withProgress: withProgress)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    @MainActor
-    public func getMyCourses(page: Int, withProgress: Bool = true) async {
+    public func getMyCourses(page: Int, withProgress: Bool = true, refresh: Bool = false) async {
         do {
             if connectivity.isInternetAvaliable {
-                courses += try await interactor.getMyCourses(page: page)
-                self.nextPage += 1
+                if refresh {
+                    courses = try await interactor.getMyCourses(page: page)
+                    self.totalPages = 1
+                    self.nextPage = 2
+                } else {
+                    courses += try await interactor.getMyCourses(page: page)
+                    self.nextPage += 1
+                }
                 if !courses.isEmpty {
                     totalPages = courses[0].numPages
                 }
@@ -81,6 +72,21 @@ public class DashboardViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.noCachedData
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+    }
+    
+    @MainActor
+    public func getMyCoursesPagination(index: Int, withProgress: Bool = true) async {
+        if !fetchInProgress {
+            if totalPages > 1 {
+                if index == courses.count - 3 {
+                    if totalPages != 1 {
+                        if nextPage <= totalPages {
+                            await getMyCourses(page: self.nextPage, withProgress: withProgress)
+                        }
+                    }
+                }
             }
         }
     }

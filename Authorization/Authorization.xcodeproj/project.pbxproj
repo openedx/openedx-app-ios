@@ -14,6 +14,7 @@
 		022D04962976DA6500E0059B /* AuthorizationMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */; };
 		025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */; };
 		025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */; };
+		02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */; };
 		02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE4292533720051930C /* AuthorizationRouter.swift */; };
 		071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C628D1DA4F00344290 /* SignInViewModel.swift */; };
 		07169458296D913400E3DED6 /* Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE3B28D0A319006D8A5D /* Authorization.framework */; platformFilter = ios; };
@@ -45,6 +46,7 @@
 		022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationMock.generated.swift; sourceTree = "<group>"; };
 		025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
+		02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		02ED50CC29A64B90008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F3BFE4292533720051930C /* AuthorizationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRouter.swift; sourceTree = "<group>"; };
 		071009C628D1DA4F00344290 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 		07169484296EC3D700E3DED6 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */,
 				07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */,
 			);
 			path = Login;
@@ -445,6 +448,7 @@
 				022D04962976DA6500E0059B /* AuthorizationMock.generated.swift in Sources */,
 				022D0482297442BA00E0059B /* SignUpViewModelTests.swift in Sources */,
 				07169464296D96DD00E3DED6 /* SignInViewModelTests.swift in Sources */,
+				02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

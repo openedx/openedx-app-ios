@@ -68,7 +68,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
     
     public func addToDownloadQueue(blocks: [CourseBlock]) throws {
-        if userCanDownloadByWifiOnly() {
+        if userCanDownload() {
             persistence.addToDownloadQueue(blocks: blocks)
             try newDownload()
         } else {
@@ -77,7 +77,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
     
     private func newDownload() throws {
-        if userCanDownloadByWifiOnly() {
+        if userCanDownload() {
             guard let download = persistence.getBlocksForDownloading().first else {
                 isDownloadingInProgress = false
                 return
@@ -89,8 +89,16 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
     
-    private func userCanDownloadByWifiOnly() -> Bool {
-        return appStorage.userSettings?.wifiOnly ?? false && connectivity.isWifi
+    private func userCanDownload() -> Bool {
+        if appStorage.userSettings?.wifiOnly ?? true {
+            if !connectivity.isMobileData {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return true
+        }
     }
     
     public func getAllDownloads() -> [DownloadData] {

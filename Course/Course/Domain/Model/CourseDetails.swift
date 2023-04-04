@@ -16,7 +16,7 @@ public struct CourseDetails {
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
-    let isEnrolled: Bool
+    var isEnrolled: Bool
     var overviewHTML: String
     let courseBannerURL: String
     

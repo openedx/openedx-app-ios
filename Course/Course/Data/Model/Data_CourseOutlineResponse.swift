@@ -12,7 +12,7 @@ import Core
 public extension DataLayer {
     struct CourseStructure: Decodable {
         let rootItem: String
-        typealias Blocks = [String: BECourseDetailIncoming]
+        typealias Blocks = [String: CourseBlock]
         var dict: Blocks
         let id: String
         let media: DataLayer.CourseMedia
@@ -45,50 +45,51 @@ public extension DataLayer {
         }
     }
 }
-
-public struct BECourseDetailIncoming: Decodable {
-    let blockId: String
-    let id: String
-    let graded: Bool
-    let completion: Double?
-    let studentUrl: String
-    let type: String
-    let displayName: String
-    let descendants: [String]?
-    let allSources: [String]?
-    let userViewData: BECourseDetailUserViewData?
-    
-    public enum CodingKeys: String, CodingKey {
-        case id, type, descendants, graded, completion
-        case blockId = "block_id"
-        case studentUrl = "student_view_url"
-        case displayName = "display_name"
-        case userViewData = "student_view_data"
-        case allSources = "all_sources"
+public extension DataLayer {
+    public struct CourseBlock: Decodable {
+        let blockId: String
+        let id: String
+        let graded: Bool
+        let completion: Double?
+        let studentUrl: String
+        let type: String
+        let displayName: String
+        let descendants: [String]?
+        let allSources: [String]?
+        let userViewData: CourseDetailUserViewData?
+        
+        public enum CodingKeys: String, CodingKey {
+            case id, type, descendants, graded, completion
+            case blockId = "block_id"
+            case studentUrl = "student_view_url"
+            case displayName = "display_name"
+            case userViewData = "student_view_data"
+            case allSources = "all_sources"
+        }
     }
-}
-
-public struct BECourseDetailUserViewData: Decodable {
-    let encodedVideo: BECourseDetailEncodedVideoData?
-    let topicID: String?
     
-    public enum CodingKeys: String, CodingKey {
-        case encodedVideo = "encoded_videos"
-        case topicID = "topic_id"
+    public struct CourseDetailUserViewData: Decodable {
+        let encodedVideo: CourseDetailEncodedVideoData?
+        let topicID: String?
+        
+        public enum CodingKeys: String, CodingKey {
+            case encodedVideo = "encoded_videos"
+            case topicID = "topic_id"
+        }
     }
-}
-
-struct BECourseDetailEncodedVideoData: Decodable {
-    let youTube: BECourseDetailYouTubeData?
-    let fallback: BECourseDetailYouTubeData?
     
-    enum CodingKeys: String, CodingKey {
-        case youTube = "youtube"
-        case fallback
+    struct CourseDetailEncodedVideoData: Decodable {
+        let youTube: CourseDetailYouTubeData?
+        let fallback: CourseDetailYouTubeData?
+        
+        enum CodingKeys: String, CodingKey {
+            case youTube = "youtube"
+            case fallback
+        }
     }
-}
-
-struct BECourseDetailYouTubeData: Decodable {
-    let url: String?
     
+    struct CourseDetailYouTubeData: Decodable {
+        let url: String?
+        
+    }
 }

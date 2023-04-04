@@ -19,7 +19,6 @@ public class CourseDetailsViewModel: ObservableObject {
     
     @Published var courseDetails: CourseDetails?
     @Published private(set) var isShowProgress = false
-    @Published var isEnrolled: Bool = false
     @Published var showError: Bool = false
     @Published var isHorisontal: Bool = false
     var errorMessage: String? {
@@ -55,14 +54,14 @@ public class CourseDetailsViewModel: ObservableObject {
             if connectivity.isInternetAvaliable {
                 courseDetails = try await interactor.getCourseDetails(courseID: courseID)
                 if let isEnrolled = courseDetails?.isEnrolled {
-                    self.isEnrolled = isEnrolled
+                    self.courseDetails?.isEnrolled = isEnrolled
                 }
 
                 isShowProgress = false
             } else {
                 courseDetails = try await interactor.getCourseDetailsOffline(courseID: courseID)
                 if let isEnrolled = courseDetails?.isEnrolled {
-                    self.isEnrolled = isEnrolled
+                    self.courseDetails?.isEnrolled = isEnrolled
                 }
                 isShowProgress = false
             }
@@ -77,7 +76,7 @@ public class CourseDetailsViewModel: ObservableObject {
     }
     
     func courseState() -> CourseState {
-        if !isEnrolled {
+        if courseDetails?.isEnrolled == false {
             if let enrollmentStart = courseDetails?.enrollmentStart, let enrollmentEnd = courseDetails?.enrollmentEnd {
                 let enrollmentsRange = DateInterval(start: enrollmentStart, end: enrollmentEnd)
                 if enrollmentsRange.contains(Date()) {
@@ -97,7 +96,7 @@ public class CourseDetailsViewModel: ObservableObject {
     func enrollToCourse(id: String) async {
         do {
             _ = try await interactor.enrollToCourse(courseID: id)
-            isEnrolled = true
+            courseDetails?.isEnrolled = true
             NotificationCenter.default.post(name: .onCourseEnrolled, object: id)
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
