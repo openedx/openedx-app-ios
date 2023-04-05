@@ -24,7 +24,9 @@ public enum LessonType: Equatable {
         case .discussion:
             return .discussion(block.topicId ?? "")
         case .video:
-            if let viewYouTubeUrl = block.youTubeUrl {
+            if block.youTubeUrl != nil, let encodedVideo = block.videoUrl {
+                return .video(videoUrl: encodedVideo, blockID: block.id)
+            } else if let viewYouTubeUrl = block.youTubeUrl {
                 return .youtube(viewYouTubeUrl: viewYouTubeUrl, blockID: block.id)
             } else if let encodedVideo = block.videoUrl {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
