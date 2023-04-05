@@ -17,7 +17,7 @@ public protocol CourseRepositoryProtocol {
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
-
+    func getSubtitles(url: String) async throws -> String
 }
 
 public class CourseRepository: CourseRepositoryProtocol {
@@ -91,6 +91,11 @@ public class CourseRepository: CourseRepositoryProtocol {
             .mapResponse(DataLayer.CourseUpdates.self).map { $0.domain }
     }
     
+    public func getSubtitles(url: String) async throws -> String {
+         let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url))
+         return String(data: result, encoding: .utf8) ?? ""
+     }
+    
     private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
         let blocks = Array(structure.dict.values)
         let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
@@ -163,6 +168,9 @@ public class CourseRepository: CourseRepositoryProtocol {
     
     private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
+        let subtitles = block.userViewData?.transcripts?.en?
+                 .replacingOccurrences(of: config.baseURL.absoluteString, with: "")
+                 .replacingOccurrences(of: "?lang=en", with: "")
         return CourseBlock(blockId: block.blockId,
                            id: block.id,
                            topicId: block.userViewData?.topicID,
@@ -171,6 +179,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                            type: BlockType(rawValue: block.type) ?? .unknown,
                            displayName: block.displayName,
                            studentUrl: block.studentUrl,
+                           subtitles: subtitles,
                            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
                            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
     }
@@ -246,6 +255,29 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     
     public  func blockCompletionRequest(courseID: String, blockID: String) {
         
+    }
+    
+    public func getSubtitles(url: String) async throws -> String {
+        return """
+0
+00:00:00,350 --> 00:00:05,230
+GREGORY NAGY: In hour zero, where I try to introduce Homeric poetry to
+1
+00:00:05,230 --> 00:00:11,060
+people who may never have been exposed to the Iliad and the Odyssey even in
+2
+00:00:11,060 --> 00:00:20,290
+translation, my idea was to get a sense of the medium, which is not a
+3
+00:00:20,290 --> 00:00:25,690
+readable medium because Homeric poetry, in its historical context, was
+4
+00:00:25,690 --> 00:00:30,210
+meant to be heard, not read.
+5
+00:00:30,210 --> 00:00:34,760
+And there are various ways of describing it-- call it oral poetry or
+"""
     }
     
     private func parseCourseStructure(courseBlocks: DataLayer.CourseStructure) -> CourseStructure {
@@ -327,6 +359,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                            type: BlockType(rawValue: block.type) ?? .unknown,
                            displayName: block.displayName,
                            studentUrl: block.studentUrl,
+                           subtitles: block.userViewData?.transcripts?.en,
                            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
                            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
     }

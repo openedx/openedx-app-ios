@@ -19,6 +19,7 @@ public protocol CourseInteractorProtocol {
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
+    func getSubtitles(url: String) async throws -> String
     
 }
 
@@ -82,6 +83,10 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getUpdates(courseID: String) async throws -> [CourseUpdate] {
         return try await repository.getUpdates(courseID: courseID)
+    }
+    
+    public func getSubtitles(url: String) async throws -> String {
+        return try await repository.getSubtitles(url: url)
     }
     
     private func filterChapter(chapter: CourseChapter) -> CourseChapter {

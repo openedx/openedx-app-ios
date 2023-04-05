@@ -46,7 +46,7 @@ public extension DataLayer {
     }
 }
 public extension DataLayer {
-    public struct CourseBlock: Decodable {
+    struct CourseBlock: Decodable {
         let blockId: String
         let id: String
         let graded: Bool
@@ -67,14 +67,28 @@ public extension DataLayer {
             case allSources = "all_sources"
         }
     }
+        
+    struct Transcripts: Codable {
+        public let en: String?
+
+        enum CodingKeys: String, CodingKey {
+            case en
+        }
+
+        public init(en: String?) {
+            self.en = en
+        }
+    }
     
-    public struct CourseDetailUserViewData: Decodable {
+    struct CourseDetailUserViewData: Decodable {
+        let transcripts: Transcripts?
         let encodedVideo: CourseDetailEncodedVideoData?
         let topicID: String?
         
         public enum CodingKeys: String, CodingKey {
             case encodedVideo = "encoded_videos"
             case topicID = "topic_id"
+            case transcripts
         }
     }
     

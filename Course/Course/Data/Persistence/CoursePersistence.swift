@@ -132,6 +132,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
         
         let blocks = try? context.fetch(requestBlocks).map {
             let userViewData = DataLayer.CourseDetailUserViewData(
+                transcripts: nil,
                 encodedVideo: DataLayer.CourseDetailEncodedVideoData(
                     youTube: DataLayer.CourseDetailYouTubeData(url: $0.youTubeUrl),
                     fallback: DataLayer.CourseDetailYouTubeData(url: $0.fallbackUrl)

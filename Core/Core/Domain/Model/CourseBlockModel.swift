@@ -132,6 +132,7 @@ public struct CourseBlock: Equatable {
                 type: BlockType,
                 displayName: String,
                 studentUrl: String,
+                subtitles: String? = nil,
                 videoUrl: String? = nil,
                 youTubeUrl: String? = nil) {
         self.blockId = blockId
@@ -142,6 +143,7 @@ public struct CourseBlock: Equatable {
         self.type = type
         self.displayName = displayName
         self.studentUrl = studentUrl
+        self.subtitles = subtitles
         self.videoUrl = videoUrl
         self.youTubeUrl = youTubeUrl
     }
@@ -154,6 +156,7 @@ public struct CourseBlock: Equatable {
     public let type: BlockType
     public let displayName: String
     public let studentUrl: String
+    public let subtitles: String?
     public let videoUrl: String?
     public let youTubeUrl: String?
     

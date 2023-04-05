@@ -15,6 +15,7 @@ public struct YouTubeVideoPlayer: View {
     private let youtubePlayer: YouTubePlayer
     private var timePublisher: AnyPublisher<Double, Never>
     private var durationPublisher: AnyPublisher<Double, Never>
+    private var currentTimePublisher: AnyPublisher<Double, Never>
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @State private var duration: Double?
     @State private var orientation = UIDevice.current.orientation
@@ -23,6 +24,7 @@ public struct YouTubeVideoPlayer: View {
     @State private var hideRotationPromt: Bool = false
     @State private var isViewedOnce: Bool = false
     public var isViewed: ((Bool) -> Void)
+    @Binding var currentTime: Double
     @State var showAlert = false
     @State var alertMessage: String? {
         didSet {
@@ -32,14 +34,17 @@ public struct YouTubeVideoPlayer: View {
         }
     }
 
-    public init(url: String, isViewed: @escaping ((Bool) -> Void)) {
+    public init(url: String,
+                isViewed: @escaping ((Bool) -> Void),
+                currentTime: Binding<Double>) {
         self.isViewed = isViewed
+        self._currentTime = currentTime
         let videoID = url.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
         let configuration = YouTubePlayer.Configuration(configure: {
             $0.autoPlay = false
-            $0.playInline = false
+            $0.playInline = true
             $0.showFullscreenButton = true
-            $0.allowsPictureInPictureMediaPlayback = true
+            $0.allowsPictureInPictureMediaPlayback = false
             $0.showControls = true
             $0.useModestBranding = false
             $0.progressBarColor = .white
@@ -55,6 +60,7 @@ public struct YouTubeVideoPlayer: View {
                                            configuration: configuration)
         self.timePublisher = youtubePlayer.currentTimePublisher()
         self.durationPublisher = youtubePlayer.durationPublisher
+        self.currentTimePublisher = youtubePlayer.currentTimePublisher(updateInterval: 0.1)
     }
 
     public var body: some View {
@@ -90,7 +96,10 @@ public struct YouTubeVideoPlayer: View {
             }.onReceive(durationPublisher, perform: { duration in
                 self.duration = duration
             })
-
+            .onReceive(currentTimePublisher, perform: { time in
+                print("TIME", time)
+                self.currentTime = time
+            })
             .onReceive(timePublisher, perform: { time in
                 if let duration {
                     if (time / duration) >= 0.8 {
@@ -128,6 +137,6 @@ public struct YouTubeVideoPlayer: View {
 
 struct YouTubeVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        YouTubeVideoPlayer(url: "", isViewed: {_ in})
+        YouTubeVideoPlayer(url: "", isViewed: {_ in}, currentTime: .constant(0))
     }
 }

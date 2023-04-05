@@ -54,8 +54,10 @@ public struct CourseUnitView: View {
                                                     await viewModel.blockCompletionRequest(blockID: blockID)
                                                 }
                                             }
-                                        })
+                                        }, currentTime: $viewModel.currentTime)
                                         Spacer()
+                                        SubtittlesView(subtitles: viewModel.subtitles,
+                                                       currentTime: $viewModel.currentTime)
                                     }.background(CoreAssets.background.swiftUIColor)
                                 case let .video(encodedUrl, blockID):
                                     Text(viewModel.selectedLesson().displayName)
