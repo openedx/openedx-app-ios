@@ -46,7 +46,7 @@ public extension DataLayer {
     }
 }
 public extension DataLayer {
-    public struct CourseBlock: Decodable {
+    struct CourseBlock: Decodable {
         let blockId: String
         let id: String
         let graded: Bool
@@ -68,7 +68,7 @@ public extension DataLayer {
         }
     }
     
-    public struct CourseDetailUserViewData: Decodable {
+    struct CourseDetailUserViewData: Decodable {
         let encodedVideo: CourseDetailEncodedVideoData?
         let topicID: String?
         

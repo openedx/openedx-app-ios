@@ -66,11 +66,9 @@ public class PostsViewModel: ObservableObject {
         }
     }
     @Published var sortTitle: SortType = .recentActivity
-    
     @Published var filterButtons: [ActionSheet.Button] = []
     
     public var courseID: String?
-    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -82,14 +80,11 @@ public class PostsViewModel: ObservableObject {
     public var type: ThreadType!
     public var topics: Topics?
     private var topicsFetched: Bool = false
-    
     private var discussionPosts: [DiscussionPost] = []
     private var threads: ThreadLists = ThreadLists(threads: [])
-    
     private let interactor: DiscussionInteractorProtocol
     private let router: DiscussionRouter
     private let config: Config
-    
     internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     private var cancellable: AnyCancellable?
     
@@ -176,7 +171,6 @@ public class PostsViewModel: ObservableObject {
     
     @MainActor
     func getPostsPagination(courseID: String, index: Int, withProgress: Bool = true) async {
-        print(">>>>>> INDEX", index)
         if !fetchInProgress {
             if totalPages > 1 {
                 if index == threads.threads.count - 3 {
@@ -203,32 +197,40 @@ public class PostsViewModel: ObservableObject {
                                     type: .allPosts,
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .followingPosts:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .followingPosts,
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .nonCourseTopics:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .nonCourseTopics,
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .courseTopics(topicID: let topicID):
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .courseTopics(topicID: topicID),
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .none:
                 isShowProgress = false
                 return false

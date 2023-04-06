@@ -29,6 +29,9 @@ public protocol CourseRouter: BaseRouter {
     func showCourseBlocksView(title: String,
                               blocks: [CourseBlock])
     
+    func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
+                                                blocks: (String, [CourseBlock]))
+    
     func showHandoutsUpdatesView(handouts: String?,
                                  announcements: [CourseUpdate]?,
                                  router: Course.CourseRouter,
@@ -59,6 +62,9 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public func showCourseBlocksView(title: String,
                                      blocks: [CourseBlock]) {}
+    
+    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
+                                                blocks: (String, [CourseBlock])) {}
     
     public func showHandoutsUpdatesView(handouts: String?,
                                         announcements: [CourseUpdate]?,
