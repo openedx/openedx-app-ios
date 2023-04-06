@@ -89,8 +89,8 @@ public struct CourseOutlineView: View {
                             .fixedSize(horizontal: false, vertical: true)
                             
                             if !isVideo {
-                                if let block = viewModel.returnCourseUnit {
-                                    ContinueWithView(block: block, courseID: courseID, viewModel: viewModel)
+                                if let sequential = viewModel.returnCourseSequential {
+                                    ContinueWithView(sequential: sequential, viewModel: viewModel)
                                 }
                             }
                             
@@ -223,8 +223,7 @@ public struct CourseOutlineView: View {
 }
 
 struct ContinueWithView: View {
-    let block: CourseBlock
-    let courseID: String
+    let sequential: CourseSequential
     let viewModel: CourseContainerViewModel
 
     var body: some View {
@@ -233,17 +232,15 @@ struct ContinueWithView: View {
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
             HStack {
-                block.type.image
-                Text(block.displayName)
+                sequential.type.image
+                Text(sequential.displayName)
                     .multilineTextAlignment(.leading)
                     .font(Theme.Fonts.titleMedium)
                     .multilineTextAlignment(.leading)
             }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
             UnitButtonView(type: .continueLesson, action: {
-                viewModel.router.showCourseUnit(blockId: block.id,
-                                                courseID: courseID,
-                                                sectionName: block.displayName,
-                                                blocks: viewModel.blocks)
+                viewModel.router.showCourseVerticalView(title: sequential.displayName,
+                                                        verticals: sequential.childs)
             })
         }
         .padding(.horizontal, 24)

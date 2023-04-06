@@ -17,8 +17,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var downloadState: [String: DownloadViewState] = [:]
-    @Published var returnCourseUnit: CourseBlock?
-    @Published var blocks: [CourseBlock] = []
+    @Published var returnCourseSequential: CourseSequential?
     
     var errorMessage: String? {
         didSet {
@@ -76,8 +75,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private func getResumeBlock(courseID: String) async throws {
         let result = try await interactor.resumeBlock(courseID: courseID)
         if let courseStructure {
-            self.returnCourseUnit = findCourseBlock(withBlockID: extractBlockID(from: result.blockID),
-                                                    courseStructure: courseStructure)
+            self.returnCourseSequential = findCourseSequential(blockID: result.blockID,
+                                                               courseStructure: courseStructure)
         }
     }
     
@@ -172,26 +171,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    private func findCourseBlock(withBlockID blockID: String, courseStructure: CourseStructure) -> CourseBlock? {
+    private func findCourseSequential(blockID: String, courseStructure: CourseStructure) -> CourseSequential? {
         for chapter in courseStructure.childs {
-            for sequential in chapter.childs {
-                for vertical in sequential.childs {
-                    if let block = vertical.childs.first(where: { $0.topicId == blockID }) {
-                            self.blocks = vertical.childs
-                        return block
-                    }
-                }
+            if let sequential = chapter.childs.first(where: { $0.id == blockID }) {
+                return sequential
             }
         }
         return nil
-    }
-    
-    private func extractBlockID(from input: String) -> String {
-        guard let range = input.range(of: "block@") else {
-            return input
-        }
-        let startIndex = range.upperBound
-        let lastIndex = input.endIndex
-        return String(input[startIndex..<lastIndex])
     }
 }
