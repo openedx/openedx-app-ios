@@ -72,15 +72,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
-    private func getResumeBlock(courseID: String) async throws {
-        let result = try await interactor.resumeBlock(courseID: courseID)
-        if let courseStructure {
-            self.returnCourseSequential = findCourseSequential(blockID: result.blockID,
-                                                               courseStructure: courseStructure)
-        }
-    }
-    
-    @MainActor
     public func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
         if let courseStart {
             if courseStart < Date() {
@@ -88,7 +79,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 do {
                     if connectivity.isInternetAvaliable {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
-                        try await getResumeBlock(courseID: courseID)
+                        isShowProgress = false
+                        if let courseStructure {
+                            let returnCourseSequential = try await getResumeBlock(courseID: courseID,
+                                                                              courseStructure: courseStructure)
+                            withAnimation {
+                                self.returnCourseSequential = returnCourseSequential
+                            }
+                        }
                     } else {
                         courseStructure = try await interactor.getCourseBlocksOffline(courseID: courseID)
                     }
@@ -106,6 +104,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
         }
+    }
+    
+    @MainActor
+    private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws -> CourseSequential? {
+        let result = try await interactor.resumeBlock(courseID: courseID)
+        return findCourseSequential(blockID: result.blockID,
+                                    courseStructure: courseStructure)
     }
     
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {

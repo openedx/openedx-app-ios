@@ -1176,6 +1176,22 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
+    open func resumeBlock(courseID: String) throws -> ResumeBlock {
+        addInvocation(.m_resumeBlock__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_resumeBlock__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: ResumeBlock
+		do {
+		    __value = try methodReturnValue(.m_resumeBlock__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for resumeBlock(courseID: String). Use given")
+			Failure("Stub return value not specified for resumeBlock(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_getCourseDetails__courseID_courseID(Parameter<String>)
@@ -1187,6 +1203,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         case m_blockCompletionRequest__courseID_courseIDblockID_blockID(Parameter<String>, Parameter<String>)
         case m_getHandouts__courseID_courseID(Parameter<String>)
         case m_getUpdates__courseID_courseID(Parameter<String>)
+        case m_resumeBlock__courseID_courseID(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1235,6 +1252,11 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_resumeBlock__courseID_courseID(let lhsCourseid), .m_resumeBlock__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -1250,6 +1272,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case let .m_blockCompletionRequest__courseID_courseIDblockID_blockID(p0, p1): return p0.intValue + p1.intValue
             case let .m_getHandouts__courseID_courseID(p0): return p0.intValue
             case let .m_getUpdates__courseID_courseID(p0): return p0.intValue
+            case let .m_resumeBlock__courseID_courseID(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -1263,6 +1286,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case .m_blockCompletionRequest__courseID_courseIDblockID_blockID: return ".blockCompletionRequest(courseID:blockID:)"
             case .m_getHandouts__courseID_courseID: return ".getHandouts(courseID:)"
             case .m_getUpdates__courseID_courseID: return ".getUpdates(courseID:)"
+            case .m_resumeBlock__courseID_courseID: return ".resumeBlock(courseID:)"
             }
         }
     }
@@ -1299,6 +1323,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func getUpdates(courseID: Parameter<String>, willReturn: [CourseUpdate]...) -> MethodStub {
             return Given(method: .m_getUpdates__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func resumeBlock(courseID: Parameter<String>, willReturn: ResumeBlock...) -> MethodStub {
+            return Given(method: .m_resumeBlock__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willProduce: (Stubber<CourseStructure>) -> Void) -> MethodStub {
             let willReturn: [CourseStructure] = []
@@ -1387,6 +1414,16 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func resumeBlock(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_resumeBlock__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func resumeBlock(courseID: Parameter<String>, willProduce: (StubberThrows<ResumeBlock>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_resumeBlock__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (ResumeBlock).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -1401,6 +1438,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func blockCompletionRequest(courseID: Parameter<String>, blockID: Parameter<String>) -> Verify { return Verify(method: .m_blockCompletionRequest__courseID_courseIDblockID_blockID(`courseID`, `blockID`))}
         public static func getHandouts(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getHandouts__courseID_courseID(`courseID`))}
         public static func getUpdates(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getUpdates__courseID_courseID(`courseID`))}
+        public static func resumeBlock(courseID: Parameter<String>) -> Verify { return Verify(method: .m_resumeBlock__courseID_courseID(`courseID`))}
     }
 
     public struct Perform {
@@ -1433,6 +1471,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func getUpdates(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getUpdates__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func resumeBlock(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_resumeBlock__courseID_courseID(`courseID`), performs: perform)
         }
     }
 

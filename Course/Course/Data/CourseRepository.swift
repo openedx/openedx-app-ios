@@ -18,7 +18,6 @@ public protocol CourseRepositoryProtocol {
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func resumeBlock(courseID: String) async throws -> ResumeBlock
-
 }
 
 public class CourseRepository: CourseRepositoryProtocol {

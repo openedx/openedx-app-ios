@@ -66,11 +66,9 @@ public class PostsViewModel: ObservableObject {
         }
     }
     @Published var sortTitle: SortType = .recentActivity
-    
     @Published var filterButtons: [ActionSheet.Button] = []
     
     public var courseID: String?
-    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -82,14 +80,11 @@ public class PostsViewModel: ObservableObject {
     public var type: ThreadType!
     public var topics: Topics?
     private var topicsFetched: Bool = false
-    
     private var discussionPosts: [DiscussionPost] = []
     private var threads: ThreadLists = ThreadLists(threads: [])
-    
     private let interactor: DiscussionInteractorProtocol
     private let router: DiscussionRouter
     private let config: Config
-    
     internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     private var cancellable: AnyCancellable?
     
@@ -176,7 +171,6 @@ public class PostsViewModel: ObservableObject {
     
     @MainActor
     func getPostsPagination(courseID: String, index: Int, withProgress: Bool = true) async {
-        print(">>>>>> INDEX", index)
         if !fetchInProgress {
             if totalPages > 1 {
                 if index == threads.threads.count - 3 {
