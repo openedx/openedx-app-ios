@@ -17,6 +17,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var downloadState: [String: DownloadViewState] = [:]
+    @Published var returnCourseUnit: CourseBlock?
+    @Published var blocks: [CourseBlock] = []
     
     var errorMessage: String? {
         didSet {
@@ -71,6 +73,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
+    private func getResumeBlock(courseID: String) async throws {
+        let result = try await interactor.resumeBlock(courseID: courseID)
+        if let courseStructure {
+            self.returnCourseUnit = findCourseBlock(withBlockID: extractBlockID(from: result.blockID),
+                                                    courseStructure: courseStructure)
+        }
+    }
+    
+    @MainActor
     public func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
         if let courseStart {
             if courseStart < Date() {
@@ -78,6 +89,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 do {
                     if connectivity.isInternetAvaliable {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
+                        try await getResumeBlock(courseID: courseID)
                     } else {
                         courseStructure = try await interactor.getCourseBlocksOffline(courseID: courseID)
                     }
@@ -158,5 +170,28 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
             self.downloadState = states
         }
+    }
+    
+    private func findCourseBlock(withBlockID blockID: String, courseStructure: CourseStructure) -> CourseBlock? {
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                for vertical in sequential.childs {
+                    if let block = vertical.childs.first(where: { $0.topicId == blockID }) {
+                            self.blocks = vertical.childs
+                        return block
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func extractBlockID(from input: String) -> String {
+        guard let range = input.range(of: "block@") else {
+            return input
+        }
+        let startIndex = range.upperBound
+        let lastIndex = input.endIndex
+        return String(input[startIndex..<lastIndex])
     }
 }

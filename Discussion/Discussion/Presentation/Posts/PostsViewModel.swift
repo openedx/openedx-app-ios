@@ -203,32 +203,40 @@ public class PostsViewModel: ObservableObject {
                                     type: .allPosts,
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .followingPosts:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .followingPosts,
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .nonCourseTopics:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .nonCourseTopics,
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .courseTopics(topicID: let topicID):
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .courseTopics(topicID: topicID),
                                     filter: filterTitle,
                                     page: pageNumber).threads
-                self.totalPages = threads.threads[0].numPages
-                self.nextPage += 1
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .none:
                 isShowProgress = false
                 return false

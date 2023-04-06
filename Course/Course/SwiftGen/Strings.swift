@@ -17,6 +17,10 @@ public enum CourseLocalization {
   public enum Courseware {
     /// Back to outline
     public static let backToOutline = CourseLocalization.tr("Localizable", "COURSEWARE.BACK_TO_OUTLINE", fallback: "Back to outline")
+    /// Continue
+    public static let `continue` = CourseLocalization.tr("Localizable", "COURSEWARE.CONTINUE", fallback: "Continue")
+    /// Continue with:
+    public static let continueWith = CourseLocalization.tr("Localizable", "COURSEWARE.CONTINUE_WITH", fallback: "Continue with:")
     /// Course content
     public static let courseContent = CourseLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT", fallback: "Course content")
     /// Course units

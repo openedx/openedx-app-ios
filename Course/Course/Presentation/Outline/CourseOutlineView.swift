@@ -88,6 +88,12 @@ public struct CourseOutlineView: View {
                             .padding(.top, 7)
                             .fixedSize(horizontal: false, vertical: true)
                             
+                            if !isVideo {
+                                if let block = viewModel.returnCourseUnit {
+                                    ContinueWithView(block: block, courseID: courseID, viewModel: viewModel)
+                                }
+                            }
+                            
                             if let courseStructure = isVideo ? viewModel.courseVideosStructure : viewModel.courseStructure {
                                 // MARK: - Sections list
                                 
@@ -213,6 +219,35 @@ public struct CourseOutlineView: View {
             CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
+    }
+}
+
+struct ContinueWithView: View {
+    let block: CourseBlock
+    let courseID: String
+    let viewModel: CourseContainerViewModel
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(CourseLocalization.Courseware.continueWith)
+                .font(Theme.Fonts.labelMedium)
+                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+            HStack {
+                block.type.image
+                Text(block.displayName)
+                    .multilineTextAlignment(.leading)
+                    .font(Theme.Fonts.titleMedium)
+                    .multilineTextAlignment(.leading)
+            }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+            UnitButtonView(type: .continueLesson, action: {
+                viewModel.router.showCourseUnit(blockId: block.id,
+                                                courseID: courseID,
+                                                sectionName: block.displayName,
+                                                blocks: viewModel.blocks)
+            })
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 32)
     }
 }
 

@@ -17,6 +17,7 @@ public protocol CourseRepositoryProtocol {
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
+    func resumeBlock(courseID: String) async throws -> ResumeBlock
 
 }
 
@@ -89,6 +90,12 @@ public class CourseRepository: CourseRepositoryProtocol {
     public func getUpdates(courseID: String) async throws -> [CourseUpdate] {
         return try await api.requestData(CourseDetailsEndpoint.getUpdates(courseID: courseID))
             .mapResponse(DataLayer.CourseUpdates.self).map { $0.domain }
+    }
+    
+    public func resumeBlock(courseID: String) async throws -> ResumeBlock {
+        return try await api.requestData(CourseDetailsEndpoint
+            .resumeBlock(userName: appStorage.user?.username ?? "", courseID: courseID))
+        .mapResponse(DataLayer.ResumeBlock.self).domain
     }
     
     private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
@@ -181,6 +188,10 @@ public class CourseRepository: CourseRepositoryProtocol {
 #if DEBUG
 // swiftlint:disable all
 class CourseRepositoryMock: CourseRepositoryProtocol {
+    func resumeBlock(courseID: String) async throws -> ResumeBlock {
+        ResumeBlock(blockID: "123")
+    }
+    
     func getHandouts(courseID: String) async throws -> String? {
         return "Test Handouts"
     }
