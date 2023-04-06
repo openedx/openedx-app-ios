@@ -46,7 +46,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
                              enrollmentEnd: courseDetails.enrollmentEnd,
                              isEnrolled: courseDetails.isEnrolled,
                              overviewHTML: courseDetails.overviewHTML ?? "",
-                             courseBannerURL: courseDetails.courseBannerURL ?? "")
+                             courseBannerURL: courseDetails.courseBannerURL ?? "",
+                             courseVideoURL: nil)
     }
     
     public func saveCourseDetails(course: CourseDetails) {

@@ -92,6 +92,14 @@ public class CourseDetailsViewModel: ObservableObject {
         }
     }
     
+    func openYouTube(url: String) -> URL? {
+        guard let youtubeURL = URL(string: url) else { return nil }
+        let httpsURL = youtubeURL.absoluteString.replacingOccurrences(of: "http://", with: "https://")
+        guard let url = URL(string: httpsURL) else { return nil }
+        return url
+    }
+
+    
     @MainActor
     func enrollToCourse(id: String) async {
         do {

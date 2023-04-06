@@ -202,7 +202,8 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
             enrollmentEnd: nil,
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
-            courseBannerURL: "courseBannerURL"
+            courseBannerURL: "courseBannerURL",
+            courseVideoURL: nil
         )
     }
     
@@ -225,7 +226,8 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
             enrollmentEnd: nil,
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
-            courseBannerURL: "courseBannerURL"
+            courseBannerURL: "courseBannerURL",
+            courseVideoURL: nil
         )
     }
         
