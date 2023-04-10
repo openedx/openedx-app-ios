@@ -17,6 +17,7 @@ enum CourseDetailsEndpoint: EndPointType {
     case blockCompletionRequest(username: String, courseID: String, blockID: String)
     case getHandouts(courseID: String)
     case getUpdates(courseID: String)
+    case resumeBlock(userName: String, courseID: String)
     case getSubtitles(url: String)
 
     var path: String {
@@ -35,6 +36,8 @@ enum CourseDetailsEndpoint: EndPointType {
             return "/api/mobile/v1/course_info/\(courseID)/handouts"
         case .getUpdates(courseID: let courseID):
             return "/api/mobile/v1/course_info/\(courseID)/updates"
+        case let .resumeBlock(userName, courseID):
+            return "/api/mobile/v1/users/\(userName)/course_status_info/\(courseID)"
         case .getSubtitles(url: let url):
             return url
         }
@@ -55,6 +58,8 @@ enum CourseDetailsEndpoint: EndPointType {
         case .getHandouts:
             return .get
         case .getUpdates:
+            return .get
+        case .resumeBlock:
             return .get
         case .getSubtitles:
             return .get
@@ -103,6 +108,8 @@ enum CourseDetailsEndpoint: EndPointType {
         case .getHandouts:
             return .requestParameters(encoding: JSONEncoding.default)
         case .getUpdates:
+            return .requestParameters(encoding: JSONEncoding.default)
+        case .resumeBlock:
             return .requestParameters(encoding: JSONEncoding.default)
         case .getSubtitles:
             let params: [String: Any] = [
