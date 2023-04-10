@@ -15,6 +15,8 @@ public protocol CoursePersistenceProtocol {
     func saveEnrollments(items: [Core.CourseItem])
     func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure
     func saveCourseStructure(structure: DataLayer.CourseStructure)
+    func saveSubtitles(url: String, subtitlesString: String)
+    func loadSubtitles(url: String) throws -> String
     func clear()
 }
 
@@ -195,6 +197,28 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 }
             }
         }
+    }
+    
+    public func saveSubtitles(url: String, subtitlesString: String) {
+        context.performAndWait {
+            let newSubtitle = CDSubtitle(context: context)
+            newSubtitle.url = url
+            newSubtitle.subtitle = subtitlesString
+            
+            do {
+                try context.save()
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
+            }
+        }
+    }
+    
+    public func loadSubtitles(url: String) throws -> String {
+        let request = CDSubtitle.fetchRequest()
+        request.predicate = NSPredicate(format: "url = %@", url)
+        
+        guard let subtitle = try? context.fetch(request).first else { throw NoCachedDataError() }
+        return subtitle.subtitle ?? ""
     }
     
     public func clear() {

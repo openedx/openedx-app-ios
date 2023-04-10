@@ -14,6 +14,14 @@ import Swinject
 public struct CourseUnitView: View {
     
     @ObservedObject private var viewModel: CourseUnitViewModel
+    @State private var showAlert: Bool = false
+    @State var alertMessage: String? {
+        didSet {
+            withAnimation {
+                showAlert = alertMessage != nil
+            }
+        }
+    }
     private let sectionName: String
     
     public init(viewModel: CourseUnitViewModel,
@@ -48,16 +56,12 @@ public struct CourseUnitView: View {
                                         Text(viewModel.selectedLesson().displayName)
                                             .font(Theme.Fonts.titleLarge)
                                             .padding(.horizontal, 24)
-                                        YouTubeVideoPlayer(url: url, isViewed: { isViewed in
-                                            if isViewed {
-                                                Task {
-                                                    await viewModel.blockCompletionRequest(blockID: blockID)
-                                                }
-                                            }
-                                        }, currentTime: $viewModel.currentTime)
+                                        YouTubeVideoPlayer(url: url,
+                                                           subtitlesUrl: viewModel.subtitlesUrl(),
+                                                           blockID: blockID,
+                                                           courseID: viewModel.courseID)
                                         Spacer()
-                                        SubtittlesView(subtitles: viewModel.subtitles,
-                                                       currentTime: $viewModel.currentTime)
+
                                     }.background(CoreAssets.background.swiftUIColor)
                                 case let .video(encodedUrl, blockID):
                                     Text(viewModel.selectedLesson().displayName)
@@ -65,16 +69,19 @@ public struct CourseUnitView: View {
                                         .padding(.horizontal, 24)
                                     EncodedVideoPlayer(
                                         url: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
-                                        isViewed: { [weak viewModel] isViewed in
-                                            if isViewed {
-                                                Task {
-                                                    await viewModel?.blockCompletionRequest(blockID: blockID)
-                                                }
-                                            }
-                                        },
+                                        subtitlesUrl: viewModel.subtitlesUrl(),
+                                        blockID: blockID,
+                                        courseID: viewModel.courseID,
                                         killPlayer: $viewModel.killPlayer
                                     )
                                     Spacer()
+//                                    SubtittlesView(subtitles: viewModel.subtitles,
+//                                                   currentTime: $viewModel.currentTime)
+//                                    .onAppear {
+//                                        Task {
+//                                            viewModel.getSubtitles()
+//                                        }
+//                                    }
                                 case .web(let url):
                                     VStack {
                                         WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
@@ -136,13 +143,35 @@ public struct CourseUnitView: View {
                                         }).frame(width: 100)
                                     }.frame(maxWidth: .infinity, maxHeight: .infinity)
                                 }
-//                                    VStack {
+                                
+                                // MARK: - Alert
+                                if showAlert {
+                                    ZStack(alignment: .bottomLeading) {
+                                        Spacer()
+                                        HStack(spacing: 6) {
+                                            CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
+                                                .onAppear {
+                                                    alertMessage = CourseLocalization.Alert.rotateDevice
+                                                }
+                                            Text(alertMessage ?? "")
+                                        }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
+                                                          textColor: .white)
+                                        .transition(.move(edge: .bottom))
+                                        .onAppear {
+                                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                                                alertMessage = nil
+                                                showAlert = false
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                // MARK: - Course Navigation
                                         CourseNavigationView(
                                             sectionName: sectionName,
                                             viewModel: viewModel
                                         ).padding(.vertical, 12)
                                             .frameLimit(sizePortrait: 420)
-//                                    }
                                     .background(
                                         CoreAssets.background.swiftUIColor
                                             .ignoresSafeArea()
@@ -155,6 +184,7 @@ public struct CourseUnitView: View {
                             viewModel.router.back()
                             self.viewModel.killPlayer.toggle()
                         }
+
                 }
         }
         .background(

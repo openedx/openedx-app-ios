@@ -47,8 +47,6 @@ public class CourseUnitViewModel: ObservableObject {
     @Published var lessonType: LessonType?
     @Published var killPlayer = false
     @Published var showError: Bool = false
-    @Published var subtitles: [Subtitle] = []
-    @Published var currentTime: Double = 0
     var errorMessage: String? {
         didSet {
             showError = errorMessage != nil
@@ -85,47 +83,8 @@ public class CourseUnitViewModel: ObservableObject {
         self.manager = manager
     }
     
-    func getSubtitles() {
-        if !subtitlesDownloaded {
-            Task {
-                if var subtitlesUrl = blocks.first(where: { $0.id == lessonID })?.subtitles {
-                    let result = try await interactor.getSubtitles(url: subtitlesUrl)
-                    print(">>>>> RESULT", result)
-                    DispatchQueue.main.async {
-                        self.subtitles = self.parseSubtitles(from: result) ?? []
-                        print(">>>>>>", self.subtitles)
-                    }
-                    
-                }
-            }
-            subtitlesDownloaded = true
-        }
-    }
-    
-    func parseSubtitles(from subtitlesString: String) -> [Subtitle] {
-        let subtitleComponents = subtitlesString.components(separatedBy: "\n\n")
-        var subtitles = [Subtitle]()
-
-        for component in subtitleComponents {
-            let lines = component.components(separatedBy: .newlines)
-
-            if lines.count >= 3 {
-                let idString = lines[0]
-                let id = Int(idString) ?? 0
-
-                let startAndEndTimes = lines[1].components(separatedBy: " --> ")
-                let startTime = startAndEndTimes.first ?? "00:00:00,000"
-                let endTime = startAndEndTimes.last ?? "00:00:00,000"
-                let text = lines[2..<lines.count].joined(separator: "\n")
-                
-                let subtitle = Subtitle(id: id,
-                                        fromTo: DateInterval(start: Date(subtitleTime: startTime),
-                                                             end:   Date(subtitleTime: endTime)),
-                                        text: text)
-                subtitles.append(subtitle)
-            }
-        }
-        return subtitles
+    public func subtitlesUrl() -> String? {
+        return blocks.first(where: { $0.id == lessonID })?.subtitles
     }
 
     private func selectLesson() -> Int {

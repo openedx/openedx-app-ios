@@ -12,12 +12,19 @@ import Swinject
 
 public struct EncodedVideoPlayer: View {
     
+    private let viewModel = Container.shared.resolve(VideoPlayerViewModel.self)!
+    
+    private var subtitlesUrl: String?
+    private var blockID: String
+    private var courseID: String
+    
     private var controller = AVPlayerViewController()
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @State private var orientation = UIDevice.current.orientation
     @State private var isLoading: Bool = true
     @State private var isAnimating: Bool = false
     @State private var isViewedOnce: Bool = false
+    @State private var currentTime: Double = 0
     @State private var isOrientationChanged: Bool = false
     @Binding private var killPlayer: Bool
     @State var showAlert = false
@@ -28,17 +35,19 @@ public struct EncodedVideoPlayer: View {
             }
         }
     }
-        
-    public var isViewed: ((Bool) -> Void)
     private let url: URL?
     
     public init(
         url: URL?,
-        isViewed: @escaping ((Bool) -> Void),
+        subtitlesUrl: String?,
+        blockID: String,
+        courseID: String,
         killPlayer: Binding<Bool>
     ) {
         self.url = url
-        self.isViewed = isViewed
+        self.subtitlesUrl = subtitlesUrl
+        self.blockID = blockID
+        self.courseID = courseID
         self._killPlayer = killPlayer
     }
     
@@ -49,12 +58,16 @@ public struct EncodedVideoPlayer: View {
                     videoURL: url,
                     controller: controller,
                     progress: { progress in
+                        print(">>>> progress", progress)
+
                         if progress >= 0.8 {
                             if !isViewedOnce {
-                                self.isViewed(true)
+//                                self.isViewed(true)
                                 isViewedOnce = true
                             }
                         }
+                    }, seconds: { seconds in
+                        currentTime = seconds
                     })
                 .aspectRatio(16 / 9, contentMode: .fit)
                 .onReceive(NotificationCenter.Publisher(
@@ -73,11 +86,28 @@ public struct EncodedVideoPlayer: View {
                             }
                         }
                     }
+                if viewModel.subtitles.count > 1 {
+                    SubtittlesView(subtitles: viewModel.subtitles,
+                                   currentTime: $currentTime)
+                }
                 Spacer()
                 if !orientation.isLandscape || idiom != .pad {
                     VStack {}.onAppear {
                         isLoading = false
+                        if let subtitlesUrl {
+                            Task {
+                                await viewModel.getSubtitles(subtitlesUrl: subtitlesUrl)
+                            }
+                        }
                         alertMessage = CourseLocalization.Alert.rotateDevice
+                    }
+                } else {
+                    VStack {}.onAppear {
+                        if let subtitlesUrl {
+                            Task {
+                                await viewModel.getSubtitles(subtitlesUrl: subtitlesUrl)
+                            }
+                        }
                     }
                 }
                 
@@ -109,6 +139,6 @@ public struct EncodedVideoPlayer: View {
 
 struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        EncodedVideoPlayer(url: URL(string: ""), isViewed: {_ in }, killPlayer: .constant(true))
+        EncodedVideoPlayer(url: nil, subtitlesUrl: "", blockID: "", courseID: "", killPlayer: .constant(false))
     }
 }

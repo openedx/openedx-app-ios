@@ -18,6 +18,7 @@ public protocol CourseRepositoryProtocol {
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func getSubtitles(url: String) async throws -> String
+    func getSubtitlesOffline(url: String) async throws -> String
 }
 
 public class CourseRepository: CourseRepositoryProtocol {
@@ -92,8 +93,14 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getSubtitles(url: String) async throws -> String {
-         let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url))
-         return String(data: result, encoding: .utf8) ?? ""
+        let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url))
+        let subtitles = String(data: result, encoding: .utf8) ?? ""
+        persistence.saveSubtitles(url: url, subtitlesString: subtitles)
+        return subtitles
+    }
+    
+    public func getSubtitlesOffline(url: String) async throws -> String {
+        return try persistence.loadSubtitles(url: url)
      }
     
     private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
@@ -258,6 +265,29 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     }
     
     public func getSubtitles(url: String) async throws -> String {
+        return """
+0
+00:00:00,350 --> 00:00:05,230
+GREGORY NAGY: In hour zero, where I try to introduce Homeric poetry to
+1
+00:00:05,230 --> 00:00:11,060
+people who may never have been exposed to the Iliad and the Odyssey even in
+2
+00:00:11,060 --> 00:00:20,290
+translation, my idea was to get a sense of the medium, which is not a
+3
+00:00:20,290 --> 00:00:25,690
+readable medium because Homeric poetry, in its historical context, was
+4
+00:00:25,690 --> 00:00:30,210
+meant to be heard, not read.
+5
+00:00:30,210 --> 00:00:34,760
+And there are various ways of describing it-- call it oral poetry or
+"""
+    }
+    
+    func getSubtitlesOffline(url: String) async throws -> String {
         return """
 0
 00:00:00,350 --> 00:00:05,230

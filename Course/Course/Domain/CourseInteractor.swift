@@ -20,7 +20,7 @@ public protocol CourseInteractorProtocol {
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func getSubtitles(url: String) async throws -> String
-    
+    func getSubtitlesOffline(url: String) async throws -> String
 }
 
 public class CourseInteractor: CourseInteractorProtocol {
@@ -87,6 +87,10 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getSubtitles(url: String) async throws -> String {
         return try await repository.getSubtitles(url: url)
+    }
+    
+    public func getSubtitlesOffline(url: String) async throws -> String {
+        return try await repository.getSubtitlesOffline(url: url)
     }
     
     private func filterChapter(chapter: CourseChapter) -> CourseChapter {
