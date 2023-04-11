@@ -14,8 +14,7 @@ public struct CourseDetailsView: View {
     
     @ObservedObject private var viewModel: CourseDetailsViewModel
     @Environment(\.colorScheme) var colorScheme
-    @State private var animate = false
-    @State private var showCourse = false
+    @State private var isOverviewRendering = true
     private var title: String
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var courseID: String
@@ -42,13 +41,13 @@ public struct CourseDetailsView: View {
             // MARK: - Page name
             VStack(alignment: .center) {
                 NavigationBar(title: CourseLocalization.Details.title,
-                                     leftButtonAction: { viewModel.router.back() })
-                    .onReceive(NotificationCenter
-                        .Publisher(center: .default,
-                                   name: UIDevice.orientationDidChangeNotification)) { _ in
-                        updateOrientation()
-                    }
-
+                              leftButtonAction: { viewModel.router.back() })
+                .onReceive(NotificationCenter
+                    .Publisher(center: .default,
+                               name: UIDevice.orientationDidChangeNotification)) { _ in
+                    updateOrientation()
+                }
+                
                 // MARK: - Page Body
                 GeometryReader { proxy in
                     if viewModel.isShowProgress {
@@ -63,69 +62,30 @@ public struct CourseDetailsView: View {
                         }) {
                             VStack(alignment: .leading) {
                                 if let courseDetails = viewModel.courseDetails {
+                                    
+                                    // MARK: - iPad
                                     if idiom == .pad && viewModel.isHorisontal {
                                         HStack {
                                             VStack(alignment: .leading) {
-                                                Text(courseDetails.courseDescription)
-                                                    .font(Theme.Fonts.labelSmall)
-                                                    .padding(.horizontal, 26)
                                                 
-                                                Text(courseDetails.courseTitle)
-                                                    .font(Theme.Fonts.titleLarge)
-                                                    .padding(.horizontal, 26)
-                                                
-                                                Text(courseDetails.org)
-                                                    .font(Theme.Fonts.labelMedium)
-                                                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
-                                                    .padding(.horizontal, 26)
-                                                    .padding(.top, 10)
+                                                // MARK: - Title and description
+                                                CourseTitleView(courseDetails: courseDetails)
                                                 Spacer()
-                                                switch viewModel.courseState() {
-                                                case .enrollOpen:
-                                                    StyledButton(CourseLocalization.Details.enrollNow, action: {
-                                                        Task {
-                                                            await viewModel.enrollToCourse(id: courseDetails.courseID)
-                                                        }
-                                                    })
-                                                    .padding(16)
-                                                    .frame(maxWidth: .infinity)
-                                                case .enrollClose:
-                                                    Text(CourseLocalization.Details.enrollmentDateIsOver)
-                                                        .multilineTextAlignment(.center)
-                                                        .font(Theme.Fonts.titleSmall)
-                                                        .cardStyle()
-                                                        .padding(.vertical, 24)
-                                                case .alreadyEnrolled:
-                                                    StyledButton(CourseLocalization.Details.viewCourse, action: {
-                                                        showCourse = true
-                                                        
-                                                        viewModel.router.showCourseScreens(
-                                                            courseID: courseDetails.courseID,
-                                                            isActive: nil,
-                                                            courseStart: courseDetails.courseStart,
-                                                            courseEnd: courseDetails.courseEnd,
-                                                            enrollmentStart: courseDetails.enrollmentStart,
-                                                            enrollmentEnd: courseDetails.enrollmentEnd,
-                                                            title: title
-                                                        )
-                                                        
-                                                    })
-                                                    .padding(16)
-                                                }
+                                                
+                                                // MARK: - Course state button
+                                                CourseStateView(title: title,
+                                                                courseDetails: courseDetails,
+                                                                viewModel: viewModel)
                                             }
                                             VStack {
-                                                let image = CoreAssets.noCourseImage.image
-                                                KFImage(URL(string: courseDetails.courseBannerURL))
-                                                    .onFailureImage(CoreAssets.noCourseImage.image)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: idiom == .pad ? 312 : proxy.size.width - 12)
-                                                    .opacity(animate ? 1 : 0)
-                                                    .onAppear {
-                                                        withAnimation(.linear(duration: 0.5)) {
-                                                            animate = true
-                                                        }
+                                                // MARK: - Course Banner
+                                                CourseBannerView(
+                                                    courseDetails: courseDetails,
+                                                    proxy: proxy,
+                                                    onPlayButtonTap: { [weak viewModel] in
+                                                        viewModel?.showCourseVideo()
                                                     }
+                                                )
                                             }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
                                                 .frame(maxHeight: 250)
                                                 .cornerRadius(12)
@@ -134,18 +94,15 @@ public struct CourseDetailsView: View {
                                             
                                         }
                                     } else {
+                                        // MARK: - iPhone
                                         VStack {
-                                            KFImage(URL(string: courseDetails.courseBannerURL))
-                                                .onFailureImage(CoreAssets.noCourseImage.image)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: idiom == .pad ? 540 : proxy.size.width - 12)
-                                                .opacity(animate ? 1 : 0)
-                                                .onAppear {
-                                                    withAnimation(.linear(duration: 0.5)) {
-                                                        animate = true
-                                                    }
-                                                }
+                                            // MARK: - Course Banner
+                                            CourseBannerView(
+                                                courseDetails: courseDetails,
+                                                proxy: proxy,
+                                                onPlayButtonTap: { [weak viewModel] in
+                                                    viewModel?.showCourseVideo()
+                                                })
                                         }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
                                             .frame(maxHeight: 250)
                                             .cornerRadius(12)
@@ -153,65 +110,36 @@ public struct CourseDetailsView: View {
                                             .padding(.top, 7)
                                             .fixedSize(horizontal: false, vertical: true)
                                         
-                                        switch viewModel.courseState() {
-                                        case .enrollOpen:
-                                            StyledButton(CourseLocalization.Details.enrollNow, action: {
-                                                Task {
-                                                    await viewModel.enrollToCourse(id: courseDetails.courseID)
-                                                }
-                                            })
-                                            .padding(16)
-                                            .frame(maxWidth: .infinity)
-                                        case .enrollClose:
-                                            Text(CourseLocalization.Details.enrollmentDateIsOver)
-                                                .multilineTextAlignment(.center)
-                                                .font(Theme.Fonts.titleSmall)
-                                                .cardStyle()
-                                                .padding(.vertical, 24)
-                                        case .alreadyEnrolled:
-                                            StyledButton(CourseLocalization.Details.viewCourse, action: {
-                                                showCourse = true
-                                                
-                                                viewModel.router.showCourseScreens(
-                                                    courseID: courseDetails.courseID,
-                                                    isActive: nil,
-                                                    courseStart: courseDetails.courseStart,
-                                                    courseEnd: courseDetails.courseEnd,
-                                                    enrollmentStart: courseDetails.enrollmentStart,
-                                                    enrollmentEnd: courseDetails.enrollmentEnd,
-                                                    title: title
-                                                )
-                                                
-                                            })
-                                            .padding(16)
-                                        }
-                                        Text(courseDetails.courseDescription)
-                                            .font(Theme.Fonts.labelSmall)
-                                            .padding(.horizontal, 26)
+                                        // MARK: - Course state button
+                                        CourseStateView(title: title,
+                                                        courseDetails: courseDetails,
+                                                        viewModel: viewModel)
                                         
-                                        Text(courseDetails.courseTitle)
-                                            .font(Theme.Fonts.titleLarge)
-                                            .padding(.horizontal, 26)
-                                        
-                                        Text(courseDetails.org)
-                                            .font(Theme.Fonts.labelMedium)
-                                            .foregroundColor(CoreAssets.accentColor.swiftUIColor)
-                                            .padding(.horizontal, 26)
-                                            .padding(.top, 10)
+                                        // MARK: - Title and description
+                                        CourseTitleView(courseDetails: courseDetails)
                                     }
                                     
                                     // MARK: - HTML Embed
-                                    VStack {
+                                    ZStack(alignment: .topLeading) {
                                         HTMLFormattedText(
                                             viewModel.cssInjector.injectCSS(
                                                 colorScheme: colorScheme,
                                                 html: courseDetails.overviewHTML,
-                                                type: .discovery, screenWidth: proxy.size.width)
+                                                type: .discovery,
+                                                screenWidth: proxy.size.width - 48),
+                                            processing: { rendering in
+                                                isOverviewRendering = rendering
+                                                print(">>>>", rendering)
+                                            }
                                         )
-                                        .ignoresSafeArea()
+                                        .padding(.horizontal, 16)
+                                        
+                                        if isOverviewRendering {
+                                            ProgressBar(size: 40, lineWidth: 8)
+                                                .padding(.top, 20)
+                                                .frame(maxWidth: .infinity)
+                                        }
                                     }
-                                    .padding(.horizontal, 16)
-                                    .padding(.bottom, 24)
                                 }
                             }
                         }.frameLimit()
@@ -224,10 +152,10 @@ public struct CourseDetailsView: View {
             }
             
             // MARK: - Offline mode SnackBar
-                OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                    reloadAction: {
-                    await viewModel.getCourseDetail(courseID: courseID, withProgress: isIOS14)
-                })
+            OfflineSnackBarView(connectivity: viewModel.connectivity,
+                                reloadAction: {
+                await viewModel.getCourseDetail(courseID: courseID, withProgress: isIOS14)
+            })
             
             // MARK: - Error Alert
             if viewModel.showError {
@@ -249,6 +177,123 @@ public struct CourseDetailsView: View {
             CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
+    }
+}
+
+private struct CourseStateView: View {
+    
+    let title: String
+    let courseDetails: CourseDetails
+    let viewModel: CourseDetailsViewModel
+    
+    init(title: String,
+         courseDetails: CourseDetails,
+         viewModel: CourseDetailsViewModel) {
+        self.title = title
+        self.courseDetails = courseDetails
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        switch viewModel.courseState() {
+        case .enrollOpen:
+            StyledButton(CourseLocalization.Details.enrollNow, action: {
+                Task {
+                    await viewModel.enrollToCourse(id: courseDetails.courseID)
+                }
+            })
+            .padding(16)
+            .frame(maxWidth: .infinity)
+        case .enrollClose:
+            Text(CourseLocalization.Details.enrollmentDateIsOver)
+                .multilineTextAlignment(.center)
+                .font(Theme.Fonts.titleSmall)
+                .cardStyle()
+                .padding(.vertical, 24)
+        case .alreadyEnrolled:
+            StyledButton(CourseLocalization.Details.viewCourse, action: {
+                viewModel.router.showCourseScreens(
+                    courseID: courseDetails.courseID,
+                    isActive: nil,
+                    courseStart: courseDetails.courseStart,
+                    courseEnd: courseDetails.courseEnd,
+                    enrollmentStart: courseDetails.enrollmentStart,
+                    enrollmentEnd: courseDetails.enrollmentEnd,
+                    title: title
+                )
+            })
+            .padding(16)
+        }
+    }
+}
+
+private struct PlayButton: View {
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action, label: {
+            CoreAssets.playVideo.swiftUIImage
+                .resizable()
+                .frame(width: 40, height: 40)
+        })
+    }
+}
+
+private struct CourseTitleView: View {
+    let courseDetails: CourseDetails
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(courseDetails.courseDescription)
+                .font(Theme.Fonts.labelSmall)
+                .padding(.horizontal, 26)
+            
+            Text(courseDetails.courseTitle)
+                .font(Theme.Fonts.titleLarge)
+                .padding(.horizontal, 26)
+            
+            Text(courseDetails.org)
+                .font(Theme.Fonts.labelMedium)
+                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                .padding(.horizontal, 26)
+                .padding(.top, 10)
+        }
+    }
+}
+
+private struct CourseBannerView: View {
+    @State private var animate = false
+    private let courseDetails: CourseDetails
+    private let idiom: UIUserInterfaceIdiom
+    private let proxy: GeometryProxy
+    private let onPlayButtonTap: () -> Void
+    
+    init(courseDetails: CourseDetails,
+         proxy: GeometryProxy,
+         onPlayButtonTap: @escaping () -> Void) {
+        self.courseDetails = courseDetails
+        self.idiom = UIDevice.current.userInterfaceIdiom
+        self.proxy = proxy
+        self.onPlayButtonTap = onPlayButtonTap
+    }
+    
+    var body: some View {
+        ZStack(alignment: .center) {
+            KFImage(URL(string: courseDetails.courseBannerURL))
+                .onFailureImage(CoreAssets.noCourseImage.image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: idiom == .pad ? 312 : proxy.size.width - 12)
+                .opacity(animate ? 1 : 0)
+                .onAppear {
+                    withAnimation(.linear(duration: 0.5)) {
+                        animate = true
+                    }
+                }
+            if courseDetails.courseVideoURL != nil {
+                PlayButton(action: onPlayButtonTap)
+            }
+        }
     }
 }
 

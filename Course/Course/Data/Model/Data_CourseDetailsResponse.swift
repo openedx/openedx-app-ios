@@ -74,6 +74,7 @@ public extension DataLayer.CourseDetailsResponse {
             enrollmentEnd: enrollmentEnd != nil ? Date(iso8601: enrollmentEnd!) : nil,
             isEnrolled: isEnrolled,
             overviewHTML: overview,
-            courseBannerURL: imageURL)
+            courseBannerURL: imageURL,
+            courseVideoURL: media.courseVideo?.url)
     }
 }

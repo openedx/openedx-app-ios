@@ -10,14 +10,21 @@ import SwiftUI
 
 public struct HTMLFormattedText: UIViewRepresentable {
     
-    let text: String
-    let isScrollEnabled: Bool
-    @Binding var textViewHeight: CGFloat?
+    private let text: String
+    private let isScrollEnabled: Bool
+    @Binding private var textViewHeight: CGFloat?
+    private let processing: ((Bool) -> Void)?
     
-    public init(_ content: String, isScrollEnabled: Bool = false, textViewHeight: Binding<CGFloat?> = .constant(nil)) {
+    public init(
+        _ content: String,
+        isScrollEnabled: Bool = false,
+        textViewHeight: Binding<CGFloat?> = .constant(nil),
+        processing: ((Bool) -> Void)? = nil
+    ) {
         self.text = content
         self.isScrollEnabled = isScrollEnabled
         self._textViewHeight = textViewHeight
+        self.processing = processing
     }
     
     public func makeUIView(context: UIViewRepresentableContext<Self>) -> UITextView {
@@ -39,13 +46,19 @@ public struct HTMLFormattedText: UIViewRepresentable {
         uiView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         uiView.setContentCompressionResistancePriority(.required, for: .vertical)
         
-        DispatchQueue.main.async {
+        processing?(true)
+        DispatchQueue.global(qos: .background).async {
             if let attributeText = self.convertHTML(text: text) {
-                uiView.attributedText = attributeText
-                
-                self.textViewHeight = uiView.contentSize.height
+                DispatchQueue.main.async {
+                    uiView.attributedText = attributeText
+                    textViewHeight = uiView.contentSize.height
+                    processing?(false)
+                }
             } else {
-                uiView.text = ""
+                DispatchQueue.main.async {
+                    uiView.text = ""
+                    processing?(false)
+                }
             }
         }
     }
