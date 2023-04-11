@@ -39,14 +39,14 @@ public struct HTMLFormattedText: UIViewRepresentable {
         uiView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         uiView.setContentCompressionResistancePriority(.required, for: .vertical)
         
-        if let attributeText = self.convertHTML(text: text) {
-            uiView.attributedText = attributeText
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            if let attributeText = self.convertHTML(text: text) {
+                uiView.attributedText = attributeText
+                
                 self.textViewHeight = uiView.contentSize.height
+            } else {
+                uiView.text = ""
             }
-
-        } else {
-            uiView.text = ""
         }
     }
     

@@ -88,8 +88,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             certificate: nil
         )
         
+        let resumeBlock = ResumeBlock(blockID: "123")
+        
         Given(interactor, .getCourseBlocks(courseID: "123",
                                            willReturn: courseStructure))
+        Given(interactor, .getCourseBlocks(courseID: "123",
+                                           willReturn: courseStructure))
+        Given(interactor, .resumeBlock(courseID: "123",
+                                       willReturn: resumeBlock))
         Given(interactor, .getCourseVideoBlocks(fullStructure: .any,
                                                 willReturn: courseStructure))
         
@@ -97,6 +103,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         Verify(interactor, .getCourseVideoBlocks(fullStructure: .any))
+        Verify(interactor, .resumeBlock(courseID: "123"))
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)

@@ -166,6 +166,23 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
+                                                blocks: (String, [CourseBlock])) {
+        let viewModelVertical = Container.shared.resolve(CourseVerticalViewModel.self, argument: verticals.1)!
+        let verticalView = CourseVerticalView(title: verticals.0, viewModel: viewModelVertical)
+        let verticalController = SwiftUIHostController(view: verticalView)
+        
+        let viewModelBlocks = Container.shared.resolve(CourseBlocksViewModel.self, argument: blocks.1)!
+        let blocksView = CourseBlocksView(title: blocks.0, viewModel: viewModelBlocks)
+        let blocksController = SwiftUIHostController(view: blocksView)
+        
+        var currentViews = navigationController.viewControllers
+        currentViews.append(verticalController)
+        currentViews.append(blocksController)
+        
+        navigationController.setViewControllers(currentViews, animated: true)
+    }
+    
     public func showCourseScreens(courseID: String,
                                   isActive: Bool?,
                                   courseStart: Date?,
