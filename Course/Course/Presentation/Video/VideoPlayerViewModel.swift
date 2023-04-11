@@ -48,7 +48,7 @@ public class VideoPlayerViewModel: ObservableObject {
         if !subtitlesDownloaded {
             do {
                 if connectivity.isInternetAvaliable {
-                    let result = try await interactor.getSubtitlesOffline(url: subtitlesUrl)
+                    let result = try await interactor.getSubtitles(url: subtitlesUrl)
                     subtitles = self.parseSubtitles(from: result)
                 } else {
                     let result = try await interactor.getSubtitlesOffline(url: subtitlesUrl)

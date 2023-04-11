@@ -110,29 +110,28 @@ public struct EncodedVideoPlayer: View {
                         }
                     }
                 }
-                
-                // MARK: - Alert
-                if showAlert {
-                    Spacer()
-                    VStack(alignment: .center) {
-                        Spacer()
-                        HStack(spacing: 6) {
-                            CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
-                            Text(alertMessage ?? "")
-                        }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
-                                          textColor: .white)
-                        .transition(.move(edge: .bottom))
-                        .onAppear {
-                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                                alertMessage = nil
-                                showAlert = false
-                            }
-                        }
-                    }
-                }
             }.onChange(of: killPlayer, perform: { _ in
                 controller.player?.replaceCurrentItem(with: nil)
             })
+            // MARK: - Alert
+            if showAlert {
+                Spacer()
+                VStack(alignment: .center) {
+                    Spacer()
+                    HStack(spacing: 6) {
+                        CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
+                        Text(alertMessage ?? "")
+                    }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
+                                      textColor: .white)
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            alertMessage = nil
+                            showAlert = false
+                        }
+                    }
+                }
+            }
         }
     }
 }
