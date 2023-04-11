@@ -14,8 +14,7 @@ public struct CourseDetailsView: View {
     
     @ObservedObject private var viewModel: CourseDetailsViewModel
     @Environment(\.colorScheme) var colorScheme
-    @State private var animate = false
-    @State private var showCourse = false
+    @State private var isOverviewRendering = true
     private var title: String
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var courseID: String
@@ -75,17 +74,18 @@ public struct CourseDetailsView: View {
                                                 
                                                 // MARK: - Course state button
                                                 CourseStateView(title: title,
-                                                                showCourse: $showCourse,
                                                                 courseDetails: courseDetails,
                                                                 viewModel: viewModel)
                                             }
                                             VStack {
-                                                
                                                 // MARK: - Course Banner
-                                                CourseBannerView(animate: $animate,
-                                                                 courseDetails: courseDetails,
-                                                                 proxy: proxy,
-                                                                 viewModel: viewModel)
+                                                CourseBannerView(
+                                                    courseDetails: courseDetails,
+                                                    proxy: proxy,
+                                                    onPlayButtonTap: { [weak viewModel] in
+                                                        viewModel?.showCourseVideo()
+                                                    }
+                                                )
                                             }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
                                                 .frame(maxHeight: 250)
                                                 .cornerRadius(12)
@@ -97,10 +97,12 @@ public struct CourseDetailsView: View {
                                         // MARK: - iPhone
                                         VStack {
                                             // MARK: - Course Banner
-                                            CourseBannerView(animate: $animate,
-                                                             courseDetails: courseDetails,
-                                                             proxy: proxy,
-                                                             viewModel: viewModel)
+                                            CourseBannerView(
+                                                courseDetails: courseDetails,
+                                                proxy: proxy,
+                                                onPlayButtonTap: { [weak viewModel] in
+                                                    viewModel?.showCourseVideo()
+                                                })
                                         }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
                                             .frame(maxHeight: 250)
                                             .cornerRadius(12)
@@ -110,7 +112,6 @@ public struct CourseDetailsView: View {
                                         
                                         // MARK: - Course state button
                                         CourseStateView(title: title,
-                                                        showCourse: $showCourse,
                                                         courseDetails: courseDetails,
                                                         viewModel: viewModel)
                                         
@@ -119,17 +120,26 @@ public struct CourseDetailsView: View {
                                     }
                                     
                                     // MARK: - HTML Embed
-                                    VStack {
+                                    ZStack(alignment: .topLeading) {
                                         HTMLFormattedText(
                                             viewModel.cssInjector.injectCSS(
                                                 colorScheme: colorScheme,
                                                 html: courseDetails.overviewHTML,
-                                                type: .discovery, screenWidth: proxy.size.width)
+                                                type: .discovery,
+                                                screenWidth: proxy.size.width - 48),
+                                            processing: { rendering in
+                                                isOverviewRendering = rendering
+                                                print(">>>>", rendering)
+                                            }
                                         )
-                                        .ignoresSafeArea()
+                                        .padding(.horizontal, 16)
+                                        
+                                        if isOverviewRendering {
+                                            ProgressBar(size: 40, lineWidth: 8)
+                                                .padding(.top, 20)
+                                                .frame(maxWidth: .infinity)
+                                        }
                                     }
-                                    .padding(.horizontal, 16)
-                                    .padding(.bottom, 24)
                                 }
                             }
                         }.frameLimit()
@@ -173,16 +183,13 @@ public struct CourseDetailsView: View {
 private struct CourseStateView: View {
     
     let title: String
-    @Binding var showCourse: Bool
     let courseDetails: CourseDetails
     let viewModel: CourseDetailsViewModel
     
     init(title: String,
-         showCourse: Binding<Bool>,
          courseDetails: CourseDetails,
          viewModel: CourseDetailsViewModel) {
         self.title = title
-        self._showCourse = showCourse
         self.courseDetails = courseDetails
         self.viewModel = viewModel
     }
@@ -205,8 +212,6 @@ private struct CourseStateView: View {
                 .padding(.vertical, 24)
         case .alreadyEnrolled:
             StyledButton(CourseLocalization.Details.viewCourse, action: {
-                showCourse = true
-                
                 viewModel.router.showCourseScreens(
                     courseID: courseDetails.courseID,
                     isActive: nil,
@@ -216,7 +221,6 @@ private struct CourseStateView: View {
                     enrollmentEnd: courseDetails.enrollmentEnd,
                     title: title
                 )
-                
             })
             .padding(16)
         }
@@ -224,20 +228,13 @@ private struct CourseStateView: View {
 }
 
 private struct PlayButton: View {
-    let youTubeUrl: String
-    let viewModel: CourseDetailsViewModel
+    let action: () -> Void
     
     var body: some View {
-        Button(action: {
-            if let url = viewModel.openYouTube(url: youTubeUrl) {
-                UIApplication.shared.open(url)
-            }
-        }, label: {
-            Image(systemName: "play.circle")
+        Button(action: action, label: {
+            CoreAssets.playVideo.swiftUIImage
                 .resizable()
-                .foregroundColor(.white)
-                .frame(width: 120, height: 120)
-                .shadow(radius: 5)
+                .frame(width: 40, height: 40)
         })
     }
 }
@@ -265,21 +262,19 @@ private struct CourseTitleView: View {
 }
 
 private struct CourseBannerView: View {
-    @Binding var animate: Bool
-    let courseDetails: CourseDetails
+    @State private var animate = false
+    private let courseDetails: CourseDetails
     private let idiom: UIUserInterfaceIdiom
     private let proxy: GeometryProxy
-    private let viewModel: CourseDetailsViewModel
+    private let onPlayButtonTap: () -> Void
     
-    init(animate: Binding<Bool>,
-         courseDetails: CourseDetails,
+    init(courseDetails: CourseDetails,
          proxy: GeometryProxy,
-         viewModel: CourseDetailsViewModel) {
-        self._animate = animate
+         onPlayButtonTap: @escaping () -> Void) {
         self.courseDetails = courseDetails
         self.idiom = UIDevice.current.userInterfaceIdiom
         self.proxy = proxy
-        self.viewModel = viewModel
+        self.onPlayButtonTap = onPlayButtonTap
     }
     
     var body: some View {
@@ -295,9 +290,8 @@ private struct CourseBannerView: View {
                         animate = true
                     }
                 }
-            if let youTubeUrl = courseDetails.courseVideoURL {
-                PlayButton(youTubeUrl: youTubeUrl,
-                           viewModel: viewModel)
+            if courseDetails.courseVideoURL != nil {
+                PlayButton(action: onPlayButtonTap)
             }
         }
     }
