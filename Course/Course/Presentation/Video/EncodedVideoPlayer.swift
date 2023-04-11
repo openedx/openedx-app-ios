@@ -58,11 +58,11 @@ public struct EncodedVideoPlayer: View {
                     videoURL: url,
                     controller: controller,
                     progress: { progress in
-                        print(">>>> progress", progress)
-
                         if progress >= 0.8 {
                             if !isViewedOnce {
-//                                self.isViewed(true)
+                                Task {
+                                   await viewModel.blockCompletionRequest(blockID: blockID, courseID: courseID)
+                                }
                                 isViewedOnce = true
                             }
                         }

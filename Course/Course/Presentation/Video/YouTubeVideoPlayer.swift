@@ -156,8 +156,8 @@ public struct YouTubeVideoPlayer: View {
                         if !isViewedOnce {
                             Task {
                                await viewModel.blockCompletionRequest(blockID: blockID, courseID: courseID)
-                                isViewedOnce = true
                             }
+                            isViewedOnce = true
                         }
                     }
                 }

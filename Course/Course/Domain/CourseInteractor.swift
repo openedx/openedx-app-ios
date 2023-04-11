@@ -88,6 +88,7 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func resumeBlock(courseID: String) async throws -> ResumeBlock {
         return try await repository.resumeBlock(courseID: courseID)
+    }
         
     public func getSubtitles(url: String) async throws -> String {
         return try await repository.getSubtitles(url: url)
