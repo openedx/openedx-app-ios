@@ -129,7 +129,6 @@ public struct CourseDetailsView: View {
                                                 screenWidth: proxy.size.width - 48),
                                             processing: { rendering in
                                                 isOverviewRendering = rendering
-                                                print(">>>>", rendering)
                                             }
                                         )
                                         .padding(.horizontal, 16)
