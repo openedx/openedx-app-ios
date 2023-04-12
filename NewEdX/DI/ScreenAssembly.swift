@@ -247,6 +247,12 @@ class ScreenAssembly: Assembly {
             WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!)
         }
         
+        container.register(VideoPlayerViewModel.self) { r in
+            VideoPlayerViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
+                                 router: r.resolve(CourseRouter.self)!,
+                                 connectivity: r.resolve(ConnectivityProtocol.self)!)
+        }
+        
         container.register(HandoutsViewModel.self) { r, courseID in
             HandoutsViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
                               router: r.resolve(CourseRouter.self)!,

@@ -20,6 +20,7 @@ public protocol CourseInteractorProtocol {
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func resumeBlock(courseID: String) async throws -> ResumeBlock
+    func getSubtitles(url: String) async throws -> [Subtitle]
 }
 
 public class CourseInteractor: CourseInteractorProtocol {
@@ -87,6 +88,11 @@ public class CourseInteractor: CourseInteractorProtocol {
     public func resumeBlock(courseID: String) async throws -> ResumeBlock {
         return try await repository.resumeBlock(courseID: courseID)
     }
+        
+    public func getSubtitles(url: String) async throws -> [Subtitle] {
+        let result = try await repository.getSubtitles(url: url)
+        return parseSubtitles(from: result)
+    }
     
     private func filterChapter(chapter: CourseChapter) -> CourseChapter {
         var newChilds = [CourseSequential]()
@@ -133,6 +139,58 @@ public class CourseInteractor: CourseInteractorProtocol {
             completion: vertical.completion,
             childs: newChilds
         )
+    }
+    
+    private func removeEmptyElements(from subtitlesString: String) -> String {
+        let subtitleComponents = subtitlesString.components(separatedBy: "\n\n")
+            .filter({
+                let lines = $0.components(separatedBy: .newlines)
+
+                if lines.count >= 3 {
+                    let text = lines[2..<lines.count].joined(separator: "\n")
+                    if !text.isEmpty {
+                       return true
+                    }
+                }
+                return false
+            })
+            .map {
+                if $0.hasPrefix("\n") {
+                    let index = $0.index($0.startIndex, offsetBy: 1)
+                    return String($0[index...])
+                } else {
+                    return $0
+                }
+            }
+        
+        return subtitleComponents.joined(separator: "\n\n")
+    }
+    
+    private func parseSubtitles(from subtitlesString: String) -> [Subtitle] {
+        let clearedSubtitles = removeEmptyElements(from: subtitlesString)
+        let subtitleComponents = clearedSubtitles.components(separatedBy: "\n\n")
+        var subtitles = [Subtitle]()
+        
+        for component in subtitleComponents {
+            let lines = component.components(separatedBy: .newlines)
+            
+            if lines.count >= 3 {
+                let idString = lines[0]
+                let id = Int(idString) ?? 0
+                
+                let startAndEndTimes = lines[1].components(separatedBy: " --> ")
+                let startTime = startAndEndTimes.first ?? "00:00:00,000"
+                let endTime = startAndEndTimes.last ?? "00:00:00,000"
+                let text = lines[2..<lines.count].joined(separator: "\n")
+                
+                let subtitle = Subtitle(id: id,
+                                        fromTo: DateInterval(start: Date(subtitleTime: startTime),
+                                                             end: Date(subtitleTime: endTime)),
+                                        text: text)
+                subtitles.append(subtitle)
+            }
+        }
+        return subtitles
     }
 }
 

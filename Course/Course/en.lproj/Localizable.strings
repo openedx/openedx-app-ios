@@ -49,3 +49,5 @@
 "NOT_AVALIABLE.TITLE" = "This interactive component isn’t yet available";
 "NOT_AVALIABLE.DESCRIPTION" = "Explore other parts of this course or view this on web.";
 "NOT_AVALIABLE.BUTTON" = "Open in browser";
+
+"SUBTITLES.TITLE" = "Subtitles";

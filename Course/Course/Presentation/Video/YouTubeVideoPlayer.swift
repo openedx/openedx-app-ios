@@ -9,22 +9,31 @@ import SwiftUI
 import Core
 import YouTubePlayerKit
 import Combine
+import Swinject
 
 public struct YouTubeVideoPlayer: View {
+    
+    private let viewModel = Container.shared.resolve(VideoPlayerViewModel.self)!
+    
+    private var blockID: String
+    private var courseID: String
+    private let languages: [SubtitleUrl]
 
     private let youtubePlayer: YouTubePlayer
     private var timePublisher: AnyPublisher<Double, Never>
     private var durationPublisher: AnyPublisher<Double, Never>
+    private var currentTimePublisher: AnyPublisher<Double, Never>
+    private var currentStatePublisher: AnyPublisher<YouTubePlayer.PlaybackState, Never>
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
     @State private var duration: Double?
+    @State private var play = false
     @State private var orientation = UIDevice.current.orientation
     @State private var isLoading: Bool = true
-    @State private var isAnimating: Bool = false
-    @State private var hideRotationPromt: Bool = false
     @State private var isViewedOnce: Bool = false
-    public var isViewed: ((Bool) -> Void)
-    @State var showAlert = false
-    @State var alertMessage: String? {
+    @State private var currentTime: Double = 0
+    @State private var showAlert = false
+    @State private var alertMessage: String? {
         didSet {
             withAnimation {
                 showAlert = alertMessage != nil
@@ -32,14 +41,21 @@ public struct YouTubeVideoPlayer: View {
         }
     }
 
-    public init(url: String, isViewed: @escaping ((Bool) -> Void)) {
-        self.isViewed = isViewed
+    public init(url: String,
+                blockID: String,
+                courseID: String,
+                languages: [SubtitleUrl]
+    ) {
+        self.blockID = blockID
+        self.courseID = courseID
+        self.languages = languages
+        
         let videoID = url.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
         let configuration = YouTubePlayer.Configuration(configure: {
             $0.autoPlay = false
-            $0.playInline = false
+            $0.playInline = true
             $0.showFullscreenButton = true
-            $0.allowsPictureInPictureMediaPlayback = true
+            $0.allowsPictureInPictureMediaPlayback = false
             $0.showControls = true
             $0.useModestBranding = false
             $0.progressBarColor = .white
@@ -55,6 +71,8 @@ public struct YouTubeVideoPlayer: View {
                                            configuration: configuration)
         self.timePublisher = youtubePlayer.currentTimePublisher()
         self.durationPublisher = youtubePlayer.durationPublisher
+        self.currentTimePublisher = youtubePlayer.currentTimePublisher(updateInterval: 0.1)
+        self.currentStatePublisher = youtubePlayer.playbackStatePublisher
     }
 
     public var body: some View {
@@ -83,19 +101,50 @@ public struct YouTubeVideoPlayer: View {
                                name: UIDevice.orientationDidChangeNotification)) { _ in
                     self.orientation = UIDevice.current.orientation
                     if self.orientation.isPortrait {
+                        youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
+                            $0.playInline = true
+                            $0.autoPlay = play
+                            $0.startTime = Int(currentTime)
+                        }))
                     } else {
-                        youtubePlayer.play()
+                        youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
+                            $0.playInline = false
+                            $0.autoPlay = true
+                            $0.startTime = Int(currentTime)
+                        }))
                     }
                 }
+                    SubtittlesView(languages: languages,
+                                   currentTime: $currentTime,
+                                   viewModel: viewModel)
+                
             }.onReceive(durationPublisher, perform: { duration in
                 self.duration = duration
             })
-
+            .onReceive(currentTimePublisher, perform: { time in
+                currentTime = time
+            })
+            .onReceive(currentStatePublisher, perform: { state in
+                switch state {
+                case .unstarted:
+                    self.play = false
+                case .ended:
+                    self.play = false
+                case .playing:
+                    self.play = true
+                case .paused:
+                    self.play = false
+                case .buffering, .cued:
+                    break
+                }
+            })
             .onReceive(timePublisher, perform: { time in
                 if let duration {
                     if (time / duration) >= 0.8 {
                         if !isViewedOnce {
-                            self.isViewed(true)
+                            Task {
+                               await viewModel.blockCompletionRequest(blockID: blockID, courseID: courseID)
+                            }
                             isViewedOnce = true
                         }
                     }
@@ -104,21 +153,21 @@ public struct YouTubeVideoPlayer: View {
             if isLoading {
                 ProgressBar(size: 40, lineWidth: 8)
             }
-        }
-        // MARK: - Alert
-        if showAlert {
-            VStack(alignment: .center) {
-                Spacer()
-                HStack(spacing: 6) {
-                    CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
-                    Text(alertMessage ?? "")
-                }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
-                                  textColor: .white)
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        alertMessage = nil
-                        showAlert = false
+            // MARK: - Alert
+            if showAlert {
+                VStack(alignment: .center) {
+                    Spacer()
+                    HStack(spacing: 6) {
+                        CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
+                        Text(alertMessage ?? "")
+                    }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
+                                      textColor: .white)
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            alertMessage = nil
+                            showAlert = false
+                        }
                     }
                 }
             }
@@ -128,6 +177,9 @@ public struct YouTubeVideoPlayer: View {
 
 struct YouTubeVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        YouTubeVideoPlayer(url: "", isViewed: {_ in})
+        YouTubeVideoPlayer(url: "",
+                           blockID: "",
+                           courseID: "",
+                           languages: [])
     }
 }

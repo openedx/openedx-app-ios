@@ -57,11 +57,12 @@ public class CourseUnitViewModel: ObservableObject {
     
     public var lessonID: String
     public var courseID: String
-    
+
     private let interactor: CourseInteractorProtocol
     public let router: CourseRouter
     public let connectivity: ConnectivityProtocol
     private let manager: DownloadManagerProtocol
+    private var subtitlesDownloaded: Bool = false
     
     func loadIndex() {
         index = selectLesson()
@@ -84,6 +85,10 @@ public class CourseUnitViewModel: ObservableObject {
         self.manager = manager
     }
     
+    public func languages() -> [SubtitleUrl] {
+        return blocks.first(where: { $0.id == lessonID })?.subtitles ?? []
+    }
+
     private func selectLesson() -> Int {
         guard blocks.count > 0 else { return 0 }
         let index = blocks.firstIndex(where: { $0.id == lessonID }) ?? 0

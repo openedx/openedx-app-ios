@@ -67,14 +67,28 @@ public extension DataLayer {
             case allSources = "all_sources"
         }
     }
+        
+    struct Transcripts: Codable {
+        public let en: String?
+
+        enum CodingKeys: String, CodingKey {
+            case en
+        }
+
+        public init(en: String?) {
+            self.en = en
+        }
+    }
     
     struct CourseDetailUserViewData: Decodable {
+        let transcripts: [String: String]?
         let encodedVideo: CourseDetailEncodedVideoData?
         let topicID: String?
         
         public enum CodingKeys: String, CodingKey {
             case encodedVideo = "encoded_videos"
             case topicID = "topic_id"
+            case transcripts
         }
     }
     

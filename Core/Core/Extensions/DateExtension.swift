@@ -31,6 +31,33 @@ public extension Date {
             return formatter.localizedString(for: self, relativeTo: Date())
         }
     }
+    
+    init(subtitleTime: String) {
+          let calendar = Calendar.current
+          let now = Date()
+          var components = calendar.dateComponents([.year, .month, .day], from: now)
+          var dateFormatter = DateFormatter()
+          dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss,SSS"
+          let dateString = "\(components.year!)-\(components.month!)-\(components.day!) \(subtitleTime)"
+          guard let date = dateFormatter.date(from: dateString) else {
+              self = now
+              return
+          }
+          self = date
+      }
+
+     init(milliseconds: Double) {
+         let now = Date()
+         let calendar = Calendar.current
+         var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: now)
+         components.nanosecond = Int((milliseconds.truncatingRemainder(dividingBy: 1)) * 1000000)
+         let seconds = Int(milliseconds)
+         components.second = seconds % 60
+         components.minute = (seconds / 60) % 60
+         components.hour = (seconds / 3600) % 24
+         let date = calendar.date(from: components) ?? Date()
+         self = date
+     }
 }
 
 public enum DateStringStyle {
