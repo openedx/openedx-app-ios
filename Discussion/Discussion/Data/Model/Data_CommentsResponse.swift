@@ -106,24 +106,26 @@ public extension DataLayer {
     }
 }
 
-public extension DataLayer.Comments {
-    var domain: UserComment {
+public extension DataLayer.CommentsResponse {
+    var domain: [UserComment] {
+        self.comments.map { comment in
         UserComment(
-            authorName: author ?? DiscussionLocalization.anonymous,
-            authorAvatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
-            postDate: Date(iso8601: createdAt),
+            authorName: comment.author ?? DiscussionLocalization.anonymous,
+            authorAvatar: comment.users?.userName?.profile?.image?.imageURLLarge ?? "",
+            postDate: Date(iso8601: comment.createdAt),
             postTitle: "",
-            postBody: rawBody,
-            postBodyHtml: renderedBody,
+            postBody: comment.rawBody,
+            postBodyHtml: comment.renderedBody,
             postVisible: true,
-            voted: voted,
+            voted: comment.voted,
             followed: false,
-            votesCount: voteCount,
-            responsesCount: childCount,
-            threadID: threadID,
-            commentID: id,
-            parentID: id,
-            abuseFlagged: abuseFlagged
+            votesCount: comment.voteCount,
+            responsesCount: pagination.count,
+            threadID: comment.threadID,
+            commentID: comment.id,
+            parentID: comment.id,
+            abuseFlagged: comment.abuseFlagged
         )
+        }
     }
 }
