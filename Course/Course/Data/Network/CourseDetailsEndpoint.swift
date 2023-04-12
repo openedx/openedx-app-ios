@@ -112,8 +112,9 @@ enum CourseDetailsEndpoint: EndPointType {
         case .resumeBlock:
             return .requestParameters(encoding: JSONEncoding.default)
         case .getSubtitles:
+           let languageCode = Locale.current.languageCode ?? "en"
             let params: [String: Any] = [
-                "lang": "en"
+                "lang": languageCode
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         }

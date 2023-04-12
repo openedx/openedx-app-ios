@@ -85,8 +85,8 @@ public class CourseUnitViewModel: ObservableObject {
         self.manager = manager
     }
     
-    public func subtitlesUrl() -> String? {
-        return blocks.first(where: { $0.id == lessonID })?.subtitles
+    public func languages() -> [SubtitleUrl] {
+        return blocks.first(where: { $0.id == lessonID })?.subtitles ?? []
     }
 
     private func selectLesson() -> Int {

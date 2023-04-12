@@ -81,7 +81,7 @@ public extension DataLayer {
     }
     
     struct CourseDetailUserViewData: Decodable {
-        let transcripts: Transcripts?
+        let transcripts: [String: String]?
         let encodedVideo: CourseDetailEncodedVideoData?
         let topicID: String?
         

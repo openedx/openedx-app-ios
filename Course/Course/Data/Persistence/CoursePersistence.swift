@@ -16,7 +16,7 @@ public protocol CoursePersistenceProtocol {
     func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure
     func saveCourseStructure(structure: DataLayer.CourseStructure)
     func saveSubtitles(url: String, subtitlesString: String)
-    func loadSubtitles(url: String) throws -> String
+    func loadSubtitles(url: String) -> String?
     func clear()
 }
 
@@ -204,6 +204,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
             let newSubtitle = CDSubtitle(context: context)
             newSubtitle.url = url
             newSubtitle.subtitle = subtitlesString
+            newSubtitle.uploadedAt = Date()
             
             do {
                 try context.save()
@@ -213,12 +214,16 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func loadSubtitles(url: String) throws -> String {
+    public func loadSubtitles(url: String) -> String? {
         let request = CDSubtitle.fetchRequest()
         request.predicate = NSPredicate(format: "url = %@", url)
         
-        guard let subtitle = try? context.fetch(request).first else { throw NoCachedDataError() }
-        return subtitle.subtitle ?? ""
+        guard let subtitle = try? context.fetch(request).first,
+              let loaded = subtitle.uploadedAt else { return nil }
+        if Date().timeIntervalSince1970 - loaded.timeIntervalSince1970 < 5 * 3600 {
+            return subtitle.subtitle ?? ""
+        }
+        return nil
     }
     
     public func clear() {

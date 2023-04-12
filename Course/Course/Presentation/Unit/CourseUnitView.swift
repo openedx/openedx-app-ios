@@ -57,9 +57,9 @@ public struct CourseUnitView: View {
                                             .font(Theme.Fonts.titleLarge)
                                             .padding(.horizontal, 24)
                                         YouTubeVideoPlayer(url: url,
-                                                           subtitlesUrl: viewModel.subtitlesUrl(),
                                                            blockID: blockID,
-                                                           courseID: viewModel.courseID)
+                                                           courseID: viewModel.courseID,
+                                                           languages: viewModel.languages())
                                         Spacer()
 
                                     }.background(CoreAssets.background.swiftUIColor)
@@ -69,19 +69,12 @@ public struct CourseUnitView: View {
                                         .padding(.horizontal, 24)
                                     EncodedVideoPlayer(
                                         url: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
-                                        subtitlesUrl: viewModel.subtitlesUrl(),
                                         blockID: blockID,
                                         courseID: viewModel.courseID,
+                                        languages: viewModel.languages(),
                                         killPlayer: $viewModel.killPlayer
                                     )
                                     Spacer()
-//                                    SubtittlesView(subtitles: viewModel.subtitles,
-//                                                   currentTime: $viewModel.currentTime)
-//                                    .onAppear {
-//                                        Task {
-//                                            viewModel.getSubtitles()
-//                                        }
-//                                    }
                                 case .web(let url):
                                     VStack {
                                         WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)

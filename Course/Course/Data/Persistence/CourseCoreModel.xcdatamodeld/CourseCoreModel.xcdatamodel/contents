@@ -72,6 +72,7 @@
     </entity>
     <entity name="CDSubtitle" representedClassName="CDSubtitle" syncable="YES" codeGenerationType="class">
         <attribute name="subtitle" optional="YES" attributeType="String"/>
+        <attribute name="uploadedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="url" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

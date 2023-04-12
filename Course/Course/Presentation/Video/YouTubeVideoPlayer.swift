@@ -15,9 +15,9 @@ public struct YouTubeVideoPlayer: View {
     
     private let viewModel = Container.shared.resolve(VideoPlayerViewModel.self)!
     
-    private var subtitlesUrl: String?
     private var blockID: String
     private var courseID: String
+    private let languages: [SubtitleUrl]
 
     private let youtubePlayer: YouTubePlayer
     private var timePublisher: AnyPublisher<Double, Never>
@@ -42,13 +42,13 @@ public struct YouTubeVideoPlayer: View {
     }
 
     public init(url: String,
-                subtitlesUrl: String?,
                 blockID: String,
-                courseID: String
+                courseID: String,
+                languages: [SubtitleUrl]
     ) {
         self.blockID = blockID
         self.courseID = courseID
-        self.subtitlesUrl = subtitlesUrl
+        self.languages = languages
         
         let videoID = url.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
         let configuration = YouTubePlayer.Configuration(configure: {
@@ -86,20 +86,10 @@ public struct YouTubeVideoPlayer: View {
                             if idiom == .pad {
                                 VStack {}.onAppear {
                                     isLoading = false
-                                    if let subtitlesUrl {
-                                        Task {
-                                            await viewModel.getSubtitles(subtitlesUrl: subtitlesUrl)
-                                        }
-                                    }
                                 }
                             } else {
                                 VStack {}.onAppear {
                                     isLoading = false
-                                    if let subtitlesUrl {
-                                        Task {
-                                            await viewModel.getSubtitles(subtitlesUrl: subtitlesUrl)
-                                        }
-                                    }
                                     alertMessage = CourseLocalization.Alert.rotateDevice
                                 }
                             }
@@ -124,12 +114,10 @@ public struct YouTubeVideoPlayer: View {
                         }))
                     }
                 }
-                if viewModel.subtitles.count > 1 {
-                    SubtittlesView(subtitles: viewModel.subtitles,
-                                   currentTime: $currentTime)
-                } else {
-                    Spacer()
-                }
+                    SubtittlesView(languages: languages,
+                                   currentTime: $currentTime,
+                                   viewModel: viewModel)
+                
             }.onReceive(durationPublisher, perform: { duration in
                 self.duration = duration
             })
@@ -190,8 +178,8 @@ public struct YouTubeVideoPlayer: View {
 struct YouTubeVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
         YouTubeVideoPlayer(url: "",
-                           subtitlesUrl: nil,
                            blockID: "",
-                           courseID: "")
+                           courseID: "",
+                           languages: [])
     }
 }

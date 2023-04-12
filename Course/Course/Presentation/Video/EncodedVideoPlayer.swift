@@ -12,11 +12,12 @@ import Swinject
 
 public struct EncodedVideoPlayer: View {
     
-    private let viewModel = Container.shared.resolve(VideoPlayerViewModel.self)!
+    @ObservedObject
+    private var viewModel = Container.shared.resolve(VideoPlayerViewModel.self)!
     
-    private var subtitlesUrl: String?
     private var blockID: String
     private var courseID: String
+    private let languages: [SubtitleUrl]
     
     private var controller = AVPlayerViewController()
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -39,21 +40,21 @@ public struct EncodedVideoPlayer: View {
     
     public init(
         url: URL?,
-        subtitlesUrl: String?,
         blockID: String,
         courseID: String,
+        languages: [SubtitleUrl],
         killPlayer: Binding<Bool>
     ) {
         self.url = url
-        self.subtitlesUrl = subtitlesUrl
         self.blockID = blockID
         self.courseID = courseID
+        self.languages = languages
         self._killPlayer = killPlayer
     }
     
     public var body: some View {
         ZStack {
-            VStack {
+            VStack(alignment: .leading) {
                 PlayerViewController(
                     videoURL: url,
                     controller: controller,
@@ -61,7 +62,7 @@ public struct EncodedVideoPlayer: View {
                         if progress >= 0.8 {
                             if !isViewedOnce {
                                 Task {
-                                   await viewModel.blockCompletionRequest(blockID: blockID, courseID: courseID)
+                                    await viewModel.blockCompletionRequest(blockID: blockID, courseID: courseID)
                                 }
                                 isViewedOnce = true
                             }
@@ -86,28 +87,14 @@ public struct EncodedVideoPlayer: View {
                             }
                         }
                     }
-                if viewModel.subtitles.count > 1 {
-                    SubtittlesView(subtitles: viewModel.subtitles,
-                                   currentTime: $currentTime)
-                }
+                    SubtittlesView(languages: languages,
+                                   currentTime: $currentTime,
+                                   viewModel: viewModel)
                 Spacer()
                 if !orientation.isLandscape || idiom != .pad {
                     VStack {}.onAppear {
                         isLoading = false
-                        if let subtitlesUrl {
-                            Task {
-                                await viewModel.getSubtitles(subtitlesUrl: subtitlesUrl)
-                            }
-                        }
                         alertMessage = CourseLocalization.Alert.rotateDevice
-                    }
-                } else {
-                    VStack {}.onAppear {
-                        if let subtitlesUrl {
-                            Task {
-                                await viewModel.getSubtitles(subtitlesUrl: subtitlesUrl)
-                            }
-                        }
                     }
                 }
             }.onChange(of: killPlayer, perform: { _ in
@@ -115,7 +102,6 @@ public struct EncodedVideoPlayer: View {
             })
             // MARK: - Alert
             if showAlert {
-                Spacer()
                 VStack(alignment: .center) {
                     Spacer()
                     HStack(spacing: 6) {
@@ -138,6 +124,6 @@ public struct EncodedVideoPlayer: View {
 
 struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        EncodedVideoPlayer(url: nil, subtitlesUrl: "", blockID: "", courseID: "", killPlayer: .constant(false))
+        EncodedVideoPlayer(url: nil, blockID: "", courseID: "", languages: [], killPlayer: .constant(false))
     }
 }

@@ -122,7 +122,31 @@ public struct CourseVertical {
     }
 }
 
+public struct SubtitleUrl: Equatable {
+    public let language: String
+    public let url: String
+    
+    public init(language: String, url: String) {
+        self.language = language
+        self.url = url
+    }
+}
+
 public struct CourseBlock: Equatable {
+    public let blockId: String
+    public let id: String
+    public let topicId: String?
+    public let graded: Bool
+    public let completion: Double
+    public let type: BlockType
+    public let displayName: String
+    public let studentUrl: String
+    public let subtitles: [SubtitleUrl]?
+    public let videoUrl: String?
+    public let youTubeUrl: String?
+    public var isDownloadable: Bool {
+        return videoUrl != nil
+    }
     
     public init(blockId: String,
                 id: String,
@@ -132,7 +156,7 @@ public struct CourseBlock: Equatable {
                 type: BlockType,
                 displayName: String,
                 studentUrl: String,
-                subtitles: String? = nil,
+                subtitles: [SubtitleUrl]? = nil,
                 videoUrl: String? = nil,
                 youTubeUrl: String? = nil) {
         self.blockId = blockId
@@ -146,21 +170,5 @@ public struct CourseBlock: Equatable {
         self.subtitles = subtitles
         self.videoUrl = videoUrl
         self.youTubeUrl = youTubeUrl
-    }
-    
-    public let blockId: String
-    public let id: String
-    public let topicId: String?
-    public let graded: Bool
-    public let completion: Double
-    public let type: BlockType
-    public let displayName: String
-    public let studentUrl: String
-    public let subtitles: String?
-    public let videoUrl: String?
-    public let youTubeUrl: String?
-    
-    public var isDownloadable: Bool {
-        return videoUrl != nil
     }
 }

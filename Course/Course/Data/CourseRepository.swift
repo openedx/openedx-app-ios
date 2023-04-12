@@ -19,7 +19,6 @@ public protocol CourseRepositoryProtocol {
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func resumeBlock(courseID: String) async throws -> ResumeBlock
     func getSubtitles(url: String) async throws -> String
-    func getSubtitlesOffline(url: String) async throws -> String
 }
 
 public class CourseRepository: CourseRepositoryProtocol {
@@ -100,15 +99,15 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getSubtitles(url: String) async throws -> String {
-        let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url))
-        let subtitles = String(data: result, encoding: .utf8) ?? ""
-        persistence.saveSubtitles(url: url, subtitlesString: subtitles)
-        return subtitles
+        if let subtitlesOffline = persistence.loadSubtitles(url: url) {
+            return subtitlesOffline
+        } else {
+            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url))
+            let subtitles = String(data: result, encoding: .utf8) ?? ""
+            persistence.saveSubtitles(url: url, subtitlesString: subtitles)
+            return subtitles
+        }
     }
-    
-    public func getSubtitlesOffline(url: String) async throws -> String {
-        return try persistence.loadSubtitles(url: url)
-     }
     
     private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
         let blocks = Array(structure.dict.values)
@@ -182,9 +181,13 @@ public class CourseRepository: CourseRepositoryProtocol {
     
     private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
-        let subtitles = block.userViewData?.transcripts?.en?
-                 .replacingOccurrences(of: config.baseURL.absoluteString, with: "")
-                 .replacingOccurrences(of: "?lang=en", with: "")
+        let subtitles = block.userViewData?.transcripts?.map {
+            let url = $0.value
+                .replacingOccurrences(of: config.baseURL.absoluteString, with: "")
+                .replacingOccurrences(of: "?lang=\($0.key)", with: "")
+            return SubtitleUrl(language: $0.key, url: url)
+        }
+            
         return CourseBlock(blockId: block.blockId,
                            id: block.id,
                            topicId: block.userViewData?.topicID,
@@ -298,29 +301,6 @@ And there are various ways of describing it-- call it oral poetry or
 """
     }
     
-    func getSubtitlesOffline(url: String) async throws -> String {
-        return """
-0
-00:00:00,350 --> 00:00:05,230
-GREGORY NAGY: In hour zero, where I try to introduce Homeric poetry to
-1
-00:00:05,230 --> 00:00:11,060
-people who may never have been exposed to the Iliad and the Odyssey even in
-2
-00:00:11,060 --> 00:00:20,290
-translation, my idea was to get a sense of the medium, which is not a
-3
-00:00:20,290 --> 00:00:25,690
-readable medium because Homeric poetry, in its historical context, was
-4
-00:00:25,690 --> 00:00:30,210
-meant to be heard, not read.
-5
-00:00:30,210 --> 00:00:34,760
-And there are various ways of describing it-- call it oral poetry or
-"""
-    }
-    
     private func parseCourseStructure(courseBlocks: DataLayer.CourseStructure) -> CourseStructure {
         let blocks = Array(courseBlocks.dict.values)
         let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
@@ -392,6 +372,12 @@ And there are various ways of describing it-- call it oral poetry or
     
     private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
+        let subtitles = block.userViewData?.transcripts?.map {
+//            let url = $0.value
+//                .replacingOccurrences(of: config.baseURL.absoluteString, with: "")
+//                .replacingOccurrences(of: "?lang=en", with: "")
+            SubtitleUrl(language: $0.key, url: $0.value)
+        }
         return CourseBlock(blockId: block.blockId,
                            id: block.id,
                            topicId: block.userViewData?.topicID,
@@ -400,7 +386,7 @@ And there are various ways of describing it-- call it oral poetry or
                            type: BlockType(rawValue: block.type) ?? .unknown,
                            displayName: block.displayName,
                            studentUrl: block.studentUrl,
-                           subtitles: block.userViewData?.transcripts?.en,
+                           subtitles: subtitles,
                            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
                            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
     }

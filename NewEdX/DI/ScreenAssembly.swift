@@ -249,6 +249,7 @@ class ScreenAssembly: Assembly {
         
         container.register(VideoPlayerViewModel.self) { r in
             VideoPlayerViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
+                                 router: r.resolve(CourseRouter.self)!,
                                  connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         

@@ -1192,6 +1192,22 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
+    open func getSubtitles(url: String) throws -> String {
+        addInvocation(.m_getSubtitles__url_url(Parameter<String>.value(`url`)))
+		let perform = methodPerformValue(.m_getSubtitles__url_url(Parameter<String>.value(`url`))) as? (String) -> Void
+		perform?(`url`)
+		var __value: String
+		do {
+		    __value = try methodReturnValue(.m_getSubtitles__url_url(Parameter<String>.value(`url`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getSubtitles(url: String). Use given")
+			Failure("Stub return value not specified for getSubtitles(url: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_getCourseDetails__courseID_courseID(Parameter<String>)
@@ -1204,6 +1220,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         case m_getHandouts__courseID_courseID(Parameter<String>)
         case m_getUpdates__courseID_courseID(Parameter<String>)
         case m_resumeBlock__courseID_courseID(Parameter<String>)
+        case m_getSubtitles__url_url(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1257,6 +1274,11 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_getSubtitles__url_url(let lhsUrl), .m_getSubtitles__url_url(let rhsUrl)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUrl, rhs: rhsUrl, with: matcher), lhsUrl, rhsUrl, "url"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -1273,6 +1295,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case let .m_getHandouts__courseID_courseID(p0): return p0.intValue
             case let .m_getUpdates__courseID_courseID(p0): return p0.intValue
             case let .m_resumeBlock__courseID_courseID(p0): return p0.intValue
+            case let .m_getSubtitles__url_url(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -1287,6 +1310,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case .m_getHandouts__courseID_courseID: return ".getHandouts(courseID:)"
             case .m_getUpdates__courseID_courseID: return ".getUpdates(courseID:)"
             case .m_resumeBlock__courseID_courseID: return ".resumeBlock(courseID:)"
+            case .m_getSubtitles__url_url: return ".getSubtitles(url:)"
             }
         }
     }
@@ -1326,6 +1350,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func resumeBlock(courseID: Parameter<String>, willReturn: ResumeBlock...) -> MethodStub {
             return Given(method: .m_resumeBlock__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getSubtitles(url: Parameter<String>, willReturn: String...) -> MethodStub {
+            return Given(method: .m_getSubtitles__url_url(`url`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willProduce: (Stubber<CourseStructure>) -> Void) -> MethodStub {
             let willReturn: [CourseStructure] = []
@@ -1424,6 +1451,16 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func getSubtitles(url: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getSubtitles__url_url(`url`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getSubtitles(url: Parameter<String>, willProduce: (StubberThrows<String>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getSubtitles__url_url(`url`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (String).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -1439,6 +1476,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func getHandouts(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getHandouts__courseID_courseID(`courseID`))}
         public static func getUpdates(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getUpdates__courseID_courseID(`courseID`))}
         public static func resumeBlock(courseID: Parameter<String>) -> Verify { return Verify(method: .m_resumeBlock__courseID_courseID(`courseID`))}
+        public static func getSubtitles(url: Parameter<String>) -> Verify { return Verify(method: .m_getSubtitles__url_url(`url`))}
     }
 
     public struct Perform {
@@ -1474,6 +1512,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func resumeBlock(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_resumeBlock__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func getSubtitles(url: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getSubtitles__url_url(`url`), performs: perform)
         }
     }
 

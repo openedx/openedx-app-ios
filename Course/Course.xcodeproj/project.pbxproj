@@ -48,6 +48,7 @@
 		02F0145728F4A2FF002E513D /* CourseContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */; };
 		02F066E829DC71750073E13B /* SubtittlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F066E729DC71750073E13B /* SubtittlesView.swift */; };
 		02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFDC29252E900051930C /* CourseRouter.swift */; };
+		02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */; };
 		02F98A8128F8224200DE94C0 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F98A8028F8224200DE94C0 /* Discussion.framework */; };
 		02FFAD0D29E4347300140E46 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */; };
 		073512E229C0E400005CFA41 /* BaseCourseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073512E129C0E400005CFA41 /* BaseCourseViewModel.swift */; };
@@ -112,6 +113,7 @@
 		02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerViewModel.swift; sourceTree = "<group>"; };
 		02F066E729DC71750073E13B /* SubtittlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtittlesView.swift; sourceTree = "<group>"; };
 		02F3BFDC29252E900051930C /* CourseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRouter.swift; sourceTree = "<group>"; };
+		02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoPlayerViewModelTests.swift; path = CourseTests/Presentation/Unit/VideoPlayerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02F98A8028F8224200DE94C0 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
 		073512E129C0E400005CFA41 /* BaseCourseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCourseViewModel.swift; sourceTree = "<group>"; };
@@ -345,7 +347,6 @@
 				0231124E28EDA811002588FB /* CourseUnitViewModel.swift */,
 				0295C888299BBE8200ABE571 /* CourseNavigationView.swift */,
 				0295C886299BBDE300ABE571 /* UnitButtonView.swift */,
-				02F066E729DC71750073E13B /* SubtittlesView.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -353,6 +354,7 @@
 		070019AA28F6F79E00D5FC78 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				02F066E729DC71750073E13B /* SubtittlesView.swift */,
 				0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */,
 				0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */,
 				0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */,
@@ -374,6 +376,7 @@
 		0766DFD5299ADA4700EBEF6A /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */,
 				022EA8CA297AD63B0014A8F7 /* CourseContainerViewModelTests.swift */,
 			);
 			path = Container;
@@ -621,6 +624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0295B1D9297E6DF8003B0C65 /* CourseUnitViewModelTests.swift in Sources */,
+				02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */,
 				023812E7297AC8EB0087098F /* CourseDetailsViewModelTests.swift in Sources */,
 				023812F3297AC9ED0087098F /* CourseMock.generated.swift in Sources */,
 				022EA8CB297AD63B0014A8F7 /* CourseContainerViewModelTests.swift in Sources */,
