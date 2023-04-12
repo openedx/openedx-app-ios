@@ -68,21 +68,21 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         let response = try await api.requestData(DiscussionEndpoint
             .getDiscussionComments(threadID: threadID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.comments.map { $0.domain }, result.pagination.numPages)
+        return (result.domain, result.pagination.numPages)
     }
     
     public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
         let response = try await api.requestData(DiscussionEndpoint
             .getQuestionComments(threadID: threadID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.comments.map { $0.domain }, result.pagination.numPages)
+        return (result.domain, result.pagination.numPages)
     }
     
     public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Int) {
         let response = try await api.requestData(DiscussionEndpoint
             .getCommentResponses(commentID: commentID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.comments.map { $0.domain }, result.pagination.numPages)
+        return (result.domain, result.pagination.numPages)
     }
     
     public func addCommentTo(threadID: String, rawBody: String, parentID: String? = nil) async throws -> Post {

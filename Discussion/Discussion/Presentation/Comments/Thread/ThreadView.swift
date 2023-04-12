@@ -93,8 +93,8 @@ public struct ThreadView: View {
 
                                         HStack {
                                             if let responsesCount = viewModel.postComments?.responsesCount {
-                                                Text("\(responsesCount - 1)")
-                                                Text(DiscussionLocalization.responsesCount(responsesCount - 1))
+                                                Text("\(responsesCount)")
+                                                Text(DiscussionLocalization.responsesCount(responsesCount))
                                                 Spacer()
                                             }
                                         }.padding(.top, 40)
