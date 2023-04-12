@@ -82,16 +82,13 @@ public struct SubtittlesView: View {
                 .padding(.top, 34)
                 .onAppear {
                     viewModel.languages = languages
-                    if !viewModel.languages.isEmpty {
-                        viewModel.generateLanguageItems()
-                        viewModel.generateSelectedLanguage()
-                        viewModel.loadSelectedSubtitles()
-                    }
+                    viewModel.prepareLanguages()
                 }
         }
     }
 }
 
+#if DEBUG
 struct SubtittlesView_Previews: PreviewProvider {
     static var previews: some View {
         
@@ -103,3 +100,4 @@ struct SubtittlesView_Previews: PreviewProvider {
                                                        connectivity: Connectivity()))
     }
 }
+#endif

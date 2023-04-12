@@ -14,33 +14,24 @@ import SwiftUI
 
 final class VideoPlayerViewModelTests: XCTestCase {
     
-    let subtitlesString = """
-0
-00:00:00,350 --> 00:00:05,230
-GREGORY NAGY: In hour zero, where I try to introduce Homeric poetry to
-1
-00:00:05,230 --> 00:00:11,060
-people who may never have been exposed to the Iliad and the Odyssey even in
-2
-00:00:11,060 --> 00:00:20,290
-translation, my idea was to get a sense of the medium, which is not a
-3
-00:00:20,290 --> 00:00:25,690
-readable medium because Homeric poetry, in its historical context, was
-4
-00:00:25,690 --> 00:00:30,210
-meant to be heard, not read.
-5
-00:00:30,210 --> 00:00:34,760
-And there are various ways of describing it-- call it oral poetry or
-"""
+    let subtitles = [
+    Subtitle(id: 0,
+             fromTo: DateInterval(start: Date(), end: Date()) ,
+             text: "GREGORY NAGY: In hour zero, where I try to introduce Homeric poetry to"),
+    Subtitle(id: 1,
+             fromTo: DateInterval(start: Date(), end: Date()) ,
+             text: "people who may never have been exposed to the Iliad and the Odyssey even in"),
+    Subtitle(id: 2,
+             fromTo: DateInterval(start: Date(), end: Date()) ,
+             text: "translation, my idea was to get a sense of the medium, which is not a"),
+    ]
 
     func testGetSubtitlesSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
                 
-        Given(interactor, .getSubtitles(url: .any, willReturn: subtitlesString))
+        Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
         
         let viewModel = VideoPlayerViewModel(interactor: interactor,
                                              router: router,
@@ -50,7 +41,7 @@ And there are various ways of describing it-- call it oral poetry or
         
         Verify(interactor, .getSubtitles(url: .any))
         
-        XCTAssertEqual(viewModel.subtitles.first!.text, viewModel.parseSubtitles(from: subtitlesString).first!.text)
+        XCTAssertEqual(viewModel.subtitles.first!.text, subtitles.first!.text)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.showError)
     }
@@ -63,7 +54,7 @@ And there are various ways of describing it-- call it oral poetry or
         
                 
         Given(connectivity, .isInternetAvaliable(getter: false))
-        Given(interactor, .getSubtitles(url: .any, willReturn: subtitlesString))
+        Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
         
         let viewModel = VideoPlayerViewModel(interactor: interactor,
                                              router: router,
@@ -73,7 +64,7 @@ And there are various ways of describing it-- call it oral poetry or
         
         Verify(interactor, .getSubtitles(url: .any))
         
-        XCTAssertEqual(viewModel.subtitles.first!.text, viewModel.parseSubtitles(from: subtitlesString).first!.text)
+        XCTAssertEqual(viewModel.subtitles.first!.text, subtitles.first!.text)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.showError)
     }
@@ -92,14 +83,12 @@ And there are various ways of describing it-- call it oral poetry or
         SubtitleUrl(language: "uk", url: "url2")
         ]
         
-        Given(interactor, .getSubtitles(url: .any, willReturn: subtitlesString))
+        Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
-        
-        viewModel.generateSelectedLanguage()
-        viewModel.generateLanguageItems()
+        viewModel.prepareLanguages()
+
         let language = viewModel.generateLanguageName(code: "en")
-        viewModel.loadSelectedSubtitles()
         
         XCTAssertEqual(language, "English")
     }

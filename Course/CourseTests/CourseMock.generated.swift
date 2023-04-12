@@ -1192,11 +1192,11 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getSubtitles(url: String) throws -> String {
+    open func getSubtitles(url: String) throws -> [Subtitle] {
         addInvocation(.m_getSubtitles__url_url(Parameter<String>.value(`url`)))
 		let perform = methodPerformValue(.m_getSubtitles__url_url(Parameter<String>.value(`url`))) as? (String) -> Void
 		perform?(`url`)
-		var __value: String
+		var __value: [Subtitle]
 		do {
 		    __value = try methodReturnValue(.m_getSubtitles__url_url(Parameter<String>.value(`url`))).casted()
 		} catch MockError.notStubed {
@@ -1351,7 +1351,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func resumeBlock(courseID: Parameter<String>, willReturn: ResumeBlock...) -> MethodStub {
             return Given(method: .m_resumeBlock__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getSubtitles(url: Parameter<String>, willReturn: String...) -> MethodStub {
+        public static func getSubtitles(url: Parameter<String>, willReturn: [Subtitle]...) -> MethodStub {
             return Given(method: .m_getSubtitles__url_url(`url`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willProduce: (Stubber<CourseStructure>) -> Void) -> MethodStub {
@@ -1454,10 +1454,10 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func getSubtitles(url: Parameter<String>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getSubtitles__url_url(`url`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getSubtitles(url: Parameter<String>, willProduce: (StubberThrows<String>) -> Void) -> MethodStub {
+        public static func getSubtitles(url: Parameter<String>, willProduce: (StubberThrows<[Subtitle]>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getSubtitles__url_url(`url`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (String).self)
+			let stubber = given.stubThrows(for: ([Subtitle]).self)
 			willProduce(stubber)
 			return given
         }

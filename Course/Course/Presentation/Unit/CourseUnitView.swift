@@ -244,8 +244,3 @@ struct LessonView_Previews: PreviewProvider {
     }
 }
 #endif
-
-
-
-
-
