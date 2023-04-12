@@ -75,7 +75,9 @@ public struct SubtittlesView: View {
                             }
                         }
                     }
-                }
+                }.introspectScrollView(customize: { scroll in
+                    scroll.isScrollEnabled = false
+                })
             }.padding(.horizontal, 24)
                 .padding(.top, 34)
                 .onAppear {
