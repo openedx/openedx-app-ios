@@ -400,7 +400,6 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                                    endorsedAt: nil,
                                    childCount: 0,
                                    children: [],
-                                   abuseFlaggedAnyUser: nil,
                                    users: nil)
             ], pagination: DataLayer.Pagination(next: nil, previous: nil, count: 0, numPages: 0))
     }
