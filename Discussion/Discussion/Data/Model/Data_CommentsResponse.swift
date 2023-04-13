@@ -47,7 +47,6 @@ public extension DataLayer {
         public let endorsedAt: String?
         public let childCount: Int
         public let children: [String]
-        public let abuseFlaggedAnyUser: String?
         public let users: Users?
         
         enum CodingKeys: String, CodingKey {
@@ -71,15 +70,13 @@ public extension DataLayer {
             case endorsedAt = "endorsed_at"
             case childCount = "child_count"
             case children = "children"
-            case abuseFlaggedAnyUser = "abuse_flagged_any_user"
             case users
         }
         
         public init(id: String, author: String?, authorLabel: String?, createdAt: String, updatedAt: String, rawBody: String,
                     renderedBody: String, abuseFlagged: Bool, voted: Bool, voteCount: Int, editableFields: [String],
                     canDelete: Bool, threadID: String, parentID: String?, endorsed: Bool, endorsedBy: String?,
-                    endorsedByLabel: String?, endorsedAt: String?, childCount: Int, children: [String],
-                    abuseFlaggedAnyUser: String?, users: Users?) {
+                    endorsedByLabel: String?, endorsedAt: String?, childCount: Int, children: [String], users: Users?) {
             self.id = id
             self.author = author
             self.authorLabel = authorLabel
@@ -100,7 +97,6 @@ public extension DataLayer {
             self.endorsedAt = endorsedAt
             self.childCount = childCount
             self.children = children
-            self.abuseFlaggedAnyUser = abuseFlaggedAnyUser
             self.users = users
         }
     }

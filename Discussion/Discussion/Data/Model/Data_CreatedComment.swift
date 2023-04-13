@@ -30,7 +30,6 @@ public extension DataLayer {
         public let endorsedAt: String?
         public let childCount: Int
         public let children: [String]
-        public let abuseFlaggedAnyUser: String?
         public let profileImage: ProfileImage
 
         enum CodingKeys: String, CodingKey {
@@ -54,7 +53,6 @@ public extension DataLayer {
             case endorsedAt = "endorsed_at"
             case childCount = "child_count"
             case children = "children"
-            case abuseFlaggedAnyUser = "abuse_flagged_any_user"
             case profileImage = "profile_image"
         }
     }
