@@ -30,6 +30,7 @@ public struct UserThread {
     public let type: PostType
     public let title: String
     public let pinned: Bool
+    public let closed: Bool
     public var following: Bool
     public var commentCount: Int
     public let avatar: String
@@ -40,7 +41,7 @@ public struct UserThread {
     
     public init(id: String, author: String, authorLabel: String, createdAt: Date, updatedAt: Date, rawBody: String,
                 renderedBody: String, voted: Bool, voteCount: Int, courseID: String, type: PostType, title: String,
-                pinned: Bool, following: Bool, commentCount: Int, avatar: String, unreadCommentCount: Int,
+                pinned: Bool, closed: Bool, following: Bool, commentCount: Int, avatar: String, unreadCommentCount: Int,
                 abuseFlagged: Bool, hasEndorsed: Bool, numPages: Int) {
         self.id = id
         self.author = author
@@ -55,6 +56,7 @@ public struct UserThread {
         self.type = type
         self.title = title
         self.pinned = pinned
+        self.closed = closed
         self.following = following
         self.commentCount = commentCount
         self.avatar = avatar
@@ -98,6 +100,7 @@ public extension DataLayer.ThreadListsResponse {
                        type: $0.type,
                        title: $0.title,
                        pinned: $0.pinned,
+                       closed: $0.closed,
                        following: $0.following,
                        commentCount: $0.commentCount,
                        avatar: $0.users?.userName?.profile?.image?.imageURLLarge ?? "",

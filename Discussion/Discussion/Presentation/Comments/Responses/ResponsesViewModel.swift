@@ -32,21 +32,22 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
         
         result.comments = comments.map { c in
             Post(authorName: c.authorName,
-                         authorAvatar: c.authorAvatar,
-                         postDate: c.postDate,
-                         postTitle: c.postTitle,
-                         postBodyHtml: c.postBodyHtml,
-                         postBody: c.postBody,
-                         postVisible: c.postVisible,
-                         voted: c.voted,
-                         followed: c.followed,
-                         votesCount: c.votesCount,
-                         responsesCount: c.responsesCount,
-                         comments: [],
-                         threadID: c.threadID,
-                         commentID: c.commentID,
-                         parentID: c.parentID,
-                         abuseFlagged: c.abuseFlagged)
+                 authorAvatar: c.authorAvatar,
+                 postDate: c.postDate,
+                 postTitle: c.postTitle,
+                 postBodyHtml: c.postBodyHtml,
+                 postBody: c.postBody,
+                 postVisible: c.postVisible,
+                 voted: c.voted,
+                 followed: c.followed,
+                 votesCount: c.votesCount,
+                 responsesCount: c.responsesCount,
+                 comments: [],
+                 threadID: c.threadID,
+                 commentID: c.commentID,
+                 parentID: c.parentID,
+                 abuseFlagged: c.abuseFlagged,
+                 closed: parentComment.closed)
         }
         return result
     }
