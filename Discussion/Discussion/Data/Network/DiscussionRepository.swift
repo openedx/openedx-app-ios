@@ -220,6 +220,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                            type: .discussion,
                            title: "Thread about nature",
                            pinned: false,
+                           closed: false,
                            following: false,
                            commentCount: 12,
                            avatar: "",
@@ -239,6 +240,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                            type: .question,
                            title: "Exam questions here",
                            pinned: false,
+                           closed: false,
                            following: false,
                            commentCount: 5,
                            avatar: "",
@@ -264,6 +266,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                             type: .discussion,
                             title: "Thread about nature",
                             pinned: false,
+                            closed: false,
                             following: false,
                             commentCount: 12,
                             avatar: "",
@@ -283,6 +286,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                             type: .question,
                             title: "Exam questions here",
                             pinned: false,
+                            closed: false,
                             following: false,
                             commentCount: 5,
                             avatar: "",
@@ -340,7 +344,8 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
             threadID: "threadID",
             commentID: "commentID",
             parentID: nil,
-            abuseFlagged: false
+            abuseFlagged: false,
+            closed: false
         )
     }
     

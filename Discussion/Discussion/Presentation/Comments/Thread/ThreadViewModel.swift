@@ -60,7 +60,8 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                           threadID: thread.id,
                           commentID: thread.courseID,
                           parentID: nil,
-                          abuseFlagged: thread.abuseFlagged)
+                          abuseFlagged: thread.abuseFlagged,
+                          closed: thread.closed)
         result.comments = comments.map { c in
             Post(authorName: c.authorName,
                  authorAvatar: c.authorAvatar,
@@ -77,7 +78,8 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                  threadID: c.threadID,
                  commentID: c.commentID,
                  parentID: c.parentID,
-                 abuseFlagged: c.abuseFlagged)
+                 abuseFlagged: c.abuseFlagged,
+                 closed: thread.closed)
         }
         return result
     }

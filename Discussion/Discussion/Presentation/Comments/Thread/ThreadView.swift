@@ -90,7 +90,7 @@ public struct ThreadView: View {
                                                 }
                                             }
                                         )
-
+                                        
                                         HStack {
                                             if let responsesCount = viewModel.postComments?.responsesCount {
                                                 Text("\(responsesCount)")
@@ -101,7 +101,7 @@ public struct ThreadView: View {
                                             .padding(.bottom, 14)
                                             .padding(.leading, 24)
                                             .font(Theme.Fonts.titleMedium)
-
+                                        
                                         ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
                                             CommentCell(
                                                 comment: comment,
@@ -160,18 +160,22 @@ public struct ThreadView: View {
                                     viewModel.sendUpdateUnreadState()
                                 }
                             }
-                            FlexibleKeyboardInputView(
-                                hint: DiscussionLocalization.Thread.addResponse,
-                                sendText: { commentText in
-                                    if let threadID = viewModel.postComments?.threadID {
-                                        Task {
-                                            await viewModel.postComment(threadID: threadID,
-                                                                        rawBody: commentText,
-                                                                        parentID: viewModel.postComments?.parentID)
+                            if let thread {
+                                if !thread.closed {
+                                    FlexibleKeyboardInputView(
+                                        hint: DiscussionLocalization.Thread.addResponse,
+                                        sendText: { commentText in
+                                            if let threadID = viewModel.postComments?.threadID {
+                                                Task {
+                                                    await viewModel.postComment(threadID: threadID,
+                                                                                rawBody: commentText,
+                                                                                parentID: viewModel.postComments?.parentID)
+                                                }
+                                            }
                                         }
-                                    }
+                                    )
                                 }
-                            )
+                            }
                         }
                         .onReceive(viewModel.addPostSubject, perform: { newComment in
                             guard let newComment else { return }
@@ -255,6 +259,7 @@ struct CommentsView_Previews: PreviewProvider {
                                     type: .discussion,
                                     title: "Demo title",
                                     pinned: false,
+                                    closed: false,
                                     following: true,
                                     commentCount: 23,
                                     avatar: "",
