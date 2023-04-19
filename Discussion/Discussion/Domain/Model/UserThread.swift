@@ -24,8 +24,8 @@ public struct UserThread {
     public var updatedAt: Date
     public let rawBody: String
     public let renderedBody: String
-    public let voted: Bool
-    public let voteCount: Int
+    public var voted: Bool
+    public var voteCount: Int
     public let courseID: String
     public let type: PostType
     public let title: String
@@ -35,7 +35,7 @@ public struct UserThread {
     public var commentCount: Int
     public let avatar: String
     public var unreadCommentCount: Int
-    public let abuseFlagged: Bool
+    public var abuseFlagged: Bool
     public let hasEndorsed: Bool
     public let numPages: Int
     
