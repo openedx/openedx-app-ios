@@ -61,22 +61,26 @@ public struct ThreadView: View {
                                             isThread: true,
                                             onLikeTap: {
                                                 Task {
-                                                    await viewModel.vote(
+                                                   if await viewModel.vote(
                                                         id: comments.threadID,
                                                         isThread: true,
                                                         voted: comments.voted,
                                                         index: nil
-                                                    )
+                                                   ) {
+                                                       viewModel.sendPostLikedState()
+                                                   }
                                                 }
                                             },
                                             onReportTap: {
                                                 Task {
-                                                    await viewModel.flag(
+                                                   if await viewModel.flag(
                                                         id: comments.threadID,
                                                         isThread: true,
                                                         abuseFlagged: comments.abuseFlagged,
                                                         index: nil
-                                                    )
+                                                   ) {
+                                                       viewModel.sendReportedState()
+                                                   }
                                                 }
                                             },
                                             onFollowTap: {

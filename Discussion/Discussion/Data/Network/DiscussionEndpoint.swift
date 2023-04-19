@@ -11,7 +11,7 @@ import Alamofire
 
 enum DiscussionEndpoint: EndPointType {
     case getCourseDiscussionInfo(courseID: String)
-    case getThreads(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int)
+    case getThreads(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int)
     case getTopics(courseID: String)
     case getDiscussionComments(threadID: String, page: Int)
     case getQuestionComments(threadID: String, page: Int)
@@ -118,7 +118,7 @@ enum DiscussionEndpoint: EndPointType {
         switch self {
         case .getCourseDiscussionInfo:
             return .requestParameters(encoding: URLEncoding.queryString)
-        case let .getThreads(courseID, type, filter, page):
+        case let .getThreads(courseID, type, sort, filter, page):
             var parameters: [String: Encodable]
             switch type {
             case .allPosts:
@@ -156,6 +156,14 @@ enum DiscussionEndpoint: EndPointType {
                 parameters["view"] = "unread"
             case .unanswered:
                 parameters["view"] = "unanswered"
+            }
+            switch sort {
+            case .recentActivity:
+                parameters["order_by"] = "last_activity_at"
+            case .mostActivity:
+                parameters["order_by"] = "comment_count"
+            case .mostVotes:
+                parameters["order_by"] = "vote_count"
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getTopics:

@@ -35,23 +35,6 @@ public class PostsViewModel: ObservableObject {
         case filter
     }
     
-    public enum SortType {
-        case recentActivity
-        case mostActivity
-        case mostVotes
-        
-        var localizedValue: String {
-            switch self {
-            case .recentActivity:
-                return DiscussionLocalization.Posts.Sort.recentActivity
-            case .mostActivity:
-                return DiscussionLocalization.Posts.Sort.mostActivity
-            case .mostVotes:
-                return DiscussionLocalization.Posts.Sort.mostVotes
-            }
-        }
-    }
-    
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var filteredPosts: [DiscussionPost] = []
@@ -65,7 +48,16 @@ public class PostsViewModel: ObservableObject {
             }
         }
     }
-    @Published var sortTitle: SortType = .recentActivity
+    @Published var sortTitle: SortType = .recentActivity {
+       willSet {
+           if let courseID {
+             resetPosts()
+               Task {
+                   _ = await getPosts(courseID: courseID, pageNumber: 1)
+               }
+           }
+       }
+   }
     @Published var filterButtons: [ActionSheet.Button] = []
     
     public var courseID: String?
@@ -106,6 +98,10 @@ public class PostsViewModel: ObservableObject {
                     self.updatePostRepliesCountState(id: id)
                 case let .readed(id):
                     self.updateUnreadCommentsCount(id: id)
+                case let .liked(id, voted, voteCount):
+                    self.updatePostLikedState(id: id, voted: voted, voteCount: voteCount)
+                case let .reported(id, reported):
+                    self.updatePostReportedState(id: id, reported: reported)
                 }
             })
     }
@@ -160,8 +156,11 @@ public class PostsViewModel: ObservableObject {
         if let threads = threads?.threads {
             for thread in threads {
                 result.append(thread.discussionPost(action: { [weak self] in
-                    guard let self else { return }
-                    self.router.showThread(thread: thread, postStateSubject: self.postStateSubject)
+                    guard let self, let actualThread = self.threads.threads
+                        .first(where: {$0.id  == thread.id }) else { return }
+                    
+                    print(">>>>>", actualThread)
+                    self.router.showThread(thread: actualThread, postStateSubject: self.postStateSubject)
                 }))
             }
         }
@@ -195,6 +194,7 @@ public class PostsViewModel: ObservableObject {
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .allPosts,
+                                    sort: sortTitle,
                                     filter: filterTitle,
                                     page: pageNumber).threads
                 if threads.threads.indices.contains(0) {
@@ -205,6 +205,7 @@ public class PostsViewModel: ObservableObject {
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .followingPosts,
+                                    sort: sortTitle,
                                     filter: filterTitle,
                                     page: pageNumber).threads
                 if threads.threads.indices.contains(0) {
@@ -215,6 +216,7 @@ public class PostsViewModel: ObservableObject {
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .nonCourseTopics,
+                                    sort: sortTitle,
                                     filter: filterTitle,
                                     page: pageNumber).threads
                 if threads.threads.indices.contains(0) {
@@ -225,6 +227,7 @@ public class PostsViewModel: ObservableObject {
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .courseTopics(topicID: topicID),
+                                    sort: sortTitle,
                                     filter: filterTitle,
                                     page: pageNumber).threads
                 if threads.threads.indices.contains(0) {
@@ -253,14 +256,6 @@ public class PostsViewModel: ObservableObject {
     
     private func sortPosts() {
         self.filteredPosts = self.discussionPosts
-        switch sortTitle {
-        case .recentActivity:
-            self.filteredPosts = self.filteredPosts.sorted(by: { $0.lastPostDate > $1.lastPostDate })
-        case .mostActivity:
-            self.filteredPosts = self.filteredPosts.sorted(by: { $0.replies > $1.replies })
-        case .mostVotes:
-            self.filteredPosts = self.filteredPosts.sorted(by: { $0.voteCount > $1.voteCount })
-        }
     }
     
     private func updateUnreadCommentsCount(id: String) {
@@ -280,6 +275,31 @@ public class PostsViewModel: ObservableObject {
         guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
         var thread = threads[index]
         thread.following = followed
+        threads[index] = thread
+        
+        self.threads = ThreadLists(threads: threads)
+        discussionPosts = generatePosts(threads: self.threads)
+        sortPosts()
+    }
+    
+    private func updatePostLikedState(id: String, voted: Bool, voteCount: Int) {
+        var threads = threads.threads
+        guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
+        var thread = threads[index]
+        thread.voted = voted
+        thread.voteCount = voteCount
+        threads[index] = thread
+        
+        self.threads = ThreadLists(threads: threads)
+        discussionPosts = generatePosts(threads: self.threads)
+        sortPosts()
+    }
+    
+    private func updatePostReportedState(id: String, reported: Bool) {
+        var threads = threads.threads
+        guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
+        var thread = threads[index]
+        thread.abuseFlagged = reported
         threads[index] = thread
         
         self.threads = ThreadLists(threads: threads)

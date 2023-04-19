@@ -19,3 +19,20 @@ public enum ThreadsFilter {
     case unread
     case unanswered
 }
+
+public enum SortType {
+    case recentActivity
+    case mostActivity
+    case mostVotes
+    
+    var localizedValue: String {
+        switch self {
+        case .recentActivity:
+            return DiscussionLocalization.Posts.Sort.recentActivity
+        case .mostActivity:
+            return DiscussionLocalization.Posts.Sort.mostActivity
+        case .mostVotes:
+            return DiscussionLocalization.Posts.Sort.mostVotes
+        }
+    }
+}

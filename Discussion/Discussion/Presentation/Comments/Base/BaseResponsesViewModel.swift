@@ -100,6 +100,7 @@ public class BaseResponsesViewModel {
             } else {
                 try await interactor.flagComment(abuseFlagged: abuseFlagged, commentID: id)
             }
+            
             return true
         } catch let error {
             if let index {

@@ -174,6 +174,18 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
         }
     }
     
+    func sendReportedState() {
+        if let postComments {
+            postStateSubject.send(.reported(id: postComments.threadID, postComments.abuseFlagged))
+        }
+    }
+    
+    func sendPostLikedState() {
+        if let postComments {
+            postStateSubject.send(.liked(id: postComments.threadID, postComments.voted, postComments.votesCount) )
+        }
+    }
+    
     private func updateThreadLikeState(id: String, voted: Bool, votesCount: Int) {
         guard var comments = postComments else { return }
         guard let index = comments.comments.firstIndex(where: { $0.commentID == id }) else { return }

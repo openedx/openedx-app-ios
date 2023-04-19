@@ -101,7 +101,7 @@ public struct PostsView: View {
                                                                      pageNumber: 1,
                                                                      withProgress: isIOS14)
                                     }) {
-                                        VStack {
+                                        LazyVStack {
                                             VStack {}.frame(height: 1)
                                                 .id(1)
                                             let posts = Array(viewModel.filteredPosts.enumerated())
@@ -125,7 +125,7 @@ public struct PostsView: View {
                                                 }
                                             }
                                             Spacer(minLength: 84)
-                                        }
+                                        }.id(UUID())
                                     }
                                 }.frameLimit()
                                     .animation(listAnimation)
@@ -235,7 +235,7 @@ struct PostsView_Previews: PreviewProvider {
 
 public struct PostCell: View {
     
-    private let post: DiscussionPost
+    private var post: DiscussionPost
     
     public init(post: DiscussionPost) {
         self.post = post
