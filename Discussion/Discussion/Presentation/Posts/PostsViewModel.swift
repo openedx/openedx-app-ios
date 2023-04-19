@@ -120,15 +120,15 @@ public class PostsViewModel: ObservableObject {
             self.filterButtons = [
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.recentActivity)) {
                     self.sortTitle = .recentActivity
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.mostActivity)) {
                     self.sortTitle = .mostActivity
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.mostVotes)) {
                     self.sortTitle = .mostVotes
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 .cancel()
             ]
@@ -136,15 +136,15 @@ public class PostsViewModel: ObservableObject {
             self.filterButtons = [
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.allPosts)) {
                     self.filterTitle = .allThreads
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.unread)) {
                     self.filterTitle = .unread
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.unanswered)) {
                     self.filterTitle = .unanswered
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 .cancel()
             ]
@@ -240,7 +240,7 @@ public class PostsViewModel: ObservableObject {
             }
             discussionPosts = generatePosts(threads: threads)
             filteredPosts = discussionPosts
-            self.sortPosts()
+            self.filteredPosts = self.discussionPosts
             isShowProgress = false
             return true
         } catch let error {
@@ -254,10 +254,6 @@ public class PostsViewModel: ObservableObject {
         }
     }
     
-    private func sortPosts() {
-        self.filteredPosts = self.discussionPosts
-    }
-    
     private func updateUnreadCommentsCount(id: String) {
         var threads = threads.threads
         guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
@@ -267,7 +263,7 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
     }
     
     private func updatePostFollowedState(id: String, followed: Bool) {
@@ -279,7 +275,7 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
     }
     
     private func updatePostLikedState(id: String, voted: Bool, voteCount: Int) {
@@ -292,7 +288,7 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
     }
     
     private func updatePostReportedState(id: String, reported: Bool) {
@@ -304,7 +300,7 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
     }
     
     private func updatePostRepliesCountState(id: String) {
@@ -317,6 +313,6 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
     }
 }
