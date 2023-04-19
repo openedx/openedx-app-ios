@@ -103,12 +103,13 @@ public extension View {
         
     }
     
-    func titleSettings(top: CGFloat? = 10, bottom: CGFloat? = 20) -> some View {
+    func titleSettings(top: CGFloat? = 10, bottom: CGFloat? = 20,
+                       color: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
         return self
             .lineLimit(1)
             .truncationMode(.tail)
             .font(Theme.Fonts.titleMedium)
-            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+            .foregroundColor(color)
             .padding(.top, top)
             .padding(.bottom, bottom)
             .padding(.horizontal, 48)
@@ -127,31 +128,17 @@ public extension View {
                            ipadMaxHeight: CGFloat = .infinity,
                            maxIpadWidth: CGFloat = 420) -> some View {
         var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-        return VStack {
-            HStack {
-                Spacer()
-                self
-                    .frame(maxWidth: maxIpadWidth, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
-                Spacer()
-            }
-            .background(color)
-            .clipShape(ipadMaxHeight == .infinity
-                       ? Theme.Shapes.roundedScreenBackgroundShapeCroppedBottom
-                       : Theme.Shapes.roundedScreenBackgroundShape)
-            .overlay(
-                GeometryReader { proxy in
-                    RoundedRectangle(cornerRadius: Theme.Shapes.screenBackgroundRadius)
-                        .offset(x: -1)
-                        .size(width: proxy.size.width + 2, height: proxy.size.height + 60)
-                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(strokeColor)
-                }
-            )
-            .edgesIgnoringSafeArea(.bottom)
-            .frame(maxWidth: .infinity, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
-            if idiom == .pad && ipadMaxHeight != .infinity {
-                Spacer()
-            }
+        return ZStack {
+            RoundedCorners(tl: 24, tr: 24)
+                .offset(y: 1)
+                .stroke(style: StrokeStyle(lineWidth: 1))
+                .foregroundColor(strokeColor)
+            RoundedCorners(tl: 24, tr: 24)
+                .offset(y: 2)
+                .foregroundColor(color)
+            self
+                .offset(y: 2)
+                .frame(maxWidth: maxIpadWidth, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
         }
     }
     

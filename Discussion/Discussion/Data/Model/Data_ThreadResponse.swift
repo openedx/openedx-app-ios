@@ -31,7 +31,7 @@ public extension DataLayer {
     // MARK: - Thread
     struct ThreadList: Codable {
         public let id: String
-        public let author: String
+        public let author: String?
         public let authorLabel: String?
         public let createdAt: String
         public let updatedAt: String
@@ -44,6 +44,7 @@ public extension DataLayer {
         public let type: PostType
         public let title: String
         public let pinned: Bool
+        public let closed: Bool
         public let following: Bool
         public let commentCount: Int
         public let unreadCommentCount: Int
@@ -66,6 +67,7 @@ public extension DataLayer {
             case type
             case title
             case pinned
+            case closed
             case following
             case commentCount = "comment_count"
             case unreadCommentCount = "unread_comment_count"

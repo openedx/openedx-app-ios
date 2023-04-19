@@ -10,55 +10,57 @@ import SwiftUI
 import Combine
 import Core
 
+public extension ThreadsFilter {
+    
+    var localizedValue: String {
+        switch self {
+        case .allThreads:
+            return DiscussionLocalization.Posts.Filter.allPosts
+        case .unread:
+            return DiscussionLocalization.Posts.Filter.unread
+        case .unanswered:
+            return DiscussionLocalization.Posts.Filter.unanswered
+        }
+    }
+}
+
 public class PostsViewModel: ObservableObject {
+    
+    public var nextPage = 1
+    public var totalPages = 1
+    public private(set) var fetchInProgress = false
     
     public enum ButtonType {
         case sort
         case filter
     }
     
-    public enum SortType {
-        case recentActivity
-        case mostActivity
-        case mostVotes
-        
-        var localizedValue: String {
-            switch self {
-            case .recentActivity:
-                return DiscussionLocalization.Posts.Sort.recentActivity
-            case .mostActivity:
-                return DiscussionLocalization.Posts.Sort.mostActivity
-            case .mostVotes:
-                return DiscussionLocalization.Posts.Sort.mostVotes
-            }
-        }
-    }
-    
-    public enum FilterType {
-        case allPosts
-        case unread
-        case unanswered
-        
-        var localizedValue: String {
-            switch self {
-            case .allPosts:
-                return DiscussionLocalization.Posts.Filter.allPosts
-            case .unread:
-                return DiscussionLocalization.Posts.Filter.unread
-            case .unanswered:
-                return DiscussionLocalization.Posts.Filter.unanswered
-            }
-        }
-    }
-    
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var filteredPosts: [DiscussionPost] = []
-    @Published var filterTitle: FilterType = .allPosts
-    @Published var sortTitle: SortType = .recentActivity
-    
+    @Published var filterTitle: ThreadsFilter = .allThreads {
+        willSet {
+            if let courseID {
+              resetPosts()
+                Task {
+                    _ = await getPosts(courseID: courseID, pageNumber: 1)
+                }
+            }
+        }
+    }
+    @Published var sortTitle: SortType = .recentActivity {
+       willSet {
+           if let courseID {
+             resetPosts()
+               Task {
+                   _ = await getPosts(courseID: courseID, pageNumber: 1)
+               }
+           }
+       }
+   }
     @Published var filterButtons: [ActionSheet.Button] = []
     
+    public var courseID: String?
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -70,14 +72,11 @@ public class PostsViewModel: ObservableObject {
     public var type: ThreadType!
     public var topics: Topics?
     private var topicsFetched: Bool = false
-    
     private var discussionPosts: [DiscussionPost] = []
     private var threads: ThreadLists = ThreadLists(threads: [])
-    
     private let interactor: DiscussionInteractorProtocol
     private let router: DiscussionRouter
     private let config: Config
-    
     internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     private var cancellable: AnyCancellable?
     
@@ -99,8 +98,20 @@ public class PostsViewModel: ObservableObject {
                     self.updatePostRepliesCountState(id: id)
                 case let .readed(id):
                     self.updateUnreadCommentsCount(id: id)
+                case let .liked(id, voted, voteCount):
+                    self.updatePostLikedState(id: id, voted: voted, voteCount: voteCount)
+                case let .reported(id, reported):
+                    self.updatePostReportedState(id: id, reported: reported)
                 }
             })
+    }
+    
+    public func resetPosts() {
+        filteredPosts = []
+        discussionPosts = []
+        threads.threads = []
+        nextPage = 1
+        totalPages = 1
     }
     
     public func generateButtons(type: ButtonType) {
@@ -109,31 +120,31 @@ public class PostsViewModel: ObservableObject {
             self.filterButtons = [
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.recentActivity)) {
                     self.sortTitle = .recentActivity
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.mostActivity)) {
                     self.sortTitle = .mostActivity
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.mostVotes)) {
                     self.sortTitle = .mostVotes
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 .cancel()
             ]
         case .filter:
             self.filterButtons = [
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.allPosts)) {
-                    self.filterTitle = .allPosts
-                    self.sortPosts()
+                    self.filterTitle = .allThreads
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.unread)) {
                     self.filterTitle = .unread
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.unanswered)) {
                     self.filterTitle = .unanswered
-                    self.sortPosts()
+                    self.filteredPosts = self.discussionPosts
                 },
                 .cancel()
             ]
@@ -145,8 +156,11 @@ public class PostsViewModel: ObservableObject {
         if let threads = threads?.threads {
             for thread in threads {
                 result.append(thread.discussionPost(action: { [weak self] in
-                    guard let self else { return }
-                    self.router.showThread(thread: thread, postStateSubject: self.postStateSubject)
+                    guard let self, let actualThread = self.threads.threads
+                        .first(where: {$0.id  == thread.id }) else { return }
+                    
+                    print(">>>>>", actualThread)
+                    self.router.showThread(thread: actualThread, postStateSubject: self.postStateSubject)
                 }))
             }
         }
@@ -155,18 +169,20 @@ public class PostsViewModel: ObservableObject {
     }
     
     @MainActor
-    func getPostsPagination(courseID: String, withProgress: Bool = true) async -> Bool {
-        self.threads.threads = []
-        guard await getPosts(courseID: courseID, pageNumber: 1, withProgress: withProgress) else { return false }
-        if !threads.threads.isEmpty {
-            if threads.threads[0].numPages > 1 {
-                for i in 2...threads.threads[0].numPages {
-                    guard await getPosts(courseID: courseID, pageNumber: i, withProgress: withProgress) else { return false }
+    func getPostsPagination(courseID: String, index: Int, withProgress: Bool = true) async {
+        if !fetchInProgress {
+            if totalPages > 1 {
+                if index == threads.threads.count - 3 {
+                    if totalPages != 1 {
+                        if nextPage <= totalPages {
+                            _ = await getPosts(courseID: courseID,
+                                               pageNumber: self.nextPage,
+                                               withProgress: withProgress)
+                        }
+                    }
                 }
             }
         }
-        
-        return true
     }
     
     @MainActor
@@ -178,29 +194,53 @@ public class PostsViewModel: ObservableObject {
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .allPosts,
+                                    sort: sortTitle,
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .followingPosts:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .followingPosts,
+                                    sort: sortTitle,
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .nonCourseTopics:
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .nonCourseTopics,
+                                    sort: sortTitle,
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .courseTopics(topicID: let topicID):
                 threads.threads += try await interactor
                     .getThreadsList(courseID: courseID,
                                     type: .courseTopics(topicID: topicID),
+                                    sort: sortTitle,
+                                    filter: filterTitle,
                                     page: pageNumber).threads
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                }
             case .none:
                 isShowProgress = false
                 return false
             }
             discussionPosts = generatePosts(threads: threads)
             filteredPosts = discussionPosts
-            self.sortPosts()
+            self.filteredPosts = self.discussionPosts
             isShowProgress = false
             return true
         } catch let error {
@@ -214,26 +254,6 @@ public class PostsViewModel: ObservableObject {
         }
     }
     
-    private func sortPosts() {
-        self.filteredPosts = self.discussionPosts
-        switch filterTitle {
-        case .allPosts:
-            break
-        case .unread:
-            self.filteredPosts = self.filteredPosts.filter({ $0.unreadCommentCount > 0 })
-        case .unanswered:
-            self.filteredPosts = self.filteredPosts.filter({ $0.type == .question && !$0.hasEndorsed })
-        }
-        switch sortTitle {
-        case .recentActivity:
-            self.filteredPosts = self.filteredPosts.sorted(by: { $0.lastPostDate > $1.lastPostDate })
-        case .mostActivity:
-            self.filteredPosts = self.filteredPosts.sorted(by: { $0.replies > $1.replies })
-        case .mostVotes:
-            self.filteredPosts = self.filteredPosts.sorted(by: { $0.voteCount > $1.voteCount })
-        }
-    }
-    
     private func updateUnreadCommentsCount(id: String) {
         var threads = threads.threads
         guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
@@ -243,7 +263,7 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
     }
     
     private func updatePostFollowedState(id: String, followed: Bool) {
@@ -255,7 +275,32 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
+    }
+    
+    private func updatePostLikedState(id: String, voted: Bool, voteCount: Int) {
+        var threads = threads.threads
+        guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
+        var thread = threads[index]
+        thread.voted = voted
+        thread.voteCount = voteCount
+        threads[index] = thread
+        
+        self.threads = ThreadLists(threads: threads)
+        discussionPosts = generatePosts(threads: self.threads)
+        self.filteredPosts = self.discussionPosts
+    }
+    
+    private func updatePostReportedState(id: String, reported: Bool) {
+        var threads = threads.threads
+        guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
+        var thread = threads[index]
+        thread.abuseFlagged = reported
+        threads[index] = thread
+        
+        self.threads = ThreadLists(threads: threads)
+        discussionPosts = generatePosts(threads: self.threads)
+        self.filteredPosts = self.discussionPosts
     }
     
     private func updatePostRepliesCountState(id: String) {
@@ -268,6 +313,6 @@ public class PostsViewModel: ObservableObject {
         
         self.threads = ThreadLists(threads: threads)
         discussionPosts = generatePosts(threads: self.threads)
-        sortPosts()
+        self.filteredPosts = self.discussionPosts
     }
 }

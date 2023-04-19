@@ -43,7 +43,7 @@ public extension DataLayer {
 public extension DataLayer {
     // MARK: - Result
     struct Course: Codable {
-        public let blocksURL: String
+        public let blocksURL: String?
         public let effort: String?
         public let end: String?
         public let enrollmentStart: String?
@@ -57,11 +57,11 @@ public extension DataLayer {
         public let start: String?
         public let startDisplay: String?
         public let startType: String?
-        public let pacing: Pacing
-        public let mobileAvailable: Bool
-        public let hidden: Bool
-        public let invitationOnly: Bool
-        public let courseID: String
+        public let pacing: Pacing?
+        public let mobileAvailable: Bool?
+        public let hidden: Bool?
+        public let invitationOnly: Bool?
+        public let courseID: String?
         
         enum CodingKeys: String, CodingKey {
             case blocksURL = "blocks_url"
@@ -102,14 +102,13 @@ public extension DataLayer.DiscoveryResponce {
         let listReady = results.map({
             CourseItem(name: $0.name, org: $0.org,
                        shortDescription: $0.shortDescription ?? "",
-                       imageURL: $0.media.image.small,
+                       imageURL: $0.media.image?.small ?? "",
                        isActive: nil,
                        courseStart: Date(iso8601: $0.start ?? ""),
                        courseEnd: Date(iso8601: $0.end ?? ""),
                        enrollmentStart: Date(iso8601: $0.enrollmentStart ?? ""),
                        enrollmentEnd: Date(iso8601: $0.enrollmentEnd ?? ""),
-                       courseID: $0.courseID,
-                       certificate: nil,
+                       courseID: $0.courseID ?? "",
                        numPages: pagination.numPages,
                        coursesCount: pagination.count)
         })

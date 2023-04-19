@@ -40,7 +40,6 @@ final class CourseDetailsViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "123",
-                       certificate: nil,
                        numPages: 2,
                       coursesCount: 2),
             CourseItem(name: "Test2",
@@ -53,7 +52,6 @@ final class CourseDetailsViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "1243",
-                       certificate: nil,
                        numPages: 1,
                        coursesCount: 2)
         ]
@@ -67,18 +65,17 @@ final class CourseDetailsViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            isEnrolled: true,
             overviewHTML: "",
             courseBannerURL: ""
         )
         
         
-        Given(interactor, .getEnrollments(willReturn: items))
         Given(interactor, .getCourseDetails(courseID: "123",
                                             willReturn: courseDetails))
         
         await viewModel.getCourseDetail(courseID: "123")
         
-        Verify(interactor, 1, .getEnrollments())
         Verify(interactor, 1, .getCourseDetails(courseID: .any))
         
         XCTAssertFalse(viewModel.isShowProgress)
@@ -112,7 +109,6 @@ final class CourseDetailsViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "123",
-                       certificate: nil,
                        numPages: 2,
                        coursesCount: 2),
             CourseItem(name: "Test2",
@@ -125,7 +121,6 @@ final class CourseDetailsViewModelTests: XCTestCase {
                        enrollmentStart: Date(),
                        enrollmentEnd: Date(),
                        courseID: "1243",
-                       certificate: nil,
                        numPages: 1,
                        coursesCount: 2)
         ]
@@ -139,17 +134,16 @@ final class CourseDetailsViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            isEnrolled: true,
             overviewHTML: "",
             courseBannerURL: ""
         )
         
-        Given(interactor, .getEnrollmentsOffline(willReturn: items))
         Given(interactor, .getCourseDetailsOffline(courseID: "123",
                                                    willReturn: courseDetails))
         
         await viewModel.getCourseDetail(courseID: "123")
         
-        Verify(interactor, 1, .getEnrollmentsOffline())
         Verify(interactor, 1, .getCourseDetailsOffline(courseID: .any))
         
         XCTAssertFalse(viewModel.isShowProgress)

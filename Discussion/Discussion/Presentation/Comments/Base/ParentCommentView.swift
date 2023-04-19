@@ -148,7 +148,8 @@ struct ParentCommentView_Previews: PreviewProvider {
             threadID: "",
             commentID: "",
             parentID: nil,
-            abuseFlagged: true
+            abuseFlagged: true,
+            closed: false
         )
         
         return VStack {

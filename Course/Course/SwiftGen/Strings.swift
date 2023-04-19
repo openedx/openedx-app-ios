@@ -17,6 +17,10 @@ public enum CourseLocalization {
   public enum Courseware {
     /// Back to outline
     public static let backToOutline = CourseLocalization.tr("Localizable", "COURSEWARE.BACK_TO_OUTLINE", fallback: "Back to outline")
+    /// Continue
+    public static let `continue` = CourseLocalization.tr("Localizable", "COURSEWARE.CONTINUE", fallback: "Continue")
+    /// Continue with:
+    public static let continueWith = CourseLocalization.tr("Localizable", "COURSEWARE.CONTINUE_WITH", fallback: "Continue with:")
     /// Course content
     public static let courseContent = CourseLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT", fallback: "Course content")
     /// Course units
@@ -98,6 +102,10 @@ public enum CourseLocalization {
     public static let passedTheCourse = CourseLocalization.tr("Localizable", "OUTLINE.PASSED_THE_COURSE", fallback: "You've passed the course")
     /// View certificate
     public static let viewCertificate = CourseLocalization.tr("Localizable", "OUTLINE.VIEW_CERTIFICATE", fallback: "View certificate")
+  }
+  public enum Subtitles {
+    /// Subtitles
+    public static let title = CourseLocalization.tr("Localizable", "SUBTITLES.TITLE", fallback: "Subtitles")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

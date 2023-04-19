@@ -16,9 +16,7 @@ public protocol CourseRouter: BaseRouter {
                            courseEnd: Date?,
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
-                           title: String,
-                           courseBanner: String,
-                           certificate: Certificate?)
+                           title: String)
     
     func showCourseUnit(blockId: String,
                         courseID: String,
@@ -30,6 +28,9 @@ public protocol CourseRouter: BaseRouter {
     
     func showCourseBlocksView(title: String,
                               blocks: [CourseBlock])
+    
+    func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
+                                                blocks: (String, [CourseBlock]))
     
     func showHandoutsUpdatesView(handouts: String?,
                                  announcements: [CourseUpdate]?,
@@ -49,9 +50,7 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String,
-                                  courseBanner: String,
-                                  certificate: Certificate?) {}
+                                  title: String) {}
     
     public func showCourseUnit(blockId: String,
                                courseID: String,
@@ -63,6 +62,9 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public func showCourseBlocksView(title: String,
                                      blocks: [CourseBlock]) {}
+    
+    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
+                                                blocks: (String, [CourseBlock])) {}
     
     public func showHandoutsUpdatesView(handouts: String?,
                                         announcements: [CourseUpdate]?,

@@ -117,6 +117,12 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showForgotPasswordScreen() {
+        let view = ResetPasswordView(viewModel: Container.shared.resolve(ResetPasswordViewModel.self)!)
+        let controller = SwiftUIHostController(view: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     public func showCourseDetais(courseID: String,
                                  title: String) {
         let view = CourseDetailsView(viewModel: Container.shared.resolve(CourseDetailsViewModel.self)!,
@@ -160,23 +166,36 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
+                                                blocks: (String, [CourseBlock])) {
+        let viewModelVertical = Container.shared.resolve(CourseVerticalViewModel.self, argument: verticals.1)!
+        let verticalView = CourseVerticalView(title: verticals.0, viewModel: viewModelVertical)
+        let verticalController = SwiftUIHostController(view: verticalView)
+        
+        let viewModelBlocks = Container.shared.resolve(CourseBlocksViewModel.self, argument: blocks.1)!
+        let blocksView = CourseBlocksView(title: blocks.0, viewModel: viewModelBlocks)
+        let blocksController = SwiftUIHostController(view: blocksView)
+        
+        var currentViews = navigationController.viewControllers
+        currentViews.append(verticalController)
+        currentViews.append(blocksController)
+        
+        navigationController.setViewControllers(currentViews, animated: true)
+    }
+    
     public func showCourseScreens(courseID: String,
                                   isActive: Bool?,
                                   courseStart: Date?,
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String,
-                                  courseBanner: String,
-                                  certificate: Certificate?) {
+                                  title: String) {
         let screensView = CourseContainerView(
             viewModel: Container.shared.resolve(CourseContainerViewModel.self,
                                                 arguments: isActive, courseStart, courseEnd,
                                                 enrollmentStart, enrollmentEnd)!,
             courseID: courseID,
-            title: title,
-            courseBanner: courseBanner,
-            certificate: certificate
+            title: title
         )
 
         let controller = SwiftUIHostController(view: screensView)

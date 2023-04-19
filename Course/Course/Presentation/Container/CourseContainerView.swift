@@ -17,8 +17,6 @@ public struct CourseContainerView: View {
     @State private var selection: CourseTab = .course
     private var courseID: String
     private var title: String
-    private var courseBanner: String
-    private var certificate: Certificate?
     
     public enum CourseTab {
         case course
@@ -30,9 +28,7 @@ public struct CourseContainerView: View {
     public init(
         viewModel: CourseContainerViewModel,
         courseID: String,
-        title: String,
-        courseBanner: String,
-        certificate: Certificate?
+        title: String
     ) {
         self.viewModel = viewModel
         Task {
@@ -40,8 +36,6 @@ public struct CourseContainerView: View {
         }
         self.courseID = courseID
         self.title = title
-        self.courseBanner = courseBanner
-        self.certificate = certificate
     }
     
     public var body: some View {
@@ -50,8 +44,6 @@ public struct CourseContainerView: View {
                 CourseOutlineView(
                     viewModel: viewModel,
                     title: title,
-                    courseBanner: courseBanner,
-                    certificate: certificate,
                     courseID: courseID,
                     isVideo: false
                 )
@@ -60,8 +52,6 @@ public struct CourseContainerView: View {
                     CourseOutlineView(
                         viewModel: self.viewModel,
                         title: title,
-                        courseBanner: courseBanner,
-                        certificate: certificate,
                         courseID: courseID,
                         isVideo: false
                     )
@@ -75,8 +65,6 @@ public struct CourseContainerView: View {
                     CourseOutlineView(
                         viewModel: self.viewModel,
                         title: title,
-                        courseBanner: courseBanner,
-                        certificate: certificate,
                         courseID: courseID,
                         isVideo: true
                     )
@@ -131,7 +119,7 @@ struct CourseScreensView_Previews: PreviewProvider {
                 enrollmentStart: nil,
                 enrollmentEnd: nil
             ),
-            courseID: "", title: "Title of Course", courseBanner: "", certificate: nil)
+            courseID: "", title: "Title of Course")
     }
 }
 #endif

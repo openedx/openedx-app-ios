@@ -79,7 +79,12 @@ public class AppStorage {
     public var userSettings: UserSettings? {
         get {
             guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
-                return nil
+                let defaultSettings = UserSettings(wifiOnly: false, downloadQuality: .auto)
+                let encoder = JSONEncoder()
+                if let encoded = try? encoder.encode(defaultSettings) {
+                    userDefaults.set(encoded, forKey: KEY_SETTINGS)
+                }
+                return defaultSettings
             }
             return try? JSONDecoder().decode(UserSettings.self, from: userSettings)
         }

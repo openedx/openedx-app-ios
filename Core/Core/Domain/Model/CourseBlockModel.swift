@@ -8,27 +8,6 @@
 import Foundation
 
 public struct CourseStructure: Equatable {
-    public init(id: String,
-                graded: Bool,
-                completion: Double,
-                viewYouTubeUrl: String,
-                encodedVideo: String,
-                displayName: String,
-                topicID: String? = nil,
-                childs: [CourseChapter]) {
-        self.id = id
-        self.graded = graded
-        self.completion = completion
-        self.viewYouTubeUrl = viewYouTubeUrl
-        self.encodedVideo = encodedVideo
-        self.displayName = displayName
-        self.topicID = topicID
-        self.childs = childs
-    }
-    
-    public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
-        return lhs.id == rhs.id
-    }
     
     public let id: String
     public let graded: Bool
@@ -38,6 +17,35 @@ public struct CourseStructure: Equatable {
     public let displayName: String
     public let topicID: String?
     public let childs: [CourseChapter]
+    public let media: DataLayer.CourseMedia
+    public let certificate: Certificate?
+    
+    public init(id: String,
+                graded: Bool,
+                completion: Double,
+                viewYouTubeUrl: String,
+                encodedVideo: String,
+                displayName: String,
+                topicID: String? = nil,
+                childs: [CourseChapter],
+                media: DataLayer.CourseMedia,
+                certificate: Certificate?) {
+        self.id = id
+        self.graded = graded
+        self.completion = completion
+        self.viewYouTubeUrl = viewYouTubeUrl
+        self.encodedVideo = encodedVideo
+        self.displayName = displayName
+        self.topicID = topicID
+        self.childs = childs
+        self.media = media
+        self.certificate = certificate
+    }
+    
+    public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
 }
 
 public struct CourseChapter {
@@ -114,7 +122,31 @@ public struct CourseVertical {
     }
 }
 
+public struct SubtitleUrl: Equatable {
+    public let language: String
+    public let url: String
+    
+    public init(language: String, url: String) {
+        self.language = language
+        self.url = url
+    }
+}
+
 public struct CourseBlock: Equatable {
+    public let blockId: String
+    public let id: String
+    public let topicId: String?
+    public let graded: Bool
+    public let completion: Double
+    public let type: BlockType
+    public let displayName: String
+    public let studentUrl: String
+    public let subtitles: [SubtitleUrl]?
+    public let videoUrl: String?
+    public let youTubeUrl: String?
+    public var isDownloadable: Bool {
+        return videoUrl != nil
+    }
     
     public init(blockId: String,
                 id: String,
@@ -124,6 +156,7 @@ public struct CourseBlock: Equatable {
                 type: BlockType,
                 displayName: String,
                 studentUrl: String,
+                subtitles: [SubtitleUrl]? = nil,
                 videoUrl: String? = nil,
                 youTubeUrl: String? = nil) {
         self.blockId = blockId
@@ -134,22 +167,8 @@ public struct CourseBlock: Equatable {
         self.type = type
         self.displayName = displayName
         self.studentUrl = studentUrl
+        self.subtitles = subtitles
         self.videoUrl = videoUrl
         self.youTubeUrl = youTubeUrl
-    }
-    
-    public let blockId: String
-    public let id: String
-    public let topicId: String?
-    public let graded: Bool
-    public let completion: Double
-    public let type: BlockType
-    public let displayName: String
-    public let studentUrl: String
-    public let videoUrl: String?
-    public let youTubeUrl: String?
-    
-    public var isDownloadable: Bool {
-        return videoUrl != nil
     }
 }

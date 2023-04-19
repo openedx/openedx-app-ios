@@ -17,6 +17,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var downloadState: [String: DownloadViewState] = [:]
+    @Published var returnCourseSequential: CourseSequential?
     
     var errorMessage: String? {
         didSet {
@@ -78,8 +79,16 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 do {
                     if connectivity.isInternetAvaliable {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
+                        isShowProgress = false
+                        if let courseStructure {
+                            let returnCourseSequential = try await getResumeBlock(courseID: courseID,
+                                                                              courseStructure: courseStructure)
+                            withAnimation {
+                                self.returnCourseSequential = returnCourseSequential
+                            }
+                        }
                     } else {
-                        courseStructure = try await interactor.getCourseBlocksOffline()
+                        courseStructure = try await interactor.getCourseBlocksOffline(courseID: courseID)
                     }
                     courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
                     setDownloadsStates()
@@ -95,6 +104,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
         }
+    }
+    
+    @MainActor
+    private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws -> CourseSequential? {
+        let result = try await interactor.resumeBlock(courseID: courseID)
+        return findCourseSequential(blockID: result.blockID,
+                                    courseStructure: courseStructure)
     }
     
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
@@ -158,5 +174,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
             self.downloadState = states
         }
+    }
+    
+    private func findCourseSequential(blockID: String, courseStructure: CourseStructure) -> CourseSequential? {
+        for chapter in courseStructure.childs {
+            if let sequential = chapter.childs.first(where: { $0.id == blockID }) {
+                return sequential
+            }
+        }
+        return nil
     }
 }

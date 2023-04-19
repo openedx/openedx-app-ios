@@ -11,7 +11,7 @@ import Core
 public extension DataLayer {
     struct CreatedComment: Codable {
         public let id: String
-        public let author: String
+        public let author: String?
         public let authorLabel: String?
         public let createdAt: String
         public let updatedAt: String
@@ -30,7 +30,7 @@ public extension DataLayer {
         public let endorsedAt: String?
         public let childCount: Int
         public let children: [String]
-        public let abuseFlaggedAnyUser: String?
+        public let profileImage: ProfileImage
 
         enum CodingKeys: String, CodingKey {
             case id = "id"
@@ -53,28 +53,29 @@ public extension DataLayer {
             case endorsedAt = "endorsed_at"
             case childCount = "child_count"
             case children = "children"
-            case abuseFlaggedAnyUser = "abuse_flagged_any_user"
+            case profileImage = "profile_image"
         }
     }
 }
 
 public extension DataLayer.CreatedComment {
     var domain: Post {
-        Post(authorName: author,
-                     authorAvatar: "",
-                     postDate: Date(iso8601: createdAt),
-                     postTitle: "",
-                     postBodyHtml: renderedBody,
-                     postBody: rawBody,
-                     postVisible: true,
-                     voted: voted,
-                     followed: false,
-                     votesCount: voteCount,
-                     responsesCount: 0,
-                     comments: [],
-                     threadID: threadID,
-                     commentID: id,
-                     parentID: parentID,
-                     abuseFlagged: abuseFlagged)
+        Post(authorName: author ?? DiscussionLocalization.anonymous,
+             authorAvatar: profileImage.imageURLSmall?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "",
+             postDate: Date(iso8601: createdAt),
+             postTitle: "",
+             postBodyHtml: renderedBody,
+             postBody: rawBody,
+             postVisible: true,
+             voted: voted,
+             followed: false,
+             votesCount: voteCount,
+             responsesCount: 0,
+             comments: [],
+             threadID: threadID,
+             commentID: id,
+             parentID: parentID,
+             abuseFlagged: abuseFlagged,
+             closed: false)
     }
 }

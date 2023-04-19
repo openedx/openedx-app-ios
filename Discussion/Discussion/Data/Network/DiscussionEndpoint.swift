@@ -11,7 +11,7 @@ import Alamofire
 
 enum DiscussionEndpoint: EndPointType {
     case getCourseDiscussionInfo(courseID: String)
-    case getThreads(courseID: String, type: ThreadType, page: Int)
+    case getThreads(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int)
     case getTopics(courseID: String)
     case getDiscussionComments(threadID: String, page: Int)
     case getQuestionComments(threadID: String, page: Int)
@@ -41,7 +41,7 @@ enum DiscussionEndpoint: EndPointType {
         case let .getCommentResponses(commentID, _):
             return "/api/discussion/v1/comments/\(commentID)"
         case .addCommentTo:
-            return "/api/discussion/v1/comments/"
+            return "/mobile_api_extensions/discussion/v1/comments/"
         case let .voteThread(_, threadID):
             return "/api/discussion/v1/threads/\(threadID)/"
         case let .voteResponse(_, responseID):
@@ -118,7 +118,7 @@ enum DiscussionEndpoint: EndPointType {
         switch self {
         case .getCourseDiscussionInfo:
             return .requestParameters(encoding: URLEncoding.queryString)
-        case let .getThreads(courseID, type, page):
+        case let .getThreads(courseID, type, sort, filter, page):
             var parameters: [String: Encodable]
             switch type {
             case .allPosts:
@@ -148,6 +148,22 @@ enum DiscussionEndpoint: EndPointType {
                     "requested_fields": "profile_image",
                     "page": page
                 ]
+            }
+            switch filter {
+            case .allThreads:
+                break
+            case .unread:
+                parameters["view"] = "unread"
+            case .unanswered:
+                parameters["view"] = "unanswered"
+            }
+            switch sort {
+            case .recentActivity:
+                parameters["order_by"] = "last_activity_at"
+            case .mostActivity:
+                parameters["order_by"] = "comment_count"
+            case .mostVotes:
+                parameters["order_by"] = "vote_count"
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getTopics:

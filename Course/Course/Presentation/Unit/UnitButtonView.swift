@@ -17,6 +17,7 @@ struct UnitButtonView: View {
         case last
         case finish
         case reload
+        case continueLesson
         
         func stringValue() -> String {
             switch self {
@@ -32,6 +33,8 @@ struct UnitButtonView: View {
                 return CourseLocalization.Courseware.finish
             case .reload:
                 return CourseLocalization.Error.reload
+            case .continueLesson:
+                return CourseLocalization.Courseware.continue
             }
         }
     }
@@ -106,6 +109,17 @@ struct UnitButtonView: View {
                                 .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                                 .font(Theme.Fonts.labelLarge)
                         }
+                    case .continueLesson:
+                        HStack {
+                            Text(type.stringValue())
+                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .padding(.leading, 20)
+                                .font(Theme.Fonts.labelLarge)
+                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .rotationEffect(Angle.degrees(180))
+                                .padding(.trailing, 20)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, minHeight: 48)
@@ -139,6 +153,7 @@ struct UnitButtonView_Previews: PreviewProvider {
             UnitButtonView(type: .last, action: {})
             UnitButtonView(type: .finish, action: {})
             UnitButtonView(type: .reload, action: {})
+            UnitButtonView(type: .continueLesson, action: {})
         }
     }
 }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CDCourseDetailIncoming" representedClassName="CDCourseDetailIncoming" syncable="YES" codeGenerationType="class">
-        <attribute name="allSources" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E252" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDCourseBlock" representedClassName="CDCourseBlock" syncable="YES" codeGenerationType="class">
+        <attribute name="allSources" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="blockId" optional="YES" attributeType="String"/>
         <attribute name="completion" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="descendants" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="courseID" optional="YES" attributeType="String"/>
+        <attribute name="descendants" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="displayName" optional="YES" attributeType="String"/>
         <attribute name="fallbackUrl" optional="YES" attributeType="String"/>
         <attribute name="graded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -14,7 +15,7 @@
         <attribute name="youTubeUrl" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="blockId"/>
+                <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -27,6 +28,7 @@
         <attribute name="courseTitle" attributeType="String"/>
         <attribute name="enrollmentEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="enrollmentStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isEnrolled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="org" attributeType="String"/>
         <attribute name="overviewHTML" attributeType="String"/>
         <uniquenessConstraints>
@@ -52,6 +54,29 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CDCourseStructure" representedClassName="CDCourseStructure" syncable="YES" codeGenerationType="class">
+        <attribute name="certificate" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="mediaLarge" optional="YES" attributeType="String"/>
+        <attribute name="mediaRaw" optional="YES" attributeType="String"/>
+        <attribute name="mediaSmall" optional="YES" attributeType="String"/>
+        <attribute name="rootItem" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CDSubtitle" representedClassName="CDSubtitle" syncable="YES" codeGenerationType="class">
+        <attribute name="subtitle" optional="YES" attributeType="String"/>
+        <attribute name="uploadedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

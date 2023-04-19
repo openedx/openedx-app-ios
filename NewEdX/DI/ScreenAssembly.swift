@@ -59,6 +59,13 @@ class ScreenAssembly: Assembly {
                 validator: r.resolve(Validator.self)!
             )
         }
+        container.register(ResetPasswordViewModel.self) { r in
+            ResetPasswordViewModel(
+                interactor: r.resolve(AuthInteractorProtocol.self)!,
+                router: r.resolve(AuthorizationRouter.self)!,
+                validator: r.resolve(Validator.self)!
+            )
+        }
         
         // MARK: Discovery
         container.register(DiscoveryPersistenceProtocol.self) { _ in
@@ -238,6 +245,12 @@ class ScreenAssembly: Assembly {
         
         container.register(WebUnitViewModel.self) { r in
             WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!)
+        }
+        
+        container.register(VideoPlayerViewModel.self) { r in
+            VideoPlayerViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
+                                 router: r.resolve(CourseRouter.self)!,
+                                 connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
         container.register(HandoutsViewModel.self) { r, courseID in

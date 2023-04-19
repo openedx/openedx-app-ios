@@ -40,7 +40,6 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                               enrollmentStart: $0.enrollmentStart,
                               enrollmentEnd: $0.enrollmentEnd,
                               courseID: $0.courseID ?? "",
-                              certificate: Certificate(url: $0.certificate  ?? ""),
                               numPages: Int($0.numPages),
                               coursesCount: Int($0.courseCount))}
         if let result, !result.isEmpty {
@@ -63,7 +62,6 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart
                 newItem.enrollmentEnd = item.enrollmentEnd
-                newItem.certificate = item.certificate?.url
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
                 
@@ -105,6 +103,11 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        let description = NSPersistentStoreDescription()
+        description.shouldInferMappingModelAutomatically = true
+        description.shouldMigrateStoreAutomatically = true
+        container.persistentStoreDescriptions = [description]
+        
         return container
     }
     

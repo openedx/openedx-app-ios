@@ -9,7 +9,7 @@ import Foundation
 import Core
 
 public protocol DashboardRepositoryProtocol {
-    func getMyCourses() async throws -> [CourseItem]
+    func getMyCourses(page: Int) async throws -> [CourseItem]
     func getMyCoursesOffline() throws -> [CourseItem]
 }
 
@@ -27,16 +27,13 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         self.persistence = persistence
     }
     
-    public func getMyCourses() async throws -> [CourseItem] {
+    public func getMyCourses(page: Int) async throws -> [CourseItem] {
         let result = try await api.requestData(
-            DashboardEndpoint.getMyCourses(username: appStorage.user?.username ?? "")
+            DashboardEndpoint.getMyCourses(username: appStorage.user?.username ?? "", page: page)
         )
-        .mapResponse([DataLayer.MyCourse].self)
-        .map({ course in
-            course.domain(baseURL: config.baseURL.absoluteString)
-        })
+            .mapResponse(DataLayer.CourseEnrollments.self)
+            .domain(baseURL: config.baseURL.absoluteString)
         persistence.saveMyCourses(items: result)
-
         return result
         
     }
@@ -50,7 +47,7 @@ public class DashboardRepository: DashboardRepositoryProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 class DashboardRepositoryMock: DashboardRepositoryProtocol {
-    func getMyCourses() async throws -> [CourseItem] {
+    func getMyCourses(page: Int) async throws -> [CourseItem] {
         var models: [CourseItem] = []
         for i in 0...10 {
             models.append(
@@ -65,7 +62,6 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    certificate: nil,
                     numPages: 1,
                     coursesCount: 0
                 )

@@ -11,17 +11,16 @@ import Core
 //sourcery: AutoMockable
 public protocol CourseInteractorProtocol {
     func getCourseDetails(courseID: String) async throws -> CourseDetails
-    func getEnrollments() async throws -> [CourseItem]
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseVideoBlocks(fullStructure: CourseStructure) -> CourseStructure
     func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getEnrollmentsOffline() async throws -> [CourseItem]
-    func getCourseBlocksOffline() async throws -> CourseStructure
+    func getCourseBlocksOffline(courseID: String) async throws -> CourseStructure
     func enrollToCourse(courseID: String) async throws -> Bool
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
-    
+    func resumeBlock(courseID: String) async throws -> ResumeBlock
+    func getSubtitles(url: String) async throws -> [Subtitle]
 }
 
 public class CourseInteractor: CourseInteractorProtocol {
@@ -34,10 +33,6 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getCourseDetails(courseID: String) async throws -> CourseDetails {
         return try await repository.getCourseDetails(courseID: courseID)
-    }
-    
-    public func getEnrollments() async throws -> [CourseItem] {
-        return try await repository.getEnrollments()
     }
     
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
@@ -60,7 +55,9 @@ public class CourseInteractor: CourseInteractorProtocol {
             encodedVideo: course.encodedVideo,
             displayName: course.displayName,
             topicID: course.topicID,
-            childs: newChilds
+            childs: newChilds,
+            media: course.media,
+            certificate: course.certificate
         )
     }
     
@@ -68,12 +65,8 @@ public class CourseInteractor: CourseInteractorProtocol {
         return try await repository.getCourseDetailsOffline(courseID: courseID)
     }
     
-    public func getEnrollmentsOffline() async throws -> [CourseItem] {
-        return try await repository.getEnrollmentsOffline()
-    }
-    
-    public func getCourseBlocksOffline() async throws -> CourseStructure {
-        return try repository.getCourseBlocksOffline()
+    public func getCourseBlocksOffline(courseID: String) async throws -> CourseStructure {
+        return try repository.getCourseBlocksOffline(courseID: courseID)
     }
     
     public func enrollToCourse(courseID: String) async throws -> Bool {
@@ -90,6 +83,15 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getUpdates(courseID: String) async throws -> [CourseUpdate] {
         return try await repository.getUpdates(courseID: courseID)
+    }
+    
+    public func resumeBlock(courseID: String) async throws -> ResumeBlock {
+        return try await repository.resumeBlock(courseID: courseID)
+    }
+        
+    public func getSubtitles(url: String) async throws -> [Subtitle] {
+        let result = try await repository.getSubtitles(url: url)
+        return parseSubtitles(from: result)
     }
     
     private func filterChapter(chapter: CourseChapter) -> CourseChapter {
@@ -137,6 +139,58 @@ public class CourseInteractor: CourseInteractorProtocol {
             completion: vertical.completion,
             childs: newChilds
         )
+    }
+    
+    private func removeEmptyElements(from subtitlesString: String) -> String {
+        let subtitleComponents = subtitlesString.components(separatedBy: "\n\n")
+            .filter({
+                let lines = $0.components(separatedBy: .newlines)
+
+                if lines.count >= 3 {
+                    let text = lines[2..<lines.count].joined(separator: "\n")
+                    if !text.isEmpty {
+                       return true
+                    }
+                }
+                return false
+            })
+            .map {
+                if $0.hasPrefix("\n") {
+                    let index = $0.index($0.startIndex, offsetBy: 1)
+                    return String($0[index...])
+                } else {
+                    return $0
+                }
+            }
+        
+        return subtitleComponents.joined(separator: "\n\n")
+    }
+    
+    private func parseSubtitles(from subtitlesString: String) -> [Subtitle] {
+        let clearedSubtitles = removeEmptyElements(from: subtitlesString)
+        let subtitleComponents = clearedSubtitles.components(separatedBy: "\n\n")
+        var subtitles = [Subtitle]()
+        
+        for component in subtitleComponents {
+            let lines = component.components(separatedBy: .newlines)
+            
+            if lines.count >= 3 {
+                let idString = lines[0]
+                let id = Int(idString) ?? 0
+                
+                let startAndEndTimes = lines[1].components(separatedBy: " --> ")
+                let startTime = startAndEndTimes.first ?? "00:00:00,000"
+                let endTime = startAndEndTimes.last ?? "00:00:00,000"
+                let text = lines[2..<lines.count].joined(separator: "\n")
+                
+                let subtitle = Subtitle(id: id,
+                                        fromTo: DateInterval(start: Date(subtitleTime: startTime),
+                                                             end: Date(subtitleTime: endTime)),
+                                        text: text)
+                subtitles.append(subtitle)
+            }
+        }
+        return subtitles
     }
 }
 

@@ -69,30 +69,4 @@ public class SignInViewModel: ObservableObject {
             }
         }
     }
-    
-    @MainActor
-    func resetPassword(email: String, isRecoveryPassord: Binding<Bool>) async {
-        guard validator.isValidEmail(email) else {
-            errorMessage = AuthLocalization.Error.invalidEmailAddress
-            return
-        }
-        isShowProgress = true
-        do {
-            alertMessage = try await interactor.resetPassword(email: email).responseText.hideHtmlTagsAndUrls()
-            isRecoveryPassord.wrappedValue.toggle()
-            isShowProgress = false
-        } catch {
-            isShowProgress = false
-            if let validationError = error.validationError,
-               let value = validationError.data?["value"] as? String {
-                errorMessage = value
-            } else if case APIError.invalidGrant = error {
-                errorMessage = CoreLocalization.Error.invalidCredentials
-            } else if error.isInternetError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
-        }
-    }
 }

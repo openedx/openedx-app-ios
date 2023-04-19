@@ -15,8 +15,10 @@ enum DiscoveryEndpoint: EndPointType {
     
     var path: String {
         switch self {
-        case .getDiscovery, .searchCourses:
+        case .getDiscovery:
             return "/api/courses/v1/courses/"
+        case .searchCourses:
+            return "/mobile_api_extensions/courses/v1/courses/"
         }
     }
     

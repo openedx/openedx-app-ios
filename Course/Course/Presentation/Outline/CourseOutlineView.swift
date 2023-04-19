@@ -13,8 +13,6 @@ public struct CourseOutlineView: View {
     
     @ObservedObject private var viewModel: CourseContainerViewModel
     private let title: String
-    private let courseBanner: String
-    private let certificate: Certificate?
     private let courseID: String
     private let isVideo: Bool
     
@@ -23,15 +21,11 @@ public struct CourseOutlineView: View {
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
-        courseBanner: String,
-        certificate: Certificate?,
         courseID: String,
         isVideo: Bool
     ) {
         self.title = title
         self.viewModel = viewModel
-        self.courseBanner = courseBanner
-        self.certificate = certificate
         self.courseID = courseID
         self.isVideo = isVideo
     }
@@ -52,14 +46,17 @@ public struct CourseOutlineView: View {
                         VStack(alignment: .leading) {
                             ZStack {
                                 // MARK: - Course Banner
-                                KFImage(URL(string: self.courseBanner))
-                                    .onFailureImage(CoreAssets.noCourseImage.image)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+                                if let banner = viewModel.courseStructure?.media.image.raw
+                                    .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                                        .onFailureImage(CoreAssets.noCourseImage.image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+                                }
                                 
                                 // MARK: - Course Certificate
-                                if let certificate {
+                                if let certificate = viewModel.courseStructure?.certificate {
                                     if let url = certificate.url, url.count > 0 {
                                         CoreAssets.certificateForeground.swiftUIColor
                                         VStack(alignment: .center, spacing: 8) {
@@ -91,78 +88,83 @@ public struct CourseOutlineView: View {
                             .padding(.top, 7)
                             .fixedSize(horizontal: false, vertical: true)
                             
+                            if !isVideo {
+                                if let sequential = viewModel.returnCourseSequential {
+                                    ContinueWithView(sequential: sequential, viewModel: viewModel)
+                                }
+                            }
+                            
                             if let courseStructure = isVideo ? viewModel.courseVideosStructure : viewModel.courseStructure {
                                 // MARK: - Sections list
                                 
-                                if let chapters = courseStructure.childs {
-                                    ForEach(chapters, id: \.id) { chapter in
-                                        let index = chapters.firstIndex(where: {$0.id == chapter.id })
-                                        Text(chapter.displayName)
-                                            .font(Theme.Fonts.titleMedium)
-                                            .multilineTextAlignment(.leading)
-                                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
-                                            .padding(.horizontal, 24)
-                                            .padding(.top, 40)
-                                        ForEach(chapter.childs, id: \.id) { child in
-                                            VStack(alignment: .leading) {
-                                                Button(action: {
-                                                    viewModel.router.showCourseVerticalView(title: child.displayName,
-                                                                                            verticals: child.childs)
-                                                }, label: {
-                                                    Group {
-                                                        child.type.image
-                                                        Text(child.displayName)
-                                                            .font(Theme.Fonts.titleMedium)
-                                                            .multilineTextAlignment(.leading)
-                                                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                                                    Spacer()
-                                                    if let state = viewModel.downloadState[child.id] {
-                                                        switch state {
-                                                        case .available:
-                                                            DownloadAvailableView()
-                                                                .onTapGesture {
-                                                                    viewModel.onDownloadViewTap(
-                                                                        chapter: chapter,
-                                                                        blockId: child.id,
-                                                                        state: state
-                                                                    )
-                                                                }
-                                                                .onForeground {
-                                                                    viewModel.onForeground()
-                                                                }
-                                                        case .downloading:
-                                                            DownloadProgressView()
-                                                                .onTapGesture {
-                                                                    viewModel.onDownloadViewTap(
-                                                                        chapter: chapter,
-                                                                        blockId: child.id,
-                                                                        state: state
-                                                                    )
-                                                                }
-                                                                .onBackground {
-                                                                    viewModel.onBackground()
-                                                                }
-                                                        case .finished:
-                                                            DownloadFinishedView()
-                                                                .onTapGesture {
-                                                                    viewModel.onDownloadViewTap(
-                                                                        chapter: chapter,
-                                                                        blockId: child.id,
-                                                                        state: state
-                                                                    )
-                                                                }
-                                                        }
+                                let chapters = courseStructure.childs
+                                ForEach(chapters, id: \.id) { chapter in
+                                    let index = chapters.firstIndex(where: {$0.id == chapter.id })
+                                    Text(chapter.displayName)
+                                        .font(Theme.Fonts.titleMedium)
+                                        .multilineTextAlignment(.leading)
+                                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                        .padding(.horizontal, 24)
+                                        .padding(.top, 40)
+                                    ForEach(chapter.childs, id: \.id) { child in
+                                        VStack(alignment: .leading) {
+                                            Button(action: {
+                                                viewModel.router.showCourseVerticalView(title: child.displayName,
+                                                                                        verticals: child.childs)
+                                            }, label: {
+                                                Group {
+                                                    child.type.image
+                                                    Text(child.displayName)
+                                                        .font(Theme.Fonts.titleMedium)
+                                                        .multilineTextAlignment(.leading)
+                                                }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                Spacer()
+                                                if let state = viewModel.downloadState[child.id] {
+                                                    switch state {
+                                                    case .available:
+                                                        DownloadAvailableView()
+                                                            .onTapGesture {
+                                                                viewModel.onDownloadViewTap(
+                                                                    chapter: chapter,
+                                                                    blockId: child.id,
+                                                                    state: state
+                                                                )
+                                                            }
+                                                            .onForeground {
+                                                                viewModel.onForeground()
+                                                            }
+                                                    case .downloading:
+                                                        DownloadProgressView()
+                                                            .onTapGesture {
+                                                                viewModel.onDownloadViewTap(
+                                                                    chapter: chapter,
+                                                                    blockId: child.id,
+                                                                    state: state
+                                                                )
+                                                            }
+                                                            .onBackground {
+                                                                viewModel.onBackground()
+                                                            }
+                                                    case .finished:
+                                                        DownloadFinishedView()
+                                                            .onTapGesture {
+                                                                viewModel.onDownloadViewTap(
+                                                                    chapter: chapter,
+                                                                    blockId: child.id,
+                                                                    state: state
+                                                                )
+                                                            }
                                                     }
-                                                    Image(systemName: "chevron.right")
-                                                        .foregroundColor(CoreAssets.accentColor.swiftUIColor)
-                                                }).padding(.horizontal, 36)
-                                                    .padding(.vertical, 20)
-                                                if index != chapters.count - 1 {
-                                                    Divider()
-                                                        .frame(height: 1)
-                                                        .overlay(CoreAssets.cardViewStroke.swiftUIColor)
-                                                        .padding(.horizontal, 24)
                                                 }
+                                                Image(systemName: "chevron.right")
+                                                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                            }).padding(.horizontal, 36)
+                                                .padding(.vertical, 20)
+                                            if index != chapters.count - 1 {
+                                                Divider()
+                                                    .frame(height: 1)
+                                                    .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                                                    .padding(.horizontal, 24)
                                             }
                                         }
                                     }
@@ -220,6 +222,38 @@ public struct CourseOutlineView: View {
     }
 }
 
+struct ContinueWithView: View {
+    let sequential: CourseSequential
+    let viewModel: CourseContainerViewModel
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            if let vertical = sequential.childs.first {
+                Text(CourseLocalization.Courseware.continueWith)
+                    .font(Theme.Fonts.labelMedium)
+                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                HStack {
+                    vertical.type.image
+                    Text(vertical.displayName)
+                        .multilineTextAlignment(.leading)
+                        .font(Theme.Fonts.titleMedium)
+                        .multilineTextAlignment(.leading)
+                }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                UnitButtonView(type: .continueLesson, action: {
+//                    viewModel.router.showCourseBlocksView(title: vertical.displayName,
+//                                                          blocks: vertical.childs)
+//                    viewModel.router.showCourseVerticalView(title: sequential.displayName,
+//                                                            verticals: sequential.childs)
+                    viewModel.router.showCourseVerticalAndBlocksView(verticals: (sequential.displayName, sequential.childs),
+                                                                     blocks: (vertical.displayName, vertical.childs))
+                })
+            }
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 32)
+    }
+}
+
 #if DEBUG
 struct CourseOutlineView_Previews: PreviewProvider {
     static var previews: some View {
@@ -243,8 +277,6 @@ struct CourseOutlineView_Previews: PreviewProvider {
             CourseOutlineView(
                 viewModel: viewModel,
                 title: "Course title",
-                courseBanner: "",
-                certificate: Certificate(url: "cert_url"),
                 courseID: "",
                 isVideo: false
             )
@@ -254,8 +286,6 @@ struct CourseOutlineView_Previews: PreviewProvider {
             CourseOutlineView(
                 viewModel: viewModel,
                 title: "Course title",
-                courseBanner: "",
-                certificate: Certificate(url: "cert_url"),
                 courseID: "",
                 isVideo: false
             )

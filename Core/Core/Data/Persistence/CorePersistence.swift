@@ -179,6 +179,11 @@ public class CorePersistence: CorePersistenceProtocol {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        let description = NSPersistentStoreDescription()
+        description.shouldInferMappingModelAutomatically = true
+        description.shouldMigrateStoreAutomatically = true
+        container.persistentStoreDescriptions = [description]
+        
         return container
     }
     

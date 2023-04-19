@@ -12,6 +12,9 @@
 		020C31CB290BF49900D6DEA2 /* FieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020C31CA290BF49900D6DEA2 /* FieldsView.swift */; };
 		022D0482297442BA00E0059B /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D0481297442BA00E0059B /* SignUpViewModelTests.swift */; };
 		022D04962976DA6500E0059B /* AuthorizationMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */; };
+		025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */; };
+		025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */; };
+		02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */; };
 		02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE4292533720051930C /* AuthorizationRouter.swift */; };
 		071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C628D1DA4F00344290 /* SignInViewModel.swift */; };
 		07169458296D913400E3DED6 /* Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE3B28D0A319006D8A5D /* Authorization.framework */; platformFilter = ios; };
@@ -41,6 +44,9 @@
 		020C31CA290BF49900D6DEA2 /* FieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldsView.swift; sourceTree = "<group>"; };
 		022D0481297442BA00E0059B /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
 		022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationMock.generated.swift; sourceTree = "<group>"; };
+		025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
+		025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
+		02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		02ED50CC29A64B90008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F3BFE4292533720051930C /* AuthorizationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRouter.swift; sourceTree = "<group>"; };
 		071009C628D1DA4F00344290 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
@@ -54,6 +60,8 @@
 		0770DE7028D0C0E7006D8A5D /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		0E586C84FB9FFDD8AAE29BB3 /* Pods-App-Authorization-AuthorizationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1CB6628EDEAAC2431CD50D9A /* Pods-App-Authorization-AuthorizationTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debugprod.xcconfig"; sourceTree = "<group>"; };
+		1CD50AA5CB635FD7200C4DF9 /* Pods-App-Authorization.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugstage.xcconfig"; sourceTree = "<group>"; };
+		2F1206D6806C156203F01524 /* Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 		37CBD3ECE7D9B20E0BC61344 /* Pods-App-Authorization-AuthorizationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.release.xcconfig"; sourceTree = "<group>"; };
 		3E0D103D8210828583660AF6 /* Pods-App-Authorization.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debug.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debug.xcconfig"; sourceTree = "<group>"; };
 		47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,7 +72,9 @@
 		90DFBB75EF40580E180D71C8 /* Pods-App-Authorization.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugdev.xcconfig"; sourceTree = "<group>"; };
 		96C85172770225EB81A6D2DA /* Pods-App-Authorization.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasedev.xcconfig"; sourceTree = "<group>"; };
 		9BF6A1004A955E24527FCF0F /* Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
+		A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		E78971D8E6ED2116BBF9FD66 /* Pods-App-Authorization.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.release.xcconfig"; sourceTree = "<group>"; };
+		F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasestage.xcconfig"; sourceTree = "<group>"; };
 		F5802BBA113276950ABCD9B3 /* Pods-App-Authorization.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releaseprod.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +116,15 @@
 			path = Register;
 			sourceTree = "<group>";
 		};
+		025F40DE29D1C1350064C183 /* Reset Password */ = {
+			isa = PBXGroup;
+			children = (
+				025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */,
+				025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */,
+			);
+			path = "Reset Password";
+			sourceTree = "<group>";
+		};
 		071009C528D1D9FA00344290 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +140,8 @@
 				020C31BD290AADA700D6DEA2 /* Base */,
 				071009C528D1D9FA00344290 /* Login */,
 				07169462296D93E000E3DED6 /* Registration */,
+				025F40DE29D1C1350064C183 /* Reset Password */,
+				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -155,6 +176,7 @@
 		07169484296EC3D700E3DED6 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */,
 				07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */,
 			);
 			path = Login;
@@ -187,7 +209,6 @@
 				0770DE6F28D0C08E006D8A5D /* SwiftGen */,
 				071009CC28D1E24000344290 /* Presentation */,
 				0770DE6D28D0C035006D8A5D /* Localizable.strings */,
-				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -225,6 +246,10 @@
 				37CBD3ECE7D9B20E0BC61344 /* Pods-App-Authorization-AuthorizationTests.release.xcconfig */,
 				9BF6A1004A955E24527FCF0F /* Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig */,
 				49A74E7AC5109DFA06BDAF3A /* Pods-App-Authorization-AuthorizationTests.releasedev.xcconfig */,
+				1CD50AA5CB635FD7200C4DF9 /* Pods-App-Authorization.debugstage.xcconfig */,
+				F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */,
+				2F1206D6806C156203F01524 /* Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig */,
+				A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -431,6 +456,7 @@
 				022D04962976DA6500E0059B /* AuthorizationMock.generated.swift in Sources */,
 				022D0482297442BA00E0059B /* SignUpViewModelTests.swift in Sources */,
 				07169464296D96DD00E3DED6 /* SignInViewModelTests.swift in Sources */,
+				02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +466,9 @@
 			files = (
 				02066B442906D72400F4307E /* SignUpView.swift in Sources */,
 				0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */,
+				025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */,
 				02066B462906D72F00F4307E /* SignUpViewModel.swift in Sources */,
+				025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */,
 				020C31CB290BF49900D6DEA2 /* FieldsView.swift in Sources */,
 				0770DE4E28D0A677006D8A5D /* SignInView.swift in Sources */,
 				02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */,
@@ -472,6 +500,233 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		02DD1C9F29E80CF900F35DCE /* DebugStage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = DebugStage;
+		};
+		02DD1CA029E80CF900F35DCE /* DebugStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CD50AA5CB635FD7200C4DF9 /* Pods-App-Authorization.debugstage.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = DebugStage;
+		};
+		02DD1CA129E80CF900F35DCE /* DebugStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F1206D6806C156203F01524 /* Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = DebugStage;
+		};
+		02DD1CA229E80D0200F35DCE /* ReleaseStage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = ReleaseStage;
+		};
+		02DD1CA329E80D0200F35DCE /* ReleaseStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = ReleaseStage;
+		};
+		02DD1CA429E80D0200F35DCE /* ReleaseStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = ReleaseStage;
+		};
 		0716945B296D913400E3DED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0E586C84FB9FFDD8AAE29BB3 /* Pods-App-Authorization-AuthorizationTests.debug.xcconfig */;
@@ -1161,9 +1416,11 @@
 			buildConfigurations = (
 				0716945B296D913400E3DED6 /* Debug */,
 				0716945C296D913400E3DED6 /* DebugProd */,
+				02DD1CA129E80CF900F35DCE /* DebugStage */,
 				0716945D296D913400E3DED6 /* DebugDev */,
 				0716945E296D913400E3DED6 /* Release */,
 				0716945F296D913400E3DED6 /* ReleaseProd */,
+				02DD1CA429E80D0200F35DCE /* ReleaseStage */,
 				07169460296D913400E3DED6 /* ReleaseDev */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1174,9 +1431,11 @@
 			buildConfigurations = (
 				0770DE4028D0A319006D8A5D /* Debug */,
 				0727876828D232A9002E9142 /* DebugProd */,
+				02DD1C9F29E80CF900F35DCE /* DebugStage */,
 				0727876428D2329C002E9142 /* DebugDev */,
 				0770DE4128D0A319006D8A5D /* Release */,
 				0727876A28D232B0002E9142 /* ReleaseProd */,
+				02DD1CA229E80D0200F35DCE /* ReleaseStage */,
 				0727876628D232A4002E9142 /* ReleaseDev */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1187,9 +1446,11 @@
 			buildConfigurations = (
 				0770DE4328D0A319006D8A5D /* Debug */,
 				0727876928D232A9002E9142 /* DebugProd */,
+				02DD1CA029E80CF900F35DCE /* DebugStage */,
 				0727876528D2329C002E9142 /* DebugDev */,
 				0770DE4428D0A319006D8A5D /* Release */,
 				0727876B28D232B0002E9142 /* ReleaseProd */,
+				02DD1CA329E80D0200F35DCE /* ReleaseStage */,
 				0727876728D232A4002E9142 /* ReleaseDev */,
 			);
 			defaultConfigurationIsVisible = 0;

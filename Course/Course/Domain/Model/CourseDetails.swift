@@ -16,8 +16,10 @@ public struct CourseDetails {
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
+    var isEnrolled: Bool
     var overviewHTML: String
     let courseBannerURL: String
+    let courseVideoURL: String?
     
     public init(courseID: String,
                 org: String,
@@ -27,8 +29,10 @@ public struct CourseDetails {
                 courseEnd: Date?,
                 enrollmentStart: Date?,
                 enrollmentEnd: Date?,
+                isEnrolled: Bool,
                 overviewHTML: String,
-                courseBannerURL: String) {
+                courseBannerURL: String,
+                courseVideoURL: String?) {
         self.courseID = courseID
         self.org = org
         self.courseTitle = courseTitle
@@ -37,7 +41,9 @@ public struct CourseDetails {
         self.courseEnd = courseEnd
         self.enrollmentStart = enrollmentStart
         self.enrollmentEnd = enrollmentEnd
+        self.isEnrolled = isEnrolled
         self.overviewHTML = overviewHTML
         self.courseBannerURL = courseBannerURL
+        self.courseVideoURL = courseVideoURL
     }
 }

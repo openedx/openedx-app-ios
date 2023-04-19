@@ -63,6 +63,10 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
                     self.updatePostRepliesCountState(id: id)
                 case let .readed(id):
                     self.updateUnreadCommentsCount(id: id)
+                case let .liked(id, voted, voteCount):
+                    self.updatePostLikedState(id: id, voted: voted, voteCount: voteCount)
+                case let .reported(id, reported):
+                    self.updatePostReportedState(id: id, reported: reported)
                 }
             })
         
@@ -182,6 +186,23 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         var thread = threads[index]
         thread.commentCount += 1
         thread.updatedAt = Date()
+        threads[index] = thread
+        searchResults = generatePosts(threads: threads)
+    }
+    
+    private func updatePostLikedState(id: String, voted: Bool, voteCount: Int) {
+        guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
+        var thread = threads[index]
+        thread.voted = voted
+        thread.voteCount = voteCount
+        threads[index] = thread
+        searchResults = generatePosts(threads: threads)
+    }
+    
+    private func updatePostReportedState(id: String, reported: Bool) {
+        guard let index = threads.firstIndex(where: { $0.id == id }) else { return }
+        var thread = threads[index]
+        thread.abuseFlagged = reported
         threads[index] = thread
         searchResults = generatePosts(threads: threads)
     }

@@ -12,12 +12,20 @@ import Swinject
 
 public struct EncodedVideoPlayer: View {
     
+    @ObservedObject
+    private var viewModel = Container.shared.resolve(VideoPlayerViewModel.self)!
+    
+    private var blockID: String
+    private var courseID: String
+    private let languages: [SubtitleUrl]
+    
     private var controller = AVPlayerViewController()
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @State private var orientation = UIDevice.current.orientation
     @State private var isLoading: Bool = true
     @State private var isAnimating: Bool = false
     @State private var isViewedOnce: Bool = false
+    @State private var currentTime: Double = 0
     @State private var isOrientationChanged: Bool = false
     @Binding private var killPlayer: Bool
     @State var showAlert = false
@@ -28,33 +36,39 @@ public struct EncodedVideoPlayer: View {
             }
         }
     }
-        
-    public var isViewed: ((Bool) -> Void)
     private let url: URL?
     
     public init(
         url: URL?,
-        isViewed: @escaping ((Bool) -> Void),
+        blockID: String,
+        courseID: String,
+        languages: [SubtitleUrl],
         killPlayer: Binding<Bool>
     ) {
         self.url = url
-        self.isViewed = isViewed
+        self.blockID = blockID
+        self.courseID = courseID
+        self.languages = languages
         self._killPlayer = killPlayer
     }
     
     public var body: some View {
         ZStack {
-            VStack {
+            VStack(alignment: .leading) {
                 PlayerViewController(
                     videoURL: url,
                     controller: controller,
                     progress: { progress in
                         if progress >= 0.8 {
                             if !isViewedOnce {
-                                self.isViewed(true)
+                                Task {
+                                    await viewModel.blockCompletionRequest(blockID: blockID, courseID: courseID)
+                                }
                                 isViewedOnce = true
                             }
                         }
+                    }, seconds: { seconds in
+                        currentTime = seconds
                     })
                 .aspectRatio(16 / 9, contentMode: .fit)
                 .onReceive(NotificationCenter.Publisher(
@@ -73,6 +87,9 @@ public struct EncodedVideoPlayer: View {
                             }
                         }
                     }
+                    SubtittlesView(languages: languages,
+                                   currentTime: $currentTime,
+                                   viewModel: viewModel)
                 Spacer()
                 if !orientation.isLandscape || idiom != .pad {
                     VStack {}.onAppear {
@@ -80,35 +97,33 @@ public struct EncodedVideoPlayer: View {
                         alertMessage = CourseLocalization.Alert.rotateDevice
                     }
                 }
-                
-                // MARK: - Alert
-                if showAlert {
-                    Spacer()
-                    VStack(alignment: .center) {
-                        Spacer()
-                        HStack(spacing: 6) {
-                            CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
-                            Text(alertMessage ?? "")
-                        }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
-                                          textColor: .white)
-                        .transition(.move(edge: .bottom))
-                        .onAppear {
-                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                                alertMessage = nil
-                                showAlert = false
-                            }
-                        }
-                    }
-                }
             }.onChange(of: killPlayer, perform: { _ in
                 controller.player?.replaceCurrentItem(with: nil)
             })
+            // MARK: - Alert
+            if showAlert {
+                VStack(alignment: .center) {
+                    Spacer()
+                    HStack(spacing: 6) {
+                        CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
+                        Text(alertMessage ?? "")
+                    }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
+                                      textColor: .white)
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            alertMessage = nil
+                            showAlert = false
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        EncodedVideoPlayer(url: URL(string: ""), isViewed: {_ in }, killPlayer: .constant(true))
+        EncodedVideoPlayer(url: nil, blockID: "", courseID: "", languages: [], killPlayer: .constant(false))
     }
 }

@@ -16,6 +16,7 @@ public extension DataLayer {
         public let end: String?
         public let enrollmentStart: String?
         public let enrollmentEnd: String?
+        public let isEnrolled: Bool
         public let id: String
         public let media: Media
         public let name: String
@@ -38,6 +39,7 @@ public extension DataLayer {
             case end
             case enrollmentStart = "enrollment_start"
             case enrollmentEnd = "enrollment_end"
+            case isEnrolled = "is_enrolled"
             case id
             case media
             case name
@@ -59,7 +61,7 @@ public extension DataLayer {
 
 public extension DataLayer.CourseDetailsResponse {
     func domain(baseURL: String) -> CourseDetails {
-        let imageURL = baseURL + (media.courseImage.url?.addingPercentEncoding(
+        let imageURL = baseURL + (media.courseImage?.url?.addingPercentEncoding(
             withAllowedCharacters: .urlQueryAllowed) ?? "")
         return CourseDetails(
             courseID: id,
@@ -70,7 +72,9 @@ public extension DataLayer.CourseDetailsResponse {
             courseEnd: end != nil ? Date(iso8601: end!) : nil,
             enrollmentStart: enrollmentStart != nil ? Date(iso8601: enrollmentStart!) : nil,
             enrollmentEnd: enrollmentEnd != nil ? Date(iso8601: enrollmentEnd!) : nil,
+            isEnrolled: isEnrolled,
             overviewHTML: overview,
-            courseBannerURL: imageURL)
+            courseBannerURL: imageURL,
+            courseVideoURL: media.courseVideo?.url)
     }
 }

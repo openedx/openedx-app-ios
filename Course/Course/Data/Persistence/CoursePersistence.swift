@@ -13,8 +13,10 @@ public protocol CoursePersistenceProtocol {
     func saveCourseDetails(course: CourseDetails)
     func loadEnrollments() throws -> [Core.CourseItem]
     func saveEnrollments(items: [Core.CourseItem])
-    func loadCourseStructure() throws -> [BECourseDetailIncoming]
-    func saveCourseStructure(structure: [BECourseDetailIncoming])
+    func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure
+    func saveCourseStructure(structure: DataLayer.CourseStructure)
+    func saveSubtitles(url: String, subtitlesString: String)
+    func loadSubtitles(url: String) -> String?
     func clear()
 }
 
@@ -33,8 +35,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
     }()
     
     public func loadCourseDetails(courseID: String) throws -> CourseDetails {
-            let request = CDCourseDetails.fetchRequest()
-            request.predicate = NSPredicate(format: "courseID = %@", courseID)
+        let request = CDCourseDetails.fetchRequest()
+        request.predicate = NSPredicate(format: "courseID = %@", courseID)
         guard let courseDetails = try? context.fetch(request).first else { throw NoCachedDataError() }
         return CourseDetails(courseID: courseDetails.courseID ?? "",
                              org: courseDetails.org ?? "",
@@ -44,14 +46,15 @@ public class CoursePersistence: CoursePersistenceProtocol {
                              courseEnd: courseDetails.courseEnd,
                              enrollmentStart: courseDetails.enrollmentStart,
                              enrollmentEnd: courseDetails.enrollmentEnd,
+                             isEnrolled: courseDetails.isEnrolled,
                              overviewHTML: courseDetails.overviewHTML ?? "",
-                             courseBannerURL: courseDetails.courseBannerURL ?? "")
+                             courseBannerURL: courseDetails.courseBannerURL ?? "",
+                             courseVideoURL: nil)
     }
     
     public func saveCourseDetails(course: CourseDetails) {
         context.performAndWait {
             let newCourseDetails = CDCourseDetails(context: context)
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             newCourseDetails.courseID = course.courseID
             newCourseDetails.org = course.org
             newCourseDetails.courseTitle = course.courseTitle
@@ -60,6 +63,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newCourseDetails.courseEnd = course.courseEnd
             newCourseDetails.enrollmentStart = course.enrollmentStart
             newCourseDetails.enrollmentEnd = course.enrollmentEnd
+            newCourseDetails.isEnrolled = course.isEnrolled
             newCourseDetails.overviewHTML = course.overviewHTML
             newCourseDetails.courseBannerURL = course.courseBannerURL
             
@@ -84,7 +88,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
                            enrollmentStart: $0.enrollmentStart,
                            enrollmentEnd: $0.enrollmentEnd,
                            courseID: $0.courseID ?? "",
-                           certificate: Certificate(url: $0.certificate  ?? ""),
                            numPages: Int($0.numPages),
                            coursesCount: Int($0.courseCount))}
         if let result, !result.isEmpty {
@@ -98,7 +101,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
         context.performAndWait {
             for item in items {
                 let newItem = CDCourseItem(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.name = item.name
                 newItem.org = item.org
                 newItem.desc = item.shortDescription
@@ -110,7 +112,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart
                 newItem.enrollmentEnd = item.enrollmentEnd
-                newItem.certificate = item.certificate?.url
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
                 newItem.courseCount = Int32(item.coursesCount)
@@ -124,41 +125,64 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func loadCourseStructure() throws -> [BECourseDetailIncoming] {
-            let result = try? context.fetch(CDCourseDetailIncoming.fetchRequest())
-                .map({
-                    let userViewData = BECourseDetailUserViewData(encodedVideo: BECourseDetailEncodedVideoData(
-                        youTube: BECourseDetailYouTubeData(url: $0.youTubeUrl),
-                        fallback: BECourseDetailYouTubeData(url: $0.fallbackUrl)
-                    ), topicID: "")
-                    return BECourseDetailIncoming(blockId: $0.blockId ?? "",
-                                                  id: $0.id ?? "",
-                                                  graded: $0.graded,
-                                                  completion: $0.completion,
-                                                  studentUrl: $0.studentUrl ?? "",
-                                                  type: $0.type ?? "",
-                                                  displayName: $0.displayName ?? "",
-                                                  descendants: $0.descendants,
-                                                  allSources: $0.allSources,
-                                                  userViewData: userViewData)
-                })
-        if let result, !result.isEmpty {
-            return result
-        } else {
-            throw NoCachedDataError()
+    public func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure {
+        let request = CDCourseStructure.fetchRequest()
+        request.predicate = NSPredicate(format: "id = %@", courseID)
+        guard let structure = try? context.fetch(request).first else { throw NoCachedDataError() }
+        
+        let requestBlocks = CDCourseBlock.fetchRequest()
+        requestBlocks.predicate = NSPredicate(format: "courseID = %@", courseID)
+        
+        let blocks = try? context.fetch(requestBlocks).map {
+            let userViewData = DataLayer.CourseDetailUserViewData(
+                transcripts: nil,
+                encodedVideo: DataLayer.CourseDetailEncodedVideoData(
+                    youTube: DataLayer.CourseDetailYouTubeData(url: $0.youTubeUrl),
+                    fallback: DataLayer.CourseDetailYouTubeData(url: $0.fallbackUrl)
+                ), topicID: "")
+            return DataLayer.CourseBlock(blockId: $0.blockId ?? "",
+                                          id: $0.id ?? "",
+                                          graded: $0.graded,
+                                          completion: $0.completion,
+                                          studentUrl: $0.studentUrl ?? "",
+                                          type: $0.type ?? "",
+                                          displayName: $0.displayName ?? "",
+                                          descendants: $0.descendants,
+                                          allSources: $0.allSources,
+                                          userViewData: userViewData)
         }
+        
+        let dictionary = blocks?.reduce(into: [:]) { result, block in
+            result[block.id] = block
+        } ?? [:]
+        
+        return DataLayer.CourseStructure(rootItem: structure.rootItem ?? "",
+                                         dict: dictionary,
+                                         id: structure.id ?? "",
+                                         media: DataLayer.CourseMedia(image:
+                                                                        DataLayer.Image(raw: structure.mediaRaw ?? "",
+                                                                                        small: structure.mediaSmall ?? "",
+                                                                                        large: structure.mediaLarge ?? "")),
+                                         certificate: DataLayer.Certificate(url: structure.certificate))
     }
     
-    public func saveCourseStructure(structure: [BECourseDetailIncoming]) {
+    public func saveCourseStructure(structure: DataLayer.CourseStructure) {
         context.performAndWait {
-            for block in structure {
-                let courseDetail = CDCourseDetailIncoming(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                
+            let newStructure = CDCourseStructure(context: context)
+            newStructure.certificate = structure.certificate?.url
+            newStructure.mediaSmall = structure.media.image.small
+            newStructure.mediaLarge = structure.media.image.large
+            newStructure.mediaRaw = structure.media.image.raw
+            newStructure.id = structure.id
+            newStructure.rootItem = structure.rootItem
+            
+            for block in Array(structure.dict.values) {
+                let courseDetail = CDCourseBlock(context: context)
                 courseDetail.allSources = block.allSources
                 courseDetail.descendants = block.descendants
                 courseDetail.graded = block.graded
                 courseDetail.blockId = block.blockId
+                courseDetail.courseID = structure.id
                 courseDetail.displayName = block.displayName
                 courseDetail.id = block.id
                 courseDetail.studentUrl = block.studentUrl
@@ -174,6 +198,33 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 }
             }
         }
+    }
+    
+    public func saveSubtitles(url: String, subtitlesString: String) {
+        context.performAndWait {
+            let newSubtitle = CDSubtitle(context: context)
+            newSubtitle.url = url
+            newSubtitle.subtitle = subtitlesString
+            newSubtitle.uploadedAt = Date()
+            
+            do {
+                try context.save()
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
+            }
+        }
+    }
+    
+    public func loadSubtitles(url: String) -> String? {
+        let request = CDSubtitle.fetchRequest()
+        request.predicate = NSPredicate(format: "url = %@", url)
+        
+        guard let subtitle = try? context.fetch(request).first,
+              let loaded = subtitle.uploadedAt else { return nil }
+        if Date().timeIntervalSince1970 - loaded.timeIntervalSince1970 < 5 * 3600 {
+            return subtitle.subtitle ?? ""
+        }
+        return nil
     }
     
     public func clear() {
@@ -205,11 +256,17 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        let description = NSPersistentStoreDescription()
+        description.shouldInferMappingModelAutomatically = true
+        description.shouldMigrateStoreAutomatically = true
+        container.persistentStoreDescriptions = [description]
+        
         return container
     }
     
     private func createContext() -> NSManagedObjectContext {
         let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.automaticallyMergesChangesFromParent = true
         return context
     }

@@ -28,6 +28,8 @@
 		0265B4B728E2141D00E6EAFD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0265B4B628E2141D00E6EAFD /* Strings.swift */; };
 		027020FC28E7362100F54332 /* Data_CourseOutlineResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027020FB28E7362100F54332 /* Data_CourseOutlineResponse.swift */; };
 		0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0270210128E736E700F54332 /* CourseOutlineView.swift */; };
+		0276D75B29DDA3890004CDF8 /* Data_ResumeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0276D75A29DDA3890004CDF8 /* Data_ResumeBlock.swift */; };
+		0276D75D29DDA3F80004CDF8 /* ResumeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0276D75C29DDA3F80004CDF8 /* ResumeBlock.swift */; };
 		0289F90228E1C3E10064F8F3 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0289F90128E1C3E00064F8F3 /* swiftgen.yml */; };
 		0295B1D9297E6DF8003B0C65 /* CourseUnitViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295B1D8297E6DF8003B0C65 /* CourseUnitViewModelTests.swift */; };
 		0295C887299BBDE300ABE571 /* UnitButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295C886299BBDE300ABE571 /* UnitButtonView.swift */; };
@@ -44,8 +46,11 @@
 		02E685C028E4B629000AE015 /* CourseDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E685BF28E4B629000AE015 /* CourseDetailsViewModel.swift */; };
 		02F0144F28F46474002E513D /* CourseContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0144E28F46474002E513D /* CourseContainerView.swift */; };
 		02F0145728F4A2FF002E513D /* CourseContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */; };
+		02F066E829DC71750073E13B /* SubtittlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F066E729DC71750073E13B /* SubtittlesView.swift */; };
 		02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFDC29252E900051930C /* CourseRouter.swift */; };
+		02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */; };
 		02F98A8128F8224200DE94C0 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F98A8028F8224200DE94C0 /* Discussion.framework */; };
+		02FFAD0D29E4347300140E46 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */; };
 		073512E229C0E400005CFA41 /* BaseCourseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073512E129C0E400005CFA41 /* BaseCourseViewModel.swift */; };
 		0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */; };
 		0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */; };
@@ -86,6 +91,8 @@
 		0265B4B628E2141D00E6EAFD /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		027020FB28E7362100F54332 /* Data_CourseOutlineResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CourseOutlineResponse.swift; sourceTree = "<group>"; };
 		0270210128E736E700F54332 /* CourseOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOutlineView.swift; sourceTree = "<group>"; };
+		0276D75A29DDA3890004CDF8 /* Data_ResumeBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_ResumeBlock.swift; sourceTree = "<group>"; };
+		0276D75C29DDA3F80004CDF8 /* ResumeBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumeBlock.swift; sourceTree = "<group>"; };
 		0289F8EE28E1C3510064F8F3 /* Course.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Course.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0289F90128E1C3E00064F8F3 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		0295B1D8297E6DF8003B0C65 /* CourseUnitViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUnitViewModelTests.swift; sourceTree = "<group>"; };
@@ -104,14 +111,18 @@
 		02ED50CF29A64BB6008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F0144E28F46474002E513D /* CourseContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerView.swift; sourceTree = "<group>"; };
 		02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerViewModel.swift; sourceTree = "<group>"; };
+		02F066E729DC71750073E13B /* SubtittlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtittlesView.swift; sourceTree = "<group>"; };
 		02F3BFDC29252E900051930C /* CourseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRouter.swift; sourceTree = "<group>"; };
+		02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoPlayerViewModelTests.swift; path = CourseTests/Presentation/Unit/VideoPlayerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02F98A8028F8224200DE94C0 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
 		073512E129C0E400005CFA41 /* BaseCourseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCourseViewModel.swift; sourceTree = "<group>"; };
 		0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeVideoPlayer.swift; sourceTree = "<group>"; };
 		0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedVideoPlayer.swift; sourceTree = "<group>"; };
 		0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		2A444220A08C5035164B071F /* Pods-App-Course-CourseTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.releasedev.xcconfig"; sourceTree = "<group>"; };
 		3A55620C6018088BFF77F9AE /* Pods-App-CourseDetails.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debug.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debug.xcconfig"; sourceTree = "<group>"; };
+		3D506212980347A9D5A70E20 /* Pods-App-Course.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debugstage.xcconfig"; sourceTree = "<group>"; };
 		418D00932369361311AEEBD3 /* Pods-App-Course-CourseTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debugprod.xcconfig"; sourceTree = "<group>"; };
 		4D2F08669DD2579EAAE02E2F /* Pods-App-Course.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.releasedev.xcconfig"; sourceTree = "<group>"; };
 		4DD47D29A4059C1222E8B7D2 /* Pods-App-Course-CourseTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
@@ -119,14 +130,17 @@
 		51A3A7BA0FC6386531BE678A /* Pods-App-CourseDetails.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debugdev.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debugdev.xcconfig"; sourceTree = "<group>"; };
 		600A464AEDA7BEFEC1A7FE99 /* Pods-App-Course-CourseTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debugdev.xcconfig"; sourceTree = "<group>"; };
 		69A261790A0B4C724CCFA4F2 /* Pods-App-CourseDetails.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.release.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.release.xcconfig"; sourceTree = "<group>"; };
+		831B08139890634968EDD44D /* Pods-App-Course-CourseTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 		99AEF08FD75F1509863D3302 /* Pods-App-CourseDetails.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debugprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debugprod.xcconfig"; sourceTree = "<group>"; };
 		9B5D3D31A9CFA08B6C4347BD /* Pods-App-CourseDetails.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releasedev.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releasedev.xcconfig"; sourceTree = "<group>"; };
+		A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.releasestage.xcconfig"; sourceTree = "<group>"; };
 		ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debug.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debug.xcconfig"; sourceTree = "<group>"; };
 		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		DBE05972CB5115D4535C6B8A /* Pods-App-Course-CourseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Course.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6BDAE887ED8A46860B3F6D3 /* Pods-App-Course-CourseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.release.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.release.xcconfig"; sourceTree = "<group>"; };
 		E954A304FDC0409BEC34C125 /* Pods-App-Course.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debugprod.xcconfig"; sourceTree = "<group>"; };
+		EBB67646EDD08315BA7B3DC5 /* Pods-App-Course-CourseTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		EDCFD7A1BFD2200B14F10F71 /* Pods-App-Course.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debugdev.xcconfig"; sourceTree = "<group>"; };
 		F4640D6B8065C404E0BC30D5 /* Pods-App-Course.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.release.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.release.xcconfig"; sourceTree = "<group>"; };
 		F496B47B12CFD866EA6845CC /* Pods-App-Course.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.releaseprod.xcconfig"; sourceTree = "<group>"; };
@@ -155,6 +169,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0208666A29CC6D8000BC05B2 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				02280F5F294B50030032823A /* CoursePersistence.swift */,
+				02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		023812E5297AC8EB0087098F /* CourseTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,9 +216,6 @@
 				02B6B3B528E1D10700232911 /* Domain */,
 				02EAE2CA28E1F0A700529644 /* Presentation */,
 				02B6B3B428E1C49400232911 /* Localizable.strings */,
-				02F3BFDC29252E900051930C /* CourseRouter.swift */,
-				02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */,
-				02280F5F294B50030032823A /* CoursePersistence.swift */,
 			);
 			path = Course;
 			sourceTree = "<group>";
@@ -220,6 +240,7 @@
 		02B6B3B828E1D12900232911 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				0208666A29CC6D8000BC05B2 /* Persistence */,
 				02B6B3BF28E1DB8800232911 /* Model */,
 				02B6B3B928E1D13500232911 /* Network */,
 				02B6B3BB28E1D14F00232911 /* CourseRepository.swift */,
@@ -239,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				02B6B3C028E1DBA100232911 /* Data_CourseDetailsResponse.swift */,
+				0276D75A29DDA3890004CDF8 /* Data_ResumeBlock.swift */,
 				027020FB28E7362100F54332 /* Data_CourseOutlineResponse.swift */,
 				022C64DB29ACFDEE000F532B /* Data_HandoutsResponse.swift */,
 				022C64DF29ADEA9B000F532B /* Data_UpdatesResponse.swift */,
@@ -276,6 +298,7 @@
 				02DFC65029ACC20A00EA4BB9 /* Handouts */,
 				070019A928F6F59D00D5FC78 /* Unit */,
 				070019AA28F6F79E00D5FC78 /* Video */,
+				02F3BFDC29252E900051930C /* CourseRouter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -284,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				02B6B3C228E1DCD100232911 /* CourseDetails.swift */,
+				0276D75C29DDA3F80004CDF8 /* ResumeBlock.swift */,
 				022C64E129ADEB83000F532B /* CourseUpdate.swift */,
 			);
 			path = Model;
@@ -334,9 +358,11 @@
 		070019AA28F6F79E00D5FC78 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				02F066E729DC71750073E13B /* SubtittlesView.swift */,
 				0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */,
 				0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */,
 				0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */,
+				02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -354,6 +380,7 @@
 		0766DFD5299ADA4700EBEF6A /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */,
 				022EA8CA297AD63B0014A8F7 /* CourseContainerViewModelTests.swift */,
 			);
 			path = Container;
@@ -397,6 +424,10 @@
 				E6BDAE887ED8A46860B3F6D3 /* Pods-App-Course-CourseTests.release.xcconfig */,
 				4DD47D29A4059C1222E8B7D2 /* Pods-App-Course-CourseTests.releaseprod.xcconfig */,
 				2A444220A08C5035164B071F /* Pods-App-Course-CourseTests.releasedev.xcconfig */,
+				3D506212980347A9D5A70E20 /* Pods-App-Course.debugstage.xcconfig */,
+				A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */,
+				831B08139890634968EDD44D /* Pods-App-Course-CourseTests.debugstage.xcconfig */,
+				EBB67646EDD08315BA7B3DC5 /* Pods-App-Course-CourseTests.releasestage.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -601,6 +632,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0295B1D9297E6DF8003B0C65 /* CourseUnitViewModelTests.swift in Sources */,
+				02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */,
 				023812E7297AC8EB0087098F /* CourseDetailsViewModelTests.swift in Sources */,
 				023812F3297AC9ED0087098F /* CourseMock.generated.swift in Sources */,
 				022EA8CB297AD63B0014A8F7 /* CourseContainerViewModelTests.swift in Sources */,
@@ -612,6 +644,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02FFAD0D29E4347300140E46 /* VideoPlayerViewModel.swift in Sources */,
 				022C64DA29ACEC50000F532B /* HandoutsViewModel.swift in Sources */,
 				022C64DE29AD167A000F532B /* HandoutsUpdatesDetailView.swift in Sources */,
 				0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */,
@@ -620,6 +653,8 @@
 				02280F60294B50030032823A /* CoursePersistence.swift in Sources */,
 				02280F5E294B4FDA0032823A /* CourseCoreModel.xcdatamodeld in Sources */,
 				0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */,
+				0276D75B29DDA3890004CDF8 /* Data_ResumeBlock.swift in Sources */,
+				0276D75D29DDA3F80004CDF8 /* ResumeBlock.swift in Sources */,
 				02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */,
 				0248C92729C097EB00DC8402 /* CourseVerticalViewModel.swift in Sources */,
 				0295C887299BBDE300ABE571 /* UnitButtonView.swift in Sources */,
@@ -635,6 +670,7 @@
 				027020FC28E7362100F54332 /* Data_CourseOutlineResponse.swift in Sources */,
 				02E685C028E4B629000AE015 /* CourseDetailsViewModel.swift in Sources */,
 				0295C889299BBE8200ABE571 /* CourseNavigationView.swift in Sources */,
+				02F066E829DC71750073E13B /* SubtittlesView.swift in Sources */,
 				022C64E229ADEB83000F532B /* CourseUpdate.swift in Sources */,
 				0766DFD0299AB29000EBEF6A /* PlayerViewController.swift in Sources */,
 				022C64DC29ACFDEE000F532B /* Data_HandoutsResponse.swift in Sources */,
@@ -1371,6 +1407,239 @@
 			};
 			name = ReleaseProd;
 		};
+		02DD1CB729E80D4200F35DCE /* DebugStage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = DebugStage;
+		};
+		02DD1CB829E80D4200F35DCE /* DebugStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3D506212980347A9D5A70E20 /* Pods-App-Course.debugstage.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.CourseDetails;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = DebugStage;
+		};
+		02DD1CB929E80D4200F35DCE /* DebugStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 831B08139890634968EDD44D /* Pods-App-Course-CourseTests.debugstage.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = stepanok.CourseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = DebugStage;
+		};
+		02DD1CBA29E80D4700F35DCE /* ReleaseStage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = ReleaseStage;
+		};
+		02DD1CBB29E80D4700F35DCE /* ReleaseStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.CourseDetails;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = ReleaseStage;
+		};
+		02DD1CBC29E80D4700F35DCE /* ReleaseStage */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBB67646EDD08315BA7B3DC5 /* Pods-App-Course-CourseTests.releasestage.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = stepanok.CourseTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = ReleaseStage;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1379,9 +1648,11 @@
 			buildConfigurations = (
 				023812EB297AC8EB0087098F /* Debug */,
 				023812EC297AC8EB0087098F /* DebugProd */,
+				02DD1CB929E80D4200F35DCE /* DebugStage */,
 				023812ED297AC8EB0087098F /* DebugDev */,
 				023812EE297AC8EB0087098F /* Release */,
 				023812EF297AC8EB0087098F /* ReleaseProd */,
+				02DD1CBC29E80D4700F35DCE /* ReleaseStage */,
 				023812F0297AC8EB0087098F /* ReleaseDev */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1392,9 +1663,11 @@
 			buildConfigurations = (
 				0289F8F328E1C3510064F8F3 /* Debug */,
 				0289F8FA28E1C37B0064F8F3 /* DebugProd */,
+				02DD1CB729E80D4200F35DCE /* DebugStage */,
 				0289F8F828E1C3750064F8F3 /* DebugDev */,
 				0289F8F428E1C3510064F8F3 /* Release */,
 				0289F8FE28E1C3880064F8F3 /* ReleaseProd */,
+				02DD1CBA29E80D4700F35DCE /* ReleaseStage */,
 				0289F8FC28E1C3830064F8F3 /* ReleaseDev */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1405,9 +1678,11 @@
 			buildConfigurations = (
 				0289F8F628E1C3510064F8F3 /* Debug */,
 				0289F8FB28E1C37B0064F8F3 /* DebugProd */,
+				02DD1CB829E80D4200F35DCE /* DebugStage */,
 				0289F8F928E1C3750064F8F3 /* DebugDev */,
 				0289F8F728E1C3510064F8F3 /* Release */,
 				0289F8FF28E1C3880064F8F3 /* ReleaseProd */,
+				02DD1CBB29E80D4700F35DCE /* ReleaseStage */,
 				0289F8FD28E1C3830064F8F3 /* ReleaseDev */,
 			);
 			defaultConfigurationIsVisible = 0;

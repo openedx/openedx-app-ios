@@ -28,7 +28,7 @@ public extension DataLayer {
     // MARK: - Comments
     struct Comments: Codable {
         public let id: String
-        public let author: String
+        public let author: String?
         public let authorLabel: String?
         public let createdAt: String
         public let updatedAt: String
@@ -47,7 +47,6 @@ public extension DataLayer {
         public let endorsedAt: String?
         public let childCount: Int
         public let children: [String]
-        public let abuseFlaggedAnyUser: String?
         public let users: Users?
         
         enum CodingKeys: String, CodingKey {
@@ -71,15 +70,13 @@ public extension DataLayer {
             case endorsedAt = "endorsed_at"
             case childCount = "child_count"
             case children = "children"
-            case abuseFlaggedAnyUser = "abuse_flagged_any_user"
             case users
         }
         
-        public init(id: String, author: String, authorLabel: String?, createdAt: String, updatedAt: String, rawBody: String,
+        public init(id: String, author: String?, authorLabel: String?, createdAt: String, updatedAt: String, rawBody: String,
                     renderedBody: String, abuseFlagged: Bool, voted: Bool, voteCount: Int, editableFields: [String],
                     canDelete: Bool, threadID: String, parentID: String?, endorsed: Bool, endorsedBy: String?,
-                    endorsedByLabel: String?, endorsedAt: String?, childCount: Int, children: [String],
-                    abuseFlaggedAnyUser: String?, users: Users?) {
+                    endorsedByLabel: String?, endorsedAt: String?, childCount: Int, children: [String], users: Users?) {
             self.id = id
             self.author = author
             self.authorLabel = authorLabel
@@ -100,30 +97,31 @@ public extension DataLayer {
             self.endorsedAt = endorsedAt
             self.childCount = childCount
             self.children = children
-            self.abuseFlaggedAnyUser = abuseFlaggedAnyUser
             self.users = users
         }
     }
 }
 
-public extension DataLayer.Comments {
-    var domain: UserComment {
+public extension DataLayer.CommentsResponse {
+    var domain: [UserComment] {
+        self.comments.map { comment in
         UserComment(
-            authorName: author,
-            authorAvatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
-            postDate: Date(iso8601: createdAt),
+            authorName: comment.author ?? DiscussionLocalization.anonymous,
+            authorAvatar: comment.users?.userName?.profile?.image?.imageURLLarge ?? "",
+            postDate: Date(iso8601: comment.createdAt),
             postTitle: "",
-            postBody: rawBody,
-            postBodyHtml: renderedBody,
+            postBody: comment.rawBody,
+            postBodyHtml: comment.renderedBody,
             postVisible: true,
-            voted: voted,
+            voted: comment.voted,
             followed: false,
-            votesCount: voteCount,
-            responsesCount: childCount,
-            threadID: threadID,
-            commentID: id,
-            parentID: id,
-            abuseFlagged: abuseFlagged
+            votesCount: comment.voteCount,
+            responsesCount: pagination.count,
+            threadID: comment.threadID,
+            commentID: comment.id,
+            parentID: comment.id,
+            abuseFlagged: comment.abuseFlagged
         )
+        }
     }
 }

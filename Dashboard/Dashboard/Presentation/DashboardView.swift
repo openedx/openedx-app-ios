@@ -27,7 +27,7 @@ public struct DashboardView: View {
         self.viewModel = viewModel
         self.router = router
         Task {
-            await viewModel.getMyCourses()
+            await viewModel.getMyCourses(page: 1)
         }
     }
     
@@ -44,7 +44,9 @@ public struct DashboardView: View {
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {
-                        await viewModel.getMyCourses(withProgress: isIOS14)
+                        await viewModel.getMyCourses(page: 1,
+                                                     withProgress: isIOS14,
+                                                     refresh: true)
                     }) {
                         if viewModel.courses.isEmpty {
                             EmptyPageIcon()
@@ -56,17 +58,22 @@ public struct DashboardView: View {
                                         .padding(.bottom, 20)
                                     Spacer()
                                 }.padding(.leading, 10)
-                                ForEach(viewModel.courses, id: \.courseID) { course in
-                                    let index = viewModel.courses.firstIndex(where: {$0.courseID == course.courseID})
+                                ForEach(Array(viewModel.courses.enumerated()),
+                                        id: \.offset) { index, course in
                                     
                                     CourseCellView(
                                         model: course,
                                         type: .dashboard,
-                                        index: index ?? 0,
+                                        index: index,
                                         cellsCount: viewModel.courses.count
                                     )
                                     .padding(.horizontal, 20)
                                     .listRowBackground(Color.clear)
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.getMyCoursesPagination(index: index)
+                                        }
+                                    }
                                     .onTapGesture {
                                         router.showCourseScreens(
                                             courseID: course.courseID,
@@ -75,28 +82,31 @@ public struct DashboardView: View {
                                             courseEnd: course.courseEnd,
                                             enrollmentStart: course.enrollmentStart,
                                             enrollmentEnd: course.enrollmentEnd,
-                                            title: course.name,
-                                            courseBanner: course.imageURL,
-                                            certificate: course.certificate
+                                            title: course.name
                                         )
                                     }
+                                }
+                                // MARK: - ProgressBar
+                                if viewModel.nextPage <= viewModel.totalPages {
+                                    VStack(alignment: .center) {
+                                        ProgressBar(size: 40, lineWidth: 8)
+                                            .padding(.top, 20)
+                                    }.frame(maxWidth: .infinity,
+                                            maxHeight: .infinity)
                                 }
                                 VStack {}.frame(height: 40)
                             }
                         }
                     }.frameLimit()
-                    
-                    // MARK: - ProgressBar
-                    if viewModel.isShowProgress {
-                        ProgressBar(size: 40, lineWidth: 8)
-                    }
                 }
             }
             
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
                                 reloadAction: {
-                await viewModel.getMyCourses(withProgress: isIOS14)
+                await viewModel.getMyCourses( page: 1,
+                                              withProgress: isIOS14,
+                                              refresh: true)
             })
             
             // MARK: - Error Alert

@@ -8,12 +8,22 @@
 import Foundation
 
 public extension DataLayer {
+    
+    // MARK: - CourseMedia
+    struct CourseMedia: Decodable {
+        public let image: DataLayer.Image
+        
+        public init(image: DataLayer.Image) {
+            self.image = image
+        }
+    }
+    
     // MARK: - Media
     struct Media: Codable {
-        public let bannerImage: DataLayer.BannerImage
-        public let courseImage: DataLayer.CourseUrl
-        public let courseVideo: DataLayer.CourseUrl
-        public let image: DataLayer.Image
+        public let bannerImage: DataLayer.BannerImage?
+        public let courseImage: DataLayer.CourseUrl?
+        public let courseVideo: DataLayer.CourseUrl?
+        public let image: DataLayer.Image?
         
         enum CodingKeys: String, CodingKey {
             case bannerImage = "banner_image"
@@ -60,6 +70,12 @@ public extension DataLayer {
             case raw
             case small
             case large
+        }
+        
+        public init(raw: String, small: String, large: String) {
+            self.raw = raw
+            self.small = small
+            self.large = large
         }
     }
 }

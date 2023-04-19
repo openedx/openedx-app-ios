@@ -10,7 +10,11 @@ import Core
 import Combine
 
 public protocol DiscussionRepositoryProtocol {
-    func getThreads(courseID: String, type: ThreadType, page: Int) async throws -> ThreadLists
+    func getThreads(courseID: String,
+                    type: ThreadType,
+                    sort: SortType,
+                    filter: ThreadsFilter,
+                    page: Int) async throws -> ThreadLists
     func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists
     func getTopics(courseID: String) async throws -> Topics
     func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Int)
@@ -43,9 +47,13 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         self.router = router
     }
     
-    public func getThreads(courseID: String, type: ThreadType, page: Int) async throws -> ThreadLists {
+    public func getThreads(courseID: String,
+                           type: ThreadType,
+                           sort: SortType,
+                           filter: ThreadsFilter,
+                           page: Int) async throws -> ThreadLists {
         let threads = try await api.requestData(DiscussionEndpoint
-            .getThreads(courseID: courseID, type: type, page: page))
+            .getThreads(courseID: courseID, type: type, sort: sort, filter: filter, page: page))
         
         return try await renameThreadUser(data: threads).domain
     }
@@ -68,21 +76,21 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         let response = try await api.requestData(DiscussionEndpoint
             .getDiscussionComments(threadID: threadID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.comments.map { $0.domain }, result.pagination.numPages)
+        return (result.domain, result.pagination.numPages)
     }
     
     public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
         let response = try await api.requestData(DiscussionEndpoint
             .getQuestionComments(threadID: threadID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.comments.map { $0.domain }, result.pagination.numPages)
+        return (result.domain, result.pagination.numPages)
     }
     
     public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Int) {
         let response = try await api.requestData(DiscussionEndpoint
             .getCommentResponses(commentID: commentID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.comments.map { $0.domain }, result.pagination.numPages)
+        return (result.domain, result.pagination.numPages)
     }
     
     public func addCommentTo(threadID: String, rawBody: String, parentID: String? = nil) async throws -> Post {
@@ -115,7 +123,7 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
     }
     
     public func readBody(threadID: String) async throws {
-//        _ = try await api.request(DiscussionEndpoint.readBody(threadID: threadID))
+        _ = try await api.request(DiscussionEndpoint.readBody(threadID: threadID))
     }
     
     public func renameThreadUser(data: Data) async throws -> DataLayer.ThreadListsResponse {
@@ -205,7 +213,11 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                         abuseFlagged: false)
         ]
     
-    public func getThreads(courseID: String, type: ThreadType, page: Int) async throws -> ThreadLists {
+    public func getThreads(courseID: String,
+                           type: ThreadType,
+                           sort: SortType,
+                           filter: ThreadsFilter,
+                           page: Int) async throws -> ThreadLists {
         ThreadLists(
             threads: [
                 UserThread(id: "", author: "Peter",
@@ -220,6 +232,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                            type: .discussion,
                            title: "Thread about nature",
                            pinned: false,
+                           closed: false,
                            following: false,
                            commentCount: 12,
                            avatar: "",
@@ -239,6 +252,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                            type: .question,
                            title: "Exam questions here",
                            pinned: false,
+                           closed: false,
                            following: false,
                            commentCount: 5,
                            avatar: "",
@@ -264,6 +278,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                             type: .discussion,
                             title: "Thread about nature",
                             pinned: false,
+                            closed: false,
                             following: false,
                             commentCount: 12,
                             avatar: "",
@@ -283,6 +298,7 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                             type: .question,
                             title: "Exam questions here",
                             pinned: false,
+                            closed: false,
                             following: false,
                             commentCount: 5,
                             avatar: "",
@@ -340,7 +356,8 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
             threadID: "threadID",
             commentID: "commentID",
             parentID: nil,
-            abuseFlagged: false
+            abuseFlagged: false,
+            closed: false
         )
     }
     
@@ -400,7 +417,6 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                                    endorsedAt: nil,
                                    childCount: 0,
                                    children: [],
-                                   abuseFlaggedAnyUser: nil,
                                    users: nil)
             ], pagination: DataLayer.Pagination(next: nil, previous: nil, count: 0, numPages: 0))
     }

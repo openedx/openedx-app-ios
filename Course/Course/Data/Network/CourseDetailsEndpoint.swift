@@ -11,22 +11,21 @@ import Alamofire
 
 enum CourseDetailsEndpoint: EndPointType {
     case getCourseDetail(courseID: String)
-    case getEnrollments(username: String)
     case getCourseBlocks(courseID: String, userName: String)
     case pageHTML(pageUrlString: String)
     case enrollToCourse(courseID: String)
     case blockCompletionRequest(username: String, courseID: String, blockID: String)
     case getHandouts(courseID: String)
     case getUpdates(courseID: String)
+    case resumeBlock(userName: String, courseID: String)
+    case getSubtitles(url: String)
 
     var path: String {
         switch self {
         case .getCourseDetail(let courseID):
-            return "/api/courses/v1/courses/\(courseID)"
-        case .getEnrollments(username: let username):
-            return "/api/mobile/v1/users/\(username)/course_enrollments/"
+            return "/mobile_api_extensions/v1/courses/\(courseID)"
         case .getCourseBlocks:
-            return "/api/courses/v1/blocks/"
+            return "/mobile_api_extensions/v1/blocks/"
         case .pageHTML(pageUrlString: let url):
             return "/xblock/\(url)"
         case .enrollToCourse:
@@ -37,15 +36,16 @@ enum CourseDetailsEndpoint: EndPointType {
             return "/api/mobile/v1/course_info/\(courseID)/handouts"
         case .getUpdates(courseID: let courseID):
             return "/api/mobile/v1/course_info/\(courseID)/updates"
-
+        case let .resumeBlock(userName, courseID):
+            return "/api/mobile/v1/users/\(userName)/course_status_info/\(courseID)"
+        case .getSubtitles(url: let url):
+            return url
         }
     }
 
     var httpMethod: HTTPMethod {
         switch self {
         case .getCourseDetail:
-            return .get
-        case .getEnrollments:
             return .get
         case .getCourseBlocks:
             return .get
@@ -58,6 +58,10 @@ enum CourseDetailsEndpoint: EndPointType {
         case .getHandouts:
             return .get
         case .getUpdates:
+            return .get
+        case .resumeBlock:
+            return .get
+        case .getSubtitles:
             return .get
         }
     }
@@ -84,8 +88,6 @@ enum CourseDetailsEndpoint: EndPointType {
                 "block_counts": "video"
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
-        case .getEnrollments:
-            return .request
         case .pageHTML:
             return .request
         case .enrollToCourse(courseID: let courseID):
@@ -107,6 +109,14 @@ enum CourseDetailsEndpoint: EndPointType {
             return .requestParameters(encoding: JSONEncoding.default)
         case .getUpdates:
             return .requestParameters(encoding: JSONEncoding.default)
+        case .resumeBlock:
+            return .requestParameters(encoding: JSONEncoding.default)
+        case .getSubtitles:
+           let languageCode = Locale.current.languageCode ?? "en"
+            let params: [String: Any] = [
+                "lang": languageCode
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         }
     }
 }

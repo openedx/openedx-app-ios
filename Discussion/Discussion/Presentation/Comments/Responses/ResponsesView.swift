@@ -49,8 +49,8 @@ public struct ResponsesView: View {
                             ZStack(alignment: .top) {
                                 RefreshableScrollViewCompat(action: {
                                     viewModel.comments = []
-                                  _ = await viewModel.getComments(commentID: commentID,
-                                                                  parentComment: parentComment, page: 1)
+                                    _ = await viewModel.getComments(commentID: commentID,
+                                                                    parentComment: parentComment, page: 1)
                                 }) {
                                     VStack {
                                         if let comments = viewModel.postComments {
@@ -145,18 +145,20 @@ public struct ResponsesView: View {
                                     }
                                 }.frameLimit()
                                 
-                                FlexibleKeyboardInputView(
-                                    hint: DiscussionLocalization.Response.addComment,
-                                    sendText: { commentText in
-                                        if let threadID = viewModel.postComments?.threadID {
-                                            Task {
-                                                await viewModel.postComment(threadID: threadID,
-                                                                            rawBody: commentText,
-                                                                            parentID: viewModel.postComments?.parentID)
+                                if !parentComment.closed {
+                                    FlexibleKeyboardInputView(
+                                        hint: DiscussionLocalization.Response.addComment,
+                                        sendText: { commentText in
+                                            if let threadID = viewModel.postComments?.threadID {
+                                                Task {
+                                                    await viewModel.postComment(threadID: threadID,
+                                                                                rawBody: commentText,
+                                                                                parentID: viewModel.postComments?.parentID)
+                                                }
                                             }
                                         }
-                                    }
-                                )
+                                    )
+                                }
                             }
                         }
                         .onReceive(viewModel.addPostSubject, perform: { newComment in
@@ -223,7 +225,8 @@ struct ResponsesView_Previews: PreviewProvider {
             threadID: "",
             commentID: "",
             parentID: "",
-            abuseFlagged: false
+            abuseFlagged: false,
+            closed: false
         )
         let router = DiscussionRouterMock()
         
