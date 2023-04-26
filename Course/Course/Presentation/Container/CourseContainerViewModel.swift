@@ -115,11 +115,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
         let blocks = chapter.childs
-            .filter { $0.isDownloadable }
+            .first(where: { $0.id == blockId })?.childs
             .flatMap { $0.childs }
-            .filter { $0.isDownloadable }
-            .flatMap { $0.childs }
-            .filter { $0.isDownloadable }
+            .filter { $0.isDownloadable } ?? []
         
         do {
             switch state {
