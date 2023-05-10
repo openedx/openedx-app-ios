@@ -271,7 +271,7 @@ public class EditProfileViewModel: ObservableObject {
     private func generateYears() {
         let currentYear = Calendar.current.component(.year, from: Date())
         years = []
-        for i in currentYear-100...currentYear {
+        for i in stride(from: currentYear, to: currentYear - 100, by: -1) {
             years.append(PickerFields.Option(value: "\(i)", name: "\(i)", optionDefault: false))
         }
     }
