@@ -31,7 +31,6 @@ public struct CreateNewThreadView: View {
         self.onPostCreated = onPostCreated
         self.courseID = courseID
         viewModel.selectedTopic = selectedTopic
-        print(">>>>> SELECTED TOPIC ",selectedTopic, "???", viewModel.selectedTopic)
         Task {
             await viewModel.getTopics(courseID: courseID)
         }
@@ -189,9 +188,6 @@ public struct CreateNewThreadView: View {
             CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
-        .onChange(of: viewModel.selectedTopic, perform: { selected in
-            print(">>>>> NEW SELECTED TOPIC ", selected)
-        })
     }
 }
 
