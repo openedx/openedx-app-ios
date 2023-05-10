@@ -44,8 +44,10 @@ public class CreateNewThreadViewModel: ObservableObject {
             if let topics {
                 allTopics = topics.nonCoursewareTopics.map { $0 }
                 allTopics.append(contentsOf: topics.coursewareTopics.flatMap { $0.children.map { $0 } })
-                if let topic = allTopics.first {
-                    selectedTopic = topic.id
+                if selectedTopic == "" {
+                    if let topic = allTopics.first {
+                        selectedTopic = topic.id
+                    }
                 }
             }
         } catch {

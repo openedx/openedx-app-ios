@@ -224,7 +224,7 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(PostsViewModel.self)!
-        let view = PostsView(courseID: courseID, topics: topics, title: title,
+        let view = PostsView(courseID: courseID, currentBlockID: "", topics: topics, title: title,
                              type: type, viewModel: viewModel, router: router)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)

@@ -172,12 +172,6 @@ public class EditProfileViewModel: ObservableObject {
                 }
             }
         }
-        if userModel.yearOfBirth == 0 {
-            withAnimation {
-                isYongUser = true
-                profileChanges.profileType = .limited
-            }
-        }
         if profileChanges.profileType == .full {
             isEditable = true
         } else {
@@ -321,8 +315,9 @@ public class EditProfileViewModel: ObservableObject {
     }
     
     public func loadLocationsAndSpokenLanguages() {
-        let yearOfBirth = userModel.yearOfBirth == 0 ? 2023 : userModel.yearOfBirth
-        self.selectedYearOfBirth = PickerItem(key: "\(yearOfBirth)", value: "\(yearOfBirth)")
+        if let yearOfBirth = userModel.yearOfBirth == 0 ? nil : userModel.yearOfBirth {
+            self.selectedYearOfBirth = PickerItem(key: "\(yearOfBirth)", value: "\(yearOfBirth)")
+        }
         
         if let index = countries.firstIndex(where: {$0.value == userModel.country}) {
             countries[index].optionDefault = true

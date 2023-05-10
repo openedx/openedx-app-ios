@@ -108,6 +108,7 @@ public struct CourseUnitView: View {
                                     let id = "course-v1:"
                                     + (viewModel.lessonID.find(from: "block-v1:", to: "+type").first ?? "")
                                     PostsView(courseID: id,
+                                              currentBlockID: blockID,
                                               topics: Topics(coursewareTopics: [],
                                                              nonCoursewareTopics: []),
                                               title: "", type: .courseTopics(topicID: blockID),
