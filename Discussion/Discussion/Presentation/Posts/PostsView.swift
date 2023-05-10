@@ -17,13 +17,15 @@ public struct PostsView: View {
     @State private var listAnimation: Animation?
     private let router: DiscussionRouter
     private let title: String
+    private let currentBlockID: String
     private let courseID: String
     private var showTopMenu: Bool
     
-    public init(courseID: String, topics: Topics, title: String, type: ThreadType,
+    public init(courseID: String, currentBlockID: String, topics: Topics, title: String, type: ThreadType,
                 viewModel: PostsViewModel, router: DiscussionRouter, showTopMenu: Bool = true) {
         self.courseID = courseID
         self.title = title
+        self.currentBlockID = currentBlockID
         self.router = router
         self.showTopMenu = showTopMenu
         self.viewModel = viewModel
@@ -31,17 +33,18 @@ public struct PostsView: View {
         self.viewModel.topics = topics
         viewModel.type = type
         Task {
-            await viewModel.getPosts(courseID: courseID, pageNumber: 1,   withProgress: true)
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1, withProgress: true)
         }
     }
     
     public init(courseID: String, router: DiscussionRouter, viewModel: PostsViewModel) {
         self.courseID = courseID
         self.title = ""
+        self.currentBlockID = ""
         self.router = router
         self.viewModel = viewModel
         Task {
-            await viewModel.getPosts(courseID: courseID, pageNumber: 1,   withProgress: true)
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1, withProgress: true)
         }
         self.showTopMenu = true
         self.viewModel.courseID = courseID
@@ -137,7 +140,7 @@ public struct PostsView: View {
                                     Spacer()
                                     Button(action: {
                                         router.createNewThread(courseID: courseID,
-                                                               selectedTopic: title,
+                                                               selectedTopic: currentBlockID,
                                                                onPostCreated: {
                                             reloadPage(onSuccess: {
                                                 withAnimation {
@@ -210,6 +213,7 @@ struct PostsView_Previews: PreviewProvider {
         )
         
         PostsView(courseID: "course_id",
+                  currentBlockID: "123",
                   topics: topics,
                   title: "Lesson question",
                   type: .allPosts,
@@ -220,6 +224,7 @@ struct PostsView_Previews: PreviewProvider {
         .loadFonts()
         
         PostsView(courseID: "course_id",
+                  currentBlockID: "123",
                   topics: topics,
                   title: "Lesson question",
                   type: .allPosts,
