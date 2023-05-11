@@ -58,6 +58,7 @@ public enum CoreAssets {
   public static let discussion = ImageAsset(name: "discussion")
   public static let extra = ImageAsset(name: "extra")
   public static let filter = ImageAsset(name: "filter")
+  public static let finished = ImageAsset(name: "finished")
   public static let followed = ImageAsset(name: "followed")
   public static let pen = ImageAsset(name: "pen")
   public static let question = ImageAsset(name: "question")

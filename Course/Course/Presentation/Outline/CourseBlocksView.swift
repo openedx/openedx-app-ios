@@ -45,8 +45,7 @@ public struct CourseBlocksView: View {
                                 HStack {
                                     Group {
                                         if block.completion == 1 {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(.accentColor)
+                                            CoreAssets.finished.swiftUIImage
                                         } else {
                                             block.type.image
                                         }
