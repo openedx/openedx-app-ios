@@ -17,6 +17,7 @@ public struct CourseOutlineView: View {
     private let isVideo: Bool
     
     @State private var openCertificateView: Bool = false
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(
         viewModel: CourseContainerViewModel,
@@ -117,6 +118,11 @@ public struct CourseOutlineView: View {
                                                     Text(child.displayName)
                                                         .font(Theme.Fonts.titleMedium)
                                                         .multilineTextAlignment(.leading)
+                                                        .lineLimit(1)
+                                                        .frame(maxWidth: idiom == .pad
+                                                               ? proxy.size.width * 0.5
+                                                               : proxy.size.width * 0.6,
+                                                               alignment: .leading)
                                                 }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                                 Spacer()
                                                 if let state = viewModel.downloadState[child.id] {
