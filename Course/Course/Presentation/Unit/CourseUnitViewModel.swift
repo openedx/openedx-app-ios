@@ -47,7 +47,6 @@ public class CourseUnitViewModel: ObservableObject {
     @Published var previousLesson: String = ""
     @Published var nextLesson: String = ""
     @Published var lessonType: LessonType?
-    @Published var killPlayer = false
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {

@@ -12,11 +12,12 @@ struct CourseNavigationView: View {
     
     @ObservedObject private var viewModel: CourseUnitViewModel
     private let sectionName: String
+    @Binding var killPlayer: Bool
 
-    init(sectionName: String, viewModel: CourseUnitViewModel) {
+    init(sectionName: String, viewModel: CourseUnitViewModel, killPlayer: Binding<Bool>) {
         self.viewModel = viewModel
         self.sectionName = sectionName
-        
+        self._killPlayer = killPlayer
     }
     
     var body: some View {
@@ -24,24 +25,24 @@ struct CourseNavigationView: View {
             if viewModel.selectedLesson() == viewModel.blocks.first
                 && viewModel.blocks.count != 1 {
                 UnitButtonView(type: .first, action: {
+                    killPlayer.toggle()
                     viewModel.select(move: .next)
-                    self.viewModel.createLessonType()
-                    self.viewModel.killPlayer.toggle()
+                    viewModel.createLessonType()
                 })
             } else {
                
                 if viewModel.previousLesson != "" {
                     UnitButtonView(type: .previous, action: {
+                        killPlayer.toggle()
                         viewModel.select(move: .previous)
-                        self.viewModel.createLessonType()
-                        self.viewModel.killPlayer.toggle()
+                        viewModel.createLessonType()
                     })
                 }
                 if viewModel.nextLesson != "" {
                     UnitButtonView(type: .next, action: {
+                        killPlayer.toggle()
                         viewModel.select(move: .next)
-                        self.viewModel.createLessonType()
-                        self.viewModel.killPlayer.toggle()
+                        viewModel.createLessonType()
                     })
                 }
                 if viewModel.selectedLesson() == viewModel.blocks.last {
@@ -54,6 +55,7 @@ struct CourseNavigationView: View {
                             image: CoreAssets.goodWork.swiftUIImage,
                             onCloseTapped: {},
                             okTapped: {
+                                killPlayer.toggle()
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.removeLastView(controllers: 2)
                             }
@@ -78,7 +80,7 @@ struct CourseNavigationView_Previews: PreviewProvider {
                                             connectivity: Connectivity(),
                                             manager: DownloadManagerMock())
         
-        CourseNavigationView(sectionName: "Name", viewModel: viewModel)
+        CourseNavigationView(sectionName: "Name", viewModel: viewModel, killPlayer: .constant(false))
     }
 }
 #endif

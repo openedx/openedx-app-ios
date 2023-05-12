@@ -162,7 +162,7 @@ public struct YouTubeVideoPlayer: View {
                     HStack(spacing: 6) {
                         CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
                         Text(alertMessage ?? "")
-                    }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
+                    }.shadowCardStyle(bgColor: CoreAssets.snackbarInfoAlert.swiftUIColor,
                                       textColor: .white)
                     .transition(.move(edge: .bottom))
                     .onAppear {

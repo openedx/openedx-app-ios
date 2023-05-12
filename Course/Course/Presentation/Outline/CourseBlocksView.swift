@@ -15,7 +15,8 @@ public struct CourseBlocksView: View {
     private var title: String
     @ObservedObject
     private var viewModel: CourseBlocksViewModel
-    
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+
     public init(title: String,
                 viewModel: CourseBlocksViewModel) {
         self.title = title
@@ -26,78 +27,86 @@ public struct CourseBlocksView: View {
         ZStack(alignment: .top) {
             
             // MARK: - Page name
-            VStack(alignment: .center) {
-                NavigationBar(title: title,
-                leftButtonAction: { viewModel.router.back() })
-                
-                // MARK: - Page Body
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        // MARK: - Lessons list
-                        ForEach(viewModel.blocks, id: \.id) { block in
-                            let index = viewModel.blocks.firstIndex(where: { $0.id == block.id })
-                            Button(action: {
-                                viewModel.router.showCourseUnit(blockId: block.id,
-                                                                courseID: block.blockId,
-                                                                sectionName: title,
-                                                                blocks: viewModel.blocks)
-                            }, label: {
-                                HStack {
-                                    Group {
-                                        if block.completion == 1 {
-                                            CoreAssets.finished.swiftUIImage
-                                        } else {
-                                            block.type.image
+            GeometryReader { proxy in
+                VStack(alignment: .center) {
+                    NavigationBar(title: title,
+                                  leftButtonAction: { viewModel.router.back() })
+
+                    // MARK: - Page Body
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            // MARK: - Lessons list
+                            ForEach(viewModel.blocks, id: \.id) { block in
+                                let index = viewModel.blocks.firstIndex(where: { $0.id == block.id })
+                                Button(action: {
+                                    viewModel.router.showCourseUnit(blockId: block.id,
+                                                                    courseID: block.blockId,
+                                                                    sectionName: title,
+                                                                    blocks: viewModel.blocks)
+                                }, label: {
+                                    HStack {
+                                        Group {
+                                            if block.completion == 1 {
+                                                CoreAssets.finished.swiftUIImage
+                                                    .renderingMode(.template)
+                                                    .foregroundColor(.accentColor)
+                                            } else {
+                                                block.type.image
+                                            }
+                                            Text(block.displayName)
+                                                .multilineTextAlignment(.leading)
+                                                .font(Theme.Fonts.titleMedium)
+                                                .lineLimit(1)
+                                                .frame(maxWidth: idiom == .pad
+                                                       ? proxy.size.width * 0.5
+                                                       : proxy.size.width * 0.6,
+                                                       alignment: .leading)
+                                        }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                        Spacer()
+                                        if let state = viewModel.downloadState[block.id] {
+                                            switch state {
+                                            case .available:
+                                                DownloadAvailableView()
+                                                    .onTapGesture {
+                                                        viewModel.onDownloadViewTap(blockId: block.id, state: state)
+                                                    }
+                                                    .onForeground {
+                                                        viewModel.onForeground()
+                                                    }
+                                            case .downloading:
+                                                DownloadProgressView()
+                                                    .onTapGesture {
+                                                        viewModel.onDownloadViewTap(blockId: block.id, state: state)
+                                                    }
+                                                    .onBackground {
+                                                        viewModel.onBackground()
+                                                    }
+                                            case .finished:
+                                                DownloadFinishedView()
+                                                    .onTapGesture {
+                                                        viewModel.onDownloadViewTap(blockId: block.id, state: state)
+                                                    }
+                                            }
                                         }
-                                        Text(block.displayName)
-                                            .multilineTextAlignment(.leading)
-                                            .font(Theme.Fonts.titleMedium)
-                                            .multilineTextAlignment(.leading)
-                                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                                    Spacer()
-                                    if let state = viewModel.downloadState[block.id] {
-                                        switch state {
-                                        case .available:
-                                            DownloadAvailableView()
-                                                .onTapGesture {
-                                                    viewModel.onDownloadViewTap(blockId: block.id, state: state)
-                                                }
-                                                .onForeground {
-                                                    viewModel.onForeground()
-                                                }
-                                        case .downloading:
-                                            DownloadProgressView()
-                                                .onTapGesture {
-                                                    viewModel.onDownloadViewTap(blockId: block.id, state: state)
-                                                }
-                                                .onBackground {
-                                                    viewModel.onBackground()
-                                                }
-                                        case .finished:
-                                            DownloadFinishedView()
-                                                .onTapGesture {
-                                                    viewModel.onDownloadViewTap(blockId: block.id, state: state)
-                                                }
-                                        }
+                                        Image(systemName: "chevron.right")
+                                            .padding(.vertical, 8)
                                     }
-                                    Image(systemName: "chevron.right")
-                                        .padding(.vertical, 8)
+                                }).padding(.horizontal, 36)
+                                    .padding(.vertical, 14)
+                                if index != viewModel.blocks.count - 1 {
+                                    Divider()
+                                        .frame(height: 1)
+                                        .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                                        .padding(.horizontal, 24)
                                 }
-                            }).padding(.horizontal, 36)
-                                .padding(.vertical, 14)
-                            if index != viewModel.blocks.count - 1 {
-                                Divider()
-                                    .frame(height: 1)
-                                    .overlay(CoreAssets.cardViewStroke.swiftUIColor)
-                                    .padding(.horizontal, 24)
                             }
                         }
-                    }
-                    Spacer(minLength: 84)
-                }.frameLimit()
-                    .onRightSwipeGesture {
-                        viewModel.router.back()
-                    }
+                        Spacer(minLength: 84)
+                    }.frameLimit()
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
+                }
             }
             
             // MARK: - Offline mode SnackBar

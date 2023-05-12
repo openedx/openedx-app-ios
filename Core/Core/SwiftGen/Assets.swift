@@ -38,6 +38,7 @@ public enum CoreAssets {
   public static let shadowColor = ColorAsset(name: "ShadowColor")
   public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
   public static let snackbarErrorTextColor = ColorAsset(name: "SnackbarErrorTextColor")
+  public static let snackbarInfoAlert = ColorAsset(name: "SnackbarInfoAlert")
   public static let styledButtonBackground = ColorAsset(name: "StyledButtonBackground")
   public static let styledButtonText = ColorAsset(name: "StyledButtonText")
   public static let textPrimary = ColorAsset(name: "TextPrimary")

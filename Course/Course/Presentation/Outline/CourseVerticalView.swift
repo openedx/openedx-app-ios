@@ -15,6 +15,7 @@ public struct CourseVerticalView: View {
     private var title: String
     @ObservedObject
     private var viewModel: CourseVerticalViewModel
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(
         title: String,
@@ -31,74 +32,82 @@ public struct CourseVerticalView: View {
                 leftButtonAction: { viewModel.router.back() })
                 
                 // MARK: - Page Body
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        // MARK: - Lessons list
-                        ForEach(viewModel.verticals, id: \.id) { vertical in
-                            let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id})
-                            Button(action: {
-                                viewModel.router.showCourseBlocksView(
-                                    title: vertical.displayName,
-                                    blocks: vertical.childs
-                                )
-                            }, label: {
-                                HStack {
-                                    Group {
-                                        if vertical.completion == 1 {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(.accentColor)
-                                        } else {
-                                            vertical.type.image
+                GeometryReader { proxy in
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            // MARK: - Lessons list
+                            ForEach(viewModel.verticals, id: \.id) { vertical in
+                                let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id})
+                                Button(action: {
+                                    viewModel.router.showCourseBlocksView(
+                                        title: vertical.displayName,
+                                        blocks: vertical.childs
+                                    )
+                                }, label: {
+                                    HStack {
+                                        Group {
+                                            if vertical.completion == 1 {
+                                                CoreAssets.finished.swiftUIImage
+                                                    .renderingMode(.template)
+                                                    .foregroundColor(.accentColor)
+                                            } else {
+                                                vertical.type.image
+                                            }
+                                            Text(vertical.displayName)
+                                                .font(Theme.Fonts.titleMedium)
+                                                .lineLimit(1)
+                                                .frame(maxWidth: idiom == .pad
+                                                       ? proxy.size.width * 0.5
+                                                       : proxy.size.width * 0.6,
+                                                       alignment: .leading)
+                                                .multilineTextAlignment(.leading)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                        }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                        Spacer()
+                                        if let state = viewModel.downloadState[vertical.id] {
+                                            switch state {
+                                            case .available:
+                                                DownloadAvailableView()
+                                                    .onTapGesture {
+                                                        viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
+                                                    }
+                                                    .onForeground {
+                                                        viewModel.onForeground()
+                                                    }
+                                            case .downloading:
+                                                DownloadProgressView()
+                                                    .onTapGesture {
+                                                        viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
+                                                    }
+                                                    .onBackground {
+                                                        viewModel.onBackground()
+                                                    }
+                                            case .finished:
+                                                DownloadFinishedView()
+                                                    .onTapGesture {
+                                                        viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
+                                                    }
+                                            }
                                         }
-                                        Text(vertical.displayName)
-                                            .font(Theme.Fonts.titleMedium)
-                                            .multilineTextAlignment(.leading)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                                    Spacer()
-                                    if let state = viewModel.downloadState[vertical.id] {
-                                        switch state {
-                                        case .available:
-                                            DownloadAvailableView()
-                                                .onTapGesture {
-                                                    viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
-                                                }
-                                                .onForeground {
-                                                    viewModel.onForeground()
-                                                }
-                                        case .downloading:
-                                            DownloadProgressView()
-                                                .onTapGesture {
-                                                    viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
-                                                }
-                                                .onBackground {
-                                                    viewModel.onBackground()
-                                                }
-                                        case .finished:
-                                            DownloadFinishedView()
-                                                .onTapGesture {
-                                                    viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
-                                                }
-                                        }
+                                        Image(systemName: "chevron.right")
+                                            .padding(.vertical, 8)
                                     }
-                                    Image(systemName: "chevron.right")
-                                        .padding(.vertical, 8)
+                                }).padding(.horizontal, 36)
+                                    .padding(.vertical, 14)
+                                if index != viewModel.verticals.count - 1 {
+                                    Divider()
+                                        .frame(height: 1)
+                                        .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                                        .padding(.horizontal, 24)
                                 }
-                            }).padding(.horizontal, 36)
-                                .padding(.vertical, 14)
-                            if index != viewModel.verticals.count - 1 {
-                                Divider()
-                                    .frame(height: 1)
-                                    .overlay(CoreAssets.cardViewStroke.swiftUIColor)
-                                    .padding(.horizontal, 24)
                             }
                         }
-                    }
-                    Spacer(minLength: 84)
-                }.frameLimit()
-                    .onRightSwipeGesture {
-                        viewModel.router.back()
-                    }
+                        Spacer(minLength: 84)
+                    }.frameLimit()
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
+                }
             }
             
             // MARK: - Offline mode SnackBar

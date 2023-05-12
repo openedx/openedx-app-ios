@@ -22,6 +22,7 @@ public struct CourseUnitView: View {
             }
         }
     }
+    @State var killPlayer: Bool = false
     private let sectionName: String
     
     public init(viewModel: CourseUnitViewModel,
@@ -41,7 +42,7 @@ public struct CourseUnitView: View {
                     NavigationBar(title: "",
                                          leftButtonAction: {
                         viewModel.router.back()
-                        self.viewModel.killPlayer.toggle()
+                        killPlayer.toggle()
                     })
 
                     // MARK: - Page Body
@@ -72,7 +73,7 @@ public struct CourseUnitView: View {
                                         blockID: blockID,
                                         courseID: viewModel.courseID,
                                         languages: viewModel.languages(),
-                                        killPlayer: $viewModel.killPlayer
+                                        killPlayer: $killPlayer
                                     )
                                     Spacer()
                                 case .web(let url):
@@ -133,7 +134,7 @@ public struct CourseUnitView: View {
                                             .padding(.horizontal, 20)
                                         UnitButtonView(type: .reload, action: {
                                             self.viewModel.createLessonType()
-                                            self.viewModel.killPlayer.toggle()
+                                            killPlayer.toggle()
                                         }).frame(width: 100)
                                     }.frame(maxWidth: .infinity, maxHeight: .infinity)
                                 }
@@ -163,7 +164,8 @@ public struct CourseUnitView: View {
                                 // MARK: - Course Navigation
                                         CourseNavigationView(
                                             sectionName: sectionName,
-                                            viewModel: viewModel
+                                            viewModel: viewModel,
+                                            killPlayer: $killPlayer
                                         ).padding(.vertical, 12)
                                             .frameLimit(sizePortrait: 420)
                                     .background(
@@ -176,7 +178,7 @@ public struct CourseUnitView: View {
                     }.frame(maxWidth: .infinity)
                         .onRightSwipeGesture {
                             viewModel.router.back()
-                            self.viewModel.killPlayer.toggle()
+                            killPlayer.toggle()
                         }
 
                 }
