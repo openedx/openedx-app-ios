@@ -47,7 +47,8 @@ public struct CourseVerticalView: View {
                                     HStack {
                                         Group {
                                             if vertical.completion == 1 {
-                                                Image(systemName: "checkmark.circle.fill")
+                                                CoreAssets.finished.swiftUIImage
+                                                    .renderingMode(.template)
                                                     .foregroundColor(.accentColor)
                                             } else {
                                                 vertical.type.image

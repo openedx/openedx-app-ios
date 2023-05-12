@@ -48,6 +48,8 @@ public struct CourseBlocksView: View {
                                         Group {
                                             if block.completion == 1 {
                                                 CoreAssets.finished.swiftUIImage
+                                                    .renderingMode(.template)
+                                                    .foregroundColor(.accentColor)
                                             } else {
                                                 block.type.image
                                             }

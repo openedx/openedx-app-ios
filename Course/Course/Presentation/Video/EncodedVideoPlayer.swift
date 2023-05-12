@@ -100,6 +100,7 @@ public struct EncodedVideoPlayer: View {
                     }
                 }
             }.onChange(of: killPlayer, perform: { _ in
+                controller.player?.pause()
                 controller.player?.replaceCurrentItem(with: nil)
             })
             // MARK: - Alert
