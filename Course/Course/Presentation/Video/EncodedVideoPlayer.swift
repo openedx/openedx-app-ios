@@ -107,7 +107,7 @@ public struct EncodedVideoPlayer: View {
                     HStack(spacing: 6) {
                         CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
                         Text(alertMessage ?? "")
-                    }.shadowCardStyle(bgColor: CoreAssets.rotationAlert.swiftUIColor,
+                    }.shadowCardStyle(bgColor: CoreAssets.snackbarInfoAlert.swiftUIColor,
                                       textColor: .white)
                     .transition(.move(edge: .bottom))
                     .onAppear {
