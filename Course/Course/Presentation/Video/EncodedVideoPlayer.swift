@@ -71,6 +71,8 @@ public struct EncodedVideoPlayer: View {
                         currentTime = seconds
                     })
                 .aspectRatio(16 / 9, contentMode: .fit)
+                .cornerRadius(12)
+                .padding(.horizontal, 6)
                 .onReceive(NotificationCenter.Publisher(
                     center: .default,
                     name: UIDevice.orientationDidChangeNotification)) { _ in
