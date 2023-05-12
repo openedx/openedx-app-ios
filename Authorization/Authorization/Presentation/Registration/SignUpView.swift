@@ -35,8 +35,8 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        VStack {}
-                            .titleSettings()
+                        Text(AuthLocalization.SignUp.title)
+                            .titleSettings(color: .white)
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
@@ -154,10 +154,12 @@ struct SignUpView_Previews: PreviewProvider {
         SignUpView(viewModel: vm)
             .preferredColorScheme(.light)
             .previewDisplayName("SignUpView Light")
+            .loadFonts()
         
         SignUpView(viewModel: vm)
             .preferredColorScheme(.dark)
             .previewDisplayName("SignUpView Dark")
+            .loadFonts()
     }
 }
 #endif
