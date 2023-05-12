@@ -95,6 +95,8 @@ public struct YouTubeVideoPlayer: View {
                             }
                         }
                     })
+                .cornerRadius(12)
+                .padding(.horizontal, 6)
                 .aspectRatio(16/8.8, contentMode: .fit)
                 .onReceive(NotificationCenter
                     .Publisher(center: .default,

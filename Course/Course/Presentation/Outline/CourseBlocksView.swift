@@ -16,7 +16,7 @@ public struct CourseBlocksView: View {
     @ObservedObject
     private var viewModel: CourseBlocksViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-    
+
     public init(title: String,
                 viewModel: CourseBlocksViewModel) {
         self.title = title
@@ -31,7 +31,7 @@ public struct CourseBlocksView: View {
                 VStack(alignment: .center) {
                     NavigationBar(title: title,
                                   leftButtonAction: { viewModel.router.back() })
-                    
+
                     // MARK: - Page Body
                     ScrollView {
                         VStack(alignment: .leading) {
@@ -47,8 +47,7 @@ public struct CourseBlocksView: View {
                                     HStack {
                                         Group {
                                             if block.completion == 1 {
-                                                Image(systemName: "checkmark.circle.fill")
-                                                    .foregroundColor(.accentColor)
+                                                CoreAssets.finished.swiftUIImage
                                             } else {
                                                 block.type.image
                                             }
