@@ -26,23 +26,28 @@ struct CourseNavigationView: View {
                 && viewModel.blocks.count != 1 {
                 UnitButtonView(type: .first, action: {
                     killPlayer.toggle()
-                    viewModel.select(move: .next)
-                    viewModel.createLessonType()
+                    withAnimation {
+                        viewModel.select(move: .next)
+//                        viewModel.createLessonType()
+                    }
                 })
             } else {
                
                 if viewModel.previousLesson != "" {
                     UnitButtonView(type: .previous, action: {
                         killPlayer.toggle()
-                        viewModel.select(move: .previous)
-                        viewModel.createLessonType()
+                        withAnimation {
+                            viewModel.select(move: .previous)
+//                            viewModel.createLessonType()
+                        }
+                        
                     })
                 }
                 if viewModel.nextLesson != "" {
                     UnitButtonView(type: .next, action: {
                         killPlayer.toggle()
                         viewModel.select(move: .next)
-                        viewModel.createLessonType()
+//                        viewModel.createLessonType()
                     })
                 }
                 if viewModel.selectedLesson() == viewModel.blocks.last {

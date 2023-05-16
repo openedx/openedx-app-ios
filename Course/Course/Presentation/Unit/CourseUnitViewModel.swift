@@ -5,7 +5,7 @@
 //  Created by  Stepanok Ivan on 05.10.2022.
 //
 
-import Foundation
+import SwiftUI
 import Core
 
 public enum LessonType: Equatable {
@@ -46,7 +46,7 @@ public class CourseUnitViewModel: ObservableObject {
     @Published var index: Int = 0
     @Published var previousLesson: String = ""
     @Published var nextLesson: String = ""
-    @Published var lessonType: LessonType?
+//    @Published var lessonType: LessonType?
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {
@@ -99,9 +99,9 @@ public class CourseUnitViewModel: ObservableObject {
         return blocks[index]
     }
     
-    func createLessonType() {
-        self.lessonType = LessonType.from(blocks[index])
-    }
+//    func createLessonType() {
+//        self.lessonType = LessonType.from(blocks[index])
+//    }
     
     enum LessonAction {
         case next
@@ -111,11 +111,11 @@ public class CourseUnitViewModel: ObservableObject {
     func select(move: LessonAction) {
         switch move {
         case .next:
-            if index != blocks.count - 1 { index += 1 }
-            nextTitles()
+            if index != blocks.count - 1 { withAnimation { index += 1 } }
+                nextTitles()
         case .previous:
-            if index != 0 { index -= 1 }
-            nextTitles()
+            if index != 0 { withAnimation { index -= 1 } }
+                nextTitles()
         }
     }
     
