@@ -246,12 +246,16 @@ struct ContinueWithView: View {
                         .multilineTextAlignment(.leading)
                 }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                 UnitButtonView(type: .continueLesson, action: {
-//                    viewModel.router.showCourseBlocksView(title: vertical.displayName,
-//                                                          blocks: vertical.childs)
-//                    viewModel.router.showCourseVerticalView(title: sequential.displayName,
-//                                                            verticals: sequential.childs)
-                    viewModel.router.showCourseVerticalAndBlocksView(verticals: (sequential.displayName, sequential.childs),
-                                                                     blocks: (vertical.displayName, vertical.childs))
+
+                    if let index = sequential.childs.firstIndex(where: {$0.id == vertical.id}) {                        
+                        if let block = sequential.childs[index].childs.first {
+                            viewModel.router.showCourseUnit(blockId: block.id,
+                                                            courseID: block.blockId,
+                                                            sectionName: "",
+                                                            selectedVertical: index,
+                                                            verticals: sequential.childs)
+                        }
+                    }
                 })
             }
         }

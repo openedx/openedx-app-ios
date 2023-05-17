@@ -22,8 +22,8 @@ struct CourseNavigationView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 24) {
-            if viewModel.selectedLesson() == viewModel.blocks.first
-                && viewModel.blocks.count != 1 {
+            if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
+                && viewModel.verticals[viewModel.selectedVertical].childs.count != 1 {
                 UnitButtonView(type: .first, action: {
                     killPlayer.toggle()
                     withAnimation {
@@ -50,12 +50,19 @@ struct CourseNavigationView: View {
 //                        viewModel.createLessonType()
                     })
                 }
-                if viewModel.selectedLesson() == viewModel.blocks.last {
-                    UnitButtonView(type: viewModel.blocks.count == 1 ? .finish : .last, action: {
+                if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.last {
+//                    var nextSeсtionName: String? = nil
+//                    if viewModel.selectedVertical < viewModel.verticals.count - 1 {
+//                        nextSeсtionName = viewModel.verticals[viewModel.selectedVertical + 1].displayName
+//                    }
+                    UnitButtonView(type: viewModel.verticals[viewModel.selectedVertical].childs.count == 1 ? .finish : .last, action: {
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
                             alertMessage: (CourseLocalization.Courseware.section
                                            + " " + sectionName + " " + CourseLocalization.Courseware.isFinished),
+                            nextSectionName: viewModel.selectedVertical < viewModel.verticals.count - 1 ?
+                            viewModel.verticals[viewModel.selectedVertical + 1].displayName
+                            : nil,
                             action: CourseLocalization.Courseware.backToOutline,
                             image: CoreAssets.goodWork.swiftUIImage,
                             onCloseTapped: {},
@@ -63,6 +70,10 @@ struct CourseNavigationView: View {
                                 killPlayer.toggle()
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.removeLastView(controllers: 2)
+                            },
+                            nextSectionTapped: {
+                                viewModel.index = 0
+                                viewModel.selectedVertical += 1
                             }
                         )
                     })
@@ -79,7 +90,9 @@ struct CourseNavigationView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = CourseUnitViewModel(lessonID: "1",
                                             courseID: "1",
-                                            blocks: [],
+//                                            blocks: [],
+                                            verticals: [],
+                                            selectedVertical: 1,
                                             interactor: CourseInteractor.mock,
                                             router: CourseRouterMock(),
                                             connectivity: Connectivity(),

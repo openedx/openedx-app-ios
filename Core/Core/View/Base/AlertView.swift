@@ -27,8 +27,10 @@ public struct AlertView: View {
     
     private var alertTitle: String
     private var alertMessage: String
+    private var nextSectionName: String?
     private var onCloseTapped: (() -> Void) = {}
     private var okTapped: (() -> Void) = {}
+    private var nextSectionTapped: (() -> Void) = {}
     private let type: AlertViewType
     
     public init(
@@ -49,15 +51,19 @@ public struct AlertView: View {
     public init(
         alertTitle: String,
         alertMessage: String,
+        nextSectionName: String? = nil,
         mainAction: String,
         image: SwiftUI.Image,
         onCloseTapped: @escaping () -> Void,
-        okTapped: @escaping () -> Void
+        okTapped: @escaping () -> Void,
+        nextSectionTapped: @escaping () -> Void
     ) {
         self.alertTitle = alertTitle
         self.alertMessage = alertMessage
         self.onCloseTapped = onCloseTapped
+        self.nextSectionName = nextSectionName
         self.okTapped = okTapped
+        self.nextSectionTapped = nextSectionTapped
         type = .action(mainAction, image)
     }
     
@@ -109,8 +115,23 @@ public struct AlertView: View {
                                 .frame(maxWidth: 135)
                                 .saturation(0)
                         case let .action(action, _):
-                            StyledButton(action, action: { okTapped() })
-                                .frame(maxWidth: 160)
+                            VStack(spacing: 20) {
+                                UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
+                                    .frame(maxWidth: 160)
+                                StyledButton(action, action: { okTapped() })
+                                    .frame(maxWidth: 160)
+                                
+                                if let nextSectionName {
+                                    Group {
+                                        Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
+                                        Text(nextSectionName) +
+                                        Text(CoreLocalization.Courseware.nextSectionDescriptionLast)
+                                    }
+                                        .font(Theme.Fonts.labelSmall)
+                                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                }
+                               
+                            }
                         case .logOut:
                             Button(action: {
                                 okTapped()
@@ -217,14 +238,23 @@ public struct AlertView: View {
 // swiftlint:disable all
 struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
-        AlertView(
-            alertTitle: "Warning!",
-            alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
-            positiveAction: "Accept",
-            onCloseTapped: {},
-            okTapped: {},
-            type: .logOut
-        )
+//        AlertView(
+//            alertTitle: "Warning!",
+//            alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
+//            positiveAction: "Accept",
+//            onCloseTapped: {},
+//            okTapped: {},
+//            type: .action("", CoreAssets.goodWork.swiftUIImage)
+//        )
+        AlertView(alertTitle: "Warning",
+                  alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
+                  nextSectionName: "Ahmad tea is a power",
+                  mainAction: "Back to outline",
+                  image: CoreAssets.goodWork.swiftUIImage,
+                  onCloseTapped: {},
+                  okTapped: {},
+                  nextSectionTapped: {})
+        
         .previewLayout(.sizeThatFits)
         .background(Color.gray)
     }

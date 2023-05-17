@@ -6,48 +6,50 @@
 //
 
 import SwiftUI
-import Core
 
-struct UnitButtonView: View {
+public enum UnitButtonType {
+    case first
+    case next
+    case previous
+    case last
+    case finish
+    case reload
+    case continueLesson
+    case nextSection
     
-    enum UnitButtonType {
-        case first
-        case next
-        case previous
-        case last
-        case finish
-        case reload
-        case continueLesson
-        
-        func stringValue() -> String {
-            switch self {
-            case .first:
-                return CourseLocalization.Courseware.next
-            case .next:
-                return CourseLocalization.Courseware.next
-            case .previous:
-                return CourseLocalization.Courseware.previous
-            case .last:
-                return CourseLocalization.Courseware.finish
-            case .finish:
-                return CourseLocalization.Courseware.finish
-            case .reload:
-                return CourseLocalization.Error.reload
-            case .continueLesson:
-                return CourseLocalization.Courseware.continue
-            }
+    func stringValue() -> String {
+        switch self {
+        case .first:
+            return CoreLocalization.Courseware.next
+        case .next:
+            return CoreLocalization.Courseware.next
+        case .previous:
+            return CoreLocalization.Courseware.previous
+        case .last:
+            return CoreLocalization.Courseware.finish
+        case .finish:
+            return CoreLocalization.Courseware.finish
+        case .reload:
+            return CoreLocalization.Error.reload
+        case .continueLesson:
+            return CoreLocalization.Courseware.continue
+        case .nextSection:
+            return CoreLocalization.Courseware.nextSection
         }
     }
+}
+
+public struct UnitButtonView: View {
     
     private let action: () -> Void
     private let type: UnitButtonType
     
-    init(type: UnitButtonType, action: @escaping () -> Void) {
+    public init(type: UnitButtonType, action: @escaping () -> Void) {
         self.action = action
         self.type = type
     }
     
-    var body: some View {
+    public  var body: some View {
         HStack {
             Button(action: action) {
                 VStack {
@@ -110,7 +112,7 @@ struct UnitButtonView: View {
                                 .foregroundColor(.white)
                                 .font(Theme.Fonts.labelLarge)
                         }.padding(.horizontal, 16)
-                    case .continueLesson:
+                    case .continueLesson, .nextSection:
                         HStack {
                             Text(type.stringValue())
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
@@ -134,7 +136,7 @@ struct UnitButtonView: View {
                                       : CoreAssets.accentColor.swiftUIColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 
-                        case .continueLesson, .reload, .finish:
+                        case .continueLesson, .nextSection, .reload, .finish:
                             Theme.Shapes.buttonShape
                                 .fill(CoreAssets.accentColor.swiftUIColor)
                             
@@ -148,7 +150,7 @@ struct UnitButtonView: View {
                     }
                 )
             
-            }.fixedSize(horizontal: type != .continueLesson, vertical: false)
+            }.fixedSize(horizontal: type != .continueLesson && type != .nextSection, vertical: false)
         }
     }
 }
@@ -163,6 +165,7 @@ struct UnitButtonView_Previews: PreviewProvider {
             UnitButtonView(type: .finish, action: {})
             UnitButtonView(type: .reload, action: {})
             UnitButtonView(type: .continueLesson, action: {})
+            UnitButtonView(type: .nextSection, action: {})
         }.padding()
     }
 }

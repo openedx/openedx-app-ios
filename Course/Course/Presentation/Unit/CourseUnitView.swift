@@ -49,8 +49,8 @@ public struct CourseUnitView: View {
                                     ScrollViewReader { scroll in
                                         ScrollView(.vertical) {
                                             VStack(spacing: 0) {
-                                                ForEach(Array(viewModel.blocks.enumerated()),
-                                                        id: \.offset) { index, block in
+                                                ForEach(Array(viewModel.verticals[viewModel.selectedVertical]
+                                                    .childs.enumerated()), id: \.offset) { index, block in
                                                     VStack(spacing: 0) {
                                                             NavigationBar(title: "",
                                                                           leftButtonAction: {
@@ -282,7 +282,10 @@ struct LessonView_Previews: PreviewProvider {
         ]
         
         return CourseUnitView(viewModel: CourseUnitViewModel(
-            lessonID: "", courseID: "", blocks: blocks,
+            lessonID: "",
+            courseID: "",
+            verticals: [],
+            selectedVertical: 1,
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
             connectivity: Connectivity(),
