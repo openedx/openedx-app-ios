@@ -43,9 +43,9 @@ public enum BlockType: String {
     
     public var image: Image {
         switch self {
-        case .problem: return CoreAssets.extra.swiftUIImage.renderingMode(.template)
+        case .problem: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
         case .video: return CoreAssets.video.swiftUIImage.renderingMode(.template)
-        case .html: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
+        case .html: return CoreAssets.extra.swiftUIImage.renderingMode(.template)
         case .discussion: return CoreAssets.discussion.swiftUIImage.renderingMode(.template)
         case .course: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
         case .chapter: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
