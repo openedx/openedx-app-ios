@@ -35,7 +35,7 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        Text(AuthLocalization.SignUp.title)
+                        Text(AuthLocalization.SignIn.registerBtn)
                             .titleSettings(color: .white)
                     }
                     VStack {
