@@ -42,7 +42,7 @@ public struct CourseVerticalView: View {
                                         if let block = viewModel.verticals[index].childs.first {
                                             viewModel.router.showCourseUnit(blockId: block.id,
                                                                             courseID: block.blockId,
-                                                                            sectionName: "",
+                                                                            sectionName: block.displayName,
                                                                             selectedVertical: index,
                                                                             verticals: viewModel.verticals)
                                         }

@@ -116,17 +116,21 @@ public struct AlertView: View {
                                 .saturation(0)
                         case let .action(action, _):
                             VStack(spacing: 20) {
-                                UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
-                                    .frame(maxWidth: 160)
+                                if let nextSectionName {
+                                    UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
+                                        .frame(maxWidth: 215)
+                                }
                                 StyledButton(action, action: { okTapped() })
-                                    .frame(maxWidth: 160)
+                                    .frame(maxWidth: 215)
                                 
                                 if let nextSectionName {
                                     Group {
                                         Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
                                         Text(nextSectionName) +
                                         Text(CoreLocalization.Courseware.nextSectionDescriptionLast)
-                                    }
+                                    }.frame(maxWidth: 215)
+                                        .padding(.horizontal, 40)
+                                        .multilineTextAlignment(.center)
                                         .font(Theme.Fonts.labelSmall)
                                         .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                 }

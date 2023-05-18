@@ -55,25 +55,28 @@ struct CourseNavigationView: View {
 //                    if viewModel.selectedVertical < viewModel.verticals.count - 1 {
 //                        nextSeсtionName = viewModel.verticals[viewModel.selectedVertical + 1].displayName
 //                    }
+                    Text("\(viewModel.selectedVertical) == \(viewModel.verticals.count - 1) \(String(viewModel.selectedVertical != viewModel.verticals.count - 1))")
                     UnitButtonView(type: viewModel.verticals[viewModel.selectedVertical].childs.count == 1 ? .finish : .last, action: {
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
                             alertMessage: (CourseLocalization.Courseware.section
                                            + " " + sectionName + " " + CourseLocalization.Courseware.isFinished),
-                            nextSectionName: viewModel.selectedVertical < viewModel.verticals.count - 1 ?
-                            viewModel.verticals[viewModel.selectedVertical + 1].displayName
+                            nextSectionName: viewModel.selectedVertical != viewModel.verticals.count - 1
+                            ? viewModel.verticals[viewModel.selectedVertical + 1].displayName
                             : nil,
                             action: CourseLocalization.Courseware.backToOutline,
                             image: CoreAssets.goodWork.swiftUIImage,
-                            onCloseTapped: {},
+                            onCloseTapped: { viewModel.router.dismiss(animated: false) },
                             okTapped: {
                                 killPlayer.toggle()
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.removeLastView(controllers: 2)
                             },
                             nextSectionTapped: {
+                                
                                 viewModel.index = 0
                                 viewModel.selectedVertical += 1
+                                viewModel.router.dismiss(animated: false)
                             }
                         )
                     })
