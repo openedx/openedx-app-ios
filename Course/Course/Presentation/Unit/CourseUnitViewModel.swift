@@ -13,7 +13,7 @@ public enum LessonType: Equatable {
     case youtube(viewYouTubeUrl: String, blockID: String)
     case video(videoUrl: String, blockID: String)
     case unknown(String)
-    case discussion(String)
+    case discussion(String, String)
     
     static func from(_ block: CourseBlock) -> Self {
         switch block.type {
@@ -22,7 +22,7 @@ public enum LessonType: Equatable {
         case .html:
             return .web(block.studentUrl)
         case .discussion:
-            return .discussion(block.topicId ?? "")
+            return .discussion(block.topicId ?? "", block.displayName)
         case .video:
             if block.youTubeUrl != nil, let encodedVideo = block.videoUrl {
                 return .video(videoUrl: encodedVideo, blockID: block.id)

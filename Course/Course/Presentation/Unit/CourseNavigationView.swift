@@ -24,21 +24,19 @@ struct CourseNavigationView: View {
         HStack(alignment: .top, spacing: 24) {
             if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
                 && viewModel.verticals[viewModel.selectedVertical].childs.count != 1 {
-                UnitButtonView(type: .first, action: {
+                UnitButtonView(type: .previous, action: {}).opacity(0.5)
+                UnitButtonView(type: .next, action: {
                     killPlayer.toggle()
                     withAnimation {
                         viewModel.select(move: .next)
-//                        viewModel.createLessonType()
                     }
                 })
             } else {
-               
                 if viewModel.previousLesson != "" {
                     UnitButtonView(type: .previous, action: {
                         killPlayer.toggle()
                         withAnimation {
                             viewModel.select(move: .previous)
-//                            viewModel.createLessonType()
                         }
                         
                     })
@@ -47,16 +45,10 @@ struct CourseNavigationView: View {
                     UnitButtonView(type: .next, action: {
                         killPlayer.toggle()
                         viewModel.select(move: .next)
-//                        viewModel.createLessonType()
                     })
                 }
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.last {
-//                    var nextSeсtionName: String? = nil
-//                    if viewModel.selectedVertical < viewModel.verticals.count - 1 {
-//                        nextSeсtionName = viewModel.verticals[viewModel.selectedVertical + 1].displayName
-//                    }
-                    Text("\(viewModel.selectedVertical) == \(viewModel.verticals.count - 1) \(String(viewModel.selectedVertical != viewModel.verticals.count - 1))")
-                    UnitButtonView(type: viewModel.verticals[viewModel.selectedVertical].childs.count == 1 ? .finish : .last, action: {
+                    UnitButtonView(type: .last, action: {
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
                             alertMessage: (CourseLocalization.Courseware.section
@@ -93,7 +85,6 @@ struct CourseNavigationView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = CourseUnitViewModel(lessonID: "1",
                                             courseID: "1",
-//                                            blocks: [],
                                             verticals: [],
                                             selectedVertical: 1,
                                             interactor: CourseInteractor.mock,

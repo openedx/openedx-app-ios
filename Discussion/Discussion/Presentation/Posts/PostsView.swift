@@ -108,14 +108,36 @@ public struct PostsView: View {
                                             VStack {}.frame(height: 1)
                                                 .id(1)
                                             let posts = Array(viewModel.filteredPosts.enumerated())
-                                            HStack {
+                                            HStack(alignment: .center) {
                                                 Text(title)
                                                     .font(Theme.Fonts.titleLarge)
                                                     .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                                                    .padding(.horizontal, 24)
-                                                    .padding(.top, 12)
                                                 Spacer()
+                                                Button(action: {
+                                                    router.createNewThread(courseID: courseID,
+                                                                           selectedTopic: currentBlockID,
+                                                                           onPostCreated: {
+                                                        reloadPage(onSuccess: {
+                                                            withAnimation {
+                                                                scroll.scrollTo(1)
+                                                            }
+                                                        })
+                                                    })
+                                                }, label: {
+                                                    VStack {
+                                                            CoreAssets.addComment.swiftUIImage
+                                                                .font(Theme.Fonts.labelLarge)
+                                                                .padding(6)
+                                                    }
+                                                    .foregroundColor(.white)
+                                                    .background(
+                                                       Circle()
+                                                            .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                                    )
+                                                })
                                             }
+                                            .padding(.horizontal, 24)
+
                                             ForEach(posts, id: \.offset) { index, post in
                                                 PostCell(post: post).padding(24)
                                                     .onAppear {
@@ -135,36 +157,6 @@ public struct PostsView: View {
                                     .onRightSwipeGesture {
                                         router.back()
                                     }
-                                
-                                VStack {
-                                    Spacer()
-                                    Button(action: {
-                                        router.createNewThread(courseID: courseID,
-                                                               selectedTopic: currentBlockID,
-                                                               onPostCreated: {
-                                            reloadPage(onSuccess: {
-                                                withAnimation {
-                                                    scroll.scrollTo(1)
-                                                }
-                                            })
-                                        })
-                                    }, label: {
-                                        VStack {
-                                            HStack(alignment: .center) {
-                                                CoreAssets.addComment.swiftUIImage
-                                                    .font(Theme.Fonts.labelLarge)
-                                                Text(DiscussionLocalization.Posts.createNewPost)
-                                            }.frame(maxHeight: 42)
-                                                .padding(.horizontal, 20)
-                                        }
-                                        .foregroundColor(.white)
-                                        .background(
-                                            Theme.Shapes.buttonShape
-                                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
-                                        )
-                                        .padding(.bottom, 30)
-                                    })
-                                }
                             }
                         }.frame(maxWidth: .infinity)
                     }

@@ -134,7 +134,7 @@ public struct CourseUnitView: View {
 
                                                                 Spacer()
                                                             }
-                                                        case let .discussion(blockID):
+                                                        case let .discussion(blockID, title):
                                                             if index >= viewModel.index-1 && index <= viewModel.index+1 {
                                                                 let id = "course-v1:"
                                                                 + (viewModel.lessonID.find(from: "block-v1:",
@@ -143,7 +143,8 @@ public struct CourseUnitView: View {
                                                                           currentBlockID: blockID,
                                                                           topics: Topics(coursewareTopics: [],
                                                                                          nonCoursewareTopics: []),
-                                                                          title: "", type: .courseTopics(topicID: blockID),
+                                                                          title: title,
+                                                                          type: .courseTopics(topicID: blockID),
                                                                           viewModel: Container.shared
                                                                     .resolve(PostsViewModel.self)!,
                                                                           router: Container.shared
@@ -155,6 +156,7 @@ public struct CourseUnitView: View {
                                                                             .blockCompletionRequest(blockID: blockID)
                                                                     }
                                                                 }
+                                                                Spacer(minLength: 100)
                                                             }
                                                         }
                                                     }
