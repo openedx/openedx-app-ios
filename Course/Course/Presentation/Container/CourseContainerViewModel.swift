@@ -176,8 +176,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     
     private func findCourseSequential(blockID: String, courseStructure: CourseStructure) -> CourseSequential? {
         for chapter in courseStructure.childs {
-            if let sequential = chapter.childs.first(where: { $0.id == blockID }) {
-                return sequential
+            for sequential in chapter.childs {
+                for vertical in sequential.childs {
+                    for block in vertical.childs {
+                        if block.id == blockID {
+                            return sequential
+                        }
+                    }
+                }
             }
         }
         return nil
