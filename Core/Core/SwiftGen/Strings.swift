@@ -39,8 +39,8 @@ public enum CoreLocalization {
     public static let finish = CoreLocalization.tr("Localizable", "COURSEWARE.FINISH", fallback: "Finish")
     /// Good Work!
     public static let goodWork = CoreLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good Work!")
-    /// is finished.
-    public static let isFinished = CoreLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "is finished.")
+    /// “ is finished.
+    public static let isFinished = CoreLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“ is finished.")
     /// Next
     public static let next = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Next section
@@ -51,8 +51,8 @@ public enum CoreLocalization {
     public static let nextSectionDescriptionLast = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT_SECTION_DESCRIPTION_LAST", fallback: "” press “Next section”.")
     /// Previous
     public static let previous = CoreLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Previous")
-    /// Section
-    public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section")
+    /// Section “
+    public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
   }
   public enum Date {
     /// Ended

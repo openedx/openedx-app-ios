@@ -25,7 +25,7 @@ struct CourseNavigationView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 24) {
+        HStack(alignment: .top, spacing: 7) {
             if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
                 && viewModel.verticals[viewModel.selectedVertical].childs.count != 1 {
                 UnitButtonView(type: .previous, action: {}).opacity(0.5)
@@ -50,7 +50,7 @@ struct CourseNavigationView: View {
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
                             alertMessage: (CourseLocalization.Courseware.section
-                                           + " " + sectionName + " " + CourseLocalization.Courseware.isFinished),
+                                            + sectionName + CourseLocalization.Courseware.isFinished),
                             nextSectionName: viewModel.selectedVertical != viewModel.verticals.count - 1
                             ? viewModel.verticals[viewModel.selectedVertical + 1].displayName
                             : nil,

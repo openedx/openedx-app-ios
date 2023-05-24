@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public enum UnitButtonType {
+public enum UnitButtonType: Equatable {
     case first
     case next
     case previous
@@ -16,6 +16,7 @@ public enum UnitButtonType {
     case reload
     case continueLesson
     case nextSection
+    case custom(String)
     
     func stringValue() -> String {
         switch self {
@@ -35,6 +36,8 @@ public enum UnitButtonType {
             return CoreLocalization.Courseware.continue
         case .nextSection:
             return CoreLocalization.Courseware.nextSection
+        case let .custom(text):
+            return text
         }
     }
 }
@@ -106,7 +109,7 @@ public struct UnitButtonView: View {
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                         }.padding(.horizontal, 16)
-                    case .reload:
+                    case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
                                 .foregroundColor(.white)
@@ -136,11 +139,17 @@ public struct UnitButtonView: View {
                                       : CoreAssets.accentColor.swiftUIColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 
-                        case .continueLesson, .nextSection, .reload, .finish:
+                        case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
                                 .fill(CoreAssets.accentColor.swiftUIColor)
                             
-                                .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
+                                .shadow(color: (type == .first
+                                                || type == .next
+                                                || type == .previous
+                                                || type == .last
+                                                || type == .finish
+                                                || type == .reload) ? Color.black.opacity(0.25) : .clear,
+                                        radius: 21, y: 4)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
@@ -150,8 +159,16 @@ public struct UnitButtonView: View {
                     }
                 )
             
-            }.fixedSize(horizontal: type != .continueLesson && type != .nextSection, vertical: false)
+            }//.fixedSize(horizontal: type != .continueLesson && type != .nextSection, vertical: false)
+            .fixedSize(horizontal: (type == .first
+                       || type == .next
+                       || type == .previous
+                       || type == .last
+                       || type == .finish
+                       || type == .reload)
+                       , vertical: false)
         }
+        
     }
 }
 
@@ -164,6 +181,7 @@ struct UnitButtonView_Previews: PreviewProvider {
             UnitButtonView(type: .last, action: {})
             UnitButtonView(type: .finish, action: {})
             UnitButtonView(type: .reload, action: {})
+            UnitButtonView(type: .custom("Custom text"), action: {})
             UnitButtonView(type: .continueLesson, action: {})
             UnitButtonView(type: .nextSection, action: {})
         }.padding()

@@ -120,7 +120,8 @@ public struct AlertView: View {
                                     UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
                                         .frame(maxWidth: 215)
                                 }
-                                StyledButton(action, action: { okTapped() })
+                                UnitButtonView(type: .custom(action), action: { okTapped() })
+//                                StyledButton(action, action: { okTapped() })
                                     .frame(maxWidth: 215)
                                 
                                 if let nextSectionName {
