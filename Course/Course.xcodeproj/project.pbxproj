@@ -16,6 +16,8 @@
 		022C64E029ADEA9B000F532B /* Data_UpdatesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64DF29ADEA9B000F532B /* Data_UpdatesResponse.swift */; };
 		022C64E229ADEB83000F532B /* CourseUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64E129ADEB83000F532B /* CourseUpdate.swift */; };
 		022EA8CB297AD63B0014A8F7 /* CourseContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022EA8CA297AD63B0014A8F7 /* CourseContainerViewModelTests.swift */; };
+		022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F8E152A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift */; };
+		022F8E182A1E2642008EFAB9 /* EncodedVideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022F8E172A1E2642008EFAB9 /* EncodedVideoPlayerViewModel.swift */; };
 		0231124D28EDA804002588FB /* CourseUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231124C28EDA804002588FB /* CourseUnitView.swift */; };
 		0231124F28EDA811002588FB /* CourseUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231124E28EDA811002588FB /* CourseUnitViewModel.swift */; };
 		023812E7297AC8EB0087098F /* CourseDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023812E6297AC8EB0087098F /* CourseDetailsViewModelTests.swift */; };
@@ -78,6 +80,8 @@
 		022C64DF29ADEA9B000F532B /* Data_UpdatesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_UpdatesResponse.swift; sourceTree = "<group>"; };
 		022C64E129ADEB83000F532B /* CourseUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpdate.swift; sourceTree = "<group>"; };
 		022EA8CA297AD63B0014A8F7 /* CourseContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerViewModelTests.swift; sourceTree = "<group>"; };
+		022F8E152A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeVideoPlayerViewModel.swift; sourceTree = "<group>"; };
+		022F8E172A1E2642008EFAB9 /* EncodedVideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedVideoPlayerViewModel.swift; sourceTree = "<group>"; };
 		0231124C28EDA804002588FB /* CourseUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUnitView.swift; sourceTree = "<group>"; };
 		0231124E28EDA811002588FB /* CourseUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUnitViewModel.swift; sourceTree = "<group>"; };
 		023812E4297AC8EA0087098F /* CourseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CourseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -357,7 +361,9 @@
 			children = (
 				02F066E729DC71750073E13B /* SubtittlesView.swift */,
 				0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */,
+				022F8E152A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift */,
 				0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */,
+				022F8E172A1E2642008EFAB9 /* EncodedVideoPlayerViewModel.swift */,
 				0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */,
 				02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */,
 			);
@@ -653,6 +659,7 @@
 				0276D75B29DDA3890004CDF8 /* Data_ResumeBlock.swift in Sources */,
 				0276D75D29DDA3F80004CDF8 /* ResumeBlock.swift in Sources */,
 				02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */,
+				022F8E182A1E2642008EFAB9 /* EncodedVideoPlayerViewModel.swift in Sources */,
 				0248C92729C097EB00DC8402 /* CourseVerticalViewModel.swift in Sources */,
 				02F0145728F4A2FF002E513D /* CourseContainerViewModel.swift in Sources */,
 				02B6B3B728E1D11E00232911 /* CourseInteractor.swift in Sources */,
@@ -674,6 +681,7 @@
 				0265B4B728E2141D00E6EAFD /* Strings.swift in Sources */,
 				02B6B3C128E1DBA100232911 /* Data_CourseDetailsResponse.swift in Sources */,
 				0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */,
+				022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */,
 				02E685BE28E4B60A000AE015 /* CourseDetailsView.swift in Sources */,
 				02B6B3BE28E1D15C00232911 /* CourseDetailsEndpoint.swift in Sources */,
 				02B6B3C328E1DCD100232911 /* CourseDetails.swift in Sources */,

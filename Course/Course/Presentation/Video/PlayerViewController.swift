@@ -27,6 +27,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         controller.modalPresentationStyle = .fullScreen
         controller.allowsPictureInPicturePlayback = true
+        controller.player = AVPlayer()
         
         addPeriodicTimeObserver(controller, currentProgress: { progress, seconds in
             self.progress(progress)
@@ -53,7 +54,10 @@ struct PlayerViewController: UIViewControllerRepresentable {
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
         DispatchQueue.main.async {
             if (playerController.player?.currentItem?.asset as? AVURLAsset)?.url.absoluteString != videoURL?.absoluteString {
-                playerController.player = AVPlayer(url: videoURL!)
+                if playerController.player == nil {
+                    playerController.player = AVPlayer()
+                }
+                playerController.player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
                 addPeriodicTimeObserver(playerController, currentProgress: { progress, seconds in
                     self.progress(progress)
                     self.seconds(seconds)

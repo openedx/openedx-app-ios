@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import _AVKit_SwiftUI
 
 public class VideoPlayerViewModel: ObservableObject {
     
@@ -16,7 +17,7 @@ public class VideoPlayerViewModel: ObservableObject {
     
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
-    @Published var languages: [SubtitleUrl] = []
+    var languages: [SubtitleUrl]
     @Published var items: [PickerItem] = []
     @Published var selectedLanguage: String?
     
@@ -27,9 +28,11 @@ public class VideoPlayerViewModel: ObservableObject {
         }
     }
     
-    public init(interactor: CourseInteractorProtocol,
+    public init(languages: [SubtitleUrl],
+                interactor: CourseInteractorProtocol,
                 router: CourseRouter,
                 connectivity: ConnectivityProtocol) {
+        self.languages = languages
         self.interactor = interactor
         self.router = router
         self.connectivity = connectivity

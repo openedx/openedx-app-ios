@@ -57,6 +57,7 @@ public enum CoreAssets {
   public static let allPosts = ImageAsset(name: "allPosts")
   public static let chapter = ImageAsset(name: "chapter")
   public static let discussion = ImageAsset(name: "discussion")
+  public static let discussionIcon = ImageAsset(name: "discussionIcon")
   public static let extra = ImageAsset(name: "extra")
   public static let filter = ImageAsset(name: "filter")
   public static let finished = ImageAsset(name: "finished")

@@ -16,6 +16,9 @@
 "POSTS.SORT.RECENT_ACTIVITY" = "Recent Activity";
 "POSTS.SORT.MOST_ACTIVITY" = "Most Activity";
 "POSTS.SORT.MOST_VOTES" = "Most Votes";
+"POSTS.NO_DISCUSSION.TITLE" = "No discussions yet";
+"POSTS.NO_DISCUSSION.DESCRIPTION" = "Click the button below to create your first discussion.";
+"POSTS.NO_DISCUSSION.CREATEBUTTON" = "Create discussion";
 
 "POSTS.FILTER.ALL_POSTS" = "All Posts";
 "POSTS.FILTER.UNREAD" = "Unread";

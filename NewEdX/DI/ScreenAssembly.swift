@@ -248,10 +248,28 @@ class ScreenAssembly: Assembly {
             WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!)
         }
         
-        container.register(VideoPlayerViewModel.self) { r in
-            VideoPlayerViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
+        container.register(VideoPlayerViewModel.self) { r, languages in
+            VideoPlayerViewModel(languages: languages,
+                                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                                  router: r.resolve(CourseRouter.self)!,
                                  connectivity: r.resolve(ConnectivityProtocol.self)!)
+        }
+        
+        container.register(YouTubeVideoPlayerViewModel.self) { r, url, blockID, courseID, languages in
+            YouTubeVideoPlayerViewModel(url: url,
+                                        blockID: blockID,
+                                        courseID: courseID,
+                                        languages: languages,
+                                        interactor: r.resolve(CourseInteractorProtocol.self)!,
+                                        router: r.resolve(CourseRouter.self)!,
+                                        connectivity: r.resolve(ConnectivityProtocol.self)!)
+        }
+        
+        container.register(EncodedVideoPlayerViewModel.self) { r, languages in
+            EncodedVideoPlayerViewModel(languages: languages,
+                                        interactor: r.resolve(CourseInteractorProtocol.self)!,
+                                        router: r.resolve(CourseRouter.self)!,
+                                        connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
         container.register(HandoutsViewModel.self) { r, courseID in

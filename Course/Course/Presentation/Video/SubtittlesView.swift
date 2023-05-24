@@ -80,10 +80,6 @@ public struct SubtittlesView: View {
                 })
             }.padding(.horizontal, 24)
                 .padding(.top, 34)
-                .onAppear {
-                    viewModel.languages = languages
-                    viewModel.prepareLanguages()
-                }
         }
     }
 }
@@ -95,7 +91,8 @@ struct SubtittlesView_Previews: PreviewProvider {
         SubtittlesView(languages: [SubtitleUrl(language: "fr", url: "url"),
                                    SubtitleUrl(language: "uk", url: "url2")],
                        currentTime: .constant(0),
-                       viewModel: VideoPlayerViewModel(interactor: CourseInteractor(repository: CourseRepositoryMock()),
+                       viewModel: VideoPlayerViewModel(languages: [],
+                                                       interactor: CourseInteractor(repository: CourseRepositoryMock()),
                                                        router: CourseRouterMock(),
                                                        connectivity: Connectivity()))
     }

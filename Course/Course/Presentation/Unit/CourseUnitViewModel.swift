@@ -47,8 +47,8 @@ public class CourseUnitViewModel: ObservableObject {
     public var selectedVertical: Int
 
     @Published var index: Int = 0
-    @Published var previousLesson: String = ""
-    @Published var nextLesson: String = ""
+    var previousLesson: String = ""
+    var nextLesson: String = ""
 //    @Published var lessonType: LessonType?
     @Published var showError: Bool = false
     var errorMessage: String? {
@@ -118,10 +118,10 @@ public class CourseUnitViewModel: ObservableObject {
     func select(move: LessonAction) {
         switch move {
         case .next:
-            if index != verticals[selectedVertical].childs.count - 1 { withAnimation { index += 1 } }
+            if index != verticals[selectedVertical].childs.count - 1 { index += 1 }
                 nextTitles()
         case .previous:
-            if index != 0 { withAnimation { index -= 1 } }
+            if index != 0 { index -= 1 }
                 nextTitles()
         }
     }
