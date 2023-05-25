@@ -12,10 +12,13 @@ import SwiftUI
 public struct WebView: UIViewRepresentable {
     
     public class ViewModel: ObservableObject {
-        @Published var url: String
         
-        public init(url: String) {
+        @Published var url: String
+        let baseURL: String
+        
+        public init(url: String, baseURL: String) {
             self.url = url
+            self.baseURL = baseURL
         }
     }
     
@@ -40,6 +43,24 @@ public struct WebView: UIViewRepresentable {
             DispatchQueue.main.async {
                 self.parent.isLoading = false
             }
+        }
+        
+        public func webView(_ webView: WKWebView,
+                            decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+            
+            guard let url = navigationAction.request.url else {
+                return .cancel
+            }
+            
+            let baseURL = await parent.viewModel.baseURL
+            if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
+                await MainActor.run {
+                    UIApplication.shared.open(url, options: [:])
+                }
+                return .cancel
+            }
+            
+            return .allow
         }
         
         public func webView(_ webView: WKWebView,
