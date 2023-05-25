@@ -231,32 +231,54 @@ public struct CourseOutlineView: View {
 struct ContinueWithView: View {
     let sequential: CourseSequential
     let viewModel: CourseContainerViewModel
-
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
     var body: some View {
-        VStack(alignment: .leading) {
-            if let vertical = sequential.childs.first {
-                Text(CourseLocalization.Courseware.continueWith)
-                    .font(Theme.Fonts.labelMedium)
-                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
-                HStack {
-                    vertical.type.image
-                    Text(vertical.displayName)
-                        .multilineTextAlignment(.leading)
-                        .font(Theme.Fonts.titleMedium)
-                        .multilineTextAlignment(.leading)
-                }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                UnitButtonView(type: .continueLesson, action: {
-//                    viewModel.router.showCourseBlocksView(title: vertical.displayName,
-//                                                          blocks: vertical.childs)
-//                    viewModel.router.showCourseVerticalView(title: sequential.displayName,
-//                                                            verticals: sequential.childs)
-                    viewModel.router.showCourseVerticalAndBlocksView(verticals: (sequential.displayName, sequential.childs),
-                                                                     blocks: (vertical.displayName, vertical.childs))
-                })
+        if idiom == .pad {
+            HStack(alignment: .top) {
+                if let vertical = sequential.childs.first {
+                    VStack(alignment: .leading) {
+                    Text(CourseLocalization.Courseware.continueWith)
+                        .font(Theme.Fonts.labelMedium)
+                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                        HStack {
+                            vertical.type.image
+                            Text(vertical.displayName)
+                                .multilineTextAlignment(.leading)
+                                .font(Theme.Fonts.titleMedium)
+                                .multilineTextAlignment(.leading)
+                        }
+                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                    Spacer()
+                    UnitButtonView(type: .continueLesson, action: {
+                        viewModel.router.showCourseVerticalAndBlocksView(verticals: (sequential.displayName, sequential.childs),
+                                                                         blocks: (vertical.displayName, vertical.childs))
+                    }).frame(width: 200)
+                }
+            } .padding(.horizontal, 24)
+                .padding(.top, 32)
+        } else {
+            VStack(alignment: .leading) {
+                if let vertical = sequential.childs.first {
+                    Text(CourseLocalization.Courseware.continueWith)
+                        .font(Theme.Fonts.labelMedium)
+                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                    HStack {
+                        vertical.type.image
+                        Text(vertical.displayName)
+                            .multilineTextAlignment(.leading)
+                            .font(Theme.Fonts.titleMedium)
+                            .multilineTextAlignment(.leading)
+                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                    UnitButtonView(type: .continueLesson, action: {
+                        viewModel.router.showCourseVerticalAndBlocksView(verticals: (sequential.displayName, sequential.childs),
+                                                                         blocks: (vertical.displayName, vertical.childs))
+                    })
+                }
             }
+            .padding(.horizontal, 24)
+            .padding(.top, 32)
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 32)
     }
 }
 
