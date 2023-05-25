@@ -92,9 +92,10 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
     public func getComments(commentID: String, parentComment: Post, page: Int) async -> Bool {
         guard !fetchInProgress else { return false }
         do {
-            let (comments, totalPages) = try await interactor
+            let (comments, pagination) = try await interactor
                 .getCommentResponses(commentID: commentID, page: page)
-            self.totalPages = totalPages
+            self.totalPages = pagination.numPages
+            self.itemsCount = pagination.count
             self.comments += comments
             postComments = generateCommentsResponses(comments: self.comments, parentComment: parentComment)
             return true

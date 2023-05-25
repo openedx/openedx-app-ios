@@ -17,9 +17,9 @@ public protocol DiscussionRepositoryProtocol {
                     page: Int) async throws -> ThreadLists
     func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists
     func getTopics(courseID: String) async throws -> Topics
-    func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Int)
-    func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Int)
-    func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Int)
+    func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
+    func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
+    func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination)
     func addCommentTo(threadID: String, rawBody: String, parentID: String?) async throws -> Post
     func voteThread(voted: Bool, threadID: String) async throws
     func voteResponse(voted: Bool, responseID: String) async throws
@@ -72,25 +72,25 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         return topics.domain
     }
     
-    public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
+    public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
         let response = try await api.requestData(DiscussionEndpoint
             .getDiscussionComments(threadID: threadID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.domain, result.pagination.numPages)
+        return (result.domain, result.pagination.domain)
     }
     
-    public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
+    public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
         let response = try await api.requestData(DiscussionEndpoint
             .getQuestionComments(threadID: threadID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.domain, result.pagination.numPages)
+        return (result.domain, result.pagination.domain)
     }
     
-    public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Int) {
+    public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination) {
         let response = try await api.requestData(DiscussionEndpoint
             .getCommentResponses(commentID: commentID, page: page))
         let result = try await renameUsers(data: response)
-        return (result.domain, result.pagination.numPages)
+        return (result.domain, result.pagination.domain)
     }
     
     public func addCommentTo(threadID: String, rawBody: String, parentID: String? = nil) async throws -> Post {
@@ -327,16 +327,16 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
         )
     }
     
-    public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
-        (comments, 10)
+    public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
+        (comments, Pagination(next: nil, previous: nil, count: 10, numPages: 1))
     }
     
-    public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
-        (comments, 10)
+    public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
+        (comments, Pagination(next: nil, previous: nil, count: 10, numPages: 1))
     }
     
-    public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Int) {
-        (comments, 10)
+    public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination) {
+        (comments, Pagination(next: nil, previous: nil, count: 10, numPages: 1))
     }
     
     public func addCommentTo(threadID: String, rawBody: String, parentID: String?) async throws  -> Post {

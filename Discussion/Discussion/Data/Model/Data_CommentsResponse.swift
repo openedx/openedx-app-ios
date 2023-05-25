@@ -105,23 +105,23 @@ public extension DataLayer {
 public extension DataLayer.CommentsResponse {
     var domain: [UserComment] {
         self.comments.map { comment in
-        UserComment(
-            authorName: comment.author ?? DiscussionLocalization.anonymous,
-            authorAvatar: comment.users?.userName?.profile?.image?.imageURLLarge ?? "",
-            postDate: Date(iso8601: comment.createdAt),
-            postTitle: "",
-            postBody: comment.rawBody,
-            postBodyHtml: comment.renderedBody,
-            postVisible: true,
-            voted: comment.voted,
-            followed: false,
-            votesCount: comment.voteCount,
-            responsesCount: pagination.count,
-            threadID: comment.threadID,
-            commentID: comment.id,
-            parentID: comment.id,
-            abuseFlagged: comment.abuseFlagged
-        )
+            UserComment(
+                authorName: comment.author ?? DiscussionLocalization.anonymous,
+                authorAvatar: comment.users?.userName?.profile?.image?.imageURLLarge ?? "",
+                postDate: Date(iso8601: comment.createdAt),
+                postTitle: "",
+                postBody: comment.rawBody,
+                postBodyHtml: comment.renderedBody,
+                postVisible: true,
+                voted: comment.voted,
+                followed: false,
+                votesCount: comment.voteCount,
+                responsesCount: comment.childCount,
+                threadID: comment.threadID,
+                commentID: comment.id,
+                parentID: comment.id,
+                abuseFlagged: comment.abuseFlagged
+            )
         }
     }
 }
