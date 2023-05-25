@@ -60,108 +60,43 @@ public struct CourseUnitView: View {
                                                                 playerStateSubject.send(VideoPlayerState.kill)
                                                             }).padding(.top, 50)
                                                             switch LessonType.from(block) {
+                                                                // MARK: YouTube
                                                             case let .youtube(url, blockID):
-                                                                VStack(alignment: .leading, spacing: 8) {
-                                                                    VStack(alignment: .leading) {
-                                                                        Text(viewModel.verticals[viewModel.selectedVertical]
-                                                                            .childs[index].displayName)
-                                                                            .font(Theme.Fonts.titleLarge)
-                                                                            .padding(.horizontal, 24)
-                                                                        let vm = Container.shared.resolve(
-                                                                            YouTubeVideoPlayerViewModel.self,
-                                                                            arguments: url, blockID,
-                                                                            viewModel.courseID,
-                                                                            viewModel.languages(),
-                                                                            playerStateSubject)!
-                                                                        YouTubeVideoPlayer(viewModel: vm)
-                                                                        Spacer()
-                                                                    }.background(CoreAssets.background.swiftUIColor)
-                                                                }
-                                                                Spacer(minLength: 100)
+                                                                YouTubeView(index: index, url: url,
+                                                                            blockID: blockID,
+                                                                            viewModel: viewModel,
+                                                                            playerStateSubject: playerStateSubject)
+                                                                
+                                                                // MARK: Encoded Video
                                                             case let .video(encodedUrl, blockID):
-                                                                VStack(alignment: .leading, spacing: 8) {
-                                                                    Text(viewModel.verticals[viewModel.selectedVertical]
-                                                                        .childs[index].displayName)
-                                                                        .font(Theme.Fonts.titleLarge)
-                                                                        .padding(.horizontal, 24)
-                                                                    
-                                                                    let vm = Container.shared.resolve(
-                                                                        EncodedVideoPlayerViewModel.self,
-                                                                        arguments: viewModel.languages(),
-                                                                        playerStateSubject)!
-                                                                    
-                                                                    EncodedVideoPlayer(
-                                                                        url: viewModel.urlForVideoFileOrFallback(
-                                                                            blockId: blockID, url: encodedUrl),
-                                                                        blockID: blockID,
-                                                                        courseID: viewModel.courseID,
-                                                                        viewModel: vm
-                                                                    )
-                                                                    Spacer(minLength: 100)
-                                                                }
+                                                                EncodedVideoView(index: index,
+                                                                                 encodedUrl: encodedUrl,
+                                                                                 blockID: blockID,
+                                                                                 viewModel: viewModel,
+                                                                                 playerStateSubject: playerStateSubject)
+                                                                
+                                                                // MARK: Web
                                                             case .web(let url):
-                                                                RoundedRectangle(cornerRadius: 30)
-                                                                    .frame(height: 60)
-                                                                    .foregroundColor(.white)
-                                                                    .padding(.bottom, -30)
-                                                                VStack {
-                                                                    WebUnitView(url: url,
-                                                                                viewModel: Container.shared
-                                                                        .resolve(WebUnitViewModel.self)!)
-                                                                    
-                                                                    Spacer(minLength: 100)
-                                                                }.background(Color.white)
-                                                                    .contrast(1.08)
-                                                                    .padding(.horizontal, -12)
-                                                                    .roundedBackground(strokeColor: .clear,
-                                                                                       maxIpadWidth: .infinity)
+                                                                WebView(url: url,
+                                                                        viewModel: viewModel)
+                                                                
+                                                                // MARK: Unknown
                                                             case .unknown(let url):
-                                                                VStack(spacing: 0) {
-                                                                    CoreAssets.notAvaliable.swiftUIImage
-                                                                    Text(CourseLocalization.NotAvaliable.title)
-                                                                        .font(Theme.Fonts.titleLarge)
-                                                                        .multilineTextAlignment(.center)
-                                                                        .frame(maxWidth: .infinity)
-                                                                        .padding(.top, 40)
-                                                                    Text(CourseLocalization.NotAvaliable.description)
-                                                                        .font(Theme.Fonts.bodyLarge)
-                                                                        .multilineTextAlignment(.center)
-                                                                        .frame(maxWidth: .infinity)
-                                                                        .padding(.top, 12)
-                                                                    StyledButton(CourseLocalization.NotAvaliable.button,
-                                                                                 action: {
-                                                                        if let url = URL(string: url) {
-                                                                            UIApplication.shared.open(url)
-                                                                        }
-                                                                    }).frame(width: 215).padding(.top, 40)
-                                                                }.padding(24)
-                                                                Spacer()
+                                                                UnknownView(url: url,
+                                                                            viewModel: viewModel)
+                                                                
+                                                                // MARK: Discussion
                                                             case let .discussion(blockID, title):
-                                                                let id = "course-v1:"
-                                                                + (viewModel.lessonID.find(from: "block-v1:",
-                                                                                           to: "+type").first ?? "")
-                                                                PostsView(courseID: id,
-                                                                          currentBlockID: blockID,
-                                                                          topics: Topics(coursewareTopics: [],
-                                                                                         nonCoursewareTopics: []),
-                                                                          title: title,
-                                                                          type: .courseTopics(topicID: blockID),
-                                                                          viewModel: Container.shared
-                                                                    .resolve(PostsViewModel.self)!,
-                                                                          router: Container.shared
-                                                                    .resolve(DiscussionRouter.self)!,
-                                                                          showTopMenu: false)
-                                                                .onAppear {
-                                                                    Task {
-                                                                        await viewModel
-                                                                            .blockCompletionRequest(blockID: blockID)
-                                                                    }
-                                                                }
-                                                                Spacer(minLength: 100)
+                                                                DiscussionView(blockID: blockID,
+                                                                               title: title,
+                                                                               viewModel: viewModel,
+                                                                               playerStateSubject: playerStateSubject)
                                                             }
                                                         }
-                                                        .frame(height: reader.size.height + 10)
+                                                        
+                                                        .frame(height: reader.size.height)
                                                         .id(index)
+                                                        
                                                     }
                                                 }
                                         }
@@ -171,7 +106,7 @@ public struct CourseUnitView: View {
                                             }
                                         })
                                     }.introspectScrollView(customize: { sv in
-                                        sv.isScrollEnabled = false
+                                        sv.isScrollEnabled = true
                                     })
                                     .onAppear {
                                         withAnimation {
@@ -180,6 +115,8 @@ public struct CourseUnitView: View {
                                     }
                                 }
                             } else {
+                                
+                                // MARK: No internet view
                                 VStack(spacing: 28) {
                                     Image(systemName: "wifi").resizable()
                                         .scaledToFit()
@@ -193,27 +130,10 @@ public struct CourseUnitView: View {
                                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                         }.frame(maxWidth: .infinity)
+                        
+                        // MARK: Progress Dots
                         if viewModel.verticals[viewModel.selectedVertical].childs.count > 1 {
-                            HStack {
-                                Spacer()
-                                VStack {
-                                    Spacer()
-                                    let childs = viewModel.verticals[viewModel.selectedVertical].childs
-                                    ForEach(Array(childs.enumerated()), id: \.offset) { index, block in
-                                        let selected = viewModel.verticals[viewModel.selectedVertical].childs[index]
-                                        Circle().frame(width: selected == viewModel.selectedLesson()
-                                                       ? 5
-                                                       : 3,
-                                                       height: selected == viewModel.selectedLesson()
-                                                       ? 5
-                                                       : 3)
-                                        .foregroundColor(selected == viewModel.selectedLesson()
-                                                         ? .accentColor
-                                                         : CoreAssets.textSecondary.swiftUIColor)
-                                    }
-                                    Spacer()
-                                }.padding(.trailing, 6)
-                            }
+                            LessonProgressView(viewModel: viewModel)
                         }
                     }
                     // MARK: - Alert
@@ -256,6 +176,164 @@ public struct CourseUnitView: View {
                 CoreAssets.background.swiftUIColor
                     .ignoresSafeArea()
             )
+    }
+}
+
+struct YouTubeView: View {
+    let index: Int
+    let url: String
+    let blockID: String
+    let viewModel: CourseUnitViewModel
+    let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading) {
+                Text(viewModel.verticals[viewModel.selectedVertical].childs[index].displayName)
+                    .font(Theme.Fonts.titleLarge)
+                    .padding(.horizontal, 24)
+                let vm = Container.shared.resolve(YouTubeVideoPlayerViewModel.self,
+                                                  arguments: url,
+                                                  blockID,
+                                                  viewModel.courseID,
+                                                  viewModel.languages(),
+                                                  playerStateSubject)!
+                YouTubeVideoPlayer(viewModel: vm)
+                Spacer(minLength: 100)
+            }.background(CoreAssets.background.swiftUIColor)
+        }
+    }
+}
+
+struct EncodedVideoView: View {
+    let index: Int
+    let encodedUrl: String
+    let blockID: String
+    let viewModel: CourseUnitViewModel
+    let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(viewModel.verticals[viewModel.selectedVertical].childs[index].displayName)
+                .font(Theme.Fonts.titleLarge)
+                .padding(.horizontal, 24)
+            
+            let vm = Container.shared.resolve(EncodedVideoPlayerViewModel.self,
+                                              arguments: viewModel.languages(),
+                                              playerStateSubject)!
+            
+            EncodedVideoPlayer(
+                url: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
+                blockID: blockID,
+                courseID: viewModel.courseID,
+                viewModel: vm
+            )
+            Spacer(minLength: 100)
+        }
+    }
+}
+
+struct WebView: View {
+    let url: String
+    let viewModel: CourseUnitViewModel
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 30)
+            .frame(height: 60)
+            .foregroundColor(.white)
+            .padding(.bottom, -30)
+        VStack {
+            WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
+            Spacer(minLength: 100)
+        }
+        .background(Color.white)
+        .contrast(1.08)
+        .padding(.horizontal, -12)
+        .roundedBackground(strokeColor: .clear, maxIpadWidth: .infinity)
+        .padding(.bottom, 2)
+    }
+}
+
+struct UnknownView: View {
+    let url: String
+    let viewModel: CourseUnitViewModel
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            CoreAssets.notAvaliable.swiftUIImage
+            Text(CourseLocalization.NotAvaliable.title)
+                .font(Theme.Fonts.titleLarge)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 40)
+            Text(CourseLocalization.NotAvaliable.description)
+                .font(Theme.Fonts.bodyLarge)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 12)
+            StyledButton(CourseLocalization.NotAvaliable.button, action: {
+                if let url = URL(string: url) {
+                    UIApplication.shared.open(url)
+                }
+            })
+            .frame(width: 215)
+            .padding(.top, 40)
+        }
+        .padding(24)
+    }
+}
+
+struct DiscussionView: View {
+    let blockID: String
+    let title: String
+    let viewModel: CourseUnitViewModel
+    let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    
+    var body: some View {
+        let id = "course-v1:" + (viewModel.lessonID.find(from: "block-v1:", to: "+type").first ?? "")
+        PostsView(
+            courseID: id,
+            currentBlockID: blockID,
+            topics: Topics(coursewareTopics: [], nonCoursewareTopics: []),
+            title: title,
+            type: .courseTopics(topicID: blockID),
+            viewModel: Container.shared.resolve(PostsViewModel.self)!,
+            router: Container.shared.resolve(DiscussionRouter.self)!,
+            showTopMenu: false
+        )
+        .onAppear {
+            Task {
+                await viewModel.blockCompletionRequest(blockID: blockID)
+            }
+        }
+    }
+}
+
+struct LessonProgressView: View {
+    @ObservedObject var viewModel: CourseUnitViewModel
+    
+    init(viewModel: CourseUnitViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            VStack {
+                Spacer()
+                let childs = viewModel.verticals[viewModel.selectedVertical].childs
+                ForEach(Array(childs.enumerated()), id: \.offset) { index, _ in
+                    let selected = viewModel.verticals[viewModel.selectedVertical].childs[index]
+                    Circle()
+                        .frame(width: selected == viewModel.selectedLesson() ? 5 : 3,
+                               height: selected == viewModel.selectedLesson() ? 5 : 3)
+                        .foregroundColor(selected == viewModel.selectedLesson()
+                                         ? .accentColor : CoreAssets.textSecondary.swiftUIColor)
+                }
+                Spacer()
+            }
+            .padding(.trailing, 6)
+        }
     }
 }
 

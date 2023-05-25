@@ -37,15 +37,15 @@ struct CourseNavigationView: View {
                 })
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.last {
-                    //                        if viewModel.previousLesson != "" {
                     UnitButtonView(type: .previous, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
                         withAnimation {
                             viewModel.select(move: .previous)
                         }
                         
-                    }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first ? 0.5 : 1)
-                    //                        }
+                    }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
+                               ? 0.5
+                               : 1)
                     UnitButtonView(type: .last, action: {
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
@@ -61,14 +61,18 @@ struct CourseNavigationView: View {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
                                 viewModel.router.dismiss(animated: false)
-                                viewModel.router.removeLastView(controllers: 2)
+                                viewModel.router.back(animated: false)
                             },
                             nextSectionTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
-                                viewModel.index = 0
-                                viewModel.selectedVertical += 1
                                 viewModel.router.dismiss(animated: false)
+                                viewModel.router.back(animated: false)
+                                viewModel.router.showCourseUnit(blockId: viewModel.lessonID,
+                                                                courseID: viewModel.courseID,
+                                                                sectionName: viewModel.selectedLesson().displayName,
+                                                                selectedVertical: viewModel.selectedVertical + 1,
+                                                                verticals: viewModel.verticals)
                             }
                         )
                     })
