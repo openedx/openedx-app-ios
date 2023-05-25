@@ -255,18 +255,20 @@ class ScreenAssembly: Assembly {
                                  connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
-        container.register(YouTubeVideoPlayerViewModel.self) { r, url, blockID, courseID, languages in
+        container.register(YouTubeVideoPlayerViewModel.self) { r, url, blockID, courseID, languages, playerStateSubject in
             YouTubeVideoPlayerViewModel(url: url,
                                         blockID: blockID,
                                         courseID: courseID,
                                         languages: languages,
+                                        playerStateSubject: playerStateSubject,
                                         interactor: r.resolve(CourseInteractorProtocol.self)!,
                                         router: r.resolve(CourseRouter.self)!,
                                         connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
-        container.register(EncodedVideoPlayerViewModel.self) { r, languages in
+        container.register(EncodedVideoPlayerViewModel.self) { r, languages, playerStateSubject in
             EncodedVideoPlayerViewModel(languages: languages,
+                                        playerStateSubject: playerStateSubject,
                                         interactor: r.resolve(CourseInteractorProtocol.self)!,
                                         router: r.resolve(CourseRouter.self)!,
                                         connectivity: r.resolve(ConnectivityProtocol.self)!)

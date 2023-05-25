@@ -31,7 +31,6 @@ public struct EncodedVideoPlayer: View {
     @State private var isViewedOnce: Bool = false
     @State private var currentTime: Double = 0
     @State private var isOrientationChanged: Bool = false
-    private var subscription = Set<AnyCancellable>()
 
     @State var showAlert = false
     @State var alertMessage: String? {
@@ -47,24 +46,11 @@ public struct EncodedVideoPlayer: View {
         url: URL?,
         blockID: String,
         courseID: String,
-        viewModel: EncodedVideoPlayerViewModel,
-        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    ) {
+        viewModel: EncodedVideoPlayerViewModel) {
         self.url = url
         self.blockID = blockID
         self.courseID = courseID
         self._viewModel = StateObject(wrappedValue: { viewModel }())
-        
-        playerStateSubject.sink(receiveValue: { state in
-            switch state {
-            case .pause:
-                viewModel.controller.player?.pause()
-            case .kill:
-                viewModel.controller.player?.replaceCurrentItem(with: nil)
-            case .none:
-                break
-            }
-        }).store(in: &subscription)
     }
     
     public var body: some View {
@@ -138,14 +124,18 @@ public struct EncodedVideoPlayer: View {
     }
 }
 
+#if DEBUG
 struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        EncodedVideoPlayer(url: nil, blockID: "", courseID: "",
-                           viewModel: EncodedVideoPlayerViewModel(languages: [],
-                                                                  interactor: CourseInteractor(repository:
-                                                                                                CourseRepositoryMock()),
-                                                                  router: CourseRouterMock(),
-                                                                  connectivity: Connectivity()),
-                           playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil))
+        EncodedVideoPlayer(url: nil,
+                           blockID: "",
+                           courseID: "",
+                           viewModel: EncodedVideoPlayerViewModel(
+                            languages: [],
+                            playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
+                            interactor: CourseInteractor(repository: CourseRepositoryMock()),
+                            router: CourseRouterMock(),
+                            connectivity: Connectivity()))
     }
 }
+#endif

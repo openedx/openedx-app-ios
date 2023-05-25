@@ -15,7 +15,6 @@ public struct YouTubeVideoPlayer: View {
     
     @StateObject
     private var viewModel: YouTubeVideoPlayerViewModel
-    private var subscription = Set<AnyCancellable>()
     
     @State private var orientation = UIDevice.current.orientation
     @State var showAlert = false
@@ -27,18 +26,8 @@ public struct YouTubeVideoPlayer: View {
         }
     }
     
-    public init(viewModel: YouTubeVideoPlayerViewModel,
-                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) {
+    public init(viewModel: YouTubeVideoPlayerViewModel) {
         self._viewModel = StateObject(wrappedValue: {viewModel}())
-        
-        playerStateSubject.sink(receiveValue: { state in
-            switch state {
-            case .pause:
-                viewModel.youtubePlayer.pause()
-            case .kill, .none:
-                break
-            }
-        }).store(in: &subscription)
     }
     
     public var body: some View {
@@ -102,16 +91,19 @@ public struct YouTubeVideoPlayer: View {
     }
 }
 
+#if DEBUG
 struct YouTubeVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        YouTubeVideoPlayer(viewModel: YouTubeVideoPlayerViewModel(url: "",
-                                                                  blockID: "",
-                                                                  courseID: "",
-                                                                  languages: [],
-                                                                  interactor: CourseInteractor(
-                                                                    repository: CourseRepositoryMock()),
-                                                                  router: CourseRouterMock(),
-                                                                  connectivity: Connectivity()),
-                           playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil))
+        YouTubeVideoPlayer(
+            viewModel: YouTubeVideoPlayerViewModel(
+                url: "",
+                blockID: "",
+                courseID: "",
+                languages: [],
+                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
+                interactor: CourseInteractor(repository: CourseRepositoryMock()),
+                router: CourseRouterMock(),
+                connectivity: Connectivity()))
     }
 }
+#endif

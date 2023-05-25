@@ -85,7 +85,9 @@ struct CourseNavigationView: View {
                     //                    if viewModel.nextLesson != "" {
                     UnitButtonView(type: .next, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
-                        viewModel.select(move: .next)
+                        withAnimation {
+                            viewModel.select(move: .next)
+                        }
                     })
                     //                    }
                 }

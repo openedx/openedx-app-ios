@@ -28,6 +28,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 blockID: String,
                 courseID: String,
                 languages: [SubtitleUrl],
+                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
                 interactor: CourseInteractorProtocol,
                 router: CourseRouter,
                 connectivity: ConnectivityProtocol
@@ -59,6 +60,15 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                    interactor: interactor,
                    router: router,
                    connectivity: connectivity)
+        
+        playerStateSubject.sink(receiveValue: { [weak self] state in
+            switch state {
+            case .pause:
+                self?.youtubePlayer.pause()
+            case .kill, .none:
+                break
+            }
+        }).store(in: &subscription)
         
         youtubePlayer.durationPublisher.sink(receiveValue: { [weak self] duration in
             self?.duration = duration
