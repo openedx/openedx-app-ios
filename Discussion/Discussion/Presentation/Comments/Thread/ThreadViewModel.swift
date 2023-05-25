@@ -128,20 +128,19 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
             try await interactor.readBody(threadID: thread.id)
             switch thread.type {
             case .question:
-                let (comments, totalPages) = try await interactor
+                let (comments, pagination) = try await interactor
                     .getQuestionComments(threadID: thread.id, page: page)
                 self.totalPages = totalPages
+                self.itemsCount = pagination.count
                 self.comments += comments
-                
-                postComments =
-                generateComments(comments: self.comments, thread: thread)
+                postComments = generateComments(comments: self.comments, thread: thread)
             case .discussion:
-                let (comments, totalPages) = try await interactor
+                let (comments, pagination) = try await interactor
                     .getDiscussionComments(threadID: thread.id, page: page)
                 self.totalPages = totalPages
+                self.itemsCount = pagination.count
                 self.comments += comments
-                postComments =
-                generateComments(comments: self.comments, thread: thread)
+                postComments = generateComments(comments: self.comments, thread: thread)
             }
             fetchInProgress = false
             return true

@@ -85,11 +85,9 @@ public struct ResponsesView: View {
                                                 onFollowTap: {}
                                             )
                                             HStack {
-                                                if let responsesCount = viewModel.postComments?.responsesCount {
-                                                    Text("\(responsesCount)")
-                                                    Text(DiscussionLocalization.commentsCount(responsesCount))
-                                                    Spacer()
-                                                }
+                                                Text("\(viewModel.itemsCount)")
+                                                Text(DiscussionLocalization.commentsCount(viewModel.itemsCount))
+                                                Spacer()
                                             }.padding(.top, 40)
                                                 .padding(.bottom, 14)
                                                 .padding(.leading, 24)
