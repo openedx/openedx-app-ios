@@ -28,9 +28,11 @@ public struct WebUnitView: View {
             GeometryReader { reader in
                 ScrollView {
                     if viewModel.cookiesReady {
-                        WebView(viewModel: .init(url: url), isLoading: $isWebViewLoading, refreshCookies: {
-                            await viewModel.updateCookies(force: true)
-                        })
+                        WebView(
+                            viewModel: .init(url: url, baseURL: viewModel.config.baseURL.absoluteString),
+                            isLoading: $isWebViewLoading, refreshCookies: {
+                                await viewModel.updateCookies(force: true)
+                            })
                         .introspectScrollView(customize: { scrollView in
                             scrollView.isScrollEnabled = false
                             scrollView.alwaysBounceVertical = false
