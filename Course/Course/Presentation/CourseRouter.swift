@@ -24,14 +24,14 @@ public protocol CourseRouter: BaseRouter {
                         selectedVertical: Int,
                         verticals: [CourseVertical])
     
+    func replaceCourseUnit(blockId: String,
+                           courseID: String,
+                           sectionName: String,
+                           selectedVertical: Int,
+                           verticals: [CourseVertical])
+    
     func showCourseVerticalView(title: String,
                                 verticals: [CourseVertical])
-    
-//    func showCourseBlocksView(title: String,
-//                              blocks: [CourseBlock])
-    
-//    func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
-//                                                blocks: (String, [CourseBlock]))
     
     func showHandoutsUpdatesView(handouts: String?,
                                  announcements: [CourseUpdate]?,
@@ -59,14 +59,14 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
                                selectedVertical: Int,
                                verticals: [CourseVertical]) {}
     
+    public func replaceCourseUnit(blockId: String,
+                           courseID: String,
+                           sectionName: String,
+                           selectedVertical: Int,
+                           verticals: [CourseVertical]) {}
+    
     public func showCourseVerticalView(title: String,
                                        verticals: [CourseVertical]) {}
-    
-//    public func showCourseBlocksView(title: String,
-//                                     blocks: [CourseBlock]) {}
-    
-//    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
-//                                                blocks: (String, [CourseBlock])) {}
     
     public func showHandoutsUpdatesView(handouts: String?,
                                         announcements: [CourseUpdate]?,

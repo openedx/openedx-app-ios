@@ -61,14 +61,13 @@ struct CourseNavigationView: View {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
                                 viewModel.router.dismiss(animated: false)
-                                viewModel.router.back(animated: false)
+                                viewModel.router.back(animated: true)
                             },
                             nextSectionTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
                                 viewModel.router.dismiss(animated: false)
-                                viewModel.router.back(animated: false)
-                                viewModel.router.showCourseUnit(blockId: viewModel.lessonID,
+                                viewModel.router.replaceCourseUnit(blockId: viewModel.lessonID,
                                                                 courseID: viewModel.courseID,
                                                                 sectionName: viewModel.selectedLesson().displayName,
                                                                 selectedVertical: viewModel.selectedVertical + 1,

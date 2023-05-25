@@ -204,6 +204,21 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func replaceCourseUnit(blockId: String,
+                                  courseID: String,
+                                  sectionName: String,
+                                  selectedVertical: Int,
+                                  verticals: [CourseVertical]) {
+        let viewModel = Container.shared.resolve(CourseUnitViewModel.self,
+                                                 arguments: blockId, courseID, verticals, selectedVertical)!
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
+        let controller = SwiftUIHostController(view: view)
+        var controllers = navigationController.viewControllers
+        controllers.removeLast()
+        controllers.append(controller)
+        navigationController.setViewControllers(controllers, animated: true)
+    }
+    
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(PostsViewModel.self)!
