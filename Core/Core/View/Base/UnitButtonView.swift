@@ -46,10 +46,12 @@ public struct UnitButtonView: View {
     
     private let action: () -> Void
     private let type: UnitButtonType
+    private let bgColor: Color?
     
-    public init(type: UnitButtonType, action: @escaping () -> Void) {
-        self.action = action
+    public init(type: UnitButtonType, bgColor: Color? = nil, action: @escaping () -> Void) {
         self.type = type
+        self.bgColor = bgColor
+        self.action = action
     }
     
     public  var body: some View {
@@ -112,7 +114,7 @@ public struct UnitButtonView: View {
                     case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
-                                .foregroundColor(.white)
+                                .foregroundColor(bgColor == nil ? .white : CoreAssets.accentColor.swiftUIColor)
                                 .font(Theme.Fonts.labelLarge)
                         }.padding(.horizontal, 16)
                     case .continueLesson, .nextSection:
@@ -141,7 +143,7 @@ public struct UnitButtonView: View {
                                 
                         case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
-                                .fill(CoreAssets.accentColor.swiftUIColor)
+                                .fill(bgColor ?? CoreAssets.accentColor.swiftUIColor)
                             
                                 .shadow(color: (type == .first
                                                 || type == .next

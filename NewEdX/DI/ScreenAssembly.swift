@@ -217,13 +217,6 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(CourseBlocksViewModel.self) { r, blocks in
-            CourseBlocksViewModel(blocks: blocks,
-                                  manager: r.resolve(DownloadManagerProtocol.self)!,
-                                  router: r.resolve(CourseRouter.self)!,
-                                  connectivity: r.resolve(ConnectivityProtocol.self)!)
-        }
-        
         container.register(CourseVerticalViewModel.self) { r, verticals in
             CourseVerticalViewModel(verticals: verticals,
                                     manager: r.resolve(DownloadManagerProtocol.self)!,
