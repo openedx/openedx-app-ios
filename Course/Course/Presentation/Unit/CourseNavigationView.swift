@@ -7,63 +7,96 @@
 
 import SwiftUI
 import Core
+import Combine
 
 struct CourseNavigationView: View {
     
     @ObservedObject private var viewModel: CourseUnitViewModel
     private let sectionName: String
-
-    init(sectionName: String, viewModel: CourseUnitViewModel) {
+    private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    
+    init(sectionName: String,
+         viewModel: CourseUnitViewModel,
+         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    ) {
         self.viewModel = viewModel
         self.sectionName = sectionName
-        
+        self.playerStateSubject = playerStateSubject
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 24) {
-            if viewModel.selectedLesson() == viewModel.blocks.first
-                && viewModel.blocks.count != 1 {
-                UnitButtonView(type: .first, action: {
-                    viewModel.select(move: .next)
-                    self.viewModel.createLessonType()
-                    self.viewModel.killPlayer.toggle()
+        HStack(alignment: .top, spacing: 7) {
+            if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
+                && viewModel.verticals[viewModel.selectedVertical].childs.count != 1 {
+                UnitButtonView(type: .previous, action: {}).opacity(0.5)
+                UnitButtonView(type: .next, action: {
+                    playerStateSubject.send(VideoPlayerState.pause)
+                    withAnimation {
+                        viewModel.select(move: .next)
+                    }
                 })
             } else {
-               
-                if viewModel.previousLesson != "" {
+                if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.last {
                     UnitButtonView(type: .previous, action: {
-                        viewModel.select(move: .previous)
-                        self.viewModel.createLessonType()
-                        self.viewModel.killPlayer.toggle()
-                    })
-                }
-                if viewModel.nextLesson != "" {
-                    UnitButtonView(type: .next, action: {
-                        viewModel.select(move: .next)
-                        self.viewModel.createLessonType()
-                        self.viewModel.killPlayer.toggle()
-                    })
-                }
-                if viewModel.selectedLesson() == viewModel.blocks.last {
-                    UnitButtonView(type: viewModel.blocks.count == 1 ? .finish : .last, action: {
+                        playerStateSubject.send(VideoPlayerState.pause)
+                        withAnimation {
+                            viewModel.select(move: .previous)
+                        }
+                        
+                    }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
+                               ? 0.5
+                               : 1)
+                    UnitButtonView(type: .last, action: {
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
                             alertMessage: (CourseLocalization.Courseware.section
-                                           + " " + sectionName + " " + CourseLocalization.Courseware.isFinished),
+                                            + sectionName + CourseLocalization.Courseware.isFinished),
+                            nextSectionName: viewModel.selectedVertical != viewModel.verticals.count - 1
+                            ? viewModel.verticals[viewModel.selectedVertical + 1].displayName
+                            : nil,
                             action: CourseLocalization.Courseware.backToOutline,
                             image: CoreAssets.goodWork.swiftUIImage,
-                            onCloseTapped: {},
+                            onCloseTapped: { viewModel.router.dismiss(animated: false) },
                             okTapped: {
+                                playerStateSubject.send(VideoPlayerState.pause)
+                                playerStateSubject.send(VideoPlayerState.kill)
                                 viewModel.router.dismiss(animated: false)
-                                viewModel.router.removeLastView(controllers: 2)
+                                viewModel.router.back(animated: true)
+                            },
+                            nextSectionTapped: {
+                                playerStateSubject.send(VideoPlayerState.pause)
+                                playerStateSubject.send(VideoPlayerState.kill)
+                                viewModel.router.dismiss(animated: false)
+                                viewModel.router.replaceCourseUnit(blockId: viewModel.lessonID,
+                                                                courseID: viewModel.courseID,
+                                                                sectionName: viewModel.selectedLesson().displayName,
+                                                                selectedVertical: viewModel.selectedVertical + 1,
+                                                                verticals: viewModel.verticals)
                             }
                         )
                     })
+                } else {
+                    //                    if viewModel.previousLesson != "" {
+                    UnitButtonView(type: .previous, action: {
+                        playerStateSubject.send(VideoPlayerState.pause)
+                        withAnimation {
+                            viewModel.select(move: .previous)
+                        }
+                        
+                    })
+                    //                    }
+                    //                    if viewModel.nextLesson != "" {
+                    UnitButtonView(type: .next, action: {
+                        playerStateSubject.send(VideoPlayerState.pause)
+                        withAnimation {
+                            viewModel.select(move: .next)
+                        }
+                    })
+                    //                    }
                 }
             }
         }.frame(minWidth: 0, maxWidth: .infinity)
             .padding(.horizontal, 24)
-            
     }
 }
 
@@ -72,13 +105,17 @@ struct CourseNavigationView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = CourseUnitViewModel(lessonID: "1",
                                             courseID: "1",
-                                            blocks: [],
+                                            verticals: [],
+                                            selectedVertical: 1,
                                             interactor: CourseInteractor.mock,
                                             router: CourseRouterMock(),
                                             connectivity: Connectivity(),
                                             manager: DownloadManagerMock())
         
-        CourseNavigationView(sectionName: "Name", viewModel: viewModel)
+        CourseNavigationView(sectionName: "Name",
+                             viewModel: viewModel,
+                             playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
+        )
     }
 }
 #endif

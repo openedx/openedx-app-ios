@@ -29,14 +29,14 @@ public enum CourseLocalization {
     public static let finish = CourseLocalization.tr("Localizable", "COURSEWARE.FINISH", fallback: "Finish")
     /// Good Work!
     public static let goodWork = CourseLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good Work!")
-    /// is finished.
-    public static let isFinished = CourseLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "is finished.")
+    /// “ is finished.
+    public static let isFinished = CourseLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“ is finished.")
     /// Next
     public static let next = CourseLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Previous
     public static let previous = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Previous")
-    /// Section
-    public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section")
+    /// Section “
+    public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
   }
   public enum CourseContainer {
     /// Course

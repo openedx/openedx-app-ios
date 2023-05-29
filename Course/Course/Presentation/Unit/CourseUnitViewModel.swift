@@ -5,7 +5,7 @@
 //  Created by  Stepanok Ivan on 05.10.2022.
 //
 
-import Foundation
+import SwiftUI
 import Core
 
 public enum LessonType: Equatable {
@@ -13,7 +13,7 @@ public enum LessonType: Equatable {
     case youtube(viewYouTubeUrl: String, blockID: String)
     case video(videoUrl: String, blockID: String)
     case unknown(String)
-    case discussion(String)
+    case discussion(String, String)
     
     static func from(_ block: CourseBlock) -> Self {
         switch block.type {
@@ -22,7 +22,7 @@ public enum LessonType: Equatable {
         case .html:
             return .web(block.studentUrl)
         case .discussion:
-            return .discussion(block.topicId ?? "")
+            return .discussion(block.topicId ?? "", block.displayName)
         case .video:
             if block.youTubeUrl != nil, let encodedVideo = block.videoUrl {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
@@ -42,12 +42,14 @@ public enum LessonType: Equatable {
 
 public class CourseUnitViewModel: ObservableObject {
     
-    public var blocks: [CourseBlock]
+//    public var blocks: [CourseBlock]
+    public var verticals: [CourseVertical]
+    public var selectedVertical: Int
+
     @Published var index: Int = 0
-    @Published var previousLesson: String = ""
-    @Published var nextLesson: String = ""
-    @Published var lessonType: LessonType?
-    @Published var killPlayer = false
+    var previousLesson: String = ""
+    var nextLesson: String = ""
+//    @Published var lessonType: LessonType?
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {
@@ -70,7 +72,9 @@ public class CourseUnitViewModel: ObservableObject {
     
     public init(lessonID: String,
                 courseID: String,
-                blocks: [CourseBlock],
+//                blocks: [CourseBlock],
+                verticals: [CourseVertical],
+                selectedVertical: Int,
                 interactor: CourseInteractorProtocol,
                 router: CourseRouter,
                 connectivity: ConnectivityProtocol,
@@ -78,7 +82,9 @@ public class CourseUnitViewModel: ObservableObject {
     ) {
         self.lessonID = lessonID
         self.courseID = courseID
-        self.blocks = blocks
+//        self.blocks = blocks
+        self.verticals = verticals
+        self.selectedVertical = selectedVertical
         self.interactor = interactor
         self.router = router
         self.connectivity = connectivity
@@ -86,23 +92,23 @@ public class CourseUnitViewModel: ObservableObject {
     }
     
     public func languages() -> [SubtitleUrl] {
-        return blocks.first(where: { $0.id == lessonID })?.subtitles ?? []
+        return verticals[selectedVertical].childs.first(where: { $0.id == lessonID })?.subtitles ?? []
     }
 
     private func selectLesson() -> Int {
-        guard blocks.count > 0 else { return 0 }
-        let index = blocks.firstIndex(where: { $0.id == lessonID }) ?? 0
+        guard verticals[selectedVertical].childs.count > 0 else { return 0 }
+        let index = verticals[selectedVertical].childs.firstIndex(where: { $0.id == lessonID }) ?? 0
         nextTitles()
         return index
     }
     
     func selectedLesson() -> CourseBlock {
-        return blocks[index]
+        return verticals[selectedVertical].childs[index]
     }
     
-    func createLessonType() {
-        self.lessonType = LessonType.from(blocks[index])
-    }
+//    func createLessonType() {
+//        self.lessonType = LessonType.from(blocks[index])
+//    }
     
     enum LessonAction {
         case next
@@ -112,11 +118,11 @@ public class CourseUnitViewModel: ObservableObject {
     func select(move: LessonAction) {
         switch move {
         case .next:
-            if index != blocks.count - 1 { index += 1 }
-            nextTitles()
+            if index != verticals[selectedVertical].childs.count - 1 { withAnimation { index += 1 } }
+                nextTitles()
         case .previous:
-            if index != 0 { index -= 1 }
-            nextTitles()
+            if index != 0 { withAnimation { index -= 1 } }
+                nextTitles()
         }
     }
     
@@ -136,19 +142,19 @@ public class CourseUnitViewModel: ObservableObject {
     
     func nextTitles() {
         if index != 0 {
-            previousLesson = blocks[index - 1].displayName
+            previousLesson = verticals[selectedVertical].childs[index - 1].displayName
         } else {
             previousLesson = ""
         }
-        if index != blocks.count - 1 {
-            nextLesson = blocks[index + 1].displayName
+        if index != verticals[selectedVertical].childs.count - 1 {
+            nextLesson = verticals[selectedVertical].childs[index + 1].displayName
         } else {
             nextLesson = ""
         }
     }
     
     public func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
-        guard let block = blocks.first(where: { $0.id == blockId }) else { return nil }
+        guard let block = verticals[selectedVertical].childs.first(where: { $0.id == blockId }) else { return nil }
         
         if let fileURL = manager.fileUrl(for: blockId) {
             return fileURL

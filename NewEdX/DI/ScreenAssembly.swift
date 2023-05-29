@@ -217,13 +217,6 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(CourseBlocksViewModel.self) { r, blocks in
-            CourseBlocksViewModel(blocks: blocks,
-                                  manager: r.resolve(DownloadManagerProtocol.self)!,
-                                  router: r.resolve(CourseRouter.self)!,
-                                  connectivity: r.resolve(ConnectivityProtocol.self)!)
-        }
-        
         container.register(CourseVerticalViewModel.self) { r, verticals in
             CourseVerticalViewModel(verticals: verticals,
                                     manager: r.resolve(DownloadManagerProtocol.self)!,
@@ -231,11 +224,12 @@ class ScreenAssembly: Assembly {
                                     connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
-        container.register(CourseUnitViewModel.self) { r, blockId, courseId, blocks in
+        container.register(CourseUnitViewModel.self) { r, blockId, courseId, verticals, selectedVertical in
             CourseUnitViewModel(
                 lessonID: blockId,
                 courseID: courseId,
-                blocks: blocks,
+                verticals: verticals,
+                selectedVertical: selectedVertical,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
@@ -247,10 +241,30 @@ class ScreenAssembly: Assembly {
             WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!)
         }
         
-        container.register(VideoPlayerViewModel.self) { r in
-            VideoPlayerViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
+        container.register(VideoPlayerViewModel.self) { r, languages in
+            VideoPlayerViewModel(languages: languages,
+                                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                                  router: r.resolve(CourseRouter.self)!,
                                  connectivity: r.resolve(ConnectivityProtocol.self)!)
+        }
+        
+        container.register(YouTubeVideoPlayerViewModel.self) { r, url, blockID, courseID, languages, playerStateSubject in
+            YouTubeVideoPlayerViewModel(url: url,
+                                        blockID: blockID,
+                                        courseID: courseID,
+                                        languages: languages,
+                                        playerStateSubject: playerStateSubject,
+                                        interactor: r.resolve(CourseInteractorProtocol.self)!,
+                                        router: r.resolve(CourseRouter.self)!,
+                                        connectivity: r.resolve(ConnectivityProtocol.self)!)
+        }
+        
+        container.register(EncodedVideoPlayerViewModel.self) { r, languages, playerStateSubject in
+            EncodedVideoPlayerViewModel(languages: languages,
+                                        playerStateSubject: playerStateSubject,
+                                        interactor: r.resolve(CourseInteractorProtocol.self)!,
+                                        router: r.resolve(CourseRouter.self)!,
+                                        connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
         container.register(HandoutsViewModel.self) { r, courseID in

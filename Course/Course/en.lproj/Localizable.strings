@@ -25,8 +25,8 @@
 "COURSEWARE.FINISH" = "Finish";
 "COURSEWARE.GOOD_WORK" = "Good Work!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";
-"COURSEWARE.SECTION" = "Section";
-"COURSEWARE.IS_FINISHED" = "is finished.";
+"COURSEWARE.SECTION" = "Section “";
+"COURSEWARE.IS_FINISHED" = "“ is finished.";
 "COURSEWARE.CONTINUE" = "Continue";
 "COURSEWARE.CONTINUE_WITH" = "Continue with:";
 

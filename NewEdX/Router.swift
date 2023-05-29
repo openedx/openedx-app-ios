@@ -85,19 +85,23 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     public func presentAlert(
         alertTitle: String,
         alertMessage: String,
+        nextSectionName: String? = nil,
         action: String,
         image: Image,
         onCloseTapped: @escaping () -> Void,
-        okTapped: @escaping () -> Void
+        okTapped: @escaping () -> Void,
+        nextSectionTapped: @escaping () -> Void
     ) {
         presentView(transitionStyle: .crossDissolve, content: {
             AlertView(
                 alertTitle: alertTitle,
                 alertMessage: alertMessage,
+                nextSectionName: nextSectionName,
                 mainAction: action,
                 image: image,
                 onCloseTapped: onCloseTapped,
-                okTapped: okTapped
+                okTapped: okTapped,
+                nextSectionTapped: { nextSectionTapped() }
             )
         })
     }
@@ -157,32 +161,6 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showCourseBlocksView(title: String,
-                                     blocks: [CourseBlock]) {
-        let viewModel = Container.shared.resolve(CourseBlocksViewModel.self, argument: blocks)!
-        
-        let view = CourseBlocksView(title: title, viewModel: viewModel)
-        let controller = SwiftUIHostController(view: view)
-        navigationController.pushViewController(controller, animated: true)
-    }
-    
-    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
-                                                blocks: (String, [CourseBlock])) {
-        let viewModelVertical = Container.shared.resolve(CourseVerticalViewModel.self, argument: verticals.1)!
-        let verticalView = CourseVerticalView(title: verticals.0, viewModel: viewModelVertical)
-        let verticalController = SwiftUIHostController(view: verticalView)
-        
-        let viewModelBlocks = Container.shared.resolve(CourseBlocksViewModel.self, argument: blocks.1)!
-        let blocksView = CourseBlocksView(title: blocks.0, viewModel: viewModelBlocks)
-        let blocksController = SwiftUIHostController(view: blocksView)
-        
-        var currentViews = navigationController.viewControllers
-        currentViews.append(verticalController)
-        currentViews.append(blocksController)
-        
-        navigationController.setViewControllers(currentViews, animated: true)
-    }
-    
     public func showCourseScreens(courseID: String,
                                   isActive: Bool?,
                                   courseStart: Date?,
@@ -214,17 +192,37 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
 
-    public func showCourseUnit(blockId: String, courseID: String, sectionName: String, blocks: [CourseBlock]) {
-        let viewModel = Container.shared.resolve(CourseUnitViewModel.self, arguments: blockId, courseID, blocks)!
+    public func showCourseUnit(blockId: String,
+                               courseID: String,
+                               sectionName: String,
+                               selectedVertical: Int,
+                               verticals: [CourseVertical]) {
+        let viewModel = Container.shared.resolve(CourseUnitViewModel.self,
+                                                 arguments: blockId, courseID, verticals, selectedVertical)!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func replaceCourseUnit(blockId: String,
+                                  courseID: String,
+                                  sectionName: String,
+                                  selectedVertical: Int,
+                                  verticals: [CourseVertical]) {
+        let viewModel = Container.shared.resolve(CourseUnitViewModel.self,
+                                                 arguments: blockId, courseID, verticals, selectedVertical)!
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
+        let controller = SwiftUIHostController(view: view)
+        var controllers = navigationController.viewControllers
+        controllers.removeLast()
+        controllers.append(controller)
+        navigationController.setViewControllers(controllers, animated: true)
+    }
+    
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(PostsViewModel.self)!
-        let view = PostsView(courseID: courseID, topics: topics, title: title,
+        let view = PostsView(courseID: courseID, currentBlockID: "", topics: topics, title: title,
                              type: type, viewModel: viewModel, router: router)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)

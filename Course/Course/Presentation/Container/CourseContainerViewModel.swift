@@ -115,11 +115,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
         let blocks = chapter.childs
-            .filter { $0.isDownloadable }
+            .first(where: { $0.id == blockId })?.childs
             .flatMap { $0.childs }
-            .filter { $0.isDownloadable }
-            .flatMap { $0.childs }
-            .filter { $0.isDownloadable }
+            .filter { $0.isDownloadable } ?? []
         
         do {
             switch state {
@@ -178,8 +176,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     
     private func findCourseSequential(blockID: String, courseStructure: CourseStructure) -> CourseSequential? {
         for chapter in courseStructure.childs {
-            if let sequential = chapter.childs.first(where: { $0.id == blockID }) {
-                return sequential
+            for sequential in chapter.childs {
+                for vertical in sequential.childs {
+                    for block in vertical.childs {
+                        if block.id == blockID {
+                            return sequential
+                        }
+                    }
+                }
             }
         }
         return nil

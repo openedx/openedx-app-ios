@@ -6,48 +6,55 @@
 //
 
 import SwiftUI
-import Core
 
-struct UnitButtonView: View {
+public enum UnitButtonType: Equatable {
+    case first
+    case next
+    case previous
+    case last
+    case finish
+    case reload
+    case continueLesson
+    case nextSection
+    case custom(String)
     
-    enum UnitButtonType {
-        case first
-        case next
-        case previous
-        case last
-        case finish
-        case reload
-        case continueLesson
-        
-        func stringValue() -> String {
-            switch self {
-            case .first:
-                return CourseLocalization.Courseware.next
-            case .next:
-                return CourseLocalization.Courseware.next
-            case .previous:
-                return CourseLocalization.Courseware.previous
-            case .last:
-                return CourseLocalization.Courseware.finish
-            case .finish:
-                return CourseLocalization.Courseware.finish
-            case .reload:
-                return CourseLocalization.Error.reload
-            case .continueLesson:
-                return CourseLocalization.Courseware.continue
-            }
+    func stringValue() -> String {
+        switch self {
+        case .first:
+            return CoreLocalization.Courseware.next
+        case .next:
+            return CoreLocalization.Courseware.next
+        case .previous:
+            return CoreLocalization.Courseware.previous
+        case .last:
+            return CoreLocalization.Courseware.finish
+        case .finish:
+            return CoreLocalization.Courseware.finish
+        case .reload:
+            return CoreLocalization.Error.reload
+        case .continueLesson:
+            return CoreLocalization.Courseware.continue
+        case .nextSection:
+            return CoreLocalization.Courseware.nextSection
+        case let .custom(text):
+            return text
         }
     }
+}
+
+public struct UnitButtonView: View {
     
     private let action: () -> Void
     private let type: UnitButtonType
+    private let bgColor: Color?
     
-    init(type: UnitButtonType, action: @escaping () -> Void) {
-        self.action = action
+    public init(type: UnitButtonType, bgColor: Color? = nil, action: @escaping () -> Void) {
         self.type = type
+        self.bgColor = bgColor
+        self.action = action
     }
     
-    var body: some View {
+    public  var body: some View {
         HStack {
             Button(action: action) {
                 VStack {
@@ -59,8 +66,8 @@ struct UnitButtonView: View {
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
-                                .rotationEffect(Angle.degrees(180))
-                        }
+                                .rotationEffect(Angle.degrees(-90))
+                        }.padding(.horizontal, 16)
                     case .next:
                         HStack {
                             Text(type.stringValue())
@@ -70,17 +77,18 @@ struct UnitButtonView: View {
                             Spacer()
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
-                                .rotationEffect(Angle.degrees(180))
+                                .rotationEffect(Angle.degrees(-90))
                                 .padding(.trailing, 20)
                         }
                     case .previous:
                         HStack {
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                .rotationEffect(Angle.degrees(90))
                                 .padding(.leading, 20)
-                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                .foregroundColor(.white)
                             Spacer()
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                .foregroundColor(.white)
                                 .font(Theme.Fonts.labelLarge)
                                 .padding(.trailing, 20)
                         }
@@ -102,14 +110,14 @@ struct UnitButtonView: View {
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
-                        }
-                    case .reload:
+                        }.padding(.horizontal, 16)
+                    case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                .foregroundColor(bgColor == nil ? .white : CoreAssets.accentColor.swiftUIColor)
                                 .font(Theme.Fonts.labelLarge)
-                        }
-                    case .continueLesson:
+                        }.padding(.horizontal, 16)
+                    case .continueLesson, .nextSection:
                         HStack {
                             Text(type.stringValue())
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
@@ -122,25 +130,47 @@ struct UnitButtonView: View {
                         }
                     }
                 }
-                .frame(maxWidth: .infinity, minHeight: 48)
+                .frame(maxWidth: .infinity, minHeight: 42)
                 .background(
                     VStack {
-                        if self.type == .reload {
+                        switch self.type {
+                        case .first, .next, .previous, .last:
+                            Theme.Shapes.unitButtonShape
+                                .fill(type == .previous
+                                      ? CoreAssets.textSecondary.swiftUIColor
+                                      : CoreAssets.accentColor.swiftUIColor)
+                                .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
+                                
+                        case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
-                                .fill(.clear)
-                        } else {
-                            Theme.Shapes.buttonShape
-                                .fill(type == .previous ? .clear : CoreAssets.accentColor.swiftUIColor)
+                                .fill(bgColor ?? CoreAssets.accentColor.swiftUIColor)
+                            
+                                .shadow(color: (type == .first
+                                                || type == .next
+                                                || type == .previous
+                                                || type == .last
+                                                || type == .finish
+                                                || type == .reload) ? Color.black.opacity(0.25) : .clear,
+                                        radius: 21, y: 4)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                                        .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                )
                         }
                     }
                 )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(CoreAssets.accentColor.swiftUIColor)
-                )
-            }
+            
+            }//.fixedSize(horizontal: type != .continueLesson && type != .nextSection, vertical: false)
+            .fixedSize(horizontal: (type == .first
+                       || type == .next
+                       || type == .previous
+                       || type == .last
+                       || type == .finish
+                       || type == .reload)
+                       , vertical: false)
         }
+        
     }
 }
 
@@ -153,7 +183,9 @@ struct UnitButtonView_Previews: PreviewProvider {
             UnitButtonView(type: .last, action: {})
             UnitButtonView(type: .finish, action: {})
             UnitButtonView(type: .reload, action: {})
+            UnitButtonView(type: .custom("Custom text"), action: {})
             UnitButtonView(type: .continueLesson, action: {})
-        }
+            UnitButtonView(type: .nextSection, action: {})
+        }.padding()
     }
 }

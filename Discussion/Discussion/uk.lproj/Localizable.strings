@@ -20,6 +20,9 @@
 "POSTS.FILTER.ALL_POSTS" = "Всі пости";
 "POSTS.FILTER.UNREAD" = "Непрочитаних";
 "POSTS.FILTER.UNANSWERED" = "Без відповіді";
+"POSTS.NO_DISCUSSION.TITLE" = "Ще немає дискусій";
+"POSTS.NO_DISCUSSION.DESCRIPTION" = "Натисніть кнопку нижче, щоб створити свою першу дискусію.";
+"POSTS.NO_DISCUSSION.CREATEBUTTON" = "Створити дискусію";
 
 "POSTS.CREATE_NEW_POST" = "Створити новий пост";
 "POSTS.ALERT.MAKE_SELECTION" = "Оберіть";

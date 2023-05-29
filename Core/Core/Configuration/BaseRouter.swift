@@ -41,10 +41,12 @@ public protocol BaseRouter {
     func presentAlert(
         alertTitle: String,
         alertMessage: String,
+        nextSectionName: String?,
         action: String,
         image: SwiftUI.Image,
         onCloseTapped: @escaping () -> Void,
-        okTapped: @escaping () -> Void
+        okTapped: @escaping () -> Void,
+        nextSectionTapped: @escaping () -> Void
     )
     
     func presentView(transitionStyle: UIModalTransitionStyle, view: any View)
@@ -99,10 +101,12 @@ open class BaseRouterMock: BaseRouter {
     public func presentAlert(
         alertTitle: String,
         alertMessage: String,
+        nextSectionName: String? = nil,
         action: String,
         image: SwiftUI.Image,
         onCloseTapped: @escaping () -> Void,
-        okTapped: @escaping () -> Void
+        okTapped: @escaping () -> Void,
+        nextSectionTapped: @escaping () -> Void
     ) {}
 
     public func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {}
