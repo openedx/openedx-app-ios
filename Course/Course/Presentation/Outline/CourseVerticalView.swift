@@ -43,8 +43,10 @@ public struct CourseVerticalView: View {
                                             viewModel.router.showCourseUnit(blockId: block.id,
                                                                             courseID: block.blockId,
                                                                             sectionName: block.displayName,
-                                                                            selectedVertical: index,
-                                                                            verticals: viewModel.verticals)
+                                                                            verticalIndex: index,
+                                                                            chapters: viewModel.chapters,
+                                                                            chapterIndex: viewModel.chapterIndex,
+                                                                            sequentialIndex: viewModel.sequentialIndex)
                                         }
                                     }, label: {
                                         HStack {
@@ -172,10 +174,12 @@ struct CourseVerticalView_Previews: PreviewProvider {
             )
         ]
         
-        let viewModel = CourseVerticalViewModel(verticals: verticals,
-                                              manager: DownloadManagerMock(),
-                                              router: CourseRouterMock(),
-                                              connectivity: Connectivity())
+        let viewModel = CourseVerticalViewModel(chapters: [],
+                                                chapterIndex: 1,
+                                                sequentialIndex: 1,
+                                                manager: DownloadManagerMock(),
+                                                router: CourseRouterMock(),
+                                                connectivity: Connectivity())
         
         return Group {
             CourseVerticalView(title: "Course title", viewModel: viewModel)

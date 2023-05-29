@@ -217,19 +217,24 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(CourseVerticalViewModel.self) { r, verticals in
-            CourseVerticalViewModel(verticals: verticals,
+        container.register(CourseVerticalViewModel.self) { r, chapters, chapterIndex, sequentialIndex in
+            CourseVerticalViewModel(chapters: chapters,
+                                    chapterIndex: chapterIndex,
+                                    sequentialIndex: sequentialIndex,
                                     manager: r.resolve(DownloadManagerProtocol.self)!,
                                     router: r.resolve(CourseRouter.self)!,
                                     connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
-        container.register(CourseUnitViewModel.self) { r, blockId, courseId, verticals, selectedVertical in
+        container.register(CourseUnitViewModel.self) { r, blockId, courseId, chapters, chapterIndex, sequentialIndex,
+            verticalIndex in
             CourseUnitViewModel(
                 lessonID: blockId,
                 courseID: courseId,
-                verticals: verticals,
-                selectedVertical: selectedVertical,
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex,
+                verticalIndex: verticalIndex,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,

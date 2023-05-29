@@ -50,7 +50,7 @@ public struct CourseUnitView: View {
                                 ScrollViewReader { scroll in
                                     ScrollView(.vertical) {
                                         LazyVStack(spacing: 0) {
-                                            ForEach(Array(viewModel.verticals[viewModel.selectedVertical]
+                                            ForEach(Array(viewModel.verticals[viewModel.verticalIndex]
                                                 .childs.enumerated()), id: \.offset) { index, block in
                                                     if index >= viewModel.index-1 && index <= viewModel.index+1 {
                                                         VStack(spacing: 0) {
@@ -132,7 +132,7 @@ public struct CourseUnitView: View {
                         }.frame(maxWidth: .infinity)
                         
                         // MARK: Progress Dots
-                        if viewModel.verticals[viewModel.selectedVertical].childs.count > 1 {
+                        if viewModel.verticals[viewModel.verticalIndex].childs.count > 1 {
                             LessonProgressView(viewModel: viewModel)
                         }
                     }
@@ -189,7 +189,7 @@ struct YouTubeView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             VStack(alignment: .leading) {
-                Text(viewModel.verticals[viewModel.selectedVertical].childs[index].displayName)
+                Text(viewModel.verticals[viewModel.verticalIndex].childs[index].displayName)
                     .font(Theme.Fonts.titleLarge)
                     .padding(.horizontal, 24)
                 let vm = Container.shared.resolve(YouTubeVideoPlayerViewModel.self,
@@ -214,7 +214,7 @@ struct EncodedVideoView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(viewModel.verticals[viewModel.selectedVertical].childs[index].displayName)
+            Text(viewModel.verticals[viewModel.verticalIndex].childs[index].displayName)
                 .font(Theme.Fonts.titleLarge)
                 .padding(.horizontal, 24)
             
@@ -321,9 +321,9 @@ struct LessonProgressView: View {
             Spacer()
             VStack {
                 Spacer()
-                let childs = viewModel.verticals[viewModel.selectedVertical].childs
+                let childs = viewModel.verticals[viewModel.verticalIndex].childs
                 ForEach(Array(childs.enumerated()), id: \.offset) { index, _ in
-                    let selected = viewModel.verticals[viewModel.selectedVertical].childs[index]
+                    let selected = viewModel.verticals[viewModel.verticalIndex].childs[index]
                     Circle()
                         .frame(width: selected == viewModel.selectedLesson() ? 5 : 3,
                                height: selected == viewModel.selectedLesson() ? 5 : 3)
@@ -387,8 +387,10 @@ struct LessonView_Previews: PreviewProvider {
         return CourseUnitView(viewModel: CourseUnitViewModel(
             lessonID: "",
             courseID: "",
-            verticals: [],
-            selectedVertical: 1,
+            chapters: [],
+            chapterIndex: 1,
+            sequentialIndex: 1,
+            verticalIndex: 1,
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
             connectivity: Connectivity(),

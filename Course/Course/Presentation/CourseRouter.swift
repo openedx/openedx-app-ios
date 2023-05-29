@@ -21,17 +21,23 @@ public protocol CourseRouter: BaseRouter {
     func showCourseUnit(blockId: String,
                         courseID: String,
                         sectionName: String,
-                        selectedVertical: Int,
-                        verticals: [CourseVertical])
+                        verticalIndex: Int,
+                        chapters: [CourseChapter],
+                        chapterIndex: Int,
+                        sequentialIndex: Int)
     
     func replaceCourseUnit(blockId: String,
                            courseID: String,
                            sectionName: String,
-                           selectedVertical: Int,
-                           verticals: [CourseVertical])
+                           verticalIndex: Int,
+                           chapters: [CourseChapter],
+                           chapterIndex: Int,
+                           sequentialIndex: Int)
     
     func showCourseVerticalView(title: String,
-                                verticals: [CourseVertical])
+                                chapters: [CourseChapter],
+                                chapterIndex: Int,
+                                sequentialIndex: Int)
     
     func showHandoutsUpdatesView(handouts: String?,
                                  announcements: [CourseUpdate]?,
@@ -56,17 +62,23 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     public func showCourseUnit(blockId: String,
                                courseID: String,
                                sectionName: String,
-                               selectedVertical: Int,
-                               verticals: [CourseVertical]) {}
+                               verticalIndex: Int,
+                               chapters: [CourseChapter],
+                               chapterIndex: Int,
+                               sequentialIndex: Int) {}
     
     public func replaceCourseUnit(blockId: String,
-                           courseID: String,
-                           sectionName: String,
-                           selectedVertical: Int,
-                           verticals: [CourseVertical]) {}
+                                  courseID: String,
+                                  sectionName: String,
+                                  verticalIndex: Int,
+                                  chapters: [CourseChapter],
+                                  chapterIndex: Int,
+                                  sequentialIndex: Int) {}
     
     public func showCourseVerticalView(title: String,
-                                       verticals: [CourseVertical]) {}
+                                       chapters: [CourseChapter],
+                                       chapterIndex: Int,
+                                       sequentialIndex: Int) {}
     
     public func showHandoutsUpdatesView(handouts: String?,
                                         announcements: [CourseUpdate]?,

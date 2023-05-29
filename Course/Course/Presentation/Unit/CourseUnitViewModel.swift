@@ -42,14 +42,12 @@ public enum LessonType: Equatable {
 
 public class CourseUnitViewModel: ObservableObject {
     
-//    public var blocks: [CourseBlock]
     public var verticals: [CourseVertical]
-    public var selectedVertical: Int
+    public var verticalIndex: Int
 
     @Published var index: Int = 0
     var previousLesson: String = ""
     var nextLesson: String = ""
-//    @Published var lessonType: LessonType?
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {
@@ -65,6 +63,9 @@ public class CourseUnitViewModel: ObservableObject {
     public let connectivity: ConnectivityProtocol
     private let manager: DownloadManagerProtocol
     private var subtitlesDownloaded: Bool = false
+    public let chapters: [CourseChapter]
+    public let chapterIndex: Int
+    public let sequentialIndex: Int
     
     func loadIndex() {
         index = selectLesson()
@@ -72,9 +73,10 @@ public class CourseUnitViewModel: ObservableObject {
     
     public init(lessonID: String,
                 courseID: String,
-//                blocks: [CourseBlock],
-                verticals: [CourseVertical],
-                selectedVertical: Int,
+                chapters: [CourseChapter],
+                chapterIndex: Int,
+                sequentialIndex: Int,
+                verticalIndex: Int,
                 interactor: CourseInteractorProtocol,
                 router: CourseRouter,
                 connectivity: ConnectivityProtocol,
@@ -82,9 +84,11 @@ public class CourseUnitViewModel: ObservableObject {
     ) {
         self.lessonID = lessonID
         self.courseID = courseID
-//        self.blocks = blocks
-        self.verticals = verticals
-        self.selectedVertical = selectedVertical
+        self.chapters = chapters
+        self.chapterIndex = chapterIndex
+        self.sequentialIndex = sequentialIndex
+        self.verticalIndex = verticalIndex
+        self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         self.interactor = interactor
         self.router = router
         self.connectivity = connectivity
@@ -92,18 +96,18 @@ public class CourseUnitViewModel: ObservableObject {
     }
     
     public func languages() -> [SubtitleUrl] {
-        return verticals[selectedVertical].childs.first(where: { $0.id == lessonID })?.subtitles ?? []
+        return verticals[verticalIndex].childs.first(where: { $0.id == lessonID })?.subtitles ?? []
     }
 
     private func selectLesson() -> Int {
-        guard verticals[selectedVertical].childs.count > 0 else { return 0 }
-        let index = verticals[selectedVertical].childs.firstIndex(where: { $0.id == lessonID }) ?? 0
+        guard verticals[verticalIndex].childs.count > 0 else { return 0 }
+        let index = verticals[verticalIndex].childs.firstIndex(where: { $0.id == lessonID }) ?? 0
         nextTitles()
         return index
     }
     
     func selectedLesson() -> CourseBlock {
-        return verticals[selectedVertical].childs[index]
+        return verticals[verticalIndex].childs[index]
     }
     
 //    func createLessonType() {
@@ -118,7 +122,7 @@ public class CourseUnitViewModel: ObservableObject {
     func select(move: LessonAction) {
         switch move {
         case .next:
-            if index != verticals[selectedVertical].childs.count - 1 { withAnimation { index += 1 } }
+            if index != verticals[verticalIndex].childs.count - 1 { withAnimation { index += 1 } }
                 nextTitles()
         case .previous:
             if index != 0 { withAnimation { index -= 1 } }
@@ -142,19 +146,19 @@ public class CourseUnitViewModel: ObservableObject {
     
     func nextTitles() {
         if index != 0 {
-            previousLesson = verticals[selectedVertical].childs[index - 1].displayName
+            previousLesson = verticals[verticalIndex].childs[index - 1].displayName
         } else {
             previousLesson = ""
         }
-        if index != verticals[selectedVertical].childs.count - 1 {
-            nextLesson = verticals[selectedVertical].childs[index + 1].displayName
+        if index != verticals[verticalIndex].childs.count - 1 {
+            nextLesson = verticals[verticalIndex].childs[index + 1].displayName
         } else {
             nextLesson = ""
         }
     }
     
     public func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
-        guard let block = verticals[selectedVertical].childs.first(where: { $0.id == blockId }) else { return nil }
+//        guard let block = verticals[verticalIndex].childs.first(where: { $0.id == blockId }) else { return nil }
         
         if let fileURL = manager.fileUrl(for: blockId) {
             return fileURL

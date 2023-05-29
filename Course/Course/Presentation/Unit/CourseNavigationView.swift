@@ -26,8 +26,8 @@ struct CourseNavigationView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 7) {
-            if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
-                && viewModel.verticals[viewModel.selectedVertical].childs.count != 1 {
+            if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
+                && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 {
                 UnitButtonView(type: .previous, action: {}).opacity(0.5)
                 UnitButtonView(type: .next, action: {
                     playerStateSubject.send(VideoPlayerState.pause)
@@ -36,24 +36,36 @@ struct CourseNavigationView: View {
                     }
                 })
             } else {
-                if viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.last {
+                if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     UnitButtonView(type: .previous, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
                         withAnimation {
                             viewModel.select(move: .previous)
                         }
                         
-                    }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.selectedVertical].childs.first
+                    }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
                                ? 0.5
                                : 1)
                     UnitButtonView(type: .last, action: {
+                        
+                        let sequentials = viewModel.chapters[viewModel.chapterIndex].childs
+                        let verticals = viewModel.chapters[viewModel.chapterIndex].childs[viewModel.sequentialIndex].childs
+
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
                             alertMessage: (CourseLocalization.Courseware.section
                                             + sectionName + CourseLocalization.Courseware.isFinished),
-                            nextSectionName: viewModel.selectedVertical != viewModel.verticals.count - 1
-                            ? viewModel.verticals[viewModel.selectedVertical + 1].displayName
-                            : nil,
+                            nextSectionName: {
+                                if viewModel.chapters.count > viewModel.chapterIndex + 1 {
+                                    return viewModel.chapters[viewModel.chapterIndex + 1].childs.first?.displayName
+                                } else if !sequentials.isEmpty, sequentials.count > viewModel.sequentialIndex + 1 {
+                                    return sequentials[viewModel.sequentialIndex + 1].childs.first?.displayName
+                                } else if !verticals.isEmpty, verticals.count > viewModel.verticalIndex + 1 {
+                                    return verticals[viewModel.verticalIndex + 1].displayName
+                                } else {
+                                    return nil
+                                }
+                            }(),
                             action: CourseLocalization.Courseware.backToOutline,
                             image: CoreAssets.goodWork.swiftUIImage,
                             onCloseTapped: { viewModel.router.dismiss(animated: false) },
@@ -67,16 +79,40 @@ struct CourseNavigationView: View {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
                                 viewModel.router.dismiss(animated: false)
-                                viewModel.router.replaceCourseUnit(blockId: viewModel.lessonID,
-                                                                courseID: viewModel.courseID,
-                                                                sectionName: viewModel.selectedLesson().displayName,
-                                                                selectedVertical: viewModel.selectedVertical + 1,
-                                                                verticals: viewModel.verticals)
+                                
+                                let chapterIndex: Int
+                                let sequentialIndex: Int
+                                let verticalIndex: Int
+                                
+                                // Switch to the next Vertical
+                                if verticals.count - 1 > viewModel.verticalIndex {
+                                    chapterIndex = viewModel.chapterIndex
+                                    sequentialIndex = viewModel.sequentialIndex
+                                    verticalIndex = viewModel.verticalIndex + 1
+                                    // Switch to the next Sequential
+                                } else if sequentials.count - 1 > viewModel.sequentialIndex {
+                                    chapterIndex = viewModel.chapterIndex
+                                    sequentialIndex = viewModel.sequentialIndex + 1
+                                    verticalIndex = 0
+                                } else {
+                                    // Switch to the next Chapter
+                                    chapterIndex = viewModel.chapterIndex + 1
+                                    sequentialIndex = 0
+                                    verticalIndex = 0
+                                }
+                                
+                                viewModel.router.replaceCourseUnit(
+                                    blockId: viewModel.lessonID,
+                                    courseID: viewModel.courseID,
+                                    sectionName: viewModel.selectedLesson().displayName,
+                                    verticalIndex: verticalIndex,
+                                    chapters: viewModel.chapters,
+                                    chapterIndex: chapterIndex,
+                                    sequentialIndex: sequentialIndex)
                             }
                         )
                     })
                 } else {
-                    //                    if viewModel.previousLesson != "" {
                     UnitButtonView(type: .previous, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
                         withAnimation {
@@ -84,15 +120,12 @@ struct CourseNavigationView: View {
                         }
                         
                     })
-                    //                    }
-                    //                    if viewModel.nextLesson != "" {
                     UnitButtonView(type: .next, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
                         withAnimation {
                             viewModel.select(move: .next)
                         }
                     })
-                    //                    }
                 }
             }
         }.frame(minWidth: 0, maxWidth: .infinity)
@@ -105,8 +138,10 @@ struct CourseNavigationView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = CourseUnitViewModel(lessonID: "1",
                                             courseID: "1",
-                                            verticals: [],
-                                            selectedVertical: 1,
+                                            chapters: [],
+                                            chapterIndex: 1,
+                                            sequentialIndex: 1,
+                                            verticalIndex: 1,
                                             interactor: CourseInteractor.mock,
                                             router: CourseRouterMock(),
                                             connectivity: Connectivity(),

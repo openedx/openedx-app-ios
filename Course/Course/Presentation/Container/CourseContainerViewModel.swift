@@ -17,7 +17,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var downloadState: [String: DownloadViewState] = [:]
-    @Published var returnCourseSequential: CourseSequential?
+    @Published var continueWith: ContinueWith?
     
     var errorMessage: String? {
         didSet {
@@ -81,10 +81,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                         isShowProgress = false
                         if let courseStructure {
-                            let returnCourseSequential = try await getResumeBlock(courseID: courseID,
+                            let continueWith = try await getResumeBlock(courseID: courseID,
                                                                               courseStructure: courseStructure)
                             withAnimation {
-                                self.returnCourseSequential = returnCourseSequential
+                                self.continueWith = continueWith
                             }
                         }
                     } else {
@@ -107,9 +107,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
-    private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws -> CourseSequential? {
+    private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws -> ContinueWith? {
         let result = try await interactor.resumeBlock(courseID: courseID)
-        return findCourseSequential(blockID: result.blockID,
+        return findContinueVertical(blockID: result.blockID,
                                     courseStructure: courseStructure)
     }
     
@@ -174,14 +174,17 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    private func findCourseSequential(blockID: String, courseStructure: CourseStructure) -> CourseSequential? {
-        for chapter in courseStructure.childs {
-            for sequential in chapter.childs {
-                for vertical in sequential.childs {
-                    for block in vertical.childs {
-                        if block.id == blockID {
-                            return sequential
-                        }
+    private func findContinueVertical(blockID: String, courseStructure: CourseStructure) -> ContinueWith? {
+        for chapterIndex in courseStructure.childs.indices {
+            let chapter = courseStructure.childs[chapterIndex]
+            for sequentialIndex in chapter.childs.indices {
+                let sequential = chapter.childs[sequentialIndex]
+                for verticalIndex in sequential.childs.indices {
+                    let vertical = sequential.childs[verticalIndex]
+                    for block in vertical.childs where block.id == blockID {
+                        return ContinueWith(chapterIndex: chapterIndex,
+                                            sequentialIndex: sequentialIndex,
+                                            verticalIndex: verticalIndex)
                     }
                 }
             }

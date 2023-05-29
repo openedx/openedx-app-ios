@@ -152,9 +152,12 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     }
     
     public func showCourseVerticalView(title: String,
-                                       verticals: [CourseVertical]) {
-        
-        let viewModel = Container.shared.resolve(CourseVerticalViewModel.self, argument: verticals)!
+                                       chapters: [CourseChapter],
+                                       chapterIndex: Int,
+                                       sequentialIndex: Int) {
+
+        let viewModel = Container.shared.resolve(CourseVerticalViewModel.self,
+                                                 arguments: chapters, chapterIndex, sequentialIndex)!
         
         let view = CourseVerticalView(title: title, viewModel: viewModel)
         let controller = SwiftUIHostController(view: view)
@@ -195,10 +198,15 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     public func showCourseUnit(blockId: String,
                                courseID: String,
                                sectionName: String,
-                               selectedVertical: Int,
-                               verticals: [CourseVertical]) {
+                               verticalIndex: Int,
+                               chapters: [CourseChapter],
+                               chapterIndex: Int,
+                               sequentialIndex: Int) {
+        let verticals = chapters[chapterIndex].childs[sequentialIndex].childs
+        
         let viewModel = Container.shared.resolve(CourseUnitViewModel.self,
-                                                 arguments: blockId, courseID, verticals, selectedVertical)!
+                                                 arguments: blockId, courseID, chapters, chapterIndex, sequentialIndex,
+                                                 verticalIndex)!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
@@ -207,15 +215,28 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     public func replaceCourseUnit(blockId: String,
                                   courseID: String,
                                   sectionName: String,
-                                  selectedVertical: Int,
-                                  verticals: [CourseVertical]) {
+                                  verticalIndex: Int,
+                                  chapters: [CourseChapter],
+                                  chapterIndex: Int,
+                                  sequentialIndex: Int) {
+        
+        let vmVertical = Container.shared.resolve(CourseVerticalViewModel.self,
+                                                 arguments: chapters, chapterIndex, sequentialIndex)!
+        
+        let viewVertical = CourseVerticalView(title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+                                              viewModel: vmVertical)
+        let controllerVertical = SwiftUIHostController(view: viewVertical)
+        
+        let verticals = chapters[chapterIndex].childs[sequentialIndex].childs
+        
         let viewModel = Container.shared.resolve(CourseUnitViewModel.self,
-                                                 arguments: blockId, courseID, verticals, selectedVertical)!
+                                                 arguments: blockId, courseID, chapters, chapterIndex, sequentialIndex,
+                                                 verticalIndex)!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
         let controller = SwiftUIHostController(view: view)
         var controllers = navigationController.viewControllers
-        controllers.removeLast()
-        controllers.append(controller)
+        controllers.removeLast(2)
+        controllers.append(contentsOf: [controllerVertical, controller])
         navigationController.setViewControllers(controllers, animated: true)
     }
     

@@ -15,6 +15,9 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
     @Published var verticals: [CourseVertical]
     @Published var downloadState: [String: DownloadViewState] = [:]
     @Published var showError: Bool = false
+    public let chapters: [CourseChapter]
+    public let chapterIndex: Int
+    public let sequentialIndex: Int
 
     var errorMessage: String? {
         didSet {
@@ -24,14 +27,18 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         }
     }
     
-    public init(verticals: [CourseVertical],
+    public init(chapters: [CourseChapter],
+                chapterIndex: Int,
+                sequentialIndex: Int,
                 manager: DownloadManagerProtocol,
                 router: CourseRouter,
                 connectivity: ConnectivityProtocol) {
-        self.verticals = verticals
+        self.chapters = chapters
+        self.chapterIndex = chapterIndex
+        self.sequentialIndex = sequentialIndex
         self.router = router
         self.connectivity = connectivity
-        
+        self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         super.init(manager: manager)
         
         manager.publisher()
