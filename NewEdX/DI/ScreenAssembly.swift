@@ -243,7 +243,8 @@ class ScreenAssembly: Assembly {
         }
         
         container.register(WebUnitViewModel.self) { r in
-            WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!)
+            WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!,
+                             config: r.resolve(Config.self)!)
         }
         
         container.register(VideoPlayerViewModel.self) { r, languages in

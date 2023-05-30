@@ -22,6 +22,7 @@ public class BaseResponsesViewModel {
     
     public var nextPage = 2
     public var totalPages = 1
+    @Published public var itemsCount = 0
     public var fetchInProgress = false
 
     var errorMessage: String? {
@@ -138,6 +139,7 @@ public class BaseResponsesViewModel {
         var newPostWithAvatar = post
         newPostWithAvatar.authorAvatar = storage.userProfile?.profileImage?.imageURLLarge ?? ""
         postComments?.comments.append(newPostWithAvatar)
+        itemsCount += 1
     }
     
     private func toggleLikeOnParrent() {

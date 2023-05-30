@@ -99,6 +99,7 @@
 		072787B628D37A0E002E9142 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072787B528D37A0E002E9142 /* Validator.swift */; };
 		07460FE1294B706200F70538 /* CollectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07460FE0294B706200F70538 /* CollectionExtension.swift */; };
 		07460FE3294B72D700F70538 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07460FE2294B72D700F70538 /* Notification.swift */; };
+		076F297F2A1F80C800967E7D /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F297E2A1F80C800967E7D /* Pagination.swift */; };
 		0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE1828D0847D006D8A5D /* BaseRouter.swift */; };
 		0770DE2528D08FBA006D8A5D /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2428D08FBA006D8A5D /* AppStorage.swift */; };
 		0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2928D0929E006D8A5D /* HTTPTask.swift */; };
@@ -221,6 +222,7 @@
 		07460FE0294B706200F70538 /* CollectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtension.swift; sourceTree = "<group>"; };
 		07460FE2294B72D700F70538 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		0754BB7841E3C0F8D6464951 /* Pods-App-Core.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releasestage.xcconfig"; sourceTree = "<group>"; };
+		076F297E2A1F80C800967E7D /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		0770DE0828D07831006D8A5D /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE1828D0847D006D8A5D /* BaseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRouter.swift; sourceTree = "<group>"; };
 		0770DE2428D08FBA006D8A5D /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 				027BD39B2908810C00392132 /* RegisterUser.swift */,
 				028F9F38293A452B00DE65D0 /* ResetPassword.swift */,
 				020C31C8290AC3F700D6DEA2 /* PickerFields.swift */,
+				076F297E2A1F80C800967E7D /* Pagination.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -786,6 +789,7 @@
 				027BD3AE2909475000392132 /* KeyboardScrollerOptions.swift in Sources */,
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
+				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
 				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,

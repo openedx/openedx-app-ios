@@ -31,7 +31,7 @@ public struct WebBrowser: View {
                 VStack {
                     ZStack(alignment: .top) {
                         NavigationView {
-                            WebView(viewModel: .init(url: url), isLoading: $isShowProgress, refreshCookies: {})
+                            WebView(viewModel: .init(url: url, baseURL: ""), isLoading: $isShowProgress, refreshCookies: {})
                                 .navigationBarTitle(Text("")) // Needed for hide navBar on ios 14, 15
                                 .navigationBarHidden(true)
                                 .ignoresSafeArea()
