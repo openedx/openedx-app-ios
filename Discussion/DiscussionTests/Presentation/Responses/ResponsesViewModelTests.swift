@@ -89,12 +89,14 @@ final class ResponsesViewModelTests: XCTestCase {
                              threadID: "1",
                              commentID: "1",
                              parentID: nil,
-                             abuseFlagged: false)
+                             abuseFlagged: false,
+                             closed: false)
                     ],
                     threadID: "1",
                     commentID: "1",
                     parentID: nil,
-                    abuseFlagged: false
+                    abuseFlagged: false,
+                    closed: false
     )
 
     func testGetCommentsSuccess() async throws {
@@ -109,7 +111,11 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: .mock,
                                            threadStateSubject: .init(.postAdded(id: "1")))
         
-        Given(interactor, .getCommentResponses(commentID: .any, page: .any, willReturn: (userComments, 1)))
+        Given(interactor, .getCommentResponses(commentID: .any, page: .any,
+                                               willReturn: (userComments, Pagination(next: "",
+                                                                                     previous: "",
+                                                                                     count: 1,
+                                                                                     numPages: 1))))
         
         result = await viewModel.getComments(commentID: "1", parentComment: post, page: 1)
         
@@ -255,7 +261,11 @@ final class ResponsesViewModelTests: XCTestCase {
         viewModel.totalPages = 2
         viewModel.comments = userComments
         
-        Given(interactor, .getCommentResponses(commentID: .any, page: .any, willReturn: (userComments, 0)))
+        Given(interactor, .getCommentResponses(commentID: .any, page: .any,
+                                               willReturn: (userComments, Pagination(next: "",
+                                                                                     previous: "",
+                                                                                     count: 1,
+                                                                                     numPages: 1))))
         
         await viewModel.fetchMorePosts(commentID: "1", parentComment: post, index: 0)
         

@@ -28,6 +28,7 @@ final class PostViewModelTests: XCTestCase {
                    type: .question,
                    title: "1",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 1,
                    avatar: "1",
@@ -48,6 +49,7 @@ final class PostViewModelTests: XCTestCase {
                    type: .discussion,
                    title: "2",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 2,
                    avatar: "2",
@@ -68,6 +70,7 @@ final class PostViewModelTests: XCTestCase {
                    type: .question,
                    title: "3",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 3,
                    avatar: "3",
@@ -88,6 +91,7 @@ final class PostViewModelTests: XCTestCase {
                    type: .question,
                    title: "4",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 4,
                    avatar: "4",
@@ -106,7 +110,7 @@ final class PostViewModelTests: XCTestCase {
         
         viewModel.type = .allPosts
 
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any, willReturn: threads))
+        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willReturn: threads))
 
         viewModel.type = .allPosts
         result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
@@ -132,7 +136,7 @@ final class PostViewModelTests: XCTestCase {
         result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
         XCTAssertFalse(result)
 
-        Verify(interactor, 4, .getThreadsList(courseID: .value("1"), type: .any, filter: .any, page: .value(1)))
+        Verify(interactor, 4, .getThreadsList(courseID: .value("1"), type: .any, sort: .any, filter: .any, page: .value(1)))
         
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.showError)
@@ -148,12 +152,12 @@ final class PostViewModelTests: XCTestCase {
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any, willThrow: noInternetError))
+        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: noInternetError))
 
         viewModel.type = .allPosts
         result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
 
-        Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any))
+        Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
         
         XCTAssertFalse(result)
         XCTAssertFalse(viewModel.isShowProgress)
@@ -168,12 +172,12 @@ final class PostViewModelTests: XCTestCase {
         var result = false
         let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
 
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any, willThrow: NSError()))
+        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError()))
 
         viewModel.type = .allPosts
         result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
 
-        Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any))
+        Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
         
         XCTAssertFalse(result)
         XCTAssertFalse(viewModel.isShowProgress)
@@ -187,26 +191,32 @@ final class PostViewModelTests: XCTestCase {
         let config = ConfigMock()
         let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
         
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any,
+        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any,
                                           willReturn: threads))
         viewModel.type = .allPosts
         viewModel.sortTitle = .mostActivity
         _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
-        XCTAssertTrue(viewModel.filteredPosts[0].title == "4")
+        XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
+        
+        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .value(.recentActivity), filter: .any, page: .any,
+                                          willReturn: threads))
         
         viewModel.filterTitle = .unread
         viewModel.sortTitle = .recentActivity
         _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
-        XCTAssertTrue(viewModel.filteredPosts[0].title == "2")
+        XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: {$0.unreadCommentCount == 4}))
+        
+        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .value(.mostVotes), filter: .any, page: .any,
+                                          willReturn: threads))
         
         viewModel.filterTitle = .unanswered
         viewModel.sortTitle = .mostVotes
         _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
-        XCTAssertTrue(viewModel.filteredPosts[0].title == "3")
+        XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: { $0.hasEndorsed }))
         
-        Verify(interactor, .getThreadsList(courseID: .any, type: .any, filter: .any, page: .any))
+        Verify(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
     }
 
 }

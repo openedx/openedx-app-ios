@@ -33,7 +33,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
                 
         Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
         
-        let viewModel = VideoPlayerViewModel(interactor: interactor,
+        let viewModel = VideoPlayerViewModel(languages: [],
+                                             interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
@@ -56,7 +57,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
         Given(connectivity, .isInternetAvaliable(getter: false))
         Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
         
-        let viewModel = VideoPlayerViewModel(interactor: interactor,
+        let viewModel = VideoPlayerViewModel(languages: [],
+                                             interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
@@ -74,7 +76,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
         
-        let viewModel = VideoPlayerViewModel(interactor: interactor,
+        let viewModel = VideoPlayerViewModel(languages: [],
+                                             interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
@@ -98,7 +101,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
         
-        let viewModel = VideoPlayerViewModel(interactor: interactor,
+        let viewModel = VideoPlayerViewModel(languages: [],
+                                             interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
@@ -114,7 +118,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
                 
-        let viewModel = VideoPlayerViewModel(interactor: interactor,
+        let viewModel = VideoPlayerViewModel(languages: [],
+                                             interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
@@ -135,7 +140,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
                 
-        let viewModel = VideoPlayerViewModel(interactor: interactor,
+        let viewModel = VideoPlayerViewModel(languages: [],
+                                             interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
