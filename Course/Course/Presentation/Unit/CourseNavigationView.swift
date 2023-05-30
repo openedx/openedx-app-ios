@@ -120,6 +120,9 @@ struct CourseNavigationView: View {
                         }
                         
                     })
+                    .opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
+                               ? 0.5
+                               : 1)
                     UnitButtonView(type: .next, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
                         withAnimation {

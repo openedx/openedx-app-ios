@@ -82,15 +82,15 @@ public struct UnitButtonView: View {
                         }
                     case .previous:
                         HStack {
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .rotationEffect(Angle.degrees(90))
-                                .padding(.leading, 20)
-                                .foregroundColor(.white)
-                            Spacer()
                             Text(type.stringValue())
                                 .foregroundColor(.white)
                                 .font(Theme.Fonts.labelLarge)
+                                .padding(.leading, 20)
+                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                .rotationEffect(Angle.degrees(90))
                                 .padding(.trailing, 20)
+                                .foregroundColor(.white)
+                            
                         }
                     case .last:
                         HStack {
