@@ -204,7 +204,6 @@ private struct CourseStateView: View {
                 }
             })
             .padding(16)
-            .frame(maxWidth: .infinity)
         case .enrollClose:
             Text(CourseLocalization.Details.enrollmentDateIsOver)
                 .multilineTextAlignment(.center)
