@@ -33,8 +33,8 @@ public enum CourseLocalization {
     public static let isFinished = CourseLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“ is finished.")
     /// Next
     public static let next = CourseLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
-    /// Previous
-    public static let previous = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Previous")
+    /// Prev
+    public static let previous = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Prev")
     /// Section “
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
   }

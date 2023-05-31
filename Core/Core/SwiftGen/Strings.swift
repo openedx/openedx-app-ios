@@ -49,8 +49,8 @@ public enum CoreLocalization {
     public static let nextSectionDescriptionFirst = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT_SECTION_DESCRIPTION_FIRST", fallback: "To proceed with “")
     /// ” press “Next section”.
     public static let nextSectionDescriptionLast = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT_SECTION_DESCRIPTION_LAST", fallback: "” press “Next section”.")
-    /// Previous
-    public static let previous = CoreLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Previous")
+    /// Prev
+    public static let previous = CoreLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Prev")
     /// Section “
     public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
   }
