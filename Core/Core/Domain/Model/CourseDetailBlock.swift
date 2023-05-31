@@ -50,7 +50,7 @@ public enum BlockType: String {
         case .course: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
         case .chapter: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
         case .sequential: return CoreAssets.chapter.swiftUIImage.renderingMode(.template)
-        case .vertical: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
+        case .vertical: return CoreAssets.extra.swiftUIImage.renderingMode(.template)
         default: return CoreAssets.extra.swiftUIImage.renderingMode(.template)
         }
     }
