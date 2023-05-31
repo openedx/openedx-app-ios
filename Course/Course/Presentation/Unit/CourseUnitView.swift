@@ -104,7 +104,7 @@ public struct CourseUnitView: View {
                                                     }
                                                 }
                                             }
-                                    }
+                                    }.frameLimit()
                                     .onChange(of: viewModel.index, perform: { index in
                                         DispatchQueue.main.async {
                                             withAnimation(Animation.easeIn(duration: 2)) {
