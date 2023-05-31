@@ -54,7 +54,7 @@ public struct CourseUnitView: View {
                                     LazyVStack(spacing: 0) {
                                         ForEach(Array(viewModel.verticals[viewModel.verticalIndex]
                                             .childs.enumerated()), id: \.offset) { index, block in
-                                                if index >= viewModel.index-1 && index <= viewModel.index+1 {
+                                                if index >= viewModel.index-2 && index <= viewModel.index+2 {
                                                     VStack(spacing: 0) {
                                                         switch LessonType.from(block) {
                                                             // MARK: YouTube
@@ -80,14 +80,13 @@ public struct CourseUnitView: View {
                                                                 Color.white
                                                                 WebView(url: url,
                                                                         viewModel: viewModel)
-                                                            }
-                                                            .cornerRadius(30)
+                                                            }.padding(.bottom, 10)
                                                             
                                                             // MARK: Unknown
                                                         case .unknown(let url):
                                                             UnknownView(url: url,
                                                                         viewModel: viewModel)
-                                                            
+                                                            Spacer()
                                                             // MARK: Discussion
                                                         case let .discussion(blockID, title):
                                                             DiscussionView(blockID: blockID,
@@ -99,22 +98,26 @@ public struct CourseUnitView: View {
                                                     .frame(height: reader.size.height)
                                                     .id(index)
                                                     
+                                                } else {
+                                                    VStack {
+                                                        Color.white
+                                                    }
                                                 }
                                             }
                                     }
                                     .onChange(of: viewModel.index, perform: { index in
-                                        withAnimation {
-                                            scroll.scrollTo(index, anchor: .top)
+                                        DispatchQueue.main.async {
+                                            withAnimation(Animation.easeIn(duration: 2)) {
+                                                scroll.scrollTo(index, anchor: .top)
+                                            }
                                         }
+                                        
                                     })
                                 }.introspectScrollView(customize: { sv in
-                                    sv.isScrollEnabled = true
+                                    sv.isScrollEnabled = false
+                                    sv.layer.cornerRadius = 24
+                                    sv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
                                 })
-                                .onAppear {
-                                    withAnimation {
-                                        scroll.scrollTo(viewModel.index, anchor: .top)
-                                    }
-                                }
                             }
                         } else {
                             
@@ -134,9 +137,9 @@ public struct CourseUnitView: View {
                     }.frame(maxWidth: .infinity)
                     
                     // MARK: Progress Dots
-//                    if viewModel.verticals[viewModel.verticalIndex].childs.count > 1 {
-//                        LessonProgressView(viewModel: viewModel)
-//                    }
+                    if viewModel.verticals[viewModel.verticalIndex].childs.count > 1 {
+                        LessonProgressView(viewModel: viewModel)
+                    }
                 }
                 // MARK: - Alert
                 if showAlert {

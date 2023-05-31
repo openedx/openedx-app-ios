@@ -31,18 +31,13 @@ struct CourseNavigationView: View {
                 UnitButtonView(type: .previous, action: {}).opacity(0.5)
                 UnitButtonView(type: .next, action: {
                     playerStateSubject.send(VideoPlayerState.pause)
-                    withAnimation {
                         viewModel.select(move: .next)
-                    }
                 })
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     UnitButtonView(type: .previous, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
-                        withAnimation {
                             viewModel.select(move: .previous)
-                        }
-                        
                     }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
                                ? 0.5
                                : 1)
@@ -115,19 +110,14 @@ struct CourseNavigationView: View {
                 } else {
                     UnitButtonView(type: .previous, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
-                        withAnimation {
                             viewModel.select(move: .previous)
-                        }
-                        
                     })
                     .opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
                                ? 0.5
                                : 1)
                     UnitButtonView(type: .next, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
-                        withAnimation {
                             viewModel.select(move: .next)
-                        }
                     })
                 }
             }

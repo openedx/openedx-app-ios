@@ -27,10 +27,10 @@ struct DiscussionView: View {
             router: Container.shared.resolve(DiscussionRouter.self)!,
             showTopMenu: false
         )
-        .onAppear {
-            Task {
-                await viewModel.blockCompletionRequest(blockID: blockID)
-            }
-        }
+//        .onAppear {
+//            Task {
+//                await viewModel.blockCompletionRequest(blockID: blockID)
+//            }
+//        }
     }
 }
