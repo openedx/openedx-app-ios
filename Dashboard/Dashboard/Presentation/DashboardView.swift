@@ -48,7 +48,7 @@ public struct DashboardView: View {
                                                      withProgress: isIOS14,
                                                      refresh: true)
                     }) {
-                        if viewModel.courses.isEmpty {
+                        if !viewModel.fetchInProgress || viewModel.courses.isEmpty {
                             EmptyPageIcon()
                         } else {
                             LazyVStack(spacing: 0) {
