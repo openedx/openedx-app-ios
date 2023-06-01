@@ -31,13 +31,13 @@ struct CourseNavigationView: View {
                 UnitButtonView(type: .previous, action: {}).opacity(0.5)
                 UnitButtonView(type: .next, action: {
                     playerStateSubject.send(VideoPlayerState.pause)
-                        viewModel.select(move: .next)
+                    viewModel.select(move: .next)
                 })
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     UnitButtonView(type: .previous, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
-                            viewModel.select(move: .previous)
+                        viewModel.select(move: .previous)
                     }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
                                ? 0.5
                                : 1)
@@ -45,18 +45,20 @@ struct CourseNavigationView: View {
                         
                         let sequentials = viewModel.chapters[viewModel.chapterIndex].childs
                         let verticals = viewModel.chapters[viewModel.chapterIndex].childs[viewModel.sequentialIndex].childs
-
+                        let chapters = viewModel.chapters
+                        let currentVertical = viewModel.verticals[viewModel.verticalIndex]
+                        
                         viewModel.router.presentAlert(
                             alertTitle: CourseLocalization.Courseware.goodWork,
                             alertMessage: (CourseLocalization.Courseware.section
-                                            + sectionName + CourseLocalization.Courseware.isFinished),
+                                           + currentVertical.displayName + CourseLocalization.Courseware.isFinished),
                             nextSectionName: {
-                                if viewModel.chapters.count > viewModel.chapterIndex + 1 {
-                                    return viewModel.chapters[viewModel.chapterIndex + 1].childs.first?.displayName
-                                } else if !sequentials.isEmpty, sequentials.count > viewModel.sequentialIndex + 1 {
+                                if viewModel.verticals.count > viewModel.verticalIndex + 1 {
+                                    return viewModel.verticals[viewModel.verticalIndex + 1].displayName
+                                } else if sequentials.count > viewModel.sequentialIndex + 1 {
                                     return sequentials[viewModel.sequentialIndex + 1].childs.first?.displayName
-                                } else if !verticals.isEmpty, verticals.count > viewModel.verticalIndex + 1 {
-                                    return verticals[viewModel.verticalIndex + 1].displayName
+                                } else if chapters.count > viewModel.chapterIndex + 1 {
+                                    return chapters[viewModel.chapterIndex + 1].childs.first?.childs.first?.displayName
                                 } else {
                                     return nil
                                 }
@@ -117,7 +119,7 @@ struct CourseNavigationView: View {
                     
                     UnitButtonView(type: .next, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
-                            viewModel.select(move: .next)
+                        viewModel.select(move: .next)
                     })
                 }
             }
