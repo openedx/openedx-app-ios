@@ -108,13 +108,13 @@ struct CourseNavigationView: View {
                         )
                     })
                 } else {
-                    UnitButtonView(type: .previous, action: {
-                        playerStateSubject.send(VideoPlayerState.pause)
+                    if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
+                        UnitButtonView(type: .previous, action: {
+                            playerStateSubject.send(VideoPlayerState.pause)
                             viewModel.select(move: .previous)
-                    })
-                    .opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
-                               ? 0.5
-                               : 1)
+                        })
+                    }
+                    
                     UnitButtonView(type: .next, action: {
                         playerStateSubject.send(VideoPlayerState.pause)
                             viewModel.select(move: .next)

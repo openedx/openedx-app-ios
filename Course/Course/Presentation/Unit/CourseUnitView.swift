@@ -59,20 +59,24 @@ public struct CourseUnitView: View {
                                                         switch LessonType.from(block) {
                                                             // MARK: YouTube
                                                         case let .youtube(url, blockID):
-                                                            YouTubeView(index: index, url: url,
-                                                                        blockID: blockID,
-                                                                        viewModel: viewModel,
-                                                                        playerStateSubject: playerStateSubject)
-                                                            Spacer(minLength: 100)
+                                                                YouTubeView(index: index, url: url,
+                                                                            blockID: blockID,
+                                                                            viewModel: viewModel,
+                                                                            playerStateSubject: playerStateSubject,
+                                                                isOnScreen: index == viewModel.index)
+                                                                Spacer(minLength: 100)
                                                             
                                                             // MARK: Encoded Video
                                                         case let .video(encodedUrl, blockID):
-                                                            EncodedVideoView(index: index,
-                                                                             encodedUrl: encodedUrl,
-                                                                             blockID: blockID,
-                                                                             viewModel: viewModel,
-                                                                             playerStateSubject: playerStateSubject)
-                                                            Spacer(minLength: 100)
+                                                            if index == viewModel.index {
+                                                                EncodedVideoView(index: index,
+                                                                                 encodedUrl: encodedUrl,
+                                                                                 blockID: blockID,
+                                                                                 viewModel: viewModel,
+                                                                                 playerStateSubject: playerStateSubject,
+                                                                                 isOnScreen: true)
+                                                                Spacer(minLength: 100)
+                                                            }
                                                             
                                                             // MARK: Web
                                                         case .web(let url):

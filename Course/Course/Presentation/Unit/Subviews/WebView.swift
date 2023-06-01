@@ -21,6 +21,7 @@ struct WebView: View {
         .background(Color.white)
         .contrast(1.08)
         .padding(.horizontal, -12)
+        .padding(.top, -6)
         .roundedBackground(strokeColor: .clear, maxIpadWidth: .infinity)
     }
 }

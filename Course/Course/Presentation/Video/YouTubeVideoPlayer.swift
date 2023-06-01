@@ -15,6 +15,7 @@ public struct YouTubeVideoPlayer: View {
     
     @StateObject
     private var viewModel: YouTubeVideoPlayerViewModel
+    @State var isOnScreen: Bool
     
     @State private var orientation = UIDevice.current.orientation
     @State var showAlert = false
@@ -26,8 +27,9 @@ public struct YouTubeVideoPlayer: View {
         }
     }
     
-    public init(viewModel: YouTubeVideoPlayerViewModel) {
+    public init(viewModel: YouTubeVideoPlayerViewModel, isOnScreen: Bool) {
         self._viewModel = StateObject(wrappedValue: {viewModel}())
+        self.isOnScreen = isOnScreen
     }
     
     public var body: some View {
@@ -47,18 +49,21 @@ public struct YouTubeVideoPlayer: View {
                     .Publisher(center: .default,
                                name: UIDevice.orientationDidChangeNotification)) { _ in
                     self.orientation = UIDevice.current.orientation
-                    if self.orientation.isPortrait {
-                        viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
-                            $0.playInline = true
-                            $0.autoPlay = viewModel.play
-                            $0.startTime = Int(viewModel.currentTime)
-                        }))
-                    } else {
-                        viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
-                            $0.playInline = false
-                            $0.autoPlay = true
-                            $0.startTime = Int(viewModel.currentTime)
-                        }))
+                    if isOnScreen {
+                        if self.orientation.isPortrait {
+                            viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
+                                $0.playInline = true
+                                $0.autoPlay = viewModel.play
+                                $0.startTime = Int(viewModel.currentTime)
+                                
+                            }))
+                        } else {
+                            viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
+                                $0.playInline = false
+                                $0.autoPlay = true
+                                $0.startTime = Int(viewModel.currentTime)
+                            }))
+                        }
                     }
                 }
                 SubtittlesView(languages: viewModel.languages,
@@ -103,7 +108,8 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
                 router: CourseRouterMock(),
-                connectivity: Connectivity()))
+                connectivity: Connectivity()),
+            isOnScreen: true)
     }
 }
 #endif

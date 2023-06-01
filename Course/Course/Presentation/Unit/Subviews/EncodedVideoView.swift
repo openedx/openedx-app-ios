@@ -16,9 +16,11 @@ struct EncodedVideoView: View {
     let blockID: String
     let viewModel: CourseUnitViewModel
     let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    @State var isOnScreen: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            if isOnScreen {
             Text(viewModel.verticals[viewModel.verticalIndex].childs[index].displayName)
                 .font(Theme.Fonts.titleLarge)
                 .padding(.horizontal, 24)
@@ -26,14 +28,15 @@ struct EncodedVideoView: View {
             let vm = Container.shared.resolve(EncodedVideoPlayerViewModel.self,
                                               arguments: viewModel.languages(),
                                               playerStateSubject)!
-            
-            EncodedVideoPlayer(
-                url: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
-                blockID: blockID,
-                courseID: viewModel.courseID,
-                viewModel: vm
-            )
-            Spacer(minLength: 100)
+                EncodedVideoPlayer(
+                    url: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
+                    blockID: blockID,
+                    courseID: viewModel.courseID,
+                    isOnScreen: isOnScreen,
+                    viewModel: vm
+                )
+                Spacer(minLength: 100)
+            }
         }
     }
 }
