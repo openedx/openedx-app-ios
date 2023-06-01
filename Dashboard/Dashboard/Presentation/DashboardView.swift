@@ -44,11 +44,9 @@ public struct DashboardView: View {
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {
-                        await viewModel.getMyCourses(page: 1,
-                                                     withProgress: isIOS14,
-                                                     refresh: true)
+                        await viewModel.getMyCourses(page: 1, refresh: true)
                     }) {
-                        if !viewModel.fetchInProgress || viewModel.courses.isEmpty {
+                        if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
                             EmptyPageIcon()
                         } else {
                             LazyVStack(spacing: 0) {
@@ -104,9 +102,7 @@ public struct DashboardView: View {
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
                                 reloadAction: {
-                await viewModel.getMyCourses( page: 1,
-                                              withProgress: isIOS14,
-                                              refresh: true)
+                await viewModel.getMyCourses(page: 1, refresh: true)
             })
             
             // MARK: - Error Alert
