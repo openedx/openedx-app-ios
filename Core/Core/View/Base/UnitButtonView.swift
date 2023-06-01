@@ -10,6 +10,7 @@ import SwiftUI
 public enum UnitButtonType: Equatable {
     case first
     case next
+    case nextBig
     case previous
     case last
     case finish
@@ -22,7 +23,7 @@ public enum UnitButtonType: Equatable {
         switch self {
         case .first:
             return CoreLocalization.Courseware.next
-        case .next:
+        case .next, .nextBig:
             return CoreLocalization.Courseware.next
         case .previous:
             return CoreLocalization.Courseware.previous
@@ -68,13 +69,15 @@ public struct UnitButtonView: View {
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                                 .rotationEffect(Angle.degrees(-90))
                         }.padding(.horizontal, 16)
-                    case .next:
+                    case .next, .nextBig:
                         HStack {
                             Text(type.stringValue())
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
-                            Spacer()
+                            if type != .nextBig {
+                                Spacer()
+                            }
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                                 .rotationEffect(Angle.degrees(-90))
@@ -83,13 +86,13 @@ public struct UnitButtonView: View {
                     case .previous:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(.white)
+                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .padding(.leading, 20)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .rotationEffect(Angle.degrees(90))
                                 .padding(.trailing, 20)
-                                .foregroundColor(.white)
+                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                             
                         }
                     case .last:
@@ -134,12 +137,17 @@ public struct UnitButtonView: View {
                 .background(
                     VStack {
                         switch self.type {
-                        case .first, .next, .previous, .last:
-                            Theme.Shapes.unitButtonShape
+                        case .first, .next, .nextBig, .previous, .last:
+                            Theme.Shapes.buttonShape
                                 .fill(type == .previous
-                                      ? CoreAssets.textSecondary.swiftUIColor
+                                      ? CoreAssets.background.swiftUIColor
                                       : CoreAssets.accentColor.swiftUIColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                                        .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                )
                                 
                         case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
@@ -161,7 +169,7 @@ public struct UnitButtonView: View {
                     }
                 )
             
-            }//.fixedSize(horizontal: type != .continueLesson && type != .nextSection, vertical: false)
+            }
             .fixedSize(horizontal: (type == .first
                        || type == .next
                        || type == .previous

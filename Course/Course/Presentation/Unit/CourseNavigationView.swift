@@ -28,19 +28,18 @@ struct CourseNavigationView: View {
         HStack(alignment: .top, spacing: 7) {
             if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
                 && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 {
-                UnitButtonView(type: .previous, action: {}).opacity(0.5)
-                UnitButtonView(type: .next, action: {
+                UnitButtonView(type: .nextBig, action: {
                     playerStateSubject.send(VideoPlayerState.pause)
                     viewModel.select(move: .next)
-                })
+                }).frame(width: 215)
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
-                    UnitButtonView(type: .previous, action: {
-                        playerStateSubject.send(VideoPlayerState.pause)
-                        viewModel.select(move: .previous)
-                    }).opacity(viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
-                               ? 0.5
-                               : 1)
+                    if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
+                        UnitButtonView(type: .previous, action: {
+                            playerStateSubject.send(VideoPlayerState.pause)
+                            viewModel.select(move: .previous)
+                        })
+                    }
                     UnitButtonView(type: .last, action: {
                         
                         let sequentials = viewModel.chapters[viewModel.chapterIndex].childs
