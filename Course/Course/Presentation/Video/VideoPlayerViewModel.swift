@@ -36,6 +36,7 @@ public class VideoPlayerViewModel: ObservableObject {
         self.interactor = interactor
         self.router = router
         self.connectivity = connectivity
+        self.prepareLanguages()
     }
     
     @MainActor

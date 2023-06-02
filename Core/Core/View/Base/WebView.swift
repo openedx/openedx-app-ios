@@ -98,6 +98,8 @@ public struct WebView: UIViewRepresentable {
         webview.backgroundColor = .clear
         webview.scrollView.backgroundColor = UIColor.clear
         webview.scrollView.alwaysBounceVertical = false
+        webview.scrollView.layer.cornerRadius = 24
+        webview.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
         return webview
     }

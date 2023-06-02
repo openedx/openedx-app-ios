@@ -35,6 +35,8 @@ public struct WebUnitView: View {
                             })
                         .introspectScrollView(customize: { scrollView in
                             scrollView.isScrollEnabled = false
+                            scrollView.layer.cornerRadius = 24
+                            scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
                             scrollView.alwaysBounceVertical = false
                             scrollView.alwaysBounceHorizontal = false
                             scrollView.bounces = false

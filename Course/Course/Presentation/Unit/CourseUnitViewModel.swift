@@ -96,7 +96,7 @@ public class CourseUnitViewModel: ObservableObject {
     }
     
     public func languages() -> [SubtitleUrl] {
-        return verticals[verticalIndex].childs.first(where: { $0.id == lessonID })?.subtitles ?? []
+        return chapters[chapterIndex].childs[sequentialIndex].childs[verticalIndex].childs[index].subtitles ?? []
     }
 
     private func selectLesson() -> Int {
@@ -158,7 +158,6 @@ public class CourseUnitViewModel: ObservableObject {
     }
     
     public func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
-//        guard let block = verticals[verticalIndex].childs.first(where: { $0.id == blockId }) else { return nil }
         
         if let fileURL = manager.fileUrl(for: blockId) {
             return fileURL

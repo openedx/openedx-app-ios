@@ -18,9 +18,7 @@ struct WebView: View {
             WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
             Spacer(minLength: 100)
         }
-        .background(Color.white)
         .contrast(1.08)
-        .padding(.horizontal, -12)
         .padding(.top, -6)
         .roundedBackground(strokeColor: .clear, maxIpadWidth: .infinity)
     }

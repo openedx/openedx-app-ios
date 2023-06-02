@@ -24,6 +24,8 @@ public struct CourseUnitView: View {
             }
         }
     }
+    @State var offsetView: CGFloat = 0
+    @State var showDiscussion: Bool = false
     
     private let sectionName: String
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
@@ -49,12 +51,11 @@ public struct CourseUnitView: View {
                                 playerStateSubject.send(VideoPlayerState.kill)
                             }).padding(.top, 50)
                             
-                            ScrollViewReader { scroll in
-                                ScrollView(.vertical) {
+//                            ScrollViewReader { scroll in
+//                                ScrollView(.vertical) {
                                     LazyVStack(spacing: 0) {
                                         ForEach(Array(viewModel.verticals[viewModel.verticalIndex]
                                             .childs.enumerated()), id: \.offset) { index, block in
-                                                if index >= viewModel.index-2 && index <= viewModel.index+2 {
                                                     VStack(spacing: 0) {
                                                         switch LessonType.from(block) {
                                                             // MARK: YouTube
@@ -80,11 +81,8 @@ public struct CourseUnitView: View {
                                                             
                                                             // MARK: Web
                                                         case .web(let url):
-                                                            ZStack {
-                                                                Color.white
                                                                 WebView(url: url,
                                                                         viewModel: viewModel)
-                                                            }.padding(.bottom, 10)
                                                             
                                                             // MARK: Unknown
                                                         case .unknown(let url):
@@ -93,36 +91,47 @@ public struct CourseUnitView: View {
                                                             Spacer()
                                                             // MARK: Discussion
                                                         case let .discussion(blockID, title):
-                                                            DiscussionView(blockID: blockID,
-                                                                           title: title,
-                                                                           viewModel: viewModel)
+                                                            VStack {
+                                                                if showDiscussion {
+                                                                    DiscussionView(blockID: blockID,
+                                                                                   title: title,
+                                                                                   viewModel: viewModel)
+                                                                    Spacer(minLength: 100)
+                                                                } else {
+                                                                    DiscussionView(blockID: blockID,
+                                                                                   title: title,
+                                                                                   viewModel: viewModel)
+                                                                    .drawingGroup()
+                                                                    Spacer(minLength: 100)
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                     
                                                     .frame(height: reader.size.height)
                                                     .id(index)
-                                                    
-                                                } else {
-                                                    VStack {
-                                                        Color.white
-                                                    }
-                                                }
                                             }
                                     }.frameLimit()
+                                .offset(y: offsetView)
+                                .clipped()
                                     .onChange(of: viewModel.index, perform: { index in
                                         DispatchQueue.main.async {
-                                            withAnimation(Animation.easeIn(duration: 2)) {
-                                                scroll.scrollTo(index, anchor: .top)
+                                            withAnimation(Animation.easeInOut(duration: 0.2)) {
+//                                                scroll.scrollTo(index, anchor: .top)
+                                                offsetView = -(reader.size.height * CGFloat(index))
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                        showDiscussion = viewModel.selectedLesson().type == .discussion
+                                                    }
                                             }
                                         }
-                                        
+
                                     })
-                                }.introspectScrollView(customize: { sv in
-                                    sv.isScrollEnabled = false
-                                    sv.layer.cornerRadius = 24
-                                    sv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-                                })
-                            }
+//                                }.introspectScrollView(customize: { sv in
+//                                    sv.isScrollEnabled = false
+//                                    sv.layer.cornerRadius = 24
+//                                    sv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+//                                })
+//                            }
                         } else {
                             
                             // MARK: No internet view
@@ -293,3 +302,38 @@ struct CourseUnitView_Previews: PreviewProvider {
     }
 }
 #endif
+
+struct QuickView<Content: View>: View  {
+    
+    @State var isOnScreen: Bool
+    var content: () -> Content
+    
+    var body: some View {
+        VStack {
+            if !isOnScreen {
+                QuickRender(isOnScreen: $isOnScreen) {
+                    content()
+                }
+            } else {
+                content()
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isOnScreen = true
+            }
+        }
+    }
+}
+
+struct QuickRender<Content: View>: View {
+    @Binding var isOnScreen: Bool
+    var content: () -> Content
+    
+    var body: some View {
+        ZStack {
+            content()
+        }
+        .drawingGroup()
+    }
+}
