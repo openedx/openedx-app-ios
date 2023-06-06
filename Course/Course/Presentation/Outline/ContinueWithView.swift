@@ -38,7 +38,8 @@ struct ContinueWithView: View {
                         }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                         Spacer()
                         UnitButtonView(type: .continueLesson, action: {
-                            router.showCourseVerticalView(title: chapter.childs[data.sequentialIndex].displayName,
+                            router.showCourseVerticalView(id: courseStructure.id,
+                                                          title: chapter.childs[data.sequentialIndex].displayName,
                                                           chapters: courseStructure.childs,
                                                           chapterIndex: data.chapterIndex,
                                                           sequentialIndex: data.sequentialIndex)
@@ -51,7 +52,8 @@ struct ContinueWithView: View {
                             .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     }
                     UnitButtonView(type: .continueLesson, action: {
-                        router.showCourseVerticalView(title: chapter.childs[data.sequentialIndex].displayName,
+                        router.showCourseVerticalView(id: courseStructure.id,
+                                                      title: chapter.childs[data.sequentialIndex].displayName,
                                                       chapters: courseStructure.childs,
                                                       chapterIndex: data.chapterIndex,
                                                       sequentialIndex: data.sequentialIndex)

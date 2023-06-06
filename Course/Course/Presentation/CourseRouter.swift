@@ -18,7 +18,8 @@ public protocol CourseRouter: BaseRouter {
                            enrollmentEnd: Date?,
                            title: String)
     
-    func showCourseUnit(blockId: String,
+    func showCourseUnit(id: String,
+                        blockId: String,
                         courseID: String,
                         sectionName: String,
                         verticalIndex: Int,
@@ -26,7 +27,8 @@ public protocol CourseRouter: BaseRouter {
                         chapterIndex: Int,
                         sequentialIndex: Int)
     
-    func replaceCourseUnit(blockId: String,
+    func replaceCourseUnit(id: String,
+                           blockId: String,
                            courseID: String,
                            sectionName: String,
                            verticalIndex: Int,
@@ -34,7 +36,8 @@ public protocol CourseRouter: BaseRouter {
                            chapterIndex: Int,
                            sequentialIndex: Int)
     
-    func showCourseVerticalView(title: String,
+    func showCourseVerticalView(id: String,
+                                title: String,
                                 chapters: [CourseChapter],
                                 chapterIndex: Int,
                                 sequentialIndex: Int)
@@ -59,7 +62,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
                                   enrollmentEnd: Date?,
                                   title: String) {}
     
-    public func showCourseUnit(blockId: String,
+    public func showCourseUnit(id: String,
+                               blockId: String,
                                courseID: String,
                                sectionName: String,
                                verticalIndex: Int,
@@ -67,7 +71,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
                                chapterIndex: Int,
                                sequentialIndex: Int) {}
     
-    public func replaceCourseUnit(blockId: String,
+    public func replaceCourseUnit(id: String,
+                                  blockId: String,
                                   courseID: String,
                                   sectionName: String,
                                   verticalIndex: Int,
@@ -75,7 +80,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
                                   chapterIndex: Int,
                                   sequentialIndex: Int) {}
     
-    public func showCourseVerticalView(title: String,
+    public func showCourseVerticalView(id: String,
+                                       title: String,
                                        chapters: [CourseChapter],
                                        chapterIndex: Int,
                                        sequentialIndex: Int) {}

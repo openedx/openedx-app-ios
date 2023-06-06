@@ -13,15 +13,18 @@ import Kingfisher
 public struct CourseVerticalView: View {
     
     private var title: String
+    private let id: String
     @ObservedObject
     private var viewModel: CourseVerticalViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(
         title: String,
+        id: String,
         viewModel: CourseVerticalViewModel
     ) {
         self.title = title
+        self.id = id
         self.viewModel = viewModel
     }
     
@@ -40,7 +43,8 @@ public struct CourseVerticalView: View {
                                 if let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id}) {
                                     Button(action: {
                                         if let block = viewModel.verticals[index].childs.first {
-                                            viewModel.router.showCourseUnit(blockId: block.id,
+                                            viewModel.router.showCourseUnit(id: id,
+                                                                            blockId: block.id,
                                                                             courseID: block.blockId,
                                                                             sectionName: block.displayName,
                                                                             verticalIndex: index,
@@ -182,11 +186,11 @@ struct CourseVerticalView_Previews: PreviewProvider {
                                                 connectivity: Connectivity())
         
         return Group {
-            CourseVerticalView(title: "Course title", viewModel: viewModel)
+            CourseVerticalView(title: "Course title", id: "1", viewModel: viewModel)
             .preferredColorScheme(.light)
             .previewDisplayName("CourseVerticalView Light")
             
-            CourseVerticalView(title: "Course title", viewModel: viewModel)
+            CourseVerticalView(title: "Course title", id: "1", viewModel: viewModel)
             .preferredColorScheme(.dark)
             .previewDisplayName("CourseVerticalView Dark")
         }

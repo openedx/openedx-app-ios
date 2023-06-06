@@ -151,7 +151,8 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushFade(viewController: controller)
     }
     
-    public func showCourseVerticalView(title: String,
+    public func showCourseVerticalView(id: String,
+                                       title: String,
                                        chapters: [CourseChapter],
                                        chapterIndex: Int,
                                        sequentialIndex: Int) {
@@ -159,7 +160,7 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         let viewModel = Container.shared.resolve(CourseVerticalViewModel.self,
                                                  arguments: chapters, chapterIndex, sequentialIndex)!
         
-        let view = CourseVerticalView(title: title, viewModel: viewModel)
+        let view = CourseVerticalView(title: title, id: id, viewModel: viewModel)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -195,7 +196,8 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
 
-    public func showCourseUnit(blockId: String,
+    public func showCourseUnit(id: String,
+                               blockId: String,
                                courseID: String,
                                sectionName: String,
                                verticalIndex: Int,
@@ -205,14 +207,15 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         let verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         
         let viewModel = Container.shared.resolve(CourseUnitViewModel.self,
-                                                 arguments: blockId, courseID, chapters, chapterIndex, sequentialIndex,
+                                                 arguments: blockId, courseID, id, chapters, chapterIndex, sequentialIndex,
                                                  verticalIndex)!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func replaceCourseUnit(blockId: String,
+    public func replaceCourseUnit(id: String,
+                                  blockId: String,
                                   courseID: String,
                                   sectionName: String,
                                   verticalIndex: Int,
@@ -223,14 +226,14 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         let vmVertical = Container.shared.resolve(CourseVerticalViewModel.self,
                                                  arguments: chapters, chapterIndex, sequentialIndex)!
         
-        let viewVertical = CourseVerticalView(title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+        let viewVertical = CourseVerticalView(title: chapters[chapterIndex].childs[sequentialIndex].displayName, id: id,
                                               viewModel: vmVertical)
         let controllerVertical = SwiftUIHostController(view: viewVertical)
         
         let verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         
         let viewModel = Container.shared.resolve(CourseUnitViewModel.self,
-                                                 arguments: blockId, courseID, chapters, chapterIndex, sequentialIndex,
+                                                 arguments: blockId, courseID, id, chapters, chapterIndex, sequentialIndex,
                                                  verticalIndex)!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
         let controller = SwiftUIHostController(view: view)

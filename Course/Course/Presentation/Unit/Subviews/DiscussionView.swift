@@ -11,12 +11,13 @@ import Discussion
 import Swinject
 
 struct DiscussionView: View {
+    let id: String
     let blockID: String
+    let blockKey: String
     let title: String
     let viewModel: CourseUnitViewModel
 
     var body: some View {
-        let id = "course-v1:" + (viewModel.lessonID.find(from: "block-v1:", to: "+type").first ?? "")
         PostsView(
             courseID: id,
             currentBlockID: blockID,
@@ -27,10 +28,10 @@ struct DiscussionView: View {
             router: Container.shared.resolve(DiscussionRouter.self)!,
             showTopMenu: false
         )
-//        .onAppear {
-//            Task {
-//                await viewModel.blockCompletionRequest(blockID: blockID)
-//            }
-//        }
+        .onAppear {
+            Task {
+                await viewModel.blockCompletionRequest(blockID: blockKey)
+            }
+        }
     }
 }

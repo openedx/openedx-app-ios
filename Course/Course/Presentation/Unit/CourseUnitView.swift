@@ -53,79 +53,83 @@ public struct CourseUnitView: View {
                             
 //                            ScrollViewReader { scroll in
 //                                ScrollView(.vertical) {
-                                    LazyVStack(spacing: 0) {
-                                        ForEach(Array(viewModel.verticals[viewModel.verticalIndex]
-                                            .childs.enumerated()), id: \.offset) { index, block in
-                                                    VStack(spacing: 0) {
-                                                        switch LessonType.from(block) {
-                                                            // MARK: YouTube
-                                                        case let .youtube(url, blockID):
-                                                                YouTubeView(index: index, url: url,
-                                                                            blockID: blockID,
-                                                                            viewModel: viewModel,
-                                                                            playerStateSubject: playerStateSubject,
-                                                                isOnScreen: index == viewModel.index)
-                                                                Spacer(minLength: 100)
-                                                            
-                                                            // MARK: Encoded Video
-                                                        case let .video(encodedUrl, blockID):
-                                                            if index == viewModel.index {
-                                                                EncodedVideoView(index: index,
-                                                                                 encodedUrl: encodedUrl,
-                                                                                 blockID: blockID,
-                                                                                 viewModel: viewModel,
-                                                                                 playerStateSubject: playerStateSubject,
-                                                                                 isOnScreen: true)
-                                                                Spacer(minLength: 100)
-                                                            }
-                                                            
-                                                            // MARK: Web
-                                                        case .web(let url):
-                                                                WebView(url: url,
-                                                                        viewModel: viewModel)
-                                                            
-                                                            // MARK: Unknown
-                                                        case .unknown(let url):
-                                                            UnknownView(url: url,
-                                                                        viewModel: viewModel)
-                                                            Spacer()
-                                                            // MARK: Discussion
-                                                        case let .discussion(blockID, title):
-                                                            VStack {
-                                                                if showDiscussion {
-                                                                    DiscussionView(blockID: blockID,
-                                                                                   title: title,
-                                                                                   viewModel: viewModel)
-                                                                    Spacer(minLength: 100)
-                                                                } else {
-                                                                    DiscussionView(blockID: blockID,
-                                                                                   title: title,
-                                                                                   viewModel: viewModel)
-                                                                    .drawingGroup()
-                                                                    Spacer(minLength: 100)
-                                                                }
-                                                            }
-                                                        }
+                            LazyVStack(spacing: 0) {
+                                ForEach(Array(viewModel.verticals[viewModel.verticalIndex]
+                                    .childs.enumerated()), id: \.offset) { index, block in
+                                        VStack(spacing: 0) {
+                                            switch LessonType.from(block) {
+                                                // MARK: YouTube
+                                            case let .youtube(url, blockID):
+                                                YouTubeView(index: index, url: url,
+                                                            blockID: blockID,
+                                                            viewModel: viewModel,
+                                                            playerStateSubject: playerStateSubject,
+                                                            isOnScreen: index == viewModel.index)
+                                                Spacer(minLength: 100)
+                                                
+                                                // MARK: Encoded Video
+                                            case let .video(encodedUrl, blockID):
+                                                if index == viewModel.index {
+                                                    EncodedVideoView(index: index,
+                                                                     encodedUrl: encodedUrl,
+                                                                     blockID: blockID,
+                                                                     viewModel: viewModel,
+                                                                     playerStateSubject: playerStateSubject,
+                                                                     isOnScreen: true)
+                                                    Spacer(minLength: 100)
+                                                }
+                                                
+                                                // MARK: Web
+                                            case .web(let url):
+                                                WebView(url: url,
+                                                        viewModel: viewModel)
+                                                
+                                                // MARK: Unknown
+                                            case .unknown(let url):
+                                                UnknownView(url: url,
+                                                            viewModel: viewModel)
+                                                Spacer()
+                                                // MARK: Discussion
+                                            case let .discussion(blockID, blockKey, title):
+                                                VStack {
+                                                    if showDiscussion {
+                                                        DiscussionView(id: viewModel.id,
+                                                                       blockID: blockID,
+                                                                       blockKey: blockKey,
+                                                                       title: title,
+                                                                       viewModel: viewModel)
+                                                        Spacer(minLength: 100)
+                                                    } else {
+                                                        DiscussionView(id: viewModel.id,
+                                                                       blockID: blockID,
+                                                                       blockKey: blockKey,
+                                                                       title: title,
+                                                                       viewModel: viewModel)
+                                                        .drawingGroup()
+                                                        Spacer(minLength: 100)
                                                     }
-                                                    
-                                                    .frame(height: reader.size.height)
-                                                    .id(index)
-                                            }
-                                    }.frameLimit()
-                                .offset(y: offsetView)
-                                .clipped()
-                                    .onChange(of: viewModel.index, perform: { index in
-                                        DispatchQueue.main.async {
-                                            withAnimation(Animation.easeInOut(duration: 0.2)) {
-//                                                scroll.scrollTo(index, anchor: .top)
-                                                offsetView = -(reader.size.height * CGFloat(index))
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                                        showDiscussion = viewModel.selectedLesson().type == .discussion
-                                                    }
+                                                }
                                             }
                                         }
-
-                                    })
+                                        
+                                        .frame(height: reader.size.height)
+                                        .id(index)
+                                    }
+                            }.frameLimit()
+                                .offset(y: offsetView)
+                                .clipped()
+                                .onChange(of: viewModel.index, perform: { index in
+                                    DispatchQueue.main.async {
+                                        withAnimation(Animation.easeInOut(duration: 0.2)) {
+//                                                scroll.scrollTo(index, anchor: .top)
+                                            offsetView = -(reader.size.height * CGFloat(index))
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                showDiscussion = viewModel.selectedLesson().type == .discussion
+                                            }
+                                        }
+                                    }
+                                    
+                                })
 //                                }.introspectScrollView(customize: { sv in
 //                                    sv.isScrollEnabled = false
 //                                    sv.layer.cornerRadius = 24
@@ -148,6 +152,7 @@ public struct CourseUnitView: View {
                             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }.frame(maxWidth: .infinity)
+                        .clipped()
                     
                     // MARK: Progress Dots
                     if viewModel.verticals[viewModel.verticalIndex].childs.count > 1 {
@@ -177,17 +182,25 @@ public struct CourseUnitView: View {
                 }
                 
                 // MARK: - Course Navigation
-                CourseNavigationView(
-                    sectionName: sectionName,
-                    viewModel: viewModel,
-                    playerStateSubject: playerStateSubject
-                ).padding(.bottom, 30)
-                    .frameLimit(sizePortrait: 420)
-            }.frame(maxWidth: .infinity)
-                .onRightSwipeGesture {
-                    playerStateSubject.send(VideoPlayerState.kill)
-                    viewModel.router.back()
-                }
+                VStack {
+                    NavigationBar(title: "",
+                                  leftButtonAction: {
+                        viewModel.router.back()
+                        playerStateSubject.send(VideoPlayerState.kill)
+                    }).padding(.top, 50)
+                    Spacer()
+                    CourseNavigationView(
+                        sectionName: sectionName,
+                        viewModel: viewModel,
+                        playerStateSubject: playerStateSubject
+                    ).padding(.bottom, 30)
+                        .frameLimit(sizePortrait: 420)
+                }.frame(maxWidth: .infinity)
+                    .onRightSwipeGesture {
+                        playerStateSubject.send(VideoPlayerState.kill)
+                        viewModel.router.back()
+                    }
+            }
         }.ignoresSafeArea()
             .background(
                 CoreAssets.background.swiftUIColor
@@ -290,6 +303,7 @@ struct CourseUnitView_Previews: PreviewProvider {
         return CourseUnitView(viewModel: CourseUnitViewModel(
             lessonID: "",
             courseID: "",
+            id: "1",
             chapters: chapters,
             chapterIndex: 0,
             sequentialIndex: 0,

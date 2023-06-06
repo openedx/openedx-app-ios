@@ -98,6 +98,7 @@ struct CourseNavigationView: View {
                                 }
                                 
                                 viewModel.router.replaceCourseUnit(
+                                    id: viewModel.id,
                                     blockId: viewModel.lessonID,
                                     courseID: viewModel.courseID,
                                     sectionName: viewModel.selectedLesson().displayName,
@@ -132,6 +133,7 @@ struct CourseNavigationView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = CourseUnitViewModel(lessonID: "1",
                                             courseID: "1",
+                                            id: "1",
                                             chapters: [],
                                             chapterIndex: 1,
                                             sequentialIndex: 1,

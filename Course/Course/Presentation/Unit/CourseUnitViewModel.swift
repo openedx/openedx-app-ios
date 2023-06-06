@@ -13,7 +13,7 @@ public enum LessonType: Equatable {
     case youtube(viewYouTubeUrl: String, blockID: String)
     case video(videoUrl: String, blockID: String)
     case unknown(String)
-    case discussion(String, String)
+    case discussion(String, String, String)
     
     static func from(_ block: CourseBlock) -> Self {
         switch block.type {
@@ -22,7 +22,7 @@ public enum LessonType: Equatable {
         case .html:
             return .web(block.studentUrl)
         case .discussion:
-            return .discussion(block.topicId ?? "", block.displayName)
+            return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
             if block.youTubeUrl != nil, let encodedVideo = block.videoUrl {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
@@ -57,6 +57,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     public var lessonID: String
     public var courseID: String
+    public var id: String
 
     private let interactor: CourseInteractorProtocol
     public let router: CourseRouter
@@ -73,6 +74,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     public init(lessonID: String,
                 courseID: String,
+                id: String,
                 chapters: [CourseChapter],
                 chapterIndex: Int,
                 sequentialIndex: Int,
@@ -84,6 +86,7 @@ public class CourseUnitViewModel: ObservableObject {
     ) {
         self.lessonID = lessonID
         self.courseID = courseID
+        self.id = id
         self.chapters = chapters
         self.chapterIndex = chapterIndex
         self.sequentialIndex = sequentialIndex
@@ -132,9 +135,8 @@ public class CourseUnitViewModel: ObservableObject {
     
     @MainActor
     func blockCompletionRequest(blockID: String) async {
-        let fullBlockID = "block-v1:\(courseID.dropFirst(10))+type@discussion+block@\(blockID)"
         do {
-            try await interactor.blockCompletionRequest(courseID: courseID, blockID: fullBlockID)
+            try await interactor.blockCompletionRequest(courseID: self.id, blockID: blockID)
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection

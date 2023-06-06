@@ -116,7 +116,8 @@ public struct CourseOutlineView: View {
                                         VStack(alignment: .leading) {
                                             Button(action: {
                                                 if let chapterIndex, let sequentialIndex {
-                                                    viewModel.router.showCourseVerticalView(title: child.displayName,
+                                                    viewModel.router.showCourseVerticalView(id: courseID,
+                                                                                            title: child.displayName,
                                                                                             chapters: chapters,
                                                                                             chapterIndex: chapterIndex,
                                                                                             sequentialIndex: sequentialIndex)

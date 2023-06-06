@@ -226,11 +226,12 @@ class ScreenAssembly: Assembly {
                                     connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
-        container.register(CourseUnitViewModel.self) { r, blockId, courseId, chapters, chapterIndex, sequentialIndex,
+        container.register(CourseUnitViewModel.self) { r, blockId, courseId, id, chapters, chapterIndex, sequentialIndex,
             verticalIndex in
             CourseUnitViewModel(
                 lessonID: blockId,
                 courseID: courseId,
+                id: id,
                 chapters: chapters,
                 chapterIndex: chapterIndex,
                 sequentialIndex: sequentialIndex,
