@@ -141,6 +141,7 @@ public struct PostsView: View {
                                                 
                                                 ForEach(posts, id: \.offset) { index, post in
                                                     PostCell(post: post).padding(24)
+                                                        .id(UUID())
                                                         .onAppear {
                                                             Task {
                                                                 await viewModel.getPostsPagination(courseID: self.courseID, index: index)
@@ -151,7 +152,7 @@ public struct PostsView: View {
                                                     }
                                                 }
                                                 Spacer(minLength: 84)
-                                            }.id(UUID())
+                                            }
                                         } else {
                                             VStack(spacing: 0) {
                                                 CoreAssets.discussionIcon.swiftUIImage
