@@ -21,8 +21,6 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
     @Published var isViewedOnce: Bool = false
     
     private var url: String
-    private var blockID: String
-    private var courseID: String
     
     public init(url: String,
                 blockID: String,
@@ -34,8 +32,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 connectivity: ConnectivityProtocol
     ) {
         self.url = url
-        self.blockID = blockID
-        self.courseID = courseID
+
         let videoID = url.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
         let configuration = YouTubePlayer.Configuration(configure: {
             $0.autoPlay = false
@@ -56,7 +53,9 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         self.youtubePlayer = YouTubePlayer(source: .video(id: videoID),
                                            configuration: configuration)
         
-        super.init(languages: languages,
+        super.init(blockID: blockID,
+                   courseID: courseID,
+                   languages: languages,
                    interactor: interactor,
                    router: router,
                    connectivity: connectivity)
@@ -82,7 +81,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 if (time / duration) >= 0.8 {
                     if !isViewedOnce {
                         Task {
-                            await self.blockCompletionRequest(blockID: blockID, courseID: courseID)
+                            await self.blockCompletionRequest()
                         }
                         isViewedOnce = true
                     }

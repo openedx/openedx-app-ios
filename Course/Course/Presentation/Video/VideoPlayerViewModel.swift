@@ -11,6 +11,9 @@ import _AVKit_SwiftUI
 
 public class VideoPlayerViewModel: ObservableObject {
     
+    private var blockID: String
+    private var courseID: String
+    
     private let interactor: CourseInteractorProtocol
     public let connectivity: ConnectivityProtocol
     public let router: CourseRouter
@@ -28,10 +31,14 @@ public class VideoPlayerViewModel: ObservableObject {
         }
     }
     
-    public init(languages: [SubtitleUrl],
+    public init(blockID: String,
+                courseID: String,
+                languages: [SubtitleUrl],
                 interactor: CourseInteractorProtocol,
                 router: CourseRouter,
                 connectivity: ConnectivityProtocol) {
+        self.blockID = blockID
+        self.courseID = courseID
         self.languages = languages
         self.interactor = interactor
         self.router = router
@@ -40,7 +47,7 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     @MainActor
-    func blockCompletionRequest(blockID: String, courseID: String) async {
+    func blockCompletionRequest() async {
         let fullBlockID = "block-v1:\(courseID.dropFirst(10))+type@discussion+block@\(blockID)"
         do {
             try await interactor.blockCompletionRequest(courseID: courseID, blockID: fullBlockID)

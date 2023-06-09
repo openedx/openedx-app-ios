@@ -33,7 +33,9 @@ final class VideoPlayerViewModelTests: XCTestCase {
                 
         Given(interactor, .getSubtitles(url: .any, selectedLanguage: .any, willReturn: subtitles))
         
-        let viewModel = VideoPlayerViewModel(languages: [],
+        let viewModel = VideoPlayerViewModel(blockID: "",
+                                             courseID: "",
+                                             languages: [],
                                              interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
@@ -57,7 +59,9 @@ final class VideoPlayerViewModelTests: XCTestCase {
         Given(connectivity, .isInternetAvaliable(getter: false))
         Given(interactor, .getSubtitles(url: .any, selectedLanguage: .any, willReturn: subtitles))
         
-        let viewModel = VideoPlayerViewModel(languages: [],
+        let viewModel = VideoPlayerViewModel(blockID: "",
+                                             courseID: "",
+                                             languages: [],
                                              interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
@@ -76,7 +80,9 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
         
-        let viewModel = VideoPlayerViewModel(languages: [],
+        let viewModel = VideoPlayerViewModel(blockID: "",
+                                             courseID: "",
+                                             languages: [],
                                              interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
@@ -101,14 +107,16 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
         
-        let viewModel = VideoPlayerViewModel(languages: [],
+        let viewModel = VideoPlayerViewModel(blockID: "",
+                                             courseID: "",
+                                             languages: [],
                                              interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willProduce: {_ in}))
         
-        await viewModel.blockCompletionRequest(blockID: "123", courseID: "123")
+        await viewModel.blockCompletionRequest()
         
         Verify(interactor, .blockCompletionRequest(courseID: .any, blockID: .any))
     }
@@ -118,14 +126,16 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
                 
-        let viewModel = VideoPlayerViewModel(languages: [],
+        let viewModel = VideoPlayerViewModel(blockID: "",
+                                             courseID: "",
+                                             languages: [],
                                              interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: NSError()))
         
-        await viewModel.blockCompletionRequest(blockID: "123", courseID: "123")
+        await viewModel.blockCompletionRequest()
         
         Verify(interactor, .blockCompletionRequest(courseID: .any, blockID: .any))
         
@@ -140,14 +150,16 @@ final class VideoPlayerViewModelTests: XCTestCase {
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
                 
-        let viewModel = VideoPlayerViewModel(languages: [],
+        let viewModel = VideoPlayerViewModel(blockID: "",
+                                             courseID: "",
+                                             languages: [],
                                              interactor: interactor,
                                              router: router,
                                              connectivity: connectivity)
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: noInternetError))
         
-        await viewModel.blockCompletionRequest(blockID: "123", courseID: "123")
+        await viewModel.blockCompletionRequest()
         
         Verify(interactor, .blockCompletionRequest(courseID: .any, blockID: .any))
         

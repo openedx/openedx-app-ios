@@ -16,7 +16,7 @@ struct YouTubeView: View {
     let blockID: String
     let viewModel: CourseUnitViewModel
     let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    @State var isOnScreen: Bool
+    @Binding var isOnScreen: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -30,7 +30,7 @@ struct YouTubeView: View {
                                                       viewModel.courseID,
                                                       viewModel.languages(),
                                                       playerStateSubject)!
-                    YouTubeVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
+                    YouTubeVideoPlayer(viewModel: vm, isOnScreen: $isOnScreen)
                     Spacer(minLength: 100)
             }.background(CoreAssets.background.swiftUIColor)
         }

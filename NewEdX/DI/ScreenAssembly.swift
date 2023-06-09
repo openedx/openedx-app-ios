@@ -248,13 +248,6 @@ class ScreenAssembly: Assembly {
                              config: r.resolve(Config.self)!)
         }
         
-        container.register(VideoPlayerViewModel.self) { r, languages in
-            VideoPlayerViewModel(languages: languages,
-                                 interactor: r.resolve(CourseInteractorProtocol.self)!,
-                                 router: r.resolve(CourseRouter.self)!,
-                                 connectivity: r.resolve(ConnectivityProtocol.self)!)
-        }
-        
         container.register(YouTubeVideoPlayerViewModel.self) { r, url, blockID, courseID, languages, playerStateSubject in
             YouTubeVideoPlayerViewModel(url: url,
                                         blockID: blockID,
@@ -266,8 +259,11 @@ class ScreenAssembly: Assembly {
                                         connectivity: r.resolve(ConnectivityProtocol.self)!)
         }
         
-        container.register(EncodedVideoPlayerViewModel.self) { r, languages, playerStateSubject in
-            EncodedVideoPlayerViewModel(languages: languages,
+        container.register(EncodedVideoPlayerViewModel.self) { r, url, blockID, courseID, languages, playerStateSubject in
+            EncodedVideoPlayerViewModel(url: url,
+                                        blockID: blockID,
+                                        courseID: courseID,
+                                        languages: languages,
                                         playerStateSubject: playerStateSubject,
                                         interactor: r.resolve(CourseInteractorProtocol.self)!,
                                         router: r.resolve(CourseRouter.self)!,

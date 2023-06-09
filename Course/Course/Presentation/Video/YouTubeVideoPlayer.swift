@@ -15,7 +15,7 @@ public struct YouTubeVideoPlayer: View {
     
     @StateObject
     private var viewModel: YouTubeVideoPlayerViewModel
-    @State var isOnScreen: Bool
+    @Binding var isOnScreen: Bool
     
     @State private var orientation = UIDevice.current.orientation
     @State var showAlert = false
@@ -27,9 +27,9 @@ public struct YouTubeVideoPlayer: View {
         }
     }
     
-    public init(viewModel: YouTubeVideoPlayerViewModel, isOnScreen: Bool) {
+    public init(viewModel: YouTubeVideoPlayerViewModel, isOnScreen: Binding<Bool>) {
         self._viewModel = StateObject(wrappedValue: {viewModel}())
-        self.isOnScreen = isOnScreen
+        self._isOnScreen = isOnScreen
     }
     
     public var body: some View {
@@ -109,7 +109,7 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
                 router: CourseRouterMock(),
                 connectivity: Connectivity()),
-            isOnScreen: true)
+            isOnScreen: .constant(true))
     }
 }
 #endif

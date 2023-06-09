@@ -89,13 +89,18 @@ public struct SubtittlesView: View {
 struct SubtittlesView_Previews: PreviewProvider {
     static var previews: some View {
         
-        SubtittlesView(languages: [SubtitleUrl(language: "fr", url: "url"),
-                                   SubtitleUrl(language: "uk", url: "url2")],
-                       currentTime: .constant(0),
-                       viewModel: VideoPlayerViewModel(languages: [],
-                                                       interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                                                       router: CourseRouterMock(),
-                                                       connectivity: Connectivity()))
+        SubtittlesView(
+            languages: [SubtitleUrl(language: "fr", url: "url"),
+                        SubtitleUrl(language: "uk", url: "url2")],
+            currentTime: .constant(0),
+            viewModel: VideoPlayerViewModel(
+                blockID: "", courseID: "",
+                languages: [],
+                interactor: CourseInteractor(repository: CourseRepositoryMock()),
+                router: CourseRouterMock(),
+                connectivity: Connectivity()
+            )
+        )
     }
 }
 #endif

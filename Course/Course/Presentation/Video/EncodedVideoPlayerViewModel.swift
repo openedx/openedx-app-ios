@@ -11,22 +11,32 @@ import Combine
 
 public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
     
+    let url: URL?
+    
     let controller = AVPlayerViewController()
     private var subscription = Set<AnyCancellable>()
     
-    public init(languages: [SubtitleUrl],
-                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
-                interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol) {
-        super.init(languages: languages,
-                   interactor: interactor,
-                   router: router,
-                   connectivity: connectivity)
-        
-        playerStateSubject.sink(receiveValue: { [weak self] state in
-            switch state {
-            case .pause:
+    public init(
+        url: URL?,
+        blockID: String,
+        courseID: String,
+        languages: [SubtitleUrl],
+        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        connectivity: ConnectivityProtocol) {
+            self.url = url
+            
+            super.init(blockID: blockID,
+                       courseID: courseID,
+                       languages: languages,
+                       interactor: interactor,
+                       router: router,
+                       connectivity: connectivity)
+            
+            playerStateSubject.sink(receiveValue: { [weak self] state in
+                switch state {
+                case .pause:
                 self?.controller.player?.pause()
             case .kill:
                 self?.controller.player?.replaceCurrentItem(with: nil)

@@ -64,20 +64,21 @@ public struct CourseUnitView: View {
                                                             blockID: blockID,
                                                             viewModel: viewModel,
                                                             playerStateSubject: playerStateSubject,
-                                                            isOnScreen: index == viewModel.index)
+                                                            isOnScreen: Binding(projectedValue:
+                                                                    .constant(index == viewModel.index)))
                                                 Spacer(minLength: 100)
                                                 
                                                 // MARK: Encoded Video
                                             case let .video(encodedUrl, blockID):
-                                                if index == viewModel.index {
+//                                                if index == viewModel.index {
                                                     EncodedVideoView(index: index,
                                                                      encodedUrl: encodedUrl,
                                                                      blockID: blockID,
                                                                      viewModel: viewModel,
                                                                      playerStateSubject: playerStateSubject,
-                                                                     isOnScreen: true)
+                                                                     isOnScreen: index == viewModel.index)
                                                     Spacer(minLength: 100)
-                                                }
+//                                                }
                                                 
                                                 // MARK: Web
                                             case .web(let url):

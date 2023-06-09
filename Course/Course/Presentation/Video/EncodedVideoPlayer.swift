@@ -21,9 +21,7 @@ public struct EncodedVideoPlayer: View {
     @StateObject
     private var viewModel: EncodedVideoPlayerViewModel
     
-    private var blockID: String
-    private var courseID: String
-    @State var isOnScreen: Bool = true
+    @State var isOnScreen: Bool
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @State private var orientation = UIDevice.current.orientation
@@ -41,17 +39,10 @@ public struct EncodedVideoPlayer: View {
             }
         }
     }
-    private let url: URL?
     
     public init(
-        url: URL?,
-        blockID: String,
-        courseID: String,
-        isOnScreen: Bool,
-        viewModel: EncodedVideoPlayerViewModel) {
-            self.url = url
-            self.blockID = blockID
-            self.courseID = courseID
+        viewModel: EncodedVideoPlayerViewModel,
+        isOnScreen: Bool) {
             self._viewModel = StateObject(wrappedValue: { viewModel }())
             self.isOnScreen = isOnScreen
         }
@@ -60,13 +51,13 @@ public struct EncodedVideoPlayer: View {
         ZStack {
             VStack(alignment: .leading) {
                 PlayerViewController(
-                    videoURL: url,
+                    videoURL: viewModel.url,
                     controller: viewModel.controller,
                     progress: { progress in
                         if progress >= 0.8 {
                             if !isViewedOnce {
                                 Task {
-                                    await viewModel.blockCompletionRequest(blockID: blockID, courseID: courseID)
+                                    await viewModel.blockCompletionRequest()
                                 }
                                 isViewedOnce = true
                             }
@@ -80,7 +71,7 @@ public struct EncodedVideoPlayer: View {
                 .onReceive(NotificationCenter.Publisher(
                     center: .default,
                     name: UIDevice.orientationDidChangeNotification)) { _ in
-//                        if isOnScreen {
+                        if isOnScreen {
                             self.orientation = UIDevice.current.orientation
                             if self.orientation.isLandscape {
                                 viewModel.controller.enterFullScreen(animated: true)
@@ -93,7 +84,7 @@ public struct EncodedVideoPlayer: View {
                                     isOrientationChanged = false
                                 }
                             }
-//                        }
+                        }
                     }
                 SubtittlesView(languages: viewModel.languages,
                                    currentTime: $currentTime,
@@ -132,16 +123,19 @@ public struct EncodedVideoPlayer: View {
 #if DEBUG
 struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
-        EncodedVideoPlayer(url: nil,
-                           blockID: "",
-                           courseID: "",
-                           isOnScreen: true,
-                           viewModel: EncodedVideoPlayerViewModel(
-                            languages: [],
-                            playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
-                            interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                            router: CourseRouterMock(),
-                            connectivity: Connectivity()))
+        EncodedVideoPlayer(
+            viewModel: EncodedVideoPlayerViewModel(
+                url: URL(string: "")!,
+                blockID: "",
+                courseID: "",
+                languages: [],
+                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
+                interactor: CourseInteractor(repository: CourseRepositoryMock()),
+                router: CourseRouterMock(),
+                connectivity: Connectivity()
+            ),
+            isOnScreen: true
+        )
     }
 }
 #endif
