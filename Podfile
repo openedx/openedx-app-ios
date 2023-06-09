@@ -21,7 +21,7 @@ abstract_target "App" do
     #Keychain
     pod 'KeychainSwift', '~> 20.0'
     #SwiftUI backward UIKit access
-    pod 'Introspect', '0.1.4'
+    pod 'Introspect', '0.6.0'
     pod 'Kingfisher', '~> 7.6.2'
     pod 'Swinject', '2.8.2'
   end

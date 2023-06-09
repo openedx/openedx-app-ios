@@ -107,6 +107,7 @@ final class CourseUnitViewModelTests: XCTestCase {
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
+                                            id: "789",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
@@ -130,6 +131,7 @@ final class CourseUnitViewModelTests: XCTestCase {
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
+                                            id: "789",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
@@ -158,6 +160,7 @@ final class CourseUnitViewModelTests: XCTestCase {
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
+                                            id: "789",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
@@ -188,6 +191,7 @@ final class CourseUnitViewModelTests: XCTestCase {
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
+                                            id: "789",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
@@ -217,6 +221,7 @@ final class CourseUnitViewModelTests: XCTestCase {
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
+                                            id: "789",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,

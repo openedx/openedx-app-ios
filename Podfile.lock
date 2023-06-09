@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (5.6.4)
-  - Introspect (0.1.4)
+  - Introspect (0.6.0)
   - KeychainSwift (20.0.0)
   - Kingfisher (7.6.2)
   - Sourcery (1.8.0):
@@ -14,7 +14,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (= 5.6.4)
-  - Introspect (= 0.1.4)
+  - Introspect (= 0.6.0)
   - KeychainSwift (~> 20.0)
   - Kingfisher (~> 7.6.2)
   - SwiftGen (~> 6.0)
@@ -45,7 +45,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
-  Introspect: b62c4dd2063072327c21d618ef2bedc3c87bc366
+  Introspect: 59378bd7e1774f0327244ad2d06b1b9c805cb9ed
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
   Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
@@ -54,6 +54,6 @@ SPEC CHECKSUMS:
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
   Swinject: b4a11b31992e8668308dc594ba1cb9b3164a37ab
 
-PODFILE CHECKSUM: 581ff8dcee79309f445fdcb8360e69b153117532
+PODFILE CHECKSUM: 032737d86ade74ddc18251a6a4608fe347f5d033
 
 COCOAPODS: 1.12.0

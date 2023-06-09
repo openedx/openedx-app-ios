@@ -31,7 +31,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
                 
-        Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
+        Given(interactor, .getSubtitles(url: .any, selectedLanguage: .any, willReturn: subtitles))
         
         let viewModel = VideoPlayerViewModel(languages: [],
                                              interactor: interactor,
@@ -40,7 +40,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
         
-        Verify(interactor, .getSubtitles(url: .any))
+        Verify(interactor, .getSubtitles(url: .any, selectedLanguage: .any))
         
         XCTAssertEqual(viewModel.subtitles.first!.text, subtitles.first!.text)
         XCTAssertNil(viewModel.errorMessage)
@@ -55,7 +55,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
         
                 
         Given(connectivity, .isInternetAvaliable(getter: false))
-        Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
+        Given(interactor, .getSubtitles(url: .any, selectedLanguage: .any, willReturn: subtitles))
         
         let viewModel = VideoPlayerViewModel(languages: [],
                                              interactor: interactor,
@@ -64,7 +64,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
         
-        Verify(interactor, .getSubtitles(url: .any))
+        Verify(interactor, .getSubtitles(url: .any, selectedLanguage: .any))
         
         XCTAssertEqual(viewModel.subtitles.first!.text, subtitles.first!.text)
         XCTAssertNil(viewModel.errorMessage)
@@ -86,7 +86,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
         SubtitleUrl(language: "uk", url: "url2")
         ]
         
-        Given(interactor, .getSubtitles(url: .any, willReturn: subtitles))
+        Given(interactor, .getSubtitles(url: .any, selectedLanguage: .any, willReturn: subtitles))
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
         viewModel.prepareLanguages()

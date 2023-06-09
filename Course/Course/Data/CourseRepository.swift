@@ -18,7 +18,7 @@ public protocol CourseRepositoryProtocol {
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func resumeBlock(courseID: String) async throws -> ResumeBlock
-    func getSubtitles(url: String) async throws -> String
+    func getSubtitles(url: String, selectedLanguage: String) async throws -> String
 }
 
 public class CourseRepository: CourseRepositoryProtocol {
@@ -98,11 +98,12 @@ public class CourseRepository: CourseRepositoryProtocol {
         .mapResponse(DataLayer.ResumeBlock.self).domain
     }
     
-    public func getSubtitles(url: String) async throws -> String {
+    public func getSubtitles(url: String, selectedLanguage: String) async throws -> String {
         if let subtitlesOffline = persistence.loadSubtitles(url: url) {
             return subtitlesOffline
         } else {
-            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url))
+            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url,
+                                                                                      selectedLanguage: selectedLanguage))
             let subtitles = String(data: result, encoding: .utf8) ?? ""
             persistence.saveSubtitles(url: url, subtitlesString: subtitles)
             return subtitles
@@ -280,7 +281,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         
     }
     
-    public func getSubtitles(url: String) async throws -> String {
+    public func getSubtitles(url: String, selectedLanguage: String) async throws -> String {
         return """
 0
 00:00:00,350 --> 00:00:05,230

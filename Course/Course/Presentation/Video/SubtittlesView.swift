@@ -74,10 +74,11 @@ public struct SubtittlesView: View {
                                 }.id(subtitle.id)
                             }
                         }
+                        .introspectScrollView(customize: { scroll in
+                            scroll.isScrollEnabled = false
+                        })
                     }
-                }.introspectScrollView(customize: { scroll in
-                    scroll.isScrollEnabled = false
-                })
+                }
             }.padding(.horizontal, 24)
                 .padding(.top, 34)
         }

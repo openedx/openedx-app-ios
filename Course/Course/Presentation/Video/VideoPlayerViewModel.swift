@@ -55,8 +55,15 @@ public class VideoPlayerViewModel: ObservableObject {
     
     @MainActor
     public func getSubtitles(subtitlesUrl: String) async {
-        guard let result = try? await interactor.getSubtitles(url: subtitlesUrl) else { return }
-        subtitles = result
+        do {
+            let result = try await interactor.getSubtitles(
+                url: subtitlesUrl,
+                selectedLanguage: self.selectedLanguage ?? "en"
+            )
+            subtitles = result
+        } catch {
+            print(">>>>> ⛔️⛔️⛔️⛔️⛔️⛔️⛔️⛔️", error)
+        }
     }
     
     public func prepareLanguages() {
