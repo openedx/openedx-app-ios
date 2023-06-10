@@ -28,6 +28,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     public let interactor: CourseInteractorProtocol
+    private let authInteractor: AuthInteractorProtocol
     public let router: CourseRouter
     public let config: Config
     public let connectivity: ConnectivityProtocol
@@ -39,6 +40,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     public let enrollmentEnd: Date?
     
     public init(interactor: CourseInteractorProtocol,
+                authInteractor: AuthInteractorProtocol,
                 router: CourseRouter,
                 config: Config,
                 connectivity: ConnectivityProtocol,
@@ -50,6 +52,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 enrollmentEnd: Date?
     ) {
         self.interactor = interactor
+        self.authInteractor = authInteractor
         self.router = router
         self.config = config
         self.connectivity = connectivity
@@ -72,7 +75,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
-    public func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
+    func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
         if let courseStart {
             if courseStart < Date() {
                 isShowProgress = withProgress
@@ -104,6 +107,11 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
         }
+    }
+    
+    @MainActor
+    func tryToRefreshCookies() async {
+        try? await authInteractor.getCookies(force: false)
     }
     
     @MainActor

@@ -205,6 +205,7 @@ class ScreenAssembly: Assembly {
             .register(CourseContainerViewModel.self) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
+                authInteractor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 config: r.resolve(Config.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,

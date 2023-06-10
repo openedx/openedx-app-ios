@@ -98,6 +98,11 @@ public struct CourseContainerView: View {
                 .introspectViewController { vc in
                     vc.navigationController?.setNavigationBarHidden(true, animated: false)
                 }
+                .onFirstAppear {
+                    Task {
+                        await viewModel.tryToRefreshCookies()
+                    }
+                }
             }
         }
     }
@@ -109,6 +114,7 @@ struct CourseScreensView_Previews: PreviewProvider {
         CourseContainerView(
             viewModel: CourseContainerViewModel(
                 interactor: CourseInteractor.mock,
+                authInteractor: AuthInteractor.mock,
                 router: CourseRouterMock(),
                 config: ConfigMock(),
                 connectivity: Connectivity(),

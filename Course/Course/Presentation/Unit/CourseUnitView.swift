@@ -55,66 +55,69 @@ public struct CourseUnitView: View {
                                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                                 ForEach(data, id: \.offset) { index, block in
                                     VStack(spacing: 0) {
-                                        switch LessonType.from(block) {
-                                            // MARK: YouTube
-                                        case let .youtube(url, blockID):
-                                            YouTubeView(
-                                                name: block.displayName,
-                                                url: url,
-                                                courseID: viewModel.courseID,
-                                                blockID: blockID,
-                                                playerStateSubject: playerStateSubject,
-                                                languages: block.subtitles ?? [],
-                                                isOnScreen: index == viewModel.index
-                                            )
-                                            Spacer(minLength: 100)
-                                            
-                                            // MARK: Encoded Video
-                                        case let .video(encodedUrl, blockID):
-                                            EncodedVideoView(
-                                                name: block.displayName,
-                                                url: viewModel.urlForVideoFileOrFallback(
-                                                    blockId: blockID,
-                                                    url: encodedUrl
-                                                ),
-                                                courseID: viewModel.courseID,
-                                                blockID: blockID,
-                                                playerStateSubject: playerStateSubject,
-                                                languages: block.subtitles ?? [],
-                                                isOnScreen: index == viewModel.index
-                                            )
-                                            Spacer(minLength: 100)
-                                            // MARK: Web
-                                        case .web(let url):
-                                            WebView(url: url, viewModel: viewModel)
-                                            
-                                            // MARK: Unknown
-                                        case .unknown(let url):
-                                            UnknownView(url: url, viewModel: viewModel)
-                                            Spacer()
-                                            // MARK: Discussion
-                                        case let .discussion(blockID, blockKey, title):
-                                            VStack {
-                                                if showDiscussion {
-                                                    DiscussionView(
-                                                        id: viewModel.id,
-                                                        blockID: blockID,
-                                                        blockKey: blockKey,
-                                                        title: title,
-                                                        viewModel: viewModel
-                                                    )
-                                                    Spacer(minLength: 100)
-                                                } else {
-                                                    DiscussionView(
-                                                        id: viewModel.id,
-                                                        blockID: blockID,
-                                                        blockKey: blockKey,
-                                                        title: title,
-                                                        viewModel: viewModel
-                                                    ).drawingGroup()
-                                                    Spacer(minLength: 100)
+                                        if index >= viewModel.index - 2 && index <= viewModel.index + 2 {
+                                            switch LessonType.from(block) {
+                                                // MARK: YouTube
+                                            case let .youtube(url, blockID):
+                                                YouTubeView(
+                                                    name: block.displayName,
+                                                    url: url,
+                                                    courseID: viewModel.courseID,
+                                                    blockID: blockID,
+                                                    playerStateSubject: playerStateSubject,
+                                                    languages: block.subtitles ?? [],
+                                                    isOnScreen: index == viewModel.index
+                                                )
+                                                Spacer(minLength: 100)
+                                                
+                                                // MARK: Encoded Video
+                                            case let .video(encodedUrl, blockID):
+                                                EncodedVideoView(
+                                                    name: block.displayName,
+                                                    url: viewModel.urlForVideoFileOrFallback(
+                                                        blockId: blockID,
+                                                        url: encodedUrl
+                                                    ),
+                                                    courseID: viewModel.courseID,
+                                                    blockID: blockID,
+                                                    playerStateSubject: playerStateSubject,
+                                                    languages: block.subtitles ?? [],
+                                                    isOnScreen: index == viewModel.index
+                                                )
+                                                Spacer(minLength: 100)
+                                                // MARK: Web
+                                            case .web(let url):
+                                                WebView(url: url, viewModel: viewModel)
+                                                // MARK: Unknown
+                                            case .unknown(let url):
+                                                UnknownView(url: url, viewModel: viewModel)
+                                                Spacer()
+                                                // MARK: Discussion
+                                            case let .discussion(blockID, blockKey, title):
+                                                VStack {
+                                                    if showDiscussion {
+                                                        DiscussionView(
+                                                            id: viewModel.id,
+                                                            blockID: blockID,
+                                                            blockKey: blockKey,
+                                                            title: title,
+                                                            viewModel: viewModel
+                                                        )
+                                                        Spacer(minLength: 100)
+                                                    } else {
+                                                        DiscussionView(
+                                                            id: viewModel.id,
+                                                            blockID: blockID,
+                                                            blockKey: blockKey,
+                                                            title: title,
+                                                            viewModel: viewModel
+                                                        ).drawingGroup()
+                                                        Spacer(minLength: 100)
+                                                    }
                                                 }
                                             }
+                                        } else {
+                                            EmptyView()
                                         }
                                     }
                                     .frame(height: reader.size.height)

@@ -16,6 +16,7 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
@@ -24,6 +25,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
             config: config,
             connectivity: connectivity,
@@ -112,6 +114,7 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksOfflineSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
@@ -120,6 +123,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
             config: config,
             connectivity: connectivity,
@@ -160,6 +164,7 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksNoInternetError() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
@@ -168,6 +173,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
             config: config,
             connectivity: connectivity,
@@ -196,6 +202,7 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksNoCacheError() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
@@ -204,6 +211,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
             config: config,
             connectivity: connectivity,
@@ -229,6 +237,7 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksUnknownError() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
@@ -237,6 +246,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
             config: config,
             connectivity: connectivity,

@@ -144,7 +144,10 @@ public struct PostsView: View {
                                                         .id(UUID())
                                                         .onAppear {
                                                             Task {
-                                                                await viewModel.getPostsPagination(courseID: self.courseID, index: index)
+                                                                await viewModel.getPostsPagination(
+                                                                    courseID: self.courseID,
+                                                                    index: index
+                                                                )
                                                             }
                                                         }
                                                     if posts.last?.element != post {
@@ -154,34 +157,36 @@ public struct PostsView: View {
                                                 Spacer(minLength: 84)
                                             }
                                         } else {
-                                            VStack(spacing: 0) {
-                                                CoreAssets.discussionIcon.swiftUIImage
-                                                    .renderingMode(.template)
-                                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                                                Text(DiscussionLocalization.Posts.NoDiscussion.title)
-                                                    .font(Theme.Fonts.titleLarge)
-                                                    .multilineTextAlignment(.center)
-                                                    .frame(maxWidth: .infinity)
-                                                    .padding(.top, 40)
-                                                Text(DiscussionLocalization.Posts.NoDiscussion.description)
-                                                    .font(Theme.Fonts.bodyLarge)
-                                                    .multilineTextAlignment(.center)
-                                                    .frame(maxWidth: .infinity)
-                                                    .padding(.top, 12)
-                                                StyledButton(DiscussionLocalization.Posts.NoDiscussion.createbutton,
-                                                             action: {
-                                                    router.createNewThread(courseID: courseID,
-                                                                           selectedTopic: currentBlockID,
-                                                                           onPostCreated: {
-                                                        reloadPage(onSuccess: {
-                                                            withAnimation {
-                                                                scroll.scrollTo(1)
-                                                            }
+                                            if !viewModel.isShowProgress {
+                                                VStack(spacing: 0) {
+                                                    CoreAssets.discussionIcon.swiftUIImage
+                                                        .renderingMode(.template)
+                                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                    Text(DiscussionLocalization.Posts.NoDiscussion.title)
+                                                        .font(Theme.Fonts.titleLarge)
+                                                        .multilineTextAlignment(.center)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.top, 40)
+                                                    Text(DiscussionLocalization.Posts.NoDiscussion.description)
+                                                        .font(Theme.Fonts.bodyLarge)
+                                                        .multilineTextAlignment(.center)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.top, 12)
+                                                    StyledButton(DiscussionLocalization.Posts.NoDiscussion.createbutton,
+                                                                 action: {
+                                                        router.createNewThread(courseID: courseID,
+                                                                               selectedTopic: currentBlockID,
+                                                                               onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
                                                         })
-                                                    })
-                                                }).frame(width: 215).padding(.top, 40)
-                                            }.padding(24)
-                                                .padding(.top, 100)
+                                                    }).frame(width: 215).padding(.top, 40)
+                                                }.padding(24)
+                                                    .padding(.top, 100)
+                                            }
                                         }
                                     }
                                 }.frameLimit()

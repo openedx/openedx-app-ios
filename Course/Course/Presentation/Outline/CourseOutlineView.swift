@@ -243,6 +243,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = CourseContainerViewModel(
             interactor: CourseInteractor.mock,
+            authInteractor: AuthInteractor.mock,
             router: CourseRouterMock(),
             config: ConfigMock(),
             connectivity: Connectivity(),
