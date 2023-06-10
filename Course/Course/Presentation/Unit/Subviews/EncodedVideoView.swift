@@ -11,26 +11,29 @@ import Combine
 import Swinject
 
 struct EncodedVideoView: View {
-    let index: Int
-    let encodedUrl: String
+    
+    let name: String
+    let url: URL?
+    let courseID: String
     let blockID: String
-    let viewModel: CourseUnitViewModel
     let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    @State var isOnScreen: Bool
+    let languages: [SubtitleUrl]
+    let isOnScreen: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(viewModel.verticals[viewModel.verticalIndex].childs[index].displayName)
+            Text(name)
                 .font(Theme.Fonts.titleLarge)
                 .padding(.horizontal, 24)
             
             let vm = Container.shared.resolve(
                 EncodedVideoPlayerViewModel.self,
-                arguments: viewModel.urlForVideoFileOrFallback(blockId: blockID, url: encodedUrl),
+                arguments: url,
                 blockID,
-                viewModel.courseID,
-                viewModel.languages(),
-                playerStateSubject)!
+                courseID,
+                languages,
+                playerStateSubject
+            )!
             EncodedVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
             Spacer(minLength: 100)
         }

@@ -21,7 +21,7 @@ public struct EncodedVideoPlayer: View {
     @StateObject
     private var viewModel: EncodedVideoPlayerViewModel
     
-    @State var isOnScreen: Bool
+    private var isOnScreen: Bool
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @State private var orientation = UIDevice.current.orientation
@@ -42,10 +42,11 @@ public struct EncodedVideoPlayer: View {
     
     public init(
         viewModel: EncodedVideoPlayerViewModel,
-        isOnScreen: Bool) {
-            self._viewModel = StateObject(wrappedValue: { viewModel }())
-            self.isOnScreen = isOnScreen
-        }
+        isOnScreen: Bool
+    ) {
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.isOnScreen = isOnScreen
+    }
     
     public var body: some View {
         ZStack {

@@ -97,10 +97,6 @@ public class CourseUnitViewModel: ObservableObject {
         self.connectivity = connectivity
         self.manager = manager
     }
-    
-    public func languages() -> [SubtitleUrl] {
-        return chapters[chapterIndex].childs[sequentialIndex].childs[verticalIndex].childs[index].subtitles ?? []
-    }
 
     private func selectLesson() -> Int {
         guard verticals[verticalIndex].childs.count > 0 else { return 0 }
@@ -112,10 +108,6 @@ public class CourseUnitViewModel: ObservableObject {
     func selectedLesson() -> CourseBlock {
         return verticals[verticalIndex].childs[index]
     }
-    
-//    func createLessonType() {
-//        self.lessonType = LessonType.from(blocks[index])
-//    }
     
     enum LessonAction {
         case next
@@ -159,8 +151,7 @@ public class CourseUnitViewModel: ObservableObject {
         }
     }
     
-    public func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
-        
+    func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
         if let fileURL = manager.fileUrl(for: blockId) {
             return fileURL
         } else {

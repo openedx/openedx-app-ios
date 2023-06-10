@@ -12,24 +12,26 @@ import Combine
 import Swinject
 
 public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
-    let youtubePlayer: YouTubePlayer
-    private var subscription = Set<AnyCancellable>()
-    @Published var isLoading: Bool = true
-    @Published var duration: Double?
-    @Published var play = false
-    @Published var currentTime: Double = 0
-    @Published var isViewedOnce: Bool = false
     
+    @Published var youtubePlayer: YouTubePlayer
+    private (set) var play = false
+    @Published var isLoading: Bool = true
+    @Published var currentTime: Double = 0
+    
+    private var subscription = Set<AnyCancellable>()
+    private var duration: Double?
+    private var isViewedOnce: Bool = false
     private var url: String
     
-    public init(url: String,
-                blockID: String,
-                courseID: String,
-                languages: [SubtitleUrl],
-                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
-                interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol
+    public init(
+        url: String,
+        blockID: String,
+        courseID: String,
+        languages: [SubtitleUrl],
+        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        connectivity: ConnectivityProtocol
     ) {
         self.url = url
 
@@ -50,16 +52,23 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                                  AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5
                                  """
         })
-        self.youtubePlayer = YouTubePlayer(source: .video(id: videoID),
-                                           configuration: configuration)
+        self.youtubePlayer = YouTubePlayer(source: .video(id: videoID), configuration: configuration)
         
-        super.init(blockID: blockID,
-                   courseID: courseID,
-                   languages: languages,
-                   interactor: interactor,
-                   router: router,
-                   connectivity: connectivity)
+        super.init(
+            blockID: blockID,
+            courseID: courseID,
+            languages: languages,
+            interactor: interactor,
+            router: router,
+            connectivity: connectivity
+        )
         
+        self.youtubePlayer.pause()
+        
+        subscrube(playerStateSubject: playerStateSubject)
+    }
+    
+    private func subscrube(playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) {
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
             case .pause:
@@ -68,15 +77,15 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 break
             }
         }).store(in: &subscription)
-        
+
         youtubePlayer.durationPublisher.sink(receiveValue: { [weak self] duration in
             self?.duration = duration
         }).store(in: &subscription)
-        
+
         youtubePlayer.currentTimePublisher(updateInterval: 0.1).sink(receiveValue: { [weak self] time in
             guard let self else { return }
             self.currentTime = time
-            
+
             if let duration = self.duration {
                 if (time / duration) >= 0.8 {
                     if !isViewedOnce {
@@ -88,7 +97,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 }
             }
         }).store(in: &subscription)
-        
+
         youtubePlayer.playbackStatePublisher.sink(receiveValue: { [weak self] state in
             guard let self else { return }
             switch state {
@@ -104,15 +113,11 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 break
             }
         }).store(in: &subscription)
-        
+
         youtubePlayer.statePublisher.sink(receiveValue: { [weak self] state in
             guard let self else { return }
             if state == .ready {
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    self.isLoading = false
-                } else {
-                    self.isLoading = false
-                }
+                self.isLoading = false
             }
         }).store(in: &subscription)
     }
