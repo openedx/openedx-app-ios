@@ -130,14 +130,14 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
             case .question:
                 let (comments, pagination) = try await interactor
                     .getQuestionComments(threadID: thread.id, page: page)
-                self.totalPages = totalPages
+                self.totalPages = pagination.numPages
                 self.itemsCount = pagination.count
                 self.comments += comments
                 postComments = generateComments(comments: self.comments, thread: thread)
             case .discussion:
                 let (comments, pagination) = try await interactor
                     .getDiscussionComments(threadID: thread.id, page: page)
-                self.totalPages = totalPages
+                self.totalPages = pagination.numPages
                 self.itemsCount = pagination.count
                 self.comments += comments
                 postComments = generateComments(comments: self.comments, thread: thread)
