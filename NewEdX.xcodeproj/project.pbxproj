@@ -16,6 +16,7 @@
 		025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 027DB32F28D8A063002B6862 /* Dashboard.framework */; };
 		027DB33128D8A063002B6862 /* Dashboard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 027DB32F28D8A063002B6862 /* Dashboard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		028A14AA2A3871A20026B0A0 /* Configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 028A14A92A3871A20026B0A0 /* Configuration.json */; };
 		02ED50D429A6554E008341CD /* сountries.json in Resources */ = {isa = PBXBuildFile; fileRef = 02ED50D629A6554E008341CD /* сountries.json */; };
 		02ED50D829A66007008341CD /* languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 02ED50DA29A66007008341CD /* languages.json */; };
 		071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C828D1DB3F00344290 /* ScreenAssembly.swift */; };
@@ -68,6 +69,7 @@
 		025DE1A328DB4DAE0053E0F4 /* Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		025EF2F7297177F300B838AB /* NewEdX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NewEdX.entitlements; sourceTree = "<group>"; };
 		027DB32F28D8A063002B6862 /* Dashboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dashboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		028A14A92A3871A20026B0A0 /* Configuration.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Configuration.json; sourceTree = "<group>"; };
 		02B6B3C428E1E61400232911 /* CourseDetails.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CourseDetails.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02ED50CA29A64AAA008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02ED50D529A6554E008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = "uk.lproj/сountries.json"; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				02512FF1299534300024D438 /* CoreDataHandler.swift */,
 				0770DE2628D09209006D8A5D /* SwiftUIHostController.swift */,
 				0727876C28D23312002E9142 /* Environment.swift */,
+				028A14A92A3871A20026B0A0 /* Configuration.json */,
 				0727878C28D347B2002E9142 /* View */,
 				0770DE1A28D084BC006D8A5D /* DI */,
 				07D5DA3D28D075AB00752FD9 /* Assets.xcassets */,
@@ -274,6 +277,7 @@
 				02ED50D429A6554E008341CD /* сountries.json in Resources */,
 				02ED50D829A66007008341CD /* languages.json in Resources */,
 				0770DE6428D0BCC7006D8A5D /* Localizable.strings in Resources */,
+				028A14AA2A3871A20026B0A0 /* Configuration.json in Resources */,
 				07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

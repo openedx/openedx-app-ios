@@ -7,13 +7,11 @@
 
 import Foundation
 
-enum `Environment`: String {
+enum Environment: String {
     case debugDev = "DebugDev"
     case releaseDev = "ReleaseDev"
-    
     case debugStage = "DebugStage"
     case releaseStage = "ReleaseStage"
-    
     case debugProd = "DebugProd"
     case releaseProd = "ReleaseProd"
 }
@@ -23,30 +21,66 @@ class BuildConfiguration {
     
     var environment: Environment
     
+    private var configuration: [String: Any] = [:]
+    
     var baseURL: String {
-        switch environment {
-        case .debugDev, .releaseDev:
-            return "https://example-dev.com"
-        case .debugStage, .releaseStage:
-            return "https://example-stage.com"
-        case .debugProd, .releaseProd:
-            return "https://example.com"
+        guard let environmentConfig = configuration[environment.rawValue] as? [String: Any],
+              let baseURL = environmentConfig["baseURL"] as? String else {
+            fatalError("Missing baseURL configuration for environment: \(environment.rawValue)")
         }
+        return baseURL
     }
     
     var clientId: String {
-        switch environment {
-        case .debugDev, .releaseDev:
-            return "DEV_CLIENT_ID"
-        case .debugStage, .releaseStage:
-            return "STAGE_CLIENT_ID"
-        case .debugProd, .releaseProd:
-            return "PROD_CLIENT_ID"
+        guard let environmentConfig = configuration[environment.rawValue] as? [String: Any],
+              let clientId = environmentConfig["clientId"] as? String else {
+            fatalError("Missing clientId configuration for environment: \(environment.rawValue)")
         }
+        return clientId
     }
     
-    init() {
+    private init() {
         let currentConfiguration = Bundle.main.object(forInfoDictionaryKey: "Configuration") as! String
         environment = Environment(rawValue: currentConfiguration)!
+        
+        guard let url = Bundle.main.url(forResource: "Configuration", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+            fatalError("Failed to load Configuration.json")
+        }
+        
+        configuration = json
     }
 }
+
+/*-
+ 
+ MARK: Example of Configuration.json 
+ 
+{
+  "DebugDev": {
+    "baseURL": "https://example.com",
+    "clientId": "DEBUG_CLIENT_ID"
+  },
+  "ReleaseDev": {
+    "baseURL": "https://example.com",
+    "clientId": "RELEASE_CLIENT_ID"
+  },
+  "DebugStage": {
+ "baseURL": "https://example.com",
+    "clientId": "DEBUG_CLIENT_ID"
+  },
+  "ReleaseStage": {
+ "baseURL": "https://example.com",
+    "clientId": "RELEASE_CLIENT_ID"
+  },
+  "DebugProd": {
+    "baseURL": "https://example.com",
+    "clientId": "PROD_CLIENT_ID"
+  },
+  "ReleaseProd": {
+    "baseURL": "https://example.com",
+    "clientId": "PROD_CLIENT_ID"
+  }
+}
+ */
