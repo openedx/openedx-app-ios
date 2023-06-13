@@ -75,32 +75,6 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                                                         debounce: .test)
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        let items = ThreadLists(
-            threads: [
-                UserThread(id: "1",
-                           author: "1",
-                           authorLabel: "1",
-                           createdAt: Date(),
-                           updatedAt: Date(),
-                           rawBody: "1",
-                           renderedBody: "1",
-                           voted: false,
-                           voteCount: 1,
-                           courseID: "1",
-                           type: .discussion,
-                           title: "1",
-                           pinned: false,
-                           closed: false,
-                           following: true,
-                           commentCount: 1,
-                           avatar: "avatar",
-                           unreadCommentCount: 1,
-                           abuseFlagged: false,
-                           hasEndorsed: true,
-                           numPages: 1)
-            ]
-        )
 
         Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willThrow: noInternetError))
 
@@ -128,32 +102,6 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                                                         interactor: interactor,
                                                         router: router,
                                                         debounce: .test)
-                
-        let items = ThreadLists(
-            threads: [
-                UserThread(id: "1",
-                           author: "1",
-                           authorLabel: "1",
-                           createdAt: Date(),
-                           updatedAt: Date(),
-                           rawBody: "1",
-                           renderedBody: "1",
-                           voted: false,
-                           voteCount: 1,
-                           courseID: "1",
-                           type: .discussion,
-                           title: "1",
-                           pinned: false,
-                           closed: false,
-                           following: true,
-                           commentCount: 1,
-                           avatar: "avatar",
-                           unreadCommentCount: 1,
-                           abuseFlagged: false,
-                           hasEndorsed: true,
-                           numPages: 1)
-            ]
-        )
 
         Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willThrow: NSError()))
 

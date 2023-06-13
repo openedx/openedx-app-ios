@@ -160,7 +160,12 @@ public struct AlertView: View {
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                                    .stroke(style: .init(
+                                        lineWidth: 1,
+                                        lineCap: .round,
+                                        lineJoin: .round,
+                                        miterLimit: 1
+                                    ))
                                     .foregroundColor(.clear)
                             )
                             .frame(maxWidth: 215)
@@ -184,7 +189,12 @@ public struct AlertView: View {
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                                        .stroke(style: .init(
+                                            lineWidth: 1,
+                                            lineCap: .round,
+                                            lineJoin: .round,
+                                            miterLimit: 1
+                                        ))
                                         .foregroundColor(.clear)
                                 )
                                 .frame(maxWidth: 215)
@@ -207,7 +217,12 @@ public struct AlertView: View {
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                                        .stroke(style: .init(
+                                            lineWidth: 1,
+                                            lineCap: .round,
+                                            lineJoin: .round,
+                                            miterLimit: 1
+                                        ))
                                         .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                 )
                                 .frame(maxWidth: 215)

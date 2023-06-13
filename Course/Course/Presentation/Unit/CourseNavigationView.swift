@@ -11,13 +11,15 @@ import Combine
 
 struct CourseNavigationView: View {
     
-    @ObservedObject private var viewModel: CourseUnitViewModel
+    @ObservedObject
+    private var viewModel: CourseUnitViewModel
     private let sectionName: String
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
     
-    init(sectionName: String,
-         viewModel: CourseUnitViewModel,
-         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    init(
+        sectionName: String,
+        viewModel: CourseUnitViewModel,
+        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
     ) {
         self.viewModel = viewModel
         self.sectionName = sectionName
@@ -41,9 +43,11 @@ struct CourseNavigationView: View {
                         })
                     }
                     UnitButtonView(type: .last, action: {
-                        
                         let sequentials = viewModel.chapters[viewModel.chapterIndex].childs
-                        let verticals = viewModel.chapters[viewModel.chapterIndex].childs[viewModel.sequentialIndex].childs
+                        let verticals = viewModel
+                            .chapters[viewModel.chapterIndex]
+                            .childs[viewModel.sequentialIndex]
+                            .childs
                         let chapters = viewModel.chapters
                         let currentVertical = viewModel.verticals[viewModel.verticalIndex]
                         
@@ -131,21 +135,24 @@ struct CourseNavigationView: View {
 #if DEBUG
 struct CourseNavigationView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = CourseUnitViewModel(lessonID: "1",
-                                            courseID: "1",
-                                            id: "1",
-                                            chapters: [],
-                                            chapterIndex: 1,
-                                            sequentialIndex: 1,
-                                            verticalIndex: 1,
-                                            interactor: CourseInteractor.mock,
-                                            router: CourseRouterMock(),
-                                            connectivity: Connectivity(),
-                                            manager: DownloadManagerMock())
+        let viewModel = CourseUnitViewModel(
+            lessonID: "1",
+            courseID: "1",
+            id: "1",
+            chapters: [],
+            chapterIndex: 1,
+            sequentialIndex: 1,
+            verticalIndex: 1,
+            interactor: CourseInteractor.mock,
+            router: CourseRouterMock(),
+            connectivity: Connectivity(),
+            manager: DownloadManagerMock()
+        )
         
-        CourseNavigationView(sectionName: "Name",
-                             viewModel: viewModel,
-                             playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
+        CourseNavigationView(
+            sectionName: "Name",
+            viewModel: viewModel,
+            playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
         )
     }
 }

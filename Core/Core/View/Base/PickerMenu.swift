@@ -32,11 +32,13 @@ public struct PickerMenu: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var selected: ((PickerItem) -> Void) = { _ in }
 
-    public init(items: [PickerItem],
-                titleText: String,
-                router: BaseRouter,
-                selectedItem: PickerItem? = nil,
-                selected: @escaping (PickerItem) -> Void) {
+    public init(
+        items: [PickerItem],
+        titleText: String,
+        router: BaseRouter,
+        selectedItem: PickerItem? = nil,
+        selected: @escaping (PickerItem) -> Void
+    ) {
         self.items = items
         self.titleText = titleText
         self.router = router

@@ -33,13 +33,15 @@ public class CourseDetailsViewModel: ObservableObject {
     let router: CourseRouter
     let config: Config
     let cssInjector: CSSInjector
-    public let connectivity: ConnectivityProtocol
+    let connectivity: ConnectivityProtocol
     
-    public init(interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                config: Config,
-                cssInjector: CSSInjector,
-                connectivity: ConnectivityProtocol) {
+    public init(
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        config: Config,
+        cssInjector: CSSInjector,
+        connectivity: ConnectivityProtocol
+    ) {
         self.interactor = interactor
         self.router = router
         self.config = config
@@ -56,7 +58,7 @@ public class CourseDetailsViewModel: ObservableObject {
                 if let isEnrolled = courseDetails?.isEnrolled {
                     self.courseDetails?.isEnrolled = isEnrolled
                 }
-
+                
                 isShowProgress = false
             } else {
                 courseDetails = try await interactor.getCourseDetailsOffline(courseID: courseID)
@@ -98,7 +100,7 @@ public class CourseDetailsViewModel: ObservableObject {
         guard let url = URL(string: httpsURL) else { return }
         UIApplication.shared.open(url)
     }
-
+    
     @MainActor
     func enrollToCourse(id: String) async {
         do {

@@ -27,29 +27,30 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    public let interactor: CourseInteractorProtocol
+    private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
-    public let router: CourseRouter
-    public let config: Config
-    public let connectivity: ConnectivityProtocol
+    let router: CourseRouter
+    let config: Config
+    let connectivity: ConnectivityProtocol
     
-    public let isActive: Bool?
-    public let courseStart: Date?
-    public let courseEnd: Date?
-    public let enrollmentStart: Date?
-    public let enrollmentEnd: Date?
+    let isActive: Bool?
+    let courseStart: Date?
+    let courseEnd: Date?
+    let enrollmentStart: Date?
+    let enrollmentEnd: Date?
     
-    public init(interactor: CourseInteractorProtocol,
-                authInteractor: AuthInteractorProtocol,
-                router: CourseRouter,
-                config: Config,
-                connectivity: ConnectivityProtocol,
-                manager: DownloadManagerProtocol,
-                isActive: Bool?,
-                courseStart: Date?,
-                courseEnd: Date?,
-                enrollmentStart: Date?,
-                enrollmentEnd: Date?
+    public init(
+        interactor: CourseInteractorProtocol,
+        authInteractor: AuthInteractorProtocol,
+        router: CourseRouter,
+        config: Config,
+        connectivity: ConnectivityProtocol,
+        manager: DownloadManagerProtocol,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?
     ) {
         self.interactor = interactor
         self.authInteractor = authInteractor
@@ -85,7 +86,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         isShowProgress = false
                         if let courseStructure {
                             let continueWith = try await getResumeBlock(courseID: courseID,
-                                                                              courseStructure: courseStructure)
+                                                                        courseStructure: courseStructure)
                             withAnimation {
                                 self.continueWith = continueWith
                             }
@@ -117,8 +118,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws -> ContinueWith? {
         let result = try await interactor.resumeBlock(courseID: courseID)
-        return findContinueVertical(blockID: result.blockID,
-                                    courseStructure: courseStructure)
+        return findContinueVertical(
+            blockID: result.blockID,
+            courseStructure: courseStructure
+        )
     }
     
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
@@ -190,9 +193,11 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 for verticalIndex in sequential.childs.indices {
                     let vertical = sequential.childs[verticalIndex]
                     for block in vertical.childs where block.id == blockID {
-                        return ContinueWith(chapterIndex: chapterIndex,
-                                            sequentialIndex: sequentialIndex,
-                                            verticalIndex: verticalIndex)
+                        return ContinueWith(
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex,
+                            verticalIndex: verticalIndex
+                        )
                     }
                 }
             }

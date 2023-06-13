@@ -102,8 +102,10 @@ public class CourseRepository: CourseRepositoryProtocol {
         if let subtitlesOffline = persistence.loadSubtitles(url: url) {
             return subtitlesOffline
         } else {
-            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url,
-                                                                                      selectedLanguage: selectedLanguage))
+            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(
+                url: url,
+                selectedLanguage: selectedLanguage
+            ))
             let subtitles = String(data: result, encoding: .utf8) ?? ""
             persistence.saveSubtitles(url: url, subtitlesString: subtitles)
             return subtitles

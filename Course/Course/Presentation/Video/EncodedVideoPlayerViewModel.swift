@@ -24,19 +24,20 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
-        connectivity: ConnectivityProtocol) {
-            self.url = url
-            
-            super.init(blockID: blockID,
-                       courseID: courseID,
-                       languages: languages,
-                       interactor: interactor,
-                       router: router,
-                       connectivity: connectivity)
-            
-            playerStateSubject.sink(receiveValue: { [weak self] state in
-                switch state {
-                case .pause:
+        connectivity: ConnectivityProtocol
+    ) {
+        self.url = url
+        
+        super.init(blockID: blockID,
+                   courseID: courseID,
+                   languages: languages,
+                   interactor: interactor,
+                   router: router,
+                   connectivity: connectivity)
+        
+        playerStateSubject.sink(receiveValue: { [weak self] state in
+            switch state {
+            case .pause:
                 self?.controller.player?.pause()
             case .kill:
                 self?.controller.player?.replaceCurrentItem(with: nil)

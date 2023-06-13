@@ -33,7 +33,7 @@ public struct CourseCellView: View {
         self.courseStart = model.courseStart?.dateToString(style: .startDDMonthYear) ?? ""
         self.courseEnd = model.courseEnd?.dateToString(style: .endedMonthDay) ?? ""
         self.courseOrg =  model.org
-        self.index = Double(index)+1
+        self.index = Double(index) + 1
         self.cellsCount = cellsCount
     }
     

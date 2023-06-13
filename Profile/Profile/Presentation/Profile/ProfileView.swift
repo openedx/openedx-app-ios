@@ -26,8 +26,8 @@ public struct ProfileView: View {
             // MARK: - Page name
             VStack(alignment: .center) {
                 NavigationBar(title: ProfileLocalization.title,
-                                     rightButtonType: .edit,
-                rightButtonAction: {
+                              rightButtonType: .edit,
+                              rightButtonAction: {
                     if let userModel = viewModel.userModel {
                         viewModel.router.showEditProfile(
                             userModel: userModel,
@@ -43,7 +43,7 @@ public struct ProfileView: View {
                         )
                     }
                 }, rightButtonIsActive: .constant(viewModel.connectivity.isInternetAvaliable))
-
+                
                 // MARK: - Page Body
                 
                 RefreshableScrollViewCompat(action: {
@@ -90,8 +90,10 @@ public struct ProfileView: View {
                                             }
                                         }
                                     }
-                                    .cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
-                                               strokeColor: .clear)
+                                    .cardStyle(
+                                        bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                        strokeColor: .clear
+                                    )
                                 }.padding(.bottom, 16)
                             }
                             
@@ -102,16 +104,18 @@ public struct ProfileView: View {
                                     .font(Theme.Fonts.labelLarge)
                                 VStack(alignment: .leading, spacing: 27) {
                                     HStack {
-                                     Button(action: {
-                                         viewModel.router.showSettings()
-                                     }, label: {
+                                        Button(action: {
+                                            viewModel.router.showSettings()
+                                        }, label: {
                                             Text(ProfileLocalization.settingsVideo)
                                             Spacer()
                                             Image(systemName: "chevron.right")
                                         })
                                     }
-                                }.cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
-                                            strokeColor: .clear)
+                                }.cardStyle(
+                                    bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                    strokeColor: .clear
+                                )
                                 
                                 // MARK: - Support info
                                 Text(ProfileLocalization.supportInfo)
@@ -119,7 +123,7 @@ public struct ProfileView: View {
                                     .font(Theme.Fonts.labelLarge)
                                 VStack(alignment: .leading, spacing: 24) {
                                     if let support = viewModel.contactSupport() {
-                                    HStack {
+                                        HStack {
                                             Link(destination: support, label: {
                                                 Text(ProfileLocalization.contact)
                                                 Spacer()
@@ -151,8 +155,10 @@ public struct ProfileView: View {
                                             })
                                         }
                                     }
-                                }.cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
-                                            strokeColor: .clear)
+                                }.cardStyle(
+                                    bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                    strokeColor: .clear
+                                )
                                 
                                 // MARK: - Log out
                                 VStack {

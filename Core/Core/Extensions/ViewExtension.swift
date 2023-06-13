@@ -44,12 +44,14 @@ public extension View {
         ))
     }
     
-    func cardStyle(top: CGFloat? = 0,
-                   bottom: CGFloat? = 0,
-                   leftLineEnabled: Bool = false,
-                   bgColor: Color = CoreAssets.background.swiftUIColor,
-                   strokeColor: Color = CoreAssets.cardViewStroke.swiftUIColor,
-                   textColor: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
+    func cardStyle(
+        top: CGFloat? = 0,
+        bottom: CGFloat? = 0,
+        leftLineEnabled: Bool = false,
+        bgColor: Color = CoreAssets.background.swiftUIColor,
+        strokeColor: Color = CoreAssets.cardViewStroke.swiftUIColor,
+        textColor: Color = CoreAssets.textPrimary.swiftUIColor
+    ) -> some View {
         return self
             .padding(.all, 20)
             .padding(.vertical, leftLineEnabled ? 0 : 6)
@@ -81,10 +83,12 @@ public extension View {
             .padding(.bottom, bottom)
     }
     
-    func shadowCardStyle(top: CGFloat? = 0,
-                         bottom: CGFloat? = 0,
-                         bgColor: Color = CoreAssets.cardViewBackground.swiftUIColor,
-                         textColor: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
+    func shadowCardStyle(
+        top: CGFloat? = 0,
+        bottom: CGFloat? = 0,
+        bgColor: Color = CoreAssets.cardViewBackground.swiftUIColor,
+        textColor: Color = CoreAssets.textPrimary.swiftUIColor
+    ) -> some View {
         return self
             .padding(.all, 16)
             .padding(.vertical, 6)
@@ -103,8 +107,11 @@ public extension View {
         
     }
     
-    func titleSettings(top: CGFloat? = 10, bottom: CGFloat? = 20,
-                       color: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
+    func titleSettings(
+        top: CGFloat? = 10,
+        bottom: CGFloat? = 20,
+        color: Color = CoreAssets.textPrimary.swiftUIColor
+    ) -> some View {
         return self
             .lineLimit(1)
             .truncationMode(.tail)
@@ -123,10 +130,12 @@ public extension View {
         }
     }
     
-    func roundedBackground(_ color: Color = CoreAssets.background.swiftUIColor,
-                           strokeColor: Color = CoreAssets.backgroundStroke.swiftUIColor,
-                           ipadMaxHeight: CGFloat = .infinity,
-                           maxIpadWidth: CGFloat = 420) -> some View {
+    func roundedBackground(
+        _ color: Color = CoreAssets.background.swiftUIColor,
+        strokeColor: Color = CoreAssets.backgroundStroke.swiftUIColor,
+        ipadMaxHeight: CGFloat = .infinity,
+        maxIpadWidth: CGFloat = 420
+    ) -> some View {
         var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
         return ZStack {
             RoundedCorners(tl: 24, tr: 24)

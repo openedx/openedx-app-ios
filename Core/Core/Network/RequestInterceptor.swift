@@ -27,10 +27,10 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
         _ urlRequest: URLRequest,
         for session: Session,
         completion: @escaping (Result<URLRequest, Error>) -> Void) {
-            //            guard urlRequest.url?.absoluteString.hasPrefix("https://api.authenticated.com") == true else {
-            //                /// If the request does not require authentication, we can directly return it as unmodified.
-            //                return completion(.success(urlRequest))
-            //            }
+//            guard urlRequest.url?.absoluteString.hasPrefix("https://api.authenticated.com") == true else {
+//                // If the request does not require authentication, we can directly return it as unmodified.
+//                return completion(.success(urlRequest))
+//            }
             var urlRequest = urlRequest
             
             // Set the Authorization header value using the access token.

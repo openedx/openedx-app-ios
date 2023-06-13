@@ -22,7 +22,7 @@ public struct DiscoveryView: View {
         Text(DiscoveryLocalization.Header.title2)
             .font(Theme.Fonts.titleSmall)
             .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-        }.listRowBackground(Color.clear)
+    }.listRowBackground(Color.clear)
     
     public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
         self.viewModel = viewModel
@@ -38,10 +38,8 @@ public struct DiscoveryView: View {
             // MARK: - Page name
             VStack(alignment: .center) {
                 ZStack {
-                    
                     Text(DiscoveryLocalization.title)
                         .titleSettings(top: 10)
-                    
                 }
                 
                 // MARK: - Search fake field
@@ -92,18 +90,18 @@ public struct DiscoveryView: View {
                                                type: .discovery,
                                                index: index,
                                                cellsCount: viewModel.courses.count)
-                                    .padding(.horizontal, 24)
-                                    .onAppear {
-                                        Task {
-                                           await viewModel.getDiscoveryCourses(index: index)
-                                        }
+                                .padding(.horizontal, 24)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.getDiscoveryCourses(index: index)
                                     }
-                                    .onTapGesture {
-                                        router.showCourseDetais(
-                                            courseID: course.courseID,
-                                            title: course.name
-                                        )
-                                    }
+                                }
+                                .onTapGesture {
+                                    router.showCourseDetais(
+                                        courseID: course.courseID,
+                                        title: course.name
+                                    )
+                                }
                             }
                             
                             // MARK: - ProgressBar

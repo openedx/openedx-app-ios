@@ -31,8 +31,13 @@ public class SignUpViewModel: ObservableObject {
     private let interactor: AuthInteractorProtocol
     private let validator: Validator
     
-    public init(interactor: AuthInteractorProtocol, router: AuthorizationRouter, config: Config, cssInjector: CSSInjector,
-                validator: Validator) {
+    public init(
+        interactor: AuthInteractorProtocol,
+        router: AuthorizationRouter,
+        config: Config,
+        cssInjector: CSSInjector,
+        validator: Validator
+    ) {
         self.interactor = interactor
         self.router = router
         self.config = config

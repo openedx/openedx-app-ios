@@ -42,9 +42,14 @@ public enum LessonType: Equatable {
 
 public class CourseUnitViewModel: ObservableObject {
     
-    public var verticals: [CourseVertical]
-    public var verticalIndex: Int
-
+    enum LessonAction {
+        case next
+        case previous
+    }
+    
+    var verticals: [CourseVertical]
+    var verticalIndex: Int
+    
     @Published var index: Int = 0
     var previousLesson: String = ""
     var nextLesson: String = ""
@@ -55,34 +60,35 @@ public class CourseUnitViewModel: ObservableObject {
         }
     }
     
-    public var lessonID: String
-    public var courseID: String
-    public var id: String
-
+    var lessonID: String
+    var courseID: String
+    var id: String
+    
     private let interactor: CourseInteractorProtocol
-    public let router: CourseRouter
-    public let connectivity: ConnectivityProtocol
+    let router: CourseRouter
+    let connectivity: ConnectivityProtocol
     private let manager: DownloadManagerProtocol
     private var subtitlesDownloaded: Bool = false
-    public let chapters: [CourseChapter]
-    public let chapterIndex: Int
-    public let sequentialIndex: Int
+    let chapters: [CourseChapter]
+    let chapterIndex: Int
+    let sequentialIndex: Int
     
     func loadIndex() {
         index = selectLesson()
     }
     
-    public init(lessonID: String,
-                courseID: String,
-                id: String,
-                chapters: [CourseChapter],
-                chapterIndex: Int,
-                sequentialIndex: Int,
-                verticalIndex: Int,
-                interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol,
-                manager: DownloadManagerProtocol
+    public init(
+        lessonID: String,
+        courseID: String,
+        id: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int,
+        verticalIndex: Int,
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        connectivity: ConnectivityProtocol,
+        manager: DownloadManagerProtocol
     ) {
         self.lessonID = lessonID
         self.courseID = courseID
@@ -97,7 +103,7 @@ public class CourseUnitViewModel: ObservableObject {
         self.connectivity = connectivity
         self.manager = manager
     }
-
+    
     private func selectLesson() -> Int {
         guard verticals[verticalIndex].childs.count > 0 else { return 0 }
         let index = verticals[verticalIndex].childs.firstIndex(where: { $0.id == lessonID }) ?? 0
@@ -109,19 +115,14 @@ public class CourseUnitViewModel: ObservableObject {
         return verticals[verticalIndex].childs[index]
     }
     
-    enum LessonAction {
-        case next
-        case previous
-    }
-    
     func select(move: LessonAction) {
         switch move {
         case .next:
             if index != verticals[verticalIndex].childs.count - 1 { index += 1 }
-                nextTitles()
+            nextTitles()
         case .previous:
             if index != 0 { index -= 1 }
-                nextTitles()
+            nextTitles()
         }
     }
     

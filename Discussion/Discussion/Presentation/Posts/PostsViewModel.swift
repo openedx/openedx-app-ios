@@ -41,7 +41,7 @@ public class PostsViewModel: ObservableObject {
     @Published var filterTitle: ThreadsFilter = .allThreads {
         willSet {
             if let courseID {
-              resetPosts()
+                resetPosts()
                 Task {
                     _ = await getPosts(courseID: courseID, pageNumber: 1)
                 }
@@ -49,15 +49,15 @@ public class PostsViewModel: ObservableObject {
         }
     }
     @Published var sortTitle: SortType = .recentActivity {
-       willSet {
-           if let courseID {
-             resetPosts()
-               Task {
-                   _ = await getPosts(courseID: courseID, pageNumber: 1)
-               }
-           }
-       }
-   }
+        willSet {
+            if let courseID {
+                resetPosts()
+                Task {
+                    _ = await getPosts(courseID: courseID, pageNumber: 1)
+                }
+            }
+        }
+    }
     @Published var filterButtons: [ActionSheet.Button] = []
     
     public var courseID: String?
@@ -80,9 +80,11 @@ public class PostsViewModel: ObservableObject {
     internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     private var cancellable: AnyCancellable?
     
-    public init(interactor: DiscussionInteractorProtocol,
-                router: DiscussionRouter,
-                config: Config) {
+    public init(
+        interactor: DiscussionInteractorProtocol,
+        router: DiscussionRouter,
+        config: Config
+    ) {
         self.interactor = interactor
         self.router = router
         self.config = config

@@ -156,14 +156,19 @@ public class CoursePersistence: CoursePersistenceProtocol {
             result[block.id] = block
         } ?? [:]
         
-        return DataLayer.CourseStructure(rootItem: structure.rootItem ?? "",
-                                         dict: dictionary,
-                                         id: structure.id ?? "",
-                                         media: DataLayer.CourseMedia(image:
-                                                                        DataLayer.Image(raw: structure.mediaRaw ?? "",
-                                                                                        small: structure.mediaSmall ?? "",
-                                                                                        large: structure.mediaLarge ?? "")),
-                                         certificate: DataLayer.Certificate(url: structure.certificate))
+        return DataLayer.CourseStructure(
+            rootItem: structure.rootItem ?? "",
+            dict: dictionary,
+            id: structure.id ?? "",
+            media: DataLayer.CourseMedia(
+                image: DataLayer.Image(
+                    raw: structure.mediaRaw ?? "",
+                    small: structure.mediaSmall ?? "",
+                    large: structure.mediaLarge ?? ""
+                )
+            ),
+            certificate: DataLayer.Certificate(url: structure.certificate)
+        )
     }
     
     public func saveCourseStructure(structure: DataLayer.CourseStructure) {

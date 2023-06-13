@@ -184,11 +184,12 @@ public struct CourseUnitView: View {
                 
                 // MARK: - Course Navigation
                 VStack {
-                    NavigationBar(title: "",
-                                  leftButtonAction: {
-                        viewModel.router.back()
-                        playerStateSubject.send(VideoPlayerState.kill)
-                    }).padding(.top, 50)
+                    NavigationBar(
+                        title: "",
+                        leftButtonAction: {
+                            viewModel.router.back()
+                            playerStateSubject.send(VideoPlayerState.kill)
+                        }).padding(.top, 50)
                     Spacer()
                     CourseNavigationView(
                         sectionName: sectionName,

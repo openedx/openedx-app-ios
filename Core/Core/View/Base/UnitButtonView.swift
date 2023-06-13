@@ -145,7 +145,12 @@ public struct UnitButtonView: View {
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                                        .stroke(style: .init(
+                                            lineWidth: 1,
+                                            lineCap: .round,
+                                            lineJoin: .round,
+                                            miterLimit: 1)
+                                        )
                                         .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                                 )
                                 
@@ -162,7 +167,12 @@ public struct UnitButtonView: View {
                                         radius: 21, y: 4)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                                        .stroke(style: .init(
+                                            lineWidth: 1,
+                                            lineCap: .round,
+                                            lineJoin: .round,
+                                            miterLimit: 1
+                                        ))
                                         .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                                 )
                         }

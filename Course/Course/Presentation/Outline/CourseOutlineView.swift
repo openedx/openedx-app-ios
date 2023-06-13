@@ -38,7 +38,7 @@ public struct CourseOutlineView: View {
             GeometryReader { proxy in
                 VStack(alignment: .center) {
                     NavigationBar(title: title,
-                    leftButtonAction: { viewModel.router.back() })
+                                  leftButtonAction: { viewModel.router.back() })
                     
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
@@ -91,14 +91,16 @@ public struct CourseOutlineView: View {
                             
                             if !isVideo {
                                 if let continueWith = viewModel.continueWith,
-                                 let courseStructure = viewModel.courseStructure {
+                                   let courseStructure = viewModel.courseStructure {
                                     ContinueWithView(data: continueWith,
                                                      courseStructure: courseStructure,
                                                      router: viewModel.router)
                                 }
                             }
                             
-                            if let courseStructure = isVideo ? viewModel.courseVideosStructure : viewModel.courseStructure {
+                            if let courseStructure = isVideo
+                                ? viewModel.courseVideosStructure
+                                : viewModel.courseStructure {
                                 // MARK: - Sections list
                                 
                                 let chapters = courseStructure.childs
@@ -111,16 +113,17 @@ public struct CourseOutlineView: View {
                                         .padding(.horizontal, 24)
                                         .padding(.top, 40)
                                     ForEach(chapter.childs, id: \.id) { child in
-                                        
                                         let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == child.id })
                                         VStack(alignment: .leading) {
                                             Button(action: {
                                                 if let chapterIndex, let sequentialIndex {
-                                                    viewModel.router.showCourseVerticalView(id: courseID,
-                                                                                            title: child.displayName,
-                                                                                            chapters: chapters,
-                                                                                            chapterIndex: chapterIndex,
-                                                                                            sequentialIndex: sequentialIndex)
+                                                    viewModel.router.showCourseVerticalView(
+                                                        id: courseID,
+                                                        title: child.displayName,
+                                                        chapters: chapters,
+                                                        chapterIndex: chapterIndex,
+                                                        sequentialIndex: sequentialIndex
+                                                    )
                                                 }
                                             }, label: {
                                                 Group {
@@ -129,10 +132,12 @@ public struct CourseOutlineView: View {
                                                         .font(Theme.Fonts.titleMedium)
                                                         .multilineTextAlignment(.leading)
                                                         .lineLimit(1)
-                                                        .frame(maxWidth: idiom == .pad
-                                                               ? proxy.size.width * 0.5
-                                                               : proxy.size.width * 0.6,
-                                                               alignment: .leading)
+                                                        .frame(
+                                                            maxWidth: idiom == .pad
+                                                            ? proxy.size.width * 0.5
+                                                            : proxy.size.width * 0.6,
+                                                            alignment: .leading
+                                                        )
                                                 }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                                 Spacer()
                                                 if let state = viewModel.downloadState[child.id] {

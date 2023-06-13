@@ -15,10 +15,10 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
     @Published var verticals: [CourseVertical]
     @Published var downloadState: [String: DownloadViewState] = [:]
     @Published var showError: Bool = false
-    public let chapters: [CourseChapter]
-    public let chapterIndex: Int
-    public let sequentialIndex: Int
-
+    let chapters: [CourseChapter]
+    let chapterIndex: Int
+    let sequentialIndex: Int
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -27,12 +27,14 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         }
     }
     
-    public init(chapters: [CourseChapter],
-                chapterIndex: Int,
-                sequentialIndex: Int,
-                manager: DownloadManagerProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol) {
+    public init(
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int,
+        manager: DownloadManagerProtocol,
+        router: CourseRouter,
+        connectivity: ConnectivityProtocol
+    ) {
         self.chapters = chapters
         self.chapterIndex = chapterIndex
         self.sequentialIndex = sequentialIndex
@@ -75,7 +77,7 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             }
         }
     }
-        
+    
     private func setDownloadsStates() {
         let downloads = manager.getAllDownloads()
         var states: [String: DownloadViewState] = [:]

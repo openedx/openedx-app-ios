@@ -30,7 +30,7 @@ public struct EncodedVideoPlayer: View {
     @State private var isViewedOnce: Bool = false
     @State private var currentTime: Double = 0
     @State private var isOrientationChanged: Bool = false
-
+    
     @State var showAlert = false
     @State var alertMessage: String? {
         didSet {
@@ -71,25 +71,26 @@ public struct EncodedVideoPlayer: View {
                 .padding(.horizontal, 6)
                 .onReceive(NotificationCenter.Publisher(
                     center: .default,
-                    name: UIDevice.orientationDidChangeNotification)) { _ in
-                        if isOnScreen {
-                            self.orientation = UIDevice.current.orientation
-                            if self.orientation.isLandscape {
-                                viewModel.controller.enterFullScreen(animated: true)
-                                viewModel.controller.player?.play()
-                                isOrientationChanged = true
-                            } else {
-                                if isOrientationChanged {
-                                    viewModel.controller.exitFullScreen(animated: true)
-                                    viewModel.controller.player?.pause()
-                                    isOrientationChanged = false
-                                }
+                    name: UIDevice.orientationDidChangeNotification)
+                ) { _ in
+                    if isOnScreen {
+                        self.orientation = UIDevice.current.orientation
+                        if self.orientation.isLandscape {
+                            viewModel.controller.enterFullScreen(animated: true)
+                            viewModel.controller.player?.play()
+                            isOrientationChanged = true
+                        } else {
+                            if isOrientationChanged {
+                                viewModel.controller.exitFullScreen(animated: true)
+                                viewModel.controller.player?.pause()
+                                isOrientationChanged = false
                             }
                         }
                     }
+                }
                 SubtittlesView(languages: viewModel.languages,
-                                   currentTime: $currentTime,
-                                   viewModel: viewModel)
+                               currentTime: $currentTime,
+                               viewModel: viewModel)
                 Spacer()
                 if !orientation.isLandscape || idiom != .pad {
                     VStack {}.onAppear {

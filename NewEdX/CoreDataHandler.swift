@@ -17,9 +17,11 @@ class CoreDataHandler: CoreDataHandlerProtocol {
     private let discoveryPersistence: DiscoveryPersistenceProtocol
     private let coursePersistence: CoursePersistenceProtocol
     
-    init(dashboardPersistence: DashboardPersistenceProtocol,
-         discoveryPersistence: DiscoveryPersistenceProtocol,
-         coursePersistence: CoursePersistenceProtocol) {
+    init(
+        dashboardPersistence: DashboardPersistenceProtocol,
+        discoveryPersistence: DiscoveryPersistenceProtocol,
+        coursePersistence: CoursePersistenceProtocol
+    ) {
         self.dashboardPersistence = dashboardPersistence
         self.discoveryPersistence = discoveryPersistence
         self.coursePersistence = coursePersistence

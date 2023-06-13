@@ -32,7 +32,7 @@ public struct CourseVerticalView: View {
         ZStack(alignment: .top) {
             VStack(alignment: .center) {
                 NavigationBar(title: title,
-                leftButtonAction: { viewModel.router.back() })
+                              leftButtonAction: { viewModel.router.back() })
                 
                 // MARK: - Page Body
                 GeometryReader { proxy in
@@ -78,7 +78,10 @@ public struct CourseVerticalView: View {
                                                 case .available:
                                                     DownloadAvailableView()
                                                         .onTapGesture {
-                                                            viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
+                                                            viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
                                                         }
                                                         .onForeground {
                                                             viewModel.onForeground()
@@ -86,7 +89,10 @@ public struct CourseVerticalView: View {
                                                 case .downloading:
                                                     DownloadProgressView()
                                                         .onTapGesture {
-                                                            viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
+                                                            viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
                                                         }
                                                         .onBackground {
                                                             viewModel.onBackground()
@@ -94,7 +100,10 @@ public struct CourseVerticalView: View {
                                                 case .finished:
                                                     DownloadFinishedView()
                                                         .onTapGesture {
-                                                            viewModel.onDownloadViewTap(blockId: vertical.id, state: state)
+                                                            viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
                                                         }
                                                 }
                                             }
@@ -122,7 +131,7 @@ public struct CourseVerticalView: View {
             
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                    reloadAction: { })
+                                reloadAction: { })
             
             // MARK: - Error Alert
             if viewModel.showError {
@@ -150,49 +159,23 @@ public struct CourseVerticalView: View {
 #if DEBUG
 struct CourseVerticalView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        let verticals: [CourseVertical] = [
-            CourseVertical(
-                blockId: "block_1",
-                id: "1",
-                displayName: "Some vertical",
-                type: .vertical,
-                completion: 0,
-                childs: []
-            ),
-            CourseVertical(
-                blockId: "block_2",
-                id: "2",
-                displayName: "Comleted vertical",
-                type: .vertical,
-                completion: 1,
-                childs: []
-            ),
-            CourseVertical(
-                blockId: "block_3",
-                id: "3",
-                displayName: "Another vertical",
-                type: .vertical,
-                completion: 0,
-                childs: []
-            )
-        ]
-        
-        let viewModel = CourseVerticalViewModel(chapters: [],
-                                                chapterIndex: 1,
-                                                sequentialIndex: 1,
-                                                manager: DownloadManagerMock(),
-                                                router: CourseRouterMock(),
-                                                connectivity: Connectivity())
+        let viewModel = CourseVerticalViewModel(
+            chapters: [],
+            chapterIndex: 1,
+            sequentialIndex: 1,
+            manager: DownloadManagerMock(),
+            router: CourseRouterMock(),
+            connectivity: Connectivity()
+        )
         
         return Group {
             CourseVerticalView(title: "Course title", id: "1", viewModel: viewModel)
-            .preferredColorScheme(.light)
-            .previewDisplayName("CourseVerticalView Light")
+                .preferredColorScheme(.light)
+                .previewDisplayName("CourseVerticalView Light")
             
             CourseVerticalView(title: "Course title", id: "1", viewModel: viewModel)
-            .preferredColorScheme(.dark)
-            .previewDisplayName("CourseVerticalView Dark")
+                .preferredColorScheme(.dark)
+                .previewDisplayName("CourseVerticalView Dark")
         }
         
     }

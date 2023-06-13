@@ -39,7 +39,6 @@ public struct DashboardView: View {
                 ZStack {
                     Text(DashboardLocalization.title)
                         .titleSettings()
-
                 }
                 
                 ZStack {

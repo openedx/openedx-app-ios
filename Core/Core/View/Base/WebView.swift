@@ -63,8 +63,10 @@ public struct WebView: UIViewRepresentable {
             return .allow
         }
         
-        public func webView(_ webView: WKWebView,
-                            decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationResponse: WKNavigationResponse
+        ) async -> WKNavigationResponsePolicy {
             guard let statusCode = (navigationResponse.response as? HTTPURLResponse)?.statusCode else {
                 return .cancel
             }

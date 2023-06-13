@@ -20,7 +20,12 @@ public struct HandoutsUpdatesDetailView: View {
     private let title: String
     @State private var height: [Int: CGFloat] = [:]
     
-    public init(handouts: String?, announcements: [CourseUpdate]?, router: CourseRouter, cssInjector: CSSInjector) {
+    public init(
+        handouts: String?,
+        announcements: [CourseUpdate]?,
+        router: CourseRouter,
+        cssInjector: CSSInjector
+    ) {
         if handouts != nil {
             self.title = CourseLocalization.HandoutsCellHandouts.title
         } else {
@@ -66,19 +71,23 @@ public struct HandoutsUpdatesDetailView: View {
             GeometryReader { reader in
                 // MARK: - Page name
                 VStack(alignment: .center) {
-                    NavigationBar(title: title,
-                                  leftButtonAction: { router.back() })
+                    NavigationBar(
+                        title: title,
+                        leftButtonAction: { router.back() }
+                    )
                     
                     // MARK: - Page Body
                     VStack(alignment: .leading) {
                         
                         // MARK: - Handouts
                         if let handouts {
-                            let formattedHandouts = cssInjector.injectCSS(colorScheme: colorScheme,
-                                                                          html: handouts,
-                                                                          type: .discovery,
-                                                                          fontSize: idiom == .pad ? 100 : 300,
-                                                                          screenWidth: .infinity)
+                            let formattedHandouts = cssInjector.injectCSS(
+                                colorScheme: colorScheme,
+                                html: handouts,
+                                type: .discovery,
+                                fontSize: idiom == .pad ? 100 : 300,
+                                screenWidth: .infinity
+                            )
                             
                             WebViewHtml(fixBrokenLinks(in: formattedHandouts))
                         } else if let announcements {
@@ -89,15 +98,19 @@ public struct HandoutsUpdatesDetailView: View {
                                     
                                     Text(ann.date)
                                         .font(Theme.Fonts.labelSmall)
-                                    let formattedAnnouncements = cssInjector.injectCSS(colorScheme: colorScheme,
-                                                                                       html: ann.content,
-                                                                                       type: .discovery,
-                                                                                       screenWidth: reader.size.width)
-                                    HTMLFormattedText(fixBrokenLinks(in: formattedAnnouncements),
-                                                      isScrollEnabled: true,
-                                                      textViewHeight: $height[index])
+                                    let formattedAnnouncements = cssInjector.injectCSS(
+                                        colorScheme: colorScheme,
+                                        html: ann.content,
+                                        type: .discovery,
+                                        screenWidth: reader.size.width
+                                    )
+                                    HTMLFormattedText(
+                                        fixBrokenLinks(in: formattedAnnouncements),
+                                        isScrollEnabled: true,
+                                        textViewHeight: $height[index]
+                                    )
                                     .frame(height: height[index])
-                                                                        
+                                    
                                     if index != announcements.count - 1 {
                                         Divider()
                                     }
@@ -135,13 +148,23 @@ Hi! Welcome to the demonstration course. We built this to help you become more f
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollitia animi, id est laborum.
 """
         
-        HandoutsUpdatesDetailView(handouts: nil,
-                                  announcements: [CourseUpdate(id: 1, date: "1 march",
-                                                               content: handouts, status: "done"),
-                                                  CourseUpdate(id: 2, date: "3 april",
-                                                               content: loremIpsumHtml, status: "nice")],
-                                  router: CourseRouterMock(),
-                                  cssInjector: CSSInjectorMock())
+        HandoutsUpdatesDetailView(
+            handouts: nil,
+            announcements: [
+                CourseUpdate(
+                    id: 1,
+                    date: "1 march",
+                    content: handouts,
+                    status: "done"
+                ),
+                CourseUpdate(
+                    id: 2,
+                    date: "3 april",
+                    content: loremIpsumHtml,
+                    status: "nice")],
+            router: CourseRouterMock(),
+            cssInjector: CSSInjectorMock()
+        )
     }
 }
 #endif

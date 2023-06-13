@@ -169,9 +169,11 @@ public struct ThreadView: View {
                                         sendText: { commentText in
                                             if let threadID = viewModel.postComments?.threadID {
                                                 Task {
-                                                    await viewModel.postComment(threadID: threadID,
-                                                                                rawBody: commentText,
-                                                                                parentID: viewModel.postComments?.parentID)
+                                                    await viewModel.postComment(
+                                                        threadID: threadID,
+                                                        rawBody: commentText,
+                                                        parentID: viewModel.postComments?.parentID
+                                                    )
                                                 }
                                             }
                                         }
@@ -215,8 +217,10 @@ public struct ThreadView: View {
             if viewModel.showAlert {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
-                        .shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
-                                         textColor: .white)
+                        .shadowCardStyle(
+                            bgColor: CoreAssets.accentColor.swiftUIColor,
+                            textColor: .white
+                        )
                         .padding(.top, 80)
                     Spacer()
                     

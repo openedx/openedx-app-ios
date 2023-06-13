@@ -59,6 +59,11 @@ public struct CourseButton: View {
 
 struct CourseButton_Previews: PreviewProvider {
     static var previews: some View {
-        CourseButton(isCompleted: true, image: CoreAssets.pen.swiftUIImage, displayName: "Lets see whats happen", index: 0)
+        CourseButton(
+            isCompleted: true,
+            image: CoreAssets.pen.swiftUIImage,
+            displayName: "Lets see whats happen",
+            index: 0
+        )
     }
 }

@@ -24,10 +24,15 @@ struct LessonProgressView: View {
                 ForEach(Array(childs.enumerated()), id: \.offset) { index, _ in
                     let selected = viewModel.verticals[viewModel.verticalIndex].childs[index]
                     Circle()
-                        .frame(width: selected == viewModel.selectedLesson() ? 5 : 3,
-                               height: selected == viewModel.selectedLesson() ? 5 : 3)
-                        .foregroundColor(selected == viewModel.selectedLesson()
-                                         ? .accentColor : CoreAssets.textSecondary.swiftUIColor)
+                        .frame(
+                            width: selected == viewModel.selectedLesson() ? 5 : 3,
+                            height: selected == viewModel.selectedLesson() ? 5 : 3
+                        )
+                        .foregroundColor(
+                            selected == viewModel.selectedLesson()
+                            ? .accentColor
+                            : CoreAssets.textSecondary.swiftUIColor
+                        )
                 }
                 Spacer()
             }

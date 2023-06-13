@@ -64,7 +64,6 @@
 		028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F9F38293A452B00DE65D0 /* ResetPassword.swift */; };
 		0295B1DC297FF114003B0C65 /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0295B1DA297FF0E9003B0C65 /* SF-Pro.ttf */; };
 		0295C885299B99DD00ABE571 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */; };
-		029B78F1292517860097ACD8 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B78F0292517860097ACD8 /* Sequence.swift */; };
 		02A4833529B8A73400D33F33 /* CorePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833429B8A73400D33F33 /* CorePersistence.swift */; };
 		02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */; };
 		02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833929B8A9AB00D33F33 /* DownloadManager.swift */; };
@@ -185,7 +184,6 @@
 		028F9F38293A452B00DE65D0 /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		0295B1DA297FF0E9003B0C65 /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
 		0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
-		029B78F0292517860097ACD8 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		02A4833429B8A73400D33F33 /* CorePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorePersistence.swift; sourceTree = "<group>"; };
 		02A4833729B8A8F800D33F33 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		02A4833929B8A9AB00D33F33 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
@@ -339,7 +337,6 @@
 				027BD3BB2909478B00392132 /* UIResponder+CurrentResponder.swift */,
 				027BD3BA2909478B00392132 /* UIView+EnclosingScrollView.swift */,
 				02E225AF291D29EB0067769A /* UrlExtension.swift */,
-				029B78F0292517860097ACD8 /* Sequence.swift */,
 				02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */,
 				07460FE0294B706200F70538 /* CollectionExtension.swift */,
 				07460FE2294B72D700F70538 /* Notification.swift */,
@@ -772,7 +769,6 @@
 				0282DA7328F98CC9003C3F07 /* WebUnitView.swift in Sources */,
 				0727878128D25EFD002E9142 /* SnackBarView.swift in Sources */,
 				021D924828DC860C00ACC565 /* Data_UserProfile.swift in Sources */,
-				029B78F1292517860097ACD8 /* Sequence.swift in Sources */,
 				070019AC28F6FD0100D5FC78 /* CourseDetailBlock.swift in Sources */,
 				0727877028D23411002E9142 /* Config.swift in Sources */,
 				CFC84952299F8B890055E497 /* Debounce.swift in Sources */,

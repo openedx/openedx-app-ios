@@ -31,12 +31,14 @@ public class VideoPlayerViewModel: ObservableObject {
         }
     }
     
-    public init(blockID: String,
-                courseID: String,
-                languages: [SubtitleUrl],
-                interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol) {
+    public init(
+        blockID: String,
+        courseID: String,
+        languages: [SubtitleUrl],
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        connectivity: ConnectivityProtocol
+    ) {
         self.blockID = blockID
         self.courseID = courseID
         self.languages = languages
