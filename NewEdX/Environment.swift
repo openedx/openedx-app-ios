@@ -24,26 +24,26 @@ class BuildConfiguration {
     var environment: Environment
     
     var baseURL: String {
-            switch environment {
-            case .debugDev, .releaseDev:
-                return "https://lms-rg-app-ios-dev.raccoongang.com"
-            case .debugStage, .releaseStage:
-                return "https://lms-rg-app-ios-stage.raccoongang.com"
-            case .debugProd, .releaseProd:
-                return "https://example.com"
-            }
+        switch environment {
+        case .debugDev, .releaseDev:
+            return "https://example-dev.com"
+        case .debugStage, .releaseStage:
+            return "https://example-stage.com"
+        case .debugProd, .releaseProd:
+            return "https://example.com"
         }
-        
-        var clientId: String {
-            switch environment {
-            case .debugDev, .releaseDev:
-                return "T7od4OFlYni7hTMnepfQuF1XUoqsESjEClltL40T"
-            case .debugStage, .releaseStage:
-                return "kHDbLaYlc1lpY1obmyAAEp9dX9qPqeDrBiVGQFIy"
-            case .debugProd, .releaseProd:
-                return "PROD_CLIENT_ID"
-            }
+    }
+    
+    var clientId: String {
+        switch environment {
+        case .debugDev, .releaseDev:
+            return "DEV_CLIENT_ID"
+        case .debugStage, .releaseStage:
+            return "STAGE_CLIENT_ID"
+        case .debugProd, .releaseProd:
+            return "PROD_CLIENT_ID"
         }
+    }
     
     init() {
         let currentConfiguration = Bundle.main.object(forInfoDictionaryKey: "Configuration") as! String
