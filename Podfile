@@ -4,9 +4,9 @@ use_frameworks! :linkage => :static
 abstract_target "App" do
   
   #Code style
-  pod 'SwiftLint', '0.49.1'
+  pod 'SwiftLint', '~> 0.5'
   #CodeGen for resources
-  pod 'SwiftGen', '~> 6.0'
+  pod 'SwiftGen', '~> 6.6'
   
   target "NewEdX" do
     inherit! :complete
@@ -17,13 +17,13 @@ abstract_target "App" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
     #Networking
-    pod 'Alamofire', '5.6.4'
+    pod 'Alamofire', '~> 5.7'
     #Keychain
     pod 'KeychainSwift', '~> 20.0'
     #SwiftUI backward UIKit access
-    pod 'Introspect', '0.1.4'
-    pod 'Kingfisher', '~> 7.6.2'
-    pod 'Swinject', '2.8.2'
+    pod 'Introspect', '~> 0.6'
+    pod 'Kingfisher', '~> 7.8'
+    pod 'Swinject', '2.8.3'
   end
   
   target "Authorization" do
