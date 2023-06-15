@@ -55,7 +55,7 @@ public struct CourseUnitView: View {
                                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                                 ForEach(data, id: \.offset) { index, block in
                                     VStack(spacing: 0) {
-                                        if index >= viewModel.index - 2 && index <= viewModel.index + 2 {
+                                        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             switch LessonType.from(block) {
                                                 // MARK: YouTube
                                             case let .youtube(url, blockID):
@@ -67,7 +67,7 @@ public struct CourseUnitView: View {
                                                     playerStateSubject: playerStateSubject,
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
-                                                )
+                                                ).frameLimit()
                                                 Spacer(minLength: 100)
                                                 
                                                 // MARK: Encoded Video
@@ -83,7 +83,7 @@ public struct CourseUnitView: View {
                                                     playerStateSubject: playerStateSubject,
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
-                                                )
+                                                ).frameLimit()
                                                 Spacer(minLength: 100)
                                                 // MARK: Web
                                             case .web(let url):
@@ -114,7 +114,7 @@ public struct CourseUnitView: View {
                                                         ).drawingGroup()
                                                         Spacer(minLength: 100)
                                                     }
-                                                }
+                                                }.frameLimit()
                                             }
                                         } else {
                                             EmptyView()
@@ -123,7 +123,7 @@ public struct CourseUnitView: View {
                                     .frame(height: reader.size.height)
                                     .id(index)
                                 }
-                            }.frameLimit()
+                            }
                                 .offset(y: offsetView)
                                 .clipped()
                                 .onChange(of: viewModel.index, perform: { index in

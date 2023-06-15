@@ -14,6 +14,7 @@
 		021D925028DC89D100ACC565 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924F28DC89D100ACC565 /* UserProfile.swift */; };
 		021D925728DCF12900ACC565 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D925628DCF12900ACC565 /* AlertView.swift */; };
 		02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5A294B4E6F0032823A /* Connectivity.swift */; };
+		02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02284C172A3B1AE00007117F /* UIApplicationExtension.swift */; };
 		022C26E52A12519000026AE1 /* VTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C26E42A12519000026AE1 /* VTabView.swift */; };
 		022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64E329AE0191000F532B /* TextWithUrls.swift */; };
 		0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231CDBD2922422D00032416 /* CSSInjector.swift */; };
@@ -52,7 +53,6 @@
 		027BD3B92909476200392132 /* KeyboardAvoidingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3B72909476200392132 /* KeyboardAvoidingModifier.swift */; };
 		027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3BA2909478B00392132 /* UIView+EnclosingScrollView.swift */; };
 		027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3BB2909478B00392132 /* UIResponder+CurrentResponder.swift */; };
-		027BD3BF2909478B00392132 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3BC2909478B00392132 /* UIApplication+.swift */; };
 		027BD3C52909707700392132 /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3C42909707700392132 /* Shake.swift */; };
 		027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DB33428D8C8FE002B6862 /* Data_MyCourse.swift */; };
 		0282DA7328F98CC9003C3F07 /* WebUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282DA7228F98CC9003C3F07 /* WebUnitView.swift */; };
@@ -135,6 +135,7 @@
 		021D924F28DC89D100ACC565 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		021D925628DCF12900ACC565 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		02280F5A294B4E6F0032823A /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
+		02284C172A3B1AE00007117F /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		022C26E42A12519000026AE1 /* VTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTabView.swift; sourceTree = "<group>"; };
 		022C64E329AE0191000F532B /* TextWithUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWithUrls.swift; sourceTree = "<group>"; };
 		0231CDBD2922422D00032416 /* CSSInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSInjector.swift; sourceTree = "<group>"; };
@@ -172,7 +173,6 @@
 		027BD3B72909476200392132 /* KeyboardAvoidingModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidingModifier.swift; sourceTree = "<group>"; };
 		027BD3BA2909478B00392132 /* UIView+EnclosingScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+EnclosingScrollView.swift"; sourceTree = "<group>"; };
 		027BD3BB2909478B00392132 /* UIResponder+CurrentResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+CurrentResponder.swift"; sourceTree = "<group>"; };
-		027BD3BC2909478B00392132 /* UIApplication+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		027BD3C42909707700392132 /* Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
 		027DB33428D8C8FE002B6862 /* Data_MyCourse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_MyCourse.swift; sourceTree = "<group>"; };
 		0282DA7228F98CC9003C3F07 /* WebUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUnitView.swift; sourceTree = "<group>"; };
@@ -333,7 +333,6 @@
 				0283347F28D4DCD200C828FC /* ViewExtension.swift */,
 				02F6EF4928D9F0A700835477 /* DateExtension.swift */,
 				02F98A7E28F81EE900DE94C0 /* Container+App.swift */,
-				027BD3BC2909478B00392132 /* UIApplication+.swift */,
 				027BD3BB2909478B00392132 /* UIResponder+CurrentResponder.swift */,
 				027BD3BA2909478B00392132 /* UIView+EnclosingScrollView.swift */,
 				02E225AF291D29EB0067769A /* UrlExtension.swift */,
@@ -343,6 +342,7 @@
 				02B2B593295C5C7A00914876 /* Thread.swift */,
 				0727878228D31287002E9142 /* DispatchQueue+App.swift */,
 				07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */,
+				02284C172A3B1AE00007117F /* UIApplicationExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -760,6 +760,7 @@
 				027BD3B92909476200392132 /* KeyboardAvoidingModifier.swift in Sources */,
 				0770DE2C28D092B3006D8A5D /* NetworkLogger.swift in Sources */,
 				0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */,
+				02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */,
 				0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */,
 				027BD3B32909475900392132 /* Publishers+KeyboardState.swift in Sources */,
 				0727877D28D25212002E9142 /* ProgressBar.swift in Sources */,
@@ -816,7 +817,6 @@
 				0248C92329C075EF00DC8402 /* CourseBlockModel.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
-				027BD3BF2909478B00392132 /* UIApplication+.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,

@@ -65,3 +65,6 @@
 
 "PICKER.SEARCH" = "Знайти";
 "PICKER.ACCEPT" = "Прийняти";
+
+"WEBVIEW.ALERT.OK" = "Так";
+"WEBVIEW.ALERT.CANCEL" = "Скасувати";

@@ -14,12 +14,10 @@ struct WebView: View {
     let viewModel: CourseUnitViewModel
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
-            Spacer(minLength: 100)
+            Spacer(minLength: 5)
         }
-        .contrast(1.08)
-        .padding(.top, -6)
         .roundedBackground(strokeColor: .clear, maxIpadWidth: .infinity)
     }
 }

@@ -105,6 +105,7 @@ public struct AlertView: View {
                             .font(Theme.Fonts.bodyMedium)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
+                            .frame(maxWidth: 250)
                     }
                     HStack {
                         switch type {

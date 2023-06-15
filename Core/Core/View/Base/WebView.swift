@@ -32,7 +32,7 @@ public struct WebView: UIViewRepresentable {
         self.refreshCookies = refreshCookies
     }
     
-    public class Coordinator: NSObject, WKNavigationDelegate {
+    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         var parent: WebView
         
         init(_ parent: WebView) {
@@ -45,8 +45,37 @@ public struct WebView: UIViewRepresentable {
             }
         }
         
-        public func webView(_ webView: WKWebView,
-                            decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        public func webView(
+            _ webView: WKWebView,
+            runJavaScriptConfirmPanelWithMessage message: String,
+            initiatedByFrame frame: WKFrameInfo,
+            completionHandler: @escaping (Bool) -> Void
+        ) {
+            
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+            
+            alertController.addAction(UIAlertAction(
+                title: CoreLocalization.Webview.Alert.ok,
+                style: .default,
+                handler: { _ in
+                    completionHandler(true)
+                }))
+            
+            alertController.addAction(UIAlertAction(
+                title: CoreLocalization.Webview.Alert.cancel,
+                style: .cancel,
+                handler: { _ in
+                    completionHandler(false)
+                }))
+            
+            UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
+            
+        }
+        
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction
+        ) async -> WKNavigationActionPolicy {
             
             guard let url = navigationAction.request.url else {
                 return .cancel
@@ -67,10 +96,13 @@ public struct WebView: UIViewRepresentable {
             _ webView: WKWebView,
             decidePolicyFor navigationResponse: WKNavigationResponse
         ) async -> WKNavigationResponsePolicy {
-            guard let statusCode = (navigationResponse.response as? HTTPURLResponse)?.statusCode else {
+            guard let response = (navigationResponse.response as? HTTPURLResponse),
+                  let url = response.url else {
                 return .cancel
             }
-            if (401...404).contains(statusCode) {
+            let baseURL = await parent.viewModel.baseURL
+            
+            if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
                 await parent.refreshCookies()
                 DispatchQueue.main.async {
                     if let url = webView.url {
@@ -90,6 +122,7 @@ public struct WebView: UIViewRepresentable {
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
         let webview = WKWebView()
         webview.navigationDelegate = context.coordinator
+        webview.uiDelegate = context.coordinator
         
         webview.scrollView.bounces = false
         webview.scrollView.alwaysBounceHorizontal = false
