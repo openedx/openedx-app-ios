@@ -131,11 +131,11 @@ public struct WebView: UIViewRepresentable {
         webview.configuration.suppressesIncrementalRendering = true
         webview.isOpaque = false
         webview.backgroundColor = .clear
-        webview.scrollView.backgroundColor = UIColor.clear
+        webview.scrollView.backgroundColor = .white
         webview.scrollView.alwaysBounceVertical = false
         webview.scrollView.layer.cornerRadius = 24
         webview.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
+        webview.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         return webview
     }
     
