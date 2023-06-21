@@ -99,7 +99,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getSubtitles(url: String, selectedLanguage: String) async throws -> String {
-        if let subtitlesOffline = persistence.loadSubtitles(url: url) {
+        if let subtitlesOffline = persistence.loadSubtitles(url: url + selectedLanguage) {
             return subtitlesOffline
         } else {
             let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(
@@ -107,7 +107,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                 selectedLanguage: selectedLanguage
             ))
             let subtitles = String(data: result, encoding: .utf8) ?? ""
-            persistence.saveSubtitles(url: url, subtitlesString: subtitles)
+            persistence.saveSubtitles(url: url + selectedLanguage, subtitlesString: subtitles)
             return subtitles
         }
     }
