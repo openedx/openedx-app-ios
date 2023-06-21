@@ -76,7 +76,6 @@ public struct WebView: UIViewRepresentable {
             _ webView: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction
         ) async -> WKNavigationActionPolicy {
-            
             guard let url = navigationAction.request.url else {
                 return .cancel
             }
@@ -120,37 +119,35 @@ public struct WebView: UIViewRepresentable {
     }
     
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
-        let webview = WKWebView()
-        webview.navigationDelegate = context.coordinator
-        webview.uiDelegate = context.coordinator
+        let webViewConfig = WKWebViewConfiguration()
         
-        webview.scrollView.bounces = false
-        webview.scrollView.alwaysBounceHorizontal = false
-        webview.scrollView.showsHorizontalScrollIndicator = false
-        webview.scrollView.isScrollEnabled = true
-        webview.configuration.suppressesIncrementalRendering = true
-        webview.isOpaque = false
-        webview.backgroundColor = .clear
-        webview.scrollView.backgroundColor = .white
-        webview.scrollView.alwaysBounceVertical = false
-        webview.scrollView.layer.cornerRadius = 24
-        webview.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        webview.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        return webview
+        let webView = WKWebView(frame: .zero, configuration: webViewConfig)
+        webView.navigationDelegate = context.coordinator
+        webView.uiDelegate = context.coordinator
+        
+        webView.scrollView.bounces = false
+        webView.scrollView.alwaysBounceHorizontal = false
+        webView.scrollView.showsHorizontalScrollIndicator = false
+        webView.scrollView.isScrollEnabled = true
+        webView.configuration.suppressesIncrementalRendering = true
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.scrollView.backgroundColor = .white
+        webView.scrollView.alwaysBounceVertical = false
+        webView.scrollView.layer.cornerRadius = 24
+        webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
+        
+        return webView
     }
     
     public func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<WebView>) {
         if let url = URL(string: viewModel.url) {
-            let cookies = HTTPCookieStorage.shared.cookies ?? []
-            for (cookie) in cookies {
-                webview.configuration.websiteDataStore.httpCookieStore
-                    .setCookie(cookie)
-            }
-            let request = URLRequest(url: url)
             if webview.url?.absoluteString != url.absoluteString {
                 DispatchQueue.main.async {
                     isLoading = true
                 }
+                let request = URLRequest(url: url)
                 webview.load(request)
             }
         }

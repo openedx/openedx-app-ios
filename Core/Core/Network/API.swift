@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import WebKit
 
 public final class API {
     
@@ -127,6 +128,12 @@ public final class API {
         let cookies = HTTPCookie.cookies(withResponseHeaderFields: fields, for: url)
         HTTPCookieStorage.shared.cookies?.forEach { HTTPCookieStorage.shared.deleteCookie($0) }
         HTTPCookieStorage.shared.setCookies(cookies, for: url, mainDocumentURL: nil)
+        DispatchQueue.main.async {
+            let cookies = HTTPCookieStorage.shared.cookies ?? []
+            for c in cookies {
+                WKWebsiteDataStore.default().httpCookieStore.setCookie(c)
+            }
+        }
     }
     
     private func callResponse(

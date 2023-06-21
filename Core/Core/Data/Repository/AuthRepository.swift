@@ -68,8 +68,8 @@ public class AuthRepository: AuthRepositoryProtocol {
                 appStorage.cookiesDate = Date().dateToString(style: .iso8601)
             }
         } else {
-            appStorage.cookiesDate = Date().dateToString(style: .iso8601)
             _ = try await api.requestData(AuthEndpoint.getAuthCookies)
+            appStorage.cookiesDate = Date().dateToString(style: .iso8601)
         }
     }
     
