@@ -1,26 +1,27 @@
 PODS:
-  - Alamofire (5.6.4)
-  - Introspect (0.6.0)
+
+  - Alamofire (5.7.1)
+  - Introspect (0.6.1)
   - KeychainSwift (20.0.0)
-  - Kingfisher (7.6.2)
+  - Kingfisher (7.8.0)
   - Sourcery (1.8.0):
     - Sourcery/CLI-Only (= 1.8.0)
   - Sourcery/CLI-Only (1.8.0)
   - SwiftGen (6.6.2)
-  - SwiftLint (0.49.1)
+  - SwiftLint (0.52.2)
   - SwiftyMocky (4.2.0):
     - Sourcery (= 1.8.0)
-  - Swinject (2.8.2)
+  - Swinject (2.8.3)
 
 DEPENDENCIES:
-  - Alamofire (= 5.6.4)
-  - Introspect (= 0.6.0)
+  - Alamofire (~> 5.7)
+  - Introspect (~> 0.6)
   - KeychainSwift (~> 20.0)
-  - Kingfisher (~> 7.6.2)
-  - SwiftGen (~> 6.0)
-  - SwiftLint (= 0.49.1)
+  - Kingfisher (~> 7.8)
+  - SwiftGen (~> 6.6)
+  - SwiftLint (~> 0.5)
   - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, tag `4.2.0`)
-  - Swinject (= 2.8.2)
+  - Swinject (= 2.8.3)
 
 SPEC REPOS:
   trunk:
@@ -44,16 +45,16 @@ CHECKOUT OPTIONS:
     :tag: 4.2.0
 
 SPEC CHECKSUMS:
-  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
-  Introspect: 59378bd7e1774f0327244ad2d06b1b9c805cb9ed
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  Introspect: 1b66ef0782311ff003007732e2d940c69545a7be
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
-  Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
+  Kingfisher: 0656e1b064bfc1ca1cd04e033f617a86559696e9
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
-  SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
+  SwiftLint: 1ac76dac888ca05cb0cf24d0c85887ec1209961d
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
-  Swinject: b4a11b31992e8668308dc594ba1cb9b3164a37ab
+  Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: 032737d86ade74ddc18251a6a4608fe347f5d033
+PODFILE CHECKSUM: 20ef878e00f4ddcb660df8166a4c969e80e80901
 
 COCOAPODS: 1.12.0
