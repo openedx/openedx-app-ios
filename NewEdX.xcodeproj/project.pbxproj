@@ -36,7 +36,7 @@
 		07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D5DA3428D075AA00752FD9 /* AppDelegate.swift */; };
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		07D5DA4128D075AB00752FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3F28D075AB00752FD9 /* LaunchScreen.storyboard */; };
-		955D45D9B3C2A224A5869AD6 /* Pods_App_NewEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9840FE925678B7723ACA7167 /* Pods_App_NewEdX.framework */; };
+		F9D8E3EA58261028C3968180 /* Pods_App_NewEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B61E47E3D4524ED0463D63 /* Pods_App_NewEdX.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -91,13 +91,13 @@
 		07D5DA3428D075AA00752FD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07D5DA3D28D075AB00752FD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07D5DA4028D075AB00752FD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		40A7E74C7E8BA16CF1C37A27 /* Pods-App-NewEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
-		629FEC6E87F0A0CE4EF3BFE3 /* Pods-App-NewEdX.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.debugprod.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.debugprod.xcconfig"; sourceTree = "<group>"; };
-		6C40659E4A0D422E211C112C /* Pods-App-NewEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		7C063BCA6EAA90159BF3AEE0 /* Pods-App-NewEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
-		850717CD110D52547BED165B /* Pods-App-NewEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
-		9840FE925678B7723ACA7167 /* Pods_App_NewEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_NewEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7DE8FAB4E16DE50EDE7A5BF /* Pods-App-NewEdX.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.debugstage.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.debugstage.xcconfig"; sourceTree = "<group>"; };
+		16B61E47E3D4524ED0463D63 /* Pods_App_NewEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_NewEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		31F7D13F89ABEA0C978F4988 /* Pods-App-NewEdX.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.debugstage.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.debugstage.xcconfig"; sourceTree = "<group>"; };
+		92E99692D520163574381814 /* Pods-App-NewEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
+		B65009A9300CA1C0AA1ADA13 /* Pods-App-NewEdX.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.debugprod.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.debugprod.xcconfig"; sourceTree = "<group>"; };
+		B7A07A23F1B105D41A41426C /* Pods-App-NewEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
+		DAFCB10EBCC10B9CE95D5140 /* Pods-App-NewEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
+		E8680E764DC8A25C24EA74D5 /* Pods-App-NewEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-NewEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-NewEdX/Pods-App-NewEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +112,7 @@
 				0218196428F734FA00202564 /* Discussion.framework in Frameworks */,
 				0219C67728F4347600D64452 /* Course.framework in Frameworks */,
 				027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */,
-				955D45D9B3C2A224A5869AD6 /* Pods_App_NewEdX.framework in Frameworks */,
+				F9D8E3EA58261028C3968180 /* Pods_App_NewEdX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +190,7 @@
 				072787B028D34D83002E9142 /* Discovery.framework */,
 				0770DE4A28D0A462006D8A5D /* Authorization.framework */,
 				0770DE1228D07845006D8A5D /* Core.framework */,
-				9840FE925678B7723ACA7167 /* Pods_App_NewEdX.framework */,
+				16B61E47E3D4524ED0463D63 /* Pods_App_NewEdX.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -198,12 +198,12 @@
 		55A895025FB07897BA68E063 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				629FEC6E87F0A0CE4EF3BFE3 /* Pods-App-NewEdX.debugprod.xcconfig */,
-				7C063BCA6EAA90159BF3AEE0 /* Pods-App-NewEdX.debugdev.xcconfig */,
-				6C40659E4A0D422E211C112C /* Pods-App-NewEdX.releaseprod.xcconfig */,
-				850717CD110D52547BED165B /* Pods-App-NewEdX.releasedev.xcconfig */,
-				E7DE8FAB4E16DE50EDE7A5BF /* Pods-App-NewEdX.debugstage.xcconfig */,
-				40A7E74C7E8BA16CF1C37A27 /* Pods-App-NewEdX.releasestage.xcconfig */,
+				B65009A9300CA1C0AA1ADA13 /* Pods-App-NewEdX.debugprod.xcconfig */,
+				31F7D13F89ABEA0C978F4988 /* Pods-App-NewEdX.debugstage.xcconfig */,
+				B7A07A23F1B105D41A41426C /* Pods-App-NewEdX.debugdev.xcconfig */,
+				E8680E764DC8A25C24EA74D5 /* Pods-App-NewEdX.releaseprod.xcconfig */,
+				92E99692D520163574381814 /* Pods-App-NewEdX.releasestage.xcconfig */,
+				DAFCB10EBCC10B9CE95D5140 /* Pods-App-NewEdX.releasedev.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -215,7 +215,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07D5DA4528D075AB00752FD9 /* Build configuration list for PBXNativeTarget "NewEdX" */;
 			buildPhases = (
-				8739D71CE4167C18E475C4E7 /* [CP] Check Pods Manifest.lock */,
+				46EB6B53644A79B05619EEAD /* [CP] Check Pods Manifest.lock */,
 				0770DE2328D08647006D8A5D /* SwiftLint */,
 				07D5DA2D28D075AA00752FD9 /* Sources */,
 				07D5DA2E28D075AA00752FD9 /* Frameworks */,
@@ -299,7 +299,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
-		8739D71CE4167C18E475C4E7 /* [CP] Check Pods Manifest.lock */ = {
+		46EB6B53644A79B05619EEAD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -444,7 +444,7 @@
 		};
 		02DD1C9629E80CC200F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7DE8FAB4E16DE50EDE7A5BF /* Pods-App-NewEdX.debugstage.xcconfig */;
+			baseConfigurationReference = 31F7D13F89ABEA0C978F4988 /* Pods-App-NewEdX.debugstage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -533,7 +533,7 @@
 		};
 		02DD1C9829E80CCB00F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40A7E74C7E8BA16CF1C37A27 /* Pods-App-NewEdX.releasestage.xcconfig */;
+			baseConfigurationReference = 92E99692D520163574381814 /* Pods-App-NewEdX.releasestage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -628,7 +628,7 @@
 		};
 		0727875928D231FD002E9142 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7C063BCA6EAA90159BF3AEE0 /* Pods-App-NewEdX.debugdev.xcconfig */;
+			baseConfigurationReference = B7A07A23F1B105D41A41426C /* Pods-App-NewEdX.debugdev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -717,7 +717,7 @@
 		};
 		0727875B28D23204002E9142 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 850717CD110D52547BED165B /* Pods-App-NewEdX.releasedev.xcconfig */;
+			baseConfigurationReference = DAFCB10EBCC10B9CE95D5140 /* Pods-App-NewEdX.releasedev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -866,7 +866,7 @@
 		};
 		07D5DA4628D075AB00752FD9 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 629FEC6E87F0A0CE4EF3BFE3 /* Pods-App-NewEdX.debugprod.xcconfig */;
+			baseConfigurationReference = B65009A9300CA1C0AA1ADA13 /* Pods-App-NewEdX.debugprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -901,7 +901,7 @@
 		};
 		07D5DA4728D075AB00752FD9 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C40659E4A0D422E211C112C /* Pods-App-NewEdX.releaseprod.xcconfig */;
+			baseConfigurationReference = E8680E764DC8A25C24EA74D5 /* Pods-App-NewEdX.releaseprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

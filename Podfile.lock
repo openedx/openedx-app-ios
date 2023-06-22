@@ -1,9 +1,8 @@
 PODS:
-
   - Alamofire (5.7.1)
-  - Introspect (0.6.1)
+  - Introspect (0.6.2)
   - KeychainSwift (20.0.0)
-  - Kingfisher (7.8.0)
+  - Kingfisher (7.8.1)
   - Sourcery (1.8.0):
     - Sourcery/CLI-Only (= 1.8.0)
   - Sourcery/CLI-Only (1.8.0)
@@ -46,9 +45,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
-  Introspect: 1b66ef0782311ff003007732e2d940c69545a7be
+  Introspect: f80afac3cf8ff466700413368a5a2339144f71ce
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
-  Kingfisher: 0656e1b064bfc1ca1cd04e033f617a86559696e9
+  Kingfisher: 63f677311d36a3473f6b978584f8a3845d023dc5
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
   SwiftLint: 1ac76dac888ca05cb0cf24d0c85887ec1209961d
