@@ -92,9 +92,11 @@ public struct CourseOutlineView: View {
                             if !isVideo {
                                 if let continueWith = viewModel.continueWith,
                                    let courseStructure = viewModel.courseStructure {
-                                    ContinueWithView(data: continueWith,
-                                                     courseStructure: courseStructure,
-                                                     router: viewModel.router)
+                                    ContinueWithView(
+                                        data: continueWith,
+                                        courseStructure: courseStructure,
+                                        router: viewModel.router
+                                    )
                                 }
                             }
                             
@@ -206,10 +208,12 @@ public struct CourseOutlineView: View {
                 }
                 
                 // MARK: - Offline mode SnackBar
-                OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                    reloadAction: {
-                    await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
-                })
+                OfflineSnackBarView(
+                    connectivity: viewModel.connectivity,
+                    reloadAction: {
+                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
+                    }
+                )
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -253,10 +257,10 @@ struct CourseOutlineView_Previews: PreviewProvider {
             config: ConfigMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock(),
-            isActive: nil,
+            isActive: true,
             courseStart: Date(),
             courseEnd: nil,
-            enrollmentStart: nil,
+            enrollmentStart: Date(),
             enrollmentEnd: nil
         )
         Task {

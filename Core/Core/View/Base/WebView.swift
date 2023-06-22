@@ -69,7 +69,6 @@ public struct WebView: UIViewRepresentable {
                 }))
             
             UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
-            
         }
         
         public func webView(

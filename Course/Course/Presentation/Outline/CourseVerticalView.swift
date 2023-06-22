@@ -159,10 +159,35 @@ public struct CourseVerticalView: View {
 #if DEBUG
 struct CourseVerticalView_Previews: PreviewProvider {
     static var previews: some View {
+        let chapters = [
+            CourseChapter(
+                blockId: "1",
+                id: "1",
+                displayName: "Chapter 1",
+                type: .chapter,
+                childs: [
+                    CourseSequential(
+                        blockId: "3",
+                        id: "3",
+                        displayName: "Sequential",
+                        type: .sequential,
+                        completion: 1,
+                        childs: [
+                            CourseVertical(
+                                blockId: "4",
+                                id: "4",
+                                displayName: "Vertical",
+                                type: .vertical,
+                                completion: 0,
+                                childs: [])
+                        ])
+                ])
+        ]
+        
         let viewModel = CourseVerticalViewModel(
-            chapters: [],
-            chapterIndex: 1,
-            sequentialIndex: 1,
+            chapters: chapters,
+            chapterIndex: 0,
+            sequentialIndex: 0,
             manager: DownloadManagerMock(),
             router: CourseRouterMock(),
             connectivity: Connectivity()
