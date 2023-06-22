@@ -24,9 +24,9 @@ public class ProfileViewModel: ObservableObject {
     }
     
     private let interactor: ProfileInteractorProtocol
-    public let router: ProfileRouter
-    public let config: Config
-    public let connectivity: ConnectivityProtocol
+    let router: ProfileRouter
+    let config: Config
+    let connectivity: ConnectivityProtocol
     
     public init(interactor: ProfileInteractorProtocol,
                 router: ProfileRouter,

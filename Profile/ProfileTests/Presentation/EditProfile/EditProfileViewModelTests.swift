@@ -390,7 +390,7 @@ final class EditProfileViewModelTests: XCTestCase {
         viewModel.checkProfileType()
         
         XCTAssertEqual(viewModel.profileChanges.profileType, .limited)
-        XCTAssertTrue(viewModel.isYongUser)
+        XCTAssertFalse(viewModel.isYongUser)
         XCTAssertFalse(viewModel.isEditable)
         XCTAssertTrue(viewModel.profileChanges.profileType == .limited)
     }

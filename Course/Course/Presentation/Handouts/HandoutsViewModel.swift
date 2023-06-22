@@ -25,15 +25,17 @@ public class HandoutsViewModel: ObservableObject {
     }
     
     private let interactor: CourseInteractorProtocol
-    public let cssInjector: CSSInjector
-    public let router: CourseRouter
-    public let connectivity: ConnectivityProtocol
+    let cssInjector: CSSInjector
+    let router: CourseRouter
+    let connectivity: ConnectivityProtocol
     
-    public init(interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                cssInjector: CSSInjector,
-                connectivity: ConnectivityProtocol,
-                courseID: String) {
+    public init(
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        cssInjector: CSSInjector,
+        connectivity: ConnectivityProtocol,
+        courseID: String
+    ) {
         self.interactor = interactor
         self.router = router
         self.cssInjector = cssInjector

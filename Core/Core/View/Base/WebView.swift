@@ -32,7 +32,7 @@ public struct WebView: UIViewRepresentable {
         self.refreshCookies = refreshCookies
     }
     
-    public class Coordinator: NSObject, WKNavigationDelegate {
+    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         var parent: WebView
         
         init(_ parent: WebView) {
@@ -45,9 +45,36 @@ public struct WebView: UIViewRepresentable {
             }
         }
         
-        public func webView(_ webView: WKWebView,
-                            decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        public func webView(
+            _ webView: WKWebView,
+            runJavaScriptConfirmPanelWithMessage message: String,
+            initiatedByFrame frame: WKFrameInfo,
+            completionHandler: @escaping (Bool) -> Void
+        ) {
             
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+            
+            alertController.addAction(UIAlertAction(
+                title: CoreLocalization.Webview.Alert.ok,
+                style: .default,
+                handler: { _ in
+                    completionHandler(true)
+                }))
+            
+            alertController.addAction(UIAlertAction(
+                title: CoreLocalization.Webview.Alert.cancel,
+                style: .cancel,
+                handler: { _ in
+                    completionHandler(false)
+                }))
+            
+            UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
+        }
+        
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction
+        ) async -> WKNavigationActionPolicy {
             guard let url = navigationAction.request.url else {
                 return .cancel
             }
@@ -63,12 +90,17 @@ public struct WebView: UIViewRepresentable {
             return .allow
         }
         
-        public func webView(_ webView: WKWebView,
-                            decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
-            guard let statusCode = (navigationResponse.response as? HTTPURLResponse)?.statusCode else {
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationResponse: WKNavigationResponse
+        ) async -> WKNavigationResponsePolicy {
+            guard let response = (navigationResponse.response as? HTTPURLResponse),
+                  let url = response.url else {
                 return .cancel
             }
-            if (401...404).contains(statusCode) {
+            let baseURL = await parent.viewModel.baseURL
+            
+            if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
                 await parent.refreshCookies()
                 DispatchQueue.main.async {
                     if let url = webView.url {
@@ -86,34 +118,35 @@ public struct WebView: UIViewRepresentable {
     }
     
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
-        let webview = WKWebView()
-        webview.navigationDelegate = context.coordinator
+        let webViewConfig = WKWebViewConfiguration()
         
-        webview.scrollView.bounces = false
-        webview.scrollView.alwaysBounceHorizontal = false
-        webview.scrollView.showsHorizontalScrollIndicator = false
-        webview.scrollView.isScrollEnabled = true
-        webview.configuration.suppressesIncrementalRendering = true
-        webview.isOpaque = false
-        webview.backgroundColor = .clear
-        webview.scrollView.backgroundColor = UIColor.clear
-        webview.scrollView.alwaysBounceVertical = false
+        let webView = WKWebView(frame: .zero, configuration: webViewConfig)
+        webView.navigationDelegate = context.coordinator
+        webView.uiDelegate = context.coordinator
         
-        return webview
+        webView.scrollView.bounces = false
+        webView.scrollView.alwaysBounceHorizontal = false
+        webView.scrollView.showsHorizontalScrollIndicator = false
+        webView.scrollView.isScrollEnabled = true
+        webView.configuration.suppressesIncrementalRendering = true
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.scrollView.backgroundColor = .white
+        webView.scrollView.alwaysBounceVertical = false
+        webView.scrollView.layer.cornerRadius = 24
+        webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
+        
+        return webView
     }
     
     public func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<WebView>) {
         if let url = URL(string: viewModel.url) {
-            let cookies = HTTPCookieStorage.shared.cookies ?? []
-            for (cookie) in cookies {
-                webview.configuration.websiteDataStore.httpCookieStore
-                    .setCookie(cookie)
-            }
-            let request = URLRequest(url: url)
             if webview.url?.absoluteString != url.absoluteString {
                 DispatchQueue.main.async {
                     isLoading = true
                 }
+                let request = URLRequest(url: url)
                 webview.load(request)
             }
         }

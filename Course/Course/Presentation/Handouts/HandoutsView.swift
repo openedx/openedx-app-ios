@@ -12,10 +12,13 @@ struct HandoutsView: View {
     
     private let courseID: String
     
-    @ObservedObject private var viewModel: HandoutsViewModel
+    @ObservedObject
+    private var viewModel: HandoutsViewModel
     
-    public init(courseID: String,
-                viewModel: HandoutsViewModel) {
+    public init(
+        courseID: String,
+        viewModel: HandoutsViewModel
+    ) {
         self.courseID = courseID
         self.viewModel = viewModel
     }
@@ -60,13 +63,15 @@ struct HandoutsView: View {
             }
             
             // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                reloadAction: {
-                Task {
-                    await viewModel.getHandouts(courseID: courseID)
-                    await viewModel.getUpdates(courseID: courseID)
+            OfflineSnackBarView(
+                connectivity: viewModel.connectivity,
+                reloadAction: {
+                    Task {
+                        await viewModel.getHandouts(courseID: courseID)
+                        await viewModel.getUpdates(courseID: courseID)
+                    }
                 }
-            })
+            )
             
             // MARK: - Error Alert
             if viewModel.showError {

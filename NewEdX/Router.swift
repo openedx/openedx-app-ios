@@ -18,7 +18,12 @@ import Dashboard
 import Profile
 import Combine
 
-public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, DashboardRouter, CourseRouter, DiscussionRouter {
+public class Router: AuthorizationRouter,
+                     DiscoveryRouter,
+                     ProfileRouter,
+                     DashboardRouter,
+                     CourseRouter,
+                     DiscussionRouter {
     
     public var container: Container
     
@@ -85,19 +90,23 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     public func presentAlert(
         alertTitle: String,
         alertMessage: String,
+        nextSectionName: String? = nil,
         action: String,
         image: Image,
         onCloseTapped: @escaping () -> Void,
-        okTapped: @escaping () -> Void
+        okTapped: @escaping () -> Void,
+        nextSectionTapped: @escaping () -> Void
     ) {
         presentView(transitionStyle: .crossDissolve, content: {
             AlertView(
                 alertTitle: alertTitle,
                 alertMessage: alertMessage,
+                nextSectionName: nextSectionName,
                 mainAction: action,
                 image: image,
                 onCloseTapped: onCloseTapped,
-                okTapped: okTapped
+                okTapped: okTapped,
+                nextSectionTapped: { nextSectionTapped() }
             )
         })
     }
@@ -107,8 +116,8 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     }
     
     public func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View) {
-        navigationController.present(prepareToPresent(content(),
-                                                      transitionStyle: transitionStyle), animated: true)
+        let view = prepareToPresent(content(), transitionStyle: transitionStyle)
+        navigationController.present(view, animated: true)
     }
     
     public func showRegisterScreen() {
@@ -123,10 +132,12 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showCourseDetais(courseID: String,
-                                 title: String) {
-        let view = CourseDetailsView(viewModel: Container.shared.resolve(CourseDetailsViewModel.self)!,
-                                     courseID: courseID, title: title)
+    public func showCourseDetais(courseID: String, title: String) {
+        let view = CourseDetailsView(
+            viewModel: Container.shared.resolve(CourseDetailsViewModel.self)!,
+            courseID: courseID,
+            title: title
+        )
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -147,85 +158,150 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         navigationController.pushFade(viewController: controller)
     }
     
-    public func showCourseVerticalView(title: String,
-                                       verticals: [CourseVertical]) {
+    public func showCourseVerticalView(
+        id: String,
+        title: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) {
+        let viewModel = Container.shared.resolve(
+            CourseVerticalViewModel.self,
+            arguments: chapters,
+            chapterIndex,
+            sequentialIndex
+        )!
         
-        let viewModel = Container.shared.resolve(CourseVerticalViewModel.self, argument: verticals)!
-        
-        let view = CourseVerticalView(title: title, viewModel: viewModel)
+        let view = CourseVerticalView(title: title, id: id, viewModel: viewModel)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showCourseBlocksView(title: String,
-                                     blocks: [CourseBlock]) {
-        let viewModel = Container.shared.resolve(CourseBlocksViewModel.self, argument: blocks)!
-        
-        let view = CourseBlocksView(title: title, viewModel: viewModel)
-        let controller = SwiftUIHostController(view: view)
-        navigationController.pushViewController(controller, animated: true)
-    }
-    
-    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
-                                                blocks: (String, [CourseBlock])) {
-        let viewModelVertical = Container.shared.resolve(CourseVerticalViewModel.self, argument: verticals.1)!
-        let verticalView = CourseVerticalView(title: verticals.0, viewModel: viewModelVertical)
-        let verticalController = SwiftUIHostController(view: verticalView)
-        
-        let viewModelBlocks = Container.shared.resolve(CourseBlocksViewModel.self, argument: blocks.1)!
-        let blocksView = CourseBlocksView(title: blocks.0, viewModel: viewModelBlocks)
-        let blocksController = SwiftUIHostController(view: blocksView)
-        
-        var currentViews = navigationController.viewControllers
-        currentViews.append(verticalController)
-        currentViews.append(blocksController)
-        
-        navigationController.setViewControllers(currentViews, animated: true)
-    }
-    
-    public func showCourseScreens(courseID: String,
-                                  isActive: Bool?,
-                                  courseStart: Date?,
-                                  courseEnd: Date?,
-                                  enrollmentStart: Date?,
-                                  enrollmentEnd: Date?,
-                                  title: String) {
+    public func showCourseScreens(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    ) {
+        let vm = Container.shared.resolve(
+            CourseContainerViewModel.self,
+            arguments: isActive,
+            courseStart,
+            courseEnd,
+            enrollmentStart,
+            enrollmentEnd
+        )!
         let screensView = CourseContainerView(
-            viewModel: Container.shared.resolve(CourseContainerViewModel.self,
-                                                arguments: isActive, courseStart, courseEnd,
-                                                enrollmentStart, enrollmentEnd)!,
+            viewModel: vm,
             courseID: courseID,
             title: title
         )
-
+        
         let controller = SwiftUIHostController(view: screensView)
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showHandoutsUpdatesView(handouts: String?,
-                                        announcements: [CourseUpdate]?,
-                                        router: Course.CourseRouter,
-                                        cssInjector: CSSInjector) {
-        let view = HandoutsUpdatesDetailView(handouts: handouts,
-                                             announcements: announcements,
-                                             router: router,
-                                             cssInjector: cssInjector)
+    public func showHandoutsUpdatesView(
+        handouts: String?,
+        announcements: [CourseUpdate]?,
+        router: Course.CourseRouter,
+        cssInjector: CSSInjector
+    ) {
+        let view = HandoutsUpdatesDetailView(
+            handouts: handouts,
+            announcements: announcements,
+            router: router,
+            cssInjector: cssInjector
+        )
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
 
-    public func showCourseUnit(blockId: String, courseID: String, sectionName: String, blocks: [CourseBlock]) {
-        let viewModel = Container.shared.resolve(CourseUnitViewModel.self, arguments: blockId, courseID, blocks)!
+    public func showCourseUnit(
+        id: String,
+        blockId: String,
+        courseID: String,
+        sectionName: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) {
+        let viewModel = Container.shared.resolve(
+            CourseUnitViewModel.self,
+            arguments: blockId,
+            courseID,
+            id,
+            chapters,
+            chapterIndex,
+            sequentialIndex,
+            verticalIndex
+        )!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func replaceCourseUnit(
+        id: String,
+        blockId: String,
+        courseID: String,
+        sectionName: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) {
+        
+        let vmVertical = Container.shared.resolve(
+            CourseVerticalViewModel.self,
+            arguments: chapters,
+            chapterIndex,
+            sequentialIndex
+        )!
+        
+        let viewVertical = CourseVerticalView(
+            title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+            id: id,
+            viewModel: vmVertical
+        )
+        let controllerVertical = SwiftUIHostController(view: viewVertical)
+        
+        let verticals = chapters[chapterIndex].childs[sequentialIndex].childs
+        
+        let viewModel = Container.shared.resolve(
+            CourseUnitViewModel.self,
+            arguments: blockId,
+            courseID,
+            id,
+            chapters,
+            chapterIndex,
+            sequentialIndex,
+            verticalIndex
+        )!
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
+        let controllerUnit = SwiftUIHostController(view: view)
+        var controllers = navigationController.viewControllers
+        controllers.removeLast(2)
+        controllers.append(contentsOf: [controllerVertical, controllerUnit])
+        navigationController.setViewControllers(controllers, animated: true)
+    }
+    
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(PostsViewModel.self)!
-        let view = PostsView(courseID: courseID, currentBlockID: "", topics: topics, title: title,
-                             type: type, viewModel: viewModel, router: router)
+        let view = PostsView(
+            courseID: courseID,
+            currentBlockID: "",
+            topics: topics,
+            title: title,
+            type: type,
+            viewModel: viewModel,
+            router: router
+        )
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -244,7 +320,12 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(ResponsesViewModel.self, argument: threadStateSubject)!
-        let view = ResponsesView(commentID: commentID, viewModel: viewModel, router: router, parentComment: parentComment)
+        let view = ResponsesView(
+            commentID: commentID,
+            viewModel: viewModel,
+            router: router,
+            parentComment: parentComment
+        )
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -255,19 +336,27 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
         onPostCreated: @escaping () -> Void
     ) {
         let viewModel = Container.shared.resolve(CreateNewThreadViewModel.self)!
-        let view = CreateNewThreadView(viewModel: viewModel, selectedTopic: selectedTopic,
-                                       courseID: courseID, onPostCreated: onPostCreated)
+        let view = CreateNewThreadView(
+            viewModel: viewModel,
+            selectedTopic: selectedTopic,
+            courseID: courseID,
+            onPostCreated: onPostCreated
+        )
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showEditProfile(userModel: Core.UserProfile,
-                                avatar: UIImage?,
-                                profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void) {
+    public func showEditProfile(
+        userModel: Core.UserProfile,
+        avatar: UIImage?,
+        profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
+    ) {
         let viewModel = Container.shared.resolve(EditProfileViewModel.self, argument: userModel)!
-        let view = EditProfileView(viewModel: viewModel,
-                                   avatar: avatar,
-                                   profileDidEdit: profileDidEdit)
+        let view = EditProfileView(
+            viewModel: viewModel,
+            avatar: avatar,
+            profileDidEdit: profileDidEdit
+        )
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -286,9 +375,11 @@ public class Router: AuthorizationRouter, DiscoveryRouter, ProfileRouter, Dashbo
     }
     
     private func present<ToPresent: View>(transitionStyle: UIModalTransitionStyle, view: ToPresent) {
-        navigationController.present(prepareToPresent(view, transitionStyle: transitionStyle),
-                                     animated: true,
-                                     completion: {})
+        navigationController.present(
+            prepareToPresent(view, transitionStyle: transitionStyle),
+            animated: true,
+            completion: {}
+        )
     }
     
     public func showDeleteProfileView() {

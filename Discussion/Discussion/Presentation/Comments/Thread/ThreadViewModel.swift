@@ -45,41 +45,45 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     }
     
     func generateComments(comments: [UserComment], thread: UserThread) -> Post {
-        var result = Post(authorName: thread.author,
-                          authorAvatar: thread.avatar,
-                          postDate: thread.createdAt,
-                          postTitle: thread.title,
-                          postBodyHtml: thread.renderedBody,
-                          postBody: thread.rawBody,
-                          postVisible: true,
-                          voted: thread.voted,
-                          followed: thread.following,
-                          votesCount: thread.voteCount,
-                          responsesCount: comments.last?.responsesCount ?? 0,
-                          comments: [],
-                          threadID: thread.id,
-                          commentID: thread.courseID,
-                          parentID: nil,
-                          abuseFlagged: thread.abuseFlagged,
-                          closed: thread.closed)
+        var result = Post(
+            authorName: thread.author,
+            authorAvatar: thread.avatar,
+            postDate: thread.createdAt,
+            postTitle: thread.title,
+            postBodyHtml: thread.renderedBody,
+            postBody: thread.rawBody,
+            postVisible: true,
+            voted: thread.voted,
+            followed: thread.following,
+            votesCount: thread.voteCount,
+            responsesCount: comments.last?.responsesCount ?? 0,
+            comments: [],
+            threadID: thread.id,
+            commentID: thread.courseID,
+            parentID: nil,
+            abuseFlagged: thread.abuseFlagged,
+            closed: thread.closed
+        )
         result.comments = comments.map { c in
-            Post(authorName: c.authorName,
-                 authorAvatar: c.authorAvatar,
-                 postDate: c.postDate,
-                 postTitle: c.postTitle,
-                 postBodyHtml: c.postBodyHtml,
-                 postBody: c.postBody,
-                 postVisible: c.postVisible,
-                 voted: c.voted,
-                 followed: c.followed,
-                 votesCount: c.votesCount,
-                 responsesCount: c.responsesCount,
-                 comments: [],
-                 threadID: c.threadID,
-                 commentID: c.commentID,
-                 parentID: c.parentID,
-                 abuseFlagged: c.abuseFlagged,
-                 closed: thread.closed)
+            Post(
+                authorName: c.authorName,
+                authorAvatar: c.authorAvatar,
+                postDate: c.postDate,
+                postTitle: c.postTitle,
+                postBodyHtml: c.postBodyHtml,
+                postBody: c.postBody,
+                postVisible: c.postVisible,
+                voted: c.voted,
+                followed: c.followed,
+                votesCount: c.votesCount,
+                responsesCount: c.responsesCount,
+                comments: [],
+                threadID: c.threadID,
+                commentID: c.commentID,
+                parentID: c.parentID,
+                abuseFlagged: c.abuseFlagged,
+                closed: thread.closed
+            )
         }
         return result
     }

@@ -29,33 +29,6 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
         
-        let items = [
-            CourseItem(name: "Test",
-                       org: "org",
-                       shortDescription: "",
-                       imageURL: "",
-                       isActive: true,
-                       courseStart: Date(),
-                       courseEnd: nil,
-                       enrollmentStart: Date(),
-                       enrollmentEnd: Date(),
-                       courseID: "123",
-                       numPages: 2,
-                      coursesCount: 2),
-            CourseItem(name: "Test2",
-                       org: "org2",
-                       shortDescription: "",
-                       imageURL: "",
-                       isActive: true,
-                       courseStart: Date(),
-                       courseEnd: nil,
-                       enrollmentStart: Date(),
-                       enrollmentEnd: Date(),
-                       courseID: "1243",
-                       numPages: 1,
-                       coursesCount: 2)
-        ]
-        
         let courseDetails = CourseDetails(
             courseID: "123",
             org: "org",
@@ -67,7 +40,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
             enrollmentEnd: nil,
             isEnrolled: true,
             overviewHTML: "",
-            courseBannerURL: ""
+            courseBannerURL: "",
+            courseVideoURL: nil
         )
         
         
@@ -98,33 +72,6 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
         
-        let items = [
-            CourseItem(name: "Test",
-                       org: "org",
-                       shortDescription: "",
-                       imageURL: "",
-                       isActive: true,
-                       courseStart: Date(),
-                       courseEnd: nil,
-                       enrollmentStart: Date(),
-                       enrollmentEnd: Date(),
-                       courseID: "123",
-                       numPages: 2,
-                       coursesCount: 2),
-            CourseItem(name: "Test2",
-                       org: "org2",
-                       shortDescription: "",
-                       imageURL: "",
-                       isActive: true,
-                       courseStart: Date(),
-                       courseEnd: nil,
-                       enrollmentStart: Date(),
-                       enrollmentEnd: Date(),
-                       courseID: "1243",
-                       numPages: 1,
-                       coursesCount: 2)
-        ]
-        
         let courseDetails = CourseDetails(
             courseID: "123",
             org: "org",
@@ -136,7 +83,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
             enrollmentEnd: nil,
             isEnrolled: true,
             overviewHTML: "",
-            courseBannerURL: ""
+            courseBannerURL: "",
+            courseVideoURL: nil
         )
         
         Given(interactor, .getCourseDetailsOffline(courseID: "123",

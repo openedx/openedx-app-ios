@@ -33,11 +33,13 @@ public class WebUnitViewModel: ObservableObject {
     
     @MainActor
     func updateCookies(force: Bool = false) async {
+        guard !updatingCookies else { return }
         do {
             updatingCookies = true
             try await authInteractor.getCookies(force: force)
             cookiesReady = true
             updatingCookies = false
+            errorMessage = nil
         } catch {
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection

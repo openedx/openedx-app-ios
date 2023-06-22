@@ -76,6 +76,7 @@ final class ThreadViewModelTests: XCTestCase {
                    type: .question,
                    title: "1",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 1,
                    avatar: "1",
@@ -96,6 +97,7 @@ final class ThreadViewModelTests: XCTestCase {
                    type: .discussion,
                    title: "2",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 2,
                    avatar: "2",
@@ -116,6 +118,7 @@ final class ThreadViewModelTests: XCTestCase {
                    type: .discussion,
                    title: "3",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 3,
                    avatar: "3",
@@ -136,6 +139,7 @@ final class ThreadViewModelTests: XCTestCase {
                    type: .question,
                    title: "4",
                    pinned: false,
+                   closed: false,
                    following: false,
                    commentCount: 1,
                    avatar: "4",
@@ -172,7 +176,8 @@ final class ThreadViewModelTests: XCTestCase {
                                      threadID: "2",
                                      commentID: "2",
                                      parentID: nil,
-                                     abuseFlagged: false),
+                                     abuseFlagged: false,
+                                     closed: false),
                                 Post(authorName: "2",
                                      authorAvatar: "2",
                                      postDate: Date(),
@@ -188,12 +193,14 @@ final class ThreadViewModelTests: XCTestCase {
                                      threadID: "2",
                                      commentID: "2",
                                      parentID: nil,
-                                     abuseFlagged: false)
+                                     abuseFlagged: false,
+                                     closed: false)
                             ],
                             threadID: "1",
                             commentID: "1",
                             parentID: nil,
-                            abuseFlagged: false
+                            abuseFlagged: false,
+                            closed: false
     )
 
     func testGetQuestionPostsSuccess() async {
@@ -209,8 +216,12 @@ final class ThreadViewModelTests: XCTestCase {
                                         postStateSubject: .init(.readed(id: "1")))
                 
         Given(interactor, .readBody(threadID: .any, willProduce: {_ in}))
-        Given(interactor,   .getQuestionComments(threadID: .any, page: .any, willReturn: (userComments, 1)))
-                
+        Given(interactor,   .getQuestionComments(threadID: .any, page: .any,
+                                                 willReturn: (userComments, Pagination(next: "",
+                                                                                       previous: "",
+                                                                                       count: 1,
+                                                                                       numPages: 1))))
+        
         result = await viewModel.getPosts(thread: threads.threads[0], page: 1)
         
         Verify(interactor, .readBody(threadID: .value(threads.threads[0].id)))
@@ -235,7 +246,11 @@ final class ThreadViewModelTests: XCTestCase {
                                         postStateSubject: .init(.readed(id: "1")))
                 
         Given(interactor, .readBody(threadID: .any, willProduce: {_ in}))
-        Given(interactor, .getDiscussionComments(threadID: .any, page: .any, willReturn: (userComments, 1)))
+        Given(interactor, .getDiscussionComments(threadID: .any, page: .any,
+                                                 willReturn: (userComments, Pagination(next: "",
+                                                                                       previous: "",
+                                                                                       count: 1,
+                                                                                       numPages: 1))))
                 
         result = await viewModel.getPosts(thread: threads.threads[1], page: 1)
         
@@ -335,7 +350,8 @@ final class ThreadViewModelTests: XCTestCase {
                         threadID: "",
                         commentID: "",
                         parentID: nil,
-                        abuseFlagged: true)
+                        abuseFlagged: true,
+                        closed: false)
                 
         Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willReturn: post) )
                 
@@ -412,7 +428,11 @@ final class ThreadViewModelTests: XCTestCase {
         viewModel.totalPages = 2
         viewModel.comments = userComments + userComments
         
-        Given(interactor, .getQuestionComments(threadID: .any, page: .any, willReturn: (userComments, 1)))
+        Given(interactor, .getQuestionComments(threadID: .any, page: .any,
+                                               willReturn: (userComments, Pagination(next: "",
+                                                                                     previous: "",
+                                                                                     count: 1,
+                                                                                     numPages: 1))))
         
         result = await viewModel.fetchMorePosts(thread: threads.threads[0], index: 3)
         

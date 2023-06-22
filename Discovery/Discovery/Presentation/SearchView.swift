@@ -104,7 +104,10 @@ public struct SearchView: View {
                                     .padding(.horizontal, 24)
                                     .onAppear {
                                         Task {
-                                            await viewModel.searchCourses(index: index, searchTerm: viewModel.searchText)
+                                            await viewModel.searchCourses(
+                                                index: index,
+                                                searchTerm: viewModel.searchText
+                                            )
                                         }
                                     }
                                     .onTapGesture {

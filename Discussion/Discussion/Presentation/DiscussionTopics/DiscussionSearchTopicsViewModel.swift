@@ -95,7 +95,7 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
     }
     
     @MainActor
-    public func searchCourses(index: Int, searchTerm: String) async {
+    func searchCourses(index: Int, searchTerm: String) async {
         if !fetchInProgress {
             if totalPages > 1 {
                 if index == searchResults.count - 3 {

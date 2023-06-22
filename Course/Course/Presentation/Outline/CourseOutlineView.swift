@@ -38,7 +38,7 @@ public struct CourseOutlineView: View {
             GeometryReader { proxy in
                 VStack(alignment: .center) {
                     NavigationBar(title: title,
-                    leftButtonAction: { viewModel.router.back() })
+                                  leftButtonAction: { viewModel.router.back() })
                     
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
@@ -90,17 +90,24 @@ public struct CourseOutlineView: View {
                             .fixedSize(horizontal: false, vertical: true)
                             
                             if !isVideo {
-                                if let sequential = viewModel.returnCourseSequential {
-                                    ContinueWithView(sequential: sequential, viewModel: viewModel)
+                                if let continueWith = viewModel.continueWith,
+                                   let courseStructure = viewModel.courseStructure {
+                                    ContinueWithView(
+                                        data: continueWith,
+                                        courseStructure: courseStructure,
+                                        router: viewModel.router
+                                    )
                                 }
                             }
                             
-                            if let courseStructure = isVideo ? viewModel.courseVideosStructure : viewModel.courseStructure {
+                            if let courseStructure = isVideo
+                                ? viewModel.courseVideosStructure
+                                : viewModel.courseStructure {
                                 // MARK: - Sections list
                                 
                                 let chapters = courseStructure.childs
                                 ForEach(chapters, id: \.id) { chapter in
-                                    let index = chapters.firstIndex(where: {$0.id == chapter.id })
+                                    let chapterIndex = chapters.firstIndex(where: { $0.id == chapter.id })
                                     Text(chapter.displayName)
                                         .font(Theme.Fonts.titleMedium)
                                         .multilineTextAlignment(.leading)
@@ -108,10 +115,18 @@ public struct CourseOutlineView: View {
                                         .padding(.horizontal, 24)
                                         .padding(.top, 40)
                                     ForEach(chapter.childs, id: \.id) { child in
+                                        let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == child.id })
                                         VStack(alignment: .leading) {
                                             Button(action: {
-                                                viewModel.router.showCourseVerticalView(title: child.displayName,
-                                                                                        verticals: child.childs)
+                                                if let chapterIndex, let sequentialIndex {
+                                                    viewModel.router.showCourseVerticalView(
+                                                        id: courseID,
+                                                        title: child.displayName,
+                                                        chapters: chapters,
+                                                        chapterIndex: chapterIndex,
+                                                        sequentialIndex: sequentialIndex
+                                                    )
+                                                }
                                             }, label: {
                                                 Group {
                                                     child.type.image
@@ -119,10 +134,12 @@ public struct CourseOutlineView: View {
                                                         .font(Theme.Fonts.titleMedium)
                                                         .multilineTextAlignment(.leading)
                                                         .lineLimit(1)
-                                                        .frame(maxWidth: idiom == .pad
-                                                               ? proxy.size.width * 0.5
-                                                               : proxy.size.width * 0.6,
-                                                               alignment: .leading)
+                                                        .frame(
+                                                            maxWidth: idiom == .pad
+                                                            ? proxy.size.width * 0.5
+                                                            : proxy.size.width * 0.6,
+                                                            alignment: .leading
+                                                        )
                                                 }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                                 Spacer()
                                                 if let state = viewModel.downloadState[child.id] {
@@ -166,7 +183,7 @@ public struct CourseOutlineView: View {
                                                     .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                                             }).padding(.horizontal, 36)
                                                 .padding(.vertical, 20)
-                                            if index != chapters.count - 1 {
+                                            if chapterIndex != chapters.count - 1 {
                                                 Divider()
                                                     .frame(height: 1)
                                                     .overlay(CoreAssets.cardViewStroke.swiftUIColor)
@@ -191,10 +208,12 @@ public struct CourseOutlineView: View {
                 }
                 
                 // MARK: - Offline mode SnackBar
-                OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                    reloadAction: {
-                    await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
-                })
+                OfflineSnackBarView(
+                    connectivity: viewModel.connectivity,
+                    reloadAction: {
+                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
+                    }
+                )
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -228,73 +247,20 @@ public struct CourseOutlineView: View {
     }
 }
 
-struct ContinueWithView: View {
-    let sequential: CourseSequential
-    let viewModel: CourseContainerViewModel
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-    
-    var body: some View {
-        if idiom == .pad {
-            HStack(alignment: .top) {
-                if let vertical = sequential.childs.first {
-                    VStack(alignment: .leading) {
-                    Text(CourseLocalization.Courseware.continueWith)
-                        .font(Theme.Fonts.labelMedium)
-                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
-                        HStack {
-                            vertical.type.image
-                            Text(vertical.displayName)
-                                .multilineTextAlignment(.leading)
-                                .font(Theme.Fonts.titleMedium)
-                                .multilineTextAlignment(.leading)
-                        }
-                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                    Spacer()
-                    UnitButtonView(type: .continueLesson, action: {
-                        viewModel.router.showCourseVerticalAndBlocksView(verticals: (sequential.displayName, sequential.childs),
-                                                                         blocks: (vertical.displayName, vertical.childs))
-                    }).frame(width: 200)
-                }
-            } .padding(.horizontal, 24)
-                .padding(.top, 32)
-        } else {
-            VStack(alignment: .leading) {
-                if let vertical = sequential.childs.first {
-                    Text(CourseLocalization.Courseware.continueWith)
-                        .font(Theme.Fonts.labelMedium)
-                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
-                    HStack {
-                        vertical.type.image
-                        Text(vertical.displayName)
-                            .multilineTextAlignment(.leading)
-                            .font(Theme.Fonts.titleMedium)
-                            .multilineTextAlignment(.leading)
-                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                    UnitButtonView(type: .continueLesson, action: {
-                        viewModel.router.showCourseVerticalAndBlocksView(verticals: (sequential.displayName, sequential.childs),
-                                                                         blocks: (vertical.displayName, vertical.childs))
-                    })
-                }
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 32)
-        }
-    }
-}
-
 #if DEBUG
 struct CourseOutlineView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = CourseContainerViewModel(
             interactor: CourseInteractor.mock,
+            authInteractor: AuthInteractor.mock,
             router: CourseRouterMock(),
             config: ConfigMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock(),
-            isActive: nil,
+            isActive: true,
             courseStart: Date(),
             courseEnd: nil,
-            enrollmentStart: nil,
+            enrollmentStart: Date(),
             enrollmentEnd: nil
         )
         Task {

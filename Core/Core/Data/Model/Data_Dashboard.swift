@@ -85,8 +85,12 @@ public extension DataLayer.CourseEnrollments {
                 isActive: true,
                 courseStart: course.course.start != nil ? Date(iso8601: course.course.start!) : nil,
                 courseEnd: course.course.end != nil ? Date(iso8601: course.course.end!) : nil,
-                enrollmentStart: course.course.enrollmentStart != nil ? Date(iso8601: course.course.enrollmentStart!) : nil,
-                enrollmentEnd: course.course.enrollmentEnd != nil ? Date(iso8601: course.course.enrollmentEnd!) : nil,
+                enrollmentStart: course.course.enrollmentStart != nil
+                ? Date(iso8601: course.course.enrollmentStart!)
+                : nil,
+                enrollmentEnd: course.course.enrollmentEnd != nil
+                ? Date(iso8601: course.course.enrollmentEnd!)
+                : nil,
                 courseID: course.course.id,
                 numPages: numPages,
                 coursesCount: count

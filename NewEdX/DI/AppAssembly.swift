@@ -16,6 +16,7 @@ import Discussion
 import Authorization
 import Profile
 
+// swiftlint:disable function_body_length
 class AppAssembly: Assembly {
     
     private let navigation: UINavigationController
@@ -90,7 +91,8 @@ class AppAssembly: Assembly {
         container.register(AppStorage.self) { r in
             AppStorage(
                 keychain: r.resolve(KeychainSwift.self)!,
-                userDefaults: r.resolve(UserDefaults.self)!)
+                userDefaults: r.resolve(UserDefaults.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(Validator.self) { _ in

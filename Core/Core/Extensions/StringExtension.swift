@@ -21,10 +21,12 @@ public extension String {
         guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
             return self
         }
-        return detector.stringByReplacingMatches(in: self,
-                                                 options: [],
-                                                 range: NSRange(location: 0, length: self.utf16.count),
-                                                 withTemplate: "")
+        return detector.stringByReplacingMatches(
+            in: self,
+            options: [],
+            range: NSRange(location: 0, length: self.utf16.count),
+            withTemplate: ""
+        )
         .replacingOccurrences(of: "<[^>]+>", with: "", options: String.CompareOptions.regularExpression, range: nil)
         .replacingOccurrences(of: "<h2>", with: "")
         .replacingOccurrences(of: "<p>", with: "")
@@ -39,12 +41,15 @@ public extension String {
         var urls: [URL] = []
         do {
             let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
-            detector.enumerateMatches(in: self, options: [],
-                                      range: NSRange(location: 0, length: self.count), using: { (result, _, _) in
-                if let match = result, let url = match.url {
-                    urls.append(url)
+            detector.enumerateMatches(
+                in: self, options: [],
+                range: NSRange(location: 0, length: self.count),
+                using: { (result, _, _) in
+                    if let match = result, let url = match.url {
+                        urls.append(url)
+                    }
                 }
-            })
+            )
         } catch let error as NSError {
             print(error.localizedDescription)
         }

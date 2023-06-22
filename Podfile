@@ -24,7 +24,6 @@ abstract_target "App" do
     pod 'Introspect', '~> 0.6'
     pod 'Kingfisher', '~> 7.8'
     pod 'Swinject', '2.8.3'
-  end
   
   target "Authorization" do
     project './Authorization/Authorization.xcodeproj'

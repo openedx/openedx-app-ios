@@ -50,40 +50,41 @@ public struct SubtittlesView: View {
                         })
                     }
                 }
-                ScrollView {
-                    if viewModel.subtitles.count > 0 {
-                        VStack(alignment: .leading, spacing: 0) {
-                            ForEach(viewModel.subtitles, id: \.id) { subtitle in
-                                HStack {
-                                    Text(subtitle.text)
-                                        .padding(.vertical, 16)
-                                        .font(Theme.Fonts.bodyMedium)
-                                        .foregroundColor(subtitle.fromTo.contains(Date(milliseconds: currentTime))
-                                                         ? CoreAssets.textPrimary.swiftUIColor
-                                                         : CoreAssets.textSecondary.swiftUIColor)
-                                        .onChange(of: currentTime, perform: { _ in
-                                            if subtitle.fromTo.contains(Date(milliseconds: currentTime)) {
-                                                if id != subtitle.id {
-                                                    withAnimation {
-                                                        scroll.scrollTo(subtitle.id, anchor: .top)
+                ZStack {
+                    ScrollView {
+                        if viewModel.subtitles.count > 0 {
+                            VStack(alignment: .leading, spacing: 0) {
+                                ForEach(viewModel.subtitles, id: \.id) { subtitle in
+                                    HStack {
+                                        Text(subtitle.text)
+                                            .padding(.vertical, 16)
+                                            .font(Theme.Fonts.bodyMedium)
+                                            .foregroundColor(subtitle.fromTo.contains(Date(milliseconds: currentTime))
+                                                             ? CoreAssets.textPrimary.swiftUIColor
+                                                             : CoreAssets.textSecondary.swiftUIColor)
+                                            .onChange(of: currentTime, perform: { _ in
+                                                if subtitle.fromTo.contains(Date(milliseconds: currentTime)) {
+                                                    if id != subtitle.id {
+                                                        withAnimation {
+                                                            scroll.scrollTo(subtitle.id, anchor: .top)
+                                                        }
                                                     }
+                                                    self.id = subtitle.id
                                                 }
-                                                self.id = subtitle.id
-                                            }
-                                        })
-                                }.id(subtitle.id)
+                                            })
+                                    }.id(subtitle.id)
+                                }
                             }
+                            .introspectScrollView(customize: { scroll in
+                                scroll.isScrollEnabled = false
+                            })
                         }
                     }
-                }.introspectScrollView(customize: { scroll in
-                    scroll.isScrollEnabled = false
-                })
+                    // Forced disable scrolling for iOS 14, 15
+                    Color.white.opacity(0)
+                }
             }.padding(.horizontal, 24)
                 .padding(.top, 34)
-                .onAppear {
-                    viewModel.languages = languages
-                    viewModel.prepareLanguages()
-                }
         }
     }
 }
@@ -92,12 +93,18 @@ public struct SubtittlesView: View {
 struct SubtittlesView_Previews: PreviewProvider {
     static var previews: some View {
         
-        SubtittlesView(languages: [SubtitleUrl(language: "fr", url: "url"),
-                                   SubtitleUrl(language: "uk", url: "url2")],
-                       currentTime: .constant(0),
-                       viewModel: VideoPlayerViewModel(interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                                                       router: CourseRouterMock(),
-                                                       connectivity: Connectivity()))
+        SubtittlesView(
+            languages: [SubtitleUrl(language: "fr", url: "url"),
+                        SubtitleUrl(language: "uk", url: "url2")],
+            currentTime: .constant(0),
+            viewModel: VideoPlayerViewModel(
+                blockID: "", courseID: "",
+                languages: [],
+                interactor: CourseInteractor(repository: CourseRepositoryMock()),
+                router: CourseRouterMock(),
+                connectivity: Connectivity()
+            )
+        )
     }
 }
 #endif

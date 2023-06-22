@@ -514,10 +514,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`)
     }
 
-    open func presentAlert(alertTitle: String, alertMessage: String, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void) {
-        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`)))
-		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`))) as? (String, String, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void) -> Void
-		perform?(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`)
+    open func presentAlert(alertTitle: String, alertMessage: String, nextSectionName: String?, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, nextSectionTapped: @escaping () -> Void) {
+        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`)))
+		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`))) as? (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
+		perform?(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`)
     }
 
     open func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {
@@ -544,7 +544,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_showRegisterScreen
         case m_showForgotPasswordScreen
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
-        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>)
+        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
         case m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>, Parameter<() -> any View>)
 
@@ -590,14 +590,16 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsOktapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsOktapped)):
+            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsNextsectionname, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsOktapped, let lhsNextsectiontapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsNextsectionname, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsOktapped, let rhsNextsectiontapped)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlerttitle, rhs: rhsAlerttitle, with: matcher), lhsAlerttitle, rhsAlerttitle, "alertTitle"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlertmessage, rhs: rhsAlertmessage, with: matcher), lhsAlertmessage, rhsAlertmessage, "alertMessage"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsNextsectionname, rhs: rhsNextsectionname, with: matcher), lhsNextsectionname, rhsNextsectionname, "nextSectionName"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsImage, rhs: rhsImage, with: matcher), lhsImage, rhsImage, "image"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOnclosetapped, rhs: rhsOnclosetapped, with: matcher), lhsOnclosetapped, rhsOnclosetapped, "onCloseTapped"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOktapped, rhs: rhsOktapped, with: matcher), lhsOktapped, rhsOktapped, "okTapped"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsNextsectiontapped, rhs: rhsNextsectiontapped, with: matcher), lhsNextsectiontapped, rhsNextsectiontapped, "nextSectionTapped"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_presentView__transitionStyle_transitionStyleview_view(let lhsTransitionstyle, let lhsView), .m_presentView__transitionStyle_transitionStyleview_view(let rhsTransitionstyle, let rhsView)):
@@ -627,7 +629,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_showRegisterScreen: return 0
             case .m_showForgotPasswordScreen: return 0
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
-            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
+            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
             case let .m_presentView__transitionStyle_transitionStylecontent_content(p0, p1): return p0.intValue + p1.intValue
             }
@@ -644,7 +646,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_showRegisterScreen: return ".showRegisterScreen()"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
-            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped: return ".presentAlert(alertTitle:alertMessage:action:image:onCloseTapped:okTapped:)"
+            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
             case .m_presentView__transitionStyle_transitionStylecontent_content: return ".presentView(transitionStyle:content:)"
             }
@@ -675,7 +677,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`))}
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStylecontent_content(`transitionStyle`, `content`))}
     }
@@ -714,8 +716,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)
         }
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, perform: @escaping (String, String, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
-            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`), performs: perform)
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>, perform: @escaping (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
+            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`), performs: perform)
         }
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, perform: @escaping (UIModalTransitionStyle, any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`), performs: perform)
@@ -1038,16 +1040,16 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
 
 
-    open func getThreadsList(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int) throws -> ThreadLists {
-        addInvocation(.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`)))
-		let perform = methodPerformValue(.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`))) as? (String, ThreadType, ThreadsFilter, Int) -> Void
-		perform?(`courseID`, `type`, `filter`, `page`)
+    open func getThreadsList(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int) throws -> ThreadLists {
+        addInvocation(.m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<SortType>.value(`sort`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`)))
+		let perform = methodPerformValue(.m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<SortType>.value(`sort`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`))) as? (String, ThreadType, SortType, ThreadsFilter, Int) -> Void
+		perform?(`courseID`, `type`, `sort`, `filter`, `page`)
 		var __value: ThreadLists
 		do {
-		    __value = try methodReturnValue(.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`))).casted()
+		    __value = try methodReturnValue(.m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<SortType>.value(`sort`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int). Use given")
-			Failure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, filter: ThreadsFilter, page: Int). Use given")
+			onFatalFailure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int). Use given")
+			Failure("Stub return value not specified for getThreadsList(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int). Use given")
 		} catch {
 		    throw error
 		}
@@ -1086,11 +1088,11 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 		return __value
     }
 
-    open func getDiscussionComments(threadID: String, page: Int) throws -> ([UserComment], Int) {
+    open func getDiscussionComments(threadID: String, page: Int) throws -> ([UserComment], Pagination) {
         addInvocation(.m_getDiscussionComments__threadID_threadIDpage_page(Parameter<String>.value(`threadID`), Parameter<Int>.value(`page`)))
 		let perform = methodPerformValue(.m_getDiscussionComments__threadID_threadIDpage_page(Parameter<String>.value(`threadID`), Parameter<Int>.value(`page`))) as? (String, Int) -> Void
 		perform?(`threadID`, `page`)
-		var __value: ([UserComment], Int)
+		var __value: ([UserComment], Pagination)
 		do {
 		    __value = try methodReturnValue(.m_getDiscussionComments__threadID_threadIDpage_page(Parameter<String>.value(`threadID`), Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
@@ -1102,11 +1104,11 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 		return __value
     }
 
-    open func getQuestionComments(threadID: String, page: Int) throws -> ([UserComment], Int) {
+    open func getQuestionComments(threadID: String, page: Int) throws -> ([UserComment], Pagination) {
         addInvocation(.m_getQuestionComments__threadID_threadIDpage_page(Parameter<String>.value(`threadID`), Parameter<Int>.value(`page`)))
 		let perform = methodPerformValue(.m_getQuestionComments__threadID_threadIDpage_page(Parameter<String>.value(`threadID`), Parameter<Int>.value(`page`))) as? (String, Int) -> Void
 		perform?(`threadID`, `page`)
-		var __value: ([UserComment], Int)
+		var __value: ([UserComment], Pagination)
 		do {
 		    __value = try methodReturnValue(.m_getQuestionComments__threadID_threadIDpage_page(Parameter<String>.value(`threadID`), Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
@@ -1118,11 +1120,11 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 		return __value
     }
 
-    open func getCommentResponses(commentID: String, page: Int) throws -> ([UserComment], Int) {
+    open func getCommentResponses(commentID: String, page: Int) throws -> ([UserComment], Pagination) {
         addInvocation(.m_getCommentResponses__commentID_commentIDpage_page(Parameter<String>.value(`commentID`), Parameter<Int>.value(`page`)))
 		let perform = methodPerformValue(.m_getCommentResponses__commentID_commentIDpage_page(Parameter<String>.value(`commentID`), Parameter<Int>.value(`page`))) as? (String, Int) -> Void
 		perform?(`commentID`, `page`)
-		var __value: ([UserComment], Int)
+		var __value: ([UserComment], Pagination)
 		do {
 		    __value = try methodReturnValue(.m_getCommentResponses__commentID_commentIDpage_page(Parameter<String>.value(`commentID`), Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
@@ -1243,7 +1245,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
 
     fileprivate enum MethodType {
-        case m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(Parameter<String>, Parameter<ThreadType>, Parameter<ThreadsFilter>, Parameter<Int>)
+        case m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>, Parameter<ThreadType>, Parameter<SortType>, Parameter<ThreadsFilter>, Parameter<Int>)
         case m_getTopics__courseID_courseID(Parameter<String>)
         case m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(Parameter<String>, Parameter<String>, Parameter<Int>)
         case m_getDiscussionComments__threadID_threadIDpage_page(Parameter<String>, Parameter<Int>)
@@ -1260,10 +1262,11 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(let lhsCourseid, let lhsType, let lhsFilter, let lhsPage), .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(let rhsCourseid, let rhsType, let rhsFilter, let rhsPage)):
+            case (.m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(let lhsCourseid, let lhsType, let lhsSort, let lhsFilter, let lhsPage), .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(let rhsCourseid, let rhsType, let rhsSort, let rhsFilter, let rhsPage)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSort, rhs: rhsSort, with: matcher), lhsSort, rhsSort, "sort"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFilter, rhs: rhsFilter, with: matcher), lhsFilter, rhsFilter, "filter"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPage, rhs: rhsPage, with: matcher), lhsPage, rhsPage, "page"))
 				return Matcher.ComparisonResult(results)
@@ -1350,7 +1353,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
         func intValue() -> Int {
             switch self {
-            case let .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_getTopics__courseID_courseID(p0): return p0.intValue
             case let .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_getDiscussionComments__threadID_threadIDpage_page(p0, p1): return p0.intValue + p1.intValue
@@ -1368,7 +1371,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         }
         func assertionName() -> String {
             switch self {
-            case .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page: return ".getThreadsList(courseID:type:filter:page:)"
+            case .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page: return ".getThreadsList(courseID:type:sort:filter:page:)"
             case .m_getTopics__courseID_courseID: return ".getTopics(courseID:)"
             case .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber: return ".searchThreads(courseID:searchText:pageNumber:)"
             case .m_getDiscussionComments__threadID_threadIDpage_page: return ".getDiscussionComments(threadID:page:)"
@@ -1395,8 +1398,8 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         }
 
 
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willReturn: ThreadLists...) -> MethodStub {
-            return Given(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willReturn: ThreadLists...) -> MethodStub {
+            return Given(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getTopics(courseID: Parameter<String>, willReturn: Topics...) -> MethodStub {
             return Given(method: .m_getTopics__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1404,24 +1407,24 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         public static func searchThreads(courseID: Parameter<String>, searchText: Parameter<String>, pageNumber: Parameter<Int>, willReturn: ThreadLists...) -> MethodStub {
             return Given(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Int)...) -> MethodStub {
+        public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Pagination)...) -> MethodStub {
             return Given(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getQuestionComments(threadID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Int)...) -> MethodStub {
+        public static func getQuestionComments(threadID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Pagination)...) -> MethodStub {
             return Given(method: .m_getQuestionComments__threadID_threadIDpage_page(`threadID`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Int)...) -> MethodStub {
+        public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Pagination)...) -> MethodStub {
             return Given(method: .m_getCommentResponses__commentID_commentIDpage_page(`commentID`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func addCommentTo(threadID: Parameter<String>, rawBody: Parameter<String>, parentID: Parameter<String?>, willReturn: Post...) -> MethodStub {
             return Given(method: .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(`threadID`, `rawBody`, `parentID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willProduce: (StubberThrows<ThreadLists>) -> Void) -> MethodStub {
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, willProduce: (StubberThrows<ThreadLists>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (ThreadLists).self)
 			willProduce(stubber)
 			return given
@@ -1449,30 +1452,30 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<([UserComment], Int)>) -> Void) -> MethodStub {
+        public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<([UserComment], Pagination)>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (([UserComment], Int)).self)
+			let stubber = given.stubThrows(for: (([UserComment], Pagination)).self)
 			willProduce(stubber)
 			return given
         }
         public static func getQuestionComments(threadID: Parameter<String>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getQuestionComments__threadID_threadIDpage_page(`threadID`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getQuestionComments(threadID: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<([UserComment], Int)>) -> Void) -> MethodStub {
+        public static func getQuestionComments(threadID: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<([UserComment], Pagination)>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getQuestionComments__threadID_threadIDpage_page(`threadID`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (([UserComment], Int)).self)
+			let stubber = given.stubThrows(for: (([UserComment], Pagination)).self)
 			willProduce(stubber)
 			return given
         }
         public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getCommentResponses__commentID_commentIDpage_page(`commentID`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<([UserComment], Int)>) -> Void) -> MethodStub {
+        public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<([UserComment], Pagination)>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getCommentResponses__commentID_commentIDpage_page(`commentID`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (([UserComment], Int)).self)
+			let stubber = given.stubThrows(for: (([UserComment], Pagination)).self)
 			willProduce(stubber)
 			return given
         }
@@ -1561,7 +1564,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`))}
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`))}
         public static func getTopics(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getTopics__courseID_courseID(`courseID`))}
         public static func searchThreads(courseID: Parameter<String>, searchText: Parameter<String>, pageNumber: Parameter<Int>) -> Verify { return Verify(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`))}
         public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`))}
@@ -1581,8 +1584,8 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, perform: @escaping (String, ThreadType, ThreadsFilter, Int) -> Void) -> Perform {
-            return Perform(method: .m_getThreadsList__courseID_courseIDtype_typefilter_filterpage_page(`courseID`, `type`, `filter`, `page`), performs: perform)
+        public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, perform: @escaping (String, ThreadType, SortType, ThreadsFilter, Int) -> Void) -> Perform {
+            return Perform(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`), performs: perform)
         }
         public static func getTopics(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getTopics__courseID_courseID(`courseID`), performs: perform)
@@ -1832,10 +1835,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 		perform?(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`)
     }
 
-    open func presentAlert(alertTitle: String, alertMessage: String, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void) {
-        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`)))
-		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`))) as? (String, String, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void) -> Void
-		perform?(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`)
+    open func presentAlert(alertTitle: String, alertMessage: String, nextSectionName: String?, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, nextSectionTapped: @escaping () -> Void) {
+        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`)))
+		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`))) as? (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
+		perform?(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`)
     }
 
     open func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {
@@ -1867,7 +1870,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         case m_showRegisterScreen
         case m_showForgotPasswordScreen
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
-        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>)
+        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
         case m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>, Parameter<() -> any View>)
 
@@ -1946,14 +1949,16 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsOktapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsOktapped)):
+            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsNextsectionname, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsOktapped, let lhsNextsectiontapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsNextsectionname, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsOktapped, let rhsNextsectiontapped)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlerttitle, rhs: rhsAlerttitle, with: matcher), lhsAlerttitle, rhsAlerttitle, "alertTitle"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlertmessage, rhs: rhsAlertmessage, with: matcher), lhsAlertmessage, rhsAlertmessage, "alertMessage"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsNextsectionname, rhs: rhsNextsectionname, with: matcher), lhsNextsectionname, rhsNextsectionname, "nextSectionName"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsImage, rhs: rhsImage, with: matcher), lhsImage, rhsImage, "image"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOnclosetapped, rhs: rhsOnclosetapped, with: matcher), lhsOnclosetapped, rhsOnclosetapped, "onCloseTapped"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOktapped, rhs: rhsOktapped, with: matcher), lhsOktapped, rhsOktapped, "okTapped"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsNextsectiontapped, rhs: rhsNextsectiontapped, with: matcher), lhsNextsectiontapped, rhsNextsectiontapped, "nextSectionTapped"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_presentView__transitionStyle_transitionStyleview_view(let lhsTransitionstyle, let lhsView), .m_presentView__transitionStyle_transitionStyleview_view(let rhsTransitionstyle, let rhsView)):
@@ -1988,7 +1993,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case .m_showRegisterScreen: return 0
             case .m_showForgotPasswordScreen: return 0
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
-            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
+            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
             case let .m_presentView__transitionStyle_transitionStylecontent_content(p0, p1): return p0.intValue + p1.intValue
             }
@@ -2010,7 +2015,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case .m_showRegisterScreen: return ".showRegisterScreen()"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
-            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped: return ".presentAlert(alertTitle:alertMessage:action:image:onCloseTapped:okTapped:)"
+            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
             case .m_presentView__transitionStyle_transitionStylecontent_content: return ".presentView(transitionStyle:content:)"
             }
@@ -2046,7 +2051,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`))}
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStylecontent_content(`transitionStyle`, `content`))}
     }
@@ -2100,8 +2105,8 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)
         }
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, perform: @escaping (String, String, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
-            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`), performs: perform)
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>, perform: @escaping (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
+            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`), performs: perform)
         }
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, perform: @escaping (UIModalTransitionStyle, any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`), performs: perform)

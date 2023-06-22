@@ -17,7 +17,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var downloadState: [String: DownloadViewState] = [:]
-    @Published var returnCourseSequential: CourseSequential?
+    @Published var continueWith: ContinueWith?
     
     var errorMessage: String? {
         didSet {
@@ -27,29 +27,33 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    public let interactor: CourseInteractorProtocol
-    public let router: CourseRouter
-    public let config: Config
-    public let connectivity: ConnectivityProtocol
+    private let interactor: CourseInteractorProtocol
+    private let authInteractor: AuthInteractorProtocol
+    let router: CourseRouter
+    let config: Config
+    let connectivity: ConnectivityProtocol
     
-    public let isActive: Bool?
-    public let courseStart: Date?
-    public let courseEnd: Date?
-    public let enrollmentStart: Date?
-    public let enrollmentEnd: Date?
+    let isActive: Bool?
+    let courseStart: Date?
+    let courseEnd: Date?
+    let enrollmentStart: Date?
+    let enrollmentEnd: Date?
     
-    public init(interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                config: Config,
-                connectivity: ConnectivityProtocol,
-                manager: DownloadManagerProtocol,
-                isActive: Bool?,
-                courseStart: Date?,
-                courseEnd: Date?,
-                enrollmentStart: Date?,
-                enrollmentEnd: Date?
+    public init(
+        interactor: CourseInteractorProtocol,
+        authInteractor: AuthInteractorProtocol,
+        router: CourseRouter,
+        config: Config,
+        connectivity: ConnectivityProtocol,
+        manager: DownloadManagerProtocol,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?
     ) {
         self.interactor = interactor
+        self.authInteractor = authInteractor
         self.router = router
         self.config = config
         self.connectivity = connectivity
@@ -72,7 +76,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
-    public func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
+    func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
         if let courseStart {
             if courseStart < Date() {
                 isShowProgress = withProgress
@@ -81,10 +85,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                         isShowProgress = false
                         if let courseStructure {
-                            let returnCourseSequential = try await getResumeBlock(courseID: courseID,
-                                                                              courseStructure: courseStructure)
+                            let continueWith = try await getResumeBlock(courseID: courseID,
+                                                                        courseStructure: courseStructure)
                             withAnimation {
-                                self.returnCourseSequential = returnCourseSequential
+                                self.continueWith = continueWith
                             }
                         }
                     } else {
@@ -107,10 +111,17 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
-    private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws -> CourseSequential? {
+    func tryToRefreshCookies() async {
+        try? await authInteractor.getCookies(force: false)
+    }
+    
+    @MainActor
+    private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws -> ContinueWith? {
         let result = try await interactor.resumeBlock(courseID: courseID)
-        return findCourseSequential(blockID: result.blockID,
-                                    courseStructure: courseStructure)
+        return findContinueVertical(
+            blockID: result.blockID,
+            courseStructure: courseStructure
+        )
     }
     
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
@@ -174,14 +185,19 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    private func findCourseSequential(blockID: String, courseStructure: CourseStructure) -> CourseSequential? {
-        for chapter in courseStructure.childs {
-            for sequential in chapter.childs {
-                for vertical in sequential.childs {
-                    for block in vertical.childs {
-                        if block.id == blockID {
-                            return sequential
-                        }
+    private func findContinueVertical(blockID: String, courseStructure: CourseStructure) -> ContinueWith? {
+        for chapterIndex in courseStructure.childs.indices {
+            let chapter = courseStructure.childs[chapterIndex]
+            for sequentialIndex in chapter.childs.indices {
+                let sequential = chapter.childs[sequentialIndex]
+                for verticalIndex in sequential.childs.indices {
+                    let vertical = sequential.childs[verticalIndex]
+                    for block in vertical.childs where block.id == blockID {
+                        return ContinueWith(
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex,
+                            verticalIndex: verticalIndex
+                        )
                     }
                 }
             }

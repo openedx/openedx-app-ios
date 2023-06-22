@@ -7,8 +7,12 @@
 
 import Foundation
 import Core
+import _AVKit_SwiftUI
 
 public class VideoPlayerViewModel: ObservableObject {
+    
+    private var blockID: String
+    private var courseID: String
     
     private let interactor: CourseInteractorProtocol
     public let connectivity: ConnectivityProtocol
@@ -16,7 +20,7 @@ public class VideoPlayerViewModel: ObservableObject {
     
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
-    @Published var languages: [SubtitleUrl] = []
+    var languages: [SubtitleUrl]
     @Published var items: [PickerItem] = []
     @Published var selectedLanguage: String?
     
@@ -27,16 +31,25 @@ public class VideoPlayerViewModel: ObservableObject {
         }
     }
     
-    public init(interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol) {
+    public init(
+        blockID: String,
+        courseID: String,
+        languages: [SubtitleUrl],
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        connectivity: ConnectivityProtocol
+    ) {
+        self.blockID = blockID
+        self.courseID = courseID
+        self.languages = languages
         self.interactor = interactor
         self.router = router
         self.connectivity = connectivity
+        self.prepareLanguages()
     }
     
     @MainActor
-    func blockCompletionRequest(blockID: String, courseID: String) async {
+    func blockCompletionRequest() async {
         let fullBlockID = "block-v1:\(courseID.dropFirst(10))+type@discussion+block@\(blockID)"
         do {
             try await interactor.blockCompletionRequest(courseID: courseID, blockID: fullBlockID)
@@ -51,8 +64,15 @@ public class VideoPlayerViewModel: ObservableObject {
     
     @MainActor
     public func getSubtitles(subtitlesUrl: String) async {
-        guard let result = try? await interactor.getSubtitles(url: subtitlesUrl) else { return }
-        subtitles = result
+        do {
+            let result = try await interactor.getSubtitles(
+                url: subtitlesUrl,
+                selectedLanguage: self.selectedLanguage ?? "en"
+            )
+            subtitles = result
+        } catch {
+            print(">>>>> ⛔️⛔️⛔️⛔️⛔️⛔️⛔️⛔️", error)
+        }
     }
     
     public func prepareLanguages() {

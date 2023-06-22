@@ -12,8 +12,11 @@ import UIKit
 //sourcery: AutoMockable
 public protocol ProfileRouter: BaseRouter {
     
-    func showEditProfile(userModel: Core.UserProfile, avatar: UIImage?,
-                         profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void)
+    func showEditProfile(
+        userModel: Core.UserProfile,
+        avatar: UIImage?,
+        profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
+    )
     
     func showSettings()
     
@@ -29,8 +32,11 @@ public class ProfileRouterMock: BaseRouterMock, ProfileRouter {
     
     public override init() {}
     
-    public func showEditProfile(userModel: Core.UserProfile, avatar: UIImage?,
-                                profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void) {}
+    public func showEditProfile(
+        userModel: Core.UserProfile,
+        avatar: UIImage?,
+        profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
+    ) {}
     
     public func showSettings() {}
     

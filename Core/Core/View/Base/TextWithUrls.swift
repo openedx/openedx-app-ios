@@ -62,7 +62,9 @@ public struct TextWithUrls: View {
         var text = Text("")
         attributedString.enumerateAttributes(in: stringRange, options: []) { attrs, range, _ in
             let valueOfString: String = attributedString.attributedSubstring(from: range).string
-            text = text + Text(.init((attrs[.underlineStyle] != nil ? getMarkupText(url: valueOfString):  valueOfString)))
+            text = text + Text(.init((attrs[.underlineStyle] != nil
+                                      ? getMarkupText(url: valueOfString)
+                                      : valueOfString)))
         }
 
         return text

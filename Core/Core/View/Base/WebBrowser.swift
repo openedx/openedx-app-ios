@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WebKit
 
 public struct WebBrowser: View {
     
@@ -24,17 +25,23 @@ public struct WebBrowser: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: pageTitle,
-                                     leftButtonAction: { presentationMode.wrappedValue.dismiss() })
+                NavigationBar(
+                    title: pageTitle,
+                    leftButtonAction: { presentationMode.wrappedValue.dismiss() }
+                )
                 
                 // MARK: - Page Body
                 VStack {
                     ZStack(alignment: .top) {
                         NavigationView {
-                            WebView(viewModel: .init(url: url, baseURL: ""), isLoading: $isShowProgress, refreshCookies: {})
-                                .navigationBarTitle(Text("")) // Needed for hide navBar on ios 14, 15
-                                .navigationBarHidden(true)
-                                .ignoresSafeArea()
+                            WebView(
+                                viewModel: .init(url: url, baseURL: ""),
+                                isLoading: $isShowProgress,
+                                refreshCookies: {}
+                            )
+                            .navigationBarTitle(Text("")) // Needed for hide navBar on ios 14, 15
+                            .navigationBarHidden(true)
+                            .ignoresSafeArea()
                         }
                     }
                 }

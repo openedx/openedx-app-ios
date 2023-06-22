@@ -37,23 +37,27 @@ public class DiscussionTopicsViewModel: ObservableObject {
     
     func generateTopics(topics: Topics?) -> [DiscussionTopic] {
         var result = [
-            DiscussionTopic(name: DiscussionLocalization.Topics.allPosts,
-                            action: {
-                                self.router.showThreads(
-                                    courseID: self.courseID,
-                                    topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
-                                    title: DiscussionLocalization.Topics.allPosts,
-                                    type: .allPosts)
-                            },
-                            style: .basic),
-            DiscussionTopic(name: DiscussionLocalization.Topics.postImFollowing, action: {
-                self.router.showThreads(
-                    courseID: self.courseID,
-                    topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
-                    title: DiscussionLocalization.Topics.postImFollowing,
-                    type: .followingPosts
-                )
-            }, style: .followed)
+            DiscussionTopic(
+                name: DiscussionLocalization.Topics.allPosts,
+                action: {
+                    self.router.showThreads(
+                        courseID: self.courseID,
+                        topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
+                        title: DiscussionLocalization.Topics.allPosts,
+                        type: .allPosts)
+                },
+                style: .basic
+            ),
+            DiscussionTopic(
+                name: DiscussionLocalization.Topics.postImFollowing, action: {
+                    self.router.showThreads(
+                        courseID: self.courseID,
+                        topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
+                        title: DiscussionLocalization.Topics.postImFollowing,
+                        type: .followingPosts
+                    )
+                },
+                style: .followed)
         ]
         if let topics = topics {
             for t in topics.nonCoursewareTopics {
@@ -97,10 +101,14 @@ public class DiscussionTopicsViewModel: ObservableObject {
                     result.append(
                         DiscussionTopic(
                             name: child.name,
-                            action: { self.router.showThreads(courseID: self.courseID,
-                                                              topics: topics,
-                                                              title: child.name,
-                                                              type: .courseTopics(topicID: child.id))},
+                            action: {
+                                self.router.showThreads(
+                                    courseID: self.courseID,
+                                    topics: topics,
+                                    title: child.name,
+                                    type: .courseTopics(topicID: child.id)
+                                )
+                            },
                             style: .subTopic)
                     )
                 }
@@ -113,17 +121,17 @@ public class DiscussionTopicsViewModel: ObservableObject {
     public func getTopics(courseID: String, withProgress: Bool = true) async {
         self.courseID = courseID
         isShowProgress = withProgress
-            do {
-                topics = try await interactor.getTopics(courseID: courseID)
-                discussionTopics = generateTopics(topics: topics)
-                isShowProgress = false
-            } catch let error {
-                isShowProgress = false
-                if error.isInternetError {
-                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                } else {
-                    errorMessage = CoreLocalization.Error.unknownError
-                }
+        do {
+            topics = try await interactor.getTopics(courseID: courseID)
+            discussionTopics = generateTopics(topics: topics)
+            isShowProgress = false
+        } catch let error {
+            isShowProgress = false
+            if error.isInternetError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
             }
+        }
     }
 }

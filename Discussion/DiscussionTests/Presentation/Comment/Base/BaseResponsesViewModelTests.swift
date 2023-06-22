@@ -41,12 +41,14 @@ final class BaseResponsesViewModelTests: XCTestCase {
                                         threadID: "1",
                                         commentID: "1",
                                         parentID: nil,
-                                        abuseFlagged: false)
+                             abuseFlagged: false,
+                             closed: false)
                     ],
                     threadID: "1",
                     commentID: "1",
                     parentID: nil,
-                    abuseFlagged: false)
+                    abuseFlagged: false,
+                    closed: false)
     
     func testVoteThreadSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
@@ -348,7 +350,8 @@ final class BaseResponsesViewModelTests: XCTestCase {
                            threadID: "3",
                            commentID: "3",
                            parentID: nil,
-                           abuseFlagged: false)
+                           abuseFlagged: false,
+                           closed: false)
         
         viewModel.addNewPost(newPost)
         

@@ -30,7 +30,11 @@ public class AuthRepository: AuthRepositoryProtocol {
     
     public func login(username: String, password: String) async throws -> User {
         appStorage.cookiesDate = nil
-        let endPoint = AuthEndpoint.getAccessToken(username: username, password: password, clientId: config.oAuthClientId)
+        let endPoint = AuthEndpoint.getAccessToken(
+            username: username,
+            password: password,
+            clientId: config.oAuthClientId
+        )
         let authResponse = try await api.requestData(endPoint).mapResponse(DataLayer.AuthResponse.self)
         guard let accessToken = authResponse.accessToken,
               let refreshToken = authResponse.refreshToken else {
@@ -64,8 +68,8 @@ public class AuthRepository: AuthRepositoryProtocol {
                 appStorage.cookiesDate = Date().dateToString(style: .iso8601)
             }
         } else {
-            appStorage.cookiesDate = Date().dateToString(style: .iso8601)
             _ = try await api.requestData(AuthEndpoint.getAuthCookies)
+            appStorage.cookiesDate = Date().dateToString(style: .iso8601)
         }
     }
     

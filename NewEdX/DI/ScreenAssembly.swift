@@ -201,10 +201,12 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: CourseScreensView
-        container
-            .register(CourseContainerViewModel.self) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
+        container.register(
+            CourseContainerViewModel.self
+        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
+                authInteractor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 config: r.resolve(Config.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
@@ -217,25 +219,28 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(CourseBlocksViewModel.self) { r, blocks in
-            CourseBlocksViewModel(blocks: blocks,
-                                  manager: r.resolve(DownloadManagerProtocol.self)!,
-                                  router: r.resolve(CourseRouter.self)!,
-                                  connectivity: r.resolve(ConnectivityProtocol.self)!)
+        container.register(CourseVerticalViewModel.self) { r, chapters, chapterIndex, sequentialIndex in
+            CourseVerticalViewModel(
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex,
+                manager: r.resolve(DownloadManagerProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
         }
         
-        container.register(CourseVerticalViewModel.self) { r, verticals in
-            CourseVerticalViewModel(verticals: verticals,
-                                    manager: r.resolve(DownloadManagerProtocol.self)!,
-                                    router: r.resolve(CourseRouter.self)!,
-                                    connectivity: r.resolve(ConnectivityProtocol.self)!)
-        }
-        
-        container.register(CourseUnitViewModel.self) { r, blockId, courseId, blocks in
+        container.register(
+            CourseUnitViewModel.self
+        ) { r, blockId, courseId, id, chapters, chapterIndex, sequentialIndex, verticalIndex in
             CourseUnitViewModel(
                 lessonID: blockId,
                 courseID: courseId,
-                blocks: blocks,
+                id: id,
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex,
+                verticalIndex: verticalIndex,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
@@ -248,18 +253,43 @@ class ScreenAssembly: Assembly {
                              config: r.resolve(Config.self)!)
         }
         
-        container.register(VideoPlayerViewModel.self) { r in
-            VideoPlayerViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
-                                 router: r.resolve(CourseRouter.self)!,
-                                 connectivity: r.resolve(ConnectivityProtocol.self)!)
+        container.register(
+            YouTubeVideoPlayerViewModel.self
+        ) { r, url, blockID, courseID, languages, playerStateSubject in
+            YouTubeVideoPlayerViewModel(
+                url: url,
+                blockID: blockID,
+                courseID: courseID,
+                languages: languages,
+                playerStateSubject: playerStateSubject,
+                interactor: r.resolve(CourseInteractorProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }
+        
+        container.register(
+            EncodedVideoPlayerViewModel.self
+        ) { r, url, blockID, courseID, languages, playerStateSubject in
+            EncodedVideoPlayerViewModel(
+                url: url,
+                blockID: blockID,
+                courseID: courseID,
+                languages: languages,
+                playerStateSubject: playerStateSubject,
+                interactor: r.resolve(CourseInteractorProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
         }
         
         container.register(HandoutsViewModel.self) { r, courseID in
-            HandoutsViewModel(interactor: r.resolve(CourseInteractorProtocol.self)!,
-                              router: r.resolve(CourseRouter.self)!,
-                              cssInjector: r.resolve(CSSInjector.self)!,
-                              connectivity: r.resolve(ConnectivityProtocol.self)!,
-                              courseID: courseID
+            HandoutsViewModel(
+                interactor: r.resolve(CourseInteractorProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!,
+                cssInjector: r.resolve(CSSInjector.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                courseID: courseID
             )
         }
         
@@ -272,11 +302,13 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(DiscussionRouter.self)!
             )
         }
+        
         container.register(DiscussionInteractorProtocol.self) { r in
             DiscussionInteractor(
                 repository: r.resolve(DiscussionRepositoryProtocol.self)!
             )
         }
+        
         container.register(DiscussionTopicsViewModel.self) { r in
             DiscussionTopicsViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
@@ -284,6 +316,7 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(Config.self)!
             )
         }
+        
         container.register(DiscussionSearchTopicsViewModel.self) { r, courseID in
             DiscussionSearchTopicsViewModel(
                 courseID: courseID,
@@ -292,6 +325,7 @@ class ScreenAssembly: Assembly {
                 debounce: .searchDebounce
             )
         }
+        
         container.register(PostsViewModel.self) { r in
             PostsViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
@@ -299,6 +333,7 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(Config.self)!
             )
         }
+        
         container.register(ThreadViewModel.self) { r, subject in
             ThreadViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
@@ -308,6 +343,7 @@ class ScreenAssembly: Assembly {
                 postStateSubject: subject
             )
         }
+        
         container.register(ResponsesViewModel.self) { r, subject in
             ResponsesViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
@@ -317,6 +353,7 @@ class ScreenAssembly: Assembly {
                 threadStateSubject: subject
             )
         }
+        
         container.register(CreateNewThreadViewModel.self) { r in
             CreateNewThreadViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,

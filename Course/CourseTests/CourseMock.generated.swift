@@ -514,10 +514,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`)
     }
 
-    open func presentAlert(alertTitle: String, alertMessage: String, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void) {
-        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`)))
-		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`))) as? (String, String, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void) -> Void
-		perform?(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`)
+    open func presentAlert(alertTitle: String, alertMessage: String, nextSectionName: String?, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, nextSectionTapped: @escaping () -> Void) {
+        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`)))
+		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`))) as? (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
+		perform?(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`)
     }
 
     open func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {
@@ -544,7 +544,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_showRegisterScreen
         case m_showForgotPasswordScreen
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
-        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>)
+        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
         case m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>, Parameter<() -> any View>)
 
@@ -590,14 +590,16 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsOktapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsOktapped)):
+            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsNextsectionname, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsOktapped, let lhsNextsectiontapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsNextsectionname, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsOktapped, let rhsNextsectiontapped)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlerttitle, rhs: rhsAlerttitle, with: matcher), lhsAlerttitle, rhsAlerttitle, "alertTitle"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlertmessage, rhs: rhsAlertmessage, with: matcher), lhsAlertmessage, rhsAlertmessage, "alertMessage"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsNextsectionname, rhs: rhsNextsectionname, with: matcher), lhsNextsectionname, rhsNextsectionname, "nextSectionName"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsImage, rhs: rhsImage, with: matcher), lhsImage, rhsImage, "image"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOnclosetapped, rhs: rhsOnclosetapped, with: matcher), lhsOnclosetapped, rhsOnclosetapped, "onCloseTapped"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOktapped, rhs: rhsOktapped, with: matcher), lhsOktapped, rhsOktapped, "okTapped"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsNextsectiontapped, rhs: rhsNextsectiontapped, with: matcher), lhsNextsectiontapped, rhsNextsectiontapped, "nextSectionTapped"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_presentView__transitionStyle_transitionStyleview_view(let lhsTransitionstyle, let lhsView), .m_presentView__transitionStyle_transitionStyleview_view(let rhsTransitionstyle, let rhsView)):
@@ -627,7 +629,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_showRegisterScreen: return 0
             case .m_showForgotPasswordScreen: return 0
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
-            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
+            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
             case let .m_presentView__transitionStyle_transitionStylecontent_content(p0, p1): return p0.intValue + p1.intValue
             }
@@ -644,7 +646,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_showRegisterScreen: return ".showRegisterScreen()"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
-            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped: return ".presentAlert(alertTitle:alertMessage:action:image:onCloseTapped:okTapped:)"
+            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
             case .m_presentView__transitionStyle_transitionStylecontent_content: return ".presentView(transitionStyle:content:)"
             }
@@ -675,7 +677,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`))}
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStylecontent_content(`transitionStyle`, `content`))}
     }
@@ -714,8 +716,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)
         }
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, perform: @escaping (String, String, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
-            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessageaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTapped(`alertTitle`, `alertMessage`, `action`, `image`, `onCloseTapped`, `okTapped`), performs: perform)
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>, perform: @escaping (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
+            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`), performs: perform)
         }
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, perform: @escaping (UIModalTransitionStyle, any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`), performs: perform)
@@ -1192,16 +1194,16 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getSubtitles(url: String) throws -> [Subtitle] {
-        addInvocation(.m_getSubtitles__url_url(Parameter<String>.value(`url`)))
-		let perform = methodPerformValue(.m_getSubtitles__url_url(Parameter<String>.value(`url`))) as? (String) -> Void
-		perform?(`url`)
+    open func getSubtitles(url: String, selectedLanguage: String) throws -> [Subtitle] {
+        addInvocation(.m_getSubtitles__url_urlselectedLanguage_selectedLanguage(Parameter<String>.value(`url`), Parameter<String>.value(`selectedLanguage`)))
+		let perform = methodPerformValue(.m_getSubtitles__url_urlselectedLanguage_selectedLanguage(Parameter<String>.value(`url`), Parameter<String>.value(`selectedLanguage`))) as? (String, String) -> Void
+		perform?(`url`, `selectedLanguage`)
 		var __value: [Subtitle]
 		do {
-		    __value = try methodReturnValue(.m_getSubtitles__url_url(Parameter<String>.value(`url`))).casted()
+		    __value = try methodReturnValue(.m_getSubtitles__url_urlselectedLanguage_selectedLanguage(Parameter<String>.value(`url`), Parameter<String>.value(`selectedLanguage`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getSubtitles(url: String). Use given")
-			Failure("Stub return value not specified for getSubtitles(url: String). Use given")
+			onFatalFailure("Stub return value not specified for getSubtitles(url: String, selectedLanguage: String). Use given")
+			Failure("Stub return value not specified for getSubtitles(url: String, selectedLanguage: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -1220,7 +1222,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         case m_getHandouts__courseID_courseID(Parameter<String>)
         case m_getUpdates__courseID_courseID(Parameter<String>)
         case m_resumeBlock__courseID_courseID(Parameter<String>)
-        case m_getSubtitles__url_url(Parameter<String>)
+        case m_getSubtitles__url_urlselectedLanguage_selectedLanguage(Parameter<String>, Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1275,9 +1277,10 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_getSubtitles__url_url(let lhsUrl), .m_getSubtitles__url_url(let rhsUrl)):
+            case (.m_getSubtitles__url_urlselectedLanguage_selectedLanguage(let lhsUrl, let lhsSelectedlanguage), .m_getSubtitles__url_urlselectedLanguage_selectedLanguage(let rhsUrl, let rhsSelectedlanguage)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUrl, rhs: rhsUrl, with: matcher), lhsUrl, rhsUrl, "url"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSelectedlanguage, rhs: rhsSelectedlanguage, with: matcher), lhsSelectedlanguage, rhsSelectedlanguage, "selectedLanguage"))
 				return Matcher.ComparisonResult(results)
             default: return .none
             }
@@ -1295,7 +1298,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case let .m_getHandouts__courseID_courseID(p0): return p0.intValue
             case let .m_getUpdates__courseID_courseID(p0): return p0.intValue
             case let .m_resumeBlock__courseID_courseID(p0): return p0.intValue
-            case let .m_getSubtitles__url_url(p0): return p0.intValue
+            case let .m_getSubtitles__url_urlselectedLanguage_selectedLanguage(p0, p1): return p0.intValue + p1.intValue
             }
         }
         func assertionName() -> String {
@@ -1310,7 +1313,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case .m_getHandouts__courseID_courseID: return ".getHandouts(courseID:)"
             case .m_getUpdates__courseID_courseID: return ".getUpdates(courseID:)"
             case .m_resumeBlock__courseID_courseID: return ".resumeBlock(courseID:)"
-            case .m_getSubtitles__url_url: return ".getSubtitles(url:)"
+            case .m_getSubtitles__url_urlselectedLanguage_selectedLanguage: return ".getSubtitles(url:selectedLanguage:)"
             }
         }
     }
@@ -1351,8 +1354,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func resumeBlock(courseID: Parameter<String>, willReturn: ResumeBlock...) -> MethodStub {
             return Given(method: .m_resumeBlock__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getSubtitles(url: Parameter<String>, willReturn: [Subtitle]...) -> MethodStub {
-            return Given(method: .m_getSubtitles__url_url(`url`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getSubtitles(url: Parameter<String>, selectedLanguage: Parameter<String>, willReturn: [Subtitle]...) -> MethodStub {
+            return Given(method: .m_getSubtitles__url_urlselectedLanguage_selectedLanguage(`url`, `selectedLanguage`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willProduce: (Stubber<CourseStructure>) -> Void) -> MethodStub {
             let willReturn: [CourseStructure] = []
@@ -1451,12 +1454,12 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func getSubtitles(url: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getSubtitles__url_url(`url`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getSubtitles(url: Parameter<String>, selectedLanguage: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getSubtitles__url_urlselectedLanguage_selectedLanguage(`url`, `selectedLanguage`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getSubtitles(url: Parameter<String>, willProduce: (StubberThrows<[Subtitle]>) -> Void) -> MethodStub {
+        public static func getSubtitles(url: Parameter<String>, selectedLanguage: Parameter<String>, willProduce: (StubberThrows<[Subtitle]>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getSubtitles__url_url(`url`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getSubtitles__url_urlselectedLanguage_selectedLanguage(`url`, `selectedLanguage`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: ([Subtitle]).self)
 			willProduce(stubber)
 			return given
@@ -1476,7 +1479,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func getHandouts(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getHandouts__courseID_courseID(`courseID`))}
         public static func getUpdates(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getUpdates__courseID_courseID(`courseID`))}
         public static func resumeBlock(courseID: Parameter<String>) -> Verify { return Verify(method: .m_resumeBlock__courseID_courseID(`courseID`))}
-        public static func getSubtitles(url: Parameter<String>) -> Verify { return Verify(method: .m_getSubtitles__url_url(`url`))}
+        public static func getSubtitles(url: Parameter<String>, selectedLanguage: Parameter<String>) -> Verify { return Verify(method: .m_getSubtitles__url_urlselectedLanguage_selectedLanguage(`url`, `selectedLanguage`))}
     }
 
     public struct Perform {
@@ -1513,8 +1516,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func resumeBlock(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_resumeBlock__courseID_courseID(`courseID`), performs: perform)
         }
-        public static func getSubtitles(url: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_getSubtitles__url_url(`url`), performs: perform)
+        public static func getSubtitles(url: Parameter<String>, selectedLanguage: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_getSubtitles__url_urlselectedLanguage_selectedLanguage(`url`, `selectedLanguage`), performs: perform)
         }
     }
 

@@ -132,7 +132,9 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         
         if let stringJSON = String(data: data, encoding: .utf8) {
             modifiedJSON = renameUsersInJSON(stringJSON: stringJSON)
-            if let modifiedParsed = try modifiedJSON.data(using: .utf8)?.mapResponse(DataLayer.ThreadListsResponse.self) {
+            if let modifiedParsed = try modifiedJSON.data(using: .utf8)?.mapResponse(
+                DataLayer.ThreadListsResponse.self
+            ) {
                 return modifiedParsed
             } else {
                 return parsed

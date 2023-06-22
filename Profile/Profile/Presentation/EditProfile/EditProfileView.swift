@@ -16,9 +16,11 @@ public struct EditProfileView: View {
     private var oldAvatar: UIImage?
     private var profileDidEdit: ((UserProfile?, UIImage?)) -> Void
     
-    public init(viewModel: EditProfileViewModel,
-                avatar: UIImage?,
-                profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void) {
+    public init(
+        viewModel: EditProfileViewModel,
+        avatar: UIImage?,
+        profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
+    ) {
         self.viewModel = viewModel
         self.profileDidEdit = profileDidEdit
         self.viewModel.inputImage = avatar
@@ -31,22 +33,26 @@ public struct EditProfileView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: ProfileLocalization.editProfile,
-                                     leftButtonAction: {
-                    viewModel.backButtonTapped()
-                    if viewModel.profileChanges.isAvatarSaved {
-                        self.profileDidEdit((viewModel.editedProfile, viewModel.inputImage))
-                    } else {
-                        self.profileDidEdit((viewModel.editedProfile, oldAvatar))
-                    }
-                }, rightButtonType: .done,
-                                     rightButtonAction: {
-                    if viewModel.isChanged {
-                        Task {
-                            await viewModel.saveProfileUpdates()
+                NavigationBar(
+                    title: ProfileLocalization.editProfile,
+                    leftButtonAction: {
+                        viewModel.backButtonTapped()
+                        if viewModel.profileChanges.isAvatarSaved {
+                            self.profileDidEdit((viewModel.editedProfile, viewModel.inputImage))
+                        } else {
+                            self.profileDidEdit((viewModel.editedProfile, oldAvatar))
                         }
-                    }
-                }, rightButtonIsActive: $viewModel.isChanged)
+                    },
+                    rightButtonType: .done,
+                    rightButtonAction: {
+                        if viewModel.isChanged {
+                            Task {
+                                await viewModel.saveProfileUpdates()
+                            }
+                        }
+                    },
+                    rightButtonIsActive: $viewModel.isChanged
+                )
                 
                 // MARK: - Page Body
                 ScrollView {
@@ -82,8 +88,10 @@ public struct EditProfileView: View {
                             .font(Theme.Fonts.labelLarge)
                         
                         Group {
-                            PickerView(config: viewModel.yearsConfiguration,
-                                       router: viewModel.router)
+                            PickerView(
+                                config: viewModel.yearsConfiguration,
+                                router: viewModel.router
+                            )
                             if viewModel.isEditable {
                                 VStack(alignment: .leading) {
                                     PickerView(config: viewModel.countriesConfiguration,

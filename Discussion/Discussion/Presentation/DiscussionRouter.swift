@@ -21,7 +21,8 @@ public protocol DiscussionRouter: BaseRouter {
     func showComments(
         commentID: String,
         parentComment: Post,
-        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>)
+        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
+    )
     
     func createNewThread(courseID: String, selectedTopic: String, onPostCreated: @escaping () -> Void)
 }
@@ -41,12 +42,13 @@ public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
     public func showComments(
         commentID: String,
         parentComment: Post,
-        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>) {}
+        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
+    ) {}
 
     public func createNewThread(
         courseID: String,
         selectedTopic: String,
-        onPostCreated: @escaping () -> Void) {}
-    
+        onPostCreated: @escaping () -> Void
+    ) {}
 }
 #endif
