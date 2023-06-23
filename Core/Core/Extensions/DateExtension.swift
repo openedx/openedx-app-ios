@@ -72,7 +72,7 @@ public enum DateStringStyle {
 public extension Date {
     func dateToString(style: DateStringStyle) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = .current
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         switch style {
         case .endedMonthDay:
