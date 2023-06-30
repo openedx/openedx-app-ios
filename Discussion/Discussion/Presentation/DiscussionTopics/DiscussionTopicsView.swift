@@ -183,6 +183,7 @@ struct DiscussionView_Previews: PreviewProvider {
         .loadFonts()
     }
 }
+// swiftlint:enable all
 #endif
 
 public struct TopicCell: View {

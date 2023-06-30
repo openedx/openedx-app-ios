@@ -15,7 +15,7 @@ import Profile
 import Course
 import Discussion
 
-// swiftlint:disable function_body_length
+// swiftlint:disable function_body_length type_body_length
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
@@ -379,3 +379,4 @@ class ScreenAssembly: Assembly {
         }
     }
 }
+// swiftlint:enable function_body_length type_body_length

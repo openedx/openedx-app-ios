@@ -117,7 +117,7 @@ public struct AlertView: View {
                                 .saturation(0)
                         case let .action(action, _):
                             VStack(spacing: 20) {
-                                if let nextSectionName {
+                                if nextSectionName != nil {
                                     UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
                                         .frame(maxWidth: 215)
                                 }
@@ -260,24 +260,18 @@ public struct AlertView: View {
 // swiftlint:disable all
 struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
-//        AlertView(
-//            alertTitle: "Warning!",
-//            alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
-//            positiveAction: "Accept",
-//            onCloseTapped: {},
-//            okTapped: {},
-//            type: .action("", CoreAssets.goodWork.swiftUIImage)
-//        )
-        AlertView(alertTitle: "Warning",
-                  alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
-                  nextSectionName: "Ahmad tea is a power",
-                  mainAction: "Back to outline",
-                  image: CoreAssets.goodWork.swiftUIImage,
-                  onCloseTapped: {},
-                  okTapped: {},
-                  nextSectionTapped: {})
-        
+        AlertView(
+            alertTitle: "Warning",
+            alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
+            nextSectionName: "Ahmad tea is a power",
+            mainAction: "Back to outline",
+            image: CoreAssets.goodWork.swiftUIImage,
+            onCloseTapped: {},
+            okTapped: {},
+            nextSectionTapped: {}
+        )
         .previewLayout(.sizeThatFits)
         .background(Color.gray)
     }
 }
+//swiftlint:enable all

@@ -132,3 +132,4 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
     }
 }
+// swiftlint:enable function_body_length

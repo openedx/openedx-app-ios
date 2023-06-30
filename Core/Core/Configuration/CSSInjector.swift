@@ -71,6 +71,7 @@ public class CSSInjector {
         }
     }
 
+    //swiftlint:disable function_body_length line_length
     public func injectCSS(
         colorScheme: ColorScheme,
         html: String,
@@ -138,6 +139,7 @@ public class CSSInjector {
         """
         return style + replacedHTML
     }
+    //swiftlint:enable function_body_length line_length
     
 }
 

@@ -144,3 +144,4 @@ struct CourseCellView_Previews: PreviewProvider {
 
     }
 }
+// swiftlint:enable all

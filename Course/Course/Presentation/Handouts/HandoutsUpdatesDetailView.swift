@@ -137,6 +137,7 @@ public struct HandoutsUpdatesDetailView: View {
 }
 
 #if DEBUG
+// swiftlint:disable all
 struct HandoutsUpdatesDetailView_Previews: PreviewProvider {
     static var previews: some View {
         
@@ -167,4 +168,5 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
         )
     }
 }
+// swiftlint:enable all
 #endif
