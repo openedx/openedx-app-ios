@@ -143,6 +143,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
+// swiftlint:disable all
 class ProfileRepositoryMock: ProfileRepositoryProtocol {
     func getMyProfileOffline() throws -> Core.UserProfile {
         return UserProfile(
@@ -212,4 +213,5 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
     }
     public func saveSettings(_ settings: UserSettings) {}
 }
+// swiftlint:enable all
 #endif

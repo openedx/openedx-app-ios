@@ -230,7 +230,6 @@ public struct PostsView: View {
 }
 
 #if DEBUG
-// swiftlint:disable all
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
         let topics = Topics(coursewareTopics: [], nonCoursewareTopics: [])

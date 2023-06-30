@@ -33,18 +33,18 @@ public extension Date {
     }
     
     init(subtitleTime: String) {
-          let calendar = Calendar.current
-          let now = Date()
-          var components = calendar.dateComponents([.year, .month, .day], from: now)
-          var dateFormatter = DateFormatter()
-          dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss,SSS"
-          let dateString = "\(components.year!)-\(components.month!)-\(components.day!) \(subtitleTime)"
-          guard let date = dateFormatter.date(from: dateString) else {
-              self = now
-              return
-          }
-          self = date
-      }
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.year, .month, .day], from: now)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss,SSS"
+        let dateString = "\(components.year!)-\(components.month!)-\(components.day!) \(subtitleTime)"
+        guard let date = dateFormatter.date(from: dateString) else {
+            self = now
+            return
+        }
+        self = date
+    }
 
      init(milliseconds: Double) {
          let now = Date()

@@ -70,6 +70,7 @@ public struct TextWithUrls: View {
         return text
     }
 }
+// swiftlint:enable shorthand_operator
 
 struct TextWithUrls_Previews: PreviewProvider {
     static var previews: some View {

@@ -332,4 +332,5 @@ struct CourseUnitView_Previews: PreviewProvider {
         ), sectionName: "")
     }
 }
+//swiftlint:enable all
 #endif
