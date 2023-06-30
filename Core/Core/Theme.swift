@@ -66,6 +66,7 @@ public extension Theme.Fonts {
         guard let url = Bundle(for: __.self).url(forResource: "SF-Pro", withExtension: "ttf") else { return }
         CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
     }
+    // swiftlint:enable type_name
 }
 
 extension View {

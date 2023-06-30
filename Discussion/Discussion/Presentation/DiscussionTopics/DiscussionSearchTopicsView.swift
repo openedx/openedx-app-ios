@@ -97,7 +97,10 @@ public struct DiscussionSearchTopicsView: View {
                                     .padding(24)
                                     .onAppear {
                                         Task.detached(priority: .high) {
-                                            await viewModel.searchCourses(index: index, searchTerm: viewModel.searchText)
+                                            await viewModel.searchCourses(
+                                                index: index,
+                                                searchTerm: viewModel.searchText
+                                            )
                                         }
                                     }
                                 if viewModel.searchResults.last != post {
