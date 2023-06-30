@@ -96,7 +96,7 @@ public struct SignUpView: View {
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         Task {
-                                            viewModel.analyticsManager.createAccountClicked(provider: .googleOauth2)
+                                            viewModel.analyticsManager.createAccountClicked()
                                             await viewModel.registerUser()
                                         }
                                     }

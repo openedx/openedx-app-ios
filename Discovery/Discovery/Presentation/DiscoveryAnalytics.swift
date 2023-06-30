@@ -13,8 +13,10 @@ public protocol DiscoveryAnalytics {
     func discoveryCourseClicked(courseID: String, courseName: String)
 }
 
+#if DEBUG
 class DiscoveryAnalyticsMock: DiscoveryAnalytics {
     public func discoverySearchBarClicked() {}
     public func discoveryCoursesSearch(label: String, coursesCount: Int) {}
     public func discoveryCourseClicked(courseID: String, courseName: String) {}
 }
+#endif

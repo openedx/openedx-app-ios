@@ -18,6 +18,7 @@ public protocol ProfileAnalytics {
     func userLogout(force: Bool)
 }
 
+#if DEBUG
 class ProfileAnalyticsMock: ProfileAnalytics {
     public func profileEditClicked() {}
     public func profileEditDoneClicked() {}
@@ -28,3 +29,4 @@ class ProfileAnalyticsMock: ProfileAnalytics {
     public func emailSupportClicked() {}
     public func userLogout(force: Bool) {}
 }
+#endif

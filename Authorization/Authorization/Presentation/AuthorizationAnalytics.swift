@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseAnalytics
 
 public enum LoginMethod: String {
     case password
@@ -15,26 +14,24 @@ public enum LoginMethod: String {
     case microsoft
 }
 
-public enum LoginProvider: String {
-    case googleOauth2 = "google-oauth2"
-    case facebook
-    case azureadOauth2 = "azuread-oauth2"
-}
-
 public protocol AuthorizationAnalytics {
+    func setUserID(_ id: String)
     func userLogin(method: LoginMethod)
     func signUpClicked()
-    func createAccountClicked(provider: LoginProvider)
-    func registrationSuccess(provider: LoginProvider)
+    func createAccountClicked()
+    func registrationSuccess()
     func forgotPasswordClicked()
     func resetPasswordClicked(success: Bool)
 }
 
+#if DEBUG
 class AuthorizationAnalyticsMock: AuthorizationAnalytics {
+    public func setUserID(_ id: String) {}
     public func userLogin(method: LoginMethod) {}
     public func signUpClicked() {}
-    public func createAccountClicked(provider: LoginProvider) {}
-    public func registrationSuccess(provider: LoginProvider) {}
+    public func createAccountClicked() {}
+    public func registrationSuccess() {}
     public func forgotPasswordClicked() {}
     public func resetPasswordClicked(success: Bool) {}
 }
+#endif

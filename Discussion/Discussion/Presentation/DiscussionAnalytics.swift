@@ -13,8 +13,10 @@ public protocol DiscussionAnalytics {
     func discussionTopicClicked(courseId: String, courseName: String, topicId: String, topicName: String)
 }
 
+#if DEBUG
 class DiscussionAnalyticsMock: DiscussionAnalytics {
     public func discussionAllPostsClicked(courseId: String, courseName: String) {}
     public func discussionFollowingClicked(courseId: String, courseName: String) {}
     public func discussionTopicClicked(courseId: String, courseName: String, topicId: String, topicName: String) {}
 }
+#endif

@@ -25,6 +25,7 @@ public protocol CourseAnalytics {
     func courseOutlineHandoutsTabClicked(courseId: String, courseName: String)
 }
 
+#if DEBUG
 class CourseAnalyticsMock: CourseAnalytics {
     public func courseEnrollClicked(courseId: String, courseName: String) {}
     public func courseEnrollSuccess(courseId: String, courseName: String) {}
@@ -42,3 +43,4 @@ class CourseAnalyticsMock: CourseAnalytics {
     public func courseOutlineDiscussionTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineHandoutsTabClicked(courseId: String, courseName: String) {}
 }
+#endif

@@ -14,7 +14,7 @@ public protocol AuthInteractorProtocol {
     func resetPassword(email: String) async throws -> ResetPassword
     func getCookies(force: Bool) async throws
     func getRegistrationFields() async throws -> [PickerFields]
-    func registerUser(fields: [String: String]) async throws
+    func registerUser(fields: [String: String]) async throws -> User
     func validateRegistrationFields(fields: [String: String]) async throws -> [String: String]
 }
 
@@ -43,8 +43,8 @@ public class AuthInteractor: AuthInteractorProtocol {
         return try await repository.getRegistrationFields()
     }
 
-    public func registerUser(fields: [String: String]) async throws {
-        _ = try await repository.registerUser(fields: fields)
+    public func registerUser(fields: [String: String]) async throws -> User {
+        return try await repository.registerUser(fields: fields)
     }
 
     public func validateRegistrationFields(fields: [String: String]) async throws -> [String: String] {

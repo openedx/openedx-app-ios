@@ -18,8 +18,6 @@ abstract_target "App" do
     workspace './Core/Core.xcodeproj'
     #Firebase
     pod 'FirebaseAnalytics', '~> 10.11'
-    pod 'FirebaseAuth', '~> 10.11'
-    pod 'FirebaseFirestore', '~> 10.11'
     pod 'FirebaseCrashlytics', '~> 10.11'
     #Networking
     pod 'Alamofire', '~> 5.7'
