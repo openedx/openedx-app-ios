@@ -72,6 +72,9 @@ struct CourseNavigationView: View {
                             okTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
+                                viewModel.analyticsManager
+                                    .finishVerticalBackToOutlineClicked(courseId: viewModel.courseID,
+                                                                        courseName: viewModel.courseName)
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.back(animated: true)
                             },
@@ -101,8 +104,15 @@ struct CourseNavigationView: View {
                                     verticalIndex = 0
                                 }
                                 
+                                viewModel.analyticsManager
+                                    .finishVerticalNextSectionClicked(courseId: viewModel.courseID,
+                                                                      courseName: viewModel.courseName,
+                                                                      blockId: viewModel.lessonID,
+                                                                      blockName: viewModel.selectedLesson().displayName)
+                                
                                 viewModel.router.replaceCourseUnit(
                                     id: viewModel.id,
+                                    courseName: viewModel.courseName,
                                     blockId: viewModel.lessonID,
                                     courseID: viewModel.courseID,
                                     sectionName: viewModel.selectedLesson().displayName,
@@ -112,6 +122,10 @@ struct CourseNavigationView: View {
                                     sequentialIndex: sequentialIndex)
                             }
                         )
+                        viewModel.analyticsManager.finishVerticalClicked(courseId: viewModel.courseID,
+                                                                         courseName: viewModel.courseName,
+                                                                         blockId: viewModel.lessonID,
+                                                                         blockName: viewModel.selectedLesson().displayName)
                     })
                 } else {
                     if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
@@ -139,12 +153,14 @@ struct CourseNavigationView_Previews: PreviewProvider {
             lessonID: "1",
             courseID: "1",
             id: "1",
+            courseName: "Name",
             chapters: [],
             chapterIndex: 1,
             sequentialIndex: 1,
             verticalIndex: 1,
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
+            analyticsManager: CourseAnalyticsMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock()
         )

@@ -28,12 +28,16 @@ public class DashboardViewModel: ObservableObject {
     
     private let interactor: DashboardInteractorProtocol
     public let connectivity: ConnectivityProtocol
+    let analyticsManager: DashboardAnalytics
     
     private var onCourseEnrolledCancellable: AnyCancellable?
     
-    public init(interactor: DashboardInteractorProtocol, connectivity: ConnectivityProtocol) {
+    public init(interactor: DashboardInteractorProtocol,
+                connectivity: ConnectivityProtocol,
+                analyticsManager: DashboardAnalytics) {
         self.interactor = interactor
         self.connectivity = connectivity
+        self.analyticsManager = analyticsManager
         
         onCourseEnrolledCancellable = NotificationCenter.default
             .publisher(for: .onCourseEnrolled)

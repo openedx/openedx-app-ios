@@ -23,6 +23,8 @@ struct MainScreenView: View {
         case profile
     }
     
+    let analyticsManager = Container.shared.resolve(MainScreenAnalytics.self)!
+    
     init() {
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().barTintColor = CoreAssets.textInputUnfocusedBackground.color
@@ -84,6 +86,18 @@ struct MainScreenView: View {
                 vc.navigationController?.setNavigationBarHidden(true, animated: false)
             }
         }  .navigationBarHidden(true)
+            .onChange(of: selection, perform: { selection in
+                switch selection {
+                case .discovery:
+                    analyticsManager.mainDiscoveryTabClicked()
+                case .dashboard:
+                    analyticsManager.mainDashboardTabClicked()
+                case .programs:
+                    analyticsManager.mainProgramsTabClicked()
+                case .profile:
+                    analyticsManager.mainProfileTabClicked()
+                }
+            })
     }
     
     struct MainScreenView_Previews: PreviewProvider {

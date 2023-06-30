@@ -95,7 +95,8 @@ public struct CourseOutlineView: View {
                                     ContinueWithView(
                                         data: continueWith,
                                         courseStructure: courseStructure,
-                                        router: viewModel.router
+                                        router: viewModel.router,
+                                        analyticsManager: viewModel.analyticsManager
                                     )
                                 }
                             }
@@ -119,6 +120,11 @@ public struct CourseOutlineView: View {
                                         VStack(alignment: .leading) {
                                             Button(action: {
                                                 if let chapterIndex, let sequentialIndex {
+                                                    viewModel.analyticsManager
+                                                        .sequentialClicked(courseId: courseID,
+                                                                           courseName: self.title,
+                                                                           blockId: child.blockId,
+                                                                           blockName: child.displayName)
                                                     viewModel.router.showCourseVerticalView(
                                                         id: courseID,
                                                         title: child.displayName,
@@ -254,6 +260,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
             interactor: CourseInteractor.mock,
             authInteractor: AuthInteractor.mock,
             router: CourseRouterMock(),
+            analyticsManager: CourseAnalyticsMock(),
             config: ConfigMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock(),

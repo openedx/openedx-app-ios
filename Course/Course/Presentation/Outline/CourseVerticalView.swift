@@ -43,7 +43,12 @@ public struct CourseVerticalView: View {
                                 if let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id}) {
                                     Button(action: {
                                         if let block = viewModel.verticals[index].childs.first {
-                                            viewModel.router.showCourseUnit(id: id,
+                                            viewModel.analyticsManager.verticalClicked(courseId: block.blockId,
+                                                                                       courseName: title,
+                                                                                       blockId: block.id,
+                                                                                       blockName: block.displayName)
+                                            viewModel.router.showCourseUnit(courseName: title,
+                                                                            id: id,
                                                                             blockId: block.id,
                                                                             courseID: block.blockId,
                                                                             sectionName: block.displayName,
@@ -190,6 +195,7 @@ struct CourseVerticalView_Previews: PreviewProvider {
             sequentialIndex: 0,
             manager: DownloadManagerMock(),
             router: CourseRouterMock(),
+            analyticsManager: CourseAnalyticsMock(),
             connectivity: Connectivity()
         )
         

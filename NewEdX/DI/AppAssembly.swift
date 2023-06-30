@@ -34,6 +34,38 @@ class AppAssembly: Assembly {
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
         
+        container.register(AnalyticsManager.self) { _ in
+            AnalyticsManager()
+        }
+        
+        container.register(AuthorizationAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(MainScreenAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(DiscoveryAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(DashboardAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(ProfileAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(CourseAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(DiscussionAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConnectivityProtocol.self) { _ in
             Connectivity()
         }

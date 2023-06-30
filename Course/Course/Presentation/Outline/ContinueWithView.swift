@@ -18,13 +18,15 @@ struct ContinueWithView: View {
     let data: ContinueWith
     let courseStructure: CourseStructure
     let router: CourseRouter
+    let analyticsManager: CourseAnalytics
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    init(data: ContinueWith, courseStructure: CourseStructure, router: CourseRouter) {
+    init(data: ContinueWith, courseStructure: CourseStructure, router: CourseRouter, analyticsManager: CourseAnalytics) {
         self.data = data
         self.courseStructure = courseStructure
         self.router = router
+        self.analyticsManager = analyticsManager
     }
     
     var body: some View {
@@ -38,6 +40,9 @@ struct ContinueWithView: View {
                         }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                         Spacer()
                         UnitButtonView(type: .continueLesson, action: {
+                            analyticsManager.resumeCourseTapped(courseId: courseStructure.id,
+                                                                courseName: chapter.childs[data.sequentialIndex].displayName,
+                                                                blockId: chapter.childs[data.sequentialIndex].blockId)
                             router.showCourseVerticalView(id: courseStructure.id,
                                                           title: chapter.childs[data.sequentialIndex].displayName,
                                                           chapters: courseStructure.childs,
@@ -131,7 +136,8 @@ struct ContinueWithView_Previews: PreviewProvider {
                                                           media: DataLayer.CourseMedia.init(image:
                                                                 .init(raw: "", small: "", large: "")),
                                                           certificate: nil),
-                         router: CourseRouterMock())
+                         router: CourseRouterMock(),
+                         analyticsManager: CourseAnalyticsMock())
     }
 }
 #endif

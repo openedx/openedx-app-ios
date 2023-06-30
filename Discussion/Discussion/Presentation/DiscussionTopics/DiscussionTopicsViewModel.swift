@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import FirebaseCrashlytics
 
 public class DiscussionTopicsViewModel: ObservableObject {
     
@@ -16,6 +17,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var discussionTopics: [DiscussionTopic]?
     @Published var courseID: String = ""
+    private var title: String
     
     var errorMessage: String? {
         didSet {
@@ -25,13 +27,20 @@ public class DiscussionTopicsViewModel: ObservableObject {
         }
     }
     
-    public let interactor: DiscussionInteractorProtocol
-    public let router: DiscussionRouter
-    public let config: Config
+    let interactor: DiscussionInteractorProtocol
+    let router: DiscussionRouter
+    let analyticsManager: DiscussionAnalytics
+    let config: Config
     
-    public init(interactor: DiscussionInteractorProtocol, router: DiscussionRouter, config: Config) {
+    public init(title: String,
+                interactor: DiscussionInteractorProtocol,
+                router: DiscussionRouter,
+                analyticsManager: DiscussionAnalytics,
+                config: Config) {
+        self.title = title
         self.interactor = interactor
         self.router = router
+        self.analyticsManager = analyticsManager
         self.config = config
     }
     
@@ -40,6 +49,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.allPosts,
                 action: {
+                    self.analyticsManager.discussionAllPostsClicked(courseId: self.courseID,
+                                                               courseName: "")
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),

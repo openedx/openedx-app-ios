@@ -321,12 +321,14 @@ struct CourseUnitView_Previews: PreviewProvider {
             lessonID: "",
             courseID: "",
             id: "1",
+            courseName: "courseName",
             chapters: chapters,
             chapterIndex: 0,
             sequentialIndex: 0,
             verticalIndex: 0,
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
+            analyticsManager: CourseAnalyticsMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock()
         ), sectionName: "")

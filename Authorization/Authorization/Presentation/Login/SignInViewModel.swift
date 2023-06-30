@@ -32,11 +32,16 @@ public class SignInViewModel: ObservableObject {
     
     private let interactor: AuthInteractorProtocol
     let router: AuthorizationRouter
+    let analyticsManager: AuthorizationAnalytics
     private let validator: Validator
     
-    public init(interactor: AuthInteractorProtocol, router: AuthorizationRouter, validator: Validator) {
+    public init(interactor: AuthInteractorProtocol,
+                router: AuthorizationRouter,
+                analyticsManager: AuthorizationAnalytics,
+                validator: Validator) {
         self.interactor = interactor
         self.router = router
+        self.analyticsManager = analyticsManager
         self.validator = validator
     }
      
@@ -54,6 +59,7 @@ public class SignInViewModel: ObservableObject {
         isShowProgress = true
         do {
             try await interactor.login(username: username, password: password)
+            analyticsManager.userLogin(method: .password)
             router.showMainScreen()
         } catch let error {
             isShowProgress = false

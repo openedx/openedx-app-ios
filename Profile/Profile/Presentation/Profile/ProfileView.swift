@@ -29,6 +29,7 @@ public struct ProfileView: View {
                               rightButtonType: .edit,
                               rightButtonAction: {
                     if let userModel = viewModel.userModel {
+                        viewModel.analyticsManager.profileEditClicked()
                         viewModel.router.showEditProfile(
                             userModel: userModel,
                             avatar: viewModel.updatedAvatar,
@@ -105,6 +106,7 @@ public struct ProfileView: View {
                                 VStack(alignment: .leading, spacing: 27) {
                                     HStack {
                                         Button(action: {
+                                            viewModel.analyticsManager.profileVideoSettingsClicked()
                                             viewModel.router.showSettings()
                                         }, label: {
                                             Text(ProfileLocalization.settingsVideo)
@@ -128,7 +130,9 @@ public struct ProfileView: View {
                                                 Text(ProfileLocalization.contact)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
+                                            }).onTapGesture {
+                                                viewModel.analyticsManager.emailSupportClicked()
+                                            }
                                         }
                                         Rectangle()
                                             .frame(height: 1)
@@ -140,7 +144,9 @@ public struct ProfileView: View {
                                                 Text(ProfileLocalization.terms)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
+                                            }).onTapGesture {
+                                                viewModel.analyticsManager.cookiePolicyClicked()
+                                            }
                                         }
                                         Rectangle()
                                             .frame(height: 1)
@@ -152,7 +158,9 @@ public struct ProfileView: View {
                                                 Text(ProfileLocalization.privacy)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
+                                            }).onTapGesture {
+                                                viewModel.analyticsManager.privacyPolicyClicked()
+                                            }
                                         }
                                     }
                                 }.cardStyle(
@@ -174,6 +182,7 @@ public struct ProfileView: View {
                                                     },
                                                     okTapped: {
                                                         Task {
+                                                            viewModel.analyticsManager.userLogout(force: false)
                                                             await viewModel.logOut()
                                                         }
                                                         viewModel.router.dismiss(animated: true)
@@ -234,6 +243,7 @@ struct ProfileView_Previews: PreviewProvider {
         let router = ProfileRouterMock()
         let vm = ProfileViewModel(interactor: ProfileInteractor.mock,
                                   router: router,
+                                  analyticsManager: ProfileAnalyticsMock(),
                                   config: ConfigMock(),
                                   connectivity: Connectivity())
         

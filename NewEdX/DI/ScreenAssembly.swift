@@ -47,6 +47,7 @@ class ScreenAssembly: Assembly {
             SignInViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
+                analyticsManager: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )
         }
@@ -54,6 +55,7 @@ class ScreenAssembly: Assembly {
             SignUpViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
+                analyticsManager: r.resolve(AuthorizationAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 validator: r.resolve(Validator.self)!
@@ -63,6 +65,7 @@ class ScreenAssembly: Assembly {
             ResetPasswordViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
+                analyticsManager: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )
         }
@@ -88,7 +91,8 @@ class ScreenAssembly: Assembly {
         container.register(DiscoveryViewModel.self) { r in
             DiscoveryViewModel(
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analyticsManager: r.resolve(DiscoveryAnalytics.self)!
             )
         }
         
@@ -97,6 +101,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 router: r.resolve(DiscoveryRouter.self)!,
+                analyticsManager: r.resolve(DiscoveryAnalytics.self)!,
                 debounce: .searchDebounce
             )
         }
@@ -122,7 +127,8 @@ class ScreenAssembly: Assembly {
         container.register(DashboardViewModel.self) { r in
             DashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analyticsManager: r.resolve(DashboardAnalytics.self)!
             )
         }
         
@@ -145,6 +151,7 @@ class ScreenAssembly: Assembly {
             ProfileViewModel(
                 interactor: r.resolve(ProfileInteractor.self)!,
                 router: r.resolve(ProfileRouter.self)!,
+                analyticsManager: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
@@ -153,7 +160,9 @@ class ScreenAssembly: Assembly {
             EditProfileViewModel(
                 userModel: userModel,
                 interactor: r.resolve(ProfileInteractor.self)!,
-                router: r.resolve(ProfileRouter.self)!
+                router: r.resolve(ProfileRouter.self)!,
+                analyticsManager: r.resolve(ProfileAnalytics.self)!
+
             )
         }
         
@@ -194,6 +203,7 @@ class ScreenAssembly: Assembly {
             CourseDetailsViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
+                analyticsManager: r.resolve(CourseAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
@@ -208,6 +218,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
+                analyticsManager: r.resolve(CourseAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 manager: r.resolve(DownloadManagerProtocol.self)!,
@@ -226,23 +237,26 @@ class ScreenAssembly: Assembly {
                 sequentialIndex: sequentialIndex,
                 manager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
+                analyticsManager: r.resolve(CourseAnalytics.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
         
         container.register(
             CourseUnitViewModel.self
-        ) { r, blockId, courseId, id, chapters, chapterIndex, sequentialIndex, verticalIndex in
+        ) { r, blockId, courseId, id, courseName, chapters, chapterIndex, sequentialIndex, verticalIndex in
             CourseUnitViewModel(
                 lessonID: blockId,
                 courseID: courseId,
                 id: id,
+                courseName: courseName,
                 chapters: chapters,
                 chapterIndex: chapterIndex,
                 sequentialIndex: sequentialIndex,
                 verticalIndex: verticalIndex,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
+                analyticsManager: r.resolve(CourseAnalytics.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 manager: r.resolve(DownloadManagerProtocol.self)!
             )
@@ -309,10 +323,12 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(DiscussionTopicsViewModel.self) { r in
+        container.register(DiscussionTopicsViewModel.self) { r, title in
             DiscussionTopicsViewModel(
+                title: title,
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
+                analyticsManager: r.resolve(DiscussionAnalytics.self)!,
                 config: r.resolve(Config.self)!
             )
         }

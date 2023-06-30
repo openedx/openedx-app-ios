@@ -192,6 +192,7 @@ struct SearchView_Previews: PreviewProvider {
             interactor: DiscoveryInteractor.mock,
             connectivity: Connectivity(),
             router: router,
+            analyticsManager: DiscoveryAnalyticsMock(),
             debounce: .searchDebounce
         )
         

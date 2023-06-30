@@ -49,6 +49,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     var verticals: [CourseVertical]
     var verticalIndex: Int
+    var courseName: String
     
     @Published var index: Int = 0
     var previousLesson: String = ""
@@ -66,6 +67,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     private let interactor: CourseInteractorProtocol
     let router: CourseRouter
+    let analyticsManager: CourseAnalytics
     let connectivity: ConnectivityProtocol
     private let manager: DownloadManagerProtocol
     private var subtitlesDownloaded: Bool = false
@@ -81,18 +83,21 @@ public class CourseUnitViewModel: ObservableObject {
         lessonID: String,
         courseID: String,
         id: String,
+        courseName: String,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
         verticalIndex: Int,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
+        analyticsManager: CourseAnalytics,
         connectivity: ConnectivityProtocol,
         manager: DownloadManagerProtocol
     ) {
         self.lessonID = lessonID
         self.courseID = courseID
         self.id = id
+        self.courseName = courseName
         self.chapters = chapters
         self.chapterIndex = chapterIndex
         self.sequentialIndex = sequentialIndex
@@ -100,6 +105,7 @@ public class CourseUnitViewModel: ObservableObject {
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         self.interactor = interactor
         self.router = router
+        self.analyticsManager = analyticsManager
         self.connectivity = connectivity
         self.manager = manager
     }
@@ -119,10 +125,20 @@ public class CourseUnitViewModel: ObservableObject {
         switch move {
         case .next:
             if index != verticals[verticalIndex].childs.count - 1 { index += 1 }
+            let nextBlock = verticals[verticalIndex].childs[index]
             nextTitles()
+            analyticsManager.nextBlockClicked(courseId: courseID,
+                                              courseName: courseName,
+                                              blockId: nextBlock.blockId,
+                                              blockName: nextBlock.displayName)
         case .previous:
             if index != 0 { index -= 1 }
             nextTitles()
+            let prevBlock = verticals[verticalIndex].childs[index]
+            analyticsManager.prevBlockClicked(courseId: courseID,
+                                              courseName: courseName,
+                                              blockId: prevBlock.blockId,
+                                              blockName: prevBlock.displayName)
         }
     }
     

@@ -161,8 +161,10 @@ public struct DiscussionTopicsView: View {
 struct DiscussionView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DiscussionTopicsViewModel(
+            title: "Course name",
             interactor: DiscussionInteractor.mock,
             router: DiscussionRouterMock(),
+            analyticsManager: DiscussionAnalyticsMock(),
             config: ConfigMock())
         let router = DiscussionRouterMock()
         

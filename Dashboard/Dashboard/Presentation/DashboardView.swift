@@ -72,6 +72,8 @@ public struct DashboardView: View {
                                         }
                                     }
                                     .onTapGesture {
+                                        viewModel.analyticsManager.dashboardCourseClicked(courseID: course.courseID,
+                                                                                          courseName: course.name)
                                         router.showCourseScreens(
                                             courseID: course.courseID,
                                             isActive: course.isActive,
@@ -132,7 +134,8 @@ struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DashboardViewModel(
             interactor: DashboardInteractor.mock,
-            connectivity: Connectivity()
+            connectivity: Connectivity(),
+            analyticsManager: DashboardAnalyticsMock()
         )
         let router = DashboardRouterMock()
         

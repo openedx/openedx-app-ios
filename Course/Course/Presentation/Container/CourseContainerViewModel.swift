@@ -30,6 +30,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
     let router: CourseRouter
+    let analyticsManager: CourseAnalytics
     let config: Config
     let connectivity: ConnectivityProtocol
     
@@ -43,6 +44,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         interactor: CourseInteractorProtocol,
         authInteractor: AuthInteractorProtocol,
         router: CourseRouter,
+        analyticsManager: CourseAnalytics,
         config: Config,
         connectivity: ConnectivityProtocol,
         manager: DownloadManagerProtocol,
@@ -55,6 +57,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.interactor = interactor
         self.authInteractor = authInteractor
         self.router = router
+        self.analyticsManager = analyticsManager
         self.config = config
         self.connectivity = connectivity
         self.isActive = isActive
