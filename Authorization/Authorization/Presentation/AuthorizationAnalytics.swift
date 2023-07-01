@@ -14,6 +14,7 @@ public enum LoginMethod: String {
     case microsoft
 }
 
+//sourcery: AutoMockable
 public protocol AuthorizationAnalytics {
     func setUserID(_ id: String)
     func userLogin(method: LoginMethod)

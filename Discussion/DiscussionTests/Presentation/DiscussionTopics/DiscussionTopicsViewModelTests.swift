@@ -39,8 +39,13 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
     func testGetTopicsSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
+        let analytics = DiscussionAnalyticsMock()
         let config = ConfigMock()
-        let viewModel = DiscussionTopicsViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = DiscussionTopicsViewModel(title: "",
+                                                  interactor: interactor,
+                                                  router: router,
+                                                  analyticsManager: analytics,
+                                                  config: config)
         
         Given(interactor, .getTopics(courseID: .any, willReturn: topics))
         
@@ -58,8 +63,13 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
     func testGetTopicsNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
+        let analytics = DiscussionAnalyticsMock()
         let config = ConfigMock()
-        let viewModel = DiscussionTopicsViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = DiscussionTopicsViewModel(title: "",
+                                                  interactor: interactor,
+                                                  router: router,
+                                                  analyticsManager: analytics,
+                                                  config: config)
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -79,9 +89,14 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
     func testGetTopicsUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
+        let analytics = DiscussionAnalyticsMock()
         let config = ConfigMock()
-        let viewModel = DiscussionTopicsViewModel(interactor: interactor, router: router, config: config)
-                
+        let viewModel = DiscussionTopicsViewModel(title: "",
+                                                  interactor: interactor,
+                                                  router: router,
+                                                  analyticsManager: analytics,
+                                                  config: config)
+        
         Given(interactor, .getTopics(courseID: .any, willThrow: NSError()))
         
         await viewModel.getTopics(courseID: "1")

@@ -50,7 +50,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
                 name: DiscussionLocalization.Topics.allPosts,
                 action: {
                     self.analyticsManager.discussionAllPostsClicked(courseId: self.courseID,
-                                                               courseName: "")
+                                                                    courseName: self.title)
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
@@ -61,6 +61,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
             ),
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.postImFollowing, action: {
+                    self.analyticsManager.discussionFollowingClicked(courseId: self.courseID,
+                                                                     courseName: self.title)
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),

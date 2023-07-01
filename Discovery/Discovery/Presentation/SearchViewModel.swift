@@ -77,7 +77,7 @@ public class SearchViewModel<S: Scheduler>: ObservableObject {
                     if totalPages != 1 {
                         if nextPage <= totalPages {
                             await search(page: self.nextPage, searchTerm: searchTerm)
-//                            analyticsManager.discoveryCoursesSearch(searchTerm: searchTerm)
+                            analyticsManager.discoveryCoursesSearch(label: searchTerm, coursesCount: searchResults.count)
                         }
                     }
                 }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol DiscoveryAnalytics {
     func discoverySearchBarClicked()
     func discoveryCoursesSearch(label: String, coursesCount: Int)

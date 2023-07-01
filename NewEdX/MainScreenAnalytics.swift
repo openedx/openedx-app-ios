@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol MainScreenAnalytics {
     func mainDiscoveryTabClicked()
     func mainDashboardTabClicked()

@@ -18,7 +18,11 @@ final class ResetPasswordViewModelTests: XCTestCase {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
         let validator = Validator()
-        let viewModel = ResetPasswordViewModel(interactor: interactor, router: router, validator: validator)
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = ResetPasswordViewModel(interactor: interactor,
+                                               router: router,
+                                               analyticsManager: analytics,
+                                               validator: validator)
         
         var isRecoveryPassword = true
         let binding = Binding(get: {
@@ -40,7 +44,11 @@ final class ResetPasswordViewModelTests: XCTestCase {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
         let validator = Validator()
-        let viewModel = ResetPasswordViewModel(interactor: interactor, router: router, validator: validator)
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = ResetPasswordViewModel(interactor: interactor,
+                                               router: router,
+                                               analyticsManager: analytics,
+                                               validator: validator)
 
         var isRecoveryPassword = true
         let binding = Binding(get: {
@@ -66,7 +74,11 @@ final class ResetPasswordViewModelTests: XCTestCase {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
         let validator = Validator()
-        let viewModel = ResetPasswordViewModel(interactor: interactor, router: router, validator: validator)
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = ResetPasswordViewModel(interactor: interactor,
+                                               router: router,
+                                               analyticsManager: analytics,
+                                               validator: validator)
 
         let validationErrorMessage = "Some error"
         let validationError = CustomValidationError(statusCode: 400, data: ["value": validationErrorMessage])
@@ -94,7 +106,11 @@ final class ResetPasswordViewModelTests: XCTestCase {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
         let validator = Validator()
-        let viewModel = ResetPasswordViewModel(interactor: interactor, router: router, validator: validator)
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = ResetPasswordViewModel(interactor: interactor,
+                                               router: router,
+                                               analyticsManager: analytics,
+                                               validator: validator)
 
         Given(interactor, .resetPassword(email: .any, willThrow: APIError.invalidGrant))
 
@@ -118,7 +134,11 @@ final class ResetPasswordViewModelTests: XCTestCase {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
         let validator = Validator()
-        let viewModel = ResetPasswordViewModel(interactor: interactor, router: router, validator: validator)
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = ResetPasswordViewModel(interactor: interactor,
+                                               router: router,
+                                               analyticsManager: analytics,
+                                               validator: validator)
 
         Given(interactor, .resetPassword(email: .any, willThrow: NSError()))
 
@@ -142,8 +162,12 @@ final class ResetPasswordViewModelTests: XCTestCase {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
         let validator = Validator()
-        let viewModel = ResetPasswordViewModel(interactor: interactor, router: router, validator: validator)
-        
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = ResetPasswordViewModel(interactor: interactor,
+                                               router: router,
+                                               analyticsManager: analytics,
+                                               validator: validator)
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
         Given(interactor, .resetPassword(email: .any, willThrow: noInternetError))

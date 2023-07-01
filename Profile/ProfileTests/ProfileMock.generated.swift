@@ -121,17 +121,20 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		return __value
     }
 
-    open func registerUser(fields: [String: String]) throws {
+    open func registerUser(fields: [String: String]) throws -> User {
         addInvocation(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`)))
 		let perform = methodPerformValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))) as? ([String: String]) -> Void
 		perform?(`fields`)
+		var __value: User
 		do {
-		    _ = try methodReturnValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))).casted() as Void
+		    __value = try methodReturnValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))).casted()
 		} catch MockError.notStubed {
-			// do nothing
+			onFatalFailure("Stub return value not specified for registerUser(fields: [String: String]). Use given")
+			Failure("Stub return value not specified for registerUser(fields: [String: String]). Use given")
 		} catch {
 		    throw error
 		}
+		return __value
     }
 
     open func validateRegistrationFields(fields: [String: String]) throws -> [String: String] {
@@ -233,6 +236,9 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         public static func getRegistrationFields(willReturn: [PickerFields]...) -> MethodStub {
             return Given(method: .m_getRegistrationFields, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
+        public static func registerUser(fields: Parameter<[String: String]>, willReturn: User...) -> MethodStub {
+            return Given(method: .m_registerUser__fields_fields(`fields`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         public static func validateRegistrationFields(fields: Parameter<[String: String]>, willReturn: [String: String]...) -> MethodStub {
             return Given(method: .m_validateRegistrationFields__fields_fields(`fields`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
@@ -281,10 +287,10 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         public static func registerUser(fields: Parameter<[String: String]>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_registerUser__fields_fields(`fields`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func registerUser(fields: Parameter<[String: String]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+        public static func registerUser(fields: Parameter<[String: String]>, willProduce: (StubberThrows<User>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_registerUser__fields_fields(`fields`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
+			let stubber = given.stubThrows(for: (User).self)
 			willProduce(stubber)
 			return given
         }
@@ -921,6 +927,286 @@ open class ConnectivityProtocolMock: ConnectivityProtocol, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - ProfileAnalytics
+
+open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func profileEditClicked() {
+        addInvocation(.m_profileEditClicked)
+		let perform = methodPerformValue(.m_profileEditClicked) as? () -> Void
+		perform?()
+    }
+
+    open func profileEditDoneClicked() {
+        addInvocation(.m_profileEditDoneClicked)
+		let perform = methodPerformValue(.m_profileEditDoneClicked) as? () -> Void
+		perform?()
+    }
+
+    open func profileDeleteAccountClicked() {
+        addInvocation(.m_profileDeleteAccountClicked)
+		let perform = methodPerformValue(.m_profileDeleteAccountClicked) as? () -> Void
+		perform?()
+    }
+
+    open func profileVideoSettingsClicked() {
+        addInvocation(.m_profileVideoSettingsClicked)
+		let perform = methodPerformValue(.m_profileVideoSettingsClicked) as? () -> Void
+		perform?()
+    }
+
+    open func privacyPolicyClicked() {
+        addInvocation(.m_privacyPolicyClicked)
+		let perform = methodPerformValue(.m_privacyPolicyClicked) as? () -> Void
+		perform?()
+    }
+
+    open func cookiePolicyClicked() {
+        addInvocation(.m_cookiePolicyClicked)
+		let perform = methodPerformValue(.m_cookiePolicyClicked) as? () -> Void
+		perform?()
+    }
+
+    open func emailSupportClicked() {
+        addInvocation(.m_emailSupportClicked)
+		let perform = methodPerformValue(.m_emailSupportClicked) as? () -> Void
+		perform?()
+    }
+
+    open func userLogout(force: Bool) {
+        addInvocation(.m_userLogout__force_force(Parameter<Bool>.value(`force`)))
+		let perform = methodPerformValue(.m_userLogout__force_force(Parameter<Bool>.value(`force`))) as? (Bool) -> Void
+		perform?(`force`)
+    }
+
+
+    fileprivate enum MethodType {
+        case m_profileEditClicked
+        case m_profileEditDoneClicked
+        case m_profileDeleteAccountClicked
+        case m_profileVideoSettingsClicked
+        case m_privacyPolicyClicked
+        case m_cookiePolicyClicked
+        case m_emailSupportClicked
+        case m_userLogout__force_force(Parameter<Bool>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_profileEditClicked, .m_profileEditClicked): return .match
+
+            case (.m_profileEditDoneClicked, .m_profileEditDoneClicked): return .match
+
+            case (.m_profileDeleteAccountClicked, .m_profileDeleteAccountClicked): return .match
+
+            case (.m_profileVideoSettingsClicked, .m_profileVideoSettingsClicked): return .match
+
+            case (.m_privacyPolicyClicked, .m_privacyPolicyClicked): return .match
+
+            case (.m_cookiePolicyClicked, .m_cookiePolicyClicked): return .match
+
+            case (.m_emailSupportClicked, .m_emailSupportClicked): return .match
+
+            case (.m_userLogout__force_force(let lhsForce), .m_userLogout__force_force(let rhsForce)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsForce, rhs: rhsForce, with: matcher), lhsForce, rhsForce, "force"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_profileEditClicked: return 0
+            case .m_profileEditDoneClicked: return 0
+            case .m_profileDeleteAccountClicked: return 0
+            case .m_profileVideoSettingsClicked: return 0
+            case .m_privacyPolicyClicked: return 0
+            case .m_cookiePolicyClicked: return 0
+            case .m_emailSupportClicked: return 0
+            case let .m_userLogout__force_force(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_profileEditClicked: return ".profileEditClicked()"
+            case .m_profileEditDoneClicked: return ".profileEditDoneClicked()"
+            case .m_profileDeleteAccountClicked: return ".profileDeleteAccountClicked()"
+            case .m_profileVideoSettingsClicked: return ".profileVideoSettingsClicked()"
+            case .m_privacyPolicyClicked: return ".privacyPolicyClicked()"
+            case .m_cookiePolicyClicked: return ".cookiePolicyClicked()"
+            case .m_emailSupportClicked: return ".emailSupportClicked()"
+            case .m_userLogout__force_force: return ".userLogout(force:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func profileEditClicked() -> Verify { return Verify(method: .m_profileEditClicked)}
+        public static func profileEditDoneClicked() -> Verify { return Verify(method: .m_profileEditDoneClicked)}
+        public static func profileDeleteAccountClicked() -> Verify { return Verify(method: .m_profileDeleteAccountClicked)}
+        public static func profileVideoSettingsClicked() -> Verify { return Verify(method: .m_profileVideoSettingsClicked)}
+        public static func privacyPolicyClicked() -> Verify { return Verify(method: .m_privacyPolicyClicked)}
+        public static func cookiePolicyClicked() -> Verify { return Verify(method: .m_cookiePolicyClicked)}
+        public static func emailSupportClicked() -> Verify { return Verify(method: .m_emailSupportClicked)}
+        public static func userLogout(force: Parameter<Bool>) -> Verify { return Verify(method: .m_userLogout__force_force(`force`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func profileEditClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_profileEditClicked, performs: perform)
+        }
+        public static func profileEditDoneClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_profileEditDoneClicked, performs: perform)
+        }
+        public static func profileDeleteAccountClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_profileDeleteAccountClicked, performs: perform)
+        }
+        public static func profileVideoSettingsClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_profileVideoSettingsClicked, performs: perform)
+        }
+        public static func privacyPolicyClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_privacyPolicyClicked, performs: perform)
+        }
+        public static func cookiePolicyClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_cookiePolicyClicked, performs: perform)
+        }
+        public static func emailSupportClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_emailSupportClicked, performs: perform)
+        }
+        public static func userLogout(force: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_userLogout__force_force(`force`), performs: perform)
+        }
     }
 
     public func given(_ method: Given) {

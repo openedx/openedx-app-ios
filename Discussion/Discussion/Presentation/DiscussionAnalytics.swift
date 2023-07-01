@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol DiscussionAnalytics {
     func discussionAllPostsClicked(courseId: String, courseName: String)
     func discussionFollowingClicked(courseId: String, courseName: String)

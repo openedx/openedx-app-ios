@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol CourseAnalytics {
     func courseEnrollClicked(courseId: String, courseName: String)
     func courseEnrollSuccess(courseId: String, courseName: String)

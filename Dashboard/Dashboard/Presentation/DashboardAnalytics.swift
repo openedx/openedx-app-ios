@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol DashboardAnalytics {
     func dashboardCourseClicked(courseID: String, courseName: String)
 }

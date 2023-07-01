@@ -18,6 +18,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -27,6 +28,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             interactor: interactor,
             authInteractor: authInteractor,
             router: router,
+            analyticsManager: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -116,6 +118,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -125,6 +128,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             interactor: interactor,
             authInteractor: authInteractor,
             router: router,
+            analyticsManager: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -166,6 +170,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -175,6 +180,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             interactor: interactor,
             authInteractor: authInteractor,
             router: router,
+            analyticsManager: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -204,6 +210,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -213,6 +220,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             interactor: interactor,
             authInteractor: authInteractor,
             router: router,
+            analyticsManager: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -239,6 +247,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -248,6 +257,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             interactor: interactor,
             authInteractor: authInteractor,
             router: router,
+            analyticsManager: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),

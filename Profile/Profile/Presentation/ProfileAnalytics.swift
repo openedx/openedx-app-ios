@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol ProfileAnalytics {
     func profileEditClicked()
     func profileEditDoneClicked()

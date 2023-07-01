@@ -17,7 +17,8 @@ final class DashboardViewModelTests: XCTestCase {
     func testGetMyCoursesSuccess() async throws {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity)
+        let analytics = DashboardAnalyticsMock()
+        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
         
         let items = [
             CourseItem(name: "Test",
@@ -61,7 +62,8 @@ final class DashboardViewModelTests: XCTestCase {
     func testGetMyCoursesOfflineSuccess() async throws {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity)
+        let analytics = DashboardAnalyticsMock()
+        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
         
         let items = [
             CourseItem(name: "Test",
@@ -105,7 +107,8 @@ final class DashboardViewModelTests: XCTestCase {
     func testGetMyCoursesNoCacheError() async throws {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity)
+        let analytics = DashboardAnalyticsMock()
+        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getMyCourses(page: .any, willThrow: NoCachedDataError()) )
@@ -122,7 +125,8 @@ final class DashboardViewModelTests: XCTestCase {
     func testGetMyCoursesUnknownError() async throws {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity)
+        let analytics = DashboardAnalyticsMock()
+        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getMyCourses(page: .any, willThrow: NSError()) )

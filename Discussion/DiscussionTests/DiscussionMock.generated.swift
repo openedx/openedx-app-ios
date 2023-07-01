@@ -121,17 +121,20 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		return __value
     }
 
-    open func registerUser(fields: [String: String]) throws {
+    open func registerUser(fields: [String: String]) throws -> User {
         addInvocation(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`)))
 		let perform = methodPerformValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))) as? ([String: String]) -> Void
 		perform?(`fields`)
+		var __value: User
 		do {
-		    _ = try methodReturnValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))).casted() as Void
+		    __value = try methodReturnValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))).casted()
 		} catch MockError.notStubed {
-			// do nothing
+			onFatalFailure("Stub return value not specified for registerUser(fields: [String: String]). Use given")
+			Failure("Stub return value not specified for registerUser(fields: [String: String]). Use given")
 		} catch {
 		    throw error
 		}
+		return __value
     }
 
     open func validateRegistrationFields(fields: [String: String]) throws -> [String: String] {
@@ -233,6 +236,9 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         public static func getRegistrationFields(willReturn: [PickerFields]...) -> MethodStub {
             return Given(method: .m_getRegistrationFields, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
+        public static func registerUser(fields: Parameter<[String: String]>, willReturn: User...) -> MethodStub {
+            return Given(method: .m_registerUser__fields_fields(`fields`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         public static func validateRegistrationFields(fields: Parameter<[String: String]>, willReturn: [String: String]...) -> MethodStub {
             return Given(method: .m_validateRegistrationFields__fields_fields(`fields`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
@@ -281,10 +287,10 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         public static func registerUser(fields: Parameter<[String: String]>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_registerUser__fields_fields(`fields`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func registerUser(fields: Parameter<[String: String]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+        public static func registerUser(fields: Parameter<[String: String]>, willProduce: (StubberThrows<User>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_registerUser__fields_fields(`fields`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
+			let stubber = given.stubThrows(for: (User).self)
 			willProduce(stubber)
 			return given
         }
@@ -921,6 +927,222 @@ open class ConnectivityProtocolMock: ConnectivityProtocol, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - DiscussionAnalytics
+
+open class DiscussionAnalyticsMock: DiscussionAnalytics, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func discussionAllPostsClicked(courseId: String, courseName: String) {
+        addInvocation(.m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
+		let perform = methodPerformValue(.m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
+		perform?(`courseId`, `courseName`)
+    }
+
+    open func discussionFollowingClicked(courseId: String, courseName: String) {
+        addInvocation(.m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
+		let perform = methodPerformValue(.m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
+		perform?(`courseId`, `courseName`)
+    }
+
+    open func discussionTopicClicked(courseId: String, courseName: String, topicId: String, topicName: String) {
+        addInvocation(.m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`topicId`), Parameter<String>.value(`topicName`)))
+		let perform = methodPerformValue(.m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`topicId`), Parameter<String>.value(`topicName`))) as? (String, String, String, String) -> Void
+		perform?(`courseId`, `courseName`, `topicId`, `topicName`)
+    }
+
+
+    fileprivate enum MethodType {
+        case m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(let lhsCourseid, let lhsCoursename, let lhsTopicid, let lhsTopicname), .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(let rhsCourseid, let rhsCoursename, let rhsTopicid, let rhsTopicname)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTopicid, rhs: rhsTopicid, with: matcher), lhsTopicid, rhsTopicid, "topicId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTopicname, rhs: rhsTopicname, with: matcher), lhsTopicname, rhsTopicname, "topicName"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case let .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case let .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName: return ".discussionAllPostsClicked(courseId:courseName:)"
+            case .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName: return ".discussionFollowingClicked(courseId:courseName:)"
+            case .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName: return ".discussionTopicClicked(courseId:courseName:topicId:topicName:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func discussionAllPostsClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
+        public static func discussionFollowingClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
+        public static func discussionTopicClicked(courseId: Parameter<String>, courseName: Parameter<String>, topicId: Parameter<String>, topicName: Parameter<String>) -> Verify { return Verify(method: .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(`courseId`, `courseName`, `topicId`, `topicName`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func discussionAllPostsClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
+        }
+        public static func discussionFollowingClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
+        }
+        public static func discussionTopicClicked(courseId: Parameter<String>, courseName: Parameter<String>, topicId: Parameter<String>, topicName: Parameter<String>, perform: @escaping (String, String, String, String) -> Void) -> Perform {
+            return Perform(method: .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(`courseId`, `courseName`, `topicId`, `topicName`), performs: perform)
+        }
     }
 
     public func given(_ method: Given) {
