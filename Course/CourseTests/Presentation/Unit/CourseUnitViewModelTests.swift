@@ -116,7 +116,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
-                                            analyticsManager: analytics,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -143,7 +143,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
-                                            analyticsManager: analytics,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -175,7 +175,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
-                                            analyticsManager: analytics,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -209,7 +209,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
-                                            analyticsManager: analytics,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -242,7 +242,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
-                                            analyticsManager: analytics,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         

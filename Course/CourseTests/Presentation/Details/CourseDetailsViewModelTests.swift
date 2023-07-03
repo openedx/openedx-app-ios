@@ -26,7 +26,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -71,7 +71,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -115,7 +115,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -146,7 +146,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -175,7 +175,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -204,7 +204,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -234,7 +234,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -264,7 +264,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -295,7 +295,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
-                                               analyticsManager: analytics,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)

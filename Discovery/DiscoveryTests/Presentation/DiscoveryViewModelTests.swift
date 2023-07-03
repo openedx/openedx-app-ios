@@ -26,7 +26,7 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
+        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
 
         let items = [
             CourseItem(name: "Test",
@@ -71,7 +71,7 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
+        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
 
         let items = [
             CourseItem(name: "Test",
@@ -115,7 +115,7 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
+        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         let items = [
             CourseItem(name: "Test",
@@ -161,7 +161,7 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
+        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
                         
@@ -180,7 +180,7 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analyticsManager: analytics)
+        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         let noInternetError = AFError.sessionInvalidated(error: NSError())
                         

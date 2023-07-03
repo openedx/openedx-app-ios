@@ -29,7 +29,7 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         validator: validator)
         
         await viewModel.login(username: "email", password: "")
@@ -48,7 +48,7 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         validator: validator)
         await viewModel.login(username: "edxUser@edx.com", password: "")
         
@@ -66,7 +66,7 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         validator: validator)
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
         
@@ -89,7 +89,7 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         validator: validator)
         
         let validationErrorMessage = "Some error"
@@ -114,7 +114,7 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         validator: validator)
         
         Given(interactor, .login(username: .any, password: .any, willThrow: APIError.invalidGrant))
@@ -135,7 +135,7 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         validator: validator)
         
         Given(interactor, .login(username: .any, password: .any, willThrow: NSError()))
@@ -156,7 +156,7 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         validator: validator)
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))

@@ -67,7 +67,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     private let interactor: CourseInteractorProtocol
     let router: CourseRouter
-    let analyticsManager: CourseAnalytics
+    let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     private let manager: DownloadManagerProtocol
     private var subtitlesDownloaded: Bool = false
@@ -90,7 +90,7 @@ public class CourseUnitViewModel: ObservableObject {
         verticalIndex: Int,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
-        analyticsManager: CourseAnalytics,
+        analytics: CourseAnalytics,
         connectivity: ConnectivityProtocol,
         manager: DownloadManagerProtocol
     ) {
@@ -105,7 +105,7 @@ public class CourseUnitViewModel: ObservableObject {
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         self.interactor = interactor
         self.router = router
-        self.analyticsManager = analyticsManager
+        self.analytics = analytics
         self.connectivity = connectivity
         self.manager = manager
     }
@@ -127,7 +127,7 @@ public class CourseUnitViewModel: ObservableObject {
             if index != verticals[verticalIndex].childs.count - 1 { index += 1 }
             let nextBlock = verticals[verticalIndex].childs[index]
             nextTitles()
-            analyticsManager.nextBlockClicked(courseId: courseID,
+            analytics.nextBlockClicked(courseId: courseID,
                                               courseName: courseName,
                                               blockId: nextBlock.blockId,
                                               blockName: nextBlock.displayName)
@@ -135,7 +135,7 @@ public class CourseUnitViewModel: ObservableObject {
             if index != 0 { index -= 1 }
             nextTitles()
             let prevBlock = verticals[verticalIndex].childs[index]
-            analyticsManager.prevBlockClicked(courseId: courseID,
+            analytics.prevBlockClicked(courseId: courseID,
                                               courseName: courseName,
                                               blockId: prevBlock.blockId,
                                               blockName: prevBlock.displayName)

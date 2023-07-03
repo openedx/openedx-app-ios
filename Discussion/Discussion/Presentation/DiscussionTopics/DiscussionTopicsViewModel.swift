@@ -29,18 +29,18 @@ public class DiscussionTopicsViewModel: ObservableObject {
     
     let interactor: DiscussionInteractorProtocol
     let router: DiscussionRouter
-    let analyticsManager: DiscussionAnalytics
+    let analytics: DiscussionAnalytics
     let config: Config
     
     public init(title: String,
                 interactor: DiscussionInteractorProtocol,
                 router: DiscussionRouter,
-                analyticsManager: DiscussionAnalytics,
+                analytics: DiscussionAnalytics,
                 config: Config) {
         self.title = title
         self.interactor = interactor
         self.router = router
-        self.analyticsManager = analyticsManager
+        self.analytics = analytics
         self.config = config
     }
     
@@ -49,7 +49,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.allPosts,
                 action: {
-                    self.analyticsManager.discussionAllPostsClicked(courseId: self.courseID,
+                    self.analytics.discussionAllPostsClicked(courseId: self.courseID,
                                                                     courseName: self.title)
                     self.router.showThreads(
                         courseID: self.courseID,
@@ -61,7 +61,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
             ),
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.postImFollowing, action: {
-                    self.analyticsManager.discussionFollowingClicked(courseId: self.courseID,
+                    self.analytics.discussionFollowingClicked(courseId: self.courseID,
                                                                      courseName: self.title)
                     self.router.showThreads(
                         courseID: self.courseID,

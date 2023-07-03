@@ -6,43 +6,10 @@
 //
 
 import Foundation
-import Introspect
+import SwiftUIIntrospect
 import SwiftUI
 
 public extension View {
-    func introspectCollectionView(customize: @escaping (UICollectionView) -> Void) -> some View {
-        return inject(UIKitIntrospectionView(
-            selector: { introspectionView in
-                guard let viewHost = Introspect.findViewHost(from: introspectionView) else {
-                    return nil
-                }
-                return Introspect.previousSibling(containing: UICollectionView.self, from: viewHost)
-            },
-            customize: customize
-        ))
-    }
-    
-    func introspectCollectionViewWithClipping(customize: @escaping (UICollectionView) -> Void) -> some View {
-        return inject(UIKitIntrospectionView(
-            selector: { introspectionView in
-                guard let viewHost = Introspect.findViewHost(from: introspectionView) else {
-                    return nil
-                }
-                // first run Introspect as normal
-                if let selectedView = Introspect.previousSibling(containing: UICollectionView.self,
-                                                                 from: viewHost) {
-                    return selectedView
-                } else if let superView = viewHost.superview {
-                    // if no view was found and a superview exists, search the superview as well
-                    return Introspect.previousSibling(containing: UICollectionView.self, from: superView)
-                } else {
-                    // no view found at all
-                    return nil
-                }
-            },
-            customize: customize
-        ))
-    }
     
     func cardStyle(
         top: CGFloat? = 0,
@@ -155,8 +122,9 @@ public extension View {
         if #available(iOS 16.0, *) {
             return self.navigationBarHidden(true)
         } else {
-            return self.introspectNavigationController { $0.isNavigationBarHidden = true }
-                .navigationBarHidden(true)
+            return self.introspect(.navigationView(style: .stack), on: .iOS(.v14, .v15, .v16, .v17), customize: {
+                $0.isNavigationBarHidden = true
+            })
         }
     }
     

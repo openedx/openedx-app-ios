@@ -90,7 +90,6 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.11.1):
     - GoogleUtilities/Logger
-  - Introspect (0.7.0)
   - KeychainSwift (20.0.0)
   - Kingfisher (7.8.1)
   - nanopb (2.30909.0):
@@ -106,6 +105,7 @@ PODS:
   - Sourcery/CLI-Only (1.8.0)
   - SwiftGen (6.6.2)
   - SwiftLint (0.52.3)
+  - SwiftUIIntrospect (0.8.0)
   - SwiftyMocky (4.2.0):
     - Sourcery (= 1.8.0)
   - Swinject (2.8.3)
@@ -114,11 +114,11 @@ DEPENDENCIES:
   - Alamofire (~> 5.7)
   - FirebaseAnalytics (~> 10.11)
   - FirebaseCrashlytics (~> 10.11)
-  - Introspect (~> 0.6)
   - KeychainSwift (~> 20.0)
   - Kingfisher (~> 7.8)
   - SwiftGen (~> 6.6)
   - SwiftLint (~> 0.5)
+  - SwiftUIIntrospect (~> 0.8)
   - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, tag `4.2.0`)
   - Swinject (= 2.8.3)
 
@@ -135,7 +135,6 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
-    - Introspect
     - KeychainSwift
     - Kingfisher
     - nanopb
@@ -144,6 +143,7 @@ SPEC REPOS:
     - Sourcery
     - SwiftGen
     - SwiftLint
+    - SwiftUIIntrospect
     - Swinject
 
 EXTERNAL SOURCES:
@@ -168,7 +168,6 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: d3dabccdb336fc0ae44b633c8abaa26559893cd9
   GoogleDataTransport: f0308f5905a745f94fb91fea9c6cbaf3831cb1bd
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
-  Introspect: afd679deb15c428b104d97b54b59ec880ec41ef1
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
   Kingfisher: 63f677311d36a3473f6b978584f8a3845d023dc5
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
@@ -177,9 +176,10 @@ SPEC CHECKSUMS:
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
   SwiftLint: 76ec9c62ad369cff2937474cb34c9af3fa270b7b
+  SwiftUIIntrospect: cde309fef1f6690dd7585100453f1985f3b91c77
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
   Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: 1242cc7edee42bd607b33075aaafa1260688963f
+PODFILE CHECKSUM: e535ea6bf82dfd5be3ef0ea79b6907f520e57993
 
 COCOAPODS: 1.12.0

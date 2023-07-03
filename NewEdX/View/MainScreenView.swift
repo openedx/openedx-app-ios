@@ -11,6 +11,7 @@ import Core
 import Swinject
 import Dashboard
 import Profile
+import SwiftUIIntrospect
 
 struct MainScreenView: View {
     
@@ -23,7 +24,7 @@ struct MainScreenView: View {
         case profile
     }
     
-    let analyticsManager = Container.shared.resolve(MainScreenAnalytics.self)!
+    let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
     
     init() {
         UITabBar.appearance().isTranslucent = false
@@ -57,9 +58,9 @@ struct MainScreenView: View {
             }
             .tag(MainTab.dashboard)
             .navigationBarHidden(true)
-            .introspectViewController { vc in
+            .introspect(.navigationView(style: .stack), on: .iOS(.v14, .v15, .v16, .v17), customize: { vc in
                 vc.navigationController?.setNavigationBarHidden(true, animated: false)
-            }
+            })
             
             VStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
@@ -82,20 +83,20 @@ struct MainScreenView: View {
             }
             .tag(MainTab.profile)
             .navigationBarHidden(true)
-            .introspectViewController { vc in
+            .introspect(.navigationView(style: .stack), on: .iOS(.v14, .v15, .v16, .v17), customize: { vc in
                 vc.navigationController?.setNavigationBarHidden(true, animated: false)
-            }
+            })
         }  .navigationBarHidden(true)
             .onChange(of: selection, perform: { selection in
                 switch selection {
                 case .discovery:
-                    analyticsManager.mainDiscoveryTabClicked()
+                    analytics.mainDiscoveryTabClicked()
                 case .dashboard:
-                    analyticsManager.mainDashboardTabClicked()
+                    analytics.mainDashboardTabClicked()
                 case .programs:
-                    analyticsManager.mainProgramsTabClicked()
+                    analytics.mainProgramsTabClicked()
                 case .profile:
-                    analyticsManager.mainProfileTabClicked()
+                    analytics.mainProfileTabClicked()
                 }
             })
     }

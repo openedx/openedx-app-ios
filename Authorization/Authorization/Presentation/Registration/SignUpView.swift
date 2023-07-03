@@ -96,7 +96,7 @@ public struct SignUpView: View {
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         Task {
-                                            viewModel.analyticsManager.createAccountClicked()
+                                            viewModel.analytics.createAccountClicked()
                                             await viewModel.registerUser()
                                         }
                                     }
@@ -147,7 +147,7 @@ struct SignUpView_Previews: PreviewProvider {
         let vm = SignUpViewModel(
             interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
-            analyticsManager: AuthorizationAnalyticsMock(),
+            analytics: AuthorizationAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             validator: Validator()

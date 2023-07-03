@@ -13,6 +13,8 @@ import Kingfisher
 public struct CourseVerticalView: View {
     
     private var title: String
+    private var courseName: String
+    private var courseID: String
     private let id: String
     @ObservedObject
     private var viewModel: CourseVerticalViewModel
@@ -20,10 +22,14 @@ public struct CourseVerticalView: View {
     
     public init(
         title: String,
+        courseName: String,
+        courseID: String,
         id: String,
         viewModel: CourseVerticalViewModel
     ) {
         self.title = title
+        self.courseName = courseName
+        self.courseID = courseID
         self.id = id
         self.viewModel = viewModel
     }
@@ -42,15 +48,16 @@ public struct CourseVerticalView: View {
                             ForEach(viewModel.verticals, id: \.id) { vertical in
                                 if let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id}) {
                                     Button(action: {
-                                        if let block = viewModel.verticals[index].childs.first {
-                                            viewModel.analyticsManager.verticalClicked(courseId: block.blockId,
-                                                                                       courseName: title,
-                                                                                       blockId: block.id,
-                                                                                       blockName: block.displayName)
-                                            viewModel.router.showCourseUnit(courseName: title,
+                                        let vertical = viewModel.verticals[index]
+                                        if let block = vertical.childs.first {
+                                            viewModel.analytics.verticalClicked(courseId: courseID,
+                                                                                courseName: courseName,
+                                                                                blockId: vertical.blockId,
+                                                                                blockName: vertical.displayName)
+                                            viewModel.router.showCourseUnit(courseName: courseName,
                                                                             id: id,
                                                                             blockId: block.id,
-                                                                            courseID: block.blockId,
+                                                                            courseID: courseID,
                                                                             sectionName: block.displayName,
                                                                             verticalIndex: index,
                                                                             chapters: viewModel.chapters,
@@ -195,16 +202,16 @@ struct CourseVerticalView_Previews: PreviewProvider {
             sequentialIndex: 0,
             manager: DownloadManagerMock(),
             router: CourseRouterMock(),
-            analyticsManager: CourseAnalyticsMock(),
+            analytics: CourseAnalyticsMock(),
             connectivity: Connectivity()
         )
         
         return Group {
-            CourseVerticalView(title: "Course title", id: "1", viewModel: viewModel)
+            CourseVerticalView(title: "Course title", courseName: "CourseName", courseID: "1", id: "1", viewModel: viewModel)
                 .preferredColorScheme(.light)
                 .previewDisplayName("CourseVerticalView Light")
             
-            CourseVerticalView(title: "Course title", id: "1", viewModel: viewModel)
+            CourseVerticalView(title: "Course title", courseName: "CourseName", courseID: "1", id: "1", viewModel: viewModel)
                 .preferredColorScheme(.dark)
                 .previewDisplayName("CourseVerticalView Dark")
         }

@@ -31,20 +31,20 @@ public class SearchViewModel<S: Scheduler>: ObservableObject {
     }
     
     let router: DiscoveryRouter
-    let analyticsManager: DiscoveryAnalytics
+    let analytics: DiscoveryAnalytics
     private let interactor: DiscoveryInteractorProtocol
     let connectivity: ConnectivityProtocol
     
     public init(interactor: DiscoveryInteractorProtocol,
                 connectivity: ConnectivityProtocol,
                 router: DiscoveryRouter,
-                analyticsManager: DiscoveryAnalytics,
+                analytics: DiscoveryAnalytics,
                 debounce: Debounce<S>
     ) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.router = router
-        self.analyticsManager = analyticsManager
+        self.analytics = analytics
         self.debounce = debounce
         
         $searchText
@@ -77,7 +77,6 @@ public class SearchViewModel<S: Scheduler>: ObservableObject {
                     if totalPages != 1 {
                         if nextPage <= totalPages {
                             await search(page: self.nextPage, searchTerm: searchTerm)
-                            analyticsManager.discoveryCoursesSearch(label: searchTerm, coursesCount: searchResults.count)
                         }
                     }
                 }
@@ -94,23 +93,26 @@ public class SearchViewModel<S: Scheduler>: ObservableObject {
             if !searchTerm.trimmingCharacters(in: .whitespaces).isEmpty {
                 var results: [CourseItem] = []
                 await results = try interactor.search(page: page, searchTerm: searchTerm)
-                analyticsManager.discoveryCoursesSearch(label: searchTerm, coursesCount: results.count)
+                
                 if results.isEmpty {
                     searchResults.removeAll()
                     fetchInProgress = false
                     return
                 }
-
+                
                 if page == 1 {
                     searchResults = results
                 } else {
                     searchResults += results
                 }
-
+                
                 if !searchResults.isEmpty {
                     self.nextPage += 1
                     totalPages = results[0].numPages
                 }
+                
+                analytics.discoveryCoursesSearch(label: searchTerm,
+                                                 coursesCount: searchResults.first?.coursesCount ?? 0)
             }
             
             fetchInProgress = false

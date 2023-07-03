@@ -28,14 +28,14 @@ public class DiscoveryViewModel: ObservableObject {
     
     private let interactor: DiscoveryInteractorProtocol
     let connectivity: ConnectivityProtocol
-    let analyticsManager: DiscoveryAnalytics
+    let analytics: DiscoveryAnalytics
     
     public init(interactor: DiscoveryInteractorProtocol,
                 connectivity: ConnectivityProtocol,
-                analyticsManager: DiscoveryAnalytics) {
+                analytics: DiscoveryAnalytics) {
         self.interactor = interactor
         self.connectivity = connectivity
-        self.analyticsManager = analyticsManager
+        self.analytics = analytics
     }
     
     @MainActor

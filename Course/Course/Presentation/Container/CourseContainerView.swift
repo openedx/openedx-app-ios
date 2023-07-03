@@ -97,9 +97,9 @@ public struct CourseContainerView: View {
                         .hideNavigationBar()
                     }
                     .navigationBarHidden(true)
-                    .introspectViewController { vc in
+                    .introspect(.navigationView(style: .stack), on: .iOS(.v14, .v15, .v16, .v17), customize: { vc in
                         vc.navigationController?.setNavigationBarHidden(true, animated: false)
-                    }
+                    })
                     .onFirstAppear {
                         Task {
                             await viewModel.tryToRefreshCookies()
@@ -110,16 +110,16 @@ public struct CourseContainerView: View {
         }.onChange(of: selection, perform: { selection in
             switch selection {
             case .course:
-                viewModel.analyticsManager.courseOutlineCourseTabClicked(courseId: courseID,
+                viewModel.analytics.courseOutlineCourseTabClicked(courseId: courseID,
                                                                          courseName: title)
             case .videos:
-                viewModel.analyticsManager.courseOutlineVideosTabClicked(courseId: courseID,
+                viewModel.analytics.courseOutlineVideosTabClicked(courseId: courseID,
                                                                          courseName: title)
             case .discussion:
-                viewModel.analyticsManager.courseOutlineDiscussionTabClicked(courseId: courseID,
+                viewModel.analytics.courseOutlineDiscussionTabClicked(courseId: courseID,
                                                                              courseName: title)
             case .handounds:
-                viewModel.analyticsManager.courseOutlineHandoutsTabClicked(courseId: courseID,
+                viewModel.analytics.courseOutlineHandoutsTabClicked(courseId: courseID,
                                                                            courseName: title)
             }
         })
@@ -134,7 +134,7 @@ struct CourseScreensView_Previews: PreviewProvider {
                 interactor: CourseInteractor.mock,
                 authInteractor: AuthInteractor.mock,
                 router: CourseRouterMock(),
-                analyticsManager: CourseAnalyticsMock(),
+                analytics: CourseAnalyticsMock(),
                 config: ConfigMock(),
                 connectivity: Connectivity(),
                 manager: DownloadManagerMock(),

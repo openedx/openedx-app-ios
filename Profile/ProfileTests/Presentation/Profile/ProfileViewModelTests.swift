@@ -22,7 +22,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -56,7 +56,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -90,7 +90,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -116,7 +116,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -140,7 +140,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -164,7 +164,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -185,7 +185,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -208,7 +208,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
-                                         analyticsManager: analytics,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
                 

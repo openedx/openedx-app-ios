@@ -29,7 +29,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)
@@ -58,7 +58,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)
@@ -82,7 +82,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)
@@ -104,7 +104,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)
@@ -133,7 +133,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)
@@ -168,7 +168,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)
@@ -194,7 +194,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)
@@ -220,7 +220,7 @@ final class SignUpViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignUpViewModel(interactor: interactor,
                                         router: router,
-                                        analyticsManager: analytics,
+                                        analytics: analytics,
                                         config: ConfigMock(),
                                         cssInjector: CSSInjectorMock(),
                                         validator: validator)

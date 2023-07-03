@@ -47,7 +47,7 @@ class ScreenAssembly: Assembly {
             SignInViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
-                analyticsManager: r.resolve(AuthorizationAnalytics.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )
         }
@@ -55,7 +55,7 @@ class ScreenAssembly: Assembly {
             SignUpViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
-                analyticsManager: r.resolve(AuthorizationAnalytics.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 validator: r.resolve(Validator.self)!
@@ -65,7 +65,7 @@ class ScreenAssembly: Assembly {
             ResetPasswordViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
-                analyticsManager: r.resolve(AuthorizationAnalytics.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )
         }
@@ -92,7 +92,7 @@ class ScreenAssembly: Assembly {
             DiscoveryViewModel(
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analyticsManager: r.resolve(DiscoveryAnalytics.self)!
+                analytics: r.resolve(DiscoveryAnalytics.self)!
             )
         }
         
@@ -101,7 +101,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 router: r.resolve(DiscoveryRouter.self)!,
-                analyticsManager: r.resolve(DiscoveryAnalytics.self)!,
+                analytics: r.resolve(DiscoveryAnalytics.self)!,
                 debounce: .searchDebounce
             )
         }
@@ -128,7 +128,7 @@ class ScreenAssembly: Assembly {
             DashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analyticsManager: r.resolve(DashboardAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!
             )
         }
         
@@ -151,7 +151,7 @@ class ScreenAssembly: Assembly {
             ProfileViewModel(
                 interactor: r.resolve(ProfileInteractor.self)!,
                 router: r.resolve(ProfileRouter.self)!,
-                analyticsManager: r.resolve(ProfileAnalytics.self)!,
+                analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
@@ -161,7 +161,7 @@ class ScreenAssembly: Assembly {
                 userModel: userModel,
                 interactor: r.resolve(ProfileInteractor.self)!,
                 router: r.resolve(ProfileRouter.self)!,
-                analyticsManager: r.resolve(ProfileAnalytics.self)!
+                analytics: r.resolve(ProfileAnalytics.self)!
 
             )
         }
@@ -203,7 +203,7 @@ class ScreenAssembly: Assembly {
             CourseDetailsViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
-                analyticsManager: r.resolve(CourseAnalytics.self)!,
+                analytics: r.resolve(CourseAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
@@ -218,7 +218,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
-                analyticsManager: r.resolve(CourseAnalytics.self)!,
+                analytics: r.resolve(CourseAnalytics.self)!,
                 config: r.resolve(Config.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 manager: r.resolve(DownloadManagerProtocol.self)!,
@@ -237,7 +237,7 @@ class ScreenAssembly: Assembly {
                 sequentialIndex: sequentialIndex,
                 manager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
-                analyticsManager: r.resolve(CourseAnalytics.self)!,
+                analytics: r.resolve(CourseAnalytics.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
@@ -256,7 +256,7 @@ class ScreenAssembly: Assembly {
                 verticalIndex: verticalIndex,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
-                analyticsManager: r.resolve(CourseAnalytics.self)!,
+                analytics: r.resolve(CourseAnalytics.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 manager: r.resolve(DownloadManagerProtocol.self)!
             )
@@ -328,7 +328,7 @@ class ScreenAssembly: Assembly {
                 title: title,
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                analyticsManager: r.resolve(DiscussionAnalytics.self)!,
+                analytics: r.resolve(DiscussionAnalytics.self)!,
                 config: r.resolve(Config.self)!
             )
         }

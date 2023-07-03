@@ -38,7 +38,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userProfile,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         let imageVertical = UIGraphicsImageRenderer(size: CGSize(width: 600, height: 800)).image { rendererContext in
@@ -75,7 +75,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userProfile,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         let imageHorizontal = UIGraphicsImageRenderer(size: CGSize(width: 800, height: 600)).image { rendererContext in
@@ -112,7 +112,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userProfile,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.profileChanges.shortBiography = "New bio"
@@ -144,7 +144,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.spokenLanguageConfiguration.text = "Changed"
@@ -176,7 +176,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = "Changed"
@@ -208,7 +208,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.profileChanges.isAvatarChanged = true
@@ -240,7 +240,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.profileChanges.profileType = .limited
@@ -272,7 +272,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "Changed"
@@ -304,7 +304,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.profileChanges.profileType = viewModel.userModel.isFullProfile ? .full : .limited
@@ -342,7 +342,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = "\(yearOfBirth10Years - 1)"
@@ -376,7 +376,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = ""
@@ -411,7 +411,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = ""
@@ -446,7 +446,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "USA"
@@ -494,7 +494,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.profileChanges.isAvatarDeleted = true
@@ -537,7 +537,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "USA"
@@ -593,7 +593,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "USA"
@@ -647,7 +647,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.profileChanges.isAvatarChanged = true
@@ -685,7 +685,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.loadLocationsAndSpokenLanguages()
@@ -717,7 +717,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.loadLocationsAndSpokenLanguages()
@@ -753,7 +753,7 @@ final class EditProfileViewModelTests: XCTestCase {
             userModel: userModel,
             interactor: interactor,
             router: router,
-            analyticsManager: analytics
+            analytics: analytics
         )
         
         viewModel.loadLocationsAndSpokenLanguages()

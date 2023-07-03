@@ -53,7 +53,7 @@ public struct DiscoveryView: View {
                 }
                 .onTapGesture {
                     router.showDiscoverySearch()
-                    viewModel.analyticsManager.discoverySearchBarClicked()
+                    viewModel.analytics.discoverySearchBarClicked()
                 }
                 .frame(minHeight: 48)
                 .frame(maxWidth: 532)
@@ -67,7 +67,7 @@ public struct DiscoveryView: View {
                         .fill(CoreAssets.textInputUnfocusedStroke.swiftUIColor)
                 ).onTapGesture {
                     router.showDiscoverySearch()
-                    viewModel.analyticsManager.discoverySearchBarClicked()
+                    viewModel.analytics.discoverySearchBarClicked()
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
@@ -99,7 +99,7 @@ public struct DiscoveryView: View {
                                     }
                                 }
                                 .onTapGesture {
-                                    viewModel.analyticsManager.discoveryCourseClicked(courseID: course.courseID,
+                                    viewModel.analytics.discoveryCourseClicked(courseID: course.courseID,
                                                                                       courseName: course.name)
                                     router.showCourseDetais(
                                         courseID: course.courseID,
@@ -155,7 +155,7 @@ public struct DiscoveryView: View {
 struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DiscoveryViewModel(interactor: DiscoveryInteractor.mock, connectivity: Connectivity(),
-                                    analyticsManager: DiscoveryAnalyticsMock())
+                                    analytics: DiscoveryAnalyticsMock())
         let router = DiscoveryRouterMock()
         
         DiscoveryView(viewModel: vm, router: router)

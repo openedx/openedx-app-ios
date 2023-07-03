@@ -72,7 +72,7 @@ struct CourseNavigationView: View {
                             okTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
-                                viewModel.analyticsManager
+                                viewModel.analytics
                                     .finishVerticalBackToOutlineClicked(courseId: viewModel.courseID,
                                                                         courseName: viewModel.courseName)
                                 viewModel.router.dismiss(animated: false)
@@ -104,7 +104,7 @@ struct CourseNavigationView: View {
                                     verticalIndex = 0
                                 }
                                 
-                                viewModel.analyticsManager
+                                viewModel.analytics
                                     .finishVerticalNextSectionClicked(courseId: viewModel.courseID,
                                                                       courseName: viewModel.courseName,
                                                                       blockId: viewModel.lessonID,
@@ -122,7 +122,7 @@ struct CourseNavigationView: View {
                                     sequentialIndex: sequentialIndex)
                             }
                         )
-                        viewModel.analyticsManager.finishVerticalClicked(courseId: viewModel.courseID,
+                        viewModel.analytics.finishVerticalClicked(courseId: viewModel.courseID,
                                                                          courseName: viewModel.courseName,
                                                                          blockId: viewModel.lessonID,
                                                                          blockName: viewModel.selectedLesson().displayName)
@@ -160,7 +160,7 @@ struct CourseNavigationView_Previews: PreviewProvider {
             verticalIndex: 1,
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
-            analyticsManager: CourseAnalyticsMock(),
+            analytics: CourseAnalyticsMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock()
         )

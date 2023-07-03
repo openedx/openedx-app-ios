@@ -164,7 +164,7 @@ struct DiscussionView_Previews: PreviewProvider {
             title: "Course name",
             interactor: DiscussionInteractor.mock,
             router: DiscussionRouterMock(),
-            analyticsManager: DiscussionAnalyticsMock(),
+            analytics: DiscussionAnalyticsMock(),
             config: ConfigMock())
         let router = DiscussionRouterMock()
         

@@ -31,7 +31,7 @@ final class SearchViewModelTests: XCTestCase {
             interactor: interactor,
             connectivity: connectivity,
             router: router,
-            analyticsManager: analytics,
+            analytics: analytics,
             debounce: .test
         )
         
@@ -89,7 +89,7 @@ final class SearchViewModelTests: XCTestCase {
             interactor: interactor,
             connectivity: connectivity,
             router: router,
-            analyticsManager: analytics,
+            analytics: analytics,
             debounce: .test
         )
 
@@ -117,7 +117,7 @@ final class SearchViewModelTests: XCTestCase {
             interactor: interactor,
             connectivity: connectivity,
             router: router,
-            analyticsManager: analytics,
+            analytics: analytics,
             debounce: .test
         )
 
@@ -150,7 +150,7 @@ final class SearchViewModelTests: XCTestCase {
             interactor: interactor,
             connectivity: connectivity,
             router: router,
-            analyticsManager: analytics,
+            analytics: analytics,
             debounce: .test
         )
 

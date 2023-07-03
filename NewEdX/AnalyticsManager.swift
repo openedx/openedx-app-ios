@@ -162,7 +162,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func resumeCourseTapped(courseId: String, courseName: String, blockId: String) {
         let parameters = [
             Key.courseID: courseId,
-            Key.courseName: courseName
+            Key.courseName: courseName,
+            Key.blockID: blockId
         ]
         logEvent(.resumeCourseTapped, parameters: parameters)
     }
@@ -171,7 +172,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             Key.courseID: courseId,
             Key.courseName: courseName,
-            Key.topicID: blockId,
+            Key.blockID: blockId,
             Key.blockName: blockName
         ]
         logEvent(.sequentialClicked, parameters: parameters)
@@ -181,7 +182,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             Key.courseID: courseId,
             Key.courseName: courseName,
-            Key.topicID: blockId,
+            Key.blockID: blockId,
             Key.blockName: blockName
         ]
         logEvent(.verticalClicked, parameters: parameters)
@@ -310,6 +311,7 @@ struct Key {
     static let courseName = "course_name"
     static let topicID = "topic_id"
     static let topicName = "topic_name"
+    static let blockID = "block_id"
     static let blockName = "block_name"
     static let method = "method"
     static let label = "label"

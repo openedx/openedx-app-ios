@@ -212,8 +212,8 @@ private struct CourseStateView: View {
                 .padding(.vertical, 24)
         case .alreadyEnrolled:
             StyledButton(CourseLocalization.Details.viewCourse, action: {
-                viewModel.analyticsManager.viewCourseClicked(courseId: courseDetails.courseID,
-                                                             courseName: courseDetails.courseTitle)
+                viewModel.viewCourseClicked(courseId: courseDetails.courseID,
+                                            courseName: courseDetails.courseTitle)
                 viewModel.router.showCourseScreens(
                     courseID: courseDetails.courseID,
                     isActive: nil,
@@ -326,7 +326,7 @@ struct CourseDetailsView_Previews: PreviewProvider {
         let vm = CourseDetailsViewModel(
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
-            analyticsManager: CourseAnalyticsMock(),
+            analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity()

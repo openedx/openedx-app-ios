@@ -44,7 +44,7 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
         let viewModel = DiscussionTopicsViewModel(title: "",
                                                   interactor: interactor,
                                                   router: router,
-                                                  analyticsManager: analytics,
+                                                  analytics: analytics,
                                                   config: config)
         
         Given(interactor, .getTopics(courseID: .any, willReturn: topics))
@@ -68,7 +68,7 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
         let viewModel = DiscussionTopicsViewModel(title: "",
                                                   interactor: interactor,
                                                   router: router,
-                                                  analyticsManager: analytics,
+                                                  analytics: analytics,
                                                   config: config)
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -94,7 +94,7 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
         let viewModel = DiscussionTopicsViewModel(title: "",
                                                   interactor: interactor,
                                                   router: router,
-                                                  analyticsManager: analytics,
+                                                  analytics: analytics,
                                                   config: config)
         
         Given(interactor, .getTopics(courseID: .any, willThrow: NSError()))

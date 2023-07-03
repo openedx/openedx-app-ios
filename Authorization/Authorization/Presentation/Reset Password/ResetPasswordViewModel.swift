@@ -30,16 +30,16 @@ public class ResetPasswordViewModel: ObservableObject {
     
     private let interactor: AuthInteractorProtocol
     let router: AuthorizationRouter
-    let analyticsManager: AuthorizationAnalytics
+    let analytics: AuthorizationAnalytics
     private let validator: Validator
     
     public init(interactor: AuthInteractorProtocol,
                 router: AuthorizationRouter,
-                analyticsManager: AuthorizationAnalytics,
+                analytics: AuthorizationAnalytics,
                 validator: Validator) {
         self.interactor = interactor
         self.router = router
-        self.analyticsManager = analyticsManager
+        self.analytics = analytics
         self.validator = validator
     }
     
@@ -53,11 +53,11 @@ public class ResetPasswordViewModel: ObservableObject {
         do {
             _ = try await interactor.resetPassword(email: email).responseText.hideHtmlTagsAndUrls()
             isRecovered.wrappedValue.toggle()
-            analyticsManager.resetPasswordClicked(success: true)
+            analytics.resetPasswordClicked(success: true)
             isShowProgress = false
         } catch {
             isShowProgress = false
-            analyticsManager.resetPasswordClicked(success: false)
+            analytics.resetPasswordClicked(success: false)
             if let validationError = error.validationError,
                let value = validationError.data?["value"] as? String {
                 errorMessage = value

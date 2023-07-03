@@ -44,9 +44,9 @@ public struct DiscussionSearchTopicsView: View {
                             viewModel.isSearchActive = editing
                         }
                     )
-                    .introspectTextField { textField in
+                    .introspect(.textField, on: .iOS(.v14, .v15, .v16, .v17), customize: { textField in
                         textField.becomeFirstResponder()
-                    }
+                    })
                     .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {

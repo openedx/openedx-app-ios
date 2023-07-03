@@ -47,7 +47,7 @@ public struct EditProfileView: View {
                     rightButtonAction: {
                         if viewModel.isChanged {
                             Task {
-                                viewModel.analyticsManager.profileEditDoneClicked()
+                                viewModel.analytics.profileEditDoneClicked()
                                 await viewModel.saveProfileUpdates()
                             }
                         }
@@ -140,7 +140,7 @@ public struct EditProfileView: View {
                         })
                         
                         Button(ProfileLocalization.Edit.deleteAccount, action: {
-                            viewModel.analyticsManager.profileDeleteAccountClicked()
+                            viewModel.analytics.profileDeleteAccountClicked()
                             viewModel.router.showDeleteProfileView()
                         })
                         .font(Theme.Fonts.labelLarge)
@@ -248,7 +248,7 @@ struct EditProfileView_Previews: PreviewProvider {
                 userModel: userModel,
                 interactor: ProfileInteractor.mock,
                 router: ProfileRouterMock(),
-                analyticsManager: ProfileAnalyticsMock()),
+                analytics: ProfileAnalyticsMock()),
             avatar: nil,
             profileDidEdit: {_ in}
         )

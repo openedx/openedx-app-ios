@@ -25,7 +25,7 @@ public class SignUpViewModel: ObservableObject {
     @Published var fields: [FieldConfiguration] = []
     
     let router: AuthorizationRouter
-    let analyticsManager: AuthorizationAnalytics
+    let analytics: AuthorizationAnalytics
     let config: Config
     let cssInjector: CSSInjector
     
@@ -35,14 +35,14 @@ public class SignUpViewModel: ObservableObject {
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
-        analyticsManager: AuthorizationAnalytics,
+        analytics: AuthorizationAnalytics,
         config: Config,
         cssInjector: CSSInjector,
         validator: Validator
     ) {
         self.interactor = interactor
         self.router = router
-        self.analyticsManager = analyticsManager
+        self.analytics = analytics
         self.config = config
         self.cssInjector = cssInjector
         self.validator = validator
@@ -90,8 +90,8 @@ public class SignUpViewModel: ObservableObject {
             guard !showErrors(errors: errors) else { return }
             isShowProgress = true
             let user = try await interactor.registerUser(fields: validateFields)
-            analyticsManager.setUserID("\(user.id)")
-            analyticsManager.registrationSuccess()
+            analytics.setUserID("\(user.id)")
+            analytics.registrationSuccess()
             isShowProgress = false
             router.showMainScreen()
             

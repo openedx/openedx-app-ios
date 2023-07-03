@@ -160,6 +160,8 @@ public class Router: AuthorizationRouter,
     
     public func showCourseVerticalView(
         id: String,
+        courseID: String,
+        courseName: String,
         title: String,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -172,7 +174,7 @@ public class Router: AuthorizationRouter,
             sequentialIndex
         )!
         
-        let view = CourseVerticalView(title: title, id: id, viewModel: viewModel)
+        let view = CourseVerticalView(title: title, courseName: courseName, courseID: courseID, id: id, viewModel: viewModel)
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -268,6 +270,8 @@ public class Router: AuthorizationRouter,
         
         let viewVertical = CourseVerticalView(
             title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+            courseName: courseName,
+            courseID: courseID,
             id: id,
             viewModel: vmVertical
         )

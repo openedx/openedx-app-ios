@@ -48,6 +48,7 @@ public class CourseInteractor: CourseInteractorProtocol {
             }
         }
         return CourseStructure(
+            courseID: course.courseID,
             id: course.id,
             graded: course.graded,
             completion: course.completion,

@@ -10,7 +10,6 @@ import SwiftUI
 import Core
 import Discussion
 import Swinject
-import Introspect
 import Combine
 
 public struct CourseUnitView: View {
@@ -328,7 +327,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             verticalIndex: 0,
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
-            analyticsManager: CourseAnalyticsMock(),
+            analytics: CourseAnalyticsMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock()
         ), sectionName: "")

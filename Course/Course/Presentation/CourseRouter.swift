@@ -46,6 +46,8 @@ public protocol CourseRouter: BaseRouter {
     
     func showCourseVerticalView(
         id: String,
+        courseID: String,
+        courseName: String,
         title: String,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -102,6 +104,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public func showCourseVerticalView(
         id: String,
+        courseID: String,
+        courseName: String,
         title: String,
         chapters: [CourseChapter],
         chapterIndex: Int,

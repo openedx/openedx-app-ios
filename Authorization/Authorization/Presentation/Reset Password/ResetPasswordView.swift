@@ -159,7 +159,7 @@ struct ResetPasswordView_Previews: PreviewProvider {
         let vm = ResetPasswordViewModel(
             interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
-            analyticsManager: AuthorizationAnalyticsMock(),
+            analytics: AuthorizationAnalyticsMock(),
             validator: Validator()
         )
         ResetPasswordView(viewModel: vm)
