@@ -43,9 +43,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func back(animated: Bool) {
-        DispatchQueue.main.async {
-            self.navigationController.popViewController(animated: animated)
-        }
+        navigationController.popViewController(animated: animated)
     }
     
     public func backWithFade() {
