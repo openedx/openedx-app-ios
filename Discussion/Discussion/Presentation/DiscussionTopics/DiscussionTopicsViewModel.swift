@@ -130,8 +130,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                 self.analytics.discussionTopicClicked(
                                     courseId: self.courseID,
                                     courseName: self.title,
-                                    topicId: t.id,
-                                    topicName: t.name
+                                    topicId: child.id,
+                                    topicName: child.name
                                 )
                                 self.router.showThreads(
                                     courseID: self.courseID,
