@@ -192,7 +192,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             Key.courseID: courseId,
             Key.courseName: courseName,
-            Key.topicID: blockId,
+            Key.blockID: blockId,
             Key.blockName: blockName
         ]
         logEvent(.nextBlockClicked, parameters: parameters)
@@ -202,7 +202,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             Key.courseID: courseId,
             Key.courseName: courseName,
-            Key.topicID: blockId,
+            Key.blockID: blockId,
             Key.blockName: blockName
         ]
         logEvent(.prevBlockClicked, parameters: parameters)
@@ -212,7 +212,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             Key.courseID: courseId,
             Key.courseName: courseName,
-            Key.topicID: blockId,
+            Key.blockID: blockId,
             Key.blockName: blockName
         ]
         logEvent(.finishVerticalClicked, parameters: parameters)
@@ -227,7 +227,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             Key.courseID: courseId,
             Key.courseName: courseName,
-            Key.topicID: blockId,
+            Key.blockID: blockId,
             Key.blockName: blockName
         ]
         logEvent(.finishVerticalNextSectionClicked, parameters: parameters)
