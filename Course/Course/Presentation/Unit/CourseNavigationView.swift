@@ -105,10 +105,12 @@ struct CourseNavigationView: View {
                                 }
                                 
                                 viewModel.analytics
-                                    .finishVerticalNextSectionClicked(courseId: viewModel.courseID,
+                                    .finishVerticalNextSectionClicked(
+                                        courseId: viewModel.courseID,
                                                                       courseName: viewModel.courseName,
-                                                                      blockId: viewModel.lessonID,
-                                                                      blockName: viewModel.selectedLesson().displayName)
+                                                                      blockId: viewModel.selectedLesson().blockId,
+                                                                      blockName: viewModel.selectedLesson().displayName
+                                    )
                                 
                                 viewModel.router.replaceCourseUnit(
                                     id: viewModel.id,
@@ -122,10 +124,12 @@ struct CourseNavigationView: View {
                                     sequentialIndex: sequentialIndex)
                             }
                         )
-                        viewModel.analytics.finishVerticalClicked(courseId: viewModel.courseID,
+                        viewModel.analytics.finishVerticalClicked(
+                            courseId: viewModel.courseID,
                                                                          courseName: viewModel.courseName,
-                                                                         blockId: viewModel.lessonID,
-                                                                         blockName: viewModel.selectedLesson().displayName)
+                                                                  blockId: viewModel.selectedLesson().blockId,
+                                                                         blockName: viewModel.selectedLesson().displayName
+                        )
                     })
                 } else {
                     if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
