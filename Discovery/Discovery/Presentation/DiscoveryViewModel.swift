@@ -26,9 +26,9 @@ public class DiscoveryViewModel: ObservableObject {
         }
     }
     
-    private let interactor: DiscoveryInteractorProtocol
     let connectivity: ConnectivityProtocol
-    let analytics: DiscoveryAnalytics
+    private let interactor: DiscoveryInteractorProtocol
+    private let analytics: DiscoveryAnalytics
     
     public init(interactor: DiscoveryInteractorProtocol,
                 connectivity: ConnectivityProtocol,
@@ -80,4 +80,11 @@ public class DiscoveryViewModel: ObservableObject {
         }
     }
     
+    func discoveryCourseClicked(courseID: String, courseName: String) {
+        analytics.discoveryCourseClicked(courseID: courseID, courseName: courseName)
+    }
+    
+    func discoverySearchBarClicked() {
+        analytics.discoverySearchBarClicked()
+    }
 }

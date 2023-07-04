@@ -26,10 +26,9 @@ public class DashboardViewModel: ObservableObject {
         }
     }
     
+    let connectivity: ConnectivityProtocol
     private let interactor: DashboardInteractorProtocol
-    public let connectivity: ConnectivityProtocol
-    let analytics: DashboardAnalytics
-    
+    private let analytics: DashboardAnalytics
     private var onCourseEnrolledCancellable: AnyCancellable?
     
     public init(interactor: DashboardInteractorProtocol,
@@ -94,5 +93,9 @@ public class DashboardViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func dashboardCourseClicked(courseID: String, courseName: String) {
+        analytics.dashboardCourseClicked(courseID: courseID, courseName: courseName)
     }
 }

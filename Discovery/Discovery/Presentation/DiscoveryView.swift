@@ -53,7 +53,7 @@ public struct DiscoveryView: View {
                 }
                 .onTapGesture {
                     router.showDiscoverySearch()
-                    viewModel.analytics.discoverySearchBarClicked()
+                    viewModel.discoverySearchBarClicked()
                 }
                 .frame(minHeight: 48)
                 .frame(maxWidth: 532)
@@ -67,7 +67,7 @@ public struct DiscoveryView: View {
                         .fill(CoreAssets.textInputUnfocusedStroke.swiftUIColor)
                 ).onTapGesture {
                     router.showDiscoverySearch()
-                    viewModel.analytics.discoverySearchBarClicked()
+                    viewModel.discoverySearchBarClicked()
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
@@ -99,8 +99,7 @@ public struct DiscoveryView: View {
                                     }
                                 }
                                 .onTapGesture {
-                                    viewModel.analytics.discoveryCourseClicked(courseID: course.courseID,
-                                                                                      courseName: course.name)
+                                    viewModel.discoveryCourseClicked(courseID: course.courseID, courseName: course.name)
                                     router.showCourseDetais(
                                         courseID: course.courseID,
                                         title: course.name
