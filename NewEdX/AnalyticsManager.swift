@@ -297,7 +297,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             Key.topicID: topicId,
             Key.topicName: topicName
         ]
-        logEvent(.discussionAllPostsClicked, parameters: parameters)
+        logEvent(.discussionTopicClicked, parameters: parameters)
     }
     
     private func logEvent(_ event: Event, parameters: [String: Any]? = nil) {
