@@ -8,10 +8,10 @@
 import Foundation
 
 public enum LoginMethod: String {
-    case password
-    case facebook
-    case google
-    case microsoft
+    case password = "Password"
+    case facebook = "Facebook"
+    case google = "Google"
+    case microsoft = "Microsoft"
 }
 
 //sourcery: AutoMockable

@@ -107,9 +107,9 @@ struct CourseNavigationView: View {
                                 viewModel.analytics
                                     .finishVerticalNextSectionClicked(
                                         courseId: viewModel.courseID,
-                                                                      courseName: viewModel.courseName,
-                                                                      blockId: viewModel.selectedLesson().blockId,
-                                                                      blockName: viewModel.selectedLesson().displayName
+                                        courseName: viewModel.courseName,
+                                        blockId: viewModel.selectedLesson().blockId,
+                                        blockName: viewModel.selectedLesson().displayName
                                     )
                                 
                                 viewModel.router.replaceCourseUnit(
@@ -126,9 +126,9 @@ struct CourseNavigationView: View {
                         )
                         viewModel.analytics.finishVerticalClicked(
                             courseId: viewModel.courseID,
-                                                                         courseName: viewModel.courseName,
-                                                                  blockId: viewModel.selectedLesson().blockId,
-                                                                         blockName: viewModel.selectedLesson().displayName
+                            courseName: viewModel.courseName,
+                            blockId: viewModel.selectedLesson().blockId,
+                            blockName: viewModel.selectedLesson().displayName
                         )
                     })
                 } else {
