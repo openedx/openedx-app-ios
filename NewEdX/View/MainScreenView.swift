@@ -44,8 +44,8 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
-            .navigationBarHidden(true)
-            
+            .hideNavigationBar()
+
             VStack {
                 DashboardView(
                     viewModel: Container.shared.resolve(DashboardViewModel.self)!,
@@ -57,10 +57,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
-            .navigationBarHidden(true)
-            .introspect(.navigationView(style: .stack), on: .iOS(.v14, .v15, .v16, .v17), customize: { vc in
-                vc.navigationController?.setNavigationBarHidden(true, animated: false)
-            })
+            .hideNavigationBar()
             
             VStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
@@ -70,8 +67,8 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.programs)
             }
             .tag(MainTab.programs)
-            .navigationBarHidden(true)
-            
+            .hideNavigationBar()
+
             VStack {
                 ProfileView(
                     viewModel: Container.shared.resolve(ProfileViewModel.self)!
@@ -82,11 +79,8 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
-            .navigationBarHidden(true)
-            .introspect(.navigationView(style: .stack), on: .iOS(.v14, .v15, .v16, .v17), customize: { vc in
-                vc.navigationController?.setNavigationBarHidden(true, animated: false)
-            })
-        }  .navigationBarHidden(true)
+            .hideNavigationBar()
+        }
             .onChange(of: selection, perform: { selection in
                 switch selection {
                 case .discovery:

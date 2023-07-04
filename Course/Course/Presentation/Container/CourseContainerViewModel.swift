@@ -152,6 +152,23 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
+    func trackSelectedTab(
+        selection: CourseContainerView.CourseTab,
+        courseId: String,
+        courseName: String
+    ) {
+        switch selection {
+        case .course:
+            analytics.courseOutlineCourseTabClicked(courseId: courseId, courseName: courseName)
+        case .videos:
+            analytics.courseOutlineVideosTabClicked(courseId: courseId, courseName: courseName)
+        case .discussion:
+            analytics.courseOutlineDiscussionTabClicked(courseId: courseId, courseName: courseName)
+        case .handounds:
+            analytics.courseOutlineHandoutsTabClicked(courseId: courseId, courseName: courseName)
+        }
+    }
+    
     @MainActor
     private func setDownloadsStates() {
         guard let courseStructure else { return }

@@ -12,6 +12,7 @@ public struct DiscussionSearchTopicsView: View {
     
     @ObservedObject private var viewModel: DiscussionSearchTopicsViewModel<RunLoop>
     @State private var animated: Bool = false
+    @State private var becomeFirstResponderRunOnce = false
     
     public init(viewModel: DiscussionSearchTopicsViewModel<RunLoop>) {
         self.viewModel = viewModel
@@ -45,7 +46,10 @@ public struct DiscussionSearchTopicsView: View {
                         }
                     )
                     .introspect(.textField, on: .iOS(.v14, .v15, .v16, .v17), customize: { textField in
-                        textField.becomeFirstResponder()
+                        if !becomeFirstResponderRunOnce {
+                            textField.becomeFirstResponder()
+                            self.becomeFirstResponderRunOnce = true
+                        }
                     })
                     .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     Spacer()

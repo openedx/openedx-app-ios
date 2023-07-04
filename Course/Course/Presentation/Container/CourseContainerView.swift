@@ -18,7 +18,7 @@ public struct CourseContainerView: View {
     private var courseID: String
     private var title: String
     
-    public enum CourseTab {
+    enum CourseTab {
         case course
         case videos
         case discussion
@@ -96,10 +96,6 @@ public struct CourseContainerView: View {
                         .tag(CourseTab.handounds)
                         .hideNavigationBar()
                     }
-                    .navigationBarHidden(true)
-                    .introspect(.navigationView(style: .stack), on: .iOS(.v14, .v15, .v16, .v17), customize: { vc in
-                        vc.navigationController?.setNavigationBarHidden(true, animated: false)
-                    })
                     .onFirstAppear {
                         Task {
                             await viewModel.tryToRefreshCookies()
@@ -108,20 +104,11 @@ public struct CourseContainerView: View {
                 }
             }
         }.onChange(of: selection, perform: { selection in
-            switch selection {
-            case .course:
-                viewModel.analytics.courseOutlineCourseTabClicked(courseId: courseID,
-                                                                         courseName: title)
-            case .videos:
-                viewModel.analytics.courseOutlineVideosTabClicked(courseId: courseID,
-                                                                         courseName: title)
-            case .discussion:
-                viewModel.analytics.courseOutlineDiscussionTabClicked(courseId: courseID,
-                                                                             courseName: title)
-            case .handounds:
-                viewModel.analytics.courseOutlineHandoutsTabClicked(courseId: courseID,
-                                                                           courseName: title)
-            }
+            viewModel.trackSelectedTab(
+                selection: selection,
+                courseId: courseID,
+                courseName: title
+            )
         })
     }
 }
