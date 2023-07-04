@@ -35,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if BuildConfiguration.shared.firebaseOptions.apiKey != "" {
             FirebaseApp.configure(options: BuildConfiguration.shared.firebaseOptions)
-            Analytics.setAnalyticsCollectionEnabled(true)
             Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
         }
         

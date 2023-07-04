@@ -301,7 +301,6 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     private func logEvent(_ event: Event, parameters: [String: Any]? = nil) {
-        Analytics.setAnalyticsCollectionEnabled(true)
         Analytics.logEvent(event.rawValue, parameters: parameters)
     }
 }
