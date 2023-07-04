@@ -98,6 +98,12 @@ public class DiscussionTopicsViewModel: ObservableObject {
                         DiscussionTopic(
                             name: children.name,
                             action: {
+                                self.analytics.discussionTopicClicked(
+                                    courseId: self.courseID,
+                                    courseName: self.title,
+                                    topicId: t.id,
+                                    topicName: t.name
+                                )
                                 self.router.showThreads(
                                     courseID: self.courseID,
                                     topics: topics,
@@ -121,6 +127,12 @@ public class DiscussionTopicsViewModel: ObservableObject {
                         DiscussionTopic(
                             name: child.name,
                             action: {
+                                self.analytics.discussionTopicClicked(
+                                    courseId: self.courseID,
+                                    courseName: self.title,
+                                    topicId: t.id,
+                                    topicName: t.name
+                                )
                                 self.router.showThreads(
                                     courseID: self.courseID,
                                     topics: topics,
