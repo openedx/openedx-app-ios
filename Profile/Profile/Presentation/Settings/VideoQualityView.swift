@@ -11,11 +11,11 @@ import Kingfisher
 
 public struct VideoQualityView: View {
     
-    @ObservedObject private var viewModel: SettingsViewModel
+    @ObservedObject
+    private var viewModel: SettingsViewModel
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
-        
     }
     
     public var body: some View {
@@ -24,7 +24,7 @@ public struct VideoQualityView: View {
             // MARK: - Page name
             VStack(alignment: .center) {
                 NavigationBar(title: ProfileLocalization.Settings.videoQualityTitle,
-                leftButtonAction: { viewModel.router.back() })
+                              leftButtonAction: { viewModel.router.back() })
                 
                 // MARK: - Page Body
                 
@@ -40,20 +40,22 @@ public struct VideoQualityView: View {
                                 Button(action: {
                                     viewModel.selectedQuality = quality
                                 }, label: {
-                                HStack {
-                                    SettingsCell(title: quality.title(),
-                                                 description: quality.description())
-                                    Spacer()
+                                    HStack {
+                                        SettingsCell(
+                                            title: quality.title(),
+                                            description: quality.description()
+                                        )
+                                        Spacer()
                                         CoreAssets.checkmark.swiftUIImage
                                             .renderingMode(.template)
                                             .foregroundColor(.accentColor)
                                             .opacity(quality == viewModel.selectedQuality ? 1 : 0)
-
-                                }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                        
+                                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                 })
                                 Divider()
                             }
-
+                            
                         }
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,

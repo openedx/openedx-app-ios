@@ -5,7 +5,7 @@
 //  Created by  Stepanok Ivan on 05.10.2022.
 //
 
-import Foundation
+import SwiftUI
 import Core
 
 public enum LessonType: Equatable {
@@ -13,7 +13,7 @@ public enum LessonType: Equatable {
     case youtube(viewYouTubeUrl: String, blockID: String)
     case video(videoUrl: String, blockID: String)
     case unknown(String)
-    case discussion(String)
+    case discussion(String, String, String)
     
     static func from(_ block: CourseBlock) -> Self {
         switch block.type {
@@ -22,7 +22,7 @@ public enum LessonType: Equatable {
         case .html:
             return .web(block.studentUrl)
         case .discussion:
-            return .discussion(block.topicId ?? "")
+            return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
             if block.youTubeUrl != nil, let encodedVideo = block.videoUrl {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
@@ -42,12 +42,18 @@ public enum LessonType: Equatable {
 
 public class CourseUnitViewModel: ObservableObject {
     
-    public var blocks: [CourseBlock]
+    enum LessonAction {
+        case next
+        case previous
+    }
+    
+    var verticals: [CourseVertical]
+    var verticalIndex: Int
+    var courseName: String
+    
     @Published var index: Int = 0
-    @Published var previousLesson: String = ""
-    @Published var nextLesson: String = ""
-    @Published var lessonType: LessonType?
-    @Published var killPlayer = false
+    var previousLesson: String = ""
+    var nextLesson: String = ""
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {
@@ -55,76 +61,91 @@ public class CourseUnitViewModel: ObservableObject {
         }
     }
     
-    public var lessonID: String
-    public var courseID: String
-
+    var lessonID: String
+    var courseID: String
+    var id: String
+    
     private let interactor: CourseInteractorProtocol
-    public let router: CourseRouter
-    public let connectivity: ConnectivityProtocol
+    let router: CourseRouter
+    let analytics: CourseAnalytics
+    let connectivity: ConnectivityProtocol
     private let manager: DownloadManagerProtocol
     private var subtitlesDownloaded: Bool = false
+    let chapters: [CourseChapter]
+    let chapterIndex: Int
+    let sequentialIndex: Int
     
     func loadIndex() {
         index = selectLesson()
     }
     
-    public init(lessonID: String,
-                courseID: String,
-                blocks: [CourseBlock],
-                interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol,
-                manager: DownloadManagerProtocol
+    public init(
+        lessonID: String,
+        courseID: String,
+        id: String,
+        courseName: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int,
+        verticalIndex: Int,
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        analytics: CourseAnalytics,
+        connectivity: ConnectivityProtocol,
+        manager: DownloadManagerProtocol
     ) {
         self.lessonID = lessonID
         self.courseID = courseID
-        self.blocks = blocks
+        self.id = id
+        self.courseName = courseName
+        self.chapters = chapters
+        self.chapterIndex = chapterIndex
+        self.sequentialIndex = sequentialIndex
+        self.verticalIndex = verticalIndex
+        self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.connectivity = connectivity
         self.manager = manager
     }
     
-    public func languages() -> [SubtitleUrl] {
-        return blocks.first(where: { $0.id == lessonID })?.subtitles ?? []
-    }
-
     private func selectLesson() -> Int {
-        guard blocks.count > 0 else { return 0 }
-        let index = blocks.firstIndex(where: { $0.id == lessonID }) ?? 0
+        guard verticals[verticalIndex].childs.count > 0 else { return 0 }
+        let index = verticals[verticalIndex].childs.firstIndex(where: { $0.id == lessonID }) ?? 0
         nextTitles()
         return index
     }
     
     func selectedLesson() -> CourseBlock {
-        return blocks[index]
-    }
-    
-    func createLessonType() {
-        self.lessonType = LessonType.from(blocks[index])
-    }
-    
-    enum LessonAction {
-        case next
-        case previous
+        return verticals[verticalIndex].childs[index]
     }
     
     func select(move: LessonAction) {
         switch move {
         case .next:
-            if index != blocks.count - 1 { index += 1 }
+            if index != verticals[verticalIndex].childs.count - 1 { index += 1 }
+            let nextBlock = verticals[verticalIndex].childs[index]
             nextTitles()
+            analytics.nextBlockClicked(courseId: courseID,
+                                              courseName: courseName,
+                                              blockId: nextBlock.blockId,
+                                              blockName: nextBlock.displayName)
         case .previous:
             if index != 0 { index -= 1 }
             nextTitles()
+            let prevBlock = verticals[verticalIndex].childs[index]
+            analytics.prevBlockClicked(courseId: courseID,
+                                              courseName: courseName,
+                                              blockId: prevBlock.blockId,
+                                              blockName: prevBlock.displayName)
         }
     }
     
     @MainActor
     func blockCompletionRequest(blockID: String) async {
-        let fullBlockID = "block-v1:\(courseID.dropFirst(10))+type@discussion+block@\(blockID)"
         do {
-            try await interactor.blockCompletionRequest(courseID: courseID, blockID: fullBlockID)
+            try await interactor.blockCompletionRequest(courseID: self.id, blockID: blockID)
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -136,20 +157,18 @@ public class CourseUnitViewModel: ObservableObject {
     
     func nextTitles() {
         if index != 0 {
-            previousLesson = blocks[index - 1].displayName
+            previousLesson = verticals[verticalIndex].childs[index - 1].displayName
         } else {
             previousLesson = ""
         }
-        if index != blocks.count - 1 {
-            nextLesson = blocks[index + 1].displayName
+        if index != verticals[verticalIndex].childs.count - 1 {
+            nextLesson = verticals[verticalIndex].childs[index + 1].displayName
         } else {
             nextLesson = ""
         }
     }
     
-    public func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
-        guard let block = blocks.first(where: { $0.id == blockId }) else { return nil }
-        
+    func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
         if let fileURL = manager.fileUrl(for: blockId) {
             return fileURL
         } else {

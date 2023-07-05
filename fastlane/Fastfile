@@ -1,0 +1,33 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+lane :linting do
+  swiftlint(
+    mode: :lint,
+    executable: "Pods/SwiftLint/swiftlint",
+    # output_file: "swiftlint.result.json",
+    config_file: ".swiftlint.yml",
+    raise_if_swiftlint_error: true,
+    ignore_exit_status: false
+  )
+end
+
+lane :unit_tests do
+  run_tests(
+    workspace: "OpenEdX.xcworkspace",
+    device: "iPhone 14",
+    scheme: "OpenEdXDev"
+  )
+end

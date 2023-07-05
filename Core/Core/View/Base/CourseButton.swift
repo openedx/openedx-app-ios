@@ -26,7 +26,8 @@ public struct CourseButton: View {
     public var body: some View {
         HStack {
             if isCompleted {
-                Image(systemName: "checkmark.circle.fill")
+                CoreAssets.finished.swiftUIImage
+                    .renderingMode(.template)
                     .foregroundColor(.accentColor)
             } else {
                 image
@@ -58,6 +59,11 @@ public struct CourseButton: View {
 
 struct CourseButton_Previews: PreviewProvider {
     static var previews: some View {
-        CourseButton(isCompleted: true, image: CoreAssets.pen.swiftUIImage, displayName: "Lets see whats happen", index: 0)
+        CourseButton(
+            isCompleted: true,
+            image: CoreAssets.pen.swiftUIImage,
+            displayName: "Lets see whats happen",
+            index: 0
+        )
     }
 }

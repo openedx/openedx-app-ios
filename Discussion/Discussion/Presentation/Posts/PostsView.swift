@@ -17,13 +17,15 @@ public struct PostsView: View {
     @State private var listAnimation: Animation?
     private let router: DiscussionRouter
     private let title: String
+    private let currentBlockID: String
     private let courseID: String
     private var showTopMenu: Bool
     
-    public init(courseID: String, topics: Topics, title: String, type: ThreadType,
+    public init(courseID: String, currentBlockID: String, topics: Topics, title: String, type: ThreadType,
                 viewModel: PostsViewModel, router: DiscussionRouter, showTopMenu: Bool = true) {
         self.courseID = courseID
         self.title = title
+        self.currentBlockID = currentBlockID
         self.router = router
         self.showTopMenu = showTopMenu
         self.viewModel = viewModel
@@ -31,17 +33,18 @@ public struct PostsView: View {
         self.viewModel.topics = topics
         viewModel.type = type
         Task {
-            await viewModel.getPosts(courseID: courseID, pageNumber: 1,   withProgress: true)
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1, withProgress: true)
         }
     }
     
     public init(courseID: String, router: DiscussionRouter, viewModel: PostsViewModel) {
         self.courseID = courseID
         self.title = ""
+        self.currentBlockID = ""
         self.router = router
         self.viewModel = viewModel
         Task {
-            await viewModel.getPosts(courseID: courseID, pageNumber: 1,   withProgress: true)
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1, withProgress: true)
         }
         self.showTopMenu = true
         self.viewModel.courseID = courseID
@@ -101,67 +104,96 @@ public struct PostsView: View {
                                                                      pageNumber: 1,
                                                                      withProgress: isIOS14)
                                     }) {
-                                        LazyVStack {
-                                            VStack {}.frame(height: 1)
-                                                .id(1)
-                                            let posts = Array(viewModel.filteredPosts.enumerated())
-                                            HStack {
-                                                Text(title)
-                                                    .font(Theme.Fonts.titleLarge)
-                                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                                                    .padding(.horizontal, 24)
-                                                    .padding(.top, 12)
-                                                Spacer()
-                                            }
-                                            ForEach(posts, id: \.offset) { index, post in
-                                                PostCell(post: post).padding(24)
-                                                    .onAppear {
-                                                        Task {
-                                                            await viewModel.getPostsPagination(courseID: self.courseID, index: index)
+                                        let posts = Array(viewModel.filteredPosts.enumerated())
+                                        if posts.count >= 1 {
+                                            LazyVStack {
+                                                VStack {}.frame(height: 1)
+                                                    .id(1)
+                                                HStack(alignment: .center) {
+                                                    Text(title)
+                                                        .font(Theme.Fonts.titleLarge)
+                                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                    Spacer()
+                                                    Button(action: {
+                                                        router.createNewThread(courseID: courseID,
+                                                                               selectedTopic: currentBlockID,
+                                                                               onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
+                                                        })
+                                                    }, label: {
+                                                        VStack {
+                                                            CoreAssets.addComment.swiftUIImage
+                                                                .font(Theme.Fonts.labelLarge)
+                                                                .padding(6)
                                                         }
-                                                    }
-                                                if posts.last?.element != post {
-                                                    Divider().padding(.horizontal, 24)
+                                                        .foregroundColor(.white)
+                                                        .background(
+                                                            Circle()
+                                                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                                        )
+                                                    })
                                                 }
+                                                .padding(.horizontal, 24)
+                                                
+                                                ForEach(posts, id: \.offset) { index, post in
+                                                    PostCell(post: post).padding(24)
+                                                        .id(UUID())
+                                                        .onAppear {
+                                                            Task {
+                                                                await viewModel.getPostsPagination(
+                                                                    courseID: self.courseID,
+                                                                    index: index
+                                                                )
+                                                            }
+                                                        }
+                                                    if posts.last?.element != post {
+                                                        Divider().padding(.horizontal, 24)
+                                                    }
+                                                }
+                                                Spacer(minLength: 84)
                                             }
-                                            Spacer(minLength: 84)
-                                        }.id(UUID())
+                                        } else {
+                                            if !viewModel.isShowProgress {
+                                                VStack(spacing: 0) {
+                                                    CoreAssets.discussionIcon.swiftUIImage
+                                                        .renderingMode(.template)
+                                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                    Text(DiscussionLocalization.Posts.NoDiscussion.title)
+                                                        .font(Theme.Fonts.titleLarge)
+                                                        .multilineTextAlignment(.center)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.top, 40)
+                                                    Text(DiscussionLocalization.Posts.NoDiscussion.description)
+                                                        .font(Theme.Fonts.bodyLarge)
+                                                        .multilineTextAlignment(.center)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.top, 12)
+                                                    StyledButton(DiscussionLocalization.Posts.NoDiscussion.createbutton,
+                                                                 action: {
+                                                        router.createNewThread(courseID: courseID,
+                                                                               selectedTopic: currentBlockID,
+                                                                               onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
+                                                        })
+                                                    }).frame(width: 215).padding(.top, 40)
+                                                }.padding(24)
+                                                    .padding(.top, 100)
+                                            }
+                                        }
                                     }
                                 }.frameLimit()
                                     .animation(listAnimation)
                                     .onRightSwipeGesture {
                                         router.back()
                                     }
-                                
-                                VStack {
-                                    Spacer()
-                                    Button(action: {
-                                        router.createNewThread(courseID: courseID,
-                                                               selectedTopic: title,
-                                                               onPostCreated: {
-                                            reloadPage(onSuccess: {
-                                                withAnimation {
-                                                    scroll.scrollTo(1)
-                                                }
-                                            })
-                                        })
-                                    }, label: {
-                                        VStack {
-                                            HStack(alignment: .center) {
-                                                CoreAssets.addComment.swiftUIImage
-                                                    .font(Theme.Fonts.labelLarge)
-                                                Text(DiscussionLocalization.Posts.createNewPost)
-                                            }.frame(maxHeight: 42)
-                                                .padding(.horizontal, 20)
-                                        }
-                                        .foregroundColor(.white)
-                                        .background(
-                                            Theme.Shapes.buttonShape
-                                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
-                                        )
-                                        .padding(.bottom, 30)
-                                    })
-                                }
                             }
                         }.frame(maxWidth: .infinity)
                     }
@@ -198,7 +230,6 @@ public struct PostsView: View {
 }
 
 #if DEBUG
-// swiftlint:disable all
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
         let topics = Topics(coursewareTopics: [], nonCoursewareTopics: [])
@@ -210,6 +241,7 @@ struct PostsView_Previews: PreviewProvider {
         )
         
         PostsView(courseID: "course_id",
+                  currentBlockID: "123",
                   topics: topics,
                   title: "Lesson question",
                   type: .allPosts,
@@ -220,6 +252,7 @@ struct PostsView_Previews: PreviewProvider {
         .loadFonts()
         
         PostsView(courseID: "course_id",
+                  currentBlockID: "123",
                   topics: topics,
                   title: "Lesson question",
                   type: .allPosts,

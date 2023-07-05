@@ -11,11 +11,11 @@ import Kingfisher
 
 public struct SettingsView: View {
     
-    @ObservedObject private var viewModel: SettingsViewModel
+    @ObservedObject
+    private var viewModel: SettingsViewModel
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
-        
     }
     
     public var body: some View {
@@ -24,7 +24,7 @@ public struct SettingsView: View {
             // MARK: - Page name
             VStack(alignment: .center) {
                 NavigationBar(title: ProfileLocalization.Settings.videoSettingsTitle,
-                leftButtonAction: { viewModel.router.back() })
+                              leftButtonAction: { viewModel.router.back() })
                 
                 // MARK: - Page Body
                 
@@ -35,11 +35,12 @@ public struct SettingsView: View {
                                 .padding(.top, 200)
                                 .padding(.horizontal)
                         } else {
-                            
                             // MARK: Wi-fi
                             HStack {
-                                    SettingsCell(title: ProfileLocalization.Settings.wifiTitle,
-                                                 description: ProfileLocalization.Settings.wifiDescription)
+                                SettingsCell(
+                                    title: ProfileLocalization.Settings.wifiTitle,
+                                    description: ProfileLocalization.Settings.wifiDescription
+                                )
                                 Toggle(isOn: $viewModel.wifiOnly, label: {})
                                     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                                     .frame(width: 50)
@@ -54,7 +55,7 @@ public struct SettingsView: View {
                                     SettingsCell(title: ProfileLocalization.Settings.videoQualityTitle,
                                                  description: viewModel.selectedQuality.settingsDescription())
                                 })
-//                                Spacer()
+                                //                                Spacer()
                                 Image(systemName: "chevron.right")
                                     .padding(.trailing, 12)
                                     .frame(width: 10)
@@ -93,8 +94,10 @@ public struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         let router = ProfileRouterMock()
-        let vm = SettingsViewModel(interactor: ProfileInteractor.mock,
-                                   router: router)
+        let vm = SettingsViewModel(
+            interactor: ProfileInteractor.mock,
+            router: router
+        )
         
         SettingsView(viewModel: vm)
             .preferredColorScheme(.light)

@@ -9,6 +9,7 @@ import Foundation
 
 public struct CourseStructure: Equatable {
     
+    public let courseID: String
     public let id: String
     public let graded: Bool
     public let completion: Double
@@ -20,7 +21,8 @@ public struct CourseStructure: Equatable {
     public let media: DataLayer.CourseMedia
     public let certificate: Certificate?
     
-    public init(id: String,
+    public init(courseID: String,
+                id: String,
                 graded: Bool,
                 completion: Double,
                 viewYouTubeUrl: String,
@@ -30,6 +32,7 @@ public struct CourseStructure: Equatable {
                 childs: [CourseChapter],
                 media: DataLayer.CourseMedia,
                 certificate: Certificate?) {
+        self.courseID = courseID
         self.id = id
         self.graded = graded
         self.completion = completion

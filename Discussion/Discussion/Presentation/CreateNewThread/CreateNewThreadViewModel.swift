@@ -28,9 +28,11 @@ public class CreateNewThreadViewModel: ObservableObject {
     public let router: DiscussionRouter
     public let config: Config
     
-    public init(interactor: DiscussionInteractorProtocol,
-                router: DiscussionRouter,
-                config: Config) {
+    public init(
+        interactor: DiscussionInteractorProtocol,
+        router: DiscussionRouter,
+        config: Config
+    ) {
         self.interactor = interactor
         self.router = router
         self.config = config
@@ -44,8 +46,10 @@ public class CreateNewThreadViewModel: ObservableObject {
             if let topics {
                 allTopics = topics.nonCoursewareTopics.map { $0 }
                 allTopics.append(contentsOf: topics.coursewareTopics.flatMap { $0.children.map { $0 } })
-                if let topic = allTopics.first {
-                    selectedTopic = topic.id
+                if selectedTopic == "" {
+                    if let topic = allTopics.first {
+                        selectedTopic = topic.id
+                    }
                 }
             }
         } catch {

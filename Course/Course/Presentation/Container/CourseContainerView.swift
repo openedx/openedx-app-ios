@@ -18,7 +18,7 @@ public struct CourseContainerView: View {
     private var courseID: String
     private var title: String
     
-    public enum CourseTab {
+    enum CourseTab {
         case course
         case videos
         case discussion
@@ -39,67 +39,77 @@ public struct CourseContainerView: View {
     }
     
     public var body: some View {
-        if let courseStart = viewModel.courseStart {
-            if courseStart > Date() {
-                CourseOutlineView(
-                    viewModel: viewModel,
-                    title: title,
-                    courseID: courseID,
-                    isVideo: false
-                )
-            } else {
-                TabView(selection: $selection) {
+        ZStack {
+            if let courseStart = viewModel.courseStart {
+                if courseStart > Date() {
                     CourseOutlineView(
-                        viewModel: self.viewModel,
+                        viewModel: viewModel,
                         title: title,
                         courseID: courseID,
                         isVideo: false
                     )
-                    .tabItem {
-                        CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
-                        Text(CourseLocalization.CourseContainer.course)
+                } else {
+                    TabView(selection: $selection) {
+                        CourseOutlineView(
+                            viewModel: self.viewModel,
+                            title: title,
+                            courseID: courseID,
+                            isVideo: false
+                        )
+                        .tabItem {
+                            CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
+                            Text(CourseLocalization.CourseContainer.course)
+                        }
+                        .tag(CourseTab.course)
+                        .hideNavigationBar()
+                        
+                        CourseOutlineView(
+                            viewModel: self.viewModel,
+                            title: title,
+                            courseID: courseID,
+                            isVideo: true
+                        )
+                        .tabItem {
+                            CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
+                            Text(CourseLocalization.CourseContainer.videos)
+                        }
+                        .tag(CourseTab.videos)
+                        .hideNavigationBar()
+                        
+                        DiscussionTopicsView(courseID: courseID,
+                                             viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
+                                                                                 argument: title)!,
+                                             router: Container.shared.resolve(DiscussionRouter.self)!)
+                        .tabItem {
+                            CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
+                            Text(CourseLocalization.CourseContainer.discussion)
+                        }
+                        .tag(CourseTab.discussion)
+                        .hideNavigationBar()
+                        
+                        HandoutsView(courseID: courseID,
+                                     viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
+                        .tabItem {
+                            CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
+                            Text(CourseLocalization.CourseContainer.handouts)
+                        }
+                        .tag(CourseTab.handounds)
+                        .hideNavigationBar()
                     }
-                    .tag(CourseTab.course)
-                    .hideNavigationBar()
-                    
-                    CourseOutlineView(
-                        viewModel: self.viewModel,
-                        title: title,
-                        courseID: courseID,
-                        isVideo: true
-                    )
-                    .tabItem {
-                        CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
-                        Text(CourseLocalization.CourseContainer.videos)
+                    .onFirstAppear {
+                        Task {
+                            await viewModel.tryToRefreshCookies()
+                        }
                     }
-                    .tag(CourseTab.videos)
-                    .hideNavigationBar()
-                    
-                    DiscussionTopicsView(courseID: courseID,
-                                         viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self)!,
-                                         router: Container.shared.resolve(DiscussionRouter.self)!)
-                    .tabItem {
-                        CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
-                        Text(CourseLocalization.CourseContainer.discussion)
-                    }
-                    .tag(CourseTab.discussion)
-                    .hideNavigationBar()
-                    
-                    HandoutsView(courseID: courseID,
-                                 viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
-                    .tabItem {
-                        CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
-                        Text(CourseLocalization.CourseContainer.handouts)
-                    }
-                    .tag(CourseTab.handounds)
-                    .hideNavigationBar()
-                }
-                .navigationBarHidden(true)
-                .introspectViewController { vc in
-                    vc.navigationController?.setNavigationBarHidden(true, animated: false)
                 }
             }
-        }
+        }.onChange(of: selection, perform: { selection in
+            viewModel.trackSelectedTab(
+                selection: selection,
+                courseId: courseID,
+                courseName: title
+            )
+        })
     }
 }
 
@@ -109,7 +119,9 @@ struct CourseScreensView_Previews: PreviewProvider {
         CourseContainerView(
             viewModel: CourseContainerViewModel(
                 interactor: CourseInteractor.mock,
+                authInteractor: AuthInteractor.mock,
                 router: CourseRouterMock(),
+                analytics: CourseAnalyticsMock(),
                 config: ConfigMock(),
                 connectivity: Connectivity(),
                 manager: DownloadManagerMock(),

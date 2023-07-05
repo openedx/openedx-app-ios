@@ -38,9 +38,11 @@ struct ProfileBottomSheet: View {
     private var removePhoto: () -> Void
     @Binding private var showingBottomSheet: Bool
     
-    init(showingBottomSheet: Binding<Bool>,
-         openGallery: @escaping () -> Void,
-         removePhoto: @escaping () -> Void) {
+    init(
+        showingBottomSheet: Binding<Bool>,
+        openGallery: @escaping () -> Void,
+        removePhoto: @escaping () -> Void
+    ) {
         self._showingBottomSheet = showingBottomSheet
         self.openGallery = openGallery
         self.removePhoto = removePhoto

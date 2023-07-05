@@ -30,6 +30,6 @@ public extension DataLayer {
 
 public extension DataLayer.ResumeBlock {
     var domain: ResumeBlock {
-        ResumeBlock(blockID: lastVisitedModulePath.first ?? "")
+        ResumeBlock(blockID: lastVisitedBlockID)
     }
 }

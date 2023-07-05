@@ -11,11 +11,15 @@ import Combine
 
 public class CourseVerticalViewModel: BaseCourseViewModel {
     let router: CourseRouter
+    let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     @Published var verticals: [CourseVertical]
     @Published var downloadState: [String: DownloadViewState] = [:]
     @Published var showError: Bool = false
-
+    let chapters: [CourseChapter]
+    let chapterIndex: Int
+    let sequentialIndex: Int
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -24,14 +28,22 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         }
     }
     
-    public init(verticals: [CourseVertical],
-                manager: DownloadManagerProtocol,
-                router: CourseRouter,
-                connectivity: ConnectivityProtocol) {
-        self.verticals = verticals
+    public init(
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int,
+        manager: DownloadManagerProtocol,
+        router: CourseRouter,
+        analytics: CourseAnalytics,
+        connectivity: ConnectivityProtocol
+    ) {
+        self.chapters = chapters
+        self.chapterIndex = chapterIndex
+        self.sequentialIndex = sequentialIndex
         self.router = router
+        self.analytics = analytics
         self.connectivity = connectivity
-        
+        self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         super.init(manager: manager)
         
         manager.publisher()
@@ -68,7 +80,7 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             }
         }
     }
-        
+    
     private func setDownloadsStates() {
         let downloads = manager.getAllDownloads()
         var states: [String: DownloadViewState] = [:]

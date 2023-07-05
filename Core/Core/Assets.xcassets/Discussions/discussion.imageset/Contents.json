@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Frame-23.svg",
+      "filename" : "discussionBlack.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Frame-22.svg",
+      "filename" : "discussion.svg",
       "idiom" : "universal"
     }
   ],

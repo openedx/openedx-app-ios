@@ -18,7 +18,7 @@ public protocol CourseRepositoryProtocol {
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func resumeBlock(courseID: String) async throws -> ResumeBlock
-    func getSubtitles(url: String) async throws -> String
+    func getSubtitles(url: String, selectedLanguage: String) async throws -> String
 }
 
 public class CourseRepository: CourseRepositoryProtocol {
@@ -98,13 +98,16 @@ public class CourseRepository: CourseRepositoryProtocol {
         .mapResponse(DataLayer.ResumeBlock.self).domain
     }
     
-    public func getSubtitles(url: String) async throws -> String {
-        if let subtitlesOffline = persistence.loadSubtitles(url: url) {
+    public func getSubtitles(url: String, selectedLanguage: String) async throws -> String {
+        if let subtitlesOffline = persistence.loadSubtitles(url: url + selectedLanguage) {
             return subtitlesOffline
         } else {
-            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(url: url))
+            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(
+                url: url,
+                selectedLanguage: selectedLanguage
+            ))
             let subtitles = String(data: result, encoding: .utf8) ?? ""
-            persistence.saveSubtitles(url: url, subtitlesString: subtitles)
+            persistence.saveSubtitles(url: url + selectedLanguage, subtitlesString: subtitles)
             return subtitles
         }
     }
@@ -119,7 +122,8 @@ public class CourseRepository: CourseRepositoryProtocol {
             childs.append(chapter)
         }
         
-        return CourseStructure(id: course.id,
+        return CourseStructure(courseID: structure.id,
+                               id: course.id,
                                graded: course.graded,
                                completion: course.completion ?? 0,
                                viewYouTubeUrl: course.userViewData?.encodedVideo?.youTube?.url ?? "",
@@ -241,7 +245,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         let decoder = JSONDecoder()
         let jsonData = Data(courseStructureJson.utf8)
         let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
-        return parseCourseStructure(courseBlocks: courseBlocks)
+        return parseCourseStructure(structure: courseBlocks)
     }
     
     public  func getCourseDetails(courseID: String) async throws -> CourseDetails {
@@ -263,10 +267,12 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         
     public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         do {
-            let decoder = JSONDecoder()
-            let jsonData = Data(courseStructureJson.utf8)
-            let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
-            return parseCourseStructure(courseBlocks: courseBlocks)
+//            let decoder = JSONDecoder()
+//            let jsonData = Data(courseStructureJson.utf8)
+            let courseBlocks = try courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
+
+//            let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
+            return parseCourseStructure(structure: courseBlocks)
         } catch {
             throw error
         }
@@ -280,7 +286,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         
     }
     
-    public func getSubtitles(url: String) async throws -> String {
+    public func getSubtitles(url: String, selectedLanguage: String) async throws -> String {
         return """
 0
 00:00:00,350 --> 00:00:05,230
@@ -303,8 +309,8 @@ And there are various ways of describing it-- call it oral poetry or
 """
     }
     
-    private func parseCourseStructure(courseBlocks: DataLayer.CourseStructure) -> CourseStructure {
-        let blocks = Array(courseBlocks.dict.values)
+    private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
+        let blocks = Array(structure.dict.values)
         let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
         let descendants = course.descendants ?? []
         var childs: [CourseChapter] = []
@@ -313,7 +319,8 @@ And there are various ways of describing it-- call it oral poetry or
             childs.append(chapter)
         }
         
-        return CourseStructure(id: course.id,
+        return CourseStructure(courseID: structure.id,
+                               id: course.id,
                                graded: course.graded,
                                completion: course.completion ?? 0,
                                viewYouTubeUrl: course.userViewData?.encodedVideo?.youTube?.url ?? "",
@@ -321,8 +328,8 @@ And there are various ways of describing it-- call it oral poetry or
                                displayName: course.displayName,
                                topicID: course.userViewData?.topicID,
                                childs: childs,
-                               media: courseBlocks.media,
-                               certificate: courseBlocks.certificate?.domain)
+                               media: structure.media,
+                               certificate: structure.certificate?.domain)
     }
     
     private func parseChapters(id: String, blocks: [DataLayer.CourseBlock]) -> CourseChapter {
@@ -375,11 +382,12 @@ And there are various ways of describing it-- call it oral poetry or
     private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
         let subtitles = block.userViewData?.transcripts?.map {
-//            let url = $0.value
+            let url = $0.value
 //                .replacingOccurrences(of: config.baseURL.absoluteString, with: "")
-//                .replacingOccurrences(of: "?lang=en", with: "")
-            SubtitleUrl(language: $0.key, url: $0.value)
+//                .replacingOccurrences(of: "?lang=\($0.key)", with: "")
+            return SubtitleUrl(language: $0.key, url: url)
         }
+            
         return CourseBlock(blockId: block.blockId,
                            id: block.id,
                            topicId: block.userViewData?.topicID,
@@ -393,443 +401,627 @@ And there are various ways of describing it-- call it oral poetry or
                            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
     }
     
-    private let courseStructureJson: String = "{\n" +
-    "    \"root\": \"block-v1:RG+MC01+2022+type@course+block@course\",\n" +
-    "    \"blocks\": {\n" +
-    "        \"block-v1:RG+MC01+2022+type@html+block@8718fdf95d584d198a3b17c0d2611139\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@html+block@8718fdf95d584d198a3b17c0d2611139\",\n" +
-    "            \"block_id\": \"8718fdf95d584d198a3b17c0d2611139\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@html+block@8718fdf95d584d198a3b17c0d2611139\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@html+block@8718fdf95d584d198a3b17c0d2611139?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@html+block@8718fdf95d584d198a3b17c0d2611139\",\n" +
-    "            \"type\": \"html\",\n" +
-    "            \"display_name\": \"Text\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_data\": {\n" +
-    "                \"enabled\": false,\n" +
-    "                \"message\": \"To enable, set FEATURES[\\\"ENABLE_HTML_XBLOCK_STUDENT_VIEW_DATA\\\"]\"\n" +
-    "            },\n" +
-    "            \"student_view_multi_device\": true,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 1.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@video+block@d1bb8c9e6ed44b708ea54cacf67b650a\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@video+block@d1bb8c9e6ed44b708ea54cacf67b650a\",\n" +
-    "            \"block_id\": \"d1bb8c9e6ed44b708ea54cacf67b650a\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@video+block@d1bb8c9e6ed44b708ea54cacf67b650a\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@video+block@d1bb8c9e6ed44b708ea54cacf67b650a?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@video+block@d1bb8c9e6ed44b708ea54cacf67b650a\",\n" +
-    "            \"type\": \"video\",\n" +
-    "            \"display_name\": \"Video\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_data\": {\n" +
-    "                \"only_on_web\": false,\n" +
-    "                \"duration\": null,\n" +
-    "                \"transcripts\": {\n" +
-    "                    \"en\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/xblock/block-v1:RG+MC01+2022+type@video+block@d1bb8c9e6ed44b708ea54cacf67b650a/handler_noauth/transcript/download?lang=en\"\n" +
-    "                },\n" +
-    "                \"encoded_videos\": {\n" +
-    "                    \"youtube\": {\n" +
-    "                        \"url\": \"https://www.youtube.com/watch?v=3_yD_cEKoCk\",\n" +
-    "                        \"file_size\": 0\n" +
-    "                    }\n" +
-    "                },\n" +
-    "                \"all_sources\": []\n" +
-    "            },\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 1\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 0.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@vertical+block@8ccbceb2abec4028a9cc8b1fecf5e7d8\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@vertical+block@8ccbceb2abec4028a9cc8b1fecf5e7d8\",\n" +
-    "            \"block_id\": \"8ccbceb2abec4028a9cc8b1fecf5e7d8\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@8ccbceb2abec4028a9cc8b1fecf5e7d8\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@8ccbceb2abec4028a9cc8b1fecf5e7d8?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@vertical+block@8ccbceb2abec4028a9cc8b1fecf5e7d8\",\n" +
-    "            \"type\": \"vertical\",\n" +
-    "            \"display_name\": \"Welcome!\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 1\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@html+block@8718fdf95d584d198a3b17c0d2611139\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@video+block@d1bb8c9e6ed44b708ea54cacf67b650a\"\n" +
-    "            ],\n" +
-    "            \"completion\": 0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@html+block@5735347ae4be44d5b184728661d79bb4\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@html+block@5735347ae4be44d5b184728661d79bb4\",\n" +
-    "            \"block_id\": \"5735347ae4be44d5b184728661d79bb4\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@html+block@5735347ae4be44d5b184728661d79bb4\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@html+block@5735347ae4be44d5b184728661d79bb4?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@html+block@5735347ae4be44d5b184728661d79bb4\",\n" +
-    "            \"type\": \"html\",\n" +
-    "            \"display_name\": \"Text\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_data\": {\n" +
-    "                \"enabled\": false,\n" +
-    "                \"message\": \"To enable, set FEATURES[\\\"ENABLE_HTML_XBLOCK_STUDENT_VIEW_DATA\\\"]\"\n" +
-    "            },\n" +
-    "            \"student_view_multi_device\": true,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 1.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@discussion+block@0b26805b246c44148a2c02dfbffa2b27\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@discussion+block@0b26805b246c44148a2c02dfbffa2b27\",\n" +
-    "            \"block_id\": \"0b26805b246c44148a2c02dfbffa2b27\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@discussion+block@0b26805b246c44148a2c02dfbffa2b27\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@discussion+block@0b26805b246c44148a2c02dfbffa2b27?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@discussion+block@0b26805b246c44148a2c02dfbffa2b27\",\n" +
-    "            \"type\": \"discussion\",\n" +
-    "            \"display_name\": \"Discussion\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_data\": {\n" +
-    "                \"topic_id\": \"035315aac3f889b472c8f051d8fd0abaa99682de\"\n" +
-    "            },\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": []\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@vertical+block@890277efe17a42a185c68b8ba8fc5a98\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@vertical+block@890277efe17a42a185c68b8ba8fc5a98\",\n" +
-    "            \"block_id\": \"890277efe17a42a185c68b8ba8fc5a98\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@890277efe17a42a185c68b8ba8fc5a98\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@890277efe17a42a185c68b8ba8fc5a98?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@vertical+block@890277efe17a42a185c68b8ba8fc5a98\",\n" +
-    "            \"type\": \"vertical\",\n" +
-    "            \"display_name\": \"General Info\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@html+block@5735347ae4be44d5b184728661d79bb4\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@discussion+block@0b26805b246c44148a2c02dfbffa2b27\"\n" +
-    "            ],\n" +
-    "            \"completion\": 1\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@sequential+block@45b174bf007b4d86a3a265d996565883\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@sequential+block@45b174bf007b4d86a3a265d996565883\",\n" +
-    "            \"block_id\": \"45b174bf007b4d86a3a265d996565883\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@45b174bf007b4d86a3a265d996565883\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@45b174bf007b4d86a3a265d996565883?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@sequential+block@45b174bf007b4d86a3a265d996565883\",\n" +
-    "            \"type\": \"sequential\",\n" +
-    "            \"display_name\": \"Course Intro\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 1\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@vertical+block@8ccbceb2abec4028a9cc8b1fecf5e7d8\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@vertical+block@890277efe17a42a185c68b8ba8fc5a98\"\n" +
-    "            ],\n" +
-    "            \"completion\": 0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@chapter+block@7cb5739b6ead4fc39b126bbe56cdb9c7\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@chapter+block@7cb5739b6ead4fc39b126bbe56cdb9c7\",\n" +
-    "            \"block_id\": \"7cb5739b6ead4fc39b126bbe56cdb9c7\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@chapter+block@7cb5739b6ead4fc39b126bbe56cdb9c7\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@chapter+block@7cb5739b6ead4fc39b126bbe56cdb9c7?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@chapter+block@7cb5739b6ead4fc39b126bbe56cdb9c7\",\n" +
-    "            \"type\": \"chapter\",\n" +
-    "            \"display_name\": \"Info Section\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 1\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@sequential+block@45b174bf007b4d86a3a265d996565883\"\n" +
-    "            ],\n" +
-    "            \"completion\": 0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@problem+block@376ec419a01449fd86c2d11c8054d0be\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@problem+block@376ec419a01449fd86c2d11c8054d0be\",\n" +
-    "            \"block_id\": \"376ec419a01449fd86c2d11c8054d0be\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@376ec419a01449fd86c2d11c8054d0be\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@376ec419a01449fd86c2d11c8054d0be?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@problem+block@376ec419a01449fd86c2d11c8054d0be\",\n" +
-    "            \"type\": \"problem\",\n" +
-    "            \"display_name\": \"Checkboxes\",\n" +
-    "            \"graded\": true,\n" +
-    "            \"student_view_multi_device\": true,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 1.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@problem+block@ebc2d20fad364992b13fff49fc53d7cf\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@problem+block@ebc2d20fad364992b13fff49fc53d7cf\",\n" +
-    "            \"block_id\": \"ebc2d20fad364992b13fff49fc53d7cf\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@ebc2d20fad364992b13fff49fc53d7cf\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@ebc2d20fad364992b13fff49fc53d7cf?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@problem+block@ebc2d20fad364992b13fff49fc53d7cf\",\n" +
-    "            \"type\": \"problem\",\n" +
-    "            \"display_name\": \"Dropdown\",\n" +
-    "            \"graded\": true,\n" +
-    "            \"student_view_multi_device\": true,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 1.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@problem+block@6b822c82f2ca4b049ee380a1cf65396b\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@problem+block@6b822c82f2ca4b049ee380a1cf65396b\",\n" +
-    "            \"block_id\": \"6b822c82f2ca4b049ee380a1cf65396b\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@6b822c82f2ca4b049ee380a1cf65396b\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@6b822c82f2ca4b049ee380a1cf65396b?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@problem+block@6b822c82f2ca4b049ee380a1cf65396b\",\n" +
-    "            \"type\": \"problem\",\n" +
-    "            \"display_name\": \"Numerical Input with Hints and Feedback\",\n" +
-    "            \"graded\": true,\n" +
-    "            \"student_view_multi_device\": true,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 1.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@problem+block@009da5f764a04078855d322e205c5863\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@problem+block@009da5f764a04078855d322e205c5863\",\n" +
-    "            \"block_id\": \"009da5f764a04078855d322e205c5863\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@009da5f764a04078855d322e205c5863\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@009da5f764a04078855d322e205c5863?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@problem+block@009da5f764a04078855d322e205c5863\",\n" +
-    "            \"type\": \"problem\",\n" +
-    "            \"display_name\": \"Multiple Choice\",\n" +
-    "            \"graded\": true,\n" +
-    "            \"student_view_multi_device\": true,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 1.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@vertical+block@e34d9616cbaa45d1a6986a687c49f5c4\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@vertical+block@e34d9616cbaa45d1a6986a687c49f5c4\",\n" +
-    "            \"block_id\": \"e34d9616cbaa45d1a6986a687c49f5c4\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@e34d9616cbaa45d1a6986a687c49f5c4\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@e34d9616cbaa45d1a6986a687c49f5c4?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@vertical+block@e34d9616cbaa45d1a6986a687c49f5c4\",\n" +
-    "            \"type\": \"vertical\",\n" +
-    "            \"display_name\": \"Common Problems\",\n" +
-    "            \"graded\": true,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@problem+block@376ec419a01449fd86c2d11c8054d0be\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@problem+block@ebc2d20fad364992b13fff49fc53d7cf\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@problem+block@6b822c82f2ca4b049ee380a1cf65396b\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@problem+block@009da5f764a04078855d322e205c5863\"\n" +
-    "            ],\n" +
-    "            \"completion\": 1\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@sequential+block@ac7862e8c3c9481bbe657a82795def56\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@sequential+block@ac7862e8c3c9481bbe657a82795def56\",\n" +
-    "            \"block_id\": \"ac7862e8c3c9481bbe657a82795def56\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@ac7862e8c3c9481bbe657a82795def56\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@ac7862e8c3c9481bbe657a82795def56?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@sequential+block@ac7862e8c3c9481bbe657a82795def56\",\n" +
-    "            \"type\": \"sequential\",\n" +
-    "            \"display_name\": \"Test\",\n" +
-    "            \"graded\": true,\n" +
-    "            \"format\": \"Final Exam\",\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@vertical+block@e34d9616cbaa45d1a6986a687c49f5c4\"\n" +
-    "            ],\n" +
-    "            \"completion\": 1\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@problem+block@9355144723fc4270a1081547fd8bdd3d\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@problem+block@9355144723fc4270a1081547fd8bdd3d\",\n" +
-    "            \"block_id\": \"9355144723fc4270a1081547fd8bdd3d\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@9355144723fc4270a1081547fd8bdd3d\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@problem+block@9355144723fc4270a1081547fd8bdd3d?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@problem+block@9355144723fc4270a1081547fd8bdd3d\",\n" +
-    "            \"type\": \"problem\",\n" +
-    "            \"display_name\": \"Image Mapped Input\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 0.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@vertical+block@50d42e9c9d91451fb50693e01b9e4340\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@vertical+block@50d42e9c9d91451fb50693e01b9e4340\",\n" +
-    "            \"block_id\": \"50d42e9c9d91451fb50693e01b9e4340\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@50d42e9c9d91451fb50693e01b9e4340\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@50d42e9c9d91451fb50693e01b9e4340?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@vertical+block@50d42e9c9d91451fb50693e01b9e4340\",\n" +
-    "            \"type\": \"vertical\",\n" +
-    "            \"display_name\": \"Advanced Problems\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@problem+block@9355144723fc4270a1081547fd8bdd3d\"\n" +
-    "            ],\n" +
-    "            \"completion\": 0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@sequential+block@5cdb10d7d0e9498faba55450173e23be\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@sequential+block@5cdb10d7d0e9498faba55450173e23be\",\n" +
-    "            \"block_id\": \"5cdb10d7d0e9498faba55450173e23be\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@5cdb10d7d0e9498faba55450173e23be\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@5cdb10d7d0e9498faba55450173e23be?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@sequential+block@5cdb10d7d0e9498faba55450173e23be\",\n" +
-    "            \"type\": \"sequential\",\n" +
-    "            \"display_name\": \"X-blocks not supported in app\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@vertical+block@50d42e9c9d91451fb50693e01b9e4340\"\n" +
-    "            ],\n" +
-    "            \"completion\": 0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@chapter+block@8f208b5d63234ce483f7d6702c46238a\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@chapter+block@8f208b5d63234ce483f7d6702c46238a\",\n" +
-    "            \"block_id\": \"8f208b5d63234ce483f7d6702c46238a\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@chapter+block@8f208b5d63234ce483f7d6702c46238a\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@chapter+block@8f208b5d63234ce483f7d6702c46238a?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@chapter+block@8f208b5d63234ce483f7d6702c46238a\",\n" +
-    "            \"type\": \"chapter\",\n" +
-    "            \"display_name\": \"Problems\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@sequential+block@ac7862e8c3c9481bbe657a82795def56\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@sequential+block@5cdb10d7d0e9498faba55450173e23be\"\n" +
-    "            ],\n" +
-    "            \"completion\": 0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@html+block@4b0ea9edbf59484fb5ecc1f8f29f73c2\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@html+block@4b0ea9edbf59484fb5ecc1f8f29f73c2\",\n" +
-    "            \"block_id\": \"4b0ea9edbf59484fb5ecc1f8f29f73c2\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@html+block@4b0ea9edbf59484fb5ecc1f8f29f73c2\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@html+block@4b0ea9edbf59484fb5ecc1f8f29f73c2?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@html+block@4b0ea9edbf59484fb5ecc1f8f29f73c2\",\n" +
-    "            \"type\": \"html\",\n" +
-    "            \"display_name\": \"Text\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_data\": {\n" +
-    "                \"enabled\": false,\n" +
-    "                \"message\": \"To enable, set FEATURES[\\\"ENABLE_HTML_XBLOCK_STUDENT_VIEW_DATA\\\"]\"\n" +
-    "            },\n" +
-    "            \"student_view_multi_device\": true,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [],\n" +
-    "            \"completion\": 1.0\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@vertical+block@b912f9ba42ac43c492bfb423e15b0da1\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@vertical+block@b912f9ba42ac43c492bfb423e15b0da1\",\n" +
-    "            \"block_id\": \"b912f9ba42ac43c492bfb423e15b0da1\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@b912f9ba42ac43c492bfb423e15b0da1\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@vertical+block@b912f9ba42ac43c492bfb423e15b0da1?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@vertical+block@b912f9ba42ac43c492bfb423e15b0da1\",\n" +
-    "            \"type\": \"vertical\",\n" +
-    "            \"display_name\": \"Thank you\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@html+block@4b0ea9edbf59484fb5ecc1f8f29f73c2\"\n" +
-    "            ],\n" +
-    "            \"completion\": 1\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@sequential+block@a6e2101867234019b60607a9b9bf64f9\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@sequential+block@a6e2101867234019b60607a9b9bf64f9\",\n" +
-    "            \"block_id\": \"a6e2101867234019b60607a9b9bf64f9\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@a6e2101867234019b60607a9b9bf64f9\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@sequential+block@a6e2101867234019b60607a9b9bf64f9?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@sequential+block@a6e2101867234019b60607a9b9bf64f9\",\n" +
-    "            \"type\": \"sequential\",\n" +
-    "            \"display_name\": \"Thank you note\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@vertical+block@b912f9ba42ac43c492bfb423e15b0da1\"\n" +
-    "            ],\n" +
-    "            \"completion\": 1\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@chapter+block@29f4043d199e46ef95d437da3be1d222\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@chapter+block@29f4043d199e46ef95d437da3be1d222\",\n" +
-    "            \"block_id\": \"29f4043d199e46ef95d437da3be1d222\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@chapter+block@29f4043d199e46ef95d437da3be1d222\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@chapter+block@29f4043d199e46ef95d437da3be1d222?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@chapter+block@29f4043d199e46ef95d437da3be1d222\",\n" +
-    "            \"type\": \"chapter\",\n" +
-    "            \"display_name\": \"Fin\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 0\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@sequential+block@a6e2101867234019b60607a9b9bf64f9\"\n" +
-    "            ],\n" +
-    "            \"completion\": 1\n" +
-    "        },\n" +
-    "        \"block-v1:RG+MC01+2022+type@course+block@course\": {\n" +
-    "            \"id\": \"block-v1:RG+MC01+2022+type@course+block@course\",\n" +
-    "            \"block_id\": \"course\",\n" +
-    "            \"lms_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@course+block@course\",\n" +
-    "            \"legacy_web_url\": \"https://lms-client-demo-maple.raccoongang.com/courses/course-v1:RG+MC01+2022/jump_to/block-v1:RG+MC01+2022+type@course+block@course?experience=legacy\",\n" +
-    "            \"student_view_url\": \"https://lms-client-demo-maple.raccoongang.com/xblock/block-v1:RG+MC01+2022+type@course+block@course\",\n" +
-    "            \"type\": \"course\",\n" +
-    "            \"display_name\": \"Mobile Course Demo\",\n" +
-    "            \"graded\": false,\n" +
-    "            \"student_view_multi_device\": false,\n" +
-    "            \"block_counts\": {\n" +
-    "                \"video\": 1\n" +
-    "            },\n" +
-    "            \"descendants\": [\n" +
-    "                \"block-v1:RG+MC01+2022+type@chapter+block@7cb5739b6ead4fc39b126bbe56cdb9c7\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@chapter+block@8f208b5d63234ce483f7d6702c46238a\",\n" +
-    "                \"block-v1:RG+MC01+2022+type@chapter+block@29f4043d199e46ef95d437da3be1d222\"\n" +
-    "            ],\n" +
-    "            \"completion\": 0\n" +
-    "        }\n" +
-    "    }\n" +
-    "}"
+    private let courseStructureJson: String = """
+    {"root": "block-v1:QA+comparison+2022+type@course+block@course",
+          "blocks": {
+            "block-v1:QA+comparison+2022+type@comparison+block@be1704c576284ba39753c6f0ea4a4c78": {
+              "id": "block-v1:QA+comparison+2022+type@comparison+block@be1704c576284ba39753c6f0ea4a4c78",
+              "block_id": "be1704c576284ba39753c6f0ea4a4c78",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@be1704c576284ba39753c6f0ea4a4c78",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@be1704c576284ba39753c6f0ea4a4c78?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@comparison+block@be1704c576284ba39753c6f0ea4a4c78",
+              "type": "comparison",
+              "display_name": "Comparison",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@problem+block@93acc543871e4c73bc20a72a64e93296": {
+              "id": "block-v1:QA+comparison+2022+type@problem+block@93acc543871e4c73bc20a72a64e93296",
+              "block_id": "93acc543871e4c73bc20a72a64e93296",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@93acc543871e4c73bc20a72a64e93296",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@93acc543871e4c73bc20a72a64e93296?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@problem+block@93acc543871e4c73bc20a72a64e93296",
+              "type": "problem",
+              "display_name": "Dropdown with Hints and Feedback",
+              "graded": false,
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@comparison+block@06c17035106e48328ebcd042babcf47b": {
+              "id": "block-v1:QA+comparison+2022+type@comparison+block@06c17035106e48328ebcd042babcf47b",
+              "block_id": "06c17035106e48328ebcd042babcf47b",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@06c17035106e48328ebcd042babcf47b",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@06c17035106e48328ebcd042babcf47b?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@comparison+block@06c17035106e48328ebcd042babcf47b",
+              "type": "comparison",
+              "display_name": "Comparison",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@problem+block@c19e41b61db14efe9c45f1354332ae58": {
+              "id": "block-v1:QA+comparison+2022+type@problem+block@c19e41b61db14efe9c45f1354332ae58",
+              "block_id": "c19e41b61db14efe9c45f1354332ae58",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@c19e41b61db14efe9c45f1354332ae58",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@c19e41b61db14efe9c45f1354332ae58?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@problem+block@c19e41b61db14efe9c45f1354332ae58",
+              "type": "problem",
+              "display_name": "Text Input with Hints and Feedback",
+              "graded": false,
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@problem+block@0d96732f577b4ff68799faf8235d1bfb": {
+              "id": "block-v1:QA+comparison+2022+type@problem+block@0d96732f577b4ff68799faf8235d1bfb",
+              "block_id": "0d96732f577b4ff68799faf8235d1bfb",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@0d96732f577b4ff68799faf8235d1bfb",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@0d96732f577b4ff68799faf8235d1bfb?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@problem+block@0d96732f577b4ff68799faf8235d1bfb",
+              "type": "problem",
+              "display_name": "Numerical Input with Hints and Feedback",
+              "graded": false,
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@problem+block@dd2e22fdf0724bd88c8b2e6b68dedd96": {
+              "id": "block-v1:QA+comparison+2022+type@problem+block@dd2e22fdf0724bd88c8b2e6b68dedd96",
+              "block_id": "dd2e22fdf0724bd88c8b2e6b68dedd96",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@dd2e22fdf0724bd88c8b2e6b68dedd96",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@dd2e22fdf0724bd88c8b2e6b68dedd96?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@problem+block@dd2e22fdf0724bd88c8b2e6b68dedd96",
+              "type": "problem",
+              "display_name": "Blank Common Problem",
+              "graded": false,
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@problem+block@d1e091aa305741c5bedfafed0d269efd": {
+              "id": "block-v1:QA+comparison+2022+type@problem+block@d1e091aa305741c5bedfafed0d269efd",
+              "block_id": "d1e091aa305741c5bedfafed0d269efd",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@d1e091aa305741c5bedfafed0d269efd",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@d1e091aa305741c5bedfafed0d269efd?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@problem+block@d1e091aa305741c5bedfafed0d269efd",
+              "type": "problem",
+              "display_name": "Blank Common Problem",
+              "graded": false,
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@comparison+block@23e10dea806345b19b77997b4fc0eea7": {
+              "id": "block-v1:QA+comparison+2022+type@comparison+block@23e10dea806345b19b77997b4fc0eea7",
+              "block_id": "23e10dea806345b19b77997b4fc0eea7",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@23e10dea806345b19b77997b4fc0eea7",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@23e10dea806345b19b77997b4fc0eea7?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@comparison+block@23e10dea806345b19b77997b4fc0eea7",
+              "type": "comparison",
+              "display_name": "Comparison",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@vertical+block@29e7eddbe8964770896e4036748c9904": {
+              "id": "block-v1:QA+comparison+2022+type@vertical+block@29e7eddbe8964770896e4036748c9904",
+              "block_id": "29e7eddbe8964770896e4036748c9904",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@29e7eddbe8964770896e4036748c9904",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@29e7eddbe8964770896e4036748c9904?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@vertical+block@29e7eddbe8964770896e4036748c9904",
+              "type": "vertical",
+              "display_name": "Unit",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@comparison+block@be1704c576284ba39753c6f0ea4a4c78",
+                "block-v1:QA+comparison+2022+type@problem+block@93acc543871e4c73bc20a72a64e93296",
+                "block-v1:QA+comparison+2022+type@comparison+block@06c17035106e48328ebcd042babcf47b",
+                "block-v1:QA+comparison+2022+type@problem+block@c19e41b61db14efe9c45f1354332ae58",
+                "block-v1:QA+comparison+2022+type@problem+block@0d96732f577b4ff68799faf8235d1bfb",
+                "block-v1:QA+comparison+2022+type@problem+block@dd2e22fdf0724bd88c8b2e6b68dedd96",
+                "block-v1:QA+comparison+2022+type@problem+block@d1e091aa305741c5bedfafed0d269efd",
+                "block-v1:QA+comparison+2022+type@comparison+block@23e10dea806345b19b77997b4fc0eea7"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@sequential+block@f468bb5c6e8641179e523c7fcec4e6d6": {
+              "id": "block-v1:QA+comparison+2022+type@sequential+block@f468bb5c6e8641179e523c7fcec4e6d6",
+              "block_id": "f468bb5c6e8641179e523c7fcec4e6d6",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@sequential+block@f468bb5c6e8641179e523c7fcec4e6d6",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@sequential+block@f468bb5c6e8641179e523c7fcec4e6d6?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@sequential+block@f468bb5c6e8641179e523c7fcec4e6d6",
+              "type": "sequential",
+              "display_name": "Subsection",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@vertical+block@29e7eddbe8964770896e4036748c9904"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@problem+block@eaf91d8fc70547339402043ba1a1c234": {
+              "id": "block-v1:QA+comparison+2022+type@problem+block@eaf91d8fc70547339402043ba1a1c234",
+              "block_id": "eaf91d8fc70547339402043ba1a1c234",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@eaf91d8fc70547339402043ba1a1c234",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@eaf91d8fc70547339402043ba1a1c234?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@problem+block@eaf91d8fc70547339402043ba1a1c234",
+              "type": "problem",
+              "display_name": "Dropdown with Hints and Feedback",
+              "graded": false,
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@comparison+block@fac531c3f1f3400cb8e3b97eb2c3d751": {
+              "id": "block-v1:QA+comparison+2022+type@comparison+block@fac531c3f1f3400cb8e3b97eb2c3d751",
+              "block_id": "fac531c3f1f3400cb8e3b97eb2c3d751",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@fac531c3f1f3400cb8e3b97eb2c3d751",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@comparison+block@fac531c3f1f3400cb8e3b97eb2c3d751?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@comparison+block@fac531c3f1f3400cb8e3b97eb2c3d751",
+              "type": "comparison",
+              "display_name": "Comparison",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@html+block@74a1074024fe401ea305534f2241e5de": {
+              "id": "block-v1:QA+comparison+2022+type@html+block@74a1074024fe401ea305534f2241e5de",
+              "block_id": "74a1074024fe401ea305534f2241e5de",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@html+block@74a1074024fe401ea305534f2241e5de",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@html+block@74a1074024fe401ea305534f2241e5de?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@html+block@74a1074024fe401ea305534f2241e5de",
+              "type": "html",
+              "display_name": "Raw HTML",
+              "graded": false,
+              "student_view_data": {
+                "last_modified": "2023-05-04T19:08:07Z",
+                "html_data": "https://s3.eu-central-1.amazonaws.com/vso-dev-edx-sorage/htmlxblock/QA/comparison/html/74a1074024fe401ea305534f2241e5de/content_html.zip",
+                "size": 576,
+                "index_page": "index.html",
+                "icon_class": "other"
+              },
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@vertical+block@e5b2e105f4f947c5b76fb12c35da1eca": {
+              "id": "block-v1:QA+comparison+2022+type@vertical+block@e5b2e105f4f947c5b76fb12c35da1eca",
+              "block_id": "e5b2e105f4f947c5b76fb12c35da1eca",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@e5b2e105f4f947c5b76fb12c35da1eca",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@e5b2e105f4f947c5b76fb12c35da1eca?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@vertical+block@e5b2e105f4f947c5b76fb12c35da1eca",
+              "type": "vertical",
+              "display_name": "Unit",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@problem+block@eaf91d8fc70547339402043ba1a1c234",
+                "block-v1:QA+comparison+2022+type@comparison+block@fac531c3f1f3400cb8e3b97eb2c3d751",
+                "block-v1:QA+comparison+2022+type@html+block@74a1074024fe401ea305534f2241e5de"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@sequential+block@d37cb0c5c2d24ddaacf3494760a055f2": {
+              "id": "block-v1:QA+comparison+2022+type@sequential+block@d37cb0c5c2d24ddaacf3494760a055f2",
+              "block_id": "d37cb0c5c2d24ddaacf3494760a055f2",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@sequential+block@d37cb0c5c2d24ddaacf3494760a055f2",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@sequential+block@d37cb0c5c2d24ddaacf3494760a055f2?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@sequential+block@d37cb0c5c2d24ddaacf3494760a055f2",
+              "type": "sequential",
+              "display_name": "Another one subsection",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@vertical+block@e5b2e105f4f947c5b76fb12c35da1eca"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@chapter+block@abecaefe203c4c93b441d16cea3b7846": {
+              "id": "block-v1:QA+comparison+2022+type@chapter+block@abecaefe203c4c93b441d16cea3b7846",
+              "block_id": "abecaefe203c4c93b441d16cea3b7846",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@chapter+block@abecaefe203c4c93b441d16cea3b7846",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@chapter+block@abecaefe203c4c93b441d16cea3b7846?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@chapter+block@abecaefe203c4c93b441d16cea3b7846",
+              "type": "chapter",
+              "display_name": "Section",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@sequential+block@f468bb5c6e8641179e523c7fcec4e6d6",
+                "block-v1:QA+comparison+2022+type@sequential+block@d37cb0c5c2d24ddaacf3494760a055f2"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@pdf+block@a0c3ac29daab425f92a34b34eb2af9de": {
+              "id": "block-v1:QA+comparison+2022+type@pdf+block@a0c3ac29daab425f92a34b34eb2af9de",
+              "block_id": "a0c3ac29daab425f92a34b34eb2af9de",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@a0c3ac29daab425f92a34b34eb2af9de",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@a0c3ac29daab425f92a34b34eb2af9de?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@pdf+block@a0c3ac29daab425f92a34b34eb2af9de",
+              "type": "pdf",
+              "display_name": "PDF title",
+              "graded": false,
+              "student_view_data": {
+                "last_modified": "2023-04-26T08:43:45Z",
+                "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+              },
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@pdf+block@bcd1b0f3015b4d3696b12f65a5d682f9": {
+              "id": "block-v1:QA+comparison+2022+type@pdf+block@bcd1b0f3015b4d3696b12f65a5d682f9",
+              "block_id": "bcd1b0f3015b4d3696b12f65a5d682f9",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@bcd1b0f3015b4d3696b12f65a5d682f9",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@bcd1b0f3015b4d3696b12f65a5d682f9?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@pdf+block@bcd1b0f3015b4d3696b12f65a5d682f9",
+              "type": "pdf",
+              "display_name": "PDF",
+              "graded": false,
+              "student_view_data": {
+                "last_modified": "2023-04-26T08:43:45Z",
+                "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+              },
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@pdf+block@67d805daade34bd4b6ace607e6d48f59": {
+              "id": "block-v1:QA+comparison+2022+type@pdf+block@67d805daade34bd4b6ace607e6d48f59",
+              "block_id": "67d805daade34bd4b6ace607e6d48f59",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@67d805daade34bd4b6ace607e6d48f59",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@67d805daade34bd4b6ace607e6d48f59?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@pdf+block@67d805daade34bd4b6ace607e6d48f59",
+              "type": "pdf",
+              "display_name": "PDF",
+              "graded": false,
+              "student_view_data": {
+                "last_modified": "2023-04-26T08:43:45Z",
+                "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+              },
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@pdf+block@828606a51f4e44198e92f86a45be7974": {
+              "id": "block-v1:QA+comparison+2022+type@pdf+block@828606a51f4e44198e92f86a45be7974",
+              "block_id": "828606a51f4e44198e92f86a45be7974",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@828606a51f4e44198e92f86a45be7974",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@828606a51f4e44198e92f86a45be7974?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@pdf+block@828606a51f4e44198e92f86a45be7974",
+              "type": "pdf",
+              "display_name": "PDF",
+              "graded": false,
+              "student_view_data": {
+                "last_modified": "2023-04-26T08:43:45Z",
+                "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+              },
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@pdf+block@8646c3bc2184467b86e5ef01ecd452ee": {
+              "id": "block-v1:QA+comparison+2022+type@pdf+block@8646c3bc2184467b86e5ef01ecd452ee",
+              "block_id": "8646c3bc2184467b86e5ef01ecd452ee",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@8646c3bc2184467b86e5ef01ecd452ee",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@8646c3bc2184467b86e5ef01ecd452ee?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@pdf+block@8646c3bc2184467b86e5ef01ecd452ee",
+              "type": "pdf",
+              "display_name": "PDF",
+              "graded": false,
+              "student_view_data": {
+                "last_modified": "2023-04-26T08:43:45Z",
+                "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+              },
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@vertical+block@e2faa0e62223489e91a41700865c5fc1": {
+              "id": "block-v1:QA+comparison+2022+type@vertical+block@e2faa0e62223489e91a41700865c5fc1",
+              "block_id": "e2faa0e62223489e91a41700865c5fc1",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@e2faa0e62223489e91a41700865c5fc1",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@e2faa0e62223489e91a41700865c5fc1?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@vertical+block@e2faa0e62223489e91a41700865c5fc1",
+              "type": "vertical",
+              "display_name": "Unit",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@pdf+block@a0c3ac29daab425f92a34b34eb2af9de",
+                "block-v1:QA+comparison+2022+type@pdf+block@bcd1b0f3015b4d3696b12f65a5d682f9",
+                "block-v1:QA+comparison+2022+type@pdf+block@67d805daade34bd4b6ace607e6d48f59",
+                "block-v1:QA+comparison+2022+type@pdf+block@828606a51f4e44198e92f86a45be7974",
+                "block-v1:QA+comparison+2022+type@pdf+block@8646c3bc2184467b86e5ef01ecd452ee"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@problem+block@0c5e89fa6d7a4fac8f7b26f2ca0bbe52": {
+              "id": "block-v1:QA+comparison+2022+type@problem+block@0c5e89fa6d7a4fac8f7b26f2ca0bbe52",
+              "block_id": "0c5e89fa6d7a4fac8f7b26f2ca0bbe52",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@0c5e89fa6d7a4fac8f7b26f2ca0bbe52",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@problem+block@0c5e89fa6d7a4fac8f7b26f2ca0bbe52?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@problem+block@0c5e89fa6d7a4fac8f7b26f2ca0bbe52",
+              "type": "problem",
+              "display_name": "Checkboxes with Hints and Feedback",
+              "graded": false,
+              "student_view_multi_device": true,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@vertical+block@8ba437d8b20d416d91a2d362b0c940a4": {
+              "id": "block-v1:QA+comparison+2022+type@vertical+block@8ba437d8b20d416d91a2d362b0c940a4",
+              "block_id": "8ba437d8b20d416d91a2d362b0c940a4",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@8ba437d8b20d416d91a2d362b0c940a4",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@8ba437d8b20d416d91a2d362b0c940a4?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@vertical+block@8ba437d8b20d416d91a2d362b0c940a4",
+              "type": "vertical",
+              "display_name": "Unit",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@problem+block@0c5e89fa6d7a4fac8f7b26f2ca0bbe52"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@pdf+block@021f70794f7349998e190b060260b70d": {
+              "id": "block-v1:QA+comparison+2022+type@pdf+block@021f70794f7349998e190b060260b70d",
+              "block_id": "021f70794f7349998e190b060260b70d",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@021f70794f7349998e190b060260b70d",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@pdf+block@021f70794f7349998e190b060260b70d?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@pdf+block@021f70794f7349998e190b060260b70d",
+              "type": "pdf",
+              "display_name": "PDF",
+              "graded": false,
+              "student_view_data": {
+                "last_modified": "2023-04-26T08:43:45Z",
+                "url": "https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf",
+              },
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ],
+              "completion": 0.0
+            },
+            "block-v1:QA+comparison+2022+type@vertical+block@2c344115d3554ac58c140ec86e591aa1": {
+              "id": "block-v1:QA+comparison+2022+type@vertical+block@2c344115d3554ac58c140ec86e591aa1",
+              "block_id": "2c344115d3554ac58c140ec86e591aa1",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@2c344115d3554ac58c140ec86e591aa1",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@vertical+block@2c344115d3554ac58c140ec86e591aa1?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@vertical+block@2c344115d3554ac58c140ec86e591aa1",
+              "type": "vertical",
+              "display_name": "Unit",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@pdf+block@021f70794f7349998e190b060260b70d"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@sequential+block@6c9c6ba663b54c0eb9cbdcd0c6b4bebe": {
+              "id": "block-v1:QA+comparison+2022+type@sequential+block@6c9c6ba663b54c0eb9cbdcd0c6b4bebe",
+              "block_id": "6c9c6ba663b54c0eb9cbdcd0c6b4bebe",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@sequential+block@6c9c6ba663b54c0eb9cbdcd0c6b4bebe",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@sequential+block@6c9c6ba663b54c0eb9cbdcd0c6b4bebe?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@sequential+block@6c9c6ba663b54c0eb9cbdcd0c6b4bebe",
+              "type": "sequential",
+              "display_name": "Subsection",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@vertical+block@e2faa0e62223489e91a41700865c5fc1",
+                "block-v1:QA+comparison+2022+type@vertical+block@8ba437d8b20d416d91a2d362b0c940a4",
+                "block-v1:QA+comparison+2022+type@vertical+block@2c344115d3554ac58c140ec86e591aa1"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@chapter+block@d5a4f1f2f5314288aae400c270fb03f7": {
+              "id": "block-v1:QA+comparison+2022+type@chapter+block@d5a4f1f2f5314288aae400c270fb03f7",
+              "block_id": "d5a4f1f2f5314288aae400c270fb03f7",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@chapter+block@d5a4f1f2f5314288aae400c270fb03f7",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@chapter+block@d5a4f1f2f5314288aae400c270fb03f7?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@chapter+block@d5a4f1f2f5314288aae400c270fb03f7",
+              "type": "chapter",
+              "display_name": "PDF",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@sequential+block@6c9c6ba663b54c0eb9cbdcd0c6b4bebe"
+              ],
+              "completion": 0
+            },
+            "block-v1:QA+comparison+2022+type@chapter+block@7ab45affb80f4846a60648ec6aff9fbf": {
+              "id": "block-v1:QA+comparison+2022+type@chapter+block@7ab45affb80f4846a60648ec6aff9fbf",
+              "block_id": "7ab45affb80f4846a60648ec6aff9fbf",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@chapter+block@7ab45affb80f4846a60648ec6aff9fbf",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@chapter+block@7ab45affb80f4846a60648ec6aff9fbf?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@chapter+block@7ab45affb80f4846a60648ec6aff9fbf",
+              "type": "chapter",
+              "display_name": "Section",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                
+              ]
+            },
+            "block-v1:QA+comparison+2022+type@course+block@course": {
+              "id": "block-v1:QA+comparison+2022+type@course+block@course",
+              "block_id": "course",
+              "lms_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@course+block@course",
+              "legacy_web_url": "https://lms.lilac-vso-dev.raccoongang.com/courses/course-v1:QA+comparison+2022/jump_to/block-v1:QA+comparison+2022+type@course+block@course?experience=legacy",
+              "student_view_url": "https://lms.lilac-vso-dev.raccoongang.com/xblock/block-v1:QA+comparison+2022+type@course+block@course",
+              "type": "course",
+              "display_name": "Comparison xblock test coursre",
+              "graded": false,
+              "student_view_multi_device": false,
+              "block_counts": {
+                "video": 0
+              },
+              "descendants": [
+                "block-v1:QA+comparison+2022+type@chapter+block@abecaefe203c4c93b441d16cea3b7846",
+                "block-v1:QA+comparison+2022+type@chapter+block@d5a4f1f2f5314288aae400c270fb03f7",
+                "block-v1:QA+comparison+2022+type@chapter+block@7ab45affb80f4846a60648ec6aff9fbf"
+              ],
+              "completion": 0
+            }
+          },
+          "id": "course-v1:QA+comparison+2022",
+          "name": "Comparison xblock test coursre",
+          "number": "comparison",
+          "org": "QA",
+          "start": "2022-01-01T00:00:00Z",
+          "start_display": "01 january 2022 р.",
+          "start_type": "timestamp",
+          "end": null,
+          "courseware_access": {
+            "has_access": true,
+            "error_code": null,
+            "developer_message": null,
+            "user_message": null,
+            "additional_context_user_message": null,
+            "user_fragment": null
+          },
+          "media": {
+            "image": {
+              "raw": "/asset-v1:QA+comparison+2022+type@asset+block@images_course_image.jpg",
+              "small": "/asset-v1:QA+comparison+2022+type@asset+block@images_course_image.jpg",
+              "large": "/asset-v1:QA+comparison+2022+type@asset+block@images_course_image.jpg"
+            }
+          },
+          "certificate": {
+            
+          },
+          "is_self_paced": false
+        }
+    """
 }
 
 #endif

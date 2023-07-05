@@ -6,50 +6,19 @@
 //
 
 import Foundation
-import Introspect
+import SwiftUIIntrospect
 import SwiftUI
 
 public extension View {
-    func introspectCollectionView(customize: @escaping (UICollectionView) -> Void) -> some View {
-        return inject(UIKitIntrospectionView(
-            selector: { introspectionView in
-                guard let viewHost = Introspect.findViewHost(from: introspectionView) else {
-                    return nil
-                }
-                return Introspect.previousSibling(containing: UICollectionView.self, from: viewHost)
-            },
-            customize: customize
-        ))
-    }
     
-    func introspectCollectionViewWithClipping(customize: @escaping (UICollectionView) -> Void) -> some View {
-        return inject(UIKitIntrospectionView(
-            selector: { introspectionView in
-                guard let viewHost = Introspect.findViewHost(from: introspectionView) else {
-                    return nil
-                }
-                // first run Introspect as normal
-                if let selectedView = Introspect.previousSibling(containing: UICollectionView.self,
-                                                                 from: viewHost) {
-                    return selectedView
-                } else if let superView = viewHost.superview {
-                    // if no view was found and a superview exists, search the superview as well
-                    return Introspect.previousSibling(containing: UICollectionView.self, from: superView)
-                } else {
-                    // no view found at all
-                    return nil
-                }
-            },
-            customize: customize
-        ))
-    }
-    
-    func cardStyle(top: CGFloat? = 0,
-                   bottom: CGFloat? = 0,
-                   leftLineEnabled: Bool = false,
-                   bgColor: Color = CoreAssets.background.swiftUIColor,
-                   strokeColor: Color = CoreAssets.cardViewStroke.swiftUIColor,
-                   textColor: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
+    func cardStyle(
+        top: CGFloat? = 0,
+        bottom: CGFloat? = 0,
+        leftLineEnabled: Bool = false,
+        bgColor: Color = CoreAssets.background.swiftUIColor,
+        strokeColor: Color = CoreAssets.cardViewStroke.swiftUIColor,
+        textColor: Color = CoreAssets.textPrimary.swiftUIColor
+    ) -> some View {
         return self
             .padding(.all, 20)
             .padding(.vertical, leftLineEnabled ? 0 : 6)
@@ -81,10 +50,12 @@ public extension View {
             .padding(.bottom, bottom)
     }
     
-    func shadowCardStyle(top: CGFloat? = 0,
-                         bottom: CGFloat? = 0,
-                         bgColor: Color = CoreAssets.cardViewBackground.swiftUIColor,
-                         textColor: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
+    func shadowCardStyle(
+        top: CGFloat? = 0,
+        bottom: CGFloat? = 0,
+        bgColor: Color = CoreAssets.cardViewBackground.swiftUIColor,
+        textColor: Color = CoreAssets.textPrimary.swiftUIColor
+    ) -> some View {
         return self
             .padding(.all, 16)
             .padding(.vertical, 6)
@@ -103,8 +74,11 @@ public extension View {
         
     }
     
-    func titleSettings(top: CGFloat? = 10, bottom: CGFloat? = 20,
-                       color: Color = CoreAssets.textPrimary.swiftUIColor) -> some View {
+    func titleSettings(
+        top: CGFloat? = 10,
+        bottom: CGFloat? = 20,
+        color: Color = CoreAssets.textPrimary.swiftUIColor
+    ) -> some View {
         return self
             .lineLimit(1)
             .truncationMode(.tail)
@@ -123,10 +97,12 @@ public extension View {
         }
     }
     
-    func roundedBackground(_ color: Color = CoreAssets.background.swiftUIColor,
-                           strokeColor: Color = CoreAssets.backgroundStroke.swiftUIColor,
-                           ipadMaxHeight: CGFloat = .infinity,
-                           maxIpadWidth: CGFloat = 420) -> some View {
+    func roundedBackground(
+        _ color: Color = CoreAssets.background.swiftUIColor,
+        strokeColor: Color = CoreAssets.backgroundStroke.swiftUIColor,
+        ipadMaxHeight: CGFloat = .infinity,
+        maxIpadWidth: CGFloat = 420
+    ) -> some View {
         var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
         return ZStack {
             RoundedCorners(tl: 24, tr: 24)
@@ -146,8 +122,12 @@ public extension View {
         if #available(iOS 16.0, *) {
             return self.navigationBarHidden(true)
         } else {
-            return self.introspectNavigationController { $0.isNavigationBarHidden = true }
-                .navigationBarHidden(true)
+            return self.introspect(
+                .navigationView(style: .stack),
+                on: .iOS(.v14, .v15, .v16, .v17),
+                scope: .ancestor) {
+                    $0.isNavigationBarHidden = true
+                }
         }
     }
     

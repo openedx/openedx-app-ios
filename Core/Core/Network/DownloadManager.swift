@@ -188,12 +188,14 @@ public class DownloadManager: DownloadManagerProtocol {
         let directoryURL = documentDirectoryURL.appendingPathComponent("Files", isDirectory: true)
         
         if FileManager.default.fileExists(atPath: directoryURL.path) {
-            print(directoryURL.path)
             return URL(fileURLWithPath: directoryURL.path)
         } else {
             do {
-                try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
-                print(directoryURL.path)
+                try FileManager.default.createDirectory(
+                    at: directoryURL,
+                    withIntermediateDirectories: true,
+                    attributes: nil
+                )
                 return URL(fileURLWithPath: directoryURL.path)
             } catch {
                 print(error.localizedDescription)

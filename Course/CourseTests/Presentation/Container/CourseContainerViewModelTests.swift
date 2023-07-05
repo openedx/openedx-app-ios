@@ -16,7 +16,9 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -24,7 +26,9 @@ final class CourseContainerViewModelTests: XCTestCase {
                 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
+            analytics: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -74,6 +78,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let childs = [chapter]
         
         let courseStructure = CourseStructure(
+            courseID: "1",
             id: "123",
             graded: true,
             completion: 0,
@@ -112,7 +117,9 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksOfflineSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -120,7 +127,9 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
+            analytics: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -131,7 +140,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentEnd: nil
         )
         
-        let courseStructure = CourseStructure(id: "123",
+        let courseStructure = CourseStructure(courseID: "1",
+                                              id: "123",
                                               graded: true,
                                               completion: 0,
                                               viewYouTubeUrl: "",
@@ -160,7 +170,9 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksNoInternetError() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -168,7 +180,9 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
+            analytics: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -196,7 +210,9 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksNoCacheError() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -204,7 +220,9 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
+            analytics: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -229,7 +247,9 @@ final class CourseContainerViewModelTests: XCTestCase {
     
     func testGetCourseBlocksUnknownError() async throws {
         let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let connectivity = ConnectivityProtocolMock()
         
@@ -237,7 +257,9 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
+            authInteractor: authInteractor,
             router: router,
+            analytics: analytics,
             config: config,
             connectivity: connectivity,
             manager: DownloadManagerMock(),
@@ -258,5 +280,43 @@ final class CourseContainerViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertNil(viewModel.courseStructure)
+    }
+    
+    func testTabSelectedAnalytics() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: DownloadManagerMock(),
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        
+        viewModel.trackSelectedTab(selection: .course, courseId: "1", courseName: "name")
+        Verify(analytics, .courseOutlineCourseTabClicked(courseId: .value("1"), courseName: .value("name")))
+        
+        viewModel.trackSelectedTab(selection: .videos, courseId: "1", courseName: "name")
+        Verify(analytics, .courseOutlineVideosTabClicked(courseId: .value("1"), courseName: .value("name")))
+        
+        viewModel.trackSelectedTab(selection: .discussion, courseId: "1", courseName: "name")
+        Verify(analytics, .courseOutlineDiscussionTabClicked(courseId: .value("1"), courseName: .value("name")))
+        
+        viewModel.trackSelectedTab(selection: .handounds, courseId: "1", courseName: "name")
+        Verify(analytics, .courseOutlineHandoutsTabClicked(courseId: .value("1"), courseName: .value("name")))
     }
 }

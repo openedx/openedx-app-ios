@@ -30,18 +30,23 @@ public class CourseDetailsViewModel: ObservableObject {
     }
     
     private let interactor: CourseInteractorProtocol
+    private let analytics: CourseAnalytics
     let router: CourseRouter
     let config: Config
     let cssInjector: CSSInjector
-    public let connectivity: ConnectivityProtocol
+    let connectivity: ConnectivityProtocol
     
-    public init(interactor: CourseInteractorProtocol,
-                router: CourseRouter,
-                config: Config,
-                cssInjector: CSSInjector,
-                connectivity: ConnectivityProtocol) {
+    public init(
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter,
+        analytics: CourseAnalytics,
+        config: Config,
+        cssInjector: CSSInjector,
+        connectivity: ConnectivityProtocol
+    ) {
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.config = config
         self.cssInjector = cssInjector
         self.connectivity = connectivity
@@ -56,7 +61,7 @@ public class CourseDetailsViewModel: ObservableObject {
                 if let isEnrolled = courseDetails?.isEnrolled {
                     self.courseDetails?.isEnrolled = isEnrolled
                 }
-
+                
                 isShowProgress = false
             } else {
                 courseDetails = try await interactor.getCourseDetailsOffline(courseID: courseID)
@@ -98,11 +103,17 @@ public class CourseDetailsViewModel: ObservableObject {
         guard let url = URL(string: httpsURL) else { return }
         UIApplication.shared.open(url)
     }
-
+    
+    func viewCourseClicked(courseId: String, courseName: String) {
+        analytics.viewCourseClicked(courseId: courseId, courseName: courseName)
+    }
+    
     @MainActor
     func enrollToCourse(id: String) async {
         do {
+            analytics.courseEnrollClicked(courseId: id, courseName: courseDetails?.courseTitle ?? "")
             _ = try await interactor.enrollToCourse(courseID: id)
+            analytics.courseEnrollSuccess(courseId: id, courseName: courseDetails?.courseTitle ?? "")
             courseDetails?.isEnrolled = true
             NotificationCenter.default.post(name: .onCourseEnrolled, object: id)
         } catch let error {

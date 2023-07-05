@@ -10,32 +10,56 @@ import Core
 
 public protocol CourseRouter: BaseRouter {
     
-    func showCourseScreens(courseID: String,
-                           isActive: Bool?,
-                           courseStart: Date?,
-                           courseEnd: Date?,
-                           enrollmentStart: Date?,
-                           enrollmentEnd: Date?,
-                           title: String)
+    func showCourseScreens(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    )
     
-    func showCourseUnit(blockId: String,
-                        courseID: String,
-                        sectionName: String,
-                        blocks: [CourseBlock])
+    func showCourseUnit(
+        courseName: String,
+        id: String,
+        blockId: String,
+        courseID: String,
+        sectionName: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    )
     
-    func showCourseVerticalView(title: String,
-                                verticals: [CourseVertical])
+    func replaceCourseUnit(
+        id: String,
+        courseName: String,
+        blockId: String,
+        courseID: String,
+        sectionName: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    )
     
-    func showCourseBlocksView(title: String,
-                              blocks: [CourseBlock])
+    func showCourseVerticalView(
+        id: String,
+        courseID: String,
+        courseName: String,
+        title: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    )
     
-    func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
-                                                blocks: (String, [CourseBlock]))
-    
-    func showHandoutsUpdatesView(handouts: String?,
-                                 announcements: [CourseUpdate]?,
-                                 router: Course.CourseRouter,
-                                 cssInjector: CSSInjector)
+    func showHandoutsUpdatesView(
+        handouts: String?,
+        announcements: [CourseUpdate]?,
+        router: Course.CourseRouter,
+        cssInjector: CSSInjector
+    )
 }
 
 // Mark - For testing and SwiftUI preview
@@ -44,32 +68,56 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public override init() {}
     
-    public func showCourseScreens(courseID: String,
-                                  isActive: Bool?,
-                                  courseStart: Date?,
-                                  courseEnd: Date?,
-                                  enrollmentStart: Date?,
-                                  enrollmentEnd: Date?,
-                                  title: String) {}
+    public func showCourseScreens(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    ) {}
     
-    public func showCourseUnit(blockId: String,
-                               courseID: String,
-                               sectionName: String,
-                               blocks: [CourseBlock]) {}
+    public func showCourseUnit(
+        courseName: String,
+        id: String,
+        blockId: String,
+        courseID: String,
+        sectionName: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) {}
     
-    public func showCourseVerticalView(title: String,
-                                       verticals: [CourseVertical]) {}
+    public func replaceCourseUnit(
+        id: String,
+        courseName: String,
+        blockId: String,
+        courseID: String,
+        sectionName: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) {}
     
-    public func showCourseBlocksView(title: String,
-                                     blocks: [CourseBlock]) {}
+    public func showCourseVerticalView(
+        id: String,
+        courseID: String,
+        courseName: String,
+        title: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) {}
     
-    public func showCourseVerticalAndBlocksView(verticals: (String, [CourseVertical]),
-                                                blocks: (String, [CourseBlock])) {}
-    
-    public func showHandoutsUpdatesView(handouts: String?,
-                                        announcements: [CourseUpdate]?,
-                                        router: Course.CourseRouter,
-                                        cssInjector: CSSInjector) {}
+    public func showHandoutsUpdatesView(
+        handouts: String?,
+        announcements: [CourseUpdate]?,
+        router: Course.CourseRouter,
+        cssInjector: CSSInjector
+    ) {}
     
 }
 #endif

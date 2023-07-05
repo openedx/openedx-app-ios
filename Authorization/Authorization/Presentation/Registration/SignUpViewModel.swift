@@ -25,16 +25,24 @@ public class SignUpViewModel: ObservableObject {
     @Published var fields: [FieldConfiguration] = []
     
     let router: AuthorizationRouter
+    let analytics: AuthorizationAnalytics
     let config: Config
     let cssInjector: CSSInjector
     
     private let interactor: AuthInteractorProtocol
     private let validator: Validator
     
-    public init(interactor: AuthInteractorProtocol, router: AuthorizationRouter, config: Config, cssInjector: CSSInjector,
-                validator: Validator) {
+    public init(
+        interactor: AuthInteractorProtocol,
+        router: AuthorizationRouter,
+        analytics: AuthorizationAnalytics,
+        config: Config,
+        cssInjector: CSSInjector,
+        validator: Validator
+    ) {
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.config = config
         self.cssInjector = cssInjector
         self.validator = validator
@@ -71,29 +79,31 @@ public class SignUpViewModel: ObservableObject {
     
     @MainActor
     func registerUser() async {
-            do {
-                var validateFields: [String: String] = [:]
-                fields.forEach({
-                    validateFields[$0.field.name] = $0.text
-                })
-                validateFields["honor_code"] = "true"
-                validateFields["terms_of_service"] = "true"
-                let errors = try await interactor.validateRegistrationFields(fields: validateFields)
-                guard !showErrors(errors: errors) else { return }
-                isShowProgress = true
-                try await interactor.registerUser(fields: validateFields)
-                isShowProgress = false
-                router.showMainScreen()
-                
-            } catch let error {
-                isShowProgress = false
-                if case APIError.invalidGrant = error {
-                    errorMessage = CoreLocalization.Error.invalidCredentials
-                } else if error.isInternetError {
-                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                } else {
-                    errorMessage = CoreLocalization.Error.unknownError
-                }
+        do {
+            var validateFields: [String: String] = [:]
+            fields.forEach({
+                validateFields[$0.field.name] = $0.text
+            })
+            validateFields["honor_code"] = "true"
+            validateFields["terms_of_service"] = "true"
+            let errors = try await interactor.validateRegistrationFields(fields: validateFields)
+            guard !showErrors(errors: errors) else { return }
+            isShowProgress = true
+            let user = try await interactor.registerUser(fields: validateFields)
+            analytics.setUserID("\(user.id)")
+            analytics.registrationSuccess()
+            isShowProgress = false
+            router.showMainScreen()
+            
+        } catch let error {
+            isShowProgress = false
+            if case APIError.invalidGrant = error {
+                errorMessage = CoreLocalization.Error.invalidCredentials
+            } else if error.isInternetError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
             }
+        }
     }
 }

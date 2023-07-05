@@ -21,6 +21,24 @@
 "ERROR.UNKNOWN_ERROR" = "Something went wrong";
 "ERROR.WIFI" = "You can only download files over Wi-Fi. You can change this in the settings.";
 
+"COURSEWARE.COURSE_CONTENT" = "Course content";
+"COURSEWARE.COURSE_UNITS" = "Course units";
+"COURSEWARE.NEXT" = "Next";
+"COURSEWARE.PREVIOUS" = "Prev";
+"COURSEWARE.FINISH" = "Finish";
+"COURSEWARE.GOOD_WORK" = "Good Work!";
+"COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";
+"COURSEWARE.SECTION" = "Section “";
+"COURSEWARE.IS_FINISHED" = "“ is finished.";
+"COURSEWARE.CONTINUE" = "Continue";
+"COURSEWARE.CONTINUE_WITH" = "Continue with:";
+"COURSEWARE.NEXT_SECTION" = "Next section";
+
+"COURSEWARE.NEXT_SECTION_DESCRIPTION_FIRST" = "To proceed with “";
+"COURSEWARE.NEXT_SECTION_DESCRIPTION_LAST" = "” press “Next section”.";
+
+"ERROR.RELOAD" = "Reload";
+
 "DATE.ENDED" = "Ended";
 "DATE.START" = "Start";
 "DATE.STARTED" = "Started";
@@ -47,3 +65,6 @@
 
 "PICKER.SEARCH" = "Search";
 "PICKER.ACCEPT" = "Accept";
+
+"WEBVIEW.ALERT.OK" = "Ok";
+"WEBVIEW.ALERT.CANCEL" = "Cancel";

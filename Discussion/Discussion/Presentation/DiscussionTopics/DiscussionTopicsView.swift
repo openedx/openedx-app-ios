@@ -161,8 +161,10 @@ public struct DiscussionTopicsView: View {
 struct DiscussionView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DiscussionTopicsViewModel(
+            title: "Course name",
             interactor: DiscussionInteractor.mock,
             router: DiscussionRouterMock(),
+            analytics: DiscussionAnalyticsMock(),
             config: ConfigMock())
         let router = DiscussionRouterMock()
         
@@ -181,6 +183,7 @@ struct DiscussionView_Previews: PreviewProvider {
         .loadFonts()
     }
 }
+// swiftlint:enable all
 #endif
 
 public struct TopicCell: View {

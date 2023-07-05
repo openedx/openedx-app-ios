@@ -79,7 +79,7 @@ public class AppStorage {
     public var userSettings: UserSettings? {
         get {
             guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
-                let defaultSettings = UserSettings(wifiOnly: false, downloadQuality: .auto)
+                let defaultSettings = UserSettings(wifiOnly: true, downloadQuality: .auto)
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(defaultSettings) {
                     userDefaults.set(encoded, forKey: KEY_SETTINGS)
@@ -129,9 +129,9 @@ public class AppStorage {
     private let KEY_ACCESS_TOKEN = "accessToken"
     private let KEY_REFRESH_TOKEN = "refreshToken"
     private let KEY_COOKIES_DATE = "cookiesDate"
-    private let KEY_USER_PROFILE = "UserProfile"
+    private let KEY_USER_PROFILE = "userProfile"
     private let KEY_USER = "refreshToken"
-    private let KEY_SETTINGS = "UserSettings"
+    private let KEY_SETTINGS = "userSettings"
 }
 
 // Mark - For testing and SwiftUI preview

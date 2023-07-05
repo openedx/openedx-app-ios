@@ -43,7 +43,7 @@ public class SettingsViewModel: ObservableObject {
     private var userSettings: UserSettings
     
     private let interactor: ProfileInteractorProtocol
-    public let router: ProfileRouter
+    let router: ProfileRouter
     
     public init(interactor: ProfileInteractorProtocol, router: ProfileRouter) {
         self.interactor = interactor

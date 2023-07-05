@@ -41,11 +41,14 @@ public class EditProfileViewModel: ObservableObject {
         ProfileLocalization.Edit.Fields.spokenLangugae
     )
     
-    @Published public var profileChanges: Changes = .init(shortBiography: "",
-                                                          profileType: .limited,
-                                                          isAvatarChanged: false,
-                                                          isAvatarDeleted: false,
-                                                          isAvatarSaved: false)
+    @Published
+    public var profileChanges: Changes = .init(
+        shortBiography: "",
+        profileType: .limited,
+        isAvatarChanged: false,
+        isAvatarDeleted: false,
+        isAvatarSaved: false
+    )
     
     @Published public var inputImage: UIImage?
     private(set) var isYongUser: Bool = false
@@ -73,18 +76,23 @@ public class EditProfileViewModel: ObservableObject {
     }
     
     private let interactor: ProfileInteractorProtocol
-    public let router: ProfileRouter
+    let router: ProfileRouter
+    let analytics: ProfileAnalytics
     
-    public init(userModel: UserProfile, interactor: ProfileInteractorProtocol, router: ProfileRouter) {
+    public init(userModel: UserProfile,
+                interactor: ProfileInteractorProtocol,
+                router: ProfileRouter,
+                analytics: ProfileAnalytics) {
         self.userModel = userModel
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.spokenLanguages = interactor.getSpokenLanguages()
         self.countries = interactor.getCountries()
         generateYears()
     }
     
-    public func resizeImage(image: UIImage, longSideSize: Double) {
+    func resizeImage(image: UIImage, longSideSize: Double) {
         let size = image.size
         
         let widthRatio  = longSideSize / size.width
@@ -107,7 +115,7 @@ public class EditProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    public func deleteAvatar() async throws {
+    func deleteAvatar() async throws {
         isShowProgress = true
         do {
             if try await interactor.deleteProfilePicture() {
@@ -124,7 +132,7 @@ public class EditProfileViewModel: ObservableObject {
         }
     }
     
-    public func checkChanges() {
+    func checkChanges() {
         withAnimation(.easeIn(duration: 0.1)) {
             self.isChanged =
             [spokenLanguageConfiguration.text.isEmpty ? false : spokenLanguageConfiguration.text != userModel.spokenLanguage,
@@ -137,7 +145,7 @@ public class EditProfileViewModel: ObservableObject {
         }
     }
     
-    public func switchProfile() {
+    func switchProfile() {
         var yearOfBirth = 0
         if yearsConfiguration.text != "" {
             yearOfBirth = Int(yearsConfiguration.text) ?? 0
@@ -151,7 +159,7 @@ public class EditProfileViewModel: ObservableObject {
         }
     }
     
-    public func checkProfileType() {
+    func checkProfileType() {
         if yearsConfiguration.text != "" {
             let yearOfBirth = yearsConfiguration.text
             if currentYear - (Int(yearOfBirth) ?? 0) < 13 {
@@ -172,12 +180,6 @@ public class EditProfileViewModel: ObservableObject {
                 }
             }
         }
-        if userModel.yearOfBirth == 0 {
-            withAnimation {
-                isYongUser = true
-                profileChanges.profileType = .limited
-            }
-        }
         if profileChanges.profileType == .full {
             isEditable = true
         } else {
@@ -186,7 +188,7 @@ public class EditProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    public func saveProfileUpdates() async {
+    func saveProfileUpdates() async {
         var parameters: [String: Any] = [:]
         
         if userModel.isFullProfile != profileChanges.profileType.boolValue {
@@ -212,7 +214,7 @@ public class EditProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    private func uploadData(parameters: [String: Any]) async {
+    func uploadData(parameters: [String: Any]) async {
         do {
             if profileChanges.isAvatarDeleted {
                 try await deleteAvatar()
@@ -254,7 +256,7 @@ public class EditProfileViewModel: ObservableObject {
         }
     }
     
-    public func backButtonTapped() {
+    func backButtonTapped() {
         if isChanged {
             router.presentAlert(
                 alertTitle: ProfileLocalization.UnsavedDataAlert.title,
@@ -274,10 +276,30 @@ public class EditProfileViewModel: ObservableObject {
         }
     }
     
+    func loadLocationsAndSpokenLanguages() {
+        if let yearOfBirth = userModel.yearOfBirth == 0 ? nil : userModel.yearOfBirth {
+            self.selectedYearOfBirth = PickerItem(key: "\(yearOfBirth)", value: "\(yearOfBirth)")
+        }
+        
+        if let index = countries.firstIndex(where: {$0.value == userModel.country}) {
+            countries[index].optionDefault = true
+            let selected = countries[index]
+            self.selectedCountry = PickerItem(key: selected.value, value: selected.name)
+        }
+        if let spokenLanguage = userModel.spokenLanguage {
+            if let spokenIndex = spokenLanguages.firstIndex(where: {$0.value == spokenLanguage }) {
+                let selected = spokenLanguages[spokenIndex]
+                self.selectedSpokeLanguage = PickerItem(key: selected.value, value: selected.name)
+            }
+        }
+        
+        generateFieldConfigurations()
+    }
+    
     private func generateYears() {
         let currentYear = Calendar.current.component(.year, from: Date())
         years = []
-        for i in currentYear-100...currentYear {
+        for i in stride(from: currentYear, to: currentYear - 100, by: -1) {
             years.append(PickerFields.Option(value: "\(i)", name: "\(i)", optionDefault: false))
         }
     }
@@ -317,25 +339,6 @@ public class EditProfileViewModel: ObservableObject {
                                 options: spokenLanguages),
             selectedItem: selectedSpokeLanguage)
         
-        profileChanges.shortBiography = userModel.shortBiography ?? ""
-    }
-    
-    public func loadLocationsAndSpokenLanguages() {
-        let yearOfBirth = userModel.yearOfBirth == 0 ? 2023 : userModel.yearOfBirth
-        self.selectedYearOfBirth = PickerItem(key: "\(yearOfBirth)", value: "\(yearOfBirth)")
-        
-        if let index = countries.firstIndex(where: {$0.value == userModel.country}) {
-            countries[index].optionDefault = true
-            let selected = countries[index]
-            self.selectedCountry = PickerItem(key: selected.value, value: selected.name)
-        }
-        if let spokenLanguage = userModel.spokenLanguage {
-            if let spokenIndex = spokenLanguages.firstIndex(where: {$0.value == spokenLanguage }) {
-                let selected = spokenLanguages[spokenIndex]
-                self.selectedSpokeLanguage = PickerItem(key: selected.value, value: selected.name)
-            }
-        }
-        
-        generateFieldConfigurations()
+        profileChanges.shortBiography = userModel.shortBiography
     }
 }

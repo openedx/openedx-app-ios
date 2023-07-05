@@ -25,11 +25,13 @@ final class SearchViewModelTests: XCTestCase {
     func testSearchSuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
+        let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
             interactor: interactor,
             connectivity: connectivity,
             router: router,
+            analytics: analytics,
             debounce: .test
         )
         
@@ -72,6 +74,7 @@ final class SearchViewModelTests: XCTestCase {
         wait(for: [exp], timeout: 1)
         
         Verify(interactor, .search(page: 1, searchTerm: .any))
+        Verify(analytics, .discoveryCoursesSearch(label: .any, coursesCount: .any))
 
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
@@ -80,11 +83,13 @@ final class SearchViewModelTests: XCTestCase {
     func testSearchEmptyQuerySuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
+        let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
             interactor: interactor,
             connectivity: connectivity,
             router: router,
+            analytics: analytics,
             debounce: .test
         )
 
@@ -106,11 +111,13 @@ final class SearchViewModelTests: XCTestCase {
     func testSearchNoInternetError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
+        let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
             interactor: interactor,
             connectivity: connectivity,
             router: router,
+            analytics: analytics,
             debounce: .test
         )
 
@@ -137,11 +144,13 @@ final class SearchViewModelTests: XCTestCase {
     func testSearchUnknownError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
+        let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
             interactor: interactor,
             connectivity: connectivity,
             router: router,
+            analytics: analytics,
             debounce: .test
         )
 

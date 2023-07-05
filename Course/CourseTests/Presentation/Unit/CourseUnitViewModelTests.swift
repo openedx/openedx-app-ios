@@ -14,24 +14,14 @@ import SwiftUI
 
 final class CourseUnitViewModelTests: XCTestCase {
     
-    let blocks = [
+    static let blocks = [
         CourseBlock(blockId: "1",
                     id: "1",
                     topicId: "1",
                     graded: false,
                     completion: 0,
-                    type: .course,
-                    displayName: "One",
-                    studentUrl: "",
-                    videoUrl: nil,
-                    youTubeUrl: nil),
-        CourseBlock(blockId: "1",
-                    id: "1",
-                    topicId: "1",
-                    graded: false,
-                    completion: 0,
-                    type: .course,
-                    displayName: "One",
+                    type: .video,
+                    displayName: "Lesson 1",
                     studentUrl: "",
                     videoUrl: nil,
                     youTubeUrl: nil),
@@ -40,9 +30,9 @@ final class CourseUnitViewModelTests: XCTestCase {
                     topicId: "2",
                     graded: false,
                     completion: 0,
-                    type: .html,
-                    displayName: "Two",
-                    studentUrl: "",
+                    type: .video,
+                    displayName: "Lesson 2",
+                    studentUrl: "2",
                     videoUrl: nil,
                     youTubeUrl: nil),
         CourseBlock(blockId: "3",
@@ -50,9 +40,9 @@ final class CourseUnitViewModelTests: XCTestCase {
                     topicId: "3",
                     graded: false,
                     completion: 0,
-                    type: .discussion,
-                    displayName: "Three",
-                    studentUrl: "",
+                    type: .unknown,
+                    displayName: "Lesson 3",
+                    studentUrl: "3",
                     videoUrl: nil,
                     youTubeUrl: nil),
         CourseBlock(blockId: "4",
@@ -60,57 +50,75 @@ final class CourseUnitViewModelTests: XCTestCase {
                     topicId: "4",
                     graded: false,
                     completion: 0,
-                    type: .video,
-                    displayName: "Four",
-                    studentUrl: "",
-                    videoUrl: "url",
-                    youTubeUrl: "url"),
-        CourseBlock(blockId: "5",
-                    id: "5",
-                    topicId: "5",
-                    graded: false,
-                    completion: 0,
-                    type: .video,
-                    displayName: "Five",
-                    studentUrl: "",
-                    videoUrl: "url",
-                    youTubeUrl: nil),
-        CourseBlock(blockId: "6",
-                    id: "6",
-                    topicId: "6",
-                    graded: false,
-                    completion: 0,
-                    type: .video,
-                    displayName: "Six",
-                    studentUrl: "",
+                    type: .unknown,
+                    displayName: "4",
+                    studentUrl: "4",
                     videoUrl: nil,
                     youTubeUrl: nil),
-        CourseBlock(blockId: "7",
-                    id: "7",
-                    topicId: "7",
-                    graded: false,
-                    completion: 0,
-                    type: .problem,
-                    displayName: "Seven",
-                    studentUrl: "",
-                    videoUrl: nil,
-                    youTubeUrl: nil)
     ]
+    
+    let chapters = [
+        CourseChapter(
+        blockId: "0",
+        id: "0",
+        displayName: "0",
+        type: .chapter,
+        childs: [
+            CourseSequential(blockId: "5",
+                             id: "5",
+                             displayName: "5",
+                             type: .sequential,
+                             completion: 0,
+                             childs: [
+                                CourseVertical(blockId: "6", id: "6",
+                                               displayName: "6",
+                                               type: .vertical,
+                                               completion: 0,
+                                               childs: blocks)
+                             ])
+            
+        ]),
+        CourseChapter(
+        blockId: "2",
+        id: "2",
+        displayName: "2",
+        type: .chapter,
+        childs: [
+            CourseSequential(blockId: "3",
+                             id: "3",
+                             displayName: "3",
+                             type: .sequential,
+                             completion: 0,
+                             childs: [
+                                CourseVertical(blockId: "4", id: "4",
+                                               displayName: "4",
+                                               type: .vertical,
+                                               completion: 0,
+                                               childs: blocks)
+                             ])
+            
+        ])
+        ]
     
     func testBlockCompletionRequestSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
-        let viewModel = CourseUnitViewModel(
-            lessonID: "123",
-            courseID: "456",
-            blocks: blocks,
-            interactor: interactor,
-            router: router,
-            connectivity: connectivity,
-            manager: DownloadManagerMock()
-        )
+        let viewModel = CourseUnitViewModel(lessonID: "123",
+                                            courseID: "456",
+                                            id: "789",
+                                            courseName: "name",
+                                            chapters: chapters,
+                                            chapterIndex: 0,
+                                            sequentialIndex: 0,
+                                            verticalIndex: 0,
+                                            interactor: interactor,
+                                            router: router,
+                                            analytics: analytics,
+                                            connectivity: connectivity,
+                                            manager: DownloadManagerMock())
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willProduce: {_ in}))
         
@@ -123,16 +131,21 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
-        let viewModel = CourseUnitViewModel(
-            lessonID: "123",
-            courseID: "456",
-            blocks: blocks,
-            interactor: interactor,
-            router: router,
-            connectivity: connectivity,
-            manager: DownloadManagerMock()
-        )
+        let viewModel = CourseUnitViewModel(lessonID: "123",
+                                            courseID: "456",
+                                            id: "789",
+                                            courseName: "name",
+                                            chapters: chapters,
+                                            chapterIndex: 0,
+                                            sequentialIndex: 0,
+                                            verticalIndex: 0,
+                                            interactor: interactor,
+                                            router: router,
+                                            analytics: analytics,
+                                            connectivity: connectivity,
+                                            manager: DownloadManagerMock())
         
         Given(interactor, .blockCompletionRequest(courseID: .any,
                                                   blockID: .any,
@@ -150,16 +163,21 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
-        let viewModel = CourseUnitViewModel(
-            lessonID: "123",
-            courseID: "456",
-            blocks: blocks,
-            interactor: interactor,
-            router: router,
-            connectivity: connectivity,
-            manager: DownloadManagerMock()
-        )
+        let viewModel = CourseUnitViewModel(lessonID: "123",
+                                            courseID: "456",
+                                            id: "789",
+                                            courseName: "name",
+                                            chapters: chapters,
+                                            chapterIndex: 0,
+                                            sequentialIndex: 0,
+                                            verticalIndex: 0,
+                                            interactor: interactor,
+                                            router: router,
+                                            analytics: analytics,
+                                            connectivity: connectivity,
+                                            manager: DownloadManagerMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
@@ -179,16 +197,21 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
-        let viewModel = CourseUnitViewModel(
-            lessonID: "123",
-            courseID: "456",
-            blocks: blocks,
-            interactor: interactor,
-            router: router,
-            connectivity: connectivity,
-            manager: DownloadManagerMock()
-        )
+        let viewModel = CourseUnitViewModel(lessonID: "123",
+                                            courseID: "456",
+                                            id: "789",
+                                            courseName: "name",
+                                            chapters: chapters,
+                                            chapterIndex: 0,
+                                            sequentialIndex: 0,
+                                            verticalIndex: 0,
+                                            interactor: interactor,
+                                            router: router,
+                                            analytics: analytics,
+                                            connectivity: connectivity,
+                                            manager: DownloadManagerMock())
         
         Given(interactor, .blockCompletionRequest(courseID: .any,
                                                   blockID: .any,
@@ -207,31 +230,37 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
-        let viewModel = CourseUnitViewModel(
-            lessonID: "123",
-            courseID: "456",
-            blocks: blocks,
-            interactor: interactor,
-            router: router,
-            connectivity: connectivity,
-            manager: DownloadManagerMock()
-        )
+        let viewModel = CourseUnitViewModel(lessonID: "123",
+                                            courseID: "456",
+                                            id: "789",
+                                            courseName: "name",
+                                            chapters: chapters,
+                                            chapterIndex: 0,
+                                            sequentialIndex: 0,
+                                            verticalIndex: 0,
+                                            interactor: interactor,
+                                            router: router,
+                                            analytics: analytics,
+                                            connectivity: connectivity,
+                                            manager: DownloadManagerMock())
         
         viewModel.loadIndex()
         
-        for _ in 0...blocks.count - 1 {
+        for _ in 0...CourseUnitViewModelTests.blocks.count - 1 {
             viewModel.select(move: .next)
-            viewModel.createLessonType()
         }
         
-        XCTAssertEqual(viewModel.index, 7)
+        Verify(analytics, .nextBlockClicked(courseId: .any, courseName: .any, blockId: .any, blockName: .any))
         
-        for _ in 0...blocks.count - 1 {
+        XCTAssertEqual(viewModel.index, 3)
+        
+        for _ in 0...CourseUnitViewModelTests.blocks.count - 1 {
             viewModel.select(move: .previous)
-            viewModel.createLessonType()
         }
         
+        Verify(analytics, .prevBlockClicked(courseId: .any, courseName: .any, blockId: .any, blockName: .any))
         
         XCTAssertEqual(viewModel.index, 0)
     }

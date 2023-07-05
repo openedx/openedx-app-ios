@@ -26,9 +26,10 @@ public struct ProfileView: View {
             // MARK: - Page name
             VStack(alignment: .center) {
                 NavigationBar(title: ProfileLocalization.title,
-                                     rightButtonType: .edit,
-                rightButtonAction: {
+                              rightButtonType: .edit,
+                              rightButtonAction: {
                     if let userModel = viewModel.userModel {
+                        viewModel.analytics.profileEditClicked()
                         viewModel.router.showEditProfile(
                             userModel: userModel,
                             avatar: viewModel.updatedAvatar,
@@ -43,7 +44,7 @@ public struct ProfileView: View {
                         )
                     }
                 }, rightButtonIsActive: .constant(viewModel.connectivity.isInternetAvaliable))
-
+                
                 // MARK: - Page Body
                 
                 RefreshableScrollViewCompat(action: {
@@ -90,8 +91,10 @@ public struct ProfileView: View {
                                             }
                                         }
                                     }
-                                    .cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
-                                               strokeColor: .clear)
+                                    .cardStyle(
+                                        bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                        strokeColor: .clear
+                                    )
                                 }.padding(.bottom, 16)
                             }
                             
@@ -102,16 +105,19 @@ public struct ProfileView: View {
                                     .font(Theme.Fonts.labelLarge)
                                 VStack(alignment: .leading, spacing: 27) {
                                     HStack {
-                                     Button(action: {
-                                         viewModel.router.showSettings()
-                                     }, label: {
+                                        Button(action: {
+                                            viewModel.analytics.profileVideoSettingsClicked()
+                                            viewModel.router.showSettings()
+                                        }, label: {
                                             Text(ProfileLocalization.settingsVideo)
                                             Spacer()
                                             Image(systemName: "chevron.right")
                                         })
                                     }
-                                }.cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
-                                            strokeColor: .clear)
+                                }.cardStyle(
+                                    bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                    strokeColor: .clear
+                                )
                                 
                                 // MARK: - Support info
                                 Text(ProfileLocalization.supportInfo)
@@ -119,40 +125,59 @@ public struct ProfileView: View {
                                     .font(Theme.Fonts.labelLarge)
                                 VStack(alignment: .leading, spacing: 24) {
                                     if let support = viewModel.contactSupport() {
-                                    HStack {
-                                            Link(destination: support, label: {
+                                        Button(action: {
+                                            viewModel.analytics.emailSupportClicked()
+                                                UIApplication.shared.open(support)
+                                        }, label: {
+                                            HStack {
                                                 Text(ProfileLocalization.contact)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
-                                        }
+                                            }
+                                        })
+                                        .buttonStyle(PlainButtonStyle())
+                                        .foregroundColor(.primary)
                                         Rectangle()
                                             .frame(height: 1)
                                             .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                     }
+
                                     if let tos = viewModel.config.termsOfUse {
-                                        HStack {
-                                            Link(destination: tos, label: {
+                                        Button(action: {
+                                            viewModel.analytics.cookiePolicyClicked()
+                                                UIApplication.shared.open(tos)
+                                        }, label: {
+                                            HStack {
                                                 Text(ProfileLocalization.terms)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
-                                        }
+                                            }
+                                        })
+                                        .buttonStyle(PlainButtonStyle())
+                                        .foregroundColor(.primary)
                                         Rectangle()
                                             .frame(height: 1)
                                             .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                     }
+
                                     if let privacy = viewModel.config.privacyPolicy {
-                                        HStack {
-                                            Link(destination: privacy, label: {
+                                        Button(action: {
+                                            viewModel.analytics.privacyPolicyClicked()
+                                                UIApplication.shared.open(privacy)
+                                        }, label: {
+                                            HStack {
                                                 Text(ProfileLocalization.privacy)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
-                                        }
+                                            }
+                                        })
+                                        .buttonStyle(PlainButtonStyle())
+                                        .foregroundColor(.primary)
                                     }
-                                }.cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
-                                            strokeColor: .clear)
+                                }.cardStyle(
+                                    bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                    strokeColor: .clear
+                                )
                                 
                                 // MARK: - Log out
                                 VStack {
@@ -168,6 +193,7 @@ public struct ProfileView: View {
                                                     },
                                                     okTapped: {
                                                         Task {
+                                                            viewModel.analytics.userLogout(force: false)
                                                             await viewModel.logOut()
                                                         }
                                                         viewModel.router.dismiss(animated: true)
@@ -228,6 +254,7 @@ struct ProfileView_Previews: PreviewProvider {
         let router = ProfileRouterMock()
         let vm = ProfileViewModel(interactor: ProfileInteractor.mock,
                                   router: router,
+                                  analytics: ProfileAnalyticsMock(),
                                   config: ConfigMock(),
                                   connectivity: Connectivity())
         

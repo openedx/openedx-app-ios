@@ -38,6 +38,7 @@ public struct Theme {
         public static let cardImageRadius = 10.0
         public static let textInputShape = RoundedRectangle(cornerRadius: 8)
         public static let buttonShape = RoundedCorners(tl: 8, tr: 8, bl: 8, br: 8)
+        public static let unitButtonShape = RoundedCorners(tl: 21, tr: 21, bl: 21, br: 21)
         public static let roundedScreenBackgroundShape = RoundedCorners(
             tl: Theme.Shapes.screenBackgroundRadius,
             tr: Theme.Shapes.screenBackgroundRadius,
@@ -65,6 +66,7 @@ public extension Theme.Fonts {
         guard let url = Bundle(for: __.self).url(forResource: "SF-Pro", withExtension: "ttf") else { return }
         CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
     }
+    // swiftlint:enable type_name
 }
 
 extension View {

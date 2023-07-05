@@ -71,20 +71,29 @@ public class CSSInjector {
         }
     }
 
-    public func injectCSS(colorScheme: ColorScheme, html: String,
-                          type: CssType, fontSize: Int = 150, screenWidth: CGFloat) -> String {
-        let meadiaReplace = html.replacingOccurrences(of: "/media/",
-                                                      with: baseURL.absoluteString + "/media/")
-        var replacedHTML = meadiaReplace.replacingOccurrences(of: "../..",
-                                                              with: baseURL.absoluteString)
-            .replacingOccurrences(of: "src=\"/", with: "src=\"" + baseURL.absoluteString + "/")
+    //swiftlint:disable function_body_length line_length
+    public func injectCSS(
+        colorScheme: ColorScheme,
+        html: String,
+        type: CssType,
+        fontSize: Int = 150,
+        screenWidth: CGFloat
+    ) -> String {
+        let meadiaReplace = html.replacingOccurrences(
+            of: "/media/",
+            with: baseURL.absoluteString + "/media/"
+        )
+        var replacedHTML = meadiaReplace.replacingOccurrences(
+            of: "../..",
+            with: baseURL.absoluteString
+        ).replacingOccurrences(of: "src=\"/", with: "src=\"" + baseURL.absoluteString + "/")
             .replacingOccurrences(of: "href=\"/", with: "href=\"" + baseURL.absoluteString + "/")
             .replacingOccurrences(of: "href='/honor'", with: "href='\(baseURL.absoluteString)/honor'")
             .replacingOccurrences(of: "href='/privacy'", with: "href='\(baseURL.absoluteString)/privacy'")
         if colorScheme == .dark {
             replacedHTML = replaceHexColorsInHTML(html: replacedHTML)
         }
-
+        
         var maxWidth: String
         switch type {
         case .discovery:
@@ -130,6 +139,7 @@ public class CSSInjector {
         """
         return style + replacedHTML
     }
+    //swiftlint:enable function_body_length line_length
     
 }
 

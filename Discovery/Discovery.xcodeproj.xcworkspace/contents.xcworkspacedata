@@ -11,7 +11,7 @@
       location = "group:Discovery.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../NewEdX.xcodeproj">
+      location = "group:../OpenEdX.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../Pods/Pods.xcodeproj">

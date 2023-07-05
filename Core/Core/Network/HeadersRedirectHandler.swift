@@ -17,16 +17,17 @@ public class HeadersRedirectHandler: RedirectHandler {
         _ task: URLSessionTask,
         willBeRedirectedTo request: URLRequest,
         for response: HTTPURLResponse,
-        completion: @escaping (URLRequest?) -> Void) {
-            var redirectedRequest = request
-            
-            if let originalRequest = task.originalRequest,
-               let headers = originalRequest.allHTTPHeaderFields {
-                for (key, value) in headers {
-                    redirectedRequest.setValue(value, forHTTPHeaderField: key)
-                }
+        completion: @escaping (URLRequest?) -> Void
+    ) {
+        var redirectedRequest = request
+        
+        if let originalRequest = task.originalRequest,
+           let headers = originalRequest.allHTTPHeaderFields {
+            for (key, value) in headers {
+                redirectedRequest.setValue(value, forHTTPHeaderField: key)
             }
-            
-            completion(redirectedRequest)
         }
+        
+        completion(redirectedRequest)
+    }
 }

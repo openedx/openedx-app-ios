@@ -10,7 +10,8 @@ import Core
 
 public struct DeleteAccountView: View {
     
-    @ObservedObject private var viewModel: DeleteAccountViewModel
+    @ObservedObject
+    private var viewModel: DeleteAccountViewModel
     
     public init(viewModel: DeleteAccountViewModel) {
         self.viewModel = viewModel
@@ -21,8 +22,10 @@ public struct DeleteAccountView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: ProfileLocalization.DeleteAccount.title,
-                                     leftButtonAction: { viewModel.router.back() })
+                NavigationBar(
+                    title: ProfileLocalization.DeleteAccount.title,
+                    leftButtonAction: { viewModel.router.back() }
+                )
                 
                 .frameLimit()
                 
@@ -149,7 +152,11 @@ public struct DeleteAccountView: View {
 struct DeleteAccountView_Previews: PreviewProvider {
     static var previews: some View {
         let router = ProfileRouterMock()
-        let vm = DeleteAccountViewModel(interactor: ProfileInteractor.mock, router: router, connectivity: Connectivity())
+        let vm = DeleteAccountViewModel(
+            interactor: ProfileInteractor.mock,
+            router: router,
+            connectivity: Connectivity()
+        )
         
         DeleteAccountView(viewModel: vm)
     }

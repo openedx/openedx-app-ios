@@ -14,7 +14,7 @@ public class DashboardViewModel: ObservableObject {
     
     public var nextPage = 1
     public var totalPages = 1
-    public private(set) var fetchInProgress = false
+    @Published public private(set) var fetchInProgress = false
     
     @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
@@ -26,14 +26,17 @@ public class DashboardViewModel: ObservableObject {
         }
     }
     
+    let connectivity: ConnectivityProtocol
     private let interactor: DashboardInteractorProtocol
-    public let connectivity: ConnectivityProtocol
-    
+    private let analytics: DashboardAnalytics
     private var onCourseEnrolledCancellable: AnyCancellable?
     
-    public init(interactor: DashboardInteractorProtocol, connectivity: ConnectivityProtocol) {
+    public init(interactor: DashboardInteractorProtocol,
+                connectivity: ConnectivityProtocol,
+                analytics: DashboardAnalytics) {
         self.interactor = interactor
         self.connectivity = connectivity
+        self.analytics = analytics
         
         onCourseEnrolledCancellable = NotificationCenter.default
             .publisher(for: .onCourseEnrolled)
@@ -46,8 +49,9 @@ public class DashboardViewModel: ObservableObject {
     }
     
     @MainActor
-    public func getMyCourses(page: Int, withProgress: Bool = true, refresh: Bool = false) async {
+    public func getMyCourses(page: Int, refresh: Bool = false) async {
         do {
+            fetchInProgress = true
             if connectivity.isInternetAvaliable {
                 if refresh {
                     courses = try await interactor.getMyCourses(page: page)
@@ -77,17 +81,21 @@ public class DashboardViewModel: ObservableObject {
     }
     
     @MainActor
-    public func getMyCoursesPagination(index: Int, withProgress: Bool = true) async {
+    public func getMyCoursesPagination(index: Int) async {
         if !fetchInProgress {
             if totalPages > 1 {
                 if index == courses.count - 3 {
                     if totalPages != 1 {
                         if nextPage <= totalPages {
-                            await getMyCourses(page: self.nextPage, withProgress: withProgress)
+                            await getMyCourses(page: self.nextPage)
                         }
                     }
                 }
             }
         }
+    }
+    
+    func dashboardCourseClicked(courseID: String, courseName: String) {
+        analytics.dashboardCourseClicked(courseID: courseID, courseName: courseName)
     }
 }

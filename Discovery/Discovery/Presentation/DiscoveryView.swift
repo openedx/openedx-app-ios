@@ -22,7 +22,7 @@ public struct DiscoveryView: View {
         Text(DiscoveryLocalization.Header.title2)
             .font(Theme.Fonts.titleSmall)
             .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-        }.listRowBackground(Color.clear)
+    }.listRowBackground(Color.clear)
     
     public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
         self.viewModel = viewModel
@@ -38,10 +38,8 @@ public struct DiscoveryView: View {
             // MARK: - Page name
             VStack(alignment: .center) {
                 ZStack {
-                    
                     Text(DiscoveryLocalization.title)
                         .titleSettings(top: 10)
-                    
                 }
                 
                 // MARK: - Search fake field
@@ -55,6 +53,7 @@ public struct DiscoveryView: View {
                 }
                 .onTapGesture {
                     router.showDiscoverySearch()
+                    viewModel.discoverySearchBarClicked()
                 }
                 .frame(minHeight: 48)
                 .frame(maxWidth: 532)
@@ -68,6 +67,7 @@ public struct DiscoveryView: View {
                         .fill(CoreAssets.textInputUnfocusedStroke.swiftUIColor)
                 ).onTapGesture {
                     router.showDiscoverySearch()
+                    viewModel.discoverySearchBarClicked()
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
@@ -92,18 +92,19 @@ public struct DiscoveryView: View {
                                                type: .discovery,
                                                index: index,
                                                cellsCount: viewModel.courses.count)
-                                    .padding(.horizontal, 24)
-                                    .onAppear {
-                                        Task {
-                                           await viewModel.getDiscoveryCourses(index: index)
-                                        }
+                                .padding(.horizontal, 24)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.getDiscoveryCourses(index: index)
                                     }
-                                    .onTapGesture {
-                                        router.showCourseDetais(
-                                            courseID: course.courseID,
-                                            title: course.name
-                                        )
-                                    }
+                                }
+                                .onTapGesture {
+                                    viewModel.discoveryCourseClicked(courseID: course.courseID, courseName: course.name)
+                                    router.showCourseDetais(
+                                        courseID: course.courseID,
+                                        title: course.name
+                                    )
+                                }
                             }
                             
                             // MARK: - ProgressBar
@@ -152,7 +153,8 @@ public struct DiscoveryView: View {
 #if DEBUG
 struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = DiscoveryViewModel(interactor: DiscoveryInteractor.mock, connectivity: Connectivity())
+        let vm = DiscoveryViewModel(interactor: DiscoveryInteractor.mock, connectivity: Connectivity(),
+                                    analytics: DiscoveryAnalyticsMock())
         let router = DiscoveryRouterMock()
         
         DiscoveryView(viewModel: vm, router: router)

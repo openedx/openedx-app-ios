@@ -41,6 +41,7 @@
 		02D1267628F76F5D00C8E689 /* DiscussionTopicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D1267528F76F5D00C8E689 /* DiscussionTopicsView.swift */; };
 		02D1267828F76FF200C8E689 /* DiscussionTopicsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D1267728F76FF200C8E689 /* DiscussionTopicsViewModel.swift */; };
 		02E4F18129A8C2FD00F31684 /* DiscussionSearchTopicsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4F18029A8C2FD00F31684 /* DiscussionSearchTopicsViewModelTests.swift */; };
+		02F175392A4DD5AB0019CD70 /* DiscussionAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175382A4DD5AA0019CD70 /* DiscussionAnalytics.swift */; };
 		02F28A5E28FF23E700AFDE1B /* ThreadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F28A5D28FF23E700AFDE1B /* ThreadView.swift */; };
 		02F28A6028FF23F300AFDE1B /* ThreadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F28A5F28FF23F300AFDE1B /* ThreadViewModel.swift */; };
 		02F3BFE32925302A0051930C /* DiscussionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE22925302A0051930C /* DiscussionRouter.swift */; };
@@ -108,6 +109,7 @@
 		02E4F18029A8C2FD00F31684 /* DiscussionSearchTopicsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionSearchTopicsViewModelTests.swift; sourceTree = "<group>"; };
 		02ED50D029A64BBF008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02ED50D129A64BBF008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		02F175382A4DD5AA0019CD70 /* DiscussionAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionAnalytics.swift; sourceTree = "<group>"; };
 		02F28A5D28FF23E700AFDE1B /* ThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
 		02F28A5F28FF23F300AFDE1B /* ThreadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewModel.swift; sourceTree = "<group>"; };
 		02F3BFE22925302A0051930C /* DiscussionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionRouter.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				0282DA5C28F89397003C3F07 /* DiscussionTopics */,
 				02CF2C8D291FA76E00FC1596 /* CheckBoxView.swift */,
 				02F3BFE22925302A0051930C /* DiscussionRouter.swift */,
+				02F175382A4DD5AA0019CD70 /* DiscussionAnalytics.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -680,6 +683,7 @@
 				029B78F5292519910097ACD8 /* ResponsesViewModel.swift in Sources */,
 				0282DA6128F893E9003C3F07 /* PostsViewModel.swift in Sources */,
 				0766DFC4299AA2C200EBEF6A /* Post.swift in Sources */,
+				02F175392A4DD5AB0019CD70 /* DiscussionAnalytics.swift in Sources */,
 				021078E929A50BA30000938D /* DiscussionSearchTopicsViewModel.swift in Sources */,
 				02F3BFEB2926A5B50051930C /* Data_CommentsResponse.swift in Sources */,
 				075DBBB329267D1D00E56134 /* PostState.swift in Sources */,
@@ -885,7 +889,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -919,7 +923,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1016,7 +1020,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1114,7 +1118,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1206,7 +1210,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1297,7 +1301,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1315,12 +1319,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1336,12 +1340,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1357,12 +1361,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1378,12 +1382,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1399,12 +1403,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1420,12 +1424,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1520,7 +1524,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1539,12 +1543,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1633,7 +1637,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Discussion;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1651,12 +1655,12 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KHU94Q2JSS;
+				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stepanok.DiscussionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

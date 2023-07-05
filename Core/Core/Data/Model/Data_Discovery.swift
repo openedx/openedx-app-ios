@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: "/api/courses/v1/courses/"
-
 // MARK: - Pagination
 public extension DataLayer {
     struct Pagination: Codable {
@@ -113,5 +111,11 @@ public extension DataLayer.DiscoveryResponce {
                        coursesCount: pagination.count)
         })
         return listReady
+    }
+}
+
+public extension DataLayer.Pagination {
+    var domain: Pagination {
+        Pagination(next: next, previous: previous, count: count, numPages: numPages)
     }
 }

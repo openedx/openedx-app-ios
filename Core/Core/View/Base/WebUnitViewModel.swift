@@ -9,7 +9,10 @@ import Foundation
 import SwiftUI
 
 public class WebUnitViewModel: ObservableObject {
+    
     let authInteractor: AuthInteractorProtocol
+    let config: Config
+    
     @Published var updatingCookies: Bool = false
     @Published var cookiesReady: Bool = false
     @Published var showError: Bool = false
@@ -23,17 +26,20 @@ public class WebUnitViewModel: ObservableObject {
         }
     }
     
-    public init(authInteractor: AuthInteractorProtocol) {
+    public init(authInteractor: AuthInteractorProtocol, config: Config) {
         self.authInteractor = authInteractor
+        self.config = config
     }
     
     @MainActor
     func updateCookies(force: Bool = false) async {
+        guard !updatingCookies else { return }
         do {
             updatingCookies = true
             try await authInteractor.getCookies(force: force)
             cookiesReady = true
             updatingCookies = false
+            errorMessage = nil
         } catch {
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection

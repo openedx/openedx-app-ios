@@ -14,6 +14,7 @@
 		022D04962976DA6500E0059B /* AuthorizationMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */; };
 		025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */; };
 		025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */; };
+		02A2ACDB2A4B016100FBBBBB /* AuthorizationAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2ACDA2A4B016100FBBBBB /* AuthorizationAnalytics.swift */; };
 		02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */; };
 		02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE4292533720051930C /* AuthorizationRouter.swift */; };
 		071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C628D1DA4F00344290 /* SignInViewModel.swift */; };
@@ -46,6 +47,7 @@
 		022D04952976DA6500E0059B /* AuthorizationMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationMock.generated.swift; sourceTree = "<group>"; };
 		025F40DF29D1E2FC0064C183 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		025F40E129D360E20064C183 /* ResetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModel.swift; sourceTree = "<group>"; };
+		02A2ACDA2A4B016100FBBBBB /* AuthorizationAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationAnalytics.swift; sourceTree = "<group>"; };
 		02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewModelTests.swift; sourceTree = "<group>"; };
 		02ED50CC29A64B90008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F3BFE4292533720051930C /* AuthorizationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRouter.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				07169462296D93E000E3DED6 /* Registration */,
 				025F40DE29D1C1350064C183 /* Reset Password */,
 				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
+				02A2ACDA2A4B016100FBBBBB /* AuthorizationAnalytics.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */,
 				025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */,
 				02066B462906D72F00F4307E /* SignUpViewModel.swift in Sources */,
+				02A2ACDB2A4B016100FBBBBB /* AuthorizationAnalytics.swift in Sources */,
 				025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */,
 				020C31CB290BF49900D6DEA2 /* FieldsView.swift in Sources */,
 				0770DE4E28D0A677006D8A5D /* SignInView.swift in Sources */,
@@ -586,7 +590,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -609,7 +613,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -697,7 +701,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -719,7 +723,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -737,7 +741,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -755,7 +759,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -773,7 +777,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -791,7 +795,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -809,7 +813,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -827,7 +831,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.AuthorizationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.AuthorizationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -921,7 +925,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1014,7 +1018,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1112,7 +1116,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1205,7 +1209,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1361,7 +1365,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1396,7 +1400,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.raccoongang.Authorization;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Authorization;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

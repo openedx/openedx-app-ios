@@ -73,10 +73,29 @@ public extension DataLayer {
             case users
         }
         
-        public init(id: String, author: String?, authorLabel: String?, createdAt: String, updatedAt: String, rawBody: String,
-                    renderedBody: String, abuseFlagged: Bool, voted: Bool, voteCount: Int, editableFields: [String],
-                    canDelete: Bool, threadID: String, parentID: String?, endorsed: Bool, endorsedBy: String?,
-                    endorsedByLabel: String?, endorsedAt: String?, childCount: Int, children: [String], users: Users?) {
+        public init(
+            id: String,
+            author: String?,
+            authorLabel: String?,
+            createdAt: String,
+            updatedAt: String,
+            rawBody: String,
+            renderedBody: String,
+            abuseFlagged: Bool,
+            voted: Bool,
+            voteCount: Int,
+            editableFields: [String],
+            canDelete: Bool,
+            threadID: String,
+            parentID: String?,
+            endorsed: Bool,
+            endorsedBy: String?,
+            endorsedByLabel: String?,
+            endorsedAt: String?,
+            childCount: Int,
+            children: [String],
+            users: Users?
+        ) {
             self.id = id
             self.author = author
             self.authorLabel = authorLabel
@@ -105,23 +124,23 @@ public extension DataLayer {
 public extension DataLayer.CommentsResponse {
     var domain: [UserComment] {
         self.comments.map { comment in
-        UserComment(
-            authorName: comment.author ?? DiscussionLocalization.anonymous,
-            authorAvatar: comment.users?.userName?.profile?.image?.imageURLLarge ?? "",
-            postDate: Date(iso8601: comment.createdAt),
-            postTitle: "",
-            postBody: comment.rawBody,
-            postBodyHtml: comment.renderedBody,
-            postVisible: true,
-            voted: comment.voted,
-            followed: false,
-            votesCount: comment.voteCount,
-            responsesCount: pagination.count,
-            threadID: comment.threadID,
-            commentID: comment.id,
-            parentID: comment.id,
-            abuseFlagged: comment.abuseFlagged
-        )
+            UserComment(
+                authorName: comment.author ?? DiscussionLocalization.anonymous,
+                authorAvatar: comment.users?.userName?.profile?.image?.imageURLLarge ?? "",
+                postDate: Date(iso8601: comment.createdAt),
+                postTitle: "",
+                postBody: comment.rawBody,
+                postBodyHtml: comment.renderedBody,
+                postVisible: true,
+                voted: comment.voted,
+                followed: false,
+                votesCount: comment.voteCount,
+                responsesCount: comment.childCount,
+                threadID: comment.threadID,
+                commentID: comment.id,
+                parentID: comment.id,
+                abuseFlagged: comment.abuseFlagged
+            )
         }
     }
 }

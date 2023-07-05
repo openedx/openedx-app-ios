@@ -39,16 +39,13 @@ public struct DashboardView: View {
                 ZStack {
                     Text(DashboardLocalization.title)
                         .titleSettings()
-
                 }
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {
-                        await viewModel.getMyCourses(page: 1,
-                                                     withProgress: isIOS14,
-                                                     refresh: true)
+                        await viewModel.getMyCourses(page: 1, refresh: true)
                     }) {
-                        if viewModel.courses.isEmpty {
+                        if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
                             EmptyPageIcon()
                         } else {
                             LazyVStack(spacing: 0) {
@@ -75,6 +72,7 @@ public struct DashboardView: View {
                                         }
                                     }
                                     .onTapGesture {
+                                        viewModel.dashboardCourseClicked(courseID: course.courseID, courseName: course.name)
                                         router.showCourseScreens(
                                             courseID: course.courseID,
                                             isActive: course.isActive,
@@ -104,9 +102,7 @@ public struct DashboardView: View {
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
                                 reloadAction: {
-                await viewModel.getMyCourses( page: 1,
-                                              withProgress: isIOS14,
-                                              refresh: true)
+                await viewModel.getMyCourses(page: 1, refresh: true)
             })
             
             // MARK: - Error Alert
@@ -137,7 +133,8 @@ struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DashboardViewModel(
             interactor: DashboardInteractor.mock,
-            connectivity: Connectivity()
+            connectivity: Connectivity(),
+            analytics: DashboardAnalyticsMock()
         )
         let router = DashboardRouterMock()
         

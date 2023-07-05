@@ -18,37 +18,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testResizeVerticalImage() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
-        let userProfile = UserProfile(
-            avatarUrl: "url",
-            name: "Test",
-            username: "Name",
-            dateJoined: Date(),
-            yearOfBirth: 2000,
-            country: "UA",
-            spokenLanguage: "UA",
-            shortBiography: "Bio",
-            isFullProfile: false
-        )
-        
-        Given(interactor, .getSpokenLanguages(willReturn: []))
-        Given(interactor, .getCountries(willReturn: []))
-        
-        let viewModel = EditProfileViewModel(userModel: userProfile, interactor: interactor, router: router)
-        
-        let imageVertical = UIGraphicsImageRenderer(size: CGSize(width: 600, height: 800)).image { rendererContext in
-            UIColor.red.setFill()
-            rendererContext.fill(CGRect(origin: .zero, size: CGSize(width: 600, height: 800)))
-        }
-        
-        viewModel.resizeImage(image: imageVertical, longSideSize: 500)
-        
-        XCTAssertNotNil(viewModel.inputImage)
-        XCTAssertEqual(viewModel.inputImage?.size.height, 500)
-    }
-    
-    func testResizeHorizontalImage() async throws {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userProfile = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -67,7 +37,45 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userProfile,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
+        )
+        
+        let imageVertical = UIGraphicsImageRenderer(size: CGSize(width: 600, height: 800)).image { rendererContext in
+            UIColor.red.setFill()
+            rendererContext.fill(CGRect(origin: .zero, size: CGSize(width: 600, height: 800)))
+        }
+        
+        viewModel.resizeImage(image: imageVertical, longSideSize: 500)
+        
+        XCTAssertNotNil(viewModel.inputImage)
+        XCTAssertEqual(viewModel.inputImage?.size.height, 500)
+    }
+    
+    func testResizeHorizontalImage() async throws {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let userProfile = UserProfile(
+            avatarUrl: "url",
+            name: "Test",
+            username: "Name",
+            dateJoined: Date(),
+            yearOfBirth: 2000,
+            country: "UA",
+            spokenLanguage: "UA",
+            shortBiography: "Bio",
+            isFullProfile: false
+        )
+        
+        Given(interactor, .getSpokenLanguages(willReturn: []))
+        Given(interactor, .getCountries(willReturn: []))
+        
+        let viewModel = EditProfileViewModel(
+            userModel: userProfile,
+            interactor: interactor,
+            router: router,
+            analytics: analytics
         )
         
         let imageHorizontal = UIGraphicsImageRenderer(size: CGSize(width: 800, height: 600)).image { rendererContext in
@@ -84,6 +92,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckChangesShortBiographyChanged() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userProfile = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -102,7 +111,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userProfile,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.profileChanges.shortBiography = "New bio"
@@ -114,6 +124,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckChangesSpokenLanguageChanged() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -132,7 +143,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.spokenLanguageConfiguration.text = "Changed"
@@ -144,6 +156,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckChangesBirthYearChanged() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -162,7 +175,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = "Changed"
@@ -174,6 +188,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckChangesAvatarChanged() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -192,7 +207,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.profileChanges.isAvatarChanged = true
@@ -204,6 +220,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckChangesProfileTypeChanged() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -222,7 +239,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.profileChanges.profileType = .limited
@@ -234,6 +252,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckChangesCountryChanged() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -252,7 +271,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "Changed"
@@ -264,6 +284,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckProfileTypeNotYongUser() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -282,7 +303,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.profileChanges.profileType = viewModel.userModel.isFullProfile ? .full : .limited
@@ -298,6 +320,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckProfileTypeIsYongerUser() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -318,7 +341,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = "\(yearOfBirth10Years - 1)"
@@ -332,6 +356,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testCheckProfileTypeYearsConfigurationEmpty() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -350,7 +375,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = ""
@@ -365,6 +391,7 @@ final class EditProfileViewModelTests: XCTestCase {
 
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -383,14 +410,15 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.yearsConfiguration.text = ""
         viewModel.checkProfileType()
         
         XCTAssertEqual(viewModel.profileChanges.profileType, .limited)
-        XCTAssertTrue(viewModel.isYongUser)
+        XCTAssertFalse(viewModel.isYongUser)
         XCTAssertFalse(viewModel.isEditable)
         XCTAssertTrue(viewModel.profileChanges.profileType == .limited)
     }
@@ -398,6 +426,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testSaveProfileUpdates() async {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -416,7 +445,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "USA"
@@ -444,6 +474,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testDeleteAvatarSuccess() async {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -462,7 +493,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.profileChanges.isAvatarDeleted = true
@@ -485,6 +517,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testSaveProfileUpdatesNoInternetError() async {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -503,7 +536,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "USA"
@@ -539,6 +573,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testSaveProfileUpdatesUnknownError() async {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -557,7 +592,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.countriesConfiguration.text = "USA"
@@ -591,6 +627,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testBackButtonTapped() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -609,7 +646,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.profileChanges.isAvatarChanged = true
@@ -627,6 +665,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testGenerateFieldConfigurationsFullProfile() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -645,7 +684,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.loadLocationsAndSpokenLanguages()
@@ -657,6 +697,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testGenerateFieldConfigurationsLimitedProfile() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -675,7 +716,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.loadLocationsAndSpokenLanguages()
@@ -686,6 +728,7 @@ final class EditProfileViewModelTests: XCTestCase {
     func testLoadLocationsAndSpokenLanguages() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let userModel = UserProfile(
             avatarUrl: "url",
             name: "Test",
@@ -709,7 +752,8 @@ final class EditProfileViewModelTests: XCTestCase {
         let viewModel = EditProfileViewModel(
             userModel: userModel,
             interactor: interactor,
-            router: router
+            router: router,
+            analytics: analytics
         )
         
         viewModel.loadLocationsAndSpokenLanguages()

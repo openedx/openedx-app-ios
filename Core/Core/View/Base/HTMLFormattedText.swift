@@ -70,11 +70,14 @@ public struct HTMLFormattedText: UIViewRepresentable {
     private func convertHTML(text: String) -> NSAttributedString? {
         guard let data = text.data(using: .utf8) else { return nil }
         
-        if let attributedString = try? NSAttributedString(data: data,
-                                                          options: [
-                                                            .documentType: NSAttributedString.DocumentType.html,
-                                                            .characterEncoding: String.Encoding.utf8.rawValue
-                                                          ], documentAttributes: nil) {
+        if let attributedString = try? NSAttributedString(
+            data: data,
+            options: [
+                .documentType: NSAttributedString.DocumentType.html,
+                .characterEncoding: String.Encoding.utf8.rawValue
+            ],
+            documentAttributes: nil
+        ) {
             return attributedString
         } else {
             return nil

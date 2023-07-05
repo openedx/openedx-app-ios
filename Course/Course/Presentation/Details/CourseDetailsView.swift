@@ -65,7 +65,7 @@ public struct CourseDetailsView: View {
                                     
                                     // MARK: - iPad
                                     if idiom == .pad && viewModel.isHorisontal {
-                                        HStack {
+                                        HStack(alignment: .top) {
                                             VStack(alignment: .leading) {
                                                 
                                                 // MARK: - Title and description
@@ -82,6 +82,7 @@ public struct CourseDetailsView: View {
                                                 CourseBannerView(
                                                     courseDetails: courseDetails,
                                                     proxy: proxy,
+                                                    isHorisontal: viewModel.isHorisontal,
                                                     onPlayButtonTap: { [weak viewModel] in
                                                         viewModel?.showCourseVideo()
                                                     }
@@ -95,28 +96,29 @@ public struct CourseDetailsView: View {
                                         }
                                     } else {
                                         // MARK: - iPhone
-                                        VStack {
+                                        VStack(alignment: .leading) {
                                             // MARK: - Course Banner
                                             CourseBannerView(
                                                 courseDetails: courseDetails,
                                                 proxy: proxy,
+                                                isHorisontal: viewModel.isHorisontal,
                                                 onPlayButtonTap: { [weak viewModel] in
                                                     viewModel?.showCourseVideo()
                                                 })
                                         }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
-                                            .frame(maxHeight: 250)
+//                                            .frame(maxHeight: 250)
                                             .cornerRadius(12)
                                             .padding(.horizontal, 6)
                                             .padding(.top, 7)
                                             .fixedSize(horizontal: false, vertical: true)
                                         
+                                        // MARK: - Title and description
+                                        CourseTitleView(courseDetails: courseDetails)
+                                        
                                         // MARK: - Course state button
                                         CourseStateView(title: title,
                                                         courseDetails: courseDetails,
                                                         viewModel: viewModel)
-                                        
-                                        // MARK: - Title and description
-                                        CourseTitleView(courseDetails: courseDetails)
                                     }
                                     
                                     // MARK: - HTML Embed
@@ -202,7 +204,6 @@ private struct CourseStateView: View {
                 }
             })
             .padding(16)
-            .frame(maxWidth: .infinity)
         case .enrollClose:
             Text(CourseLocalization.Details.enrollmentDateIsOver)
                 .multilineTextAlignment(.center)
@@ -211,6 +212,8 @@ private struct CourseStateView: View {
                 .padding(.vertical, 24)
         case .alreadyEnrolled:
             StyledButton(CourseLocalization.Details.viewCourse, action: {
+                viewModel.viewCourseClicked(courseId: courseDetails.courseID,
+                                            courseName: courseDetails.courseTitle)
                 viewModel.router.showCourseScreens(
                     courseID: courseDetails.courseID,
                     isActive: nil,
@@ -262,6 +265,7 @@ private struct CourseTitleView: View {
 
 private struct CourseBannerView: View {
     @State private var animate = false
+    private var isHorisontal: Bool
     private let courseDetails: CourseDetails
     private let idiom: UIUserInterfaceIdiom
     private let proxy: GeometryProxy
@@ -269,8 +273,10 @@ private struct CourseBannerView: View {
     
     init(courseDetails: CourseDetails,
          proxy: GeometryProxy,
+         isHorisontal: Bool,
          onPlayButtonTap: @escaping () -> Void) {
         self.courseDetails = courseDetails
+        self.isHorisontal = isHorisontal
         self.idiom = UIDevice.current.userInterfaceIdiom
         self.proxy = proxy
         self.onPlayButtonTap = onPlayButtonTap
@@ -278,19 +284,36 @@ private struct CourseBannerView: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            KFImage(URL(string: courseDetails.courseBannerURL))
-                .onFailureImage(CoreAssets.noCourseImage.image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: idiom == .pad ? 312 : proxy.size.width - 12)
-                .opacity(animate ? 1 : 0)
-                .onAppear {
-                    withAnimation(.linear(duration: 0.5)) {
-                        animate = true
+            if !isHorisontal {
+                KFImage(URL(string: courseDetails.courseBannerURL))
+                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .resizable()
+                    .aspectRatio(16/9, contentMode: .fill)
+                    .frame(width: idiom == .pad ? nil : proxy.size.width - 12)
+                    .opacity(animate ? 1 : 0)
+                    .onAppear {
+                        withAnimation(.linear(duration: 0.5)) {
+                            animate = true
+                        }
                     }
+                if courseDetails.courseVideoURL != nil {
+                    PlayButton(action: onPlayButtonTap)
                 }
-            if courseDetails.courseVideoURL != nil {
-                PlayButton(action: onPlayButtonTap)
+            } else {
+                KFImage(URL(string: courseDetails.courseBannerURL))
+                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .resizable()
+                    .aspectRatio(16/9, contentMode: .fill)
+                    .frame(width: idiom == .pad ? 312 : proxy.size.width - 12)
+                    .opacity(animate ? 1 : 0)
+                    .onAppear {
+                        withAnimation(.linear(duration: 0.5)) {
+                            animate = true
+                        }
+                    }
+                if courseDetails.courseVideoURL != nil {
+                    PlayButton(action: onPlayButtonTap)
+                }
             }
         }
     }
@@ -303,6 +326,7 @@ struct CourseDetailsView_Previews: PreviewProvider {
         let vm = CourseDetailsViewModel(
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity()

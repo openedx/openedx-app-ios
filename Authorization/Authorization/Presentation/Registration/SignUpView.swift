@@ -35,8 +35,8 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        VStack {}
-                            .titleSettings()
+                        Text(AuthLocalization.SignIn.registerBtn)
+                            .titleSettings(color: .white)
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
@@ -96,6 +96,7 @@ public struct SignUpView: View {
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         Task {
+                                            viewModel.analytics.createAccountClicked()
                                             await viewModel.registerUser()
                                         }
                                     }
@@ -146,6 +147,7 @@ struct SignUpView_Previews: PreviewProvider {
         let vm = SignUpViewModel(
             interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
+            analytics: AuthorizationAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             validator: Validator()
@@ -154,10 +156,12 @@ struct SignUpView_Previews: PreviewProvider {
         SignUpView(viewModel: vm)
             .preferredColorScheme(.light)
             .previewDisplayName("SignUpView Light")
+            .loadFonts()
         
         SignUpView(viewModel: vm)
             .preferredColorScheme(.dark)
             .previewDisplayName("SignUpView Dark")
+            .loadFonts()
     }
 }
 #endif

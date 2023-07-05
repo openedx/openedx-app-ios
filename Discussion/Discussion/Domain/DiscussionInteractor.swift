@@ -17,9 +17,9 @@ public protocol DiscussionInteractorProtocol {
                         page: Int) async throws -> ThreadLists
     func getTopics(courseID: String) async throws -> Topics
     func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists
-    func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Int)
-    func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Int)
-    func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Int)
+    func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
+    func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
+    func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination)
     func addCommentTo(threadID: String, rawBody: String, parentID: String?) async throws -> Post
     func voteThread(voted: Bool, threadID: String) async throws
     func voteResponse(voted: Bool, responseID: String) async throws
@@ -54,15 +54,15 @@ public class DiscussionInteractor: DiscussionInteractorProtocol {
         return try await repository.getTopics(courseID: courseID)
     }
     
-    public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
+    public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
         return try await repository.getDiscussionComments(threadID: threadID, page: page)
     }
     
-    public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Int) {
+    public func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
         return try await repository.getQuestionComments(threadID: threadID, page: page)
     }
     
-    public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Int) {
+    public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination) {
         return try await repository.getCommentResponses(commentID: commentID, page: page)
     }
     

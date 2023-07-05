@@ -86,6 +86,14 @@ public enum DiscussionLocalization {
       /// Unread
       public static let unread = DiscussionLocalization.tr("Localizable", "POSTS.FILTER.UNREAD", fallback: "Unread")
     }
+    public enum NoDiscussion {
+      /// Create discussion
+      public static let createbutton = DiscussionLocalization.tr("Localizable", "POSTS.NO_DISCUSSION.CREATEBUTTON", fallback: "Create discussion")
+      /// Click the button below to create your first discussion.
+      public static let description = DiscussionLocalization.tr("Localizable", "POSTS.NO_DISCUSSION.DESCRIPTION", fallback: "Click the button below to create your first discussion.")
+      /// No discussions yet
+      public static let title = DiscussionLocalization.tr("Localizable", "POSTS.NO_DISCUSSION.TITLE", fallback: "No discussions yet")
+    }
     public enum Sort {
       /// Most Activity
       public static let mostActivity = DiscussionLocalization.tr("Localizable", "POSTS.SORT.MOST_ACTIVITY", fallback: "Most Activity")

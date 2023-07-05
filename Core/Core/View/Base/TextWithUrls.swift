@@ -62,12 +62,15 @@ public struct TextWithUrls: View {
         var text = Text("")
         attributedString.enumerateAttributes(in: stringRange, options: []) { attrs, range, _ in
             let valueOfString: String = attributedString.attributedSubstring(from: range).string
-            text = text + Text(.init((attrs[.underlineStyle] != nil ? getMarkupText(url: valueOfString):  valueOfString)))
+            text = text + Text(.init((attrs[.underlineStyle] != nil
+                                      ? getMarkupText(url: valueOfString)
+                                      : valueOfString)))
         }
 
         return text
     }
 }
+// swiftlint:enable shorthand_operator
 
 struct TextWithUrls_Previews: PreviewProvider {
     static var previews: some View {
