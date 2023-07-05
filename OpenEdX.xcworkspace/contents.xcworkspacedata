@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/OpenEdX.xcodeproj">
+      location = "group:OpenEdX.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Core/Core.xcodeproj">
