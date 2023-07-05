@@ -75,8 +75,8 @@ public struct SubtittlesView: View {
                                     }.id(subtitle.id)
                                 }
                             }
-                            .introspectScrollView(customize: { scroll in
-                                scroll.isScrollEnabled = false
+                            .introspect(.scrollView, on: .iOS(.v14, .v15, .v16, .v17), customize: { scrollView in
+                                scrollView.isScrollEnabled = false
                             })
                         }
                     }

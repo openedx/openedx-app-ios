@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import FirebaseCrashlytics
 
 public class DiscussionTopicsViewModel: ObservableObject {
     
@@ -16,6 +17,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var discussionTopics: [DiscussionTopic]?
     @Published var courseID: String = ""
+    private var title: String
     
     var errorMessage: String? {
         didSet {
@@ -25,13 +27,20 @@ public class DiscussionTopicsViewModel: ObservableObject {
         }
     }
     
-    public let interactor: DiscussionInteractorProtocol
-    public let router: DiscussionRouter
-    public let config: Config
+    let interactor: DiscussionInteractorProtocol
+    let router: DiscussionRouter
+    let analytics: DiscussionAnalytics
+    let config: Config
     
-    public init(interactor: DiscussionInteractorProtocol, router: DiscussionRouter, config: Config) {
+    public init(title: String,
+                interactor: DiscussionInteractorProtocol,
+                router: DiscussionRouter,
+                analytics: DiscussionAnalytics,
+                config: Config) {
+        self.title = title
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.config = config
     }
     
@@ -40,6 +49,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.allPosts,
                 action: {
+                    self.analytics.discussionAllPostsClicked(courseId: self.courseID,
+                                                                    courseName: self.title)
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
@@ -50,6 +61,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
             ),
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.postImFollowing, action: {
+                    self.analytics.discussionFollowingClicked(courseId: self.courseID,
+                                                                     courseName: self.title)
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
@@ -65,6 +78,12 @@ public class DiscussionTopicsViewModel: ObservableObject {
                     DiscussionTopic(
                         name: t.name,
                         action: {
+                            self.analytics.discussionTopicClicked(
+                                courseId: self.courseID,
+                                courseName: self.title,
+                                topicId: t.id,
+                                topicName: t.name
+                            )
                             self.router.showThreads(
                                 courseID: self.courseID,
                                 topics: topics,
@@ -79,6 +98,12 @@ public class DiscussionTopicsViewModel: ObservableObject {
                         DiscussionTopic(
                             name: children.name,
                             action: {
+                                self.analytics.discussionTopicClicked(
+                                    courseId: self.courseID,
+                                    courseName: self.title,
+                                    topicId: t.id,
+                                    topicName: t.name
+                                )
                                 self.router.showThreads(
                                     courseID: self.courseID,
                                     topics: topics,
@@ -102,6 +127,12 @@ public class DiscussionTopicsViewModel: ObservableObject {
                         DiscussionTopic(
                             name: child.name,
                             action: {
+                                self.analytics.discussionTopicClicked(
+                                    courseId: self.courseID,
+                                    courseName: self.title,
+                                    topicId: child.id,
+                                    topicName: child.name
+                                )
                                 self.router.showThreads(
                                     courseID: self.courseID,
                                     topics: topics,

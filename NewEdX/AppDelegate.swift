@@ -8,6 +8,10 @@
 import UIKit
 import Core
 import Swinject
+import FirebaseCore
+import FirebaseAnalytics
+import FirebaseCrashlytics
+import Profile
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,6 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
+        if BuildConfiguration.shared.firebaseOptions.apiKey != "" {
+            FirebaseApp.configure(options: BuildConfiguration.shared.firebaseOptions)
+            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        }
         
         initDI()
         
@@ -76,6 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard Date().timeIntervalSince1970 - lastForceLogoutTime > 5 else {
             return
         }
+        let analytics = Container.shared.resolve(AnalyticsManager.self)
+        analytics?.userLogout(force: true)
+        
         lastForceLogoutTime = Date().timeIntervalSince1970
         
         Container.shared.resolve(AppStorage.self)?.clear()

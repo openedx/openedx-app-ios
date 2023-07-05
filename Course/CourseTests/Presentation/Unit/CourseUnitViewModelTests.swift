@@ -104,16 +104,19 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
                                             id: "789",
+                                            courseName: "name",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -128,16 +131,19 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
                                             id: "789",
+                                            courseName: "name",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -157,16 +163,19 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
                                             id: "789",
+                                            courseName: "name",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -188,16 +197,19 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
                                             id: "789",
+                                            courseName: "name",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -218,16 +230,19 @@ final class CourseUnitViewModelTests: XCTestCase {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
+        let analytics = CourseAnalyticsMock()
         
         let viewModel = CourseUnitViewModel(lessonID: "123",
                                             courseID: "456",
                                             id: "789",
+                                            courseName: "name",
                                             chapters: chapters,
                                             chapterIndex: 0,
                                             sequentialIndex: 0,
                                             verticalIndex: 0,
                                             interactor: interactor,
                                             router: router,
+                                            analytics: analytics,
                                             connectivity: connectivity,
                                             manager: DownloadManagerMock())
         
@@ -237,12 +252,15 @@ final class CourseUnitViewModelTests: XCTestCase {
             viewModel.select(move: .next)
         }
         
+        Verify(analytics, .nextBlockClicked(courseId: .any, courseName: .any, blockId: .any, blockName: .any))
+        
         XCTAssertEqual(viewModel.index, 3)
         
         for _ in 0...CourseUnitViewModelTests.blocks.count - 1 {
             viewModel.select(move: .previous)
         }
         
+        Verify(analytics, .prevBlockClicked(courseId: .any, courseName: .any, blockId: .any, blockName: .any))
         
         XCTAssertEqual(viewModel.index, 0)
     }

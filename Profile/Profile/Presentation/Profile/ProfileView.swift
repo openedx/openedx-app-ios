@@ -29,6 +29,7 @@ public struct ProfileView: View {
                               rightButtonType: .edit,
                               rightButtonAction: {
                     if let userModel = viewModel.userModel {
+                        viewModel.analytics.profileEditClicked()
                         viewModel.router.showEditProfile(
                             userModel: userModel,
                             avatar: viewModel.updatedAvatar,
@@ -105,6 +106,7 @@ public struct ProfileView: View {
                                 VStack(alignment: .leading, spacing: 27) {
                                     HStack {
                                         Button(action: {
+                                            viewModel.analytics.profileVideoSettingsClicked()
                                             viewModel.router.showSettings()
                                         }, label: {
                                             Text(ProfileLocalization.settingsVideo)
@@ -123,37 +125,54 @@ public struct ProfileView: View {
                                     .font(Theme.Fonts.labelLarge)
                                 VStack(alignment: .leading, spacing: 24) {
                                     if let support = viewModel.contactSupport() {
-                                        HStack {
-                                            Link(destination: support, label: {
+                                        Button(action: {
+                                            viewModel.analytics.emailSupportClicked()
+                                                UIApplication.shared.open(support)
+                                        }, label: {
+                                            HStack {
                                                 Text(ProfileLocalization.contact)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
-                                        }
+                                            }
+                                        })
+                                        .buttonStyle(PlainButtonStyle())
+                                        .foregroundColor(.primary)
                                         Rectangle()
                                             .frame(height: 1)
                                             .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                     }
+
                                     if let tos = viewModel.config.termsOfUse {
-                                        HStack {
-                                            Link(destination: tos, label: {
+                                        Button(action: {
+                                            viewModel.analytics.cookiePolicyClicked()
+                                                UIApplication.shared.open(tos)
+                                        }, label: {
+                                            HStack {
                                                 Text(ProfileLocalization.terms)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
-                                        }
+                                            }
+                                        })
+                                        .buttonStyle(PlainButtonStyle())
+                                        .foregroundColor(.primary)
                                         Rectangle()
                                             .frame(height: 1)
                                             .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                     }
+
                                     if let privacy = viewModel.config.privacyPolicy {
-                                        HStack {
-                                            Link(destination: privacy, label: {
+                                        Button(action: {
+                                            viewModel.analytics.privacyPolicyClicked()
+                                                UIApplication.shared.open(privacy)
+                                        }, label: {
+                                            HStack {
                                                 Text(ProfileLocalization.privacy)
                                                 Spacer()
                                                 Image(systemName: "chevron.right")
-                                            })
-                                        }
+                                            }
+                                        })
+                                        .buttonStyle(PlainButtonStyle())
+                                        .foregroundColor(.primary)
                                     }
                                 }.cardStyle(
                                     bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
@@ -174,6 +193,7 @@ public struct ProfileView: View {
                                                     },
                                                     okTapped: {
                                                         Task {
+                                                            viewModel.analytics.userLogout(force: false)
                                                             await viewModel.logOut()
                                                         }
                                                         viewModel.router.dismiss(animated: true)
@@ -234,6 +254,7 @@ struct ProfileView_Previews: PreviewProvider {
         let router = ProfileRouterMock()
         let vm = ProfileViewModel(interactor: ProfileInteractor.mock,
                                   router: router,
+                                  analytics: ProfileAnalyticsMock(),
                                   config: ConfigMock(),
                                   connectivity: Connectivity())
         

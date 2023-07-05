@@ -122,7 +122,8 @@ public class CourseRepository: CourseRepositoryProtocol {
             childs.append(chapter)
         }
         
-        return CourseStructure(id: course.id,
+        return CourseStructure(courseID: structure.id,
+                               id: course.id,
                                graded: course.graded,
                                completion: course.completion ?? 0,
                                viewYouTubeUrl: course.userViewData?.encodedVideo?.youTube?.url ?? "",
@@ -318,7 +319,8 @@ And there are various ways of describing it-- call it oral poetry or
             childs.append(chapter)
         }
         
-        return CourseStructure(id: course.id,
+        return CourseStructure(courseID: structure.id,
+                               id: course.id,
                                graded: course.graded,
                                completion: course.completion ?? 0,
                                viewYouTubeUrl: course.userViewData?.encodedVideo?.youTube?.url ?? "",

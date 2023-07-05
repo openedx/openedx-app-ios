@@ -18,13 +18,15 @@ struct ContinueWithView: View {
     let data: ContinueWith
     let courseStructure: CourseStructure
     let router: CourseRouter
+    let analytics: CourseAnalytics
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    init(data: ContinueWith, courseStructure: CourseStructure, router: CourseRouter) {
+    init(data: ContinueWith, courseStructure: CourseStructure, router: CourseRouter, analytics: CourseAnalytics) {
         self.data = data
         self.courseStructure = courseStructure
         self.router = router
+        self.analytics = analytics
     }
     
     var body: some View {
@@ -38,7 +40,13 @@ struct ContinueWithView: View {
                         }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                         Spacer()
                         UnitButtonView(type: .continueLesson, action: {
+                            analytics.resumeCourseTapped(courseId: courseStructure.courseID,
+                                                         courseName: courseStructure.displayName,
+                                                         blockId: chapter.childs[data.sequentialIndex]
+                                .childs[data.verticalIndex].blockId)
                             router.showCourseVerticalView(id: courseStructure.id,
+                                                          courseID: courseStructure.courseID,
+                                                          courseName: courseStructure.displayName,
                                                           title: chapter.childs[data.sequentialIndex].displayName,
                                                           chapters: courseStructure.childs,
                                                           chapterIndex: data.chapterIndex,
@@ -52,7 +60,13 @@ struct ContinueWithView: View {
                             .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     }
                     UnitButtonView(type: .continueLesson, action: {
+                        analytics.resumeCourseTapped(courseId: courseStructure.courseID,
+                                                     courseName: courseStructure.displayName,
+                                                     blockId: chapter.childs[data.sequentialIndex]
+                            .childs[data.verticalIndex].blockId)
                         router.showCourseVerticalView(id: courseStructure.id,
+                                                      courseID: courseStructure.courseID,
+                                                      courseName: courseStructure.displayName,
                                                       title: chapter.childs[data.sequentialIndex].displayName,
                                                       chapters: courseStructure.childs,
                                                       chapterIndex: data.chapterIndex,
@@ -121,7 +135,8 @@ struct ContinueWithView_Previews: PreviewProvider {
         ]
         
         ContinueWithView(data: ContinueWith(chapterIndex: 0, sequentialIndex: 0, verticalIndex: 0),
-                         courseStructure: CourseStructure(id: "123",
+                         courseStructure: CourseStructure(courseID: "v1-course",
+                                                          id: "123",
                                                           graded: true,
                                                           completion: 0,
                                                           viewYouTubeUrl: "",
@@ -131,7 +146,8 @@ struct ContinueWithView_Previews: PreviewProvider {
                                                           media: DataLayer.CourseMedia.init(image:
                                                                 .init(raw: "", small: "", large: "")),
                                                           certificate: nil),
-                         router: CourseRouterMock())
+                         router: CourseRouterMock(),
+                         analytics: CourseAnalyticsMock())
     }
 }
 #endif

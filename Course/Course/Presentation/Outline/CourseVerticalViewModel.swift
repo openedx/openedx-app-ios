@@ -11,6 +11,7 @@ import Combine
 
 public class CourseVerticalViewModel: BaseCourseViewModel {
     let router: CourseRouter
+    let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     @Published var verticals: [CourseVertical]
     @Published var downloadState: [String: DownloadViewState] = [:]
@@ -33,12 +34,14 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         sequentialIndex: Int,
         manager: DownloadManagerProtocol,
         router: CourseRouter,
+        analytics: CourseAnalytics,
         connectivity: ConnectivityProtocol
     ) {
         self.chapters = chapters
         self.chapterIndex = chapterIndex
         self.sequentialIndex = sequentialIndex
         self.router = router
+        self.analytics = analytics
         self.connectivity = connectivity
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         super.init(manager: manager)

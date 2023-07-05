@@ -53,6 +53,7 @@
 		02F0144F28F46474002E513D /* CourseContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0144E28F46474002E513D /* CourseContainerView.swift */; };
 		02F0145728F4A2FF002E513D /* CourseContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */; };
 		02F066E829DC71750073E13B /* SubtittlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F066E729DC71750073E13B /* SubtittlesView.swift */; };
+		02F175372A4DAFD20019CD70 /* CourseAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */; };
 		02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFDC29252E900051930C /* CourseRouter.swift */; };
 		02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */; };
 		02F98A8128F8224200DE94C0 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F98A8028F8224200DE94C0 /* Discussion.framework */; };
@@ -124,6 +125,7 @@
 		02F0144E28F46474002E513D /* CourseContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerView.swift; sourceTree = "<group>"; };
 		02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerViewModel.swift; sourceTree = "<group>"; };
 		02F066E729DC71750073E13B /* SubtittlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtittlesView.swift; sourceTree = "<group>"; };
+		02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFDC29252E900051930C /* CourseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRouter.swift; sourceTree = "<group>"; };
 		02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoPlayerViewModelTests.swift; path = CourseTests/Presentation/Unit/VideoPlayerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02F98A8028F8224200DE94C0 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -324,6 +326,7 @@
 				070019A928F6F59D00D5FC78 /* Unit */,
 				070019AA28F6F79E00D5FC78 /* Video */,
 				02F3BFDC29252E900051930C /* CourseRouter.swift */,
+				02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 				0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */,
 				022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */,
 				02E685BE28E4B60A000AE015 /* CourseDetailsView.swift in Sources */,
+				02F175372A4DAFD20019CD70 /* CourseAnalytics.swift in Sources */,
 				02B6B3BE28E1D15C00232911 /* CourseDetailsEndpoint.swift in Sources */,
 				02B6B3C328E1DCD100232911 /* CourseDetails.swift in Sources */,
 			);

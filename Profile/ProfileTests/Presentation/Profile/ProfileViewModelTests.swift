@@ -17,10 +17,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testGetMyProfileSuccess() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -49,10 +51,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testGetMyProfileOfflineSuccess() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -81,10 +85,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testGetMyProfileNoInternetError() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -105,10 +111,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testGetMyProfileNoCacheError() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -127,10 +135,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testGetMyProfileUnknownError() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -149,10 +159,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testLogOutSuccess() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -168,10 +180,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testLogOutNoInternetError() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
         
@@ -189,10 +203,12 @@ final class ProfileViewModelTests: XCTestCase {
     func testLogOutUnknownError() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         
         let viewModel = ProfileViewModel(interactor: interactor,
                                          router: router,
+                                         analytics: analytics,
                                          config: ConfigMock(),
                                          connectivity: connectivity)
                 

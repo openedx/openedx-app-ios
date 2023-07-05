@@ -11,6 +11,7 @@ import Core
 import Swinject
 import Dashboard
 import Profile
+import SwiftUIIntrospect
 
 struct MainScreenView: View {
     
@@ -22,6 +23,8 @@ struct MainScreenView: View {
         case programs
         case profile
     }
+    
+    let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
     
     init() {
         UITabBar.appearance().isTranslucent = false
@@ -41,8 +44,8 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
-            .navigationBarHidden(true)
-            
+            .hideNavigationBar()
+
             VStack {
                 DashboardView(
                     viewModel: Container.shared.resolve(DashboardViewModel.self)!,
@@ -54,10 +57,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
-            .navigationBarHidden(true)
-            .introspectViewController { vc in
-                vc.navigationController?.setNavigationBarHidden(true, animated: false)
-            }
+            .hideNavigationBar()
             
             VStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
@@ -67,8 +67,8 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.programs)
             }
             .tag(MainTab.programs)
-            .navigationBarHidden(true)
-            
+            .hideNavigationBar()
+
             VStack {
                 ProfileView(
                     viewModel: Container.shared.resolve(ProfileViewModel.self)!
@@ -79,11 +79,20 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
-            .navigationBarHidden(true)
-            .introspectViewController { vc in
-                vc.navigationController?.setNavigationBarHidden(true, animated: false)
-            }
-        }  .navigationBarHidden(true)
+            .hideNavigationBar()
+        }
+            .onChange(of: selection, perform: { selection in
+                switch selection {
+                case .discovery:
+                    analytics.mainDiscoveryTabClicked()
+                case .dashboard:
+                    analytics.mainDashboardTabClicked()
+                case .programs:
+                    analytics.mainProgramsTabClicked()
+                case .profile:
+                    analytics.mainProfileTabClicked()
+                }
+            })
     }
     
     struct MainScreenView_Previews: PreviewProvider {

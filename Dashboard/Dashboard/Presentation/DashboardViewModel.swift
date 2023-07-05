@@ -26,14 +26,17 @@ public class DashboardViewModel: ObservableObject {
         }
     }
     
+    let connectivity: ConnectivityProtocol
     private let interactor: DashboardInteractorProtocol
-    public let connectivity: ConnectivityProtocol
-    
+    private let analytics: DashboardAnalytics
     private var onCourseEnrolledCancellable: AnyCancellable?
     
-    public init(interactor: DashboardInteractorProtocol, connectivity: ConnectivityProtocol) {
+    public init(interactor: DashboardInteractorProtocol,
+                connectivity: ConnectivityProtocol,
+                analytics: DashboardAnalytics) {
         self.interactor = interactor
         self.connectivity = connectivity
+        self.analytics = analytics
         
         onCourseEnrolledCancellable = NotificationCenter.default
             .publisher(for: .onCourseEnrolled)
@@ -90,5 +93,9 @@ public class DashboardViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func dashboardCourseClicked(courseID: String, courseName: String) {
+        analytics.dashboardCourseClicked(courseID: courseID, courseName: courseName)
     }
 }

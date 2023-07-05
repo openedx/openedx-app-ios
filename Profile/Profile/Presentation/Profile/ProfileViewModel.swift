@@ -25,15 +25,18 @@ public class ProfileViewModel: ObservableObject {
     
     private let interactor: ProfileInteractorProtocol
     let router: ProfileRouter
+    let analytics: ProfileAnalytics
     let config: Config
     let connectivity: ConnectivityProtocol
     
     public init(interactor: ProfileInteractorProtocol,
                 router: ProfileRouter,
+                analytics: ProfileAnalytics,
                 config: Config,
                 connectivity: ConnectivityProtocol) {
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
     }

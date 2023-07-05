@@ -30,6 +30,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
     let router: CourseRouter
+    let analytics: CourseAnalytics
     let config: Config
     let connectivity: ConnectivityProtocol
     
@@ -43,6 +44,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         interactor: CourseInteractorProtocol,
         authInteractor: AuthInteractorProtocol,
         router: CourseRouter,
+        analytics: CourseAnalytics,
         config: Config,
         connectivity: ConnectivityProtocol,
         manager: DownloadManagerProtocol,
@@ -55,6 +57,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.interactor = interactor
         self.authInteractor = authInteractor
         self.router = router
+        self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
         self.isActive = isActive
@@ -146,6 +149,23 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             if error is NoWiFiError {
                 errorMessage = CoreLocalization.Error.wifi
             }
+        }
+    }
+    
+    func trackSelectedTab(
+        selection: CourseContainerView.CourseTab,
+        courseId: String,
+        courseName: String
+    ) {
+        switch selection {
+        case .course:
+            analytics.courseOutlineCourseTabClicked(courseId: courseId, courseName: courseName)
+        case .videos:
+            analytics.courseOutlineVideosTabClicked(courseId: courseId, courseName: courseName)
+        case .discussion:
+            analytics.courseOutlineDiscussionTabClicked(courseId: courseId, courseName: courseName)
+        case .handounds:
+            analytics.courseOutlineHandoutsTabClicked(courseId: courseId, courseName: courseName)
         }
     }
     

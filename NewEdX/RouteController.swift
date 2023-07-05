@@ -19,10 +19,15 @@ class RouteController: UIViewController {
         diContainer.resolve(AppStorage.self)!
     }()
     
+    private lazy var analytics: AuthorizationAnalytics = {
+        diContainer.resolve(AuthorizationAnalytics.self)!
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if appStorage.accessToken != nil && appStorage.user != nil {
+        if let user = appStorage.user, appStorage.accessToken != nil {
+            analytics.setUserID("\(user.id)")
             DispatchQueue.main.async {
                 self.showMainScreen()
             }

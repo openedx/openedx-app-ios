@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Core
+import FirebaseCore
 
 enum `Environment`: String {
     case debugDev = "DebugDev"
@@ -42,6 +44,41 @@ class BuildConfiguration {
             return "STAGE_CLIENT_ID"
         case .debugProd, .releaseProd:
             return "PROD_CLIENT_ID"
+        }
+    }
+    
+    var firebaseOptions: FirebaseOptions {
+        switch environment {
+        case .debugDev, .releaseDev:
+            let firebaseOptions = FirebaseOptions(googleAppID: "",
+                                                  gcmSenderID: "")
+            firebaseOptions.apiKey = ""
+            firebaseOptions.projectID = ""
+            firebaseOptions.bundleID = ""
+            firebaseOptions.clientID = ""
+            firebaseOptions.storageBucket = ""
+            
+            return firebaseOptions
+        case .debugStage, .releaseStage:
+            let firebaseOptions = FirebaseOptions(googleAppID: "",
+                                                  gcmSenderID: "")
+            firebaseOptions.apiKey = ""
+            firebaseOptions.projectID = ""
+            firebaseOptions.bundleID = ""
+            firebaseOptions.clientID = ""
+            firebaseOptions.storageBucket = ""
+            
+            return firebaseOptions
+        case .debugProd, .releaseProd:
+            let firebaseOptions = FirebaseOptions(googleAppID: "",
+                                                  gcmSenderID: "")
+            firebaseOptions.apiKey = ""
+            firebaseOptions.projectID = ""
+            firebaseOptions.bundleID = ""
+            firebaseOptions.clientID = ""
+            firebaseOptions.storageBucket = ""
+            
+            return firebaseOptions
         }
     }
     

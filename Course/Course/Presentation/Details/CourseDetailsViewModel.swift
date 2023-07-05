@@ -30,6 +30,7 @@ public class CourseDetailsViewModel: ObservableObject {
     }
     
     private let interactor: CourseInteractorProtocol
+    private let analytics: CourseAnalytics
     let router: CourseRouter
     let config: Config
     let cssInjector: CSSInjector
@@ -38,12 +39,14 @@ public class CourseDetailsViewModel: ObservableObject {
     public init(
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
+        analytics: CourseAnalytics,
         config: Config,
         cssInjector: CSSInjector,
         connectivity: ConnectivityProtocol
     ) {
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.config = config
         self.cssInjector = cssInjector
         self.connectivity = connectivity
@@ -101,10 +104,16 @@ public class CourseDetailsViewModel: ObservableObject {
         UIApplication.shared.open(url)
     }
     
+    func viewCourseClicked(courseId: String, courseName: String) {
+        analytics.viewCourseClicked(courseId: courseId, courseName: courseName)
+    }
+    
     @MainActor
     func enrollToCourse(id: String) async {
         do {
+            analytics.courseEnrollClicked(courseId: id, courseName: courseDetails?.courseTitle ?? "")
             _ = try await interactor.enrollToCourse(courseID: id)
+            analytics.courseEnrollSuccess(courseId: id, courseName: courseDetails?.courseTitle ?? "")
             courseDetails?.isEnrolled = true
             NotificationCenter.default.post(name: .onCourseEnrolled, object: id)
         } catch let error {

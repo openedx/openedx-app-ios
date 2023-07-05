@@ -95,7 +95,8 @@ public struct CourseOutlineView: View {
                                     ContinueWithView(
                                         data: continueWith,
                                         courseStructure: courseStructure,
-                                        router: viewModel.router
+                                        router: viewModel.router,
+                                        analytics: viewModel.analytics
                                     )
                                 }
                             }
@@ -119,8 +120,15 @@ public struct CourseOutlineView: View {
                                         VStack(alignment: .leading) {
                                             Button(action: {
                                                 if let chapterIndex, let sequentialIndex {
+                                                    viewModel.analytics
+                                                        .sequentialClicked(courseId: courseID,
+                                                                           courseName: self.title,
+                                                                           blockId: child.blockId,
+                                                                           blockName: child.displayName)
                                                     viewModel.router.showCourseVerticalView(
                                                         id: courseID,
+                                                        courseID: courseStructure.courseID,
+                                                        courseName: viewModel.courseStructure?.displayName ?? "",
                                                         title: child.displayName,
                                                         chapters: chapters,
                                                         chapterIndex: chapterIndex,
@@ -254,6 +262,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
             interactor: CourseInteractor.mock,
             authInteractor: AuthInteractor.mock,
             router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
             connectivity: Connectivity(),
             manager: DownloadManagerMock(),

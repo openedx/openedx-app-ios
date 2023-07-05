@@ -13,6 +13,7 @@ public struct SearchView: View {
     @ObservedObject
     private var viewModel: SearchViewModel<RunLoop>
     @State private var animated: Bool = false
+    @State private var becomeFirstResponderRunOnce = false
     
     public init(viewModel: SearchViewModel<RunLoop>) {
         self.viewModel = viewModel
@@ -47,9 +48,12 @@ public struct SearchView: View {
                             viewModel.isSearchActive = editing
                         }
                     )
-                    .introspectTextField { textField in
-                        textField.becomeFirstResponder()
-                    }
+                    .introspect(.textField, on: .iOS(.v14, .v15, .v16, .v17), customize: { textField in
+                        if !becomeFirstResponderRunOnce {
+                            textField.becomeFirstResponder()
+                            self.becomeFirstResponderRunOnce = true
+                        }
+                    })
                     .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -192,6 +196,7 @@ struct SearchView_Previews: PreviewProvider {
             interactor: DiscoveryInteractor.mock,
             connectivity: Connectivity(),
             router: router,
+            analytics: DiscoveryAnalyticsMock(),
             debounce: .searchDebounce
         )
         

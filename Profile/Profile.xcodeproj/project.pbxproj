@@ -29,6 +29,7 @@
 		02A9A91D2978194A00B55797 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */; };
 		02A9A91E2978194A00B55797 /* Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 020F834A28DB4CCD0062FA70 /* Profile.framework */; platformFilter = ios; };
 		02A9A92B29781A6300B55797 /* ProfileMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A92A29781A6300B55797 /* ProfileMock.generated.swift */; };
+		02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */; };
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
 		25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */; };
@@ -70,6 +71,7 @@
 		02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
 		02A9A92A29781A6300B55797 /* ProfileMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMock.generated.swift; sourceTree = "<group>"; };
 		02ED50CE29A64BAD008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE6292539850051930C /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBottomSheet.swift; sourceTree = "<group>"; };
 		0E5054C44435557666B6D885 /* Pods-App-Profile.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugstage.xcconfig"; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				0203DC3C29AE79EB0017BD05 /* EditProfile */,
 				0262149029AE5793008BD75A /* DeleteAccount */,
 				02F3BFE6292539850051930C /* ProfileRouter.swift */,
+				02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				0259104829C3A5F0004B5A55 /* VideoQualityView.swift in Sources */,
 				021D924628DC634300ACC565 /* ProfileView.swift in Sources */,
 				02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */,
+				02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */,
 				0262149429AE57B1008BD75A /* DeleteAccountViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

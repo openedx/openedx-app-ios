@@ -83,12 +83,14 @@ public struct SignInView: View {
                             
                             HStack {
                                 Button(AuthLocalization.SignIn.registerBtn) {
+                                    viewModel.analytics.signUpClicked()
                                     viewModel.router.showRegisterScreen()
                                 }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
                                 
                                 Spacer()
                                 
                                 Button(AuthLocalization.SignIn.forgotPassBtn) {
+                                    viewModel.analytics.forgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
                                 }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
                             }
@@ -157,6 +159,7 @@ struct SignInView_Previews: PreviewProvider {
         let vm = SignInViewModel(
             interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
+            analytics: AuthorizationAnalyticsMock(),
             validator: Validator()
         )
         

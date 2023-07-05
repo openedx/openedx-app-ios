@@ -77,11 +77,16 @@ public class EditProfileViewModel: ObservableObject {
     
     private let interactor: ProfileInteractorProtocol
     let router: ProfileRouter
+    let analytics: ProfileAnalytics
     
-    public init(userModel: UserProfile, interactor: ProfileInteractorProtocol, router: ProfileRouter) {
+    public init(userModel: UserProfile,
+                interactor: ProfileInteractorProtocol,
+                router: ProfileRouter,
+                analytics: ProfileAnalytics) {
         self.userModel = userModel
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         self.spokenLanguages = interactor.getSpokenLanguages()
         self.countries = interactor.getCountries()
         generateYears()

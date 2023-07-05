@@ -17,6 +17,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testGetCourseDetailSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -25,6 +26,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -60,6 +62,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testGetCourseDetailSuccessOffline() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -68,6 +71,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -102,6 +106,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testGetCourseDetailNoInternetError() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -110,6 +115,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -131,6 +137,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testGetCourseDetailNoCacheError() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -139,6 +146,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -158,6 +166,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testGetCourseDetailUnknownError() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -166,6 +175,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -185,6 +195,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testEnrollToCourseSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -193,6 +204,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -202,6 +214,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
         await viewModel.enrollToCourse(id: "123")
         
         Verify(interactor, 1, .enrollToCourse(courseID: .any))
+        Verify(analytics, .courseEnrollClicked(courseId: .any, courseName: .any))
+        Verify(analytics, .courseEnrollSuccess(courseId: .any, courseName: .any))
         
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertNil(viewModel.errorMessage)
@@ -211,6 +225,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testEnrollToCourseUnknownError() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -219,6 +234,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -229,6 +245,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         await viewModel.enrollToCourse(id: "123")
         
         Verify(interactor, 1, .enrollToCourse(courseID: .any))
+        Verify(analytics, .courseEnrollClicked(courseId: .any, courseName: .any))
         
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
@@ -238,6 +255,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testEnrollToCourseNoInternetError() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -246,6 +264,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
@@ -267,6 +286,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
     func testEnrollToCourseNoCacheError() async throws {
         let interactor = CourseInteractorProtocolMock()
         let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -275,6 +295,7 @@ final class CourseDetailsViewModelTests: XCTestCase {
         
         let viewModel = CourseDetailsViewModel(interactor: interactor,
                                                router: router,
+                                               analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
                                                connectivity: connectivity)
