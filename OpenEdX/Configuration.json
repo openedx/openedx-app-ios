@@ -1,0 +1,26 @@
+{
+  "DebugDev": {
+    "baseURL": "https://lms-rg-app-ios-dev.raccoongang.com",
+    "clientId": "T7od4OFlYni7hTMnepfQuF1XUoqsESjEClltL40T"
+  },
+  "ReleaseDev": {
+    "baseURL": "https://lms-rg-app-ios-dev.raccoongang.com",
+    "clientId": "T7od4OFlYni7hTMnepfQuF1XUoqsESjEClltL40T"
+  },
+  "DebugStage": {
+    "baseURL": "https://lms-rg-app-ios-stage.raccoongang.com",
+    "clientId": "kHDbLaYlc1lpY1obmyAAEp9dX9qPqeDrBiVGQFIy"
+  },
+  "ReleaseStage": {
+    "baseURL": "https://lms-rg-app-ios-stage.raccoongang.com",
+    "clientId": "kHDbLaYlc1lpY1obmyAAEp9dX9qPqeDrBiVGQFIy"
+  },
+  "DebugProd": {
+    "baseURL": "https://example.com",
+    "clientId": "PROD_CLIENT_ID"
+  },
+  "ReleaseProd": {
+    "baseURL": "https://example.com",
+    "clientId": "PROD_CLIENT_ID"
+  }
+}

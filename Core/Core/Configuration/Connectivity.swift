@@ -1,6 +1,6 @@
 //
 //  Connectivity.swift
-//  NewEdX
+//  OpenEdX
 //
 //  Created by  Stepanok Ivan on 15.12.2022.
 //

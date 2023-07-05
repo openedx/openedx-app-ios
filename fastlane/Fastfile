@@ -26,8 +26,8 @@ end
 
 lane :unit_tests do
   run_tests(
-    workspace: "NewEdX.xcworkspace",
+    workspace: "OpenEdX.xcworkspace",
     device: "iPhone 14",
-    scheme: "NewEdXDev"
+    scheme: "OpenEdXDev"
   )
 end
