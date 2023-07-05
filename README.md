@@ -9,11 +9,11 @@ Modern vision of the mobile application for the Open EdX platform from Raccoon G
 
 2. Navigate to the project folder and run ``pod install``.
 
-3. Open ``NewEdX.xcworkspace``.
+3. Open ``OpenEdX.xcworkspace``.
 
-4. Ensure that the ``NewEdXDev`` or ``NewEdXProd`` scheme is selected.
+4. Ensure that the ``OpenEdXDev`` or ``OpenEdXProd`` scheme is selected.
 
-5. Configure the [``Environment.swift`` file](https://github.com/raccoongang/new-edx-app-ios/blob/main/NewEdX/Environment.swift) with URLs and OAuth credentials for your Open edX instance.
+5. Configure the [``Environment.swift`` file](https://github.com/raccoongang/new-edx-app-ios/blob/main/OpenEdX/Environment.swift) with URLs and OAuth credentials for your Open edX instance.
 
 6. Click the **Run** button.
 
@@ -26,6 +26,8 @@ You can find the plugin with the API and installation guide [here](https://githu
 Please feel welcome to develop any of the suggested features below and submit a pull request.
 
 - ✅ ~~Migrate to the new APIs~~
+- ✅ ~~New Navigation~~
+- ✅ ~~Analytics and Crashlytics~~
 - Recent searches
 - Migrate to the Olive and JWT token
 - UnAuth User mode
