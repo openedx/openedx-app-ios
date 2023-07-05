@@ -1,0 +1,2955 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "2965F906-6C1A-45FB-8AEF-27A4BEBDF813"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7845BD01-8491-4310-89D3-61C9128E4D3B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Dashboard/Dashboard/Presentation/DashboardViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "getMyCourses(page:refresh:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "938B4274-87C0-4A41-9AC6-C7B38D400EEC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Persistence/CoursePersistence.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "loadCourseStructure(courseID:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "938B4274-87C0-4A41-9AC6-C7B38D400EEC - 1f846be87fb77478"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Course.CDCourseDetailIncoming) -&gt; Course.BECourseDetailIncoming in Course.CoursePersistence.loadCourseStructure(courseID: Swift.String) throws -&gt; Core.DataLayer.CourseStructure"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "392">
+               </Location>
+               <Location
+                  uuid = "938B4274-87C0-4A41-9AC6-C7B38D400EEC - 1f846be87fb77478"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Course.CDCourseDetailIncoming) -&gt; Course.BECourseDetailIncoming in Course.CoursePersistence.loadCourseStructure(courseID: Swift.String) throws -&gt; Core.DataLayer.CourseStructure"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "512">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E3E91C14-7039-47B9-9810-8A6E95643ECB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Persistence/CoursePersistence.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "loadCourseStructure(courseID:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "60AA8E8C-CB17-4851-B165-2CB24DD84983"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Persistence/CoursePersistence.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "loadCourseStructure(courseID:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "60AA8E8C-CB17-4851-B165-2CB24DD84983 - 853ace65c705f352"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CoursePersistence.loadCourseStructure(courseID: Swift.String) throws -&gt; Core.DataLayer.CourseStructure"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "1064">
+               </Location>
+               <Location
+                  uuid = "60AA8E8C-CB17-4851-B165-2CB24DD84983 - 853ace65c705f3b5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CoursePersistence.loadCourseStructure(courseID: Swift.String) throws -&gt; Core.DataLayer.CourseStructure"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "155"
+                  endingLineNumber = "155"
+                  offsetFromSymbolStart = "1012">
+               </Location>
+               <Location
+                  uuid = "60AA8E8C-CB17-4851-B165-2CB24DD84983 - 853ace65c705f3b5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CoursePersistence.loadCourseStructure(courseID: Swift.String) throws -&gt; Core.DataLayer.CourseStructure"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "155"
+                  endingLineNumber = "155"
+                  offsetFromSymbolStart = "1048">
+               </Location>
+               <Location
+                  uuid = "60AA8E8C-CB17-4851-B165-2CB24DD84983 - 70875900a69cd3f3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (inout Swift.Dictionary&lt;Swift.String, Course.BECourseDetailIncoming&gt;, Course.BECourseDetailIncoming) -&gt; () in Course.CoursePersistence.loadCourseStructure(courseID: Swift.String) throws -&gt; Core.DataLayer.CourseStructure"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "332">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ECE61AB6-2E22-408E-A474-F17EF2B8C429"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/PlayerViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "addPeriodicTimeObserver(_:currentProgress:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "ECE61AB6-2E22-408E-A474-F17EF2B8C429 - 838bf496207c8c77"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.PlayerViewController.addPeriodicTimeObserver(_: __C.AVPlayerViewController, currentProgress: (Swift.Float) -&gt; (), currentSeconds: (Swift.Double) -&gt; ()) -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/PlayerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "264">
+               </Location>
+               <Location
+                  uuid = "ECE61AB6-2E22-408E-A474-F17EF2B8C429 - 78039d012bfcdd7d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.CMTime) -&gt; () in Course.PlayerViewController.addPeriodicTimeObserver(_: __C.AVPlayerViewController, currentProgress: (Swift.Float) -&gt; (), currentSeconds: (Swift.Double) -&gt; ()) -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/PlayerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "46"
+                  endingLineNumber = "46"
+                  offsetFromSymbolStart = "184">
+               </Location>
+               <Location
+                  uuid = "ECE61AB6-2E22-408E-A474-F17EF2B8C429 - 8a9c6422ee3812e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.CMTime) -&gt; () in Course.PlayerViewController.addPeriodicTimeObserver(_: __C.AVPlayerViewController, currentProgress: (Swift.Float, Swift.Double) -&gt; ()) -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/PlayerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "204">
+               </Location>
+               <Location
+                  uuid = "ECE61AB6-2E22-408E-A474-F17EF2B8C429 - 1c24babd8a728418"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.CMTime) -&gt; () in Course.PlayerViewController.addPeriodicTimeObserver(_: __C.AVPlayerViewController, currentProgress: (Swift.Float) -&gt; ()) -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/PlayerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "672">
+               </Location>
+               <Location
+                  uuid = "ECE61AB6-2E22-408E-A474-F17EF2B8C429 - 8a9c6422ee3812e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.CMTime) -&gt; () in Course.PlayerViewController.addPeriodicTimeObserver(_: __C.AVPlayerViewController, currentProgress: (Swift.Float, Swift.Double) -&gt; ()) -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/PlayerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "672">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7532A6A8-6B0B-41D7-A1E6-3F3B6A112062"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Persistence/CoursePersistence.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
+            landmarkName = "saveCourseStructure(structure:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1FF53FC3-D2C2-462D-8A53-E261DD2BEEA7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Persistence/CoursePersistence.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
+            landmarkName = "saveSubtitles(url:subtitlesString:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6CA58B56-D369-4307-A1AB-965DE3CBDC25"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Network/CourseDetailsEndpoint.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "task"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6EC34C08-B046-4B88-835A-4BBEA0C20EA0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "init(lessonID:courseID:id:courseName:chapters:chapterIndex:sequentialIndex:verticalIndex:interactor:router:analytics:connectivity:manager:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6EC34C08-B046-4B88-835A-4BBEA0C20EA0 - fa468eb145f51b6a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CourseUnitViewModel.languages() -&gt; Swift.Array&lt;Core.SubtitleUrl&gt;"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "6EC34C08-B046-4B88-835A-4BBEA0C20EA0 - ad9780047202007c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Core.CourseBlock) -&gt; Swift.Bool in Course.CourseUnitViewModel.languages() -&gt; Swift.Array&lt;Core.SubtitleUrl&gt;"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "6EC34C08-B046-4B88-835A-4BBEA0C20EA0 - fa468eb145f51ba0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CourseUnitViewModel.languages() -&gt; Swift.Array&lt;Core.SubtitleUrl&gt;"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "99"
+                  endingLineNumber = "99"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "6EC34C08-B046-4B88-835A-4BBEA0C20EA0 - ad978004720200b6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Core.CourseBlock) -&gt; Swift.Bool in Course.CourseUnitViewModel.languages() -&gt; Swift.Array&lt;Core.SubtitleUrl&gt;"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "99"
+                  endingLineNumber = "99"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "6EC34C08-B046-4B88-835A-4BBEA0C20EA0 - fa468eb145f51845"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CourseUnitViewModel.languages() -&gt; Swift.Array&lt;Core.SubtitleUrl&gt;"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5CDE30BA-3BE5-4F73-95CC-8FE568F434C0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Persistence/CoursePersistence.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
+            landmarkName = "CoursePersistence"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "5CDE30BA-3BE5-4F73-95CC-8FE568F434C0 - 963c9b6aecc62e0f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CoursePersistence.loadSubtitles(url: Swift.String) -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "222"
+                  endingLineNumber = "222"
+                  offsetFromSymbolStart = "860">
+               </Location>
+               <Location
+                  uuid = "5CDE30BA-3BE5-4F73-95CC-8FE568F434C0 - 963c9b6aecc62e0f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.CoursePersistence.loadSubtitles(url: Swift.String) -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Data/Persistence/CoursePersistence.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "222"
+                  endingLineNumber = "222"
+                  offsetFromSymbolStart = "2000">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AC56C17C-67F2-4B2D-A4E5-482D69C87D3C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Discussion/Discussion/Data/Model/Data_CommentsResponse.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "domain"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5B22CED2-B384-4114-A255-571045B8FD5F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E71ACB7F-1427-43AC-B1B2-A21A3FF4BD71"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "E71ACB7F-1427-43AC-B1B2-A21A3FF4BD71 - 878fcbe32f27242f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable () async -&gt; Swift.Bool in closure #2 () -&gt; () in closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(Discussion.ParentCommentView, &lt;&lt;opaque return type of SwiftUI.View.font(Swift.Optional&lt;SwiftUI.Font&gt;) -&gt; some&gt;&gt;.0, SwiftUI.ForEach&lt;Swift.Array&lt;(offset: Swift.Int, element: Discussion.Post)&gt;, Swift.Int, &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.VStack&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;&gt;, SwiftUI.Spacer)&gt;&gt; in closure #2 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.RefreshableScrollViewCompat&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;Swift.Optional&lt;Core.FlexibleKeyboardInputView&gt;&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.frame(minWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, minHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0 in closure #2 (SwiftUI.ScrollViewProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Discussion.ThreadView.body.getter : some"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "80"
+                  endingLineNumber = "80"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "E71ACB7F-1427-43AC-B1B2-A21A3FF4BD71 - 992c8c91ef3fc48"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #2 () -&gt; () in closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(Discussion.ParentCommentView, &lt;&lt;opaque return type of SwiftUI.View.font(Swift.Optional&lt;SwiftUI.Font&gt;) -&gt; some&gt;&gt;.0, SwiftUI.ForEach&lt;Swift.Array&lt;(offset: Swift.Int, element: Discussion.Post)&gt;, Swift.Int, &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.VStack&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;&gt;, SwiftUI.Spacer)&gt;&gt; in closure #2 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.RefreshableScrollViewCompat&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;, Core.FlexibleKeyboardInputView)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.frame(minWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, minHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0 in closure #2 (SwiftUI.ScrollViewProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Discussion.ThreadView.body.getter : some"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "80"
+                  endingLineNumber = "80"
+                  offsetFromSymbolStart = "148">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3D36385D-CB66-4858-878B-8A63F21722E7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "init(lessonID:courseID:id:courseName:chapters:chapterIndex:sequentialIndex:verticalIndex:interactor:router:analytics:connectivity:manager:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "15E9A790-502D-4EF8-93DF-793432EB2613"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Outline/CourseVerticalView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "15E9A790-502D-4EF8-93DF-793432EB2613 - 2d420680e8711b3a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in closure #1 (Core.CourseVertical) -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt; in closure #2 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt;, SwiftUI.Spacer)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0)&gt;&gt;, Core.OfflineSnackBarView, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Course.CourseVerticalView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Outline/CourseVerticalView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "216">
+               </Location>
+               <Location
+                  uuid = "15E9A790-502D-4EF8-93DF-793432EB2613 - 6117d6fb8f7529da"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 () -&gt; SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.foregroundColor(Swift.Optional&lt;SwiftUI.Color&gt;) -&gt; some&gt;&gt;.0, SwiftUI.Spacer, Swift.Optional&lt;SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.onForeground(() -&gt; ()) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.onBackground(() -&gt; ()) -&gt; some&gt;&gt;.0&gt;, &lt;&lt;opaque return type of SwiftUI.View.onTapGesture(count: Swift.Int, perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0)&gt;&gt; in closure #1 (Core.CourseVertical) -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt; in closure #2 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt;, SwiftUI.Spacer)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0)&gt;&gt;, Core.OfflineSnackBarView, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Course.CourseVerticalView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Outline/CourseVerticalView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45"
+                  offsetFromSymbolStart = "368">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4DC064BA-E1D7-4E16-8724-4A2E1C452CC8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Container/CourseContainerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "getCourseBlocks(courseID:withProgress:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E31B5B2F-7E0C-4AE7-AA52-AE9CF1BC57B0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/YouTubeVideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "subscrube(playerStateSubject:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E31B5B2F-7E0C-4AE7-AA52-AE9CF1BC57B0 - dc570a567552747c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (Swift.Double) -&gt; () in Course.YouTubeVideoPlayerViewModel.init(url: Swift.String, blockID: Swift.String, courseID: Swift.String, languages: Swift.Array&lt;Core.SubtitleUrl&gt;, interactor: Course.CourseInteractorProtocol, router: Course.CourseRouter, connectivity: Core.ConnectivityProtocol) -&gt; Course.YouTubeVideoPlayerViewModel"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/YouTubeVideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "400">
+               </Location>
+               <Location
+                  uuid = "E31B5B2F-7E0C-4AE7-AA52-AE9CF1BC57B0 - 7db31a4f1752739"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable () async -&gt; () in closure #3 (Swift.Double) -&gt; () in Course.YouTubeVideoPlayerViewModel.init(url: Swift.String, blockID: Swift.String, courseID: Swift.String, languages: Swift.Array&lt;Core.SubtitleUrl&gt;, interactor: Course.CourseInteractorProtocol, router: Course.CourseRouter, connectivity: Core.ConnectivityProtocol) -&gt; Course.YouTubeVideoPlayerViewModel"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/YouTubeVideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "E31B5B2F-7E0C-4AE7-AA52-AE9CF1BC57B0 - 7db31a4f1752758"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable () async -&gt; () in closure #3 (Swift.Double) -&gt; () in Course.YouTubeVideoPlayerViewModel.init(url: Swift.String, blockID: Swift.String, courseID: Swift.String, languages: Swift.Array&lt;Core.SubtitleUrl&gt;, interactor: Course.CourseInteractorProtocol, router: Course.CourseRouter, connectivity: Core.ConnectivityProtocol) -&gt; Course.YouTubeVideoPlayerViewModel"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/YouTubeVideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "E31B5B2F-7E0C-4AE7-AA52-AE9CF1BC57B0 - f44009f2f6220c94"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) await resume partial function for closure #1 @Sendable () async -&gt; () in closure #3 (Swift.Double) -&gt; () in Course.YouTubeVideoPlayerViewModel.init(url: Swift.String, blockID: Swift.String, courseID: Swift.String, languages: Swift.Array&lt;Core.SubtitleUrl&gt;, interactor: Course.CourseInteractorProtocol, router: Course.CourseRouter, connectivity: Core.ConnectivityProtocol) -&gt; Course.YouTubeVideoPlayerViewModel"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/YouTubeVideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "305763F0-D6E3-4E31-8E0B-1217CC38B548"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/PlayerViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "makeUIViewController(context:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6D585860-E800-4507-BA42-7D6F656631DA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewEdX/Router.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "showCourseScreens(courseID:isActive:courseStart:courseEnd:enrollmentStart:enrollmentEnd:title:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6D585860-E800-4507-BA42-7D6F656631DA - f394bf5baa41ddf1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NewEdX_Dev.Router.showThreads(courseID: Swift.String, topics: Discussion.Topics, title: Swift.String, type: Discussion.ThreadType) -&gt; ()"
+                  moduleName = "NewEdX Dev"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/NewEdX/Router.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "225"
+                  endingLineNumber = "225"
+                  offsetFromSymbolStart = "224">
+               </Location>
+               <Location
+                  uuid = "6D585860-E800-4507-BA42-7D6F656631DA - 6f415bb56624f737"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NewEdX_Dev.Router.showCourseUnit(blockId: Swift.String, courseID: Swift.String, sectionName: Swift.String, selectedVertical: Swift.Int, verticals: Swift.Array&lt;Core.CourseVertical&gt;) -&gt; ()"
+                  moduleName = "NewEdX Dev"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/NewEdX/Router.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "226"
+                  endingLineNumber = "226"
+                  offsetFromSymbolStart = "176">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "70660557-3B4E-4706-B246-4EA5FA49DD2B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewEdX/Router.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
+            landmarkName = "showCourseUnit(courseName:id:blockId:courseID:sectionName:verticalIndex:chapters:chapterIndex:sequentialIndex:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A4AB83DE-37AC-4E9A-9C67-F791DAE399AF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/CourseNavigationView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AB238C8B-8AC7-473D-8F82-164EC785B907"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/Subviews/EncodedVideoView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "AB238C8B-8AC7-473D-8F82-164EC785B907 - dd2a8624ca52638"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Course.EncodedVideoPlayer, SwiftUI.Spacer)&gt;&gt; in Course.EncodedVideoView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/Subviews/EncodedVideoView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "400">
+               </Location>
+               <Location
+                  uuid = "AB238C8B-8AC7-473D-8F82-164EC785B907 - dd2a8624ca52638"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Course.EncodedVideoPlayer, SwiftUI.Spacer)&gt;&gt; in Course.EncodedVideoView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/Subviews/EncodedVideoView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "2400">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65555620-E14D-4FFB-9570-9B93532AC57B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/CourseUnitView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7853CF08-5064-4252-8FCD-C852E155B536"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "init(blockID:courseID:languages:interactor:router:connectivity:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EC16520C-CF1B-49ED-BD55-63C9CEA91A01"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/Subviews/EncodedVideoView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9910AF8D-DA85-4E91-B9F3-55AA9DC9800C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/EncodedVideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "init(url:blockID:courseID:languages:playerStateSubject:interactor:router:connectivity:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "89F5D1D4-4287-4F8A-BEE2-A135A0E8503A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/SubtittlesView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "init(languages:currentTime:viewModel:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0082A6BC-7308-458B-9A82-F800387586F5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
+            landmarkName = "blockCompletionRequest(blockID:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0082A6BC-7308-458B-9A82-F800387586F5 - 428b8f6b329e15ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Course.CourseUnitViewModel.blockCompletionRequest(blockID: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "560">
+               </Location>
+               <Location
+                  uuid = "0082A6BC-7308-458B-9A82-F800387586F5 - f8743f48d1e111f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Course.CourseUnitViewModel.blockCompletionRequest(blockID: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "0082A6BC-7308-458B-9A82-F800387586F5 - 20f41716b4b0d1a8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Course.CourseUnitViewModel.blockCompletionRequest(blockID: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "0082A6BC-7308-458B-9A82-F800387586F5 - d1eaab046ba473ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Course.CourseUnitViewModel.blockCompletionRequest(blockID: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "92">
+               </Location>
+               <Location
+                  uuid = "0082A6BC-7308-458B-9A82-F800387586F5 - 428b8f6b329e15ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Course.CourseUnitViewModel.blockCompletionRequest(blockID: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "0082A6BC-7308-458B-9A82-F800387586F5 - 20f41716b4b0d1a8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Course.CourseUnitViewModel.blockCompletionRequest(blockID: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "0082A6BC-7308-458B-9A82-F800387586F5 - d1eaab046ba473ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Course.CourseUnitViewModel.blockCompletionRequest(blockID: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ADD7ACC0-3C02-440E-ADB5-1CB7812D8133"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Outline/CourseVerticalView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "ADD7ACC0-3C02-440E-ADB5-1CB7812D8133 - 636a78786d14f7ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in closure #1 (Core.CourseVertical) -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt; in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt;&gt;, SwiftUI.Spacer)&gt; in closure #2 (SwiftUI.GeometryProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Core.OfflineSnackBarView, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Course.CourseVerticalView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Outline/CourseVerticalView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "47"
+                  endingLineNumber = "47"
+                  offsetFromSymbolStart = "992">
+               </Location>
+               <Location
+                  uuid = "ADD7ACC0-3C02-440E-ADB5-1CB7812D8133 - 636a78786d14f79b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in closure #1 (Core.CourseVertical) -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt; in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt;&gt;, SwiftUI.Spacer)&gt; in closure #2 (SwiftUI.GeometryProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Core.OfflineSnackBarView, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Course.CourseVerticalView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Outline/CourseVerticalView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "46"
+                  endingLineNumber = "46"
+                  offsetFromSymbolStart = "860">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5C3280B6-18D1-4ABB-86F4-6121C235F1EB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewEdX/Router.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "showCourseScreens(courseID:isActive:courseStart:courseEnd:enrollmentStart:enrollmentEnd:title:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5C3280B6-18D1-4ABB-86F4-6121C235F1EB - 66f1bb2fd15d9781"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NewEdX_Dev.Router.showCourseUnit(blockId: Swift.String, courseID: Swift.String, sectionName: Swift.String, verticalIndex: Swift.Int, chapters: Swift.Array&lt;Core.CourseChapter&gt;, chapterIndex: Swift.Int, sequentialIndex: Swift.Int) -&gt; ()"
+                  moduleName = "NewEdX Dev"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/NewEdX/Router.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "205"
+                  endingLineNumber = "205"
+                  offsetFromSymbolStart = "244">
+               </Location>
+               <Location
+                  uuid = "5C3280B6-18D1-4ABB-86F4-6121C235F1EB - 95344bd81e6e000f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NewEdX_Dev.Router.showCourseUnit(id: Swift.String, blockId: Swift.String, courseID: Swift.String, sectionName: Swift.String, verticalIndex: Swift.Int, chapters: Swift.Array&lt;Core.CourseChapter&gt;, chapterIndex: Swift.Int, sequentialIndex: Swift.Int) -&gt; ()"
+                  moduleName = "NewEdX Dev"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/NewEdX/Router.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "207"
+                  endingLineNumber = "207"
+                  offsetFromSymbolStart = "260">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8667E914-5ED1-4491-9FE3-10BEC92524AC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Outline/CourseOutlineView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3691EFE0-E343-4E18-A69D-69E9FCD1F147"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "from(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3691EFE0-E343-4E18-A69D-69E9FCD1F147 - 1c0dd906d68ffecf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static Course.LessonType.from(Core.CourseBlock) -&gt; Course.LessonType"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "292">
+               </Location>
+               <Location
+                  uuid = "3691EFE0-E343-4E18-A69D-69E9FCD1F147 - 1c0dd906d68ffecf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static Course.LessonType.from(Core.CourseBlock) -&gt; Course.LessonType"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Unit/CourseUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "324">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FD6FBDDA-22AD-4FE3-9FD6-3DE151B99F2E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/Subviews/DiscussionView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "624BA754-7294-4870-BA3E-CBEE53A3411D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Discussion/Discussion/Presentation/DiscussionTopics/DiscussionTopicsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "init(courseID:viewModel:router:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "624BA754-7294-4870-BA3E-CBEE53A3411D - 94c29742f3205657"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async -&gt; () in Discussion.DiscussionTopicsView.init(courseID: Swift.String, viewModel: Discussion.DiscussionTopicsViewModel, router: Discussion.DiscussionRouter) -&gt; Discussion.DiscussionTopicsView"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/DiscussionTopics/DiscussionTopicsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "624BA754-7294-4870-BA3E-CBEE53A3411D - 27e49da6025615c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #1 @Sendable () async -&gt; () in Discussion.DiscussionTopicsView.init(courseID: Swift.String, viewModel: Discussion.DiscussionTopicsViewModel, router: Discussion.DiscussionRouter) -&gt; Discussion.DiscussionTopicsView"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/DiscussionTopics/DiscussionTopicsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "624BA754-7294-4870-BA3E-CBEE53A3411D - 419bc8b9ff92dbb1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable () async -&gt; () in Discussion.DiscussionTopicsView.init(courseID: Swift.String, viewModel: Discussion.DiscussionTopicsViewModel, router: Discussion.DiscussionRouter) -&gt; Discussion.DiscussionTopicsView"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/DiscussionTopics/DiscussionTopicsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A3E1BDC-8631-4D97-96E0-B3C351679C79"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "init(blockID:courseID:languages:interactor:router:connectivity:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D7CE66FB-F06E-4EED-A41C-1007B234DE84"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "loadSelectedSubtitles()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D7CE66FB-F06E-4EED-A41C-1007B234DE84 - acf8bf51ca2ea121"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Course.VideoPlayerViewModel.loadSelectedSubtitles() -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "328">
+               </Location>
+               <Location
+                  uuid = "D7CE66FB-F06E-4EED-A41C-1007B234DE84 - 92dafe42f4dff4c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #2 @Sendable () async -&gt; () in Course.VideoPlayerViewModel.loadSelectedSubtitles() -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "118"
+                  endingLineNumber = "118"
+                  offsetFromSymbolStart = "128">
+               </Location>
+               <Location
+                  uuid = "D7CE66FB-F06E-4EED-A41C-1007B234DE84 - a8b3ba135701388f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #2 @Sendable () async -&gt; () in Course.VideoPlayerViewModel.loadSelectedSubtitles() -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "118"
+                  endingLineNumber = "118"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "D7CE66FB-F06E-4EED-A41C-1007B234DE84 - 211fdfc76bc236c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #2 @Sendable () async -&gt; () in Course.VideoPlayerViewModel.loadSelectedSubtitles() -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "118"
+                  endingLineNumber = "118"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "161C97E1-117F-45F3-88CA-4C0B8A25AD53"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "getSubtitles(subtitlesUrl:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "getSubtitles(subtitlesUrl:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7 - 5da78f246f7596b2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "156">
+               </Location>
+               <Location
+                  uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7 - 2789fe94390930b1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "152">
+               </Location>
+               <Location
+                  uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7 - a904b2c50353554c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7 - b3a8cddc8b69858"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7 - 5da78f246f7596b2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7 - 2789fe94390930b1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "63AA40C4-4748-4583-9E70-FAC954529AB7 - a904b2c50353554c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BB6C9B67-AA54-4BD0-83E1-CEA0611257D6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "generateSelectedLanguage()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "327C1482-D0FE-4379-902B-E3CD7C39A7F5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "generateSelectedLanguage()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "540547EC-F397-476D-8035-A77F04A46648"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/Network/CourseDetailsEndpoint.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "task"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1BE7A4B4-D3AF-4F51-8690-C562F5B4AE62"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/YouTubeVideoPlayer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7E4D4CBB-5A86-4442-9B0D-2321BA2C2197"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/EncodedVideoPlayer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C8E51797-98E7-44F2-BED8-2039FEEB2922"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/YouTubeVideoPlayer.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4F03318E-46E0-4588-A1CA-C002DB0BAA5C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Discussion/Discussion/Presentation/Posts/PostsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
+            landmarkName = "getPostsPagination(courseID:index:withProgress:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DB732D15-E486-4B47-B917-4F53E86994BF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "DB732D15-E486-4B47-B917-4F53E86994BF - b7954fe6f0d47ea5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async -&gt; Swift.Bool in closure #4 () -&gt; () in closure #5 (Swift.Int, Discussion.Post) -&gt; &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(Discussion.ParentCommentView, &lt;&lt;opaque return type of SwiftUI.View.font(Swift.Optional&lt;SwiftUI.Font&gt;) -&gt; some&gt;&gt;.0, SwiftUI.ForEach&lt;Swift.Array&lt;(offset: Swift.Int, element: Discussion.Post)&gt;, Swift.Int, &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.VStack&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;&gt;, SwiftUI.Spacer)&gt;&gt; in closure #2 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.RefreshableScrollViewCompat&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;Swift.Optional&lt;Core.FlexibleKeyboardInputView&gt;&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.frame(minWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, minHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0 in closure #2 (SwiftUI.ScrollViewProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Discussion.ThreadView.body.getter : some"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "141"
+                  endingLineNumber = "141"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "DB732D15-E486-4B47-B917-4F53E86994BF - c55bc2a695b07ba3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #1 @Sendable () async -&gt; Swift.Bool in closure #4 () -&gt; () in closure #5 (Swift.Int, Discussion.Post) -&gt; &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(Discussion.ParentCommentView, &lt;&lt;opaque return type of SwiftUI.View.font(Swift.Optional&lt;SwiftUI.Font&gt;) -&gt; some&gt;&gt;.0, SwiftUI.ForEach&lt;Swift.Array&lt;(offset: Swift.Int, element: Discussion.Post)&gt;, Swift.Int, &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.VStack&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;&gt;, SwiftUI.Spacer)&gt;&gt; in closure #2 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.RefreshableScrollViewCompat&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;Swift.Optional&lt;Core.FlexibleKeyboardInputView&gt;&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.frame(minWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, minHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0 in closure #2 (SwiftUI.ScrollViewProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Discussion.ThreadView.body.getter : some"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "141"
+                  endingLineNumber = "141"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "DB732D15-E486-4B47-B917-4F53E86994BF - 74aab1eb8abfb2a7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable () async -&gt; Swift.Bool in closure #4 () -&gt; () in closure #5 (Swift.Int, Discussion.Post) -&gt; &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(Discussion.ParentCommentView, &lt;&lt;opaque return type of SwiftUI.View.font(Swift.Optional&lt;SwiftUI.Font&gt;) -&gt; some&gt;&gt;.0, SwiftUI.ForEach&lt;Swift.Array&lt;(offset: Swift.Int, element: Discussion.Post)&gt;, Swift.Int, &lt;&lt;opaque return type of SwiftUI.View.id&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Hashable&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;SwiftUI.VStack&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;&gt;, SwiftUI.Spacer)&gt;&gt; in closure #2 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.RefreshableScrollViewCompat&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;Swift.Optional&lt;Core.FlexibleKeyboardInputView&gt;&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.frame(minWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxWidth: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, minHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, idealHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, maxHeight: Swift.Optional&lt;CoreGraphics.CGFloat&gt;, alignment: SwiftUI.Alignment) -&gt; some&gt;&gt;.0 in closure #2 (SwiftUI.ScrollViewProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.ScrollViewReader&lt;&lt;&lt;opaque return type of SwiftUI.View.scrollAvoidKeyboard(scrollerOptions: Core.KeyboardScrollerOptions, partialAvoidingPadding: CoreGraphics.CGFloat, dismissKeyboardByTap: Swift.Bool, onProvideScrollInvocator: Swift.Optional&lt;(Core.KeyboardScrollInvocator) -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Discussion.ThreadView.body.getter : some"
+                  moduleName = "Discussion"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Discussion/Discussion/Presentation/Comments/Thread/ThreadView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "141"
+                  endingLineNumber = "141"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3774C051-EA3E-4508-85A1-B3F221669348"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Discussion/Discussion/Presentation/Comments/Thread/ThreadViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "fetchMorePosts(thread:index:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Core/Core/Data/Repository/AuthRepository.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "getCookies(force:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE - 30c583ab4220aa89"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "360">
+               </Location>
+               <Location
+                  uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE - 30c583ab4220aa4f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "448">
+               </Location>
+               <Location
+                  uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE - 8d6c59df6f8de8b0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE - 78ded161045b9670"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE - 78ded161045b9651"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE - ce19e1aed614075"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "C51EE330-4A8C-4ABF-BD64-1318735E3FCE - ce19e1aed614054"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "100">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "64297CF1-FA6B-4421-8A38-6236D29C8FF3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Core/Core/View/Base/WebView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "webView(_:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "64297CF1-FA6B-4421-8A38-6236D29C8FF3 - ebc6e2140b7e9ff4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Core.WebView.Coordinator.webView(_: __C.WKWebView, runJavaScriptConfirmPanelWithMessage: Swift.String, initiatedByFrame: __C.WKFrameInfo, completionHandler: (Swift.Bool) -&gt; ()) -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "80"
+                  endingLineNumber = "80"
+                  offsetFromSymbolStart = "160">
+               </Location>
+               <Location
+                  uuid = "64297CF1-FA6B-4421-8A38-6236D29C8FF3 - ebc6e2140b7e9c31"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Core.WebView.Coordinator.webView(_: __C.WKWebView, runJavaScriptConfirmPanelWithMessage: Swift.String, initiatedByFrame: __C.WKFrameInfo, completionHandler: (Swift.Bool) -&gt; ()) -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "124">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Core/Core/View/Base/WebUnitViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "updateCookies(force:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - 7dbc68232abbcd26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - dfd451f6373cfa0d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - b2761eb73fd28124"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - 686bd9cd3a65e725"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - 7dbc68232abbcd01"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "140">
+               </Location>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - dfd451f6373cfa2a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - b2761eb73fd28103"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "2A85F6FB-1D49-4541-9118-B6BFD6E50661 - 686bd9cd3a65e702"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Core.WebUnitViewModel.updateCookies(force: Swift.Bool) async -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/View/Base/WebUnitViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0A527FD5-288F-41A4-A63F-E36A38C8514C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Core/Core/Domain/AuthInteractor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "getCookies(force:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0A527FD5-288F-41A4-A63F-E36A38C8514C - a9e31eecfd306ec8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Core.AuthInteractor.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Domain/AuthInteractor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  uuid = "0A527FD5-288F-41A4-A63F-E36A38C8514C - 9c2f4e09d0eddb69"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Core.AuthInteractor.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Domain/AuthInteractor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "0A527FD5-288F-41A4-A63F-E36A38C8514C - 61d62812332b52ce"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Core.AuthInteractor.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Domain/AuthInteractor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "0A527FD5-288F-41A4-A63F-E36A38C8514C - c5d3c1371616a0cf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Core.AuthInteractor.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Domain/AuthInteractor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "26303C69-B51C-4028-BDE8-7121D536B530"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Core/Core/Data/Repository/AuthRepository.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "getCookies(force:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "26303C69-B51C-4028-BDE8-7121D536B530 - 30c583ab4220ab90"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "1004">
+               </Location>
+               <Location
+                  uuid = "26303C69-B51C-4028-BDE8-7121D536B530 - 5917c75360972d6d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) await resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "26303C69-B51C-4028-BDE8-7121D536B530 - a0ebe73fce72f38c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "26303C69-B51C-4028-BDE8-7121D536B530 - e8e736f5f395df8a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for Core.AuthRepository.getCookies(force: Swift.Bool) async throws -&gt; ()"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Data/Repository/AuthRepository.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "76CE122B-6A62-471A-8EB0-45C94146A3CB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Core/Core/Network/API.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "request(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "76CE122B-6A62-471A-8EB0-45C94146A3CB - ea27053857e9a0ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Core.API.request(Core.EndPointType) async throws -&gt; __C.NSHTTPURLResponse"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Network/API.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "656">
+               </Location>
+               <Location
+                  uuid = "76CE122B-6A62-471A-8EB0-45C94146A3CB - ea1c299f2e8015c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(8) await resume partial function for Core.API.request(Core.EndPointType) async throws -&gt; __C.NSHTTPURLResponse"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Network/API.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  uuid = "76CE122B-6A62-471A-8EB0-45C94146A3CB - 6868c6e7ee8250a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for Core.API.request(Core.EndPointType) async throws -&gt; __C.NSHTTPURLResponse"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Network/API.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "76CE122B-6A62-471A-8EB0-45C94146A3CB - f3c44f4210fc74f8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(15) suspend resume partial function for Core.API.request(Core.EndPointType) async throws -&gt; __C.NSHTTPURLResponse"
+                  moduleName = "Core"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Core/Core/Network/API.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FFC11BB9-438C-4C6B-B24D-92F0DDBC8F5B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "presentPicker()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ECC02B47-5DC5-4553-AF4B-4CD2E1F9430E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "loadSelectedSubtitles()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B97807A9-66B7-443A-A35D-E1E48FF7963A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "getSubtitles(subtitlesUrl:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B97807A9-66B7-443A-A35D-E1E48FF7963A - a904b2c503535a65"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "B97807A9-66B7-443A-A35D-E1E48FF7963A - b3a8cddc8b69771"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "B97807A9-66B7-443A-A35D-E1E48FF7963A - 5da78f246f75999b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "B97807A9-66B7-443A-A35D-E1E48FF7963A - 2789fe9439093f98"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Course.VideoPlayerViewModel.getSubtitles(subtitlesUrl: Swift.String) async -&gt; ()"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Video/VideoPlayerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F5AABA21-833A-42E0-923D-82814F8447F8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Domain/CourseInteractor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "parseSubtitles(from:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8350A96A-61FB-4256-B754-6C6FF8642366"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Authorization/Authorization/Presentation/Registration/SignUpViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "registerUser()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8350A96A-61FB-4256-B754-6C6FF8642366 - a4cd5ff4064deed8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Authorization.SignUpViewModel.registerUser() async -&gt; ()"
+                  moduleName = "Authorization"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Authorization/Authorization/Presentation/Registration/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "560">
+               </Location>
+               <Location
+                  uuid = "8350A96A-61FB-4256-B754-6C6FF8642366 - 729201b60a7e80e2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Authorization.SignUpViewModel.registerUser() async -&gt; ()"
+                  moduleName = "Authorization"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Authorization/Authorization/Presentation/Registration/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "8350A96A-61FB-4256-B754-6C6FF8642366 - d45b473ec99866dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Authorization.SignUpViewModel.registerUser() async -&gt; ()"
+                  moduleName = "Authorization"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Authorization/Authorization/Presentation/Registration/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  uuid = "8350A96A-61FB-4256-B754-6C6FF8642366 - 6d7048a4db0fbae6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Authorization.SignUpViewModel.registerUser() async -&gt; ()"
+                  moduleName = "Authorization"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Authorization/Authorization/Presentation/Registration/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3D305B96-839B-4D67-A140-98498E40B29D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "39004191-988A-46ED-9FC9-E719A59F9DFE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A86CF64-A976-4570-BBFF-6254194128D6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8584D98A-2A9D-4649-8154-28C35352C0C6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "351874CA-AB00-4AB8-973B-3CCFC2AB3883"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B700F015-7A4D-4B3B-BE0D-B3A1005983C3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "13"
+            endingLineNumber = "13"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E4252CA0-768A-4FA6-A71A-7F2B754BA105"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "79193457-F0C1-4698-B6DF-FAA0A8A2EAF6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A9A1AAA8-A7CD-498C-8F6E-C5E90928D86D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "13"
+            endingLineNumber = "13"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C5204E35-4E2E-4EF7-AA02-76EAEE0D52A3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "85EFBDA0-68AC-4AB9-AC0F-C4C8022BD7F2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2EEC3801-A43D-42CB-A753-0AC64A258D12"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "86C1D395-6C90-420E-B12E-D20BFC309C2B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6F01A5F8-1E5E-44A7-9C03-799036ECF4C5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4B8F9B9F-6AE6-4C58-B3DB-393B19358E10"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E6ABF108-92BC-4EFB-B496-EEBFF5A2B7E8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DFEF90D9-E542-4C4F-B289-7D4D0CD03DA0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "193900D9-670C-443B-8558-AD366C3B492D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "23EDC4ED-BEDC-4F9D-8A16-29F726E274C7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8C998C49-BC9A-4F6A-BAD2-AA6B52FA6601"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8DC69983-E636-4427-84B5-FA87E1E1BE4D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7C9BADF6-F341-41C8-B2AD-97C59970A6D8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/CourseAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "CourseAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ED18727C-6863-4489-B1D3-5BF758798291"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Core/Core/Analytics/AnalyticsManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "discoveryCoursesSearch(label:coursesCount:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AEA90AB2-A846-4B1A-9DD9-44FF1F1668C2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Profile/Profile/Presentation/ProfileAnalytics.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "ProfileAnalytics"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "649CA90B-489B-4779-A732-49B8A69126CC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Outline/CourseOutlineView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2C163774-EA42-42A8-BF51-EDB7D8ED962B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Outline/ContinueWithView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B7F47F41-2493-4D05-A24D-CAB549A31D9D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Data/CourseRepository.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "parseCourseStructure(structure:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1F4C61E0-A7C6-4ED1-99C8-DD4F908997E5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Outline/ContinueWithView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D1930ED-AF39-40CA-BEB7-B74F41B13366"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Outline/CourseVerticalView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "7D1930ED-AF39-40CA-BEB7-B74F41B13366 - 636a78786d14f4f0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in closure #1 (Core.CourseVertical) -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt; in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt;&gt;, SwiftUI.Spacer)&gt; in closure #2 (SwiftUI.GeometryProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Core.OfflineSnackBarView, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Course.CourseVerticalView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Outline/CourseVerticalView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "1048">
+               </Location>
+               <Location
+                  uuid = "7D1930ED-AF39-40CA-BEB7-B74F41B13366 - 636a78786d14f4f0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in closure #1 (Core.CourseVertical) -&gt; Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt; in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.ForEach&lt;Swift.Array&lt;Core.CourseVertical&gt;, Swift.String, Swift.Optional&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;&gt;&gt;, SwiftUI.Spacer)&gt; in closure #2 (SwiftUI.GeometryProxy) -&gt; &lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Core.NavigationBar, SwiftUI.GeometryReader&lt;&lt;&lt;opaque return type of SwiftUI.View.onRightSwipeGesture(perform: () -&gt; ()) -&gt; some&gt;&gt;.0&gt;)&gt;&gt;, Core.OfflineSnackBarView, Swift.Optional&lt;&lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in Course.CourseVerticalView.body.getter : some"
+                  moduleName = "Course"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanokivan/Developer/RaccoonGang/new-edx-app-ios/Course/Course/Presentation/Outline/CourseVerticalView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "908">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7C9926E3-FF1D-4D94-9D49-3B8B2DAAC186"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Course/Course/Presentation/Unit/CourseNavigationView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

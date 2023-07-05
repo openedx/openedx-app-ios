@@ -31,4 +31,7 @@
    <FileRef
       location = "group:../NewEdX.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../OpenEdX.xcodeproj">
+   </FileRef>
 </Workspace>

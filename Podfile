@@ -8,9 +8,9 @@ abstract_target "App" do
   #CodeGen for resources
   pod 'SwiftGen', '~> 6.6'
   
-  target "NewEdX" do
+  target "OpenEdX" do
     inherit! :complete
-    workspace './NewEdX.xcodeproj'
+    workspace './OpenEdX.xcodeproj'
   end
   
   target "Core" do
