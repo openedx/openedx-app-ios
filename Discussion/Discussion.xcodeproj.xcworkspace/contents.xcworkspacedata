@@ -20,16 +20,10 @@
       location = "group:Discussion.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../NewEdX.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:../Profile/Profile.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../NewEdX.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../OpenEdX.xcodeproj">
