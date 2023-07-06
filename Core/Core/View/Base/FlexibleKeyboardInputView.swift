@@ -88,6 +88,7 @@ public struct FlexibleKeyboardInputView: View {
             }.frame(maxWidth: .infinity, maxHeight: commentSize + 16)
                 .background(
                     CoreAssets.commentCellBackground.swiftUIColor
+                        .ignoresSafeArea()
                 )
                 .overlay(
                     GeometryReader { proxy in
