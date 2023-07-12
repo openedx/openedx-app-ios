@@ -227,7 +227,7 @@
 				07D5DA2E28D075AA00752FD9 /* Frameworks */,
 				07D5DA2F28D075AA00752FD9 /* Resources */,
 				0770DE1528D07845006D8A5D /* Embed Frameworks */,
-				02F175442A4E3B320019CD70 /* ShellScript */,
+				02F175442A4E3B320019CD70 /* FirebaseCrashlytics */,
 			);
 			buildRules = (
 			);
@@ -288,7 +288,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02F175442A4E3B320019CD70 /* ShellScript */ = {
+		02F175442A4E3B320019CD70 /* FirebaseCrashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
@@ -296,16 +296,15 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = FirebaseCrashlytics;
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+			shellScript = "case $CONFIGURATION in\n    \"DebugDev\" | \"ReleaseDev\" )\n        googleAppID=$(grep -A 4 'case .debugDev, .releaseDev:' ${PROJECT_DIR}/${TARGET_NAME}/Environment.swift | grep 'googleAppID:' | awk -F'\"' '{print $2}')\n        ;;\n    \"DebugStage\" | \"ReleaseStage\" )\n        googleAppID=$(grep -A 4 'case .debugStage, .releaseStage:' ${PROJECT_DIR}/${TARGET_NAME}/Environment.swift | grep 'googleAppID:' | awk -F'\"' '{print $2}')\n        ;;\n    \"DebugProd\" | \"RelesaseProd\" )\n        googleAppID=$(grep -A 4 'case .debugProd, .releaseProd:' ${PROJECT_DIR}/${TARGET_NAME}/Environment.swift | grep 'googleAppID:' | awk -F'\"' '{print $2}')\n        ;;\n    *)\n    echo \"Unknown configuration\"\n    ;;\nesac\n\nif [ -z \"$googleAppID\" ]\nthen\n      echo \"GoogleAppID is empty. The FirebaseCrashlytics script will be skipped.\"\nelse\n      \"${PODS_ROOT}/FirebaseCrashlytics/run\" --app-id \"$googleAppID\" -p ios ${DWARF_DSYM_FOLDER_PATH}\nfi\n";
 		};
 		0770DE2328D08647006D8A5D /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -478,7 +477,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
@@ -567,7 +566,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
@@ -662,7 +661,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
@@ -751,7 +750,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
@@ -900,7 +899,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
@@ -935,7 +934,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
