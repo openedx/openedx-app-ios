@@ -37,7 +37,12 @@ class CourseAnalyticsMock: CourseAnalytics {
     public func nextBlockClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func prevBlockClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func finishVerticalClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
-    public func finishVerticalNextSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func finishVerticalNextSectionClicked(
+        courseId: String,
+        courseName: String,
+        blockId: String,
+        blockName: String
+    ) {}
     public func finishVerticalBackToOutlineClicked(courseId: String, courseName: String) {}
     public func courseOutlineCourseTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineVideosTabClicked(courseId: String, courseName: String) {}

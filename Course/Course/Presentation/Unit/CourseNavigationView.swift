@@ -72,9 +72,8 @@ struct CourseNavigationView: View {
                             okTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
-                                viewModel.analytics
-                                    .finishVerticalBackToOutlineClicked(courseId: viewModel.courseID,
-                                                                        courseName: viewModel.courseName)
+
+                                viewModel.trackFinishVerticalBackToOutlineClicked()
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.back(animated: true)
                             },
@@ -113,7 +112,6 @@ struct CourseNavigationView: View {
                                     )
                                 
                                 viewModel.router.replaceCourseUnit(
-                                    id: viewModel.id,
                                     courseName: viewModel.courseName,
                                     blockId: viewModel.lessonID,
                                     courseID: viewModel.courseID,
@@ -156,7 +154,6 @@ struct CourseNavigationView_Previews: PreviewProvider {
         let viewModel = CourseUnitViewModel(
             lessonID: "1",
             courseID: "1",
-            id: "1",
             courseName: "Name",
             chapters: [],
             chapterIndex: 1,

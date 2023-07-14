@@ -27,10 +27,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    private let interactor: CourseInteractorProtocol
-    private let authInteractor: AuthInteractorProtocol
     let router: CourseRouter
-    let analytics: CourseAnalytics
     let config: Config
     let connectivity: ConnectivityProtocol
     
@@ -39,6 +36,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
+    
+    private let interactor: CourseInteractorProtocol
+    private let authInteractor: AuthInteractorProtocol
+    private let analytics: CourseAnalytics
     
     public init(
         interactor: CourseInteractorProtocol,
@@ -88,8 +89,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                         isShowProgress = false
                         if let courseStructure {
-                            let continueWith = try await getResumeBlock(courseID: courseID,
-                                                                        courseStructure: courseStructure)
+                            let continueWith = try await getResumeBlock(
+                                courseID: courseID,
+                                courseStructure: courseStructure
+                            )
                             withAnimation {
                                 self.continueWith = continueWith
                             }
@@ -139,7 +142,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 try manager.addToDownloadQueue(blocks: blocks)
                 downloadState[blockId] = .downloading
             case .downloading:
-                try manager.cancelDownloading(blocks: blocks)
+                try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
                 downloadState[blockId] = .available
             case .finished:
                 manager.deleteFile(blocks: blocks)
@@ -169,12 +172,31 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
+    func trackSequentialClicked(_ sequential: CourseSequential) {
+        guard let course = courseStructure else { return }
+        analytics.sequentialClicked(
+            courseId: course.id,
+            courseName: course.displayName,
+            blockId: sequential.blockId,
+            blockName: sequential.displayName
+        )
+    }
+    
+    func trackResumeCourseTapped(blockId: String) {
+        guard let course = courseStructure else { return }
+        analytics.resumeCourseTapped(
+            courseId: course.id,
+            courseName: course.displayName,
+            blockId: blockId
+        )
+    }
+    
     @MainActor
     private func setDownloadsStates() {
-        guard let courseStructure else { return }
-        let downloads = manager.getAllDownloads()
+        guard let course = courseStructure else { return }
+        let downloads = manager.getDownloadsForCourse(course.id)
         var states: [String: DownloadViewState] = [:]
-        for chapter in courseStructure.childs {
+        for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
                 var childs: [DownloadViewState] = []
                 for vertical in sequential.childs where vertical.isDownloadable {

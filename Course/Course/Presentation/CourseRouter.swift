@@ -22,7 +22,6 @@ public protocol CourseRouter: BaseRouter {
     
     func showCourseUnit(
         courseName: String,
-        id: String,
         blockId: String,
         courseID: String,
         sectionName: String,
@@ -33,7 +32,6 @@ public protocol CourseRouter: BaseRouter {
     )
     
     func replaceCourseUnit(
-        id: String,
         courseName: String,
         blockId: String,
         courseID: String,
@@ -45,7 +43,6 @@ public protocol CourseRouter: BaseRouter {
     )
     
     func showCourseVerticalView(
-        id: String,
         courseID: String,
         courseName: String,
         title: String,
@@ -80,7 +77,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public func showCourseUnit(
         courseName: String,
-        id: String,
         blockId: String,
         courseID: String,
         sectionName: String,
@@ -91,7 +87,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     ) {}
     
     public func replaceCourseUnit(
-        id: String,
         courseName: String,
         blockId: String,
         courseID: String,
@@ -103,7 +98,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     ) {}
     
     public func showCourseVerticalView(
-        id: String,
         courseID: String,
         courseName: String,
         title: String,

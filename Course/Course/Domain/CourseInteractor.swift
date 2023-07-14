@@ -48,7 +48,6 @@ public class CourseInteractor: CourseInteractorProtocol {
             }
         }
         return CourseStructure(
-            courseID: course.courseID,
             id: course.id,
             graded: course.graded,
             completion: course.completion,
@@ -135,6 +134,7 @@ public class CourseInteractor: CourseInteractorProtocol {
         return CourseVertical(
             blockId: vertical.blockId,
             id: vertical.id,
+            courseId: vertical.courseId,
             displayName: vertical.displayName,
             type: vertical.type,
             completion: vertical.completion,

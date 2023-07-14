@@ -58,12 +58,12 @@ public struct WebUnitView: View {
                                 isLoading: $isWebViewLoading, refreshCookies: {
                                     await viewModel.updateCookies(force: true)
                                 })
-                            .introspect(.scrollView, on: .iOS(.v14, .v15, .v16, .v17), customize: { scrollView in
-                                scrollView.isScrollEnabled = false
-                            })
                             .frame(width: reader.size.width, height: reader.size.height)
                         }
                     }
+                    .introspect(.scrollView, on: .iOS(.v14, .v15, .v16, .v17), customize: { scrollView in
+                        scrollView.isScrollEnabled = false
+                    })
                     if viewModel.updatingCookies || isWebViewLoading {
                         VStack {
                             ProgressBar(size: 40, lineWidth: 8)

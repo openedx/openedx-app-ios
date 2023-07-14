@@ -95,7 +95,7 @@ public class DashboardViewModel: ObservableObject {
         }
     }
     
-    func dashboardCourseClicked(courseID: String, courseName: String) {
+    func trackDashboardCourseClicked(courseID: String, courseName: String) {
         analytics.dashboardCourseClicked(courseID: courseID, courseName: courseName)
     }
 }

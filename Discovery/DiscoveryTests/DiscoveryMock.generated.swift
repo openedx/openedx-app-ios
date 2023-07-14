@@ -1490,3 +1490,400 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
     }
 }
 
+// MARK: - DownloadManagerProtocol
+
+open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func publisher() -> AnyPublisher<Int, Never> {
+        addInvocation(.m_publisher)
+		let perform = methodPerformValue(.m_publisher) as? () -> Void
+		perform?()
+		var __value: AnyPublisher<Int, Never>
+		do {
+		    __value = try methodReturnValue(.m_publisher).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for publisher(). Use given")
+			Failure("Stub return value not specified for publisher(). Use given")
+		}
+		return __value
+    }
+
+    open func addToDownloadQueue(blocks: [CourseBlock]) throws {
+        addInvocation(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
+		let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
+		perform?(`blocks`)
+		do {
+		    _ = try methodReturnValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
+    open func getDownloadsForCourse(_ courseId: String) -> [DownloadData] {
+        addInvocation(.m_getDownloadsForCourse__courseId(Parameter<String>.value(`courseId`)))
+		let perform = methodPerformValue(.m_getDownloadsForCourse__courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
+		perform?(`courseId`)
+		var __value: [DownloadData]
+		do {
+		    __value = try methodReturnValue(.m_getDownloadsForCourse__courseId(Parameter<String>.value(`courseId`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for getDownloadsForCourse(_ courseId: String). Use given")
+			Failure("Stub return value not specified for getDownloadsForCourse(_ courseId: String). Use given")
+		}
+		return __value
+    }
+
+    open func cancelDownloading(courseId: String, blocks: [CourseBlock]) throws {
+        addInvocation(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`)))
+		let perform = methodPerformValue(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`))) as? (String, [CourseBlock]) -> Void
+		perform?(`courseId`, `blocks`)
+		do {
+		    _ = try methodReturnValue(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
+    open func resumeDownloading() throws {
+        addInvocation(.m_resumeDownloading)
+		let perform = methodPerformValue(.m_resumeDownloading) as? () -> Void
+		perform?()
+		do {
+		    _ = try methodReturnValue(.m_resumeDownloading).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
+    open func pauseDownloading() {
+        addInvocation(.m_pauseDownloading)
+		let perform = methodPerformValue(.m_pauseDownloading) as? () -> Void
+		perform?()
+    }
+
+    open func deleteFile(blocks: [CourseBlock]) {
+        addInvocation(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
+		let perform = methodPerformValue(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
+		perform?(`blocks`)
+    }
+
+    open func fileUrl(for blockId: String) -> URL? {
+        addInvocation(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`)))
+		let perform = methodPerformValue(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
+		perform?(`blockId`)
+		var __value: URL? = nil
+		do {
+		    __value = try methodReturnValue(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_publisher
+        case m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>)
+        case m_getDownloadsForCourse__courseId(Parameter<String>)
+        case m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>, Parameter<[CourseBlock]>)
+        case m_resumeDownloading
+        case m_pauseDownloading
+        case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
+        case m_fileUrl__for_blockId(Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_publisher, .m_publisher): return .match
+
+            case (.m_addToDownloadQueue__blocks_blocks(let lhsBlocks), .m_addToDownloadQueue__blocks_blocks(let rhsBlocks)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getDownloadsForCourse__courseId(let lhsCourseid), .m_getDownloadsForCourse__courseId(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_cancelDownloading__courseId_courseIdblocks_blocks(let lhsCourseid, let lhsBlocks), .m_cancelDownloading__courseId_courseIdblocks_blocks(let rhsCourseid, let rhsBlocks)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_resumeDownloading, .m_resumeDownloading): return .match
+
+            case (.m_pauseDownloading, .m_pauseDownloading): return .match
+
+            case (.m_deleteFile__blocks_blocks(let lhsBlocks), .m_deleteFile__blocks_blocks(let rhsBlocks)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_fileUrl__for_blockId(let lhsBlockid), .m_fileUrl__for_blockId(let rhsBlockid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_publisher: return 0
+            case let .m_addToDownloadQueue__blocks_blocks(p0): return p0.intValue
+            case let .m_getDownloadsForCourse__courseId(p0): return p0.intValue
+            case let .m_cancelDownloading__courseId_courseIdblocks_blocks(p0, p1): return p0.intValue + p1.intValue
+            case .m_resumeDownloading: return 0
+            case .m_pauseDownloading: return 0
+            case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
+            case let .m_fileUrl__for_blockId(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_publisher: return ".publisher()"
+            case .m_addToDownloadQueue__blocks_blocks: return ".addToDownloadQueue(blocks:)"
+            case .m_getDownloadsForCourse__courseId: return ".getDownloadsForCourse(_:)"
+            case .m_cancelDownloading__courseId_courseIdblocks_blocks: return ".cancelDownloading(courseId:blocks:)"
+            case .m_resumeDownloading: return ".resumeDownloading()"
+            case .m_pauseDownloading: return ".pauseDownloading()"
+            case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
+            case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func publisher(willReturn: AnyPublisher<Int, Never>...) -> MethodStub {
+            return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getDownloadsForCourse(_ courseId: Parameter<String>, willReturn: [DownloadData]...) -> MethodStub {
+            return Given(method: .m_getDownloadsForCourse__courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func fileUrl(for blockId: Parameter<String>, willReturn: URL?...) -> MethodStub {
+            return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func publisher(willProduce: (Stubber<AnyPublisher<Int, Never>>) -> Void) -> MethodStub {
+            let willReturn: [AnyPublisher<Int, Never>] = []
+			let given: Given = { return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (AnyPublisher<Int, Never>).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getDownloadsForCourse(_ courseId: Parameter<String>, willProduce: (Stubber<[DownloadData]>) -> Void) -> MethodStub {
+            let willReturn: [[DownloadData]] = []
+			let given: Given = { return Given(method: .m_getDownloadsForCourse__courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([DownloadData]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func fileUrl(for blockId: Parameter<String>, willProduce: (Stubber<URL?>) -> Void) -> MethodStub {
+            let willReturn: [URL?] = []
+			let given: Given = { return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (URL?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func resumeDownloading(willThrow: Error...) -> MethodStub {
+            return Given(method: .m_resumeDownloading, products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func resumeDownloading(willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_resumeDownloading, products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func publisher() -> Verify { return Verify(method: .m_publisher)}
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocks(`blocks`))}
+        public static func getDownloadsForCourse(_ courseId: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadsForCourse__courseId(`courseId`))}
+        public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`))}
+        public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
+        public static func pauseDownloading() -> Verify { return Verify(method: .m_pauseDownloading)}
+        public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
+        public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func publisher(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_publisher, performs: perform)
+        }
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
+            return Perform(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), performs: perform)
+        }
+        public static func getDownloadsForCourse(_ courseId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getDownloadsForCourse__courseId(`courseId`), performs: perform)
+        }
+        public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>, perform: @escaping (String, [CourseBlock]) -> Void) -> Perform {
+            return Perform(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`), performs: perform)
+        }
+        public static func resumeDownloading(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_resumeDownloading, performs: perform)
+        }
+        public static func pauseDownloading(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_pauseDownloading, performs: perform)
+        }
+        public static func deleteFile(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
+            return Perform(method: .m_deleteFile__blocks_blocks(`blocks`), performs: perform)
+        }
+        public static func fileUrl(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_fileUrl__for_blockId(`blockId`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+

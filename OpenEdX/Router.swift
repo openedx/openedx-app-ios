@@ -159,7 +159,6 @@ public class Router: AuthorizationRouter,
     }
     
     public func showCourseVerticalView(
-        id: String,
         courseID: String,
         courseName: String,
         title: String,
@@ -174,7 +173,12 @@ public class Router: AuthorizationRouter,
             sequentialIndex
         )!
         
-        let view = CourseVerticalView(title: title, courseName: courseName, courseID: courseID, id: id, viewModel: viewModel)
+        let view = CourseVerticalView(
+            title: title,
+            courseName: courseName,
+            courseID: courseID,
+            viewModel: viewModel
+        )
         let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -224,7 +228,6 @@ public class Router: AuthorizationRouter,
 
     public func showCourseUnit(
         courseName: String,
-        id: String,
         blockId: String,
         courseID: String,
         sectionName: String,
@@ -237,7 +240,6 @@ public class Router: AuthorizationRouter,
             CourseUnitViewModel.self,
             arguments: blockId,
             courseID,
-            id,
             courseName,
             chapters,
             chapterIndex,
@@ -250,7 +252,6 @@ public class Router: AuthorizationRouter,
     }
     
     public func replaceCourseUnit(
-        id: String,
         courseName: String,
         blockId: String,
         courseID: String,
@@ -272,18 +273,14 @@ public class Router: AuthorizationRouter,
             title: chapters[chapterIndex].childs[sequentialIndex].displayName,
             courseName: courseName,
             courseID: courseID,
-            id: id,
             viewModel: vmVertical
         )
         let controllerVertical = SwiftUIHostController(view: viewVertical)
-        
-        let verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         
         let viewModel = Container.shared.resolve(
             CourseUnitViewModel.self,
             arguments: blockId,
             courseID,
-            id,
             courseName,
             chapters,
             chapterIndex,
