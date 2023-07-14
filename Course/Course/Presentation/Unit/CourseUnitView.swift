@@ -96,7 +96,7 @@ public struct CourseUnitView: View {
                                                 VStack {
                                                     if showDiscussion {
                                                         DiscussionView(
-                                                            id: viewModel.id,
+                                                            id: viewModel.courseID,
                                                             blockID: blockID,
                                                             blockKey: blockKey,
                                                             title: title,
@@ -105,7 +105,7 @@ public struct CourseUnitView: View {
                                                         Spacer(minLength: 100)
                                                     } else {
                                                         DiscussionView(
-                                                            id: viewModel.id,
+                                                            id: viewModel.courseID,
                                                             blockID: blockID,
                                                             blockKey: blockKey,
                                                             title: title,
@@ -218,6 +218,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             CourseBlock(
                 blockId: "1",
                 id: "1",
+                courseId: "123",
                 topicId: "1",
                 graded: false,
                 completion: 0,
@@ -230,6 +231,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             CourseBlock(
                 blockId: "2",
                 id: "2",
+                courseId: "123",
                 topicId: "2",
                 graded: false,
                 completion: 0,
@@ -242,6 +244,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             CourseBlock(
                 blockId: "3",
                 id: "3",
+                courseId: "123",
                 topicId: "3",
                 graded: false,
                 completion: 0,
@@ -254,6 +257,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             CourseBlock(
                 blockId: "4",
                 id: "4",
+                courseId: "123",
                 topicId: "4",
                 graded: false,
                 completion: 0,
@@ -280,7 +284,9 @@ struct CourseUnitView_Previews: PreviewProvider {
                         completion: 0,
                         childs: [
                             CourseVertical(
-                                blockId: "6", id: "6",
+                                blockId: "6",
+                                id: "6",
+                                courseId: "123",
                                 displayName: "6",
                                 type: .vertical,
                                 completion: 0,
@@ -304,7 +310,9 @@ struct CourseUnitView_Previews: PreviewProvider {
                         completion: 0,
                         childs: [
                             CourseVertical(
-                                blockId: "4", id: "4",
+                                blockId: "4",
+                                id: "4",
+                                courseId: "1",
                                 displayName: "4",
                                 type: .vertical,
                                 completion: 0,
@@ -319,7 +327,6 @@ struct CourseUnitView_Previews: PreviewProvider {
         return CourseUnitView(viewModel: CourseUnitViewModel(
             lessonID: "",
             courseID: "",
-            id: "1",
             courseName: "courseName",
             chapters: chapters,
             chapterIndex: 0,

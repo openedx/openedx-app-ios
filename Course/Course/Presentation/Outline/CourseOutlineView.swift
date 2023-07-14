@@ -33,12 +33,13 @@ public struct CourseOutlineView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
             // MARK: - Page name
             GeometryReader { proxy in
                 VStack(alignment: .center) {
-                    NavigationBar(title: title,
-                                  leftButtonAction: { viewModel.router.back() })
+                    NavigationBar(
+                        title: title,
+                        leftButtonAction: { viewModel.router.back() }
+                    )
                     
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
@@ -68,15 +69,21 @@ public struct CourseOutlineView: View {
                                             Text(CourseLocalization.Outline.passedTheCourse)
                                                 .font(Theme.Fonts.bodyMedium)
                                                 .multilineTextAlignment(.center)
-                                            StyledButton(CourseLocalization.Outline.viewCertificate,
-                                                         action: { openCertificateView = true },
-                                                         isTransparent: true)
+                                            StyledButton(
+                                                CourseLocalization.Outline.viewCertificate,
+                                                action: { openCertificateView = true },
+                                                isTransparent: true
+                                            )
                                             .frame(width: 141)
                                             .padding(.top, 8)
-                                            .fullScreenCover(isPresented: $openCertificateView,
-                                                             content: {
-                                                WebBrowser(url: url, pageTitle: CourseLocalization.Outline.certificate)
-                                            })
+                                            .fullScreenCover(
+                                                isPresented: $openCertificateView,
+                                                content: {
+                                                    WebBrowser(
+                                                        url: url,
+                                                        pageTitle: CourseLocalization.Outline.certificate
+                                                    )
+                                                })
                                         }.padding(.horizontal, 24)
                                             .padding(.top, 8)
                                             .foregroundColor(.white)
@@ -89,117 +96,42 @@ public struct CourseOutlineView: View {
                             .padding(.top, 7)
                             .fixedSize(horizontal: false, vertical: true)
                             
-                            if !isVideo {
-                                if let continueWith = viewModel.continueWith,
-                                   let courseStructure = viewModel.courseStructure {
-                                    ContinueWithView(
-                                        data: continueWith,
-                                        courseStructure: courseStructure,
-                                        router: viewModel.router,
-                                        analytics: viewModel.analytics
+                            if let continueWith = viewModel.continueWith,
+                               let courseStructure = viewModel.courseStructure,
+                               !isVideo {
+                                
+                                // MARK: - ContinueWith button
+                                ContinueWithView(
+                                    data: continueWith,
+                                    courseStructure: courseStructure
+                                ) {
+                                    let chapter = courseStructure.childs[continueWith.chapterIndex]
+                                    let sequential = chapter.childs[continueWith.sequentialIndex]
+                                    
+                                    viewModel.trackResumeCourseTapped(
+                                        blockId: sequential.childs[continueWith.verticalIndex].blockId
+                                    )
+                                    viewModel.router.showCourseVerticalView(
+                                        courseID: courseStructure.id,
+                                        courseName: courseStructure.displayName,
+                                        title: sequential.displayName,
+                                        chapters: courseStructure.childs,
+                                        chapterIndex: continueWith.chapterIndex,
+                                        sequentialIndex: continueWith.sequentialIndex
                                     )
                                 }
                             }
                             
-                            if let courseStructure = isVideo
+                            if let course = isVideo
                                 ? viewModel.courseVideosStructure
                                 : viewModel.courseStructure {
-                                // MARK: - Sections list
                                 
-                                let chapters = courseStructure.childs
-                                ForEach(chapters, id: \.id) { chapter in
-                                    let chapterIndex = chapters.firstIndex(where: { $0.id == chapter.id })
-                                    Text(chapter.displayName)
-                                        .font(Theme.Fonts.titleMedium)
-                                        .multilineTextAlignment(.leading)
-                                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
-                                        .padding(.horizontal, 24)
-                                        .padding(.top, 40)
-                                    ForEach(chapter.childs, id: \.id) { child in
-                                        let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == child.id })
-                                        VStack(alignment: .leading) {
-                                            Button(action: {
-                                                if let chapterIndex, let sequentialIndex {
-                                                    viewModel.analytics
-                                                        .sequentialClicked(courseId: courseID,
-                                                                           courseName: self.title,
-                                                                           blockId: child.blockId,
-                                                                           blockName: child.displayName)
-                                                    viewModel.router.showCourseVerticalView(
-                                                        id: courseID,
-                                                        courseID: courseStructure.courseID,
-                                                        courseName: viewModel.courseStructure?.displayName ?? "",
-                                                        title: child.displayName,
-                                                        chapters: chapters,
-                                                        chapterIndex: chapterIndex,
-                                                        sequentialIndex: sequentialIndex
-                                                    )
-                                                }
-                                            }, label: {
-                                                Group {
-                                                    child.type.image
-                                                    Text(child.displayName)
-                                                        .font(Theme.Fonts.titleMedium)
-                                                        .multilineTextAlignment(.leading)
-                                                        .lineLimit(1)
-                                                        .frame(
-                                                            maxWidth: idiom == .pad
-                                                            ? proxy.size.width * 0.5
-                                                            : proxy.size.width * 0.6,
-                                                            alignment: .leading
-                                                        )
-                                                }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
-                                                Spacer()
-                                                if let state = viewModel.downloadState[child.id] {
-                                                    switch state {
-                                                    case .available:
-                                                        DownloadAvailableView()
-                                                            .onTapGesture {
-                                                                viewModel.onDownloadViewTap(
-                                                                    chapter: chapter,
-                                                                    blockId: child.id,
-                                                                    state: state
-                                                                )
-                                                            }
-                                                            .onForeground {
-                                                                viewModel.onForeground()
-                                                            }
-                                                    case .downloading:
-                                                        DownloadProgressView()
-                                                            .onTapGesture {
-                                                                viewModel.onDownloadViewTap(
-                                                                    chapter: chapter,
-                                                                    blockId: child.id,
-                                                                    state: state
-                                                                )
-                                                            }
-                                                            .onBackground {
-                                                                viewModel.onBackground()
-                                                            }
-                                                    case .finished:
-                                                        DownloadFinishedView()
-                                                            .onTapGesture {
-                                                                viewModel.onDownloadViewTap(
-                                                                    chapter: chapter,
-                                                                    blockId: child.id,
-                                                                    state: state
-                                                                )
-                                                            }
-                                                    }
-                                                }
-                                                Image(systemName: "chevron.right")
-                                                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
-                                            }).padding(.horizontal, 36)
-                                                .padding(.vertical, 20)
-                                            if chapterIndex != chapters.count - 1 {
-                                                Divider()
-                                                    .frame(height: 1)
-                                                    .overlay(CoreAssets.cardViewStroke.swiftUIColor)
-                                                    .padding(.horizontal, 24)
-                                            }
-                                        }
-                                    }
-                                }
+                                // MARK: - Sections
+                                CourseStructureView(
+                                    proxy: proxy,
+                                    course: course,
+                                    viewModel: viewModel
+                                )
                             } else {
                                 if let courseStart = viewModel.courseStart {
                                     Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
@@ -252,6 +184,114 @@ public struct CourseOutlineView: View {
             CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
+    }
+}
+
+struct CourseStructureView: View {
+    
+    private let proxy: GeometryProxy
+    private let course: CourseStructure
+    private let viewModel: CourseContainerViewModel
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
+    init(proxy: GeometryProxy, course: CourseStructure, viewModel: CourseContainerViewModel) {
+        self.proxy = proxy
+        self.course = course
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        let chapters = course.childs
+        ForEach(chapters, id: \.id) { chapter in
+            let chapterIndex = chapters.firstIndex(where: { $0.id == chapter.id })
+            Text(chapter.displayName)
+                .font(Theme.Fonts.titleMedium)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                .padding(.horizontal, 24)
+                .padding(.top, 40)
+            ForEach(chapter.childs, id: \.id) { child in
+                let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == child.id })
+                VStack(alignment: .leading) {
+                    Button(
+                        action: {
+                            if let chapterIndex, let sequentialIndex {
+                                viewModel.trackSequentialClicked(child)
+                                viewModel.router.showCourseVerticalView(
+                                    courseID: viewModel.courseStructure?.id ?? "",
+                                    courseName: viewModel.courseStructure?.displayName ?? "",
+                                    title: child.displayName,
+                                    chapters: chapters,
+                                    chapterIndex: chapterIndex,
+                                    sequentialIndex: sequentialIndex
+                                )
+                            }
+                        },
+                        label: {
+                            Group {
+                                child.type.image
+                                Text(child.displayName)
+                                    .font(Theme.Fonts.titleMedium)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(1)
+                                    .frame(
+                                        maxWidth: idiom == .pad
+                                        ? proxy.size.width * 0.5
+                                        : proxy.size.width * 0.6,
+                                        alignment: .leading
+                                    )
+                            }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                            Spacer()
+                            if let state = viewModel.downloadState[child.id] {
+                                switch state {
+                                case .available:
+                                    DownloadAvailableView()
+                                        .onTapGesture {
+                                            viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
+                                        .onForeground {
+                                            viewModel.onForeground()
+                                        }
+                                case .downloading:
+                                    DownloadProgressView()
+                                        .onTapGesture {
+                                            viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
+                                        .onBackground {
+                                            viewModel.onBackground()
+                                        }
+                                case .finished:
+                                    DownloadFinishedView()
+                                        .onTapGesture {
+                                            viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
+                                }
+                            }
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                        }).padding(.horizontal, 36)
+                        .padding(.vertical, 20)
+                    if chapterIndex != chapters.count - 1 {
+                        Divider()
+                            .frame(height: 1)
+                            .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                            .padding(.horizontal, 24)
+                    }
+                }
+            }
+        }
     }
 }
 

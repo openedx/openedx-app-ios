@@ -244,11 +244,10 @@ class ScreenAssembly: Assembly {
         
         container.register(
             CourseUnitViewModel.self
-        ) { r, blockId, courseId, id, courseName, chapters, chapterIndex, sequentialIndex, verticalIndex in
+        ) { r, blockId, courseId, courseName, chapters, chapterIndex, sequentialIndex, verticalIndex in
             CourseUnitViewModel(
                 lessonID: blockId,
                 courseID: courseId,
-                id: id,
                 courseName: courseName,
                 chapters: chapters,
                 chapterIndex: chapterIndex,

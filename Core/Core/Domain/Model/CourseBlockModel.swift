@@ -8,8 +8,6 @@
 import Foundation
 
 public struct CourseStructure: Equatable {
-    
-    public let courseID: String
     public let id: String
     public let graded: Bool
     public let completion: Double
@@ -18,21 +16,21 @@ public struct CourseStructure: Equatable {
     public let displayName: String
     public let topicID: String?
     public let childs: [CourseChapter]
-    public let media: DataLayer.CourseMedia
+    public let media: DataLayer.CourseMedia //FIXME Domain model
     public let certificate: Certificate?
     
-    public init(courseID: String,
-                id: String,
-                graded: Bool,
-                completion: Double,
-                viewYouTubeUrl: String,
-                encodedVideo: String,
-                displayName: String,
-                topicID: String? = nil,
-                childs: [CourseChapter],
-                media: DataLayer.CourseMedia,
-                certificate: Certificate?) {
-        self.courseID = courseID
+    public init(
+        id: String,
+        graded: Bool,
+        completion: Double,
+        viewYouTubeUrl: String,
+        encodedVideo: String,
+        displayName: String,
+        topicID: String? = nil,
+        childs: [CourseChapter],
+        media: DataLayer.CourseMedia,
+        certificate: Certificate?
+    ) {
         self.id = id
         self.graded = graded
         self.completion = completion
@@ -52,39 +50,29 @@ public struct CourseStructure: Equatable {
 }
 
 public struct CourseChapter {
-    public init(blockId: String,
-                id: String,
-                displayName: String,
-                type: BlockType,
-                childs: [CourseSequential]) {
-        self.blockId = blockId
-        self.id = id
-        self.displayName = displayName
-        self.type = type
-        self.childs = childs
-    }
     
     public let blockId: String
     public let id: String
     public let displayName: String
     public let type: BlockType
     public let childs: [CourseSequential]
-}
-
-public struct CourseSequential {
-    public init(blockId: String,
-                id: String,
-                displayName: String,
-                type: BlockType,
-                completion: Double,
-                childs: [CourseVertical]) {
+    
+    public init(
+        blockId: String,
+        id: String,
+        displayName: String,
+        type: BlockType,
+        childs: [CourseSequential]
+    ) {
         self.blockId = blockId
         self.id = id
         self.displayName = displayName
         self.type = type
-        self.completion = completion
         self.childs = childs
     }
+}
+
+public struct CourseSequential {
     
     public let blockId: String
     public let id: String
@@ -96,15 +84,15 @@ public struct CourseSequential {
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
     }
-}
-
-public struct CourseVertical {
-    public init(blockId: String,
-                id: String,
-                displayName: String,
-                type: BlockType,
-                completion: Double,
-                childs: [CourseBlock]) {
+    
+    public init(
+        blockId: String,
+        id: String,
+        displayName: String,
+        type: BlockType,
+        completion: Double,
+        childs: [CourseVertical]
+    ) {
         self.blockId = blockId
         self.id = id
         self.displayName = displayName
@@ -112,9 +100,12 @@ public struct CourseVertical {
         self.completion = completion
         self.childs = childs
     }
-    
+}
+
+public struct CourseVertical {
     public let blockId: String
     public let id: String
+    public let courseId: String
     public let displayName: String
     public let type: BlockType
     public let completion: Double
@@ -122,6 +113,24 @@ public struct CourseVertical {
     
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
+    }
+    
+    public init(
+        blockId: String,
+        id: String,
+        courseId: String,
+        displayName: String,
+        type: BlockType,
+        completion: Double,
+        childs: [CourseBlock]
+    ) {
+        self.blockId = blockId
+        self.id = id
+        self.courseId = courseId
+        self.displayName = displayName
+        self.type = type
+        self.completion = completion
+        self.childs = childs
     }
 }
 
@@ -138,6 +147,7 @@ public struct SubtitleUrl: Equatable {
 public struct CourseBlock: Equatable {
     public let blockId: String
     public let id: String
+    public let courseId: String
     public let topicId: String?
     public let graded: Bool
     public let completion: Double
@@ -147,23 +157,28 @@ public struct CourseBlock: Equatable {
     public let subtitles: [SubtitleUrl]?
     public let videoUrl: String?
     public let youTubeUrl: String?
+    
     public var isDownloadable: Bool {
         return videoUrl != nil
     }
     
-    public init(blockId: String,
-                id: String,
-                topicId: String? = nil,
-                graded: Bool,
-                completion: Double,
-                type: BlockType,
-                displayName: String,
-                studentUrl: String,
-                subtitles: [SubtitleUrl]? = nil,
-                videoUrl: String? = nil,
-                youTubeUrl: String? = nil) {
+    public init(
+        blockId: String,
+        id: String,
+        courseId: String,
+        topicId: String? = nil,
+        graded: Bool,
+        completion: Double,
+        type: BlockType,
+        displayName: String,
+        studentUrl: String,
+        subtitles: [SubtitleUrl]? = nil,
+        videoUrl: String? = nil,
+        youTubeUrl: String? = nil
+    ) {
         self.blockId = blockId
         self.id = id
+        self.courseId = courseId
         self.topicId = topicId
         self.graded = graded
         self.completion = completion

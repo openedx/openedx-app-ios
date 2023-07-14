@@ -15,18 +15,16 @@ struct ContinueWith {
 }
 
 struct ContinueWithView: View {
-    let data: ContinueWith
-    let courseStructure: CourseStructure
-    let router: CourseRouter
-    let analytics: CourseAnalytics
+    private let data: ContinueWith
+    private let courseStructure: CourseStructure
+    private let action: () -> Void
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    init(data: ContinueWith, courseStructure: CourseStructure, router: CourseRouter, analytics: CourseAnalytics) {
+    init(data: ContinueWith, courseStructure: CourseStructure, action: @escaping () -> Void) {
         self.data = data
         self.courseStructure = courseStructure
-        self.router = router
-        self.analytics = analytics
+        self.action = action
     }
     
     var body: some View {
@@ -39,19 +37,8 @@ struct ContinueWithView: View {
                             ContinueTitle(vertical: vertical)
                         }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                         Spacer()
-                        UnitButtonView(type: .continueLesson, action: {
-                            analytics.resumeCourseTapped(courseId: courseStructure.courseID,
-                                                         courseName: courseStructure.displayName,
-                                                         blockId: chapter.childs[data.sequentialIndex]
-                                .childs[data.verticalIndex].blockId)
-                            router.showCourseVerticalView(id: courseStructure.id,
-                                                          courseID: courseStructure.courseID,
-                                                          courseName: courseStructure.displayName,
-                                                          title: chapter.childs[data.sequentialIndex].displayName,
-                                                          chapters: courseStructure.childs,
-                                                          chapterIndex: data.chapterIndex,
-                                                          sequentialIndex: data.sequentialIndex)
-                        }).frame(width: 200)
+                        UnitButtonView(type: .continueLesson, action: action)
+                            .frame(width: 200)
                     } .padding(.horizontal, 24)
                         .padding(.top, 32)
                 } else {
@@ -59,23 +46,11 @@ struct ContinueWithView: View {
                         ContinueTitle(vertical: vertical)
                             .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     }
-                    UnitButtonView(type: .continueLesson, action: {
-                        analytics.resumeCourseTapped(courseId: courseStructure.courseID,
-                                                     courseName: courseStructure.displayName,
-                                                     blockId: chapter.childs[data.sequentialIndex]
-                            .childs[data.verticalIndex].blockId)
-                        router.showCourseVerticalView(id: courseStructure.id,
-                                                      courseID: courseStructure.courseID,
-                                                      courseName: courseStructure.displayName,
-                                                      title: chapter.childs[data.sequentialIndex].displayName,
-                                                      chapters: courseStructure.childs,
-                                                      chapterIndex: data.chapterIndex,
-                                                      sequentialIndex: data.sequentialIndex)
-                    })
+                    UnitButtonView(type: .continueLesson, action: action)
                 }
                 
             }
-        } .padding(.horizontal, 24)
+        }.padding(.horizontal, 24)
             .padding(.top, 32)
     }
 }
@@ -120,12 +95,15 @@ struct ContinueWithView_Previews: PreviewProvider {
                             CourseVertical(
                                 blockId: "1",
                                 id: "1",
+                                courseId: "123",
                                 displayName: "Vertical",
                                 type: .vertical,
                                 completion: 0,
                                 childs: [
                                     CourseBlock(
-                                        blockId: "2", id: "2",
+                                        blockId: "2",
+                                        id: "2",
+                                        courseId: "123",
                                         graded: true,
                                         completion: 0,
                                         type: .html,
@@ -134,20 +112,22 @@ struct ContinueWithView_Previews: PreviewProvider {
                                 ])])])
         ]
         
-        ContinueWithView(data: ContinueWith(chapterIndex: 0, sequentialIndex: 0, verticalIndex: 0),
-                         courseStructure: CourseStructure(courseID: "v1-course",
-                                                          id: "123",
-                                                          graded: true,
-                                                          completion: 0,
-                                                          viewYouTubeUrl: "",
-                                                          encodedVideo: "",
-                                                          displayName: "Namaste",
-                                                          childs: childs,
-                                                          media: DataLayer.CourseMedia.init(image:
-                                                                .init(raw: "", small: "", large: "")),
-                                                          certificate: nil),
-                         router: CourseRouterMock(),
-                         analytics: CourseAnalyticsMock())
+        ContinueWithView(
+            data: ContinueWith(chapterIndex: 0, sequentialIndex: 0, verticalIndex: 0),
+            courseStructure: CourseStructure(
+                id: "123",
+                graded: true,
+                completion: 0,
+                viewYouTubeUrl: "",
+                encodedVideo: "",
+                displayName: "Namaste",
+                childs: childs,
+                media: DataLayer.CourseMedia(
+                    image: .init(raw: "", small: "", large: "")
+                ),
+                certificate: nil)
+        ) {
+        }
     }
 }
 #endif

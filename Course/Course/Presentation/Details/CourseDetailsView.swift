@@ -349,4 +349,5 @@ struct CourseDetailsView_Previews: PreviewProvider {
         .previewDisplayName("CourseDetailsView Dark")
     }
 }
+// swiftlint:enable all
 #endif

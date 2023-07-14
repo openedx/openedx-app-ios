@@ -67,7 +67,7 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
                     try manager.addToDownloadQueue(blocks: blocks)
                     downloadState[vertical.id] = .downloading
                 case .downloading:
-                    try manager.cancelDownloading(blocks: blocks)
+                    try manager.cancelDownloading(courseId: vertical.courseId, blocks: blocks)
                     downloadState[vertical.id] = .available
                 case .finished:
                     manager.deleteFile(blocks: blocks)
@@ -81,8 +81,22 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         }
     }
     
+    func trackVerticalClicked(
+        courseId: String,
+        courseName: String,
+        vertical: CourseVertical
+    ) {
+        analytics.verticalClicked(
+            courseId: courseId,
+            courseName: courseName,
+            blockId: vertical.blockId,
+            blockName: vertical.displayName
+        )
+    }
+    
     private func setDownloadsStates() {
-        let downloads = manager.getAllDownloads()
+        guard let courseId = verticals.first?.courseId else { return }
+        let downloads = manager.getDownloadsForCourse(courseId)
         var states: [String: DownloadViewState] = [:]
         for vertical in verticals where vertical.isDownloadable {
             var childs: [DownloadViewState] = []

@@ -11,6 +11,7 @@ import XCTest
 @testable import Course
 import Alamofire
 import SwiftUI
+import Combine
 
 final class CourseContainerViewModelTests: XCTestCase {
     
@@ -42,6 +43,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let block = CourseBlock(
             blockId: "",
             id: "",
+            courseId: "123",
             topicId: "",
             graded: true,
             completion: 0,
@@ -54,6 +56,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         let vertical = CourseVertical(
             blockId: "",
             id: "",
+            courseId: "123",
             displayName: "",
             type: .vertical,
             completion: 0,
@@ -78,7 +81,6 @@ final class CourseContainerViewModelTests: XCTestCase {
         let childs = [chapter]
         
         let courseStructure = CourseStructure(
-            courseID: "1",
             id: "123",
             graded: true,
             completion: 0,
@@ -140,19 +142,20 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentEnd: nil
         )
         
-        let courseStructure = CourseStructure(courseID: "1",
-                                              id: "123",
-                                              graded: true,
-                                              completion: 0,
-                                              viewYouTubeUrl: "",
-                                              encodedVideo: "",
-                                              displayName: "",
-                                              topicID: nil,
-                                              childs: [],
-                                              media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
-                                                                                                  small: "",
-                                                                                                  large: "")),
-                                              certificate: nil)
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: [],
+            media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
+                                                                small: "",
+                                                                large: "")),
+            certificate: nil
+        )
         
         Given(interactor, .getCourseBlocksOffline(courseID: .any, willReturn: courseStructure))
         Given(interactor, .getCourseVideoBlocks(fullStructure: .any,
@@ -318,5 +321,580 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         viewModel.trackSelectedTab(selection: .handounds, courseId: "1", courseName: "name")
         Verify(analytics, .courseOutlineHandoutsTabClicked(courseId: .value("1"), courseName: .value("name")))
+    }
+    
+    func testOnDownloadViewAvailableTap() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        
+        Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
+        
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: downloadManager,
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        
+        let blockId = "chapter:block:1"
+        
+        let chapter = CourseChapter(
+            blockId: blockId,
+            id: "1",
+            displayName: "Chapter 1",
+            type: .chapter,
+            childs: []
+        )
+        
+        viewModel.onDownloadViewTap(
+            chapter: chapter,
+            blockId: blockId,
+            state: .available
+        )
+        
+        XCTAssertEqual(viewModel.downloadState[blockId], .downloading)
+    }
+    
+    func testOnDownloadViewDownloadingTap() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        
+        Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
+        
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: downloadManager,
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        
+        let blockId = "chapter:block:1"
+        
+        let chapter = CourseChapter(
+            blockId: blockId,
+            id: "1",
+            displayName: "Chapter 1",
+            type: .chapter,
+            childs: []
+        )
+        
+        viewModel.onDownloadViewTap(
+            chapter: chapter,
+            blockId: blockId,
+            state: .downloading
+        )
+        
+        XCTAssertEqual(viewModel.downloadState[blockId], .available)
+    }
+    
+    func testOnDownloadViewFinishedTap() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        
+        Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
+        
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: downloadManager,
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        
+        let blockId = "chapter:block:1"
+        
+        let chapter = CourseChapter(
+            blockId: blockId,
+            id: "1",
+            displayName: "Chapter 1",
+            type: .chapter,
+            childs: []
+        )
+        
+        viewModel.onDownloadViewTap(
+            chapter: chapter,
+            blockId: blockId,
+            state: .finished
+        )
+        
+        XCTAssertEqual(viewModel.downloadState[blockId], .available)
+    }
+    
+    func testSetDownloadsStatesAvailable() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        
+        let block = CourseBlock(
+            blockId: "block:1",
+            id: "1",
+            courseId: "123",
+            topicId: "",
+            graded: false,
+            completion: 0,
+            type: .video,
+            displayName: "",
+            studentUrl: "",
+            videoUrl: "https://example.com/file.mp4",
+            youTubeUrl: nil
+        )
+        let vertical = CourseVertical(
+            blockId: "block:vertical1",
+            id: "vertical1",
+            courseId: "123",
+            displayName: "",
+            type: .vertical,
+            completion: 0,
+            childs: [block]
+        )
+        let sequential = CourseSequential(
+            blockId: "block:sequential1",
+            id: "sequential1",
+            displayName: "",
+            type: .chapter,
+            completion: 0,
+            childs: [vertical]
+        )
+        let chapter = CourseChapter(
+            blockId: "",
+            id: "",
+            displayName: "",
+            type: .chapter,
+            childs: [sequential]
+        )
+        
+        let childs = [chapter]
+        
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: childs,
+            media: DataLayer.CourseMedia(image: DataLayer.Image(
+                raw: "",
+                small: "",
+                large: ""
+            )),
+            certificate: nil
+        )
+        
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        
+        Given(downloadManager, .publisher(willReturn: Just(1).eraseToAnyPublisher()))
+        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: []))
+        
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: downloadManager,
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        viewModel.courseStructure = courseStructure
+        
+        let exp = expectation(description: "DispatchQueue.main.async Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            exp.fulfill()
+        }
+                
+        wait(for: [exp], timeout: 1)
+        
+        XCTAssertEqual(viewModel.downloadState[sequential.id], .available)
+    }
+    
+    func testSetDownloadsStatesDownloading() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        let downloadManager = DownloadManagerProtocolMock()
+
+        let block = CourseBlock(
+            blockId: "block:1",
+            id: "1",
+            courseId: "123",
+            topicId: "",
+            graded: false,
+            completion: 0,
+            type: .video,
+            displayName: "",
+            studentUrl: "",
+            videoUrl: "https://example.com/file.mp4",
+            youTubeUrl: nil
+        )
+        let vertical = CourseVertical(
+            blockId: "block:vertical1",
+            id: "vertical1",
+            courseId: "123",
+            displayName: "",
+            type: .vertical,
+            completion: 0,
+            childs: [block]
+        )
+        let sequential = CourseSequential(
+            blockId: "block:sequential1",
+            id: "sequential1",
+            displayName: "",
+            type: .chapter,
+            completion: 0,
+            childs: [vertical]
+        )
+        let chapter = CourseChapter(
+            blockId: "",
+            id: "",
+            displayName: "",
+            type: .chapter,
+            childs: [sequential]
+        )
+
+        let childs = [chapter]
+
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: childs,
+            media: DataLayer.CourseMedia(image: DataLayer.Image(
+                raw: "",
+                small: "",
+                large: ""
+            )),
+            certificate: nil
+        )
+
+        let downloadData = DownloadData(
+            id: "1",
+            courseId: "course123",
+            url: "https://example.com/file.mp4",
+            fileName: "file.mp4",
+            progress: 0,
+            resumeData: nil,
+            state: .waiting,
+            type: .video
+        )
+
+        Given(connectivity, .isInternetAvaliable(getter: true))
+
+        Given(downloadManager, .publisher(willReturn: Just(1).eraseToAnyPublisher()))
+        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: [downloadData]))
+
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: downloadManager,
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        viewModel.courseStructure = courseStructure
+
+        let exp = expectation(description: "DispatchQueue.main.async Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        XCTAssertEqual(viewModel.downloadState[sequential.id], .downloading)
+    }
+    
+    func testSetDownloadsStatesFinished() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        let downloadManager = DownloadManagerProtocolMock()
+
+        let block = CourseBlock(
+            blockId: "block:1",
+            id: "1",
+            courseId: "123",
+            topicId: "",
+            graded: false,
+            completion: 0,
+            type: .video,
+            displayName: "",
+            studentUrl: "",
+            videoUrl: "https://example.com/file.mp4",
+            youTubeUrl: nil
+        )
+        let vertical = CourseVertical(
+            blockId: "block:vertical1",
+            id: "vertical1",
+            courseId: "123",
+            displayName: "",
+            type: .vertical,
+            completion: 0,
+            childs: [block]
+        )
+        let sequential = CourseSequential(
+            blockId: "block:sequential1",
+            id: "sequential1",
+            displayName: "",
+            type: .chapter,
+            completion: 0,
+            childs: [vertical]
+        )
+        let chapter = CourseChapter(
+            blockId: "",
+            id: "",
+            displayName: "",
+            type: .chapter,
+            childs: [sequential]
+        )
+
+        let childs = [chapter]
+
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: childs,
+            media: DataLayer.CourseMedia(image: DataLayer.Image(
+                raw: "",
+                small: "",
+                large: ""
+            )),
+            certificate: nil
+        )
+
+        let downloadData = DownloadData(
+            id: "1",
+            courseId: "course123",
+            url: "https://example.com/file.mp4",
+            fileName: "file.mp4",
+            progress: 0,
+            resumeData: nil,
+            state: .finished,
+            type: .video
+        )
+
+        Given(connectivity, .isInternetAvaliable(getter: true))
+
+        Given(downloadManager, .publisher(willReturn: Just(1).eraseToAnyPublisher()))
+        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: [downloadData]))
+
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: downloadManager,
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        viewModel.courseStructure = courseStructure
+
+        let exp = expectation(description: "DispatchQueue.main.async Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        XCTAssertEqual(viewModel.downloadState[sequential.id], .finished)
+    }
+    
+    func testSetDownloadsStatesPartiallyFinished() {
+        let interactor = CourseInteractorProtocolMock()
+        let authInteractor = AuthInteractorProtocolMock()
+        let router = CourseRouterMock()
+        let analytics = CourseAnalyticsMock()
+        let config = ConfigMock()
+        let connectivity = ConnectivityProtocolMock()
+        let downloadManager = DownloadManagerProtocolMock()
+
+        let block1 = CourseBlock(
+            blockId: "block:1",
+            id: "1",
+            courseId: "123",
+            topicId: "",
+            graded: false,
+            completion: 0,
+            type: .video,
+            displayName: "",
+            studentUrl: "",
+            videoUrl: "https://example.com/file.mp4",
+            youTubeUrl: nil
+        )
+        let block2 = CourseBlock(
+            blockId: "block:2",
+            id: "2",
+            courseId: "123",
+            topicId: "",
+            graded: false,
+            completion: 0,
+            type: .video,
+            displayName: "",
+            studentUrl: "",
+            videoUrl: "https://example.com/file2.mp4",
+            youTubeUrl: nil
+        )
+        let vertical = CourseVertical(
+            blockId: "block:vertical1",
+            id: "vertical1",
+            courseId: "123",
+            displayName: "",
+            type: .vertical,
+            completion: 0,
+            childs: [block1, block2]
+        )
+        let sequential = CourseSequential(
+            blockId: "block:sequential1",
+            id: "sequential1",
+            displayName: "",
+            type: .chapter,
+            completion: 0,
+            childs: [vertical]
+        )
+        let chapter = CourseChapter(
+            blockId: "",
+            id: "",
+            displayName: "",
+            type: .chapter,
+            childs: [sequential]
+        )
+
+        let childs = [chapter]
+
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: childs,
+            media: DataLayer.CourseMedia(image: DataLayer.Image(
+                raw: "",
+                small: "",
+                large: ""
+            )),
+            certificate: nil
+        )
+
+        let downloadData = DownloadData(
+            id: "1",
+            courseId: "course123",
+            url: "https://example.com/file.mp4",
+            fileName: "file.mp4",
+            progress: 0,
+            resumeData: nil,
+            state: .finished,
+            type: .video
+        )
+
+        Given(connectivity, .isInternetAvaliable(getter: true))
+
+        Given(downloadManager, .publisher(willReturn: Just(1).eraseToAnyPublisher()))
+        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: [downloadData]))
+
+        let viewModel = CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: authInteractor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            connectivity: connectivity,
+            manager: downloadManager,
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil
+        )
+        viewModel.courseStructure = courseStructure
+
+        let exp = expectation(description: "DispatchQueue.main.async Starting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        XCTAssertEqual(viewModel.downloadState[sequential.id], .available)
     }
 }
