@@ -2,6 +2,8 @@
 
 Modern vision of the mobile application for the Open EdX platform from Raccoon Gang.
 
+[Documentation](Documentation/Documentation.md)
+
 ## Building
 1. Check out the source code:
 
