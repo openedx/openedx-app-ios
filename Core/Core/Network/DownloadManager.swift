@@ -22,6 +22,7 @@ public enum DownloadType: String {
 
 public struct DownloadData {
     public let id: String
+    public let courseId: String
     public let url: String
     public let fileName: String
     public let progress: Double
@@ -34,11 +35,12 @@ public class NoWiFiError: LocalizedError {
     public init() {}
 }
 
+//sourcery: AutoMockable
 public protocol DownloadManagerProtocol {
     func publisher() -> AnyPublisher<Int, Never>
     func addToDownloadQueue(blocks: [CourseBlock]) throws
-    func getAllDownloads() -> [DownloadData]
-    func cancelDownloading(blocks: [CourseBlock]) throws
+    func getDownloadsForCourse(_ courseId: String) -> [DownloadData]
+    func cancelDownloading(courseId: String, blocks: [CourseBlock]) throws
     func resumeDownloading() throws
     func pauseDownloading()
     func deleteFile(blocks: [CourseBlock])
@@ -54,9 +56,10 @@ public class DownloadManager: DownloadManagerProtocol {
     private var currentDownload: DownloadData?
     private var isDownloadingInProgress: Bool = false
     
-    public init(persistence: CorePersistenceProtocol,
-                appStorage: Core.AppStorage,
-                connectivity: ConnectivityProtocol
+    public init(
+        persistence: CorePersistenceProtocol,
+        appStorage: Core.AppStorage,
+        connectivity: ConnectivityProtocol
     ) {
         self.persistence = persistence
         self.appStorage = appStorage
@@ -70,15 +73,16 @@ public class DownloadManager: DownloadManagerProtocol {
     public func addToDownloadQueue(blocks: [CourseBlock]) throws {
         if userCanDownload() {
             persistence.addToDownloadQueue(blocks: blocks)
+            guard !isDownloadingInProgress else { return }
             try newDownload()
         } else {
-               throw NoWiFiError()
-           }
+            throw NoWiFiError()
+        }
     }
     
     private func newDownload() throws {
         if userCanDownload() {
-            guard let download = persistence.getBlocksForDownloading().first else {
+            guard let download = persistence.getNextBlockForDownloading() else {
                 isDownloadingInProgress = false
                 return
             }
@@ -101,14 +105,14 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
     
-    public func getAllDownloads() -> [DownloadData] {
-        return persistence.getAllDownloads()
+    public func getDownloadsForCourse(_ courseId: String) -> [DownloadData] {
+        return persistence.getDownloadsForCourse(courseId)
     }
     
-    public func cancelDownloading(blocks: [CourseBlock]) throws {
+    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) throws {
         downloadRequest?.cancel()
         
-        let downloaded = getAllDownloads().filter { $0.state == .finished }
+        let downloaded = getDownloadsForCourse(courseId).filter { $0.state == .finished }
         let blocksForDelete = blocks.filter { block in downloaded.first(where: { $0.id == block.id }) == nil }
         
         deleteFile(blocks: blocksForDelete)
@@ -117,9 +121,11 @@ public class DownloadManager: DownloadManagerProtocol {
     
     private func downloadFileWithProgress(_ download: DownloadData) throws {
         if let url = URL(string: download.url) {
-            persistence.updateDownloadState(id: download.id,
-                                            state: .inProgress,
-                                            resumeData: download.resumeData)
+            persistence.updateDownloadState(
+                id: download.id,
+                state: .inProgress,
+                resumeData: download.resumeData
+            )
             self.isDownloadingInProgress = true
             let fileName = url.lastPathComponent
             if let resumeData = download.resumeData {
@@ -127,17 +133,19 @@ public class DownloadManager: DownloadManagerProtocol {
             } else {
                 downloadRequest = AF.download(url)
             }
-            //            downloadRequest?.downloadProgress { prog in
-            //                let completed = Double(prog.fractionCompleted * 100)
-            //                print(">>>>> Downloading", download.url, completed, "%")
-            //            }
+//            downloadRequest?.downloadProgress { prog in
+//                let completed = Double(prog.fractionCompleted * 100)
+//                print(">>>>> Downloading", download.url, completed, "%")
+//            }
             downloadRequest?.responseData(completionHandler: { [weak self] data in
                 guard let self else { return }
                 if let data = data.value, let url = self.videosFolderUrl() {
                     self.saveFile(file: fileName, data: data, url: url)
-                    self.persistence.updateDownloadState(id: download.id,
-                                                         state: .finished,
-                                                         resumeData: nil)
+                    self.persistence.updateDownloadState(
+                        id: download.id,
+                        state: .finished,
+                        resumeData: nil
+                    )
                     try? self.newDownload()
                 }
             })
@@ -151,9 +159,11 @@ public class DownloadManager: DownloadManagerProtocol {
     public func pauseDownloading() {
         guard let currentDownload else { return }
         downloadRequest?.cancel(byProducingResumeData: { resumeData in
-            self.persistence.updateDownloadState(id: currentDownload.id,
-                                                 state: .paused,
-                                                 resumeData: resumeData)
+            self.persistence.updateDownloadState(
+                id: currentDownload.id,
+                state: .paused,
+                resumeData: resumeData
+            )
         })
     }
     
@@ -230,11 +240,11 @@ public class DownloadManagerMock: DownloadManagerProtocol {
         
     }
     
-    public func getAllDownloads() -> [DownloadData] {
+    public func getDownloadsForCourse(_ courseId: String) -> [DownloadData] {
         return []
     }
     
-    public func cancelDownloading(blocks: [CourseBlock]) {
+    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) {
         
     }
     

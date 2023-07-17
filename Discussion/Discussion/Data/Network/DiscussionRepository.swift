@@ -427,4 +427,5 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
         return stringJSON
     }    
 }
+// swiftlint:enable all
 #endif

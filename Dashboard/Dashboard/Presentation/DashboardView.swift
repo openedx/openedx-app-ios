@@ -72,7 +72,10 @@ public struct DashboardView: View {
                                         }
                                     }
                                     .onTapGesture {
-                                        viewModel.dashboardCourseClicked(courseID: course.courseID, courseName: course.name)
+                                        viewModel.trackDashboardCourseClicked(
+                                            courseID: course.courseID,
+                                            courseName: course.name
+                                        )
                                         router.showCourseScreens(
                                             courseID: course.courseID,
                                             isActive: course.isActive,

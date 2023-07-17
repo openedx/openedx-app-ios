@@ -63,7 +63,6 @@ public class CourseUnitViewModel: ObservableObject {
     
     var lessonID: String
     var courseID: String
-    var id: String
     
     private let interactor: CourseInteractorProtocol
     let router: CourseRouter
@@ -82,7 +81,6 @@ public class CourseUnitViewModel: ObservableObject {
     public init(
         lessonID: String,
         courseID: String,
-        id: String,
         courseName: String,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -96,7 +94,6 @@ public class CourseUnitViewModel: ObservableObject {
     ) {
         self.lessonID = lessonID
         self.courseID = courseID
-        self.id = id
         self.courseName = courseName
         self.chapters = chapters
         self.chapterIndex = chapterIndex
@@ -127,25 +124,29 @@ public class CourseUnitViewModel: ObservableObject {
             if index != verticals[verticalIndex].childs.count - 1 { index += 1 }
             let nextBlock = verticals[verticalIndex].childs[index]
             nextTitles()
-            analytics.nextBlockClicked(courseId: courseID,
-                                              courseName: courseName,
-                                              blockId: nextBlock.blockId,
-                                              blockName: nextBlock.displayName)
+            analytics.nextBlockClicked(
+                courseId: courseID,
+                courseName: courseName,
+                blockId: nextBlock.blockId,
+                blockName: nextBlock.displayName
+            )
         case .previous:
             if index != 0 { index -= 1 }
             nextTitles()
             let prevBlock = verticals[verticalIndex].childs[index]
-            analytics.prevBlockClicked(courseId: courseID,
-                                              courseName: courseName,
-                                              blockId: prevBlock.blockId,
-                                              blockName: prevBlock.displayName)
+            analytics.prevBlockClicked(
+                courseId: courseID,
+                courseName: courseName,
+                blockId: prevBlock.blockId,
+                blockName: prevBlock.displayName
+            )
         }
     }
     
     @MainActor
     func blockCompletionRequest(blockID: String) async {
         do {
-            try await interactor.blockCompletionRequest(courseID: self.id, blockID: blockID)
+            try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -174,5 +175,9 @@ public class CourseUnitViewModel: ObservableObject {
         } else {
             return URL(string: url)
         }
+    }
+    
+    func trackFinishVerticalBackToOutlineClicked() {
+        analytics.finishVerticalBackToOutlineClicked(courseId: courseID, courseName: courseName)
     }
 }

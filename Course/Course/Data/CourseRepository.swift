@@ -51,17 +51,17 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
         
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
-        let structure = try await api.requestData(
+        let course = try await api.requestData(
             CourseDetailsEndpoint.getCourseBlocks(courseID: courseID, userName: appStorage.user?.username ?? "")
         ).mapResponse(DataLayer.CourseStructure.self)
-        persistence.saveCourseStructure(structure: structure)
-        let parsedStructure = parseCourseStructure(structure: structure)
+        persistence.saveCourseStructure(structure: course)
+        let parsedStructure = parseCourseStructure(course: course)
         return parsedStructure
     }
     
     public func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
         let localData = try persistence.loadCourseStructure(courseID: courseID)
-        return parseCourseStructure(structure: localData)
+        return parseCourseStructure(course: localData)
     }
     
     public func enrollToCourse(courseID: String) async throws -> Bool {
@@ -112,35 +112,36 @@ public class CourseRepository: CourseRepositoryProtocol {
         }
     }
     
-    private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
-        let blocks = Array(structure.dict.values)
-        let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
-        let descendants = course.descendants ?? []
+    private func parseCourseStructure(course: DataLayer.CourseStructure) -> CourseStructure {
+        let blocks = Array(course.dict.values)
+        let courseBlock = blocks.first(where: {$0.type == BlockType.course.rawValue })!
+        let descendants = courseBlock.descendants ?? []
         var childs: [CourseChapter] = []
         for descend in descendants {
-            let chapter = parseChapters(id: descend, blocks: blocks)
+            let chapter = parseChapters(id: descend, courseId: course.id, blocks: blocks)
             childs.append(chapter)
         }
         
-        return CourseStructure(courseID: structure.id,
-                               id: course.id,
-                               graded: course.graded,
-                               completion: course.completion ?? 0,
-                               viewYouTubeUrl: course.userViewData?.encodedVideo?.youTube?.url ?? "",
-                               encodedVideo: course.userViewData?.encodedVideo?.fallback?.url ?? "",
-                               displayName: course.displayName,
-                               topicID: course.userViewData?.topicID,
-                               childs: childs,
-                               media: structure.media,
-                               certificate: structure.certificate?.domain)
+        return CourseStructure(
+            id: course.id,
+            graded: courseBlock.graded,
+            completion: courseBlock.completion ?? 0,
+            viewYouTubeUrl: courseBlock.userViewData?.encodedVideo?.youTube?.url ?? "",
+            encodedVideo: courseBlock.userViewData?.encodedVideo?.fallback?.url ?? "",
+            displayName: courseBlock.displayName,
+            topicID: courseBlock.userViewData?.topicID,
+            childs: childs,
+            media: course.media,
+            certificate: course.certificate?.domain
+        )
     }
     
-    private func parseChapters(id: String, blocks: [DataLayer.CourseBlock]) -> CourseChapter {
+    private func parseChapters(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseChapter {
         let chapter = blocks.first(where: {$0.id == id })!
         let descendants = chapter.descendants ?? []
         var childs: [CourseSequential] = []
         for descend in descendants {
-            let chapter = parseSequential(id: descend, blocks: blocks)
+            let chapter = parseSequential(id: descend, courseId: courseId, blocks: blocks)
             childs.append(chapter)
         }
         return CourseChapter(blockId: chapter.blockId,
@@ -151,39 +152,44 @@ public class CourseRepository: CourseRepositoryProtocol {
         
     }
     
-    private func parseSequential(id: String, blocks: [DataLayer.CourseBlock]) -> CourseSequential {
+    private func parseSequential(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseSequential {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseVertical] = []
         for descend in descendants {
-            let vertical = parseVerticals(id: descend, blocks: blocks)
+            let vertical = parseVerticals(id: descend, courseId: courseId, blocks: blocks)
             childs.append(vertical)
         }
-        return CourseSequential(blockId: sequential.blockId,
-                                id: sequential.id,
-                                displayName: sequential.displayName,
-                                type: BlockType(rawValue: sequential.type) ?? .unknown,
-                                completion: sequential.completion ?? 0,
-                                childs: childs)
+        return CourseSequential(
+            blockId: sequential.blockId,
+            id: sequential.id,
+            displayName: sequential.displayName,
+            type: BlockType(rawValue: sequential.type) ?? .unknown,
+            completion: sequential.completion ?? 0,
+            childs: childs
+        )
     }
     
-    private func parseVerticals(id: String, blocks: [DataLayer.CourseBlock]) -> CourseVertical {
+    private func parseVerticals(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseVertical {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseBlock] = []
         for descend in descendants {
-            let block = parseBlock(id: descend, blocks: blocks)
+            let block = parseBlock(id: descend, courseId: courseId, blocks: blocks)
             childs.append(block)
         }
-        return CourseVertical(blockId: sequential.blockId,
-                                id: sequential.id,
-                                displayName: sequential.displayName,
-                                type: BlockType(rawValue: sequential.type) ?? .unknown,
-                                completion: sequential.completion ?? 0,
-                                childs: childs)
+        return CourseVertical(
+            blockId: sequential.blockId,
+            id: sequential.id,
+            courseId: courseId,
+            displayName: sequential.displayName,
+            type: BlockType(rawValue: sequential.type) ?? .unknown,
+            completion: sequential.completion ?? 0,
+            childs: childs
+        )
     }
     
-    private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
+    private func parseBlock(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
         let subtitles = block.userViewData?.transcripts?.map {
             let url = $0.value
@@ -192,24 +198,27 @@ public class CourseRepository: CourseRepositoryProtocol {
             return SubtitleUrl(language: $0.key, url: url)
         }
             
-        return CourseBlock(blockId: block.blockId,
-                           id: block.id,
-                           topicId: block.userViewData?.topicID,
-                           graded: block.graded,
-                           completion: block.completion ?? 0,
-                           type: BlockType(rawValue: block.type) ?? .unknown,
-                           displayName: block.displayName,
-                           studentUrl: block.studentUrl,
-                           subtitles: subtitles,
-                           videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-                           youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
+        return CourseBlock(
+            blockId: block.blockId,
+            id: block.id,
+            courseId: courseId,
+            topicId: block.userViewData?.topicID,
+            graded: block.graded,
+            completion: block.completion ?? 0,
+            type: BlockType(rawValue: block.type) ?? .unknown,
+            displayName: block.displayName,
+            studentUrl: block.studentUrl,
+            subtitles: subtitles,
+            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
+            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url
+        )
     }
     
 }
 
 // Mark - For testing and SwiftUI preview
-#if DEBUG
 // swiftlint:disable all
+#if DEBUG
 class CourseRepositoryMock: CourseRepositoryProtocol {
     func resumeBlock(courseID: String) async throws -> ResumeBlock {
         ResumeBlock(blockID: "123")
@@ -245,7 +254,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         let decoder = JSONDecoder()
         let jsonData = Data(courseStructureJson.utf8)
         let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
-        return parseCourseStructure(structure: courseBlocks)
+        return parseCourseStructure(course: courseBlocks)
     }
     
     public  func getCourseDetails(courseID: String) async throws -> CourseDetails {
@@ -267,12 +276,8 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         
     public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         do {
-//            let decoder = JSONDecoder()
-//            let jsonData = Data(courseStructureJson.utf8)
             let courseBlocks = try courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
-
-//            let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
-            return parseCourseStructure(structure: courseBlocks)
+            return parseCourseStructure(course: courseBlocks)
         } catch {
             throw error
         }
@@ -309,87 +314,94 @@ And there are various ways of describing it-- call it oral poetry or
 """
     }
     
-    private func parseCourseStructure(structure: DataLayer.CourseStructure) -> CourseStructure {
-        let blocks = Array(structure.dict.values)
-        let course = blocks.first(where: {$0.type == BlockType.course.rawValue })!
-        let descendants = course.descendants ?? []
+    private func parseCourseStructure(course: DataLayer.CourseStructure) -> CourseStructure {
+        let blocks = Array(course.dict.values)
+        let courseBlock = blocks.first(where: {$0.type == BlockType.course.rawValue })!
+        let descendants = courseBlock.descendants ?? []
         var childs: [CourseChapter] = []
         for descend in descendants {
-            let chapter = parseChapters(id: descend, blocks: blocks)
+            let chapter = parseChapters(id: descend, courseId: course.id, blocks: blocks)
             childs.append(chapter)
         }
         
-        return CourseStructure(courseID: structure.id,
-                               id: course.id,
-                               graded: course.graded,
-                               completion: course.completion ?? 0,
-                               viewYouTubeUrl: course.userViewData?.encodedVideo?.youTube?.url ?? "",
-                               encodedVideo: course.userViewData?.encodedVideo?.fallback?.url ?? "",
-                               displayName: course.displayName,
-                               topicID: course.userViewData?.topicID,
-                               childs: childs,
-                               media: structure.media,
-                               certificate: structure.certificate?.domain)
+        return CourseStructure(
+            id: course.id,
+            graded: courseBlock.graded,
+            completion: courseBlock.completion ?? 0,
+            viewYouTubeUrl: courseBlock.userViewData?.encodedVideo?.youTube?.url ?? "",
+            encodedVideo: courseBlock.userViewData?.encodedVideo?.fallback?.url ?? "",
+            displayName: courseBlock.displayName,
+            topicID: courseBlock.userViewData?.topicID,
+            childs: childs,
+            media: course.media,
+            certificate: course.certificate?.domain
+        )
     }
     
-    private func parseChapters(id: String, blocks: [DataLayer.CourseBlock]) -> CourseChapter {
+    private func parseChapters(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseChapter {
         let chapter = blocks.first(where: {$0.id == id })!
         let descendants = chapter.descendants ?? []
         var childs: [CourseSequential] = []
         for descend in descendants {
-            let chapter = parseSequential(id: descend, blocks: blocks)
+            let chapter = parseSequential(id: descend, courseId: courseId, blocks: blocks)
             childs.append(chapter)
         }
-        return CourseChapter(blockId: chapter.blockId,
-                             id: chapter.id,
-                             displayName: chapter.displayName,
-                             type: BlockType(rawValue: chapter.type) ?? .unknown,
-                             childs: childs)
+        return CourseChapter(
+            blockId: chapter.blockId,
+            id: chapter.id,
+            displayName: chapter.displayName,
+            type: BlockType(rawValue: chapter.type) ?? .unknown,
+            childs: childs
+        )
     }
     
-    private func parseSequential(id: String, blocks: [DataLayer.CourseBlock]) -> CourseSequential {
+    private func parseSequential(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseSequential {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseVertical] = []
         for descend in descendants {
-            let vertical = parseVerticals(id: descend, blocks: blocks)
+            let vertical = parseVerticals(id: descend, courseId: courseId, blocks: blocks)
             childs.append(vertical)
         }
-        return CourseSequential(blockId: sequential.blockId,
-                                id: sequential.id,
-                                displayName: sequential.displayName,
-                                type: BlockType(rawValue: sequential.type) ?? .unknown,
-                                completion: sequential.completion ?? 0,
-                                childs: childs)
+        return CourseSequential(
+            blockId: sequential.blockId,
+            id: sequential.id,
+            displayName: sequential.displayName,
+            type: BlockType(rawValue: sequential.type) ?? .unknown,
+            completion: sequential.completion ?? 0,
+            childs: childs
+        )
     }
     
-    private func parseVerticals(id: String, blocks: [DataLayer.CourseBlock]) -> CourseVertical {
+    private func parseVerticals(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseVertical {
         let sequential = blocks.first(where: {$0.id == id })!
         let descendants = sequential.descendants ?? []
         var childs: [CourseBlock] = []
         for descend in descendants {
-            let block = parseBlock(id: descend, blocks: blocks)
+            let block = parseBlock(id: descend, courseId: courseId, blocks: blocks)
             childs.append(block)
         }
-        return CourseVertical(blockId: sequential.blockId,
-                                id: sequential.id,
-                                displayName: sequential.displayName,
-                                type: BlockType(rawValue: sequential.type) ?? .unknown,
-                                completion: sequential.completion ?? 0,
-                                childs: childs)
+        return CourseVertical(
+            blockId: sequential.blockId,
+            id: sequential.id,
+            courseId: courseId,
+            displayName: sequential.displayName,
+            type: BlockType(rawValue: sequential.type) ?? .unknown,
+            completion: sequential.completion ?? 0,
+            childs: childs
+        )
     }
     
-    private func parseBlock(id: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
+    private func parseBlock(id: String, courseId: String, blocks: [DataLayer.CourseBlock]) -> CourseBlock {
         let block = blocks.first(where: {$0.id == id })!
         let subtitles = block.userViewData?.transcripts?.map {
             let url = $0.value
-//                .replacingOccurrences(of: config.baseURL.absoluteString, with: "")
-//                .replacingOccurrences(of: "?lang=\($0.key)", with: "")
             return SubtitleUrl(language: $0.key, url: url)
         }
             
         return CourseBlock(blockId: block.blockId,
                            id: block.id,
+                           courseId: courseId,
                            topicId: block.userViewData?.topicID,
                            graded: block.graded,
                            completion: block.completion ?? 0,
@@ -1023,5 +1035,5 @@ And there are various ways of describing it-- call it oral poetry or
         }
     """
 }
-
 #endif
+// swiftlint:enable all

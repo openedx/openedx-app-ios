@@ -15,7 +15,6 @@ public struct CourseVerticalView: View {
     private var title: String
     private var courseName: String
     private var courseID: String
-    private let id: String
     @ObservedObject
     private var viewModel: CourseVerticalViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -24,13 +23,11 @@ public struct CourseVerticalView: View {
         title: String,
         courseName: String,
         courseID: String,
-        id: String,
         viewModel: CourseVerticalViewModel
     ) {
         self.title = title
         self.courseName = courseName
         self.courseID = courseID
-        self.id = id
         self.viewModel = viewModel
     }
     
@@ -50,19 +47,21 @@ public struct CourseVerticalView: View {
                                     Button(action: {
                                         let vertical = viewModel.verticals[index]
                                         if let block = vertical.childs.first {
-                                            viewModel.analytics.verticalClicked(courseId: courseID,
-                                                                                courseName: courseName,
-                                                                                blockId: vertical.blockId,
-                                                                                blockName: vertical.displayName)
-                                            viewModel.router.showCourseUnit(courseName: courseName,
-                                                                            id: id,
-                                                                            blockId: block.id,
-                                                                            courseID: courseID,
-                                                                            sectionName: block.displayName,
-                                                                            verticalIndex: index,
-                                                                            chapters: viewModel.chapters,
-                                                                            chapterIndex: viewModel.chapterIndex,
-                                                                            sequentialIndex: viewModel.sequentialIndex)
+                                            viewModel.trackVerticalClicked(
+                                                courseId: courseID,
+                                                courseName: courseName,
+                                                vertical: vertical
+                                            )
+                                            viewModel.router.showCourseUnit(
+                                                courseName: courseName,
+                                                blockId: block.id,
+                                                courseID: courseID,
+                                                sectionName: block.displayName,
+                                                verticalIndex: index,
+                                                chapters: viewModel.chapters,
+                                                chapterIndex: viewModel.chapterIndex,
+                                                sequentialIndex: viewModel.sequentialIndex
+                                            )
                                         }
                                     }, label: {
                                         HStack {
@@ -188,6 +187,7 @@ struct CourseVerticalView_Previews: PreviewProvider {
                             CourseVertical(
                                 blockId: "4",
                                 id: "4",
+                                courseId: "1",
                                 displayName: "Vertical",
                                 type: .vertical,
                                 completion: 0,
@@ -207,13 +207,23 @@ struct CourseVerticalView_Previews: PreviewProvider {
         )
         
         return Group {
-            CourseVerticalView(title: "Course title", courseName: "CourseName", courseID: "1", id: "1", viewModel: viewModel)
-                .preferredColorScheme(.light)
-                .previewDisplayName("CourseVerticalView Light")
+            CourseVerticalView(
+                title: "Course title",
+                courseName: "CourseName",
+                courseID: "1",
+                viewModel: viewModel
+            )
+            .preferredColorScheme(.light)
+            .previewDisplayName("CourseVerticalView Light")
             
-            CourseVerticalView(title: "Course title", courseName: "CourseName", courseID: "1", id: "1", viewModel: viewModel)
-                .preferredColorScheme(.dark)
-                .previewDisplayName("CourseVerticalView Dark")
+            CourseVerticalView(
+                title: "Course title",
+                courseName: "CourseName",
+                courseID: "1",
+                viewModel: viewModel
+            )
+            .preferredColorScheme(.dark)
+            .previewDisplayName("CourseVerticalView Dark")
         }
         
     }
