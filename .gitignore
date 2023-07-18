@@ -98,3 +98,6 @@ iOSInjectionProject/
 .DS_Store
 .idea
 xcode-frameworks
+
+vendor/
+.bundle/

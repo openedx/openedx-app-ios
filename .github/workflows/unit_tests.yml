@@ -1,0 +1,60 @@
+name: Unit Tests
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ develop ]
+
+  pull_request:
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: macos-13
+
+    concurrency:
+      # When running on develop, use the sha to allow all runs of this workflow to run concurrently.
+      # Otherwise only allow a single run of this workflow on each branch, automatically cancelling older runs.
+      group: ${{ github.ref == 'refs/heads/develop' && format('unit-tests-develop-{0}', github.sha) || format('unit-tests-{0}', github.ref) }}
+      cancel-in-progress: true
+
+    steps:
+      - uses: nschloe/action-cached-lfs-checkout@v1.2.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Setup environment
+        run:
+          source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
+
+      - run: |
+          xcversion installed
+
+      - name: SwiftLint
+        run:
+          bundle exec fastlane linting
+
+      - name: Run tests
+        run: bundle exec fastlane unit_tests
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-output
+          path: fastlane/test_output
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unittests

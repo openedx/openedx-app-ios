@@ -24,6 +24,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Discovery/DiscoveryTests
   - Discussion/DiscussionTests
   - Profile/ProfileTests
+  - vendor
 #  - Source/ExcludedFolder
 #  - Source/ExcludedFile.swift
 #  - Source/*/ExcludedFile.swift # Exclude files with a wildcard
