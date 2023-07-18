@@ -98,3 +98,11 @@ iOSInjectionProject/
 .DS_Store
 .idea
 xcode-frameworks
+
+# Whitelabel configuration
+#
+# Files which are customized on a per-instance basis.
+OpenEdX/Environment.swift
+OpenEdX/Assets.xcassets/**
+Core/Core/Assets.xcassets/**
+Core/Core/Theme.swift

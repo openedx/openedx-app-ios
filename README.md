@@ -11,13 +11,17 @@ Modern vision of the mobile application for the Open EdX platform from Raccoon G
 
 2. Navigate to the project folder and run ``pod install``.
 
-3. Open ``OpenEdX.xcworkspace``.
+3. Run ``make whitelabel``. This will create theme/credential files based on example files. Take note of the output.
 
-4. Ensure that the ``OpenEdXDev`` or ``OpenEdXProd`` scheme is selected.
+4. Open ``OpenEdX.xcworkspace``.
 
-5. Configure the [``Environment.swift`` file](https://github.com/raccoongang/new-edx-app-ios/blob/main/OpenEdX/Environment.swift) with URLs and OAuth credentials for your Open edX instance.
+5. Ensure that the ``OpenEdXDev`` or ``OpenEdXProd`` scheme is selected.
 
-6. Click the **Run** button.
+6. Configure the Environment.swift file created in step 3 with URLs and OAuth credentials for your Open edX instance.
+
+7. If you're preparing the app for a production release and need to theme it, customize the package assets as directed by the output of step 3.
+
+7. Click the **Run** button.
 
 ## API plugin
 This project uses custom APIs to improve performance and reduce the number of requests to the server.
