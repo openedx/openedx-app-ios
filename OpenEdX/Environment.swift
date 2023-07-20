@@ -28,20 +28,20 @@ class BuildConfiguration {
     var baseURL: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "https://example-dev.com"
+            return "https://edxdev.yam-edu.com"
         case .debugStage, .releaseStage:
-            return "https://example-stage.com"
+            return "https://edxdev.yam-edu.com"
         case .debugProd, .releaseProd:
-            return "https://example.com"
+            return "https://my.yam-edu.com"
         }
     }
     
     var clientId: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "DEV_CLIENT_ID"
+            return "g7H79XL9yCCKKha70vcLE5dKJCTyYuKthk9OPtwl"
         case .debugStage, .releaseStage:
-            return "STAGE_CLIENT_ID"
+            return "g7H79XL9yCCKKha70vcLE5dKJCTyYuKthk9OPtwl"
         case .debugProd, .releaseProd:
             return "PROD_CLIENT_ID"
         }

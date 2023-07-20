@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "07D5DA3028D075AA00752FD9"
-               BuildableName = "OpenEdX.app"
+               BuildableName = "Yam Education.app"
                BlueprintName = "OpenEdX"
                ReferencedContainer = "container:OpenEdX.xcodeproj">
             </BuildableReference>
@@ -114,7 +114,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07D5DA3028D075AA00752FD9"
-            BuildableName = "OpenEdX.app"
+            BuildableName = "Yam Education.app"
             BlueprintName = "OpenEdX"
             ReferencedContainer = "container:OpenEdX.xcodeproj">
          </BuildableReference>
@@ -135,7 +135,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07D5DA3028D075AA00752FD9"
-            BuildableName = "OpenEdX.app"
+            BuildableName = "Yam Education.app"
             BlueprintName = "OpenEdX"
             ReferencedContainer = "container:OpenEdX.xcodeproj">
          </BuildableReference>
