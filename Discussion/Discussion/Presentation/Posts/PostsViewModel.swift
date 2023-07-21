@@ -176,9 +176,11 @@ public class PostsViewModel: ObservableObject {
                 if index == filteredPosts.count - 3 {
                     if totalPages != 1 {
                         if nextPage <= totalPages {
-                            _ = await getPosts(courseID: courseID,
-                                               pageNumber: self.nextPage,
-                                               withProgress: withProgress)
+                            _ = await getPosts(
+                                courseID: courseID,
+                                pageNumber: self.nextPage,
+                                withProgress: withProgress
+                            )
                         }
                     }
                 }
@@ -202,7 +204,6 @@ public class PostsViewModel: ObservableObject {
                 if threads.threads.indices.contains(0) {
                     self.totalPages = threads.threads[0].numPages
                     self.nextPage += 1
-                    fetchInProgress = false
                 }
             case .followingPosts:
                 threads.threads += try await interactor
@@ -214,7 +215,6 @@ public class PostsViewModel: ObservableObject {
                 if threads.threads.indices.contains(0) {
                     self.totalPages = threads.threads[0].numPages
                     self.nextPage += 1
-                    fetchInProgress = false
                 }
             case .nonCourseTopics:
                 threads.threads += try await interactor
@@ -226,7 +226,6 @@ public class PostsViewModel: ObservableObject {
                 if threads.threads.indices.contains(0) {
                     self.totalPages = threads.threads[0].numPages
                     self.nextPage += 1
-                    fetchInProgress = false
                 }
             case .courseTopics(topicID: let topicID):
                 threads.threads += try await interactor
@@ -238,7 +237,6 @@ public class PostsViewModel: ObservableObject {
                 if threads.threads.indices.contains(0) {
                     self.totalPages = threads.threads[0].numPages
                     self.nextPage += 1
-                    fetchInProgress = false
                 }
             case .none:
                 isShowProgress = false
@@ -248,9 +246,11 @@ public class PostsViewModel: ObservableObject {
             filteredPosts = discussionPosts
             self.filteredPosts = self.discussionPosts
             isShowProgress = false
+            fetchInProgress = false
             return true
         } catch let error {
             isShowProgress = false
+            fetchInProgress = false
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
