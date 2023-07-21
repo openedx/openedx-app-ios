@@ -157,7 +157,7 @@ public struct PostsView: View {
                                                 Spacer(minLength: 84)
                                             }
                                         } else {
-                                            if !viewModel.isShowProgress {
+                                            if !viewModel.fetchInProgress {
                                                 VStack(spacing: 0) {
                                                     CoreAssets.discussionIcon.swiftUIImage
                                                         .renderingMode(.template)
