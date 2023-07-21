@@ -80,7 +80,7 @@ public struct SignUpView: View {
                                                    router: viewModel.router,
                                                    configuration: viewModel.config,
                                                    cssInjector: viewModel.cssInjector,
-                                                   proxy: proxy)
+                                                   proxy: proxy).padding(.horizontal, 1)
                                     }, label: {
                                         Text(disclosureGroupOpen
                                              ? AuthLocalization.SignUp.hideFields
