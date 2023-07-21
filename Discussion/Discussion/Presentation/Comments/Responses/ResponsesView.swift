@@ -156,7 +156,7 @@ public struct ResponsesView: View {
                                                 await viewModel.postComment(
                                                     threadID: threadID,
                                                     rawBody: commentText,
-                                                    parentID: viewModel.postComments?.parentID
+                                                    parentID: commentID
                                                 )
                                             }
                                         }
