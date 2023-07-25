@@ -91,6 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         lastForceLogoutTime = Date().timeIntervalSince1970
         
         Container.shared.resolve(AppStorage.self)?.clear()
+        Container.shared.resolve(DownloadManagerProtocol.self)?.deleteAllFiles()
         Container.shared.resolve(CoreDataHandlerProtocol.self)?.clear()
         window?.rootViewController = RouteController()
     }

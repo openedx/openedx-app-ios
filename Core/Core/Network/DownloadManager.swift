@@ -29,6 +29,26 @@ public struct DownloadData {
     public let resumeData: Data?
     public let state: DownloadState
     public let type: DownloadType
+    
+    public init(
+        id: String,
+        courseId: String,
+        url: String,
+        fileName: String,
+        progress: Double,
+        resumeData: Data?,
+        state: DownloadState,
+        type: DownloadType
+    ) {
+        self.id = id
+        self.courseId = courseId
+        self.url = url
+        self.fileName = fileName
+        self.progress = progress
+        self.resumeData = resumeData
+        self.state = state
+        self.type = type
+    }
 }
 
 public class NoWiFiError: LocalizedError {
@@ -44,6 +64,7 @@ public protocol DownloadManagerProtocol {
     func resumeDownloading() throws
     func pauseDownloading()
     func deleteFile(blocks: [CourseBlock])
+    func deleteAllFiles()
     func fileUrl(for blockId: String) -> URL?
 }
 
@@ -183,6 +204,16 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
     
+    public func deleteAllFiles() {
+        if let folderUrl = videosFolderUrl() {
+            do {
+                try FileManager.default.removeItem(at: folderUrl)
+            } catch {
+                NSLog("Error deleting All files: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     public func fileUrl(for blockId: String) -> URL? {
         guard let data = persistence.downloadData(by: blockId),
               data.url.count > 0,
@@ -257,6 +288,10 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     }
     
     public func deleteFile(blocks: [CourseBlock]) {
+        
+    }
+    
+    public func deleteAllFiles() {
         
     }
     
