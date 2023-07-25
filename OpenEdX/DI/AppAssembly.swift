@@ -70,8 +70,16 @@ class AppAssembly: Assembly {
             Connectivity()
         }
         
-        container.register(CorePersistenceProtocol.self) { _ in
-            CorePersistence()
+        container.register(DatabaseManager.self) { _ in
+            DatabaseManager(databaseName: "Database")
+        }.inObjectScope(.container)
+        
+        container.register(CoreDataHandlerProtocol.self) { r in
+            r.resolve(DatabaseManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(CorePersistenceProtocol.self) { r in
+            CorePersistence(context: r.resolve(DatabaseManager.self)!.context)
         }.inObjectScope(.container)
         
         container.register(DownloadManagerProtocol.self, factory: { r in

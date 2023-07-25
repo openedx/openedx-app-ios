@@ -27,13 +27,21 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     
     private let api: API
     private let appStorage: AppStorage
+    private let downloadManager: DownloadManagerProtocol
     private let coreDataHandler: CoreDataHandlerProtocol
     private let config: Config
     
-    public init(api: API, appStorage: AppStorage, coreDataHandler: CoreDataHandlerProtocol, config: Config) {
+    public init(
+        api: API,
+        appStorage: AppStorage,
+        coreDataHandler: CoreDataHandlerProtocol,
+        downloadManager: DownloadManagerProtocol,
+        config: Config
+    ) {
         self.api = api
         self.appStorage = appStorage
         self.coreDataHandler = coreDataHandler
+        self.downloadManager = downloadManager
         self.config = config
     }
     
@@ -60,6 +68,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
             ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: config.oAuthClientId)
         )
         appStorage.clear()
+        downloadManager.deleteAllFiles()
         coreDataHandler.clear()
     }
     

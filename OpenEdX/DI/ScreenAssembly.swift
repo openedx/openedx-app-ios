@@ -19,15 +19,6 @@ import Discussion
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
-        // MARK: CoreDataHandler
-        container.register(CoreDataHandlerProtocol.self) { r in
-            CoreDataHandler(
-                dashboardPersistence: r.resolve(DashboardPersistenceProtocol.self)!,
-                discoveryPersistence: r.resolve(DiscoveryPersistenceProtocol.self)!,
-                coursePersistence: r.resolve(CoursePersistenceProtocol.self)!
-            )
-        }
-        
         // MARK: Auth
         container.register(AuthRepositoryProtocol.self) { r in
             AuthRepository(
@@ -71,8 +62,8 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: Discovery
-        container.register(DiscoveryPersistenceProtocol.self) { _ in
-            DiscoveryPersistence()
+        container.register(DiscoveryPersistenceProtocol.self) { r in
+            DiscoveryPersistence(context: r.resolve(DatabaseManager.self)!.context)
         }
         
         container.register(DiscoveryRepositoryProtocol.self) { r in
@@ -107,8 +98,8 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: Dashboard
-        container.register(DashboardPersistenceProtocol.self) { _ in
-            DashboardPersistence()
+        container.register(DashboardPersistenceProtocol.self) { r in
+            DashboardPersistence(context: r.resolve(DatabaseManager.self)!.context)
         }
         
         container.register(DashboardRepositoryProtocol.self) { r in
@@ -139,6 +130,7 @@ class ScreenAssembly: Assembly {
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(AppStorage.self)!,
                 coreDataHandler: r.resolve(CoreDataHandlerProtocol.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 config: r.resolve(Config.self)!
             )
         }
@@ -182,8 +174,8 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: Course
-        container.register(CoursePersistenceProtocol.self) { _ in
-            CoursePersistence()
+        container.register(CoursePersistenceProtocol.self) { r in
+            CoursePersistence(context: r.resolve(DatabaseManager.self)!.context)
         }
         
         container.register(CourseRepositoryProtocol.self) { r in

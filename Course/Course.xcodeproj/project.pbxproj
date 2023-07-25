@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		02280F5E294B4FDA0032823A /* CourseCoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */; };
-		02280F60294B50030032823A /* CoursePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5F294B50030032823A /* CoursePersistence.swift */; };
+		02280F60294B50030032823A /* CoursePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5F294B50030032823A /* CoursePersistenceProtocol.swift */; };
 		022C64D829ACEC48000F532B /* HandoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64D729ACEC48000F532B /* HandoutsView.swift */; };
 		022C64DA29ACEC50000F532B /* HandoutsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64D929ACEC50000F532B /* HandoutsViewModel.swift */; };
 		022C64DC29ACFDEE000F532B /* Data_HandoutsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64DB29ACFDEE000F532B /* Data_HandoutsResponse.swift */; };
@@ -78,7 +78,7 @@
 
 /* Begin PBXFileReference section */
 		02280F5D294B4FDA0032823A /* CourseCoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CourseCoreModel.xcdatamodel; sourceTree = "<group>"; };
-		02280F5F294B50030032823A /* CoursePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePersistence.swift; sourceTree = "<group>"; };
+		02280F5F294B50030032823A /* CoursePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePersistenceProtocol.swift; sourceTree = "<group>"; };
 		022C64D729ACEC48000F532B /* HandoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoutsView.swift; sourceTree = "<group>"; };
 		022C64D929ACEC50000F532B /* HandoutsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoutsViewModel.swift; sourceTree = "<group>"; };
 		022C64DB29ACFDEE000F532B /* Data_HandoutsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_HandoutsResponse.swift; sourceTree = "<group>"; };
@@ -186,7 +186,7 @@
 		0208666A29CC6D8000BC05B2 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				02280F5F294B50030032823A /* CoursePersistence.swift */,
+				02280F5F294B50030032823A /* CoursePersistenceProtocol.swift */,
 				02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */,
 			);
 			path = Persistence;
@@ -683,7 +683,7 @@
 				02454CA02A2618E70043052A /* YouTubeView.swift in Sources */,
 				02454CA22A26190A0043052A /* EncodedVideoView.swift in Sources */,
 				02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */,
-				02280F60294B50030032823A /* CoursePersistence.swift in Sources */,
+				02280F60294B50030032823A /* CoursePersistenceProtocol.swift in Sources */,
 				02454CAA2A2619B40043052A /* LessonProgressView.swift in Sources */,
 				02280F5E294B4FDA0032823A /* CourseCoreModel.xcdatamodeld in Sources */,
 				0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */,
