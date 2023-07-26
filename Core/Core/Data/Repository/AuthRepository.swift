@@ -22,6 +22,8 @@ public class AuthRepository: AuthRepositoryProtocol {
     private let appStorage: AppStorage
     private let config: Config
     
+    public let auth0Login: Bool
+    
     public init(api: API, appStorage: AppStorage, config: Config) {
         self.api = api
         self.appStorage = appStorage

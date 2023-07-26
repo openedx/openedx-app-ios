@@ -105,7 +105,7 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(Config.self) { _ in
-            Config(baseURL: BuildConfiguration.shared.baseURL, oAuthClientId: BuildConfiguration.shared.clientId)
+            Config(baseURL: BuildConfiguration.shared.baseURL, oAuthClientId: BuildConfiguration.shared.clientId, auth0ClientId: BuildConfiguration.shared.auth0Options.clientId, auth0Domain: BuildConfiguration.shared.auth0Options.domain)
         }.inObjectScope(.container)
         
         container.register(CSSInjector.self) { _ in

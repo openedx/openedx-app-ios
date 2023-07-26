@@ -15,6 +15,7 @@ public class SignInViewModel: ObservableObject {
     @Published private(set) var isShowProgress = false
     @Published private(set) var showError: Bool = false
     @Published private(set) var showAlert: Bool = false
+    @Published private(set) var showAuth0Login: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -31,18 +32,22 @@ public class SignInViewModel: ObservableObject {
     }
     
     private let interactor: AuthInteractorProtocol
+    let config: Config
     let router: AuthorizationRouter
     let analytics: AuthorizationAnalytics
     private let validator: Validator
     
     public init(interactor: AuthInteractorProtocol,
                 router: AuthorizationRouter,
+                config: Config,
                 analytics: AuthorizationAnalytics,
                 validator: Validator) {
         self.interactor = interactor
+        self.config = config
         self.router = router
         self.analytics = analytics
         self.validator = validator
+        self.showAuth0Login = config.auth0ClientId != ""
     }
      
     @MainActor

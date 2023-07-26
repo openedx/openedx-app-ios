@@ -21,6 +21,9 @@ public struct SignInView: View {
     }
     
     public var body: some View {
+        if () {
+            
+        }
         ZStack(alignment: .top) {
             VStack {
                 CoreAssets.authBackground.swiftUIImage

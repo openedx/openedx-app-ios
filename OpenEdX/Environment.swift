@@ -47,6 +47,17 @@ class BuildConfiguration {
         }
     }
     
+    var auth0Options: (clientId: String, domain: String) {
+        switch environment {
+        case .debugDev, .releaseDev:
+            return (clientId: "EkrBs0k1OZ5PtlNSDnGEpKCnYEC5feA5", domain: "auth.yam-edu.com")
+        case .debugStage, .releaseStage:
+            return (clientId: "EkrBs0k1OZ5PtlNSDnGEpKCnYEC5feA5", domain: "auth.yam-edu.com")
+        case .debugProd, .releaseProd:
+            return (clientId: "EkrBs0k1OZ5PtlNSDnGEpKCnYEC5feA5", domain: "auth.yam-edu.com")
+        }
+    }
+    
     var firebaseOptions: FirebaseOptions {
         switch environment {
         case .debugDev, .releaseDev:
