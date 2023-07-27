@@ -197,7 +197,7 @@ public struct ResponsesView: View {
             }
         }.edgesIgnoringSafeArea(.bottom)
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

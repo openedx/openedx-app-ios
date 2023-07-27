@@ -28,9 +28,9 @@ struct MainScreenView: View {
     
     init() {
         UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().barTintColor = CoreAssets.textInputUnfocusedBackground.color
-        UITabBar.appearance().backgroundColor = CoreAssets.textInputUnfocusedBackground.color
-        UITabBar.appearance().unselectedItemTintColor = CoreAssets.textSecondary.color
+        UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
+        UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondary)
     }
     
     var body: some View {

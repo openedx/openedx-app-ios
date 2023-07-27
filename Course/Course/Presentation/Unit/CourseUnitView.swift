@@ -169,7 +169,7 @@ public struct CourseUnitView: View {
                                     alertMessage = CourseLocalization.Alert.rotateDevice
                                 }
                             Text(alertMessage ?? "")
-                        }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
+                        }.shadowCardStyle(bgColor: Theme.Colors.accentColor,
                                           textColor: .white)
                         .transition(.move(edge: .bottom))
                         .onAppear {
@@ -204,7 +204,7 @@ public struct CourseUnitView: View {
             }
         }.ignoresSafeArea()
             .background(
-                CoreAssets.background.swiftUIColor
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
     }

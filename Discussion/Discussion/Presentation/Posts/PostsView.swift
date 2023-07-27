@@ -85,14 +85,14 @@ public struct PostsView: View {
                                                         CoreAssets.sort.swiftUIImage
                                                         Text(viewModel.sortTitle.localizedValue)
                                                     })
-                                                }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                                }.foregroundColor(Theme.Colors.accentColor)
                                             } .font(Theme.Fonts.labelMedium)
                                                 .padding(.horizontal, 24)
                                                 .padding(.vertical, 12)
-                                                .shadow(color: CoreAssets.shadowColor.swiftUIColor,
+                                                .shadow(color: Theme.Colors.shadowColor,
                                                         radius: 12, y: 4)
                                                 .background(
-                                                    CoreAssets.background.swiftUIColor
+                                                    Theme.Colors.background
                                                 )
                                             Divider().offset(y: -8)
                                         }
@@ -112,7 +112,7 @@ public struct PostsView: View {
                                                 HStack(alignment: .center) {
                                                     Text(title)
                                                         .font(Theme.Fonts.titleLarge)
-                                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                        .foregroundColor(Theme.Colors.textPrimary)
                                                     Spacer()
                                                     Button(action: {
                                                         router.createNewThread(courseID: courseID,
@@ -133,7 +133,7 @@ public struct PostsView: View {
                                                         .foregroundColor(.white)
                                                         .background(
                                                             Circle()
-                                                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                                                .foregroundColor(Theme.Colors.accentColor)
                                                         )
                                                     })
                                                 }
@@ -161,7 +161,7 @@ public struct PostsView: View {
                                                 VStack(spacing: 0) {
                                                     CoreAssets.discussionIcon.swiftUIImage
                                                         .renderingMode(.template)
-                                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                        .foregroundColor(Theme.Colors.textPrimary)
                                                     Text(DiscussionLocalization.Posts.NoDiscussion.title)
                                                         .font(Theme.Fonts.titleLarge)
                                                         .multilineTextAlignment(.center)
@@ -207,7 +207,7 @@ public struct PostsView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
         // MARK: - Action Sheet
@@ -289,21 +289,21 @@ public struct PostCell: View {
                         Text(DiscussionLocalization.missedPostsCount(post.unreadCommentCount - 1))
                     }
                 }.font(Theme.Fonts.labelSmall)
-                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textSecondary)
                 Text(post.title)
                     .multilineTextAlignment(.leading)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Text("\(DiscussionLocalization.Post.lastPost) \(post.lastPostDateFormatted)")
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textSecondary)
                 HStack {
                     CoreAssets.responses.swiftUIImage
                     Text("\(post.replies - 1)")
                     Text(DiscussionLocalization.responsesCount(post.replies - 1))
                         .font(Theme.Fonts.labelLarge)
                 }
-                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                .foregroundColor(Theme.Colors.accentColor)
             }
         })
     }

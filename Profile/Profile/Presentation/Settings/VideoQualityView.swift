@@ -51,7 +51,7 @@ public struct VideoQualityView: View {
                                             .foregroundColor(.accentColor)
                                             .opacity(quality == viewModel.selectedQuality ? 1 : 0)
                                         
-                                    }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                    }.foregroundColor(Theme.Colors.textPrimary)
                                 })
                                 Divider()
                             }
@@ -80,7 +80,7 @@ public struct VideoQualityView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

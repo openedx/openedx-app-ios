@@ -45,7 +45,7 @@ public struct SubtittlesView: View {
                             Group {
                                 CoreAssets.sub.swiftUIImage.renderingMode(.template)
                                 Text(viewModel.generateLanguageName(code: viewModel.selectedLanguage ?? ""))
-                            }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                            }.foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)
                         })
                     }
@@ -60,8 +60,8 @@ public struct SubtittlesView: View {
                                             .padding(.vertical, 16)
                                             .font(Theme.Fonts.bodyMedium)
                                             .foregroundColor(subtitle.fromTo.contains(Date(milliseconds: currentTime))
-                                                             ? CoreAssets.textPrimary.swiftUIColor
-                                                             : CoreAssets.textSecondary.swiftUIColor)
+                                                             ? Theme.Colors.textPrimary
+                                                             : Theme.Colors.textSecondary)
                                             .onChange(of: currentTime, perform: { _ in
                                                 if subtitle.fromTo.contains(Date(milliseconds: currentTime)) {
                                                     if id != subtitle.id {

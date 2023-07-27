@@ -44,7 +44,7 @@ public struct SettingsView: View {
                                 Toggle(isOn: $viewModel.wifiOnly, label: {})
                                     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                                     .frame(width: 50)
-                            }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                            }.foregroundColor(Theme.Colors.textPrimary)
                             Divider()
                             
                             // MARK: Download Quality
@@ -84,7 +84,7 @@ public struct SettingsView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -129,9 +129,9 @@ public struct SettingsCell: View {
             if let description {
                 Text(description)
                     .font(Theme.Fonts.labelMedium)
-                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textSecondary)
             }
-        }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+        }.foregroundColor(Theme.Colors.textPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

@@ -82,7 +82,7 @@ public struct CourseVerticalView: View {
                                                            alignment: .leading)
                                                     .multilineTextAlignment(.leading)
                                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                            }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                            }.foregroundColor(Theme.Colors.textPrimary)
                                             Spacer()
                                             if let state = viewModel.downloadState[vertical.id] {
                                                 switch state {
@@ -126,7 +126,7 @@ public struct CourseVerticalView: View {
                                     if index != viewModel.verticals.count - 1 {
                                         Divider()
                                             .frame(height: 1)
-                                            .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                                            .overlay(Theme.Colors.cardViewStroke)
                                             .padding(.horizontal, 24)
                                     }
                                 }
@@ -161,7 +161,7 @@ public struct CourseVerticalView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

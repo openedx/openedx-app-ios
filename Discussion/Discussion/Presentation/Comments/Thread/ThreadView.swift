@@ -218,7 +218,7 @@ public struct ThreadView: View {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(
-                            bgColor: CoreAssets.accentColor.swiftUIColor,
+                            bgColor: Theme.Colors.accentColor,
                             textColor: .white
                         )
                         .padding(.top, 80)
@@ -234,7 +234,7 @@ public struct ThreadView: View {
             }
         }.edgesIgnoringSafeArea(.bottom)
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

@@ -18,10 +18,10 @@ public struct DiscoveryView: View {
     private let discoveryNew: some View = VStack(alignment: .leading) {
         Text(DiscoveryLocalization.Header.title1)
             .font(Theme.Fonts.displaySmall)
-            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+            .foregroundColor(Theme.Colors.textPrimary)
         Text(DiscoveryLocalization.Header.title2)
             .font(Theme.Fonts.titleSmall)
-            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+            .foregroundColor(Theme.Colors.textPrimary)
     }.listRowBackground(Color.clear)
     
     public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
@@ -48,7 +48,7 @@ public struct DiscoveryView: View {
                         .padding(.leading, 16)
                         .padding(.top, 1)
                     Text(DiscoveryLocalization.search)
-                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                        .foregroundColor(Theme.Colors.textSecondary)
                     Spacer()
                 }
                 .onTapGesture {
@@ -59,12 +59,12 @@ public struct DiscoveryView: View {
                 .frame(maxWidth: 532)
                 .background(
                     Theme.Shapes.textInputShape
-                        .fill(CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                        .fill(Theme.Colors.textInputUnfocusedBackground)
                 )
                 .overlay(
                     Theme.Shapes.textInputShape
                         .stroke(lineWidth: 1)
-                        .fill(CoreAssets.textInputUnfocusedStroke.swiftUIColor)
+                        .fill(Theme.Colors.textInputUnfocusedStroke)
                 ).onTapGesture {
                     router.showDiscoverySearch()
                     viewModel.discoverySearchBarClicked()
@@ -146,7 +146,7 @@ public struct DiscoveryView: View {
                 }
             }
         }
-        .background(CoreAssets.background.swiftUIColor.ignoresSafeArea())
+        .background(Theme.Colors.background.ignoresSafeArea())
     }
 }
 
