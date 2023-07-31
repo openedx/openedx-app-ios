@@ -34,8 +34,6 @@ public struct Theme {
         public private(set) static var textInputUnfocusedStroke = CoreAssets.textInputUnfocusedStroke.swiftUIColor
         public private(set) static var warning = CoreAssets.warning.swiftUIColor
 
-        
-        
         public static func update(
             accentColor: Color = CoreAssets.accentColor.swiftUIColor,
             alert: Color = CoreAssets.alert.swiftUIColor,
