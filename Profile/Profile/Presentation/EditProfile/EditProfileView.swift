@@ -60,7 +60,7 @@ public struct EditProfileView: View {
                     VStack {
                         Text(viewModel.profileChanges.profileType.localizedValue.capitalized)
                             .font(Theme.Fonts.titleSmall)
-                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                            .foregroundColor(Theme.Colors.textSecondary)
                         Button(action: {
                             withAnimation {
                                 showingBottomSheet.toggle()
@@ -71,7 +71,7 @@ public struct EditProfileView: View {
                                 .overlay(
                                     ZStack {
                                         Circle().frame(width: 36, height: 36)
-                                            .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                            .foregroundColor(Theme.Colors.accentColor)
                                         CoreAssets.addPhoto.swiftUIImage
                                             .foregroundColor(.white)
                                     }.offset(x: 36, y: 50)
@@ -110,13 +110,13 @@ public struct EditProfileView: View {
                                         .hideScrollContentBackground()
                                         .background(
                                             Theme.Shapes.textInputShape
-                                                .fill(CoreAssets.textInputBackground.swiftUIColor)
+                                                .fill(Theme.Colors.textInputBackground)
                                         )
                                         .overlay(
                                             Theme.Shapes.textInputShape
                                                 .stroke(lineWidth: 1)
                                                 .fill(
-                                                    CoreAssets.textInputStroke.swiftUIColor
+                                                    Theme.Colors.textInputStroke
                                                 )
                                         )
                                 }
@@ -144,7 +144,7 @@ public struct EditProfileView: View {
                             viewModel.router.showDeleteProfileView()
                         })
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundColor(CoreAssets.alert.swiftUIColor)
+                        .foregroundColor(Theme.Colors.alert)
                         .padding(.top, 44)
                         
                         Spacer(minLength: 84)
@@ -194,7 +194,7 @@ public struct EditProfileView: View {
                     HStack(alignment: .top, spacing: 6) {
                         CoreAssets.alarm.swiftUIImage.renderingMode(.template)
                         Text(viewModel.alertMessage ?? "")
-                    }.shadowCardStyle(bgColor: CoreAssets.warning.swiftUIColor,
+                    }.shadowCardStyle(bgColor: Theme.Colors.warning,
                                       textColor: .black)
                     .transition(.move(edge: .bottom))
                     .onAppear {
@@ -225,7 +225,7 @@ public struct EditProfileView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

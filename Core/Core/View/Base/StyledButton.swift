@@ -19,17 +19,17 @@ public struct StyledButton: View {
     public init(_ title: String,
                 action: @escaping () -> Void,
                 isTransparent: Bool = false,
-                color: Color = CoreAssets.accentColor.swiftUIColor,
+                color: Color = Theme.Colors.accentColor,
                 isActive: Bool = true) {
         self.title = title
         self.action = action
         self.isTransparent = isTransparent
         if isActive {
             self.buttonColor = color
-            self.textColor = CoreAssets.styledButtonText.swiftUIColor
+            self.textColor = Theme.Colors.styledButtonText
         } else {
-            self.buttonColor = CoreAssets.cardViewStroke.swiftUIColor
-            self.textColor = CoreAssets.textPrimary.swiftUIColor
+            self.buttonColor = Theme.Colors.cardViewStroke
+            self.textColor = Theme.Colors.textPrimary
 
         }
     }

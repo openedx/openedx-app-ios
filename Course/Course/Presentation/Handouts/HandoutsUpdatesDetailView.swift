@@ -127,7 +127,7 @@ public struct HandoutsUpdatesDetailView: View {
                     Spacer(minLength: 84)
                     
                 }.background(
-                    CoreAssets.background.swiftUIColor
+                    Theme.Colors.background
                         .ignoresSafeArea()
                 )
             }

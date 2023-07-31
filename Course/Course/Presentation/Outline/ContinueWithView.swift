@@ -35,7 +35,7 @@ struct ContinueWithView: View {
                     HStack(alignment: .top) {
                         VStack(alignment: .leading) {
                             ContinueTitle(vertical: vertical)
-                        }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                        }.foregroundColor(Theme.Colors.textPrimary)
                         Spacer()
                         UnitButtonView(type: .continueLesson, action: action)
                             .frame(width: 200)
@@ -44,7 +44,7 @@ struct ContinueWithView: View {
                 } else {
                     VStack(alignment: .leading) {
                         ContinueTitle(vertical: vertical)
-                            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                            .foregroundColor(Theme.Colors.textPrimary)
                     }
                     UnitButtonView(type: .continueLesson, action: action)
                 }
@@ -62,7 +62,7 @@ private struct ContinueTitle: View {
     var body: some View {
         Text(CoreLocalization.Courseware.continueWith)
             .font(Theme.Fonts.labelMedium)
-            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+            .foregroundColor(Theme.Colors.textSecondary)
         HStack {
             vertical.type.image
             Text(vertical.displayName)

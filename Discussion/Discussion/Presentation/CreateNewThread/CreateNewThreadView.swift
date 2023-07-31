@@ -36,7 +36,7 @@ public struct CreateNewThreadView: View {
         Task {
             await viewModel.getTopics(courseID: courseID)
         }
-        UISegmentedControl.appearance().selectedSegmentTintColor = CoreAssets.accentColor.color
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Theme.Colors.accentColor)
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
     }
     
@@ -60,7 +60,7 @@ public struct CreateNewThreadView: View {
                             HStack {
                                 Text(DiscussionLocalization.CreateThread.selectPostType)
                                     .font(Theme.Fonts.titleMedium)
-                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.top, 32)
                                 Spacer()
                             }
@@ -95,14 +95,14 @@ public struct CreateNewThreadView: View {
                                         Spacer()
                                         Image(systemName: "chevron.down")
                                     }.padding(.horizontal, 14)
-                                        .accentColor(CoreAssets.textPrimary.swiftUIColor)
+                                        .accentColor(Theme.Colors.textPrimary)
                                         .background(Theme.Shapes.textInputShape
-                                            .fill(CoreAssets.textInputBackground.swiftUIColor)
+                                            .fill(Theme.Colors.textInputBackground)
                                         )
                                         .overlay(
                                             Theme.Shapes.textInputShape
                                                 .stroke(lineWidth: 1)
-                                                .fill(CoreAssets.textInputStroke.swiftUIColor)
+                                                .fill(Theme.Colors.textInputStroke)
                                         )
                                 }
                             }
@@ -119,13 +119,13 @@ public struct CreateNewThreadView: View {
                                 .frame(height: 40)
                                 .background(
                                     Theme.Shapes.textInputShape
-                                        .fill(CoreAssets.textInputBackground.swiftUIColor)
+                                        .fill(Theme.Colors.textInputBackground)
                                 )
                                 .overlay(
                                     Theme.Shapes.textInputShape
                                         .stroke(lineWidth: 1)
                                         .fill(
-                                            CoreAssets.textInputStroke.swiftUIColor
+                                            Theme.Colors.textInputStroke
                                         )
                                 )
                             
@@ -142,13 +142,13 @@ public struct CreateNewThreadView: View {
                                 .hideScrollContentBackground()
                                 .background(
                                     Theme.Shapes.textInputShape
-                                        .fill(CoreAssets.textInputBackground.swiftUIColor)
+                                        .fill(Theme.Colors.textInputBackground)
                                 )
                                 .overlay(
                                     Theme.Shapes.textInputShape
                                         .stroke(lineWidth: 1)
                                         .fill(
-                                            CoreAssets.textInputStroke.swiftUIColor
+                                            Theme.Colors.textInputStroke
                                         )
                                 )
                             
@@ -189,7 +189,7 @@ public struct CreateNewThreadView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

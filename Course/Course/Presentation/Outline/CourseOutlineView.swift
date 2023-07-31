@@ -60,7 +60,7 @@ public struct CourseOutlineView: View {
                                 // MARK: - Course Certificate
                                 if let certificate = viewModel.courseStructure?.certificate {
                                     if let url = certificate.url, url.count > 0 {
-                                        CoreAssets.certificateForeground.swiftUIColor
+                                        Theme.Colors.certificateForeground
                                         VStack(alignment: .center, spacing: 8) {
                                             CoreAssets.certificate.swiftUIImage
                                             Text(CourseLocalization.Outline.congratulations)
@@ -181,7 +181,7 @@ public struct CourseOutlineView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -207,7 +207,7 @@ struct CourseStructureView: View {
             Text(chapter.displayName)
                 .font(Theme.Fonts.titleMedium)
                 .multilineTextAlignment(.leading)
-                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                .foregroundColor(Theme.Colors.textSecondary)
                 .padding(.horizontal, 24)
                 .padding(.top, 40)
             ForEach(chapter.childs, id: \.id) { child in
@@ -240,7 +240,7 @@ struct CourseStructureView: View {
                                         : proxy.size.width * 0.6,
                                         alignment: .leading
                                     )
-                            }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                            }.foregroundColor(Theme.Colors.textPrimary)
                             Spacer()
                             if let state = viewModel.downloadState[child.id] {
                                 switch state {
@@ -280,13 +280,13 @@ struct CourseStructureView: View {
                                 }
                             }
                             Image(systemName: "chevron.right")
-                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                .foregroundColor(Theme.Colors.accentColor)
                         }).padding(.horizontal, 36)
                         .padding(.vertical, 20)
                     if chapterIndex != chapters.count - 1 {
                         Divider()
                             .frame(height: 1)
-                            .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                            .overlay(Theme.Colors.cardViewStroke)
                             .padding(.horizontal, 24)
                     }
                 }

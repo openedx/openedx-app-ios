@@ -175,7 +175,7 @@ public struct CourseDetailsView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -256,7 +256,7 @@ private struct CourseTitleView: View {
             
             Text(courseDetails.org)
                 .font(Theme.Fonts.labelMedium)
-                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                .foregroundColor(Theme.Colors.accentColor)
                 .padding(.horizontal, 26)
                 .padding(.top, 10)
         }

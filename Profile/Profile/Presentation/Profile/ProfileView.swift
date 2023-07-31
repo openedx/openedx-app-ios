@@ -65,7 +65,7 @@ public struct ProfileView: View {
                             Text("@\(viewModel.userModel?.username ?? "")")
                                 .font(Theme.Fonts.labelLarge)
                                 .padding(.top, 4)
-                                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textSecondary)
                                 .padding(.bottom, 10)
                             
                             // MARK: - Profile Info
@@ -79,20 +79,20 @@ public struct ProfileView: View {
                                         if viewModel.userModel?.yearOfBirth != 0 {
                                             HStack {
                                                 Text(ProfileLocalization.Edit.Fields.yearOfBirth)
-                                                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                                    .foregroundColor(Theme.Colors.textSecondary)
                                                 Text(String(viewModel.userModel?.yearOfBirth ?? 0))
                                             }
                                         }
                                         if let bio = viewModel.userModel?.shortBiography, bio != "" {
                                             HStack(alignment: .top) {
                                                 Text(ProfileLocalization.bio + " ")
-                                                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                                    .foregroundColor(Theme.Colors.textSecondary)
                                                 + Text(bio)
                                             }
                                         }
                                     }
                                     .cardStyle(
-                                        bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                        bgColor: Theme.Colors.textInputUnfocusedBackground,
                                         strokeColor: .clear
                                     )
                                 }.padding(.bottom, 16)
@@ -115,7 +115,7 @@ public struct ProfileView: View {
                                         })
                                     }
                                 }.cardStyle(
-                                    bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                    bgColor: Theme.Colors.textInputUnfocusedBackground,
                                     strokeColor: .clear
                                 )
                                 
@@ -139,7 +139,7 @@ public struct ProfileView: View {
                                         .foregroundColor(.primary)
                                         Rectangle()
                                             .frame(height: 1)
-                                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                            .foregroundColor(Theme.Colors.textSecondary)
                                     }
 
                                     if let tos = viewModel.config.termsOfUse {
@@ -157,7 +157,7 @@ public struct ProfileView: View {
                                         .foregroundColor(.primary)
                                         Rectangle()
                                             .frame(height: 1)
-                                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                            .foregroundColor(Theme.Colors.textSecondary)
                                     }
 
                                     if let privacy = viewModel.config.privacyPolicy {
@@ -175,7 +175,7 @@ public struct ProfileView: View {
                                         .foregroundColor(.primary)
                                     }
                                 }.cardStyle(
-                                    bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                    bgColor: Theme.Colors.textInputUnfocusedBackground,
                                     strokeColor: .clear
                                 )
                                 
@@ -206,8 +206,8 @@ public struct ProfileView: View {
                                             Image(systemName: "rectangle.portrait.and.arrow.right")
                                         })
                                     }
-                                }.foregroundColor(CoreAssets.alert.swiftUIColor)
-                                    .cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor,
+                                }.foregroundColor(Theme.Colors.alert)
+                                    .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
                                                strokeColor: .clear)
                                     .padding(.top, 24)
                                     .padding(.bottom, 60)
@@ -242,7 +242,7 @@ public struct ProfileView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -288,7 +288,7 @@ struct UserAvatar: View {
     var body: some View {
         ZStack {
             Circle()
-                .foregroundColor(CoreAssets.avatarStroke.swiftUIColor)
+                .foregroundColor(Theme.Colors.avatarStroke)
                 .frame(width: 104, height: 104)
             if let image {
                 Image(uiImage: image)

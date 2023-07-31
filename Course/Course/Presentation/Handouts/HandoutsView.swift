@@ -96,7 +96,7 @@ struct HandoutsView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -165,20 +165,20 @@ struct HandoutsItemCell: View {
         }, label: {
             HStack(spacing: 12) {
                 type.image.renderingMode(.template)
-                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .frame(width: 24, height: 24)
                 VStack(alignment: .leading) {
                     Text(type.title)
-                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .font(Theme.Fonts.titleSmall)
                     Text(type.description)
-                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                        .foregroundColor(Theme.Colors.textSecondary)
                         .font(Theme.Fonts.labelSmall)
                 }
                 Spacer()
                 Image(systemName: "chevron.right").resizable()
                     .frame(width: 7, height: 12)
-                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                    .foregroundColor(Theme.Colors.accentColor)
             }
         }).padding(.vertical, 16)
         

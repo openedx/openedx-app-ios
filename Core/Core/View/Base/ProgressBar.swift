@@ -22,9 +22,9 @@ public struct ProgressBar: View {
     
     private let gradient = AngularGradient(
         gradient: Gradient(colors: [
-            CoreAssets.accentColor.swiftUIColor.opacity(0.7),
-            CoreAssets.accentColor.swiftUIColor.opacity(0.35),
-            CoreAssets.accentColor.swiftUIColor.opacity(0.01)]),
+            Theme.Colors.accentColor.opacity(0.7),
+            Theme.Colors.accentColor.opacity(0.35),
+            Theme.Colors.accentColor.opacity(0.01)]),
         center: .center,
         startAngle: .degrees(270),
         endAngle: .degrees(0))

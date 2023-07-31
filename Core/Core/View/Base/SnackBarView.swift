@@ -36,7 +36,7 @@ public struct SnackBarView: View {
                 .font(Theme.Fonts.titleSmall)
             }
             
-        }.shadowCardStyle(bgColor: CoreAssets.snackbarErrorColor.swiftUIColor,
+        }.shadowCardStyle(bgColor: Theme.Colors.snackbarErrorColor,
                           textColor: .white)
         .padding(.bottom, 10)
     }

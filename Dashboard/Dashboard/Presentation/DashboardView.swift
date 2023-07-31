@@ -12,10 +12,10 @@ public struct DashboardView: View {
     private let dashboardCourses: some View = VStack(alignment: .leading) {
         Text(DashboardLocalization.Header.courses)
             .font(Theme.Fonts.displaySmall)
-            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+            .foregroundColor(Theme.Colors.textPrimary)
         Text(DashboardLocalization.Header.welcomeBack)
             .font(Theme.Fonts.titleSmall)
-            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+            .foregroundColor(Theme.Colors.textPrimary)
     }.listRowBackground(Color.clear)
         .padding(.top, 24)
     
@@ -125,7 +125,7 @@ public struct DashboardView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -159,11 +159,11 @@ struct EmptyPageIcon: View {
                 .padding(.bottom, 16)
             Text(DashboardLocalization.Empty.title)
                 .font(Theme.Fonts.titleMedium)
-                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .padding(.bottom, 8)
             Text(DashboardLocalization.Empty.subtitle)
                 .font(Theme.Fonts.bodySmall)
-                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                .foregroundColor(Theme.Colors.textSecondary)
         }
         .padding(.top, 200)
     }

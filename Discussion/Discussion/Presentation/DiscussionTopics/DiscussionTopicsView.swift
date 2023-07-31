@@ -38,19 +38,19 @@ public struct DiscussionTopicsView: View {
                         .padding(.leading, 16)
                         .padding(.top, 1)
                     Text(DiscussionLocalization.Topics.search)
-                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                        .foregroundColor(Theme.Colors.textSecondary)
                     Spacer()
                 }
                 .frame(maxWidth: 532)
                 .frame(minHeight: 48)
                 .background(
                     Theme.Shapes.textInputShape
-                        .fill(CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                        .fill(Theme.Colors.textInputUnfocusedBackground)
                 )
                 .overlay(
                     Theme.Shapes.textInputShape
                         .stroke(lineWidth: 1)
-                        .fill(CoreAssets.textInputUnfocusedStroke.swiftUIColor)
+                        .fill(Theme.Colors.textInputUnfocusedStroke)
                 )
                 .onTapGesture {
                     viewModel.router.showDiscussionsSearch(courseID: courseID)
@@ -75,7 +75,7 @@ public struct DiscussionTopicsView: View {
                                     HStack {
                                         Text(DiscussionLocalization.Topics.mainCategories)
                                             .font(Theme.Fonts.titleMedium)
-                                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                            .foregroundColor(Theme.Colors.textSecondary)
                                             .padding(.horizontal, 24)
                                             .padding(.top, 40)
                                         Spacer()
@@ -94,7 +94,7 @@ public struct DiscussionTopicsView: View {
                                                     Spacer(minLength: 0)
                                                 }
                                                 .frame(maxWidth: .infinity)
-                                            }).cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                                            }).cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                 .padding(.trailing, -20)
                                         }
                                         if let followed = topics.first(where: {
@@ -110,7 +110,7 @@ public struct DiscussionTopicsView: View {
                                                     Spacer(minLength: 0)
                                                 }
                                                 .frame(maxWidth: .infinity)
-                                            }).cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                                            }).cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                 .padding(.leading, -20)
                                             
                                         }
@@ -123,7 +123,7 @@ public struct DiscussionTopicsView: View {
                                                 HStack {
                                                     Text("\(topic.name):")
                                                         .font(Theme.Fonts.titleMedium)
-                                                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                                        .foregroundColor(Theme.Colors.textSecondary)
                                                     Spacer()
                                                 }.padding(.top, 32)
                                                     .padding(.bottom, 8)
@@ -150,7 +150,7 @@ public struct DiscussionTopicsView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -201,10 +201,10 @@ public struct TopicCell: View {
             HStack {
                 Text(topic.name)
                     .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
-                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                    .foregroundColor(Theme.Colors.accentColor)
             }
         })
         

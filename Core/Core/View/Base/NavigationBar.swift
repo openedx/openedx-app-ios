@@ -24,8 +24,8 @@ public struct NavigationBar: View {
     @Binding private var rightButtonIsActive: Bool
     
     public init(title: String,
-                titleColor: Color = CoreAssets.textPrimary.swiftUIColor,
-                leftButtonColor: Color = CoreAssets.accentColor.swiftUIColor,
+                titleColor: Color = Theme.Colors.textPrimary,
+                leftButtonColor: Color = Theme.Colors.accentColor,
                 leftButtonAction: (() -> Void)? = nil,
                 rightButtonType: ButtonType? = nil,
                 rightButtonAction: (() -> Void)? = nil,
@@ -56,7 +56,7 @@ public struct NavigationBar: View {
                         CoreAssets.arrowLeft.swiftUIImage
                             .backButtonStyle(color: leftButtonColor)
                     })
-                    .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                    .foregroundColor(Theme.Colors.styledButtonText)
                     
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
@@ -76,7 +76,7 @@ public struct NavigationBar: View {
                                     .backButtonStyle(topPadding: 0)
                                 Text(CoreLocalization.done)
                                     .font(Theme.Fonts.labelLarge)
-                                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                    .foregroundColor(Theme.Colors.accentColor)
                             }.offset(y: -6)
                         case .edit:
                             CoreAssets.edit.swiftUIImage
@@ -91,7 +91,7 @@ public struct NavigationBar: View {
                     })
                     .opacity(rightButtonIsActive ? 1 : 0.3)
                     .padding(.trailing, 16)
-                    .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                    .foregroundColor(Theme.Colors.styledButtonText)
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .topTrailing)

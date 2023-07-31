@@ -36,14 +36,14 @@ public struct DeleteAccountView: View {
                             CoreAssets.deleteAccount.swiftUIImage
                                 .padding(.top, 50)
                             Text(ProfileLocalization.DeleteAccount.areYouSure)
-                                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textPrimary)
                             + Text(ProfileLocalization.DeleteAccount.wantToDelete)
-                                .foregroundColor(CoreAssets.alert.swiftUIColor)
+                                .foregroundColor(Theme.Colors.alert)
                         }.multilineTextAlignment(.center)
                             .font(Theme.Fonts.headlineSmall)
                         
                         Text(ProfileLocalization.DeleteAccount.description)
-                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                            .foregroundColor(Theme.Colors.textSecondary)
                             .font(Theme.Fonts.labelLarge)
                             .multilineTextAlignment(.center)
                             .padding(.top, 16)
@@ -51,7 +51,7 @@ public struct DeleteAccountView: View {
                         // MARK: Password
                         Group {
                             Text(ProfileLocalization.DeleteAccount.password)
-                                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textSecondary)
                                 .font(Theme.Fonts.labelLarge)
                                 .multilineTextAlignment(.leading)
                                 .padding(.top, 16)
@@ -60,24 +60,24 @@ public struct DeleteAccountView: View {
                                 SecureField(ProfileLocalization.DeleteAccount.passwordDescription,
                                             text: $viewModel.password)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textPrimary)
                             }
                             .padding(.horizontal, 14)
                             .frame(minHeight: 48)
                             .frame(maxWidth: .infinity)
                             .background(
                                 Theme.Shapes.textInputShape
-                                    .fill(CoreAssets.textInputBackground.swiftUIColor)
+                                    .fill(Theme.Colors.textInputBackground)
                             )
                             .overlay(
                                 Theme.Shapes.textInputShape
                                     .stroke(lineWidth: 1)
-                                    .fill(CoreAssets.textInputUnfocusedStroke.swiftUIColor)
+                                    .fill(Theme.Colors.textInputUnfocusedStroke)
                             )
                             Text(viewModel.incorrectPassword
                                  ? ProfileLocalization.DeleteAccount.incorrectPassword
                                  : " ")
-                            .foregroundColor(CoreAssets.alert.swiftUIColor)
+                            .foregroundColor(Theme.Colors.alert)
                             .font(Theme.Fonts.labelLarge)
                             .multilineTextAlignment(.leading)
                             .padding(.top, 0)
@@ -98,7 +98,7 @@ public struct DeleteAccountView: View {
                                 Task {
                                     try await viewModel.deleteAccount(password: viewModel.password)
                                 }
-                            }, color: CoreAssets.alert.swiftUIColor,
+                            }, color: Theme.Colors.alert,
                                          isActive: viewModel.password.count >= 2)
                             .padding(.top, 18)
                         }
@@ -142,7 +142,7 @@ public struct DeleteAccountView: View {
             }
         }
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

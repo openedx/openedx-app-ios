@@ -32,8 +32,8 @@ public struct DiscussionSearchTopicsView: View {
                         .padding(.top, -1)
                         .foregroundColor(
                             viewModel.isSearchActive
-                            ? CoreAssets.accentColor.swiftUIColor
-                            : CoreAssets.textPrimary.swiftUIColor
+                            ? Theme.Colors.accentColor
+                            : Theme.Colors.textPrimary
                         )
                     
                     TextField(
@@ -51,7 +51,7 @@ public struct DiscussionSearchTopicsView: View {
                             self.becomeFirstResponderRunOnce = true
                         }
                     })
-                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
                         Button(action: { viewModel.searchText.removeAll() }, label: {
@@ -61,7 +61,7 @@ public struct DiscussionSearchTopicsView: View {
                                 .frame(height: 24)
                                 .padding(.horizontal)
                         })
-                        .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                        .foregroundColor(Theme.Colors.styledButtonText)
                     }
                 }
                 .padding(.top, 3)
@@ -70,15 +70,15 @@ public struct DiscussionSearchTopicsView: View {
                 .background(
                     Theme.Shapes.textInputShape
                         .fill(viewModel.isSearchActive
-                              ? CoreAssets.textInputBackground.swiftUIColor
-                              : CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                              ? Theme.Colors.textInputBackground
+                              : Theme.Colors.textInputUnfocusedBackground)
                 )
                 .overlay(
                     Theme.Shapes.textInputShape
                         .stroke(lineWidth: 1)
                         .fill(viewModel.isSearchActive
-                              ? CoreAssets.accentColor.swiftUIColor
-                              : CoreAssets.textInputUnfocusedStroke.swiftUIColor)
+                              ? Theme.Colors.accentColor
+                              : Theme.Colors.textInputUnfocusedStroke)
                 )
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
@@ -148,7 +148,7 @@ public struct DiscussionSearchTopicsView: View {
                     }
                 }
             }
-            .background(CoreAssets.background.swiftUIColor.ignoresSafeArea())
+            .background(Theme.Colors.background.ignoresSafeArea())
             .addTapToEndEditing(isForced: true)
     }
     
@@ -156,10 +156,10 @@ public struct DiscussionSearchTopicsView: View {
         return VStack(alignment: .leading) {
             Text(DiscussionLocalization.Search.title)
                 .font(Theme.Fonts.displaySmall)
-                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                .foregroundColor(Theme.Colors.textPrimary)
             Text(searchDescription(viewModel: viewModel))
                 .font(Theme.Fonts.titleSmall)
-                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                .foregroundColor(Theme.Colors.textPrimary)
         }.listRowBackground(Color.clear)
     }
     
