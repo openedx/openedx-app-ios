@@ -34,8 +34,14 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
             var urlRequest = urlRequest
             
             // Set the Authorization header value using the access token.
-            if let token = appStorage.accessToken {
-                urlRequest.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+            var token: String?
+            if (appStorage.accessToken != nil) {
+                token = appStorage.accessToken
+            } else if (appStorage.jsonWebToken != nil) {
+                token = appStorage.jsonWebToken
+            }
+            if token != nil {
+                urlRequest.setValue("Bearer " + token!, forHTTPHeaderField: "Authorization")
             }
             
             completion(.success(urlRequest))

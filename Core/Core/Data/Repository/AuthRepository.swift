@@ -8,6 +8,7 @@
 import Foundation
 
 public protocol AuthRepositoryProtocol {
+    func login(token: String) async throws -> User
     func login(username: String, password: String) async throws -> User
     func getCookies(force: Bool) async throws
     func getRegistrationFields() async throws -> [PickerFields]
@@ -22,12 +23,18 @@ public class AuthRepository: AuthRepositoryProtocol {
     private let appStorage: AppStorage
     private let config: Config
     
-    public let auth0Login: Bool
     
     public init(api: API, appStorage: AppStorage, config: Config) {
         self.api = api
         self.appStorage = appStorage
         self.config = config
+    }
+    
+    public func login(token: String) async throws -> User {
+        appStorage.jsonWebToken = token
+        let user = try await api.requestData(AuthEndpoint.getUserInfo).mapResponse(DataLayer.User.self)
+        appStorage.user = user
+        return user.domain
     }
     
     public func login(username: String, password: String) async throws -> User {
@@ -102,6 +109,10 @@ public class AuthRepository: AuthRepositoryProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 class AuthRepositoryMock: AuthRepositoryProtocol {
+    func login(token: String) async throws -> User {
+        User(id: 1, username: "User", email: "email@gmail.com", name: "User Name", userAvatar: "")
+    }
+    
     func login(username: String, password: String) async throws -> User {
         User(id: 1, username: "User", email: "email@gmail.com", name: "User Name", userAvatar: "")
     }

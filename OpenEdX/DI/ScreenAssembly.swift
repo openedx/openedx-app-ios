@@ -47,6 +47,7 @@ class ScreenAssembly: Assembly {
             SignInViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(Config.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )

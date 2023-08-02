@@ -44,6 +44,19 @@ public class AppStorage {
         }
     }
     
+    public var jsonWebToken: String? {
+        get {
+            return userDefaults.string(forKey: KEY_JSON_WEB_TOKEN)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_JSON_WEB_TOKEN)
+            } else {
+                userDefaults.removeObject(forKey: KEY_JSON_WEB_TOKEN)
+            }
+        }
+    }
+    
     public var cookiesDate: String? {
         get {
             return userDefaults.string(forKey: KEY_COOKIES_DATE)
@@ -126,6 +139,7 @@ public class AppStorage {
         user = nil
     }
     
+    private let KEY_JSON_WEB_TOKEN = "jsonWebToken"
     private let KEY_ACCESS_TOKEN = "accessToken"
     private let KEY_REFRESH_TOKEN = "refreshToken"
     private let KEY_COOKIES_DATE = "cookiesDate"

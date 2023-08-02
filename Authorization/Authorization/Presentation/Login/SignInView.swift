@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Auth0
 
 public struct SignInView: View {
     
@@ -21,10 +22,19 @@ public struct SignInView: View {
     }
     
     public var body: some View {
-        if () {
-            
+        if self.viewModel.showAuth0Login {
+            return AnyView(ZStack(alignment: .top) {
+                VStack(alignment: .center) {
+                    StyledButton(AuthLocalization.SignIn.logInBtn) {
+                        Task {
+                            await viewModel.login()
+                        }
+                    }.frame(maxWidth: .infinity)
+                        .padding(.top, 40)
+                }
+            })
         }
-        ZStack(alignment: .top) {
+        return AnyView(ZStack(alignment: .top) {
             VStack {
                 CoreAssets.authBackground.swiftUIImage
                     .resizable()
@@ -152,8 +162,7 @@ public struct SignInView: View {
                     }
             }
         }
-        .background(CoreAssets.background.swiftUIColor.ignoresSafeArea(.all))
-    }
+            .background(CoreAssets.background.swiftUIColor.ignoresSafeArea(.all)))}
 }
 
 #if DEBUG
@@ -162,6 +171,7 @@ struct SignInView_Previews: PreviewProvider {
         let vm = SignInViewModel(
             interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
+            config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator()
         )

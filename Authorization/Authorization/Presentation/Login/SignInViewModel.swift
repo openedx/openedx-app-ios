@@ -9,6 +9,7 @@ import Foundation
 import Core
 import SwiftUI
 import Alamofire
+import Auth0
 
 public class SignInViewModel: ObservableObject {
     
@@ -48,6 +49,45 @@ public class SignInViewModel: ObservableObject {
         self.analytics = analytics
         self.validator = validator
         self.showAuth0Login = config.auth0ClientId != ""
+    }
+    
+    @MainActor
+    func login() async {
+        Auth0
+            .webAuth(clientId: config.auth0ClientId, domain: config.auth0Domain)
+            .start { result in
+                // This is a callback, rather than an awaitable.
+                switch result {
+                case .success(let auth0Credentials):
+                    Task {
+                        await self.postAuth0Login(token: auth0Credentials.idToken)
+                    }
+                case .failure(let authError):
+                    self.errorMessage = "\(authError)"
+                }
+            }
+    }
+    
+    private func postAuth0Login(token: String) async {
+        isShowProgress = true
+        do {
+            let user = try await interactor.login(token: token)
+            analytics.setUserID("\(user.id)")
+            analytics.userLogin(method: .auth0)
+            router.showMainScreen()
+        } catch let error {
+            isShowProgress = false
+            if let validationError = error.validationError,
+               let value = validationError.data?["error_description"] as? String {
+                errorMessage = value
+            } else if case APIError.invalidGrant = error {
+                errorMessage = CoreLocalization.Error.invalidCredentials
+            } else if error.isInternetError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
     }
      
     @MainActor

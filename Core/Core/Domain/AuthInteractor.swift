@@ -10,6 +10,8 @@ import Foundation
 //sourcery: AutoMockable
 public protocol AuthInteractorProtocol {
     @discardableResult
+    func login(token: String) async throws -> User
+    @discardableResult
     func login(username: String, password: String) async throws -> User
     func resetPassword(email: String) async throws -> ResetPassword
     func getCookies(force: Bool) async throws
@@ -29,6 +31,11 @@ public class AuthInteractor: AuthInteractorProtocol {
     @discardableResult
     public func login(username: String, password: String) async throws -> User {
         return try await repository.login(username: username, password: password)
+    }
+    
+    @discardableResult
+    public func login(token: String) async throws -> User {
+        return try await repository.login(token: token)
     }
 
     public func resetPassword(email: String) async throws -> ResetPassword {

@@ -8,6 +8,7 @@
 import Foundation
 
 public enum LoginMethod: String {
+    case auth0 = "Auth0"
     case password = "Password"
     case facebook = "Facebook"
     case google = "Google"
