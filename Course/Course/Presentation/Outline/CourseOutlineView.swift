@@ -229,7 +229,13 @@ struct CourseStructureView: View {
                         },
                         label: {
                             Group {
-                                child.type.image
+                                if child.completion == 1 {
+                                    CoreAssets.finished.swiftUIImage
+                                        .renderingMode(.template)
+                                        .foregroundColor(.accentColor)
+                                } else {
+                                    child.type.image
+                                }
                                 Text(child.displayName)
                                     .font(Theme.Fonts.titleMedium)
                                     .multilineTextAlignment(.leading)
