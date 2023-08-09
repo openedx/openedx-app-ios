@@ -42,11 +42,8 @@ public struct CreateNewThreadView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: DiscussionLocalization.CreateThread.newPost,
-                              leftButtonAction: { viewModel.router.back() })
+                Spacer(minLength: 12)
                 
                 // MARK: - Page Body
                 if viewModel.isShowProgress {
@@ -188,6 +185,9 @@ public struct CreateNewThreadView: View {
                 }
             }
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(DiscussionLocalization.CreateThread.newPost)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

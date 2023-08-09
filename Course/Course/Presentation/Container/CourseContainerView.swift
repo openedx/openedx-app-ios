@@ -18,6 +18,19 @@ public struct CourseContainerView: View {
     private var courseID: String
     private var title: String
     
+    func titleBar() -> String {
+        switch selection {
+        case .course:
+            return self.title
+        case .videos:
+            return self.title
+        case .discussion:
+           return DiscussionLocalization.title
+        case .handounds:
+            return CourseLocalization.CourseContainer.handouts
+        }
+    }
+    
     enum CourseTab {
         case course
         case videos
@@ -39,7 +52,7 @@ public struct CourseContainerView: View {
     }
     
     public var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             if let courseStart = viewModel.courseStart {
                 if courseStart > Date() {
                     CourseOutlineView(
@@ -61,7 +74,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.course)
                         }
                         .tag(CourseTab.course)
-                        .hideNavigationBar()
                         
                         CourseOutlineView(
                             viewModel: self.viewModel,
@@ -74,7 +86,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.videos)
                         }
                         .tag(CourseTab.videos)
-                        .hideNavigationBar()
                         
                         DiscussionTopicsView(courseID: courseID,
                                              viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
@@ -85,7 +96,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.discussion)
                         }
                         .tag(CourseTab.discussion)
-                        .hideNavigationBar()
                         
                         HandoutsView(courseID: courseID,
                                      viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
@@ -94,7 +104,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.handouts)
                         }
                         .tag(CourseTab.handounds)
-                        .hideNavigationBar()
                     }
                     .onFirstAppear {
                         Task {
@@ -103,7 +112,14 @@ public struct CourseContainerView: View {
                     }
                 }
             }
-        }.onChange(of: selection, perform: { selection in
+            CoreAssets.background.swiftUIColor.frame(height: 100)
+                .offset(y: -100)
+            // Hack background for navigation bar
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(titleBar())
+        .onChange(of: selection, perform: { selection in
             viewModel.trackSelectedTab(
                 selection: selection,
                 courseId: courseID,

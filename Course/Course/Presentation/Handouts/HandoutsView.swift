@@ -25,11 +25,7 @@ struct HandoutsView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: CourseLocalization.CourseContainer.handouts,
-                leftButtonAction: {viewModel.router.back() })
 
                 // MARK: - Page Body
                     if viewModel.isShowProgress {

@@ -40,8 +40,7 @@ public struct ResponsesView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: title,
-                              leftButtonAction: { router.back() })
+                Spacer(minLength: 12)
                 
                 // MARK: - Page Body
                 ScrollViewReader { scroll in
@@ -195,7 +194,11 @@ public struct ResponsesView: View {
                     }
                 }
             }
-        }.edgesIgnoringSafeArea(.bottom)
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(title)
+        .edgesIgnoringSafeArea(.bottom)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

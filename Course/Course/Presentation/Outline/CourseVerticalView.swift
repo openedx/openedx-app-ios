@@ -34,8 +34,7 @@ public struct CourseVerticalView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .center) {
-                NavigationBar(title: title,
-                              leftButtonAction: { viewModel.router.back() })
+                Spacer(minLength: 12)
                 
                 // MARK: - Page Body
                 GeometryReader { proxy in
@@ -160,6 +159,9 @@ public struct CourseVerticalView: View {
                 }
             }
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(title)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

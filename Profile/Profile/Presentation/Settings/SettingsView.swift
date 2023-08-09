@@ -23,9 +23,7 @@ public struct SettingsView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: ProfileLocalization.Settings.videoSettingsTitle,
-                              leftButtonAction: { viewModel.router.back() })
-                
+                Spacer(minLength: 12)
                 // MARK: - Page Body
                 
                 ScrollView {
@@ -83,6 +81,9 @@ public struct SettingsView: View {
                 }
             }
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(ProfileLocalization.Settings.videoSettingsTitle)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

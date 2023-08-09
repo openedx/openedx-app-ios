@@ -27,7 +27,7 @@ public struct SearchView: View {
                 NavigationBar(title: DiscoveryLocalization.search,
                                      leftButtonAction: {
                     viewModel.router.backWithFade()
-                })
+                }).padding(.bottom, -3)
                 
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
@@ -67,7 +67,6 @@ public struct SearchView: View {
                         .foregroundColor(Theme.Colors.styledButtonText)
                     }
                 }
-                .padding(.top, 3)
                 .frame(minHeight: 48)
                 .frame(maxWidth: 532)
                 .background(

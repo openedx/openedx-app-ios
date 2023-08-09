@@ -36,10 +36,7 @@ public struct DashboardView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                ZStack {
-                    Text(DashboardLocalization.title)
-                        .titleSettings()
-                }
+                Spacer(minLength: 12)
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {

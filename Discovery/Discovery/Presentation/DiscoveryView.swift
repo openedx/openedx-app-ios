@@ -37,10 +37,7 @@ public struct DiscoveryView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                ZStack {
-                    Text(DiscoveryLocalization.title)
-                        .titleSettings(top: 10)
-                }
+                Spacer(minLength: 12)
                 
                 // MARK: - Search fake field
                 HStack(spacing: 11) {

@@ -241,6 +241,8 @@ public struct ProfileView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

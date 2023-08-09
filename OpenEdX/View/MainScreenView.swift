@@ -17,6 +17,19 @@ struct MainScreenView: View {
     
     @State private var selection: MainTab = .discovery
     
+    func titleBar() -> String {
+        switch selection {
+        case .discovery:
+            return DiscoveryLocalization.title
+        case .dashboard:
+            return DashboardLocalization.title
+        case .programs:
+            return CoreLocalization.Mainscreen.programs
+        case .profile:
+            return ProfileLocalization.title
+        }
+    }
+    
     enum MainTab {
         case discovery
         case dashboard
@@ -44,7 +57,6 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
-            .hideNavigationBar()
 
             VStack {
                 DashboardView(
@@ -57,7 +69,6 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
-            .hideNavigationBar()
             
             VStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
@@ -67,7 +78,6 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.programs)
             }
             .tag(MainTab.programs)
-            .hideNavigationBar()
 
             VStack {
                 ProfileView(
@@ -79,8 +89,10 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
-            .hideNavigationBar()
         }
+        .navigationBarHidden(selection == .profile)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(titleBar())
             .onChange(of: selection, perform: { selection in
                 switch selection {
                 case .discovery:

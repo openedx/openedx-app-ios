@@ -44,12 +44,7 @@ public struct CourseUnitView: View {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
                         if viewModel.connectivity.isInternetAvaliable {
-                            NavigationBar(title: "",
-                                          leftButtonAction: {
-                                viewModel.router.back()
-                                playerStateSubject.send(VideoPlayerState.kill)
-                            }).padding(.top, 50)
-                            
+                            VStack {}.frame(height: 100)
                             LazyVStack(spacing: 0) {
                                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                                 ForEach(data, id: \.offset) { index, block in
@@ -183,13 +178,6 @@ public struct CourseUnitView: View {
                 
                 // MARK: - Course Navigation
                 VStack {
-                    NavigationBar(
-                        title: "",
-                        leftButtonAction: {
-                            viewModel.router.back()
-                            playerStateSubject.send(VideoPlayerState.kill)
-                        }).padding(.top, 50)
-                    Spacer()
                     CourseNavigationView(
                         sectionName: sectionName,
                         viewModel: viewModel,
@@ -202,7 +190,14 @@ public struct CourseUnitView: View {
                         viewModel.router.back()
                     }
             }
-        }.ignoresSafeArea()
+            .onDisappear {
+                playerStateSubject.send(VideoPlayerState.kill)
+            }
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle("")
+        .ignoresSafeArea()
             .background(
                 Theme.Colors.background
                     .ignoresSafeArea()

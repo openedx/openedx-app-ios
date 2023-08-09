@@ -52,13 +52,8 @@ public struct PostsView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
                 VStack(alignment: .center) {
-                    if showTopMenu {
-                        NavigationBar(title: title,
-                        leftButtonAction: { router.back() })
-                    }
+                    Spacer(minLength: 12)
                     // MARK: - Page Body
                     ScrollViewReader { scroll in
                         VStack {
@@ -206,6 +201,9 @@ public struct PostsView: View {
                         maxHeight: .infinity)
             }
         }
+        .navigationBarHidden(!showTopMenu)
+        .navigationBarBackButtonHidden(!showTopMenu)
+        .navigationTitle(title)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

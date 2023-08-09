@@ -20,14 +20,10 @@ public struct VideoQualityView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: ProfileLocalization.Settings.videoQualityTitle,
-                              leftButtonAction: { viewModel.router.back() })
+                Spacer(minLength: 12)
                 
                 // MARK: - Page Body
-                
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         if viewModel.isShowProgress {
@@ -79,6 +75,9 @@ public struct VideoQualityView: View {
                 }
             }
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

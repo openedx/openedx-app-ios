@@ -21,6 +21,7 @@ public struct SignUpView: View {
         Task {
            await viewModel.getRegistrationFields()
         }
+        UINavigationBar.appearance().tintColor = .white
     }
     
     public var body: some View {
@@ -33,24 +34,6 @@ public struct SignUpView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                ZStack {
-                    HStack {
-                        Text(AuthLocalization.SignIn.registerBtn)
-                            .titleSettings(color: .white)
-                    }
-                    VStack {
-                        Button(action: { viewModel.router.back() }, label: {
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .backButtonStyle(color: .white)
-                        })
-                        .foregroundColor(Theme.Colors.styledButtonText)
-                        
-                    }.frame(minWidth: 0,
-                            maxWidth: .infinity,
-                            alignment: .topLeading)
-                    .frameLimit()
-                }
-                
                 GeometryReader { proxy in
                     ScrollViewReader { scroll in
                         ScrollView {
@@ -134,6 +117,19 @@ public struct SignUpView: View {
                             viewModel.errorMessage = nil
                         }
                     }
+            }
+        }
+        .onDisappear {
+            UINavigationBar.appearance().tintColor = CoreAssets.accentColor.color
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(AuthLocalization.SignIn.registerBtn)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(AuthLocalization.SignIn.registerBtn)
+                    .foregroundColor(.white)
+                    .font(Theme.Fonts.titleMedium)
             }
         }
         .background(Theme.Colors.background.ignoresSafeArea(.all))

@@ -36,11 +36,6 @@ public struct CourseOutlineView: View {
             // MARK: - Page name
             GeometryReader { proxy in
                 VStack(alignment: .center) {
-                    NavigationBar(
-                        title: title,
-                        leftButtonAction: { viewModel.router.back() }
-                    )
-                    
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
                         await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
@@ -146,7 +141,7 @@ public struct CourseOutlineView: View {
                             viewModel.router.back()
                         }
                 }
-                
+
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,

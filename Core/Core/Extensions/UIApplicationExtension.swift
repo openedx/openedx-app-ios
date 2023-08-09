@@ -34,3 +34,13 @@ extension UIApplication {
         return controller
     }
 }
+
+extension UINavigationController {
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        navigationBar.topItem?.backButtonDisplayMode = .minimal
+        navigationBar.backIndicatorImage = CoreAssets.arrowLeft.image
+        navigationBar.backIndicatorTransitionMaskImage = CoreAssets.arrowLeft.image
+        navigationBar.titleTextAttributes = [.foregroundColor: CoreAssets.textPrimary.color]
+    }
+}

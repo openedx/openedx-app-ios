@@ -34,15 +34,8 @@ public struct ThreadView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: title,
-                leftButtonAction: {
-                    viewModel.router.back()
-                    onBackTapped()
-                    viewModel.sendUpdateUnreadState()
-                })
+                Spacer(minLength: 12)
 
                 // MARK: - Page Body
                 ScrollViewReader { scroll in
@@ -232,7 +225,15 @@ public struct ThreadView: View {
                     }
                 }
             }
-        }.edgesIgnoringSafeArea(.bottom)
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(title)
+        .onDisappear {
+            onBackTapped()
+            viewModel.sendUpdateUnreadState()
+        }
+        .edgesIgnoringSafeArea(.bottom)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

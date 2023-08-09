@@ -69,12 +69,8 @@ public struct HandoutsUpdatesDetailView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             GeometryReader { reader in
-                // MARK: - Page name
                 VStack(alignment: .center) {
-                    NavigationBar(
-                        title: title,
-                        leftButtonAction: { router.back() }
-                    )
+                    Spacer(minLength: 12)
                     
                     // MARK: - Page Body
                     VStack(alignment: .leading) {
@@ -133,6 +129,9 @@ public struct HandoutsUpdatesDetailView: View {
             }
             
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(title)
     }
 }
 

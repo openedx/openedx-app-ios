@@ -30,31 +30,9 @@ public struct EditProfileView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(
-                    title: ProfileLocalization.editProfile,
-                    leftButtonAction: {
-                        viewModel.backButtonTapped()
-                        if viewModel.profileChanges.isAvatarSaved {
-                            self.profileDidEdit((viewModel.editedProfile, viewModel.inputImage))
-                        } else {
-                            self.profileDidEdit((viewModel.editedProfile, oldAvatar))
-                        }
-                    },
-                    rightButtonType: .done,
-                    rightButtonAction: {
-                        if viewModel.isChanged {
-                            Task {
-                                viewModel.analytics.profileEditDoneClicked()
-                                await viewModel.saveProfileUpdates()
-                            }
-                        }
-                    },
-                    rightButtonIsActive: $viewModel.isChanged
-                )
-                
+                Spacer(minLength: 12)
+
                 // MARK: - Page Body
                 ScrollView {
                     VStack {
@@ -224,10 +202,39 @@ public struct EditProfileView: View {
                     .padding(.horizontal)
             }
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(ProfileLocalization.editProfile)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing, content: {
+                Button(action: {
+                    if viewModel.isChanged {
+                        Task {
+                            viewModel.analytics.profileEditDoneClicked()
+                            await viewModel.saveProfileUpdates()
+                        }
+                    }
+                }, label: {
+                    HStack(spacing: 2) {
+                        CoreAssets.done.swiftUIImage
+                        Text(CoreLocalization.done)
+                            .font(Theme.Fonts.labelLarge)
+                            .foregroundColor(Theme.Colors.accentColor)
+                    }
+                }).opacity(viewModel.isChanged ? 1 : 0.3)
+            })
+        }
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .onDisappear {
+            if viewModel.profileChanges.isAvatarSaved {
+                self.profileDidEdit((viewModel.editedProfile, viewModel.inputImage))
+            } else {
+                self.profileDidEdit((viewModel.editedProfile, oldAvatar))
+            }
+        }
     }
 }
 

@@ -26,11 +26,8 @@ public struct DiscussionTopicsView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: DiscussionLocalization.title,
-                leftButtonAction: { router.back() })
+                Spacer(minLength: 12)
                 
                 // MARK: - Search fake field
                 HStack(spacing: 11) {
@@ -149,6 +146,9 @@ public struct DiscussionTopicsView: View {
                 }.frame(maxWidth: .infinity)
             }
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(DiscussionLocalization.title)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

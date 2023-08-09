@@ -19,16 +19,9 @@ public struct DeleteAccountView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(
-                    title: ProfileLocalization.DeleteAccount.title,
-                    leftButtonAction: { viewModel.router.back() }
-                )
-                
-                .frameLimit()
-                
+                Spacer(minLength: 12)
+                                
                 // MARK: - Page Body
                 ScrollView {
                     VStack {
@@ -124,6 +117,9 @@ public struct DeleteAccountView: View {
                     .frameLimit(sizePortrait: 420)
                 
             }
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
+            .navigationTitle(ProfileLocalization.DeleteAccount.title)
             
             // MARK: - Error Alert
             if viewModel.showError {
