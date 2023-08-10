@@ -17,19 +17,6 @@ struct MainScreenView: View {
     
     @State private var selection: MainTab = .discovery
     
-    func titleBar() -> String {
-        switch selection {
-        case .discovery:
-            return DiscoveryLocalization.title
-        case .dashboard:
-            return DashboardLocalization.title
-        case .programs:
-            return CoreLocalization.Mainscreen.programs
-        case .profile:
-            return ProfileLocalization.title
-        }
-    }
-    
     enum MainTab {
         case discovery
         case dashboard
@@ -37,7 +24,7 @@ struct MainScreenView: View {
         case profile
     }
     
-    let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
+    private let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
     
     init() {
         UINavigationBar.appearance().isTranslucent = false
@@ -68,7 +55,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
-
+            
             VStack {
                 DashboardView(
                     viewModel: Container.shared.resolve(DashboardViewModel.self)!,
@@ -89,7 +76,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.programs)
             }
             .tag(MainTab.programs)
-
+            
             VStack {
                 ProfileView(
                     viewModel: Container.shared.resolve(ProfileViewModel.self)!
@@ -104,18 +91,31 @@ struct MainScreenView: View {
         .navigationBarHidden(selection == .profile)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())
-            .onChange(of: selection, perform: { selection in
-                switch selection {
-                case .discovery:
-                    analytics.mainDiscoveryTabClicked()
-                case .dashboard:
-                    analytics.mainDashboardTabClicked()
-                case .programs:
-                    analytics.mainProgramsTabClicked()
-                case .profile:
-                    analytics.mainProfileTabClicked()
-                }
-            })
+        .onChange(of: selection, perform: { selection in
+            switch selection {
+            case .discovery:
+                analytics.mainDiscoveryTabClicked()
+            case .dashboard:
+                analytics.mainDashboardTabClicked()
+            case .programs:
+                analytics.mainProgramsTabClicked()
+            case .profile:
+                analytics.mainProfileTabClicked()
+            }
+        })
+    }
+    
+    private func titleBar() -> String {
+        switch selection {
+        case .discovery:
+            return DiscoveryLocalization.title
+        case .dashboard:
+            return DashboardLocalization.title
+        case .programs:
+            return CoreLocalization.Mainscreen.programs
+        case .profile:
+            return ProfileLocalization.title
+        }
     }
     
     struct MainScreenView_Previews: PreviewProvider {
