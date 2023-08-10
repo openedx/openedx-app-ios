@@ -22,6 +22,15 @@ public struct SignUpView: View {
            await viewModel.getRegistrationFields()
         }
         UINavigationBar.appearance().tintColor = .white
+        let coloredNavAppearance = UINavigationBarAppearance()
+        coloredNavAppearance.configureWithOpaqueBackground()
+        coloredNavAppearance.setBackIndicatorImage(CoreAssets.arrowLeft.image,
+                                                   transitionMaskImage: CoreAssets.arrowLeft.image)
+        coloredNavAppearance.backgroundColor = .clear
+        UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().standardAppearance = coloredNavAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = coloredNavAppearance
+        UINavigationBar.appearance().compactAppearance = coloredNavAppearance
     }
     
     public var body: some View {

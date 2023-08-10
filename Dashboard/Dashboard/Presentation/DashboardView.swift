@@ -19,16 +19,13 @@ public struct DashboardView: View {
     }.listRowBackground(Color.clear)
         .padding(.top, 24)
     
-    @ObservedObject
+    @StateObject
     private var viewModel: DashboardViewModel
     private let router: DashboardRouter
     
     public init(viewModel: DashboardViewModel, router: DashboardRouter) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.router = router
-        Task {
-            await viewModel.getMyCourses(page: 1)
-        }
     }
     
     public var body: some View {
@@ -119,6 +116,11 @@ public struct DashboardView: View {
                         viewModel.errorMessage = nil
                     }
                 }
+            }
+        }
+        .onFirstAppear {
+            Task {
+                await viewModel.getMyCourses(page: 1)
             }
         }
         .background(

@@ -10,7 +10,7 @@ import Core
 
 public struct DiscoveryView: View {
     
-    @ObservedObject
+    @StateObject
     private var viewModel: DiscoveryViewModel
     private let router: DiscoveryRouter
     @State private var isRefreshing: Bool = false
@@ -25,11 +25,8 @@ public struct DiscoveryView: View {
     }.listRowBackground(Color.clear)
     
     public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.router = router
-        Task {
-            await viewModel.discovery(page: 1)
-        }
     }
     
     public var body: some View {
@@ -141,6 +138,11 @@ public struct DiscoveryView: View {
                         viewModel.errorMessage = nil
                     }
                 }
+            }
+        }
+        .onFirstAppear {
+            Task {
+                await viewModel.discovery(page: 1)
             }
         }
         .background(Theme.Colors.background.ignoresSafeArea())

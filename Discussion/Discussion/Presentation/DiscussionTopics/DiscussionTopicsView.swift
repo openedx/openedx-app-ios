@@ -11,16 +11,13 @@ import Core
 
 public struct DiscussionTopicsView: View {
     
-    @ObservedObject private var viewModel: DiscussionTopicsViewModel
+    @StateObject private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
     
     public init(courseID: String, viewModel: DiscussionTopicsViewModel, router: DiscussionRouter) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
-        Task {
-            await viewModel.getTopics(courseID: courseID)
-        }
         self.router = router
     }
     
@@ -144,6 +141,11 @@ public struct DiscussionTopicsView: View {
                                 }
                     }
                 }.frame(maxWidth: .infinity)
+            }
+        }
+        .onFirstAppear {
+            Task {
+                await viewModel.getTopics(courseID: courseID)
             }
         }
         .navigationBarHidden(false)

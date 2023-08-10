@@ -11,13 +11,10 @@ import Kingfisher
 
 public struct ProfileView: View {
     
-    @ObservedObject private var viewModel: ProfileViewModel
+    @StateObject private var viewModel: ProfileViewModel
     
     public init(viewModel: ProfileViewModel) {
-        self.viewModel = viewModel
-        Task {
-            await viewModel.getMyProfile()
-        }
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
     
     public var body: some View {
@@ -239,6 +236,11 @@ public struct ProfileView: View {
                         viewModel.errorMessage = nil
                     }
                 }
+            }
+        }
+        .onFirstAppear {
+            Task {
+                await viewModel.getMyProfile()
             }
         }
         .navigationBarHidden(true)

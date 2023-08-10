@@ -11,7 +11,7 @@ import Kingfisher
 
 public struct CourseOutlineView: View {
     
-    @ObservedObject private var viewModel: CourseContainerViewModel
+    @StateObject private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -26,7 +26,7 @@ public struct CourseOutlineView: View {
         isVideo: Bool
     ) {
         self.title = title
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self.isVideo = isVideo
     }

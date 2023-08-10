@@ -28,9 +28,9 @@ class BuildConfiguration {
     var baseURL: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "https://example-dev.com"
+            return "https://lms-rg-app-ios-dev.raccoongang.com"
         case .debugStage, .releaseStage:
-            return "https://example-stage.com"
+            return "https://lms-rg-app-ios-stage.raccoongang.com"
         case .debugProd, .releaseProd:
             return "https://example.com"
         }
@@ -39,9 +39,9 @@ class BuildConfiguration {
     var clientId: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "DEV_CLIENT_ID"
+            return "T7od4OFlYni7hTMnepfQuF1XUoqsESjEClltL40T"
         case .debugStage, .releaseStage:
-            return "STAGE_CLIENT_ID"
+            return "kHDbLaYlc1lpY1obmyAAEp9dX9qPqeDrBiVGQFIy"
         case .debugProd, .releaseProd:
             return "PROD_CLIENT_ID"
         }
@@ -50,23 +50,23 @@ class BuildConfiguration {
     var firebaseOptions: FirebaseOptions {
         switch environment {
         case .debugDev, .releaseDev:
-            let firebaseOptions = FirebaseOptions(googleAppID: "",
-                                                  gcmSenderID: "")
-            firebaseOptions.apiKey = ""
-            firebaseOptions.projectID = ""
-            firebaseOptions.bundleID = ""
-            firebaseOptions.clientID = ""
-            firebaseOptions.storageBucket = ""
+            let firebaseOptions = FirebaseOptions(googleAppID: "1:60657986297:ios:bf0254060e5c3779581028",
+                                                  gcmSenderID: "60657986297")
+            firebaseOptions.apiKey = "AIzaSyCKj--Dfkq08r4P1d2q7Tz36gu9SQ9Apbs"
+            firebaseOptions.projectID = "openedxmobile-dev"
+            firebaseOptions.bundleID = "com.raccoongang.NewEdX.dev"
+            firebaseOptions.clientID = "60657986297-t6utefrq6tt0tscr85igqh0ni9gtis8l.apps.googleusercontent.com"
+            firebaseOptions.storageBucket = "openedxmobile-dev.appspot.com"
             
             return firebaseOptions
         case .debugStage, .releaseStage:
-            let firebaseOptions = FirebaseOptions(googleAppID: "",
-                                                  gcmSenderID: "")
-            firebaseOptions.apiKey = ""
-            firebaseOptions.projectID = ""
-            firebaseOptions.bundleID = ""
-            firebaseOptions.clientID = ""
-            firebaseOptions.storageBucket = ""
+            let firebaseOptions = FirebaseOptions(googleAppID: "1:156114692773:ios:8058bca851a8bc7c187b4c",
+                                                  gcmSenderID: "156114692773")
+            firebaseOptions.apiKey = "AIzaSyCKAIXDLM7pnX43P_viTsfgbxrLBOaJwGo"
+            firebaseOptions.projectID = "openedxmobile-stage"
+            firebaseOptions.bundleID = "com.raccoongang.NewEdX.stage"
+            firebaseOptions.clientID = "156114692773-r5pgdcdjqq7sup75fdla4lk3q3kjc6m8.apps.googleusercontent.com"
+            firebaseOptions.storageBucket = "openedxmobile-stage.appspot.com"
             
             return firebaseOptions
         case .debugProd, .releaseProd:

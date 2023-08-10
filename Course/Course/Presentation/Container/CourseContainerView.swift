@@ -112,9 +112,6 @@ public struct CourseContainerView: View {
                     }
                 }
             }
-            CoreAssets.background.swiftUIColor.frame(height: 100)
-                .offset(y: -100)
-            // Hack background for navigation bar
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)

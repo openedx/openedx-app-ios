@@ -40,6 +40,17 @@ struct MainScreenView: View {
     let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
     
     init() {
+        UINavigationBar.appearance().isTranslucent = false
+        
+        let coloredNavAppearance = UINavigationBarAppearance()
+        coloredNavAppearance.configureWithTransparentBackground()
+        coloredNavAppearance.setBackIndicatorImage(CoreAssets.arrowLeft.image,
+                                                   transitionMaskImage: CoreAssets.arrowLeft.image)
+        coloredNavAppearance.backgroundColor = CoreAssets.background.color
+        UINavigationBar.appearance().standardAppearance = coloredNavAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = coloredNavAppearance
+        UINavigationBar.appearance().compactAppearance = coloredNavAppearance
+        
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
