@@ -27,9 +27,6 @@ public struct DiscoveryView: View {
     public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
         self.viewModel = viewModel
         self.router = router
-        Task {
-            await viewModel.discovery(page: 1)
-        }
     }
     
     public var body: some View {
@@ -83,25 +80,28 @@ public struct DiscoveryView: View {
                                     .padding(.bottom, 20)
                                 Spacer()
                             }.padding(.leading, 10)
-                            ForEach(Array(viewModel.courses.enumerated()),
-                                    id: \.offset) { index, course in
-                                CourseCellView(model: course,
-                                               type: .discovery,
-                                               index: index,
-                                               cellsCount: viewModel.courses.count)
-                                .padding(.horizontal, 24)
-                                .onAppear {
-                                    Task {
-                                        await viewModel.getDiscoveryCourses(index: index)
+                            ForEach(Array(viewModel.courses.enumerated()), id: \.offset) { index, course in
+                                CourseCellView(
+                                    model: course,
+                                    type: .discovery,
+                                    index: index,
+                                    cellsCount: viewModel.courses.count
+                                ).padding(.horizontal, 24)
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.getDiscoveryCourses(index: index)
+                                        }
                                     }
-                                }
-                                .onTapGesture {
-                                    viewModel.discoveryCourseClicked(courseID: course.courseID, courseName: course.name)
-                                    router.showCourseDetais(
-                                        courseID: course.courseID,
-                                        title: course.name
-                                    )
-                                }
+                                    .onTapGesture {
+                                        viewModel.discoveryCourseClicked(
+                                            courseID: course.courseID,
+                                            courseName: course.name
+                                        )
+                                        router.showCourseDetais(
+                                            courseID: course.courseID,
+                                            title: course.name
+                                        )
+                                    }
                             }
                             
                             // MARK: - ProgressBar
@@ -119,13 +119,14 @@ public struct DiscoveryView: View {
             }
             
             // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                reloadAction: {
-                viewModel.courses = []
-                viewModel.totalPages = 1
-                viewModel.nextPage = 1
-                await viewModel.discovery(page: 1, withProgress: isIOS14)
-            })
+            OfflineSnackBarView(
+                connectivity: viewModel.connectivity,
+                reloadAction: {
+                    viewModel.courses = []
+                    viewModel.totalPages = 1
+                    viewModel.nextPage = 1
+                    await viewModel.discovery(page: 1, withProgress: isIOS14)
+                })
             
             // MARK: - Error Alert
             if viewModel.showError {
@@ -141,6 +142,11 @@ public struct DiscoveryView: View {
                         viewModel.errorMessage = nil
                     }
                 }
+            }
+        }
+        .onFirstAppear {
+            Task {
+                await viewModel.discovery(page: 1)
             }
         }
         .background(Theme.Colors.background.ignoresSafeArea())
