@@ -44,7 +44,6 @@ public struct CourseUnitView: View {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
                         if viewModel.connectivity.isInternetAvaliable {
-                            VStack {}.frame(height: 100)
                             LazyVStack(spacing: 0) {
                                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                                 ForEach(data, id: \.offset) { index, block in
@@ -62,7 +61,6 @@ public struct CourseUnitView: View {
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
                                                 ).frameLimit()
-                                                Spacer(minLength: 100)
                                                 
                                                 // MARK: Encoded Video
                                             case let .video(encodedUrl, blockID):
@@ -78,7 +76,7 @@ public struct CourseUnitView: View {
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
                                                 ).frameLimit()
-                                                Spacer(minLength: 100)
+
                                                 // MARK: Web
                                             case .web(let url):
                                                 WebView(url: url, viewModel: viewModel)
@@ -99,14 +97,9 @@ public struct CourseUnitView: View {
                                                         )
                                                         Spacer(minLength: 100)
                                                     } else {
-                                                        DiscussionView(
-                                                            id: viewModel.courseID,
-                                                            blockID: blockID,
-                                                            blockKey: blockKey,
-                                                            title: title,
-                                                            viewModel: viewModel
-                                                        ).drawingGroup()
-                                                        Spacer(minLength: 100)
+                                                        VStack {
+                                                            Color.clear
+                                                        }
                                                     }
                                                 }.frameLimit()
                                             }

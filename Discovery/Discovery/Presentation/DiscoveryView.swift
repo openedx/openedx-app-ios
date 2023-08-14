@@ -34,7 +34,6 @@ public struct DiscoveryView: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                Spacer(minLength: 12)
                 
                 // MARK: - Search fake field
                 HStack(spacing: 11) {
@@ -116,7 +115,7 @@ public struct DiscoveryView: View {
                         }
                     }.frameLimit()
                 }
-            }
+            }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(

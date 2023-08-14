@@ -140,7 +140,7 @@ public struct CourseOutlineView: View {
                         .onRightSwipeGesture {
                             viewModel.router.back()
                         }
-                }
+                }.padding(.top, 8)
 
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
@@ -168,7 +168,6 @@ public struct CourseOutlineView: View {
                 if viewModel.isShowProgress {
                     VStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.top, 200)
                             .padding(.horizontal)
                     }.frame(maxWidth: .infinity,
                             maxHeight: .infinity)

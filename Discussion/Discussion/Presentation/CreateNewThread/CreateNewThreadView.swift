@@ -43,7 +43,6 @@ public struct CreateNewThreadView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .center) {
-                Spacer(minLength: 12)
                 
                 // MARK: - Page Body
                 if viewModel.isShowProgress {
@@ -183,7 +182,7 @@ public struct CreateNewThreadView: View {
                             }
                     }.scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 }
-            }
+            }.padding(.top, 8)
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)

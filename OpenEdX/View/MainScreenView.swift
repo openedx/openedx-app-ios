@@ -16,6 +16,7 @@ import SwiftUIIntrospect
 struct MainScreenView: View {
     
     @State private var selection: MainTab = .discovery
+    @State private var settingsTapped: Bool = false
     
     enum MainTab {
         case discovery
@@ -27,7 +28,6 @@ struct MainScreenView: View {
     private let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
     
     init() {
-        UINavigationBar.appearance().isTranslucent = false
         
         let coloredNavAppearance = UINavigationBarAppearance()
         coloredNavAppearance.configureWithTransparentBackground()
@@ -37,7 +37,8 @@ struct MainScreenView: View {
         UINavigationBar.appearance().standardAppearance = coloredNavAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = coloredNavAppearance
         UINavigationBar.appearance().compactAppearance = coloredNavAppearance
-        
+        UINavigationBar.appearance().isTranslucent = false
+
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
@@ -79,7 +80,7 @@ struct MainScreenView: View {
             
             VStack {
                 ProfileView(
-                    viewModel: Container.shared.resolve(ProfileViewModel.self)!
+                    viewModel: Container.shared.resolve(ProfileViewModel.self)!, settingsTapped: $settingsTapped
                 )
             }
             .tabItem {
@@ -88,9 +89,23 @@ struct MainScreenView: View {
             }
             .tag(MainTab.profile)
         }
-        .navigationBarHidden(selection == .profile)
+        .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing, content: {
+                if selection == .profile {
+                    Button(action: {
+                        settingsTapped.toggle()
+                    }, label: {
+                        CoreAssets.edit.swiftUIImage
+                            .foregroundColor(Theme.Colors.textPrimary)
+                    })
+                } else {
+                    VStack {}
+                }
+            })
+        }
         .onChange(of: selection, perform: { selection in
             switch selection {
             case .discovery:

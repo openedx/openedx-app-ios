@@ -37,11 +37,6 @@ public struct ResponsesView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
-            VStack(alignment: .center) {
-                Spacer(minLength: 12)
-                
                 // MARK: - Page Body
                 ScrollViewReader { scroll in
                     VStack {
@@ -180,7 +175,7 @@ public struct ResponsesView: View {
                     })
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }.scrollAvoidKeyboard(dismissKeyboardByTap: true)
-            }
+            .padding(.top, 8)
             // MARK: - Error Alert
             if viewModel.showError {
                 VStack {

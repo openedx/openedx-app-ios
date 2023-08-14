@@ -30,108 +30,105 @@ public struct EditProfileView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            VStack(alignment: .center) {
-                Spacer(minLength: 12)
-
-                // MARK: - Page Body
-                ScrollView {
-                    VStack {
-                        Text(viewModel.profileChanges.profileType.localizedValue.capitalized)
-                            .font(Theme.Fonts.titleSmall)
-                            .foregroundColor(Theme.Colors.textSecondary)
-                        Button(action: {
-                            withAnimation {
-                                showingBottomSheet.toggle()
-                            }
-                        }, label: {
-                            UserAvatar(url: viewModel.userModel.avatarUrl, image: $viewModel.inputImage)
-                                .padding(.top, 30)
-                                .overlay(
-                                    ZStack {
-                                        Circle().frame(width: 36, height: 36)
-                                            .foregroundColor(Theme.Colors.accentColor)
-                                        CoreAssets.addPhoto.swiftUIImage
-                                            .foregroundColor(.white)
-                                    }.offset(x: 36, y: 50)
-                                )
-                        }).disabled(!viewModel.isEditable)
-                        
-                        Text(viewModel.userModel.name)
-                            .font(Theme.Fonts.headlineSmall)
-                        
-                        Button(ProfileLocalization.switchTo + " " +
-                               viewModel.profileChanges.profileType.switchToButtonTitle,
-                               action: {
-                            viewModel.switchProfile()
-                        }).padding(.vertical, 24)
-                            .font(Theme.Fonts.labelLarge)
-                        
-                        Group {
-                            PickerView(
-                                config: viewModel.yearsConfiguration,
-                                router: viewModel.router
+            // MARK: - Page Body
+            ScrollView {
+                VStack {
+                    Text(viewModel.profileChanges.profileType.localizedValue.capitalized)
+                        .font(Theme.Fonts.titleSmall)
+                        .foregroundColor(Theme.Colors.textSecondary)
+                    Button(action: {
+                        withAnimation {
+                            showingBottomSheet.toggle()
+                        }
+                    }, label: {
+                        UserAvatar(url: viewModel.userModel.avatarUrl, image: $viewModel.inputImage)
+                            .padding(.top, 30)
+                            .overlay(
+                                ZStack {
+                                    Circle().frame(width: 36, height: 36)
+                                        .foregroundColor(Theme.Colors.accentColor)
+                                    CoreAssets.addPhoto.swiftUIImage
+                                        .foregroundColor(.white)
+                                }.offset(x: 36, y: 50)
                             )
-                            if viewModel.isEditable {
-                                VStack(alignment: .leading) {
-                                    PickerView(config: viewModel.countriesConfiguration,
-                                               router: viewModel.router)
-                                    
-                                    PickerView(config: viewModel.spokenLanguageConfiguration,
-                                               router: viewModel.router)
-                                    
-                                    Text(ProfileLocalization.Edit.Fields.aboutMe)
-                                        .font(Theme.Fonts.titleMedium)
-                                    TextEditor(text: $viewModel.profileChanges.shortBiography)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 4)
-                                        .frame(height: 200)
-                                        .hideScrollContentBackground()
-                                        .background(
-                                            Theme.Shapes.textInputShape
-                                                .fill(Theme.Colors.textInputBackground)
-                                        )
-                                        .overlay(
-                                            Theme.Shapes.textInputShape
-                                                .stroke(lineWidth: 1)
-                                                .fill(
-                                                    Theme.Colors.textInputStroke
-                                                )
-                                        )
-                                }
-                            }
-                        }
-                        .onReceive(viewModel.yearsConfiguration.$text
-                            .combineLatest(viewModel.countriesConfiguration.$text,
-                                           viewModel.spokenLanguageConfiguration.$text),
-                                   perform: { _ in
-                            viewModel.checkChanges()
-                            viewModel.checkProfileType()
-                        })
-                        .onChange(of: viewModel.profileChanges) { _ in
-                            viewModel.checkChanges()
-                            viewModel.checkProfileType()
-                        }
-                        .onChange(of: viewModel.profileChanges.shortBiography, perform: { bio in
-                            if bio.count > 300 {
-                                viewModel.profileChanges.shortBiography.removeLast()
-                            }
-                        })
-                        
-                        Button(ProfileLocalization.Edit.deleteAccount, action: {
-                            viewModel.analytics.profileDeleteAccountClicked()
-                            viewModel.router.showDeleteProfileView()
-                        })
+                    }).disabled(!viewModel.isEditable)
+                    
+                    Text(viewModel.userModel.name)
+                        .font(Theme.Fonts.headlineSmall)
+                    
+                    Button(ProfileLocalization.switchTo + " " +
+                           viewModel.profileChanges.profileType.switchToButtonTitle,
+                           action: {
+                        viewModel.switchProfile()
+                    }).padding(.vertical, 24)
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundColor(Theme.Colors.alert)
-                        .padding(.top, 44)
-                        
-                        Spacer(minLength: 84)
-                    }.padding(.horizontal, 24)
-                        .sheet(isPresented: $showingImagePicker) {
-                            ImagePickerView(image: $viewModel.inputImage)
-                                .ignoresSafeArea()
+                    
+                    Group {
+                        PickerView(
+                            config: viewModel.yearsConfiguration,
+                            router: viewModel.router
+                        )
+                        if viewModel.isEditable {
+                            VStack(alignment: .leading) {
+                                PickerView(config: viewModel.countriesConfiguration,
+                                           router: viewModel.router)
+                                
+                                PickerView(config: viewModel.spokenLanguageConfiguration,
+                                           router: viewModel.router)
+                                
+                                Text(ProfileLocalization.Edit.Fields.aboutMe)
+                                    .font(Theme.Fonts.titleMedium)
+                                TextEditor(text: $viewModel.profileChanges.shortBiography)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 4)
+                                    .frame(height: 200)
+                                    .hideScrollContentBackground()
+                                    .background(
+                                        Theme.Shapes.textInputShape
+                                            .fill(Theme.Colors.textInputBackground)
+                                    )
+                                    .overlay(
+                                        Theme.Shapes.textInputShape
+                                            .stroke(lineWidth: 1)
+                                            .fill(
+                                                Theme.Colors.textInputStroke
+                                            )
+                                    )
+                            }
                         }
-                }
+                    }
+                    .onReceive(viewModel.yearsConfiguration.$text
+                        .combineLatest(viewModel.countriesConfiguration.$text,
+                                       viewModel.spokenLanguageConfiguration.$text),
+                               perform: { _ in
+                        viewModel.checkChanges()
+                        viewModel.checkProfileType()
+                    })
+                    .onChange(of: viewModel.profileChanges) { _ in
+                        viewModel.checkChanges()
+                        viewModel.checkProfileType()
+                    }
+                    .onChange(of: viewModel.profileChanges.shortBiography, perform: { bio in
+                        if bio.count > 300 {
+                            viewModel.profileChanges.shortBiography.removeLast()
+                        }
+                    })
+                    
+                    Button(ProfileLocalization.Edit.deleteAccount, action: {
+                        viewModel.analytics.profileDeleteAccountClicked()
+                        viewModel.router.showDeleteProfileView()
+                    })
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.alert)
+                    .padding(.top, 44)
+                    
+                    Spacer(minLength: 84)
+                }.padding(.horizontal, 24)
+                    .sheet(isPresented: $showingImagePicker) {
+                        ImagePickerView(image: $viewModel.inputImage)
+                            .ignoresSafeArea()
+                    }
+            }.padding(.top, 8)
                 .onChange(of: showingImagePicker, perform: { value in
                     if !value {
                         if let image = viewModel.inputImage {
@@ -148,10 +145,9 @@ public struct EditProfileView: View {
                         self.profileDidEdit((viewModel.editedProfile, oldAvatar))
                     }
                 }
-                
                 .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 .frameLimit(sizePortrait: 420)
-            }.ignoresSafeArea(edges: .bottom)
+                .ignoresSafeArea(edges: .bottom)
             // MARK: - Error Alert
             if viewModel.showError {
                 VStack {

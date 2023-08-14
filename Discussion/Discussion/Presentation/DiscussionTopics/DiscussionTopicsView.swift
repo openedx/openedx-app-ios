@@ -22,10 +22,8 @@ public struct DiscussionTopicsView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .center) {
             VStack(alignment: .center) {
-                Spacer(minLength: 12)
-                
                 // MARK: - Search fake field
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
@@ -59,11 +57,6 @@ public struct DiscussionTopicsView: View {
                             await viewModel.getTopics(courseID: self.courseID, withProgress: isIOS14)
                         }) {
                             VStack {
-                                if viewModel.isShowProgress {
-                                    ProgressBar(size: 40, lineWidth: 8)
-                                        .padding(.horizontal)
-                                        .padding(.top, 200)
-                                }
                                 
                                 if let topics = viewModel.discussionTopics {
                                     HStack {
@@ -141,6 +134,10 @@ public struct DiscussionTopicsView: View {
                                 }
                     }
                 }.frame(maxWidth: .infinity)
+            }.padding(.top, 8)
+            if viewModel.isShowProgress {
+                ProgressBar(size: 40, lineWidth: 8)
+                    .padding(.horizontal)
             }
         }
         .onFirstAppear {

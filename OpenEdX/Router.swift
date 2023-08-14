@@ -57,6 +57,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func showMainScreen() {
+        showToolBar()
         let controller = UIHostingController(rootView: MainScreenView())
         navigationController.setViewControllers([controller], animated: true)
     }
@@ -402,5 +403,9 @@ public class Router: AuthorizationRouter,
         hosting.modalTransitionStyle = transitionStyle
         hosting.modalPresentationStyle = .overFullScreen
         return hosting
+    }
+    
+    private func showToolBar() {
+        self.navigationController.setNavigationBarHidden(false, animated: false)
     }
 }
