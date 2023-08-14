@@ -239,8 +239,6 @@ public struct ProfileView: View {
                 await viewModel.getMyProfile()
             }
         }
-        .navigationBarHidden(true)
-        .navigationBarBackButtonHidden(true)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
