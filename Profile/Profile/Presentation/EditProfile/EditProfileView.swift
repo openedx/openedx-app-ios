@@ -115,7 +115,7 @@ public struct EditProfileView: View {
                     })
                     
                     Button(ProfileLocalization.Edit.deleteAccount, action: {
-                        viewModel.analytics.profileDeleteAccountClicked()
+                        viewModel.trackProfileDeleteAccountClicked()
                         viewModel.router.showDeleteProfileView()
                     })
                     .font(Theme.Fonts.labelLarge)
@@ -206,7 +206,7 @@ public struct EditProfileView: View {
                 Button(action: {
                     if viewModel.isChanged {
                         Task {
-                            viewModel.analytics.profileEditDoneClicked()
+                            viewModel.trackProfileEditDoneClicked()
                             await viewModel.saveProfileUpdates()
                         }
                     }
@@ -237,14 +237,16 @@ public struct EditProfileView: View {
 #if DEBUG
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        let userModel = UserProfile(avatarUrl: "",
-                                    name: "Peter Parket",
-                                    username: "Peter",
-                                    dateJoined: Date(),
-                                    yearOfBirth: 0,
-                                    country: "Ukraine",
-                                    shortBiography: "",
-                                    isFullProfile: true)
+        let userModel = UserProfile(
+            avatarUrl: "",
+            name: "Peter Parket",
+            username: "Peter",
+            dateJoined: Date(),
+            yearOfBirth: 0,
+            country: "Ukraine",
+            shortBiography: "",
+            isFullProfile: true
+        )
         
         EditProfileView(
             viewModel: EditProfileViewModel(

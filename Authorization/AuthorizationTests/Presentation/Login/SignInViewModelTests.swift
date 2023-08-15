@@ -13,24 +13,26 @@ import Alamofire
 import SwiftUI
 
 final class SignInViewModelTests: XCTestCase {
-
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
+    
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-     
+    
     func testLoginValidationEmailError() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(interactor: interactor,
-                                        router: router,
-                                        analytics: analytics,
-                                        validator: validator)
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
         
         await viewModel.login(username: "email", password: "")
         
@@ -46,10 +48,12 @@ final class SignInViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(interactor: interactor,
-                                        router: router,
-                                        analytics: analytics,
-                                        validator: validator)
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
         await viewModel.login(username: "edxUser@edx.com", password: "")
         
         Verify(interactor, 0, .login(username: .any, password: .any))
@@ -64,10 +68,12 @@ final class SignInViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(interactor: interactor,
-                                        router: router,
-                                        analytics: analytics,
-                                        validator: validator)
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
         
         Given(interactor, .login(username: .any, password: .any, willReturn: user))
@@ -87,10 +93,12 @@ final class SignInViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(interactor: interactor,
-                                        router: router,
-                                        analytics: analytics,
-                                        validator: validator)
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
         
         let validationErrorMessage = "Some error"
         let validationError = CustomValidationError(statusCode: 400, data: ["error_description": validationErrorMessage])
@@ -112,10 +120,12 @@ final class SignInViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(interactor: interactor,
-                                        router: router,
-                                        analytics: analytics,
-                                        validator: validator)
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
         
         Given(interactor, .login(username: .any, password: .any, willThrow: APIError.invalidGrant))
         
@@ -133,18 +143,20 @@ final class SignInViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(interactor: interactor,
-                                        router: router,
-                                        analytics: analytics,
-                                        validator: validator)
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
         
         Given(interactor, .login(username: .any, password: .any, willThrow: NSError()))
-
+        
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
-
+        
         Verify(interactor, 1, .login(username: .any, password: .any))
         Verify(router, 0, .showMainScreen())
-
+        
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
@@ -154,22 +166,58 @@ final class SignInViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(interactor: interactor,
-                                        router: router,
-                                        analytics: analytics,
-                                        validator: validator)
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
         Given(interactor, .login(username: .any, password: .any, willThrow: noInternetError))
-
+        
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
-
+        
         Verify(interactor, 1, .login(username: .any, password: .any))
         Verify(router, 0, .showMainScreen())
-
+        
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
-
+    
+    func testTrackSignUpClicked() {
+        let interactor = AuthInteractorProtocolMock()
+        let router = AuthorizationRouterMock()
+        let validator = Validator()
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
+        
+        viewModel.trackSignUpClicked()
+        
+        Verify(analytics, 1, .signUpClicked())
+    }
+    
+    func testTrackForgotPasswordClicked() {
+        let interactor = AuthInteractorProtocolMock()
+        let router = AuthorizationRouterMock()
+        let validator = Validator()
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            validator: validator
+        )
+        
+        viewModel.trackForgotPasswordClicked()
+        
+        Verify(analytics, 1, .forgotPasswordClicked())
+    }
+    
 }

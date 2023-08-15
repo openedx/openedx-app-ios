@@ -761,4 +761,66 @@ final class EditProfileViewModelTests: XCTestCase {
         Verify(interactor, 1, .getSpokenLanguages())
         Verify(interactor, 1, .getCountries())
     }
+    
+    func testTrackProfileDeleteAccountClicked() {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let userModel = UserProfile(
+            avatarUrl: "url",
+            name: "Test",
+            username: "Name",
+            dateJoined: Date(),
+            yearOfBirth: 1986,
+            country: "UA",
+            spokenLanguage: "UA",
+            shortBiography: "Bio",
+            isFullProfile: false
+        )
+        
+        Given(interactor, .getSpokenLanguages(willReturn: []))
+        Given(interactor, .getCountries(willReturn: []))
+        
+        let viewModel = EditProfileViewModel(
+            userModel: userModel,
+            interactor: interactor,
+            router: router,
+            analytics: analytics
+        )
+        
+        viewModel.trackProfileDeleteAccountClicked()
+        
+        Verify(analytics, 1, .profileDeleteAccountClicked())
+    }
+    
+    func testTrackProfileEditDoneClicked() {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let userModel = UserProfile(
+            avatarUrl: "url",
+            name: "Test",
+            username: "Name",
+            dateJoined: Date(),
+            yearOfBirth: 1986,
+            country: "UA",
+            spokenLanguage: "UA",
+            shortBiography: "Bio",
+            isFullProfile: false
+        )
+        
+        Given(interactor, .getSpokenLanguages(willReturn: []))
+        Given(interactor, .getCountries(willReturn: []))
+        
+        let viewModel = EditProfileViewModel(
+            userModel: userModel,
+            interactor: interactor,
+            router: router,
+            analytics: analytics
+        )
+        
+        viewModel.trackProfileEditDoneClicked()
+        
+        Verify(analytics, 1, .profileEditDoneClicked())        
+    }
 }
