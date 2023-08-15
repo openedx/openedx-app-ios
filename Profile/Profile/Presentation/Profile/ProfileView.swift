@@ -167,11 +167,11 @@ public struct ProfileView: View {
                                                     viewModel.router.dismiss(animated: true)
                                                 },
                                                 okTapped: {
+                                                    viewModel.router.dismiss(animated: true)
                                                     Task {
                                                         viewModel.analytics.userLogout(force: false)
                                                         await viewModel.logOut()
                                                     }
-                                                    viewModel.router.dismiss(animated: true)
                                                 }, type: .logOut
                                             )
                                         }

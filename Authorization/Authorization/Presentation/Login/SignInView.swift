@@ -149,7 +149,9 @@ public struct SignInView: View {
                     }
             }
         }
-            .hideNavigationBar()
+        .hideNavigationBar()
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
     }
 }

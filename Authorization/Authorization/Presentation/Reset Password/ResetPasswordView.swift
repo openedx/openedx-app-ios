@@ -2,7 +2,7 @@
 //  ResetPasswordView.swift
 //  Authorization
 //
-//  Created by  Stepanok Ivan on 27.03.2023.
+//  Created by  Stepanok Ivan on 27.03.2023.
 //
 
 import SwiftUI
@@ -19,7 +19,6 @@ public struct ResetPasswordView: View {
     
     public init(viewModel: ResetPasswordViewModel) {
         self.viewModel = viewModel
-        UINavigationBar.appearance().tintColor = UIColor.white
     }
     
     public var body: some View {
@@ -31,6 +30,13 @@ public struct ResetPasswordView: View {
             }.frame(maxWidth: .infinity, maxHeight: 200)
             
             VStack(alignment: .center) {
+                NavigationBar(title: AuthLocalization.Forgot.title,
+                             titleColor: .white,
+                             leftButtonColor: .white,
+                             leftButtonAction: {
+                   viewModel.router.back()
+               })
+                
                 ScrollView {
                     VStack {
                         if isRecovered {
@@ -59,7 +65,7 @@ public struct ResetPasswordView: View {
                                     .frame(maxWidth: .infinity)
                                 }
                             }
-                            
+                        
                         } else {
                             VStack(alignment: .leading) {
                                 Text(AuthLocalization.Forgot.title)
@@ -111,19 +117,6 @@ public struct ResetPasswordView: View {
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
             }
-            .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
-            .navigationTitle(AuthLocalization.Forgot.title)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(AuthLocalization.Forgot.title)
-                        .foregroundColor(.white)
-                        .font(Theme.Fonts.titleMedium)
-                }
-            }
-            .onDisappear {
-                UINavigationBar.appearance().tintColor = CoreAssets.accentColor.color
-            }
             
             // MARK: - Alert
             if viewModel.showAlert {
@@ -157,7 +150,7 @@ public struct ResetPasswordView: View {
             }
         }
         .background(Theme.Colors.background.ignoresSafeArea(.all))
-        .accentColor(.white)
+        .hideNavigationBar()
     }
 }
 

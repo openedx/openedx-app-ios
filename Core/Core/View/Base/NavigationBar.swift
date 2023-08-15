@@ -96,7 +96,7 @@ public struct NavigationBar: View {
                         maxWidth: .infinity,
                         alignment: .topTrailing)
             }
-        } .frameLimit()
+        }
     }
 }
 
