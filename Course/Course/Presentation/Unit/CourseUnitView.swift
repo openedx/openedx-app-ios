@@ -43,6 +43,7 @@ public struct CourseUnitView: View {
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
+                        VStack {}.frame(height: 100)
                         if viewModel.connectivity.isInternetAvaliable {
                             LazyVStack(spacing: 0) {
                                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
@@ -61,7 +62,7 @@ public struct CourseUnitView: View {
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
                                                 ).frameLimit()
-                                                
+                                                Spacer(minLength: 100)
                                                 // MARK: Encoded Video
                                             case let .video(encodedUrl, blockID):
                                                 EncodedVideoView(
@@ -76,7 +77,7 @@ public struct CourseUnitView: View {
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
                                                 ).frameLimit()
-
+                                                Spacer(minLength: 100)
                                                 // MARK: Web
                                             case .web(let url):
                                                 WebView(url: url, viewModel: viewModel)
