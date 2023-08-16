@@ -81,7 +81,7 @@ public struct ProfileView: View {
                             VStack(alignment: .leading, spacing: 27) {
                                 HStack {
                                     Button(action: {
-                                        viewModel.analytics.profileVideoSettingsClicked()
+                                        viewModel.trackProfileVideoSettingsClicked()
                                         viewModel.router.showSettings()
                                     }, label: {
                                         Text(ProfileLocalization.settingsVideo)
@@ -101,7 +101,7 @@ public struct ProfileView: View {
                             VStack(alignment: .leading, spacing: 24) {
                                 if let support = viewModel.contactSupport() {
                                     Button(action: {
-                                        viewModel.analytics.emailSupportClicked()
+                                        viewModel.trackEmailSupportClicked()
                                         UIApplication.shared.open(support)
                                     }, label: {
                                         HStack {
@@ -119,7 +119,7 @@ public struct ProfileView: View {
                                 
                                 if let tos = viewModel.config.termsOfUse {
                                     Button(action: {
-                                        viewModel.analytics.cookiePolicyClicked()
+                                        viewModel.trackCookiePolicyClicked()
                                         UIApplication.shared.open(tos)
                                     }, label: {
                                         HStack {
@@ -137,7 +137,7 @@ public struct ProfileView: View {
                                 
                                 if let privacy = viewModel.config.privacyPolicy {
                                     Button(action: {
-                                        viewModel.analytics.privacyPolicyClicked()
+                                        viewModel.trackPrivacyPolicyClicked()
                                         UIApplication.shared.open(privacy)
                                     }, label: {
                                         HStack {
@@ -169,7 +169,6 @@ public struct ProfileView: View {
                                                 okTapped: {
                                                     viewModel.router.dismiss(animated: true)
                                                     Task {
-                                                        viewModel.analytics.userLogout(force: false)
                                                         await viewModel.logOut()
                                                     }
                                                 }, type: .logOut
@@ -194,7 +193,7 @@ public struct ProfileView: View {
                 .padding(.top, 8)
                 .onChange(of: settingsTapped, perform: { _ in
                     if let userModel = viewModel.userModel {
-                        viewModel.analytics.profileEditClicked()
+                        viewModel.trackProfileEditClicked()
                         viewModel.router.showEditProfile(
                             userModel: userModel,
                             avatar: viewModel.updatedAvatar,

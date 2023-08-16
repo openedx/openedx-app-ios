@@ -95,9 +95,9 @@ public struct SignUpView: View {
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         Task {
-                                            viewModel.analytics.createAccountClicked()
                                             await viewModel.registerUser()
                                         }
+                                        viewModel.trackCreateAccountClicked()
                                     }
                                     .padding(.top, 40)
                                     .padding(.bottom, 80)

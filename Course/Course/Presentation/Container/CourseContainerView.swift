@@ -12,31 +12,18 @@ import Swinject
 
 public struct CourseContainerView: View {
     
-    @ObservedObject
-    private var viewModel: CourseContainerViewModel
-    @State private var selection: CourseTab = .course
-    private var courseID: String
-    private var title: String
-    
-    func titleBar() -> String {
-        switch selection {
-        case .course:
-            return self.title
-        case .videos:
-            return self.title
-        case .discussion:
-           return DiscussionLocalization.title
-        case .handounds:
-            return CourseLocalization.CourseContainer.handouts
-        }
-    }
-    
     enum CourseTab {
         case course
         case videos
         case discussion
         case handounds
     }
+    
+    @ObservedObject
+    private var viewModel: CourseContainerViewModel
+    @State private var selection: CourseTab = .course
+    private var courseID: String
+    private var title: String
     
     public init(
         viewModel: CourseContainerViewModel,
@@ -123,6 +110,19 @@ public struct CourseContainerView: View {
                 courseName: title
             )
         })
+    }
+    
+    private func titleBar() -> String {
+        switch selection {
+        case .course:
+            return self.title
+        case .videos:
+            return self.title
+        case .discussion:
+            return DiscussionLocalization.title
+        case .handounds:
+            return CourseLocalization.CourseContainer.handouts
+        }
     }
 }
 
