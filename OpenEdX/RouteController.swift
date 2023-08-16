@@ -49,11 +49,19 @@ class RouteController: UIViewController {
             present(navigation, animated: false)
         } else {
             let controller = UIHostingController(
-                rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
+                rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!, navigationController: self.navigation)
             )
             navigation.viewControllers = [controller]
             present(navigation, animated: false)
         }
+    }
+
+    private func showAuthorization() {
+        let controller = UIHostingController(
+            rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!, navigationController: self.navigation)
+        )
+        navigation.viewControllers = [controller]
+        present(navigation, animated: false)
     }
     
     private func showMainOrWhatsNewScreen() {

@@ -10,6 +10,7 @@ import Foundation
 public enum AuthMethod: Equatable {
     case password
     case socailAuth(SocialAuthMethod)
+    case webAuth
 
     public var analyticsValue: String {
         switch self {
@@ -17,6 +18,8 @@ public enum AuthMethod: Equatable {
             "Password"
         case .socailAuth(let socialAuthMethod):
             socialAuthMethod.rawValue
+        case .webAuth:
+            "WebAuth View"
         }
     }
 }
