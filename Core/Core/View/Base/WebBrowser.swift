@@ -25,11 +25,6 @@ public struct WebBrowser: View {
             
             // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(
-                    title: pageTitle,
-                    leftButtonAction: { presentationMode.wrappedValue.dismiss() }
-                )
-                
                 // MARK: - Page Body
                 VStack {
                     ZStack(alignment: .top) {
@@ -46,6 +41,9 @@ public struct WebBrowser: View {
                     }
                 }
             }
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
+            .navigationTitle(pageTitle)
         }
     }
 }

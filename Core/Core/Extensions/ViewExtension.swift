@@ -202,7 +202,7 @@ public extension Image {
             .resizable()
             .scaledToFit()
             .frame(height: 24)
-            .padding(.horizontal)
+            .padding(.horizontal, 8)
             .padding(.top, topPadding)
             .foregroundColor(color)
     }

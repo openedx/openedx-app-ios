@@ -2,7 +2,7 @@
 //  SignUpView.swift
 //  Authorization
 //
-//  Created by  Stepanok Ivan on 24.10.2022.
+//  Created by  Stepanok Ivan on 24.10.2022.
 //
 
 import SwiftUI
@@ -48,7 +48,6 @@ public struct SignUpView: View {
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
                             alignment: .topLeading)
-                    .frameLimit()
                 }
                 
                 GeometryReader { proxy in
@@ -96,9 +95,9 @@ public struct SignUpView: View {
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         Task {
-                                            viewModel.analytics.createAccountClicked()
                                             await viewModel.registerUser()
                                         }
+                                        viewModel.trackCreateAccountClicked()
                                     }
                                     .padding(.top, 40)
                                     .padding(.bottom, 80)
@@ -137,6 +136,7 @@ public struct SignUpView: View {
             }
         }
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+        .hideNavigationBar()
     }
 }
 

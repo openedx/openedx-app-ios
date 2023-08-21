@@ -37,17 +37,7 @@ public struct CourseDetailsView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: CourseLocalization.Details.title,
-                              leftButtonAction: { viewModel.router.back() })
-                .onReceive(NotificationCenter
-                    .Publisher(center: .default,
-                               name: UIDevice.orientationDidChangeNotification)) { _ in
-                    updateOrientation()
-                }
-                
                 // MARK: - Page Body
                 GeometryReader { proxy in
                     if viewModel.isShowProgress {
@@ -150,6 +140,15 @@ public struct CourseDetailsView: View {
                         Spacer(minLength: 84)
                     }
                 }
+            }.padding(.top, 8)
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
+            .navigationTitle(CourseLocalization.Details.title)
+            
+            .onReceive(NotificationCenter
+                .Publisher(center: .default,
+                           name: UIDevice.orientationDidChangeNotification)) { _ in
+                updateOrientation()
             }
             
             // MARK: - Offline mode SnackBar

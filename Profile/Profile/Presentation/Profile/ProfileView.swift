@@ -11,25 +11,189 @@ import Kingfisher
 
 public struct ProfileView: View {
     
-    @ObservedObject private var viewModel: ProfileViewModel
+    @StateObject private var viewModel: ProfileViewModel
+    @Binding var settingsTapped: Bool
     
-    public init(viewModel: ProfileViewModel) {
-        self.viewModel = viewModel
-        Task {
-            await viewModel.getMyProfile()
-        }
+    public init(viewModel: ProfileViewModel, settingsTapped: Binding<Bool>) {
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self._settingsTapped = settingsTapped
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
-            VStack(alignment: .center) {
-                NavigationBar(title: ProfileLocalization.title,
-                              rightButtonType: .edit,
-                              rightButtonAction: {
+            // MARK: - Page Body
+            RefreshableScrollViewCompat(action: {
+                await viewModel.getMyProfile(withProgress: isIOS14)
+            }) {
+                VStack {
+                    if viewModel.isShowProgress {
+                        ProgressBar(size: 40, lineWidth: 8)
+                            .padding(.top, 200)
+                            .padding(.horizontal)
+                    } else {
+                        UserAvatar(url: viewModel.userModel?.avatarUrl ?? "", image: $viewModel.updatedAvatar)
+                            .padding(.top, 30)
+                        Text(viewModel.userModel?.name ?? "")
+                            .font(Theme.Fonts.headlineSmall)
+                            .padding(.top, 20)
+                        
+                        Text("@\(viewModel.userModel?.username ?? "")")
+                            .font(Theme.Fonts.labelLarge)
+                            .padding(.top, 4)
+                            .foregroundColor(Theme.Colors.textSecondary)
+                            .padding(.bottom, 10)
+                        
+                        // MARK: - Profile Info
+                        if viewModel.userModel?.yearOfBirth != 0 || viewModel.userModel?.shortBiography != "" {
+                            VStack(alignment: .leading, spacing: 14) {
+                                Text(ProfileLocalization.info)
+                                    .padding(.horizontal, 24)
+                                    .font(Theme.Fonts.labelLarge)
+                                
+                                VStack(alignment: .leading, spacing: 16) {
+                                    if viewModel.userModel?.yearOfBirth != 0 {
+                                        HStack {
+                                            Text(ProfileLocalization.Edit.Fields.yearOfBirth)
+                                                .foregroundColor(Theme.Colors.textSecondary)
+                                            Text(String(viewModel.userModel?.yearOfBirth ?? 0))
+                                        }
+                                    }
+                                    if let bio = viewModel.userModel?.shortBiography, bio != "" {
+                                        HStack(alignment: .top) {
+                                            Text(ProfileLocalization.bio + " ")
+                                                .foregroundColor(Theme.Colors.textSecondary)
+                                            + Text(bio)
+                                        }
+                                    }
+                                }
+                                .cardStyle(
+                                    bgColor: Theme.Colors.textInputUnfocusedBackground,
+                                    strokeColor: .clear
+                                )
+                            }.padding(.bottom, 16)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 14) {
+                            // MARK: - Settings
+                            Text(ProfileLocalization.settings)
+                                .padding(.horizontal, 24)
+                                .font(Theme.Fonts.labelLarge)
+                            VStack(alignment: .leading, spacing: 27) {
+                                HStack {
+                                    Button(action: {
+                                        viewModel.trackProfileVideoSettingsClicked()
+                                        viewModel.router.showSettings()
+                                    }, label: {
+                                        Text(ProfileLocalization.settingsVideo)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                    })
+                                }
+                            }.cardStyle(
+                                bgColor: Theme.Colors.textInputUnfocusedBackground,
+                                strokeColor: .clear
+                            )
+                            
+                            // MARK: - Support info
+                            Text(ProfileLocalization.supportInfo)
+                                .padding(.horizontal, 24)
+                                .font(Theme.Fonts.labelLarge)
+                            VStack(alignment: .leading, spacing: 24) {
+                                if let support = viewModel.contactSupport() {
+                                    Button(action: {
+                                        viewModel.trackEmailSupportClicked()
+                                        UIApplication.shared.open(support)
+                                    }, label: {
+                                        HStack {
+                                            Text(ProfileLocalization.contact)
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                        }
+                                    })
+                                    .buttonStyle(PlainButtonStyle())
+                                    .foregroundColor(.primary)
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                }
+                                
+                                if let tos = viewModel.config.termsOfUse {
+                                    Button(action: {
+                                        viewModel.trackCookiePolicyClicked()
+                                        UIApplication.shared.open(tos)
+                                    }, label: {
+                                        HStack {
+                                            Text(ProfileLocalization.terms)
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                        }
+                                    })
+                                    .buttonStyle(PlainButtonStyle())
+                                    .foregroundColor(.primary)
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                }
+                                
+                                if let privacy = viewModel.config.privacyPolicy {
+                                    Button(action: {
+                                        viewModel.trackPrivacyPolicyClicked()
+                                        UIApplication.shared.open(privacy)
+                                    }, label: {
+                                        HStack {
+                                            Text(ProfileLocalization.privacy)
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                        }
+                                    })
+                                    .buttonStyle(PlainButtonStyle())
+                                    .foregroundColor(.primary)
+                                }
+                            }.cardStyle(
+                                bgColor: Theme.Colors.textInputUnfocusedBackground,
+                                strokeColor: .clear
+                            )
+                            
+                            // MARK: - Log out
+                            VStack {
+                                HStack {
+                                    Button(action: {
+                                        viewModel.router.presentView(transitionStyle: .crossDissolve) {
+                                            AlertView(
+                                                alertTitle: ProfileLocalization.LogoutAlert.title,
+                                                alertMessage: ProfileLocalization.LogoutAlert.text,
+                                                positiveAction: CoreLocalization.Alert.accept,
+                                                onCloseTapped: {
+                                                    viewModel.router.dismiss(animated: true)
+                                                },
+                                                okTapped: {
+                                                    viewModel.router.dismiss(animated: true)
+                                                    Task {
+                                                        await viewModel.logOut()
+                                                    }
+                                                }, type: .logOut
+                                            )
+                                        }
+                                    }, label: {
+                                        Text(ProfileLocalization.logout)
+                                        Spacer()
+                                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                                    })
+                                }
+                            }.foregroundColor(Theme.Colors.alert)
+                                .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
+                                           strokeColor: .clear)
+                                .padding(.top, 24)
+                                .padding(.bottom, 60)
+                        }
+                        Spacer()
+                    }
+                }
+            }.frameLimit(sizePortrait: 420)
+                .padding(.top, 8)
+                .onChange(of: settingsTapped, perform: { _ in
                     if let userModel = viewModel.userModel {
-                        viewModel.analytics.profileEditClicked()
+                        viewModel.trackProfileEditClicked()
                         viewModel.router.showEditProfile(
                             userModel: userModel,
                             avatar: viewModel.updatedAvatar,
@@ -43,181 +207,9 @@ public struct ProfileView: View {
                             }
                         )
                     }
-                }, rightButtonIsActive: .constant(viewModel.connectivity.isInternetAvaliable))
-                
-                // MARK: - Page Body
-                
-                RefreshableScrollViewCompat(action: {
-                    await viewModel.getMyProfile(withProgress: isIOS14)
-                }) {
-                    VStack {
-                        if viewModel.isShowProgress {
-                            ProgressBar(size: 40, lineWidth: 8)
-                                .padding(.top, 200)
-                                .padding(.horizontal)
-                        } else {
-                            UserAvatar(url: viewModel.userModel?.avatarUrl ?? "", image: $viewModel.updatedAvatar)
-                                .padding(.top, 30)
-                            Text(viewModel.userModel?.name ?? "")
-                                .font(Theme.Fonts.headlineSmall)
-                                .padding(.top, 20)
-                            
-                            Text("@\(viewModel.userModel?.username ?? "")")
-                                .font(Theme.Fonts.labelLarge)
-                                .padding(.top, 4)
-                                .foregroundColor(Theme.Colors.textSecondary)
-                                .padding(.bottom, 10)
-                            
-                            // MARK: - Profile Info
-                            if viewModel.userModel?.yearOfBirth != 0 || viewModel.userModel?.shortBiography != "" {
-                                VStack(alignment: .leading, spacing: 14) {
-                                    Text(ProfileLocalization.info)
-                                        .padding(.horizontal, 24)
-                                        .font(Theme.Fonts.labelLarge)
-                                    
-                                    VStack(alignment: .leading, spacing: 16) {
-                                        if viewModel.userModel?.yearOfBirth != 0 {
-                                            HStack {
-                                                Text(ProfileLocalization.Edit.Fields.yearOfBirth)
-                                                    .foregroundColor(Theme.Colors.textSecondary)
-                                                Text(String(viewModel.userModel?.yearOfBirth ?? 0))
-                                            }
-                                        }
-                                        if let bio = viewModel.userModel?.shortBiography, bio != "" {
-                                            HStack(alignment: .top) {
-                                                Text(ProfileLocalization.bio + " ")
-                                                    .foregroundColor(Theme.Colors.textSecondary)
-                                                + Text(bio)
-                                            }
-                                        }
-                                    }
-                                    .cardStyle(
-                                        bgColor: Theme.Colors.textInputUnfocusedBackground,
-                                        strokeColor: .clear
-                                    )
-                                }.padding(.bottom, 16)
-                            }
-                            
-                            VStack(alignment: .leading, spacing: 14) {
-                                // MARK: - Settings
-                                Text(ProfileLocalization.settings)
-                                    .padding(.horizontal, 24)
-                                    .font(Theme.Fonts.labelLarge)
-                                VStack(alignment: .leading, spacing: 27) {
-                                    HStack {
-                                        Button(action: {
-                                            viewModel.analytics.profileVideoSettingsClicked()
-                                            viewModel.router.showSettings()
-                                        }, label: {
-                                            Text(ProfileLocalization.settingsVideo)
-                                            Spacer()
-                                            Image(systemName: "chevron.right")
-                                        })
-                                    }
-                                }.cardStyle(
-                                    bgColor: Theme.Colors.textInputUnfocusedBackground,
-                                    strokeColor: .clear
-                                )
-                                
-                                // MARK: - Support info
-                                Text(ProfileLocalization.supportInfo)
-                                    .padding(.horizontal, 24)
-                                    .font(Theme.Fonts.labelLarge)
-                                VStack(alignment: .leading, spacing: 24) {
-                                    if let support = viewModel.contactSupport() {
-                                        Button(action: {
-                                            viewModel.analytics.emailSupportClicked()
-                                                UIApplication.shared.open(support)
-                                        }, label: {
-                                            HStack {
-                                                Text(ProfileLocalization.contact)
-                                                Spacer()
-                                                Image(systemName: "chevron.right")
-                                            }
-                                        })
-                                        .buttonStyle(PlainButtonStyle())
-                                        .foregroundColor(.primary)
-                                        Rectangle()
-                                            .frame(height: 1)
-                                            .foregroundColor(Theme.Colors.textSecondary)
-                                    }
-
-                                    if let tos = viewModel.config.termsOfUse {
-                                        Button(action: {
-                                            viewModel.analytics.cookiePolicyClicked()
-                                                UIApplication.shared.open(tos)
-                                        }, label: {
-                                            HStack {
-                                                Text(ProfileLocalization.terms)
-                                                Spacer()
-                                                Image(systemName: "chevron.right")
-                                            }
-                                        })
-                                        .buttonStyle(PlainButtonStyle())
-                                        .foregroundColor(.primary)
-                                        Rectangle()
-                                            .frame(height: 1)
-                                            .foregroundColor(Theme.Colors.textSecondary)
-                                    }
-
-                                    if let privacy = viewModel.config.privacyPolicy {
-                                        Button(action: {
-                                            viewModel.analytics.privacyPolicyClicked()
-                                                UIApplication.shared.open(privacy)
-                                        }, label: {
-                                            HStack {
-                                                Text(ProfileLocalization.privacy)
-                                                Spacer()
-                                                Image(systemName: "chevron.right")
-                                            }
-                                        })
-                                        .buttonStyle(PlainButtonStyle())
-                                        .foregroundColor(.primary)
-                                    }
-                                }.cardStyle(
-                                    bgColor: Theme.Colors.textInputUnfocusedBackground,
-                                    strokeColor: .clear
-                                )
-                                
-                                // MARK: - Log out
-                                VStack {
-                                    HStack {
-                                        Button(action: {
-                                            viewModel.router.presentView(transitionStyle: .crossDissolve) {
-                                                AlertView(
-                                                    alertTitle: ProfileLocalization.LogoutAlert.title,
-                                                    alertMessage: ProfileLocalization.LogoutAlert.text,
-                                                    positiveAction: CoreLocalization.Alert.accept,
-                                                    onCloseTapped: {
-                                                        viewModel.router.dismiss(animated: true)
-                                                    },
-                                                    okTapped: {
-                                                        Task {
-                                                            viewModel.analytics.userLogout(force: false)
-                                                            await viewModel.logOut()
-                                                        }
-                                                        viewModel.router.dismiss(animated: true)
-                                                    }, type: .logOut
-                                                )
-                                            }
-                                        }, label: {
-                                            Text(ProfileLocalization.logout)
-                                            Spacer()
-                                            Image(systemName: "rectangle.portrait.and.arrow.right")
-                                        })
-                                    }
-                                }.foregroundColor(Theme.Colors.alert)
-                                    .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
-                                               strokeColor: .clear)
-                                    .padding(.top, 24)
-                                    .padding(.bottom, 60)
-                            }
-                            Spacer()
-                        }
-                    }
-                }.frameLimit(sizePortrait: 420)
-                
-            }
+                })
+                .navigationBarHidden(false)
+                .navigationBarBackButtonHidden(false)
             
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
@@ -241,6 +233,11 @@ public struct ProfileView: View {
                 }
             }
         }
+        .onFirstAppear {
+            Task {
+                await viewModel.getMyProfile()
+            }
+        }
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
@@ -258,12 +255,12 @@ struct ProfileView_Previews: PreviewProvider {
                                   config: ConfigMock(),
                                   connectivity: Connectivity())
         
-        ProfileView(viewModel: vm)
+        ProfileView(viewModel: vm, settingsTapped: .constant(false))
             .preferredColorScheme(.light)
             .previewDisplayName("DiscoveryView Light")
             .loadFonts()
         
-        ProfileView(viewModel: vm)
+        ProfileView(viewModel: vm, settingsTapped: .constant(false))
             .preferredColorScheme(.dark)
             .previewDisplayName("DiscoveryView Dark")
             .loadFonts()

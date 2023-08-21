@@ -37,12 +37,6 @@ public struct ResponsesView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            
-            // MARK: - Page name
-            VStack(alignment: .center) {
-                NavigationBar(title: title,
-                              leftButtonAction: { router.back() })
-                
                 // MARK: - Page Body
                 ScrollViewReader { scroll in
                     VStack {
@@ -181,7 +175,7 @@ public struct ResponsesView: View {
                     })
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }.scrollAvoidKeyboard(dismissKeyboardByTap: true)
-            }
+            .padding(.top, 8)
             // MARK: - Error Alert
             if viewModel.showError {
                 VStack {
@@ -195,7 +189,11 @@ public struct ResponsesView: View {
                     }
                 }
             }
-        }.edgesIgnoringSafeArea(.bottom)
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(title)
+        .edgesIgnoringSafeArea(.bottom)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

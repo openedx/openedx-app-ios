@@ -83,14 +83,14 @@ public struct SignInView: View {
                             
                             HStack {
                                 Button(AuthLocalization.SignIn.registerBtn) {
-                                    viewModel.analytics.signUpClicked()
+                                    viewModel.trackSignUpClicked()
                                     viewModel.router.showRegisterScreen()
                                 }.foregroundColor(Theme.Colors.accentColor)
                                 
                                 Spacer()
                                 
                                 Button(AuthLocalization.SignIn.forgotPassBtn) {
-                                    viewModel.analytics.forgotPasswordClicked()
+                                    viewModel.trackForgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
                                 }.foregroundColor(Theme.Colors.accentColor)
                             }
@@ -149,6 +149,9 @@ public struct SignInView: View {
                     }
             }
         }
+        .hideNavigationBar()
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
     }
 }

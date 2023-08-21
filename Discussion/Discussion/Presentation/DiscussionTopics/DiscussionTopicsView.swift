@@ -11,27 +11,19 @@ import Core
 
 public struct DiscussionTopicsView: View {
     
-    @ObservedObject private var viewModel: DiscussionTopicsViewModel
+    @StateObject private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
     
     public init(courseID: String, viewModel: DiscussionTopicsViewModel, router: DiscussionRouter) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
-        Task {
-            await viewModel.getTopics(courseID: courseID)
-        }
         self.router = router
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            
-            // MARK: - Page name
+        ZStack(alignment: .center) {
             VStack(alignment: .center) {
-                NavigationBar(title: DiscussionLocalization.title,
-                leftButtonAction: { router.back() })
-                
                 // MARK: - Search fake field
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
@@ -65,11 +57,6 @@ public struct DiscussionTopicsView: View {
                             await viewModel.getTopics(courseID: self.courseID, withProgress: isIOS14)
                         }) {
                             VStack {
-                                if viewModel.isShowProgress {
-                                    ProgressBar(size: 40, lineWidth: 8)
-                                        .padding(.horizontal)
-                                        .padding(.top, 200)
-                                }
                                 
                                 if let topics = viewModel.discussionTopics {
                                     HStack {
@@ -147,8 +134,20 @@ public struct DiscussionTopicsView: View {
                                 }
                     }
                 }.frame(maxWidth: .infinity)
+            }.padding(.top, 8)
+            if viewModel.isShowProgress {
+                ProgressBar(size: 40, lineWidth: 8)
+                    .padding(.horizontal)
             }
         }
+        .onFirstAppear {
+            Task {
+                await viewModel.getTopics(courseID: courseID)
+            }
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(DiscussionLocalization.title)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

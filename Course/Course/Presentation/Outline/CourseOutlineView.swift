@@ -11,7 +11,7 @@ import Kingfisher
 
 public struct CourseOutlineView: View {
     
-    @ObservedObject private var viewModel: CourseContainerViewModel
+    @StateObject private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -26,7 +26,7 @@ public struct CourseOutlineView: View {
         isVideo: Bool
     ) {
         self.title = title
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self.isVideo = isVideo
     }
@@ -36,11 +36,6 @@ public struct CourseOutlineView: View {
             // MARK: - Page name
             GeometryReader { proxy in
                 VStack(alignment: .center) {
-                    NavigationBar(
-                        title: title,
-                        leftButtonAction: { viewModel.router.back() }
-                    )
-                    
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
                         await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
@@ -145,8 +140,8 @@ public struct CourseOutlineView: View {
                         .onRightSwipeGesture {
                             viewModel.router.back()
                         }
-                }
-                
+                }.padding(.top, 8)
+
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
@@ -173,7 +168,6 @@ public struct CourseOutlineView: View {
                 if viewModel.isShowProgress {
                     VStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.top, 200)
                             .padding(.horizontal)
                     }.frame(maxWidth: .infinity,
                             maxHeight: .infinity)

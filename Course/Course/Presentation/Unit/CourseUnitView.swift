@@ -43,13 +43,8 @@ public struct CourseUnitView: View {
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
+                        VStack {}.frame(height: 100)
                         if viewModel.connectivity.isInternetAvaliable {
-                            NavigationBar(title: "",
-                                          leftButtonAction: {
-                                viewModel.router.back()
-                                playerStateSubject.send(VideoPlayerState.kill)
-                            }).padding(.top, 50)
-                            
                             LazyVStack(spacing: 0) {
                                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                                 ForEach(data, id: \.offset) { index, block in
@@ -68,7 +63,6 @@ public struct CourseUnitView: View {
                                                     isOnScreen: index == viewModel.index
                                                 ).frameLimit()
                                                 Spacer(minLength: 100)
-                                                
                                                 // MARK: Encoded Video
                                             case let .video(encodedUrl, blockID):
                                                 EncodedVideoView(
@@ -104,14 +98,9 @@ public struct CourseUnitView: View {
                                                         )
                                                         Spacer(minLength: 100)
                                                     } else {
-                                                        DiscussionView(
-                                                            id: viewModel.courseID,
-                                                            blockID: blockID,
-                                                            blockKey: blockKey,
-                                                            title: title,
-                                                            viewModel: viewModel
-                                                        ).drawingGroup()
-                                                        Spacer(minLength: 100)
+                                                        VStack {
+                                                            Color.clear
+                                                        }
                                                     }
                                                 }.frameLimit()
                                             }
@@ -183,13 +172,6 @@ public struct CourseUnitView: View {
                 
                 // MARK: - Course Navigation
                 VStack {
-                    NavigationBar(
-                        title: "",
-                        leftButtonAction: {
-                            viewModel.router.back()
-                            playerStateSubject.send(VideoPlayerState.kill)
-                        }).padding(.top, 50)
-                    Spacer()
                     CourseNavigationView(
                         sectionName: sectionName,
                         viewModel: viewModel,
@@ -202,7 +184,14 @@ public struct CourseUnitView: View {
                         viewModel.router.back()
                     }
             }
-        }.ignoresSafeArea()
+            .onDisappear {
+                playerStateSubject.send(VideoPlayerState.kill)
+            }
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle("")
+        .ignoresSafeArea()
             .background(
                 Theme.Colors.background
                     .ignoresSafeArea()

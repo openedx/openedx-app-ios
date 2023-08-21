@@ -2,7 +2,7 @@
 //  ResetPasswordView.swift
 //  Authorization
 //
-//  Created by  Stepanok Ivan on 27.03.2023.
+//  Created by  Stepanok Ivan on 27.03.2023.
 //
 
 import SwiftUI
@@ -150,6 +150,7 @@ public struct ResetPasswordView: View {
             }
         }
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+        .hideNavigationBar()
     }
 }
 

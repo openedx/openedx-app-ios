@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import Core
 import Authorization
 
@@ -15,7 +16,7 @@ class RouteController: UIViewController {
         diContainer.resolve(UINavigationController.self)!
     }()
     
-    private lazy var appStorage: AppStorage = {
+    private lazy var appStorage: Core.AppStorage = {
         diContainer.resolve(AppStorage.self)!
     }()
     
@@ -39,15 +40,15 @@ class RouteController: UIViewController {
     }
     
     private func showAuthorization() {
-        let controller = SwiftUIHostController(
-            view: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
+        let controller = UIHostingController(
+            rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
         )
         navigation.viewControllers = [controller]
         present(navigation, animated: false)
     }
     
     private func showMainScreen() {
-        let controller = SwiftUIHostController(view: MainScreenView())
+        let controller = UIHostingController(rootView: MainScreenView())
         navigation.viewControllers = [controller]
         present(navigation, animated: false)
     }

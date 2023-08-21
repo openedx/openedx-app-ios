@@ -25,7 +25,7 @@ public struct DiscussionSearchTopicsView: View {
             VStack(alignment: .center) {
                 NavigationBar(title: DiscussionLocalization.search,
                 leftButtonAction: { viewModel.router.backWithFade() })
-                
+                .padding(.bottom, -7)
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
                         .padding(.leading, 16)
@@ -64,7 +64,7 @@ public struct DiscussionSearchTopicsView: View {
                         .foregroundColor(Theme.Colors.styledButtonText)
                     }
                 }
-                .padding(.top, 3)
+//                .padding(.top, -7)
                 .frame(minHeight: 48)
                 .frame(maxWidth: 532)
                 .background(
@@ -140,7 +140,9 @@ public struct DiscussionSearchTopicsView: View {
                     }
                 }
             }
-        }.hideNavigationBar()
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     withAnimation(.easeIn(duration: 0.3)) {

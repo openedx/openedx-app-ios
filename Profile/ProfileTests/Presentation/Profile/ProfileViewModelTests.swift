@@ -19,21 +19,24 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
         
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
-        
-        let user = UserProfile(avatarUrl: "",
-                               name: "Steve",
-                               username: "Steve",
-                               dateJoined: Date(),
-                               yearOfBirth: 2000,
-                               country: "Ua",
-                               shortBiography: "Bio",
-                               isFullProfile: false)
+        let user = UserProfile(
+            avatarUrl: "",
+            name: "Steve",
+            username: "Steve",
+            dateJoined: Date(),
+            yearOfBirth: 2000,
+            country: "Ua",
+            shortBiography: "Bio",
+            isFullProfile: false
+        )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getMyProfile(willReturn: user))
@@ -53,21 +56,24 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
         
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
-        
-        let user = UserProfile(avatarUrl: "",
-                               name: "Steve",
-                               username: "Steve",
-                               dateJoined: Date(),
-                               yearOfBirth: 2000,
-                               country: "Ua",
-                               shortBiography: "Bio",
-                               isFullProfile: false)
+        let user = UserProfile(
+            avatarUrl: "",
+            name: "Steve",
+            username: "Steve",
+            dateJoined: Date(),
+            yearOfBirth: 2000,
+            country: "Ua",
+            shortBiography: "Bio",
+            isFullProfile: false
+        )
         
         Given(connectivity, .isInternetAvaliable(getter: false))
         Given(interactor, .getMyProfileOffline(willReturn: user))
@@ -87,12 +93,13 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
@@ -113,12 +120,13 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getMyProfile(willThrow: NoCachedDataError()))
@@ -137,12 +145,13 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getMyProfile(willThrow: NSError()))
@@ -161,12 +170,13 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .logOut(willProduce: {_ in}))
@@ -182,12 +192,13 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -205,12 +216,13 @@ final class ProfileViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        let viewModel = ProfileViewModel(interactor: interactor,
-                                         router: router,
-                                         analytics: analytics,
-                                         config: ConfigMock(),
-                                         connectivity: connectivity)
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
                 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .logOut(willThrow: NSError()))
@@ -219,6 +231,96 @@ final class ProfileViewModelTests: XCTestCase {
         
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
+    }
+    
+    func testTrackProfileVideoSettingsClicked() {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let connectivity = ConnectivityProtocolMock()
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
+        
+        viewModel.trackProfileVideoSettingsClicked()
+        
+        Verify(analytics, 1, .profileVideoSettingsClicked())
+    }
+    
+    func testTrackEmailSupportClicked() {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let connectivity = ConnectivityProtocolMock()
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
+        
+        viewModel.trackEmailSupportClicked()
+        
+        Verify(analytics, 1, .emailSupportClicked())
+    }
+    
+    func testTrackCookiePolicyClicked() {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let connectivity = ConnectivityProtocolMock()
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
+        
+        viewModel.trackCookiePolicyClicked()
+        
+        Verify(analytics, 1, .cookiePolicyClicked())
+    }
+    
+    func testTrackPrivacyPolicyClicked() {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let connectivity = ConnectivityProtocolMock()
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
+        
+        viewModel.trackPrivacyPolicyClicked()
+        
+        Verify(analytics, 1, .privacyPolicyClicked())
+    }
+    
+    func testTrackProfileEditClicked() {
+        let interactor = ProfileInteractorProtocolMock()
+        let router = ProfileRouterMock()
+        let analytics = ProfileAnalyticsMock()
+        let connectivity = ConnectivityProtocolMock()
+        let viewModel = ProfileViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: ConfigMock(),
+            connectivity: connectivity
+        )
+        
+        viewModel.trackProfileEditClicked()
+        
+        Verify(analytics, 1, .profileEditClicked())
     }
 
 }

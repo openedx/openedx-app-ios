@@ -16,6 +16,7 @@ import SwiftUIIntrospect
 struct MainScreenView: View {
     
     @State private var selection: MainTab = .discovery
+    @State private var settingsTapped: Bool = false
     
     enum MainTab {
         case discovery
@@ -24,7 +25,7 @@ struct MainScreenView: View {
         case profile
     }
     
-    let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
+    private let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
     
     init() {
         UITabBar.appearance().isTranslucent = false
@@ -44,8 +45,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
-            .hideNavigationBar()
-
+            
             VStack {
                 DashboardView(
                     viewModel: Container.shared.resolve(DashboardViewModel.self)!,
@@ -57,7 +57,6 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
-            .hideNavigationBar()
             
             VStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
@@ -67,11 +66,10 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.programs)
             }
             .tag(MainTab.programs)
-            .hideNavigationBar()
-
+            
             VStack {
                 ProfileView(
-                    viewModel: Container.shared.resolve(ProfileViewModel.self)!
+                    viewModel: Container.shared.resolve(ProfileViewModel.self)!, settingsTapped: $settingsTapped
                 )
             }
             .tabItem {
@@ -79,20 +77,49 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
-            .hideNavigationBar()
         }
-            .onChange(of: selection, perform: { selection in
-                switch selection {
-                case .discovery:
-                    analytics.mainDiscoveryTabClicked()
-                case .dashboard:
-                    analytics.mainDashboardTabClicked()
-                case .programs:
-                    analytics.mainProgramsTabClicked()
-                case .profile:
-                    analytics.mainProfileTabClicked()
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(titleBar())
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing, content: {
+                if selection == .profile {
+                    Button(action: {
+                        settingsTapped.toggle()
+                    }, label: {
+                        CoreAssets.edit.swiftUIImage
+                            .foregroundColor(Theme.Colors.textPrimary)
+                    })
+                } else {
+                    VStack {}
                 }
             })
+        }
+        .onChange(of: selection, perform: { selection in
+            switch selection {
+            case .discovery:
+                analytics.mainDiscoveryTabClicked()
+            case .dashboard:
+                analytics.mainDashboardTabClicked()
+            case .programs:
+                analytics.mainProgramsTabClicked()
+            case .profile:
+                analytics.mainProfileTabClicked()
+            }
+        })
+    }
+    
+    private func titleBar() -> String {
+        switch selection {
+        case .discovery:
+            return DiscoveryLocalization.title
+        case .dashboard:
+            return DashboardLocalization.title
+        case .programs:
+            return CoreLocalization.Mainscreen.programs
+        case .profile:
+            return ProfileLocalization.title
+        }
     }
     
     struct MainScreenView_Previews: PreviewProvider {

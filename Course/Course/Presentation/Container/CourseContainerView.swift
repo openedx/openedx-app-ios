@@ -12,18 +12,18 @@ import Swinject
 
 public struct CourseContainerView: View {
     
-    @ObservedObject
-    private var viewModel: CourseContainerViewModel
-    @State private var selection: CourseTab = .course
-    private var courseID: String
-    private var title: String
-    
     enum CourseTab {
         case course
         case videos
         case discussion
         case handounds
     }
+    
+    @ObservedObject
+    private var viewModel: CourseContainerViewModel
+    @State private var selection: CourseTab = .course
+    private var courseID: String
+    private var title: String
     
     public init(
         viewModel: CourseContainerViewModel,
@@ -39,7 +39,7 @@ public struct CourseContainerView: View {
     }
     
     public var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             if let courseStart = viewModel.courseStart {
                 if courseStart > Date() {
                     CourseOutlineView(
@@ -61,7 +61,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.course)
                         }
                         .tag(CourseTab.course)
-                        .hideNavigationBar()
                         
                         CourseOutlineView(
                             viewModel: self.viewModel,
@@ -74,7 +73,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.videos)
                         }
                         .tag(CourseTab.videos)
-                        .hideNavigationBar()
                         
                         DiscussionTopicsView(courseID: courseID,
                                              viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
@@ -85,7 +83,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.discussion)
                         }
                         .tag(CourseTab.discussion)
-                        .hideNavigationBar()
                         
                         HandoutsView(courseID: courseID,
                                      viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
@@ -94,7 +91,6 @@ public struct CourseContainerView: View {
                             Text(CourseLocalization.CourseContainer.handouts)
                         }
                         .tag(CourseTab.handounds)
-                        .hideNavigationBar()
                     }
                     .onFirstAppear {
                         Task {
@@ -103,13 +99,30 @@ public struct CourseContainerView: View {
                     }
                 }
             }
-        }.onChange(of: selection, perform: { selection in
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(titleBar())
+        .onChange(of: selection, perform: { selection in
             viewModel.trackSelectedTab(
                 selection: selection,
                 courseId: courseID,
                 courseName: title
             )
         })
+    }
+    
+    private func titleBar() -> String {
+        switch selection {
+        case .course:
+            return self.title
+        case .videos:
+            return self.title
+        case .discussion:
+            return DiscussionLocalization.title
+        case .handounds:
+            return CourseLocalization.CourseContainer.handouts
+        }
     }
 }
 

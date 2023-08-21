@@ -27,7 +27,7 @@ public struct SearchView: View {
                 NavigationBar(title: DiscoveryLocalization.search,
                                      leftButtonAction: {
                     viewModel.router.backWithFade()
-                })
+                }).padding(.bottom, -7)
                 
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
@@ -67,7 +67,6 @@ public struct SearchView: View {
                         .foregroundColor(Theme.Colors.styledButtonText)
                     }
                 }
-                .padding(.top, 3)
                 .frame(minHeight: 48)
                 .frame(maxWidth: 532)
                 .background(
@@ -147,7 +146,9 @@ public struct SearchView: View {
                     }
                 }
             }
-        }.hideNavigationBar()
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     withAnimation(.easeIn(duration: 0.3)) {

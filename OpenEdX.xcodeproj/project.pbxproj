@@ -32,7 +32,6 @@
 		0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE1628D080A1006D8A5D /* RouteController.swift */; };
 		0770DE1E28D084E8006D8A5D /* AppAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE1D28D084E8006D8A5D /* AppAssembly.swift */; };
 		0770DE2028D0858A006D8A5D /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE1F28D0858A006D8A5D /* Router.swift */; };
-		0770DE2728D09209006D8A5D /* SwiftUIHostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2628D09209006D8A5D /* SwiftUIHostController.swift */; };
 		0770DE4B28D0A462006D8A5D /* Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE4A28D0A462006D8A5D /* Authorization.framework */; };
 		0770DE4C28D0A462006D8A5D /* Authorization.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE4A28D0A462006D8A5D /* Authorization.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0770DE5028D0A707006D8A5D /* NetworkAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE4F28D0A707006D8A5D /* NetworkAssembly.swift */; };
@@ -94,7 +93,6 @@
 		0770DE1628D080A1006D8A5D /* RouteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteController.swift; sourceTree = "<group>"; };
 		0770DE1D28D084E8006D8A5D /* AppAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAssembly.swift; sourceTree = "<group>"; };
 		0770DE1F28D0858A006D8A5D /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		0770DE2628D09209006D8A5D /* SwiftUIHostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIHostController.swift; sourceTree = "<group>"; };
 		0770DE4A28D0A462006D8A5D /* Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE4F28D0A707006D8A5D /* NetworkAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAssembly.swift; sourceTree = "<group>"; };
 		0770DE6528D0BCC7006D8A5D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
 				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
 				0293A2012A6FC9E30090A336 /* Data */,
-				0770DE2628D09209006D8A5D /* SwiftUIHostController.swift */,
 				0727876C28D23312002E9142 /* Environment.swift */,
 				0727878C28D347B2002E9142 /* View */,
 				0770DE1A28D084BC006D8A5D /* DI */,
@@ -387,7 +384,6 @@
 				0727876D28D23312002E9142 /* Environment.swift in Sources */,
 				0293A2092A6FCDE50090A336 /* DashboardPersistence.swift in Sources */,
 				0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */,
-				0770DE2728D09209006D8A5D /* SwiftUIHostController.swift in Sources */,
 				071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

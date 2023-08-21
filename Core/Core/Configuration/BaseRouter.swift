@@ -28,7 +28,7 @@ public protocol BaseRouter {
     func showRegisterScreen()
     
     func showForgotPasswordScreen()
-    
+        
     func presentAlert(
         alertTitle: String,
         alertMessage: String,
@@ -88,7 +88,7 @@ open class BaseRouterMock: BaseRouter {
     public func backWithFade() {}
     
     public func removeLastView(controllers: Int) {}
-    
+        
     public func presentAlert(
         alertTitle: String,
         alertMessage: String,
