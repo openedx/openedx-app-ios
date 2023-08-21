@@ -37,8 +37,9 @@ struct HandoutsView: View {
                     } else {
                         VStack(alignment: .leading) {
                             HandoutsItemCell(type: .handouts, onTapAction: {
+                                guard let handouts = viewModel.handouts else { return }
                                 viewModel.router.showHandoutsUpdatesView(
-                                    handouts: viewModel.handouts,
+                                    handouts: handouts,
                                     announcements: nil,
                                     router: viewModel.router,
                                     cssInjector: viewModel.cssInjector)
