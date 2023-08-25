@@ -113,19 +113,19 @@ public struct CourseUnitView: View {
                                     .id(index)
                                 }
                             }
-                                .offset(y: offsetView)
-                                .clipped()
-                                .onChange(of: viewModel.index, perform: { index in
-                                    DispatchQueue.main.async {
-                                        withAnimation(Animation.easeInOut(duration: 0.2)) {
-                                            offsetView = -(reader.size.height * CGFloat(index))
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                                showDiscussion = viewModel.selectedLesson().type == .discussion
-                                            }
+                            .offset(y: offsetView)
+                            .clipped()
+                            .onChange(of: viewModel.index, perform: { index in
+                                DispatchQueue.main.async {
+                                    withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                        offsetView = -(reader.size.height * CGFloat(index))
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                            showDiscussion = viewModel.selectedLesson().type == .discussion
                                         }
                                     }
-                                    
-                                })
+                                }
+                                
+                            })
                         } else {
                             
                             // MARK: No internet view
@@ -187,7 +187,7 @@ public struct CourseUnitView: View {
             }
             .onDisappear {
                 if !presentationMode.wrappedValue.isPresented {
-                                playerStateSubject.send(VideoPlayerState.kill)
+                    playerStateSubject.send(VideoPlayerState.kill)
                 }
             }
         }
