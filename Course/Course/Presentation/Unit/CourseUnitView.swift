@@ -25,6 +25,7 @@ public struct CourseUnitView: View {
     }
     @State var offsetView: CGFloat = 0
     @State var showDiscussion: Bool = false
+    @Environment(\.presentationMode) private var presentationMode
     
     private let sectionName: String
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
@@ -112,19 +113,19 @@ public struct CourseUnitView: View {
                                     .id(index)
                                 }
                             }
-                                .offset(y: offsetView)
-                                .clipped()
-                                .onChange(of: viewModel.index, perform: { index in
-                                    DispatchQueue.main.async {
-                                        withAnimation(Animation.easeInOut(duration: 0.2)) {
-                                            offsetView = -(reader.size.height * CGFloat(index))
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                                showDiscussion = viewModel.selectedLesson().type == .discussion
-                                            }
+                            .offset(y: offsetView)
+                            .clipped()
+                            .onChange(of: viewModel.index, perform: { index in
+                                DispatchQueue.main.async {
+                                    withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                        offsetView = -(reader.size.height * CGFloat(index))
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                            showDiscussion = viewModel.selectedLesson().type == .discussion
                                         }
                                     }
-                                    
-                                })
+                                }
+                                
+                            })
                         } else {
                             
                             // MARK: No internet view
@@ -185,7 +186,9 @@ public struct CourseUnitView: View {
                     }
             }
             .onDisappear {
-                playerStateSubject.send(VideoPlayerState.kill)
+                if !presentationMode.wrappedValue.isPresented {
+                    playerStateSubject.send(VideoPlayerState.kill)
+                }
             }
         }
         .navigationBarHidden(false)
