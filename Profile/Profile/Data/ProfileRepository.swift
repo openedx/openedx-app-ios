@@ -110,17 +110,17 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     }
     
     public func uploadProfilePicture(pictureData: Data) async throws {
-           let response = try await api.request(
-                ProfileEndpoint.uploadProfilePicture(username: storage.user?.username ?? "",
-                                                     pictureData: pictureData))
+        let response = try await api.request(
+            ProfileEndpoint.uploadProfilePicture(username: storage.user?.username ?? "",
+                                                 pictureData: pictureData))
         if response.statusCode != 204 {
             throw APIError.uploadError
         }
     }
     
     public func deleteProfilePicture() async throws -> Bool {
-           let response = try await api.request(
-                ProfileEndpoint.deleteProfilePicture(username: storage.user?.username ?? ""))
+        let response = try await api.request(
+            ProfileEndpoint.deleteProfilePicture(username: storage.user?.username ?? ""))
         return response.statusCode == 204
     }
     

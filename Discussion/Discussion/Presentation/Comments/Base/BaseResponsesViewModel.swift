@@ -10,6 +10,7 @@ import SwiftUI
 import Core
 import Combine
 import Swinject
+import Profile
 
 public class BaseResponsesViewModel {
     
@@ -24,7 +25,7 @@ public class BaseResponsesViewModel {
     public var totalPages = 1
     @Published public var itemsCount = 0
     public var fetchInProgress = false
-
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -44,12 +45,12 @@ public class BaseResponsesViewModel {
     internal let interactor: DiscussionInteractorProtocol
     internal let router: DiscussionRouter
     internal let config: Config
-    
     internal let addPostSubject = CurrentValueSubject<Post?, Never>(nil)
     
-    init(interactor: DiscussionInteractorProtocol,
-         router: DiscussionRouter,
-         config: Config
+    init(
+        interactor: DiscussionInteractorProtocol,
+        router: DiscussionRouter,
+        config: Config
     ) {
         self.interactor = interactor
         self.router = router
