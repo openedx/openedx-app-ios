@@ -29,6 +29,7 @@
 		02A9A91D2978194A00B55797 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */; };
 		02A9A91E2978194A00B55797 /* Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 020F834A28DB4CCD0062FA70 /* Profile.framework */; platformFilter = ios; };
 		02A9A92B29781A6300B55797 /* ProfileMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A92A29781A6300B55797 /* ProfileMock.generated.swift */; };
+		02B089432A9F832200754BD4 /* ProfileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B089422A9F832200754BD4 /* ProfileStorage.swift */; };
 		02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */; };
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
@@ -70,6 +71,7 @@
 		02A9A91A2978194A00B55797 /* ProfileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProfileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
 		02A9A92A29781A6300B55797 /* ProfileMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMock.generated.swift; sourceTree = "<group>"; };
+		02B089422A9F832200754BD4 /* ProfileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStorage.swift; sourceTree = "<group>"; };
 		02ED50CE29A64BAD008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE6292539850051930C /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		020F834028DB4CCD0062FA70 = {
 			isa = PBXGroup;
 			children = (
+				02B089412A9F830D00754BD4 /* Data */,
 				021D925B28DDADBD00ACC565 /* swiftgen.yml */,
 				020F834C28DB4CCD0062FA70 /* Profile */,
 				02A9A91B2978194A00B55797 /* ProfileTests */,
@@ -274,6 +277,14 @@
 				02A9A92A29781A6300B55797 /* ProfileMock.generated.swift */,
 			);
 			path = ProfileTests;
+			sourceTree = "<group>";
+		};
+		02B089412A9F830D00754BD4 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				02B089422A9F832200754BD4 /* ProfileStorage.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		0766DFD3299AD9D800EBEF6A /* Presentation */ = {
@@ -544,6 +555,7 @@
 				021D925528DC92F800ACC565 /* ProfileInteractor.swift in Sources */,
 				029301DA2938948500E99AB8 /* ProfileType.swift in Sources */,
 				0259104429C39C9E004B5A55 /* SettingsView.swift in Sources */,
+				02B089432A9F832200754BD4 /* ProfileStorage.swift in Sources */,
 				021D925228DC918D00ACC565 /* ProfileViewModel.swift in Sources */,
 				0248F9B128DDB09D0041327E /* Strings.swift in Sources */,
 				020306CA2932B14D000949EA /* EditProfileViewModel.swift in Sources */,

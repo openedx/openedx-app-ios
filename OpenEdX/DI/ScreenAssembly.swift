@@ -23,7 +23,7 @@ class ScreenAssembly: Assembly {
         container.register(AuthRepositoryProtocol.self) { r in
             AuthRepository(
                 api: r.resolve(API.self)!,
-                appStorage: r.resolve(AppStorage.self)!,
+                appStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(Config.self)!
             )
         }
@@ -69,7 +69,7 @@ class ScreenAssembly: Assembly {
         container.register(DiscoveryRepositoryProtocol.self) { r in
             DiscoveryRepository(
                 api: r.resolve(API.self)!,
-                appStorage: r.resolve(AppStorage.self)!,
+                appStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(Config.self)!,
                 persistence: r.resolve(DiscoveryPersistenceProtocol.self)!
             )
@@ -105,7 +105,7 @@ class ScreenAssembly: Assembly {
         container.register(DashboardRepositoryProtocol.self) { r in
             DashboardRepository(
                 api: r.resolve(API.self)!,
-                appStorage: r.resolve(AppStorage.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(Config.self)!,
                 persistence: r.resolve(DashboardPersistenceProtocol.self)!
             )
@@ -128,7 +128,7 @@ class ScreenAssembly: Assembly {
         container.register(ProfileRepositoryProtocol.self) { r in
             ProfileRepository(
                 api: r.resolve(API.self)!,
-                appStorage: r.resolve(AppStorage.self)!,
+                storage: r.resolve(AppStorage.self)!,
                 coreDataHandler: r.resolve(CoreDataHandlerProtocol.self)!,
                 downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 config: r.resolve(Config.self)!
@@ -181,7 +181,7 @@ class ScreenAssembly: Assembly {
         container.register(CourseRepositoryProtocol.self) { r in
             CourseRepository(
                 api: r.resolve(API.self)!,
-                appStorage: r.resolve(AppStorage.self)!,
+                appStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(Config.self)!,
                 persistence: r.resolve(CoursePersistenceProtocol.self)!
             )
@@ -302,7 +302,7 @@ class ScreenAssembly: Assembly {
         container.register(DiscussionRepositoryProtocol.self) { r in
             DiscussionRepository(
                 api: r.resolve(API.self)!,
-                appStorage: r.resolve(AppStorage.self)!,
+                appStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(Config.self)!,
                 router: r.resolve(DiscussionRouter.self)!
             )
@@ -346,7 +346,6 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(Config.self)!,
-                storage: r.resolve(AppStorage.self)!,
                 postStateSubject: subject
             )
         }
@@ -356,7 +355,6 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(Config.self)!,
-                storage: r.resolve(AppStorage.self)!,
                 threadStateSubject: subject
             )
         }

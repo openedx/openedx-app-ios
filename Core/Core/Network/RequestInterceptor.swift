@@ -11,11 +11,11 @@ import Alamofire
 final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
     private let config: Config
-    private let appStorage: AppStorage
+    private var storage: CoreStorage
     
-    public init(config: Config, appStorage: AppStorage) {
+    public init(config: Config, storage: CoreStorage) {
         self.config = config
-        self.appStorage = appStorage
+        self.storage = storage
     }
     
     private let lock = NSLock()
@@ -34,7 +34,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
             var urlRequest = urlRequest
             
             // Set the Authorization header value using the access token.
-            if let token = appStorage.accessToken {
+            if let token = storage.accessToken {
                 urlRequest.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
             }
             
@@ -57,7 +57,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
                 return completion(.doNotRetry)
             }
             
-            guard let token = appStorage.refreshToken else {
+            guard let token = storage.refreshToken else {
                 return completion(.doNotRetryWithError(error))
             }
             
@@ -117,8 +117,8 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
                               refreshToken.count > 0 else {
                             return completion(false)
                         }
-                        self.appStorage.accessToken = accessToken
-                        self.appStorage.refreshToken = refreshToken
+                        self.storage.accessToken = accessToken
+                        self.storage.refreshToken = refreshToken
                         completion(true)
                     } catch {
                         completion(false)

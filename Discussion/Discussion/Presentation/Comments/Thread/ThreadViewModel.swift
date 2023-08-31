@@ -22,11 +22,10 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
         config: Config,
-        storage: Core.AppStorage,
         postStateSubject: CurrentValueSubject<PostState?, Never>
     ) {
         self.postStateSubject = postStateSubject
-        super.init(interactor: interactor, router: router, config: config, storage: storage)
+        super.init(interactor: interactor, router: router, config: config)
         
         cancellable = threadStateSubject
             .receive(on: RunLoop.main)

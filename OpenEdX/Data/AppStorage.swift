@@ -1,18 +1,21 @@
 //
 //  AppStorage.swift
-//  Core
+//  OpenEdX
 //
-//  Created by Vladimir Chekyrta on 13.09.2022.
+//  Created by  Stepanok Ivan on 30.08.2023.
 //
 
 import Foundation
 import KeychainSwift
+import Core
+import Profile
 
-public class AppStorage {
-
+public class AppStorage: CoreStorage,
+                         ProfileStorage {
+    
     private let keychain: KeychainSwift
     private let userDefaults: UserDefaults
-
+    
     public init(keychain: KeychainSwift, userDefaults: UserDefaults) {
         self.keychain = keychain
         self.userDefaults = userDefaults
@@ -133,10 +136,3 @@ public class AppStorage {
     private let KEY_USER = "refreshToken"
     private let KEY_SETTINGS = "userSettings"
 }
-
-// Mark - For testing and SwiftUI preview
-#if DEBUG
-public extension AppStorage {
-    static let mock: AppStorage = .init(keychain: KeychainSwift(), userDefaults: UserDefaults.standard)
-}
-#endif

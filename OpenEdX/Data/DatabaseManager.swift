@@ -35,29 +35,6 @@ class DatabaseManager: CoreDataHandlerProtocol {
         self.databaseName = databaseName
     }
     
-    public func saveCourseDetails() {
-        context.performAndWait {
-            let newCourseDetails = CDCourseDetails(context: context)
-            newCourseDetails.courseID = UUID().uuidString
-            newCourseDetails.org = "course.org"
-            newCourseDetails.courseTitle = "course.courseTitle"
-            newCourseDetails.courseDescription = "course.courseDescription"
-            newCourseDetails.courseStart = Date()
-            newCourseDetails.courseEnd = Date()
-            newCourseDetails.enrollmentStart = Date()
-            newCourseDetails.enrollmentEnd = Date()
-            newCourseDetails.isEnrolled = false
-            newCourseDetails.overviewHTML = "course.overviewHTML"
-            newCourseDetails.courseBannerURL = "course.courseBannerURL"
-            
-            do {
-                try context.save()
-            } catch {
-                print("⛔️⛔️⛔️⛔️⛔️", error)
-            }
-        }
-    }
-    
     private func createContainer() -> NSPersistentContainer {
         let model = NSManagedObjectModel.mergedModel(from: bundles)!
         let container = NSPersistentContainer(name: databaseName, managedObjectModel: model)

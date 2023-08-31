@@ -99,7 +99,7 @@
 		07460FE3294B72D700F70538 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07460FE2294B72D700F70538 /* Notification.swift */; };
 		076F297F2A1F80C800967E7D /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F297E2A1F80C800967E7D /* Pagination.swift */; };
 		0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE1828D0847D006D8A5D /* BaseRouter.swift */; };
-		0770DE2528D08FBA006D8A5D /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2428D08FBA006D8A5D /* AppStorage.swift */; };
+		0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2428D08FBA006D8A5D /* CoreStorage.swift */; };
 		0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2928D0929E006D8A5D /* HTTPTask.swift */; };
 		0770DE2C28D092B3006D8A5D /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2B28D092B3006D8A5D /* NetworkLogger.swift */; };
 		0770DE2E28D09743006D8A5D /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE2D28D09743006D8A5D /* API.swift */; };
@@ -221,7 +221,7 @@
 		076F297E2A1F80C800967E7D /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		0770DE0828D07831006D8A5D /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE1828D0847D006D8A5D /* BaseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRouter.swift; sourceTree = "<group>"; };
-		0770DE2428D08FBA006D8A5D /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
+		0770DE2428D08FBA006D8A5D /* CoreStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreStorage.swift; sourceTree = "<group>"; };
 		0770DE2928D0929E006D8A5D /* HTTPTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPTask.swift; sourceTree = "<group>"; };
 		0770DE2B28D092B3006D8A5D /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
 		0770DE2D28D09743006D8A5D /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -381,7 +381,7 @@
 				02CF46C92954A42100A698EE /* Persistence */,
 				0236961728F9A21600EEF206 /* Repository */,
 				0727877528D2383C002E9142 /* Model */,
-				0770DE2428D08FBA006D8A5D /* AppStorage.swift */,
+				0770DE2428D08FBA006D8A5D /* CoreStorage.swift */,
 				02512FEF299533DE0024D438 /* CoreDataHandlerProtocol.swift */,
 			);
 			path = Data;
@@ -793,7 +793,7 @@
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */,
-				0770DE2528D08FBA006D8A5D /* AppStorage.swift in Sources */,
+				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
 				020306CC2932C0C4000949EA /* PickerView.swift in Sources */,
 				027BD3C52909707700392132 /* Shake.swift in Sources */,
 				027BD39C2908810C00392132 /* RegisterUser.swift in Sources */,

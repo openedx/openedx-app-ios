@@ -20,11 +20,10 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
         config: Config,
-        storage: Core.AppStorage,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
     ) {
         self.threadStateSubject = threadStateSubject
-        super.init(interactor: interactor, router: router, config: config, storage: storage)
+        super.init(interactor: interactor, router: router, config: config)
     }
 
     func generateCommentsResponses(comments: [UserComment], parentComment: Post) -> Post? {

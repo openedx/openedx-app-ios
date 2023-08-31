@@ -7,13 +7,11 @@
 
 import SwiftUI
 import Core
-import WebKit
-import Kingfisher
 
 public struct ThreadView: View {
     
     private var title: String
-    private let thread: UserThread?
+    private let thread: UserThread
     private var onBackTapped: (() -> Void) = {}
     
     @ObservedObject private var viewModel: ThreadViewModel
@@ -27,9 +25,6 @@ public struct ThreadView: View {
         self.thread = thread
         self.title = thread.title
         self.viewModel = viewModel
-        Task {
-            await viewModel.getPosts(thread: thread, page: 1)
-        }
     }
     
     public var body: some View {
@@ -40,10 +35,8 @@ public struct ThreadView: View {
                 VStack {
                     ZStack(alignment: .top) {
                         RefreshableScrollViewCompat(action: {
-                            if let thread {
-                                viewModel.comments = []
-                                _ = await viewModel.getPosts(thread: thread, page: 1)
-                            }
+                            viewModel.comments = []
+                            _ = await viewModel.getPosts(thread: thread, page: 1)
                         }) {
                             VStack {
                                 if let comments = viewModel.postComments {
@@ -127,11 +120,9 @@ public struct ThreadView: View {
                                                 )
                                             },
                                             onFetchMore: {
-                                                if let thread {
-                                                    Task {
-                                                        await viewModel.fetchMorePosts(thread: thread,
-                                                                                       index: index)
-                                                    }
+                                                Task {
+                                                    await viewModel.fetchMorePosts(thread: thread,
+                                                                                   index: index)
                                                 }
                                             }
                                         )
@@ -153,23 +144,21 @@ public struct ThreadView: View {
                                 viewModel.sendUpdateUnreadState()
                             }
                         }
-                        if let thread {
-                            if !thread.closed {
-                                FlexibleKeyboardInputView(
-                                    hint: DiscussionLocalization.Thread.addResponse,
-                                    sendText: { commentText in
-                                        if let threadID = viewModel.postComments?.threadID {
-                                            Task {
-                                                await viewModel.postComment(
-                                                    threadID: threadID,
-                                                    rawBody: commentText,
-                                                    parentID: viewModel.postComments?.parentID
-                                                )
-                                            }
+                        if !thread.closed {
+                            FlexibleKeyboardInputView(
+                                hint: DiscussionLocalization.Thread.addResponse,
+                                sendText: { commentText in
+                                    if let threadID = viewModel.postComments?.threadID {
+                                        Task {
+                                            await viewModel.postComment(
+                                                threadID: threadID,
+                                                rawBody: commentText,
+                                                parentID: viewModel.postComments?.parentID
+                                            )
                                         }
                                     }
-                                )
-                            }
+                                }
+                            )
                         }
                     }
                     .onReceive(viewModel.addPostSubject, perform: { newComment in
@@ -227,6 +216,11 @@ public struct ThreadView: View {
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
+        .onFirstAppear {
+            Task {
+                await viewModel.getPosts(thread: thread, page: 1)
+            }
+        }
         .onDisappear {
             onBackTapped()
             viewModel.sendUpdateUnreadState()
@@ -239,11 +233,9 @@ public struct ThreadView: View {
     }
     
     private func reloadPage(onSuccess: @escaping () -> Void) {
-        if let thread {
-            Task {
-                if await viewModel.getPosts(thread: thread,
-                                            page: viewModel.nextPage-1) { onSuccess() }
-            }
+        Task {
+            if await viewModel.getPosts(thread: thread,
+                                        page: viewModel.nextPage-1) { onSuccess() }
         }
     }
 }
@@ -275,7 +267,6 @@ struct CommentsView_Previews: PreviewProvider {
         let vm = ThreadViewModel(interactor: DiscussionInteractor.mock,
                                  router: DiscussionRouterMock(),
                                  config: ConfigMock(),
-                                 storage: .mock,
                                  postStateSubject: .init(nil))
         
         ThreadView(thread: userThread, viewModel: vm)

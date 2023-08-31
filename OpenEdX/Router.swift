@@ -17,7 +17,7 @@ import Discovery
 import Dashboard
 import Profile
 import Combine
-
+ 
 public class Router: AuthorizationRouter,
                      DiscoveryRouter,
                      ProfileRouter,
