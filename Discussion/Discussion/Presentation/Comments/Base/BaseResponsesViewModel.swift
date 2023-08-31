@@ -10,7 +10,6 @@ import SwiftUI
 import Core
 import Combine
 import Swinject
-import Profile
 
 public class BaseResponsesViewModel {
     
