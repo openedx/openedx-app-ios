@@ -26,20 +26,20 @@ public protocol ProfileRepositoryProtocol {
 public class ProfileRepository: ProfileRepositoryProtocol {
     
     private let api: API
-    private let appStorage: AppStorage
+    private var storage: CoreStorage & ProfileStorage
     private let downloadManager: DownloadManagerProtocol
     private let coreDataHandler: CoreDataHandlerProtocol
     private let config: Config
     
     public init(
         api: API,
-        appStorage: AppStorage,
+        storage: CoreStorage & ProfileStorage,
         coreDataHandler: CoreDataHandlerProtocol,
         downloadManager: DownloadManagerProtocol,
         config: Config
     ) {
         self.api = api
-        self.appStorage = appStorage
+        self.storage = storage
         self.coreDataHandler = coreDataHandler
         self.downloadManager = downloadManager
         self.config = config
@@ -48,14 +48,14 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     public func getMyProfile() async throws -> UserProfile {
         let user =
         try await api.requestData(
-            ProfileEndpoint.getUserProfile(username: appStorage.user?.username ?? "")
+            ProfileEndpoint.getUserProfile(username: storage.user?.username ?? "")
         ).mapResponse(DataLayer.UserProfile.self)
-        appStorage.userProfile = user
+        storage.userProfile = user
         return user.domain
     }
     
     public func getMyProfileOffline() throws -> UserProfile {
-        if let user = appStorage.userProfile {
+        if let user = storage.userProfile {
             return user.domain
         } else {
             throw NoCachedDataError()
@@ -63,11 +63,11 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     }
     
     public func logOut() async throws {
-        guard let refreshToken = appStorage.refreshToken else { return }
+        guard let refreshToken = storage.refreshToken else { return }
         _ = try await api.request(
             ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: config.oAuthClientId)
         )
-        appStorage.clear()
+        storage.clear()
         downloadManager.deleteAllFiles()
         coreDataHandler.clear()
     }
@@ -110,23 +110,23 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     }
     
     public func uploadProfilePicture(pictureData: Data) async throws {
-           let response = try await api.request(
-                ProfileEndpoint.uploadProfilePicture(username: appStorage.user?.username ?? "",
-                                                     pictureData: pictureData))
+        let response = try await api.request(
+            ProfileEndpoint.uploadProfilePicture(username: storage.user?.username ?? "",
+                                                 pictureData: pictureData))
         if response.statusCode != 204 {
             throw APIError.uploadError
         }
     }
     
     public func deleteProfilePicture() async throws -> Bool {
-           let response = try await api.request(
-                ProfileEndpoint.deleteProfilePicture(username: appStorage.user?.username ?? ""))
+        let response = try await api.request(
+            ProfileEndpoint.deleteProfilePicture(username: storage.user?.username ?? ""))
         return response.statusCode == 204
     }
     
     public func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile {
         let response = try await api.requestData(
-            ProfileEndpoint.updateUserProfile(username: appStorage.user?.username ?? "",
+            ProfileEndpoint.updateUserProfile(username: storage.user?.username ?? "",
                                               parameters: parameters))
             .mapResponse(DataLayer.UserProfile.self).domain
         return response
@@ -138,7 +138,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     }
     
     public func getSettings() -> UserSettings {
-        if let userSettings = appStorage.userSettings {
+        if let userSettings = storage.userSettings {
             return userSettings
         } else {
             return UserSettings(wifiOnly: true, downloadQuality: VideoQuality.auto)
@@ -146,7 +146,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     }
     
     public func saveSettings(_ settings: UserSettings) {
-        appStorage.userSettings = settings
+        storage.userSettings = settings
     }
 }
 

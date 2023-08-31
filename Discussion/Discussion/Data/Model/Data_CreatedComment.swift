@@ -61,9 +61,7 @@ public extension DataLayer {
 public extension DataLayer.CreatedComment {
     var domain: Post {
         Post(authorName: author ?? DiscussionLocalization.anonymous,
-             authorAvatar: profileImage.imageURLSmall?.addingPercentEncoding(
-                withAllowedCharacters: .urlHostAllowed
-             ) ?? "",
+             authorAvatar: profileImage.imageURLSmall ?? "",
              postDate: Date(iso8601: createdAt),
              postTitle: "",
              postBodyHtml: renderedBody,

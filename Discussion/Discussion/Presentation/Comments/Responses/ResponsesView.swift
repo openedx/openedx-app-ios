@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Core
-import Kingfisher
 import Combine
 
 public struct ResponsesView: View {
@@ -208,7 +207,6 @@ struct ResponsesView_Previews: PreviewProvider {
             interactor: DiscussionInteractor(repository: DiscussionRepositoryMock()),
             router: DiscussionRouterMock(),
             config: ConfigMock(),
-            storage: .mock,
             threadStateSubject: .init(nil)
         )
         let post = Post(

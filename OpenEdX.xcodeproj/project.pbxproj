@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020CA5D82AA0A25300970AAF /* AppStorage.swift */; };
 		0218196428F734FA00202564 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0218196328F734FA00202564 /* Discussion.framework */; };
 		0218196528F734FA00202564 /* Discussion.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0218196328F734FA00202564 /* Discussion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0219C67728F4347600D64452 /* Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0219C67628F4347600D64452 /* Course.framework */; };
@@ -65,6 +66,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		020CA5D82AA0A25300970AAF /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
 		0218196328F734FA00202564 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0219C67628F4347600D64452 /* Course.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Course.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02450ABD29C35FF20094E2D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				0293A2042A6FCD430090A336 /* CoursePersistence.swift */,
 				0293A2062A6FCDA30090A336 /* DiscoveryPersistence.swift */,
 				0293A2082A6FCDE50090A336 /* DashboardPersistence.swift */,
+				020CA5D82AA0A25300970AAF /* AppStorage.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
+				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,

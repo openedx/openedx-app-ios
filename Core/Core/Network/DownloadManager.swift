@@ -71,7 +71,7 @@ public protocol DownloadManagerProtocol {
 public class DownloadManager: DownloadManagerProtocol {
     
     private let persistence: CorePersistenceProtocol
-    private let appStorage: Core.AppStorage
+    private let appStorage: CoreStorage
     private let connectivity: ConnectivityProtocol
     private var downloadRequest: DownloadRequest?
     private var currentDownload: DownloadData?
@@ -79,7 +79,7 @@ public class DownloadManager: DownloadManagerProtocol {
     
     public init(
         persistence: CorePersistenceProtocol,
-        appStorage: Core.AppStorage,
+        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol
     ) {
         self.persistence = persistence

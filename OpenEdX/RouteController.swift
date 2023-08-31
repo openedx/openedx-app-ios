@@ -16,8 +16,8 @@ class RouteController: UIViewController {
         diContainer.resolve(UINavigationController.self)!
     }()
     
-    private lazy var appStorage: Core.AppStorage = {
-        diContainer.resolve(AppStorage.self)!
+    private lazy var appStorage: CoreStorage = {
+        diContainer.resolve(CoreStorage.self)!
     }()
     
     private lazy var analytics: AuthorizationAnalytics = {
