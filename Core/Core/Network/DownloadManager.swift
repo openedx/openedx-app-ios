@@ -24,6 +24,7 @@ public struct DownloadData {
     public let id: String
     public let courseId: String
     public let url: String
+    public let path: String?
     public let fileName: String
     public let progress: Double
     public let resumeData: Data?
@@ -34,6 +35,7 @@ public struct DownloadData {
         id: String,
         courseId: String,
         url: String,
+        path: String?,
         fileName: String,
         progress: Double,
         resumeData: Data?,
@@ -43,6 +45,7 @@ public struct DownloadData {
         self.id = id
         self.courseId = courseId
         self.url = url
+        self.path = path
         self.fileName = fileName
         self.progress = progress
         self.resumeData = resumeData
@@ -145,6 +148,7 @@ public class DownloadManager: DownloadManagerProtocol {
             persistence.updateDownloadState(
                 id: download.id,
                 state: .inProgress,
+                path: nil,
                 resumeData: download.resumeData
             )
             self.isDownloadingInProgress = true
@@ -161,10 +165,11 @@ public class DownloadManager: DownloadManagerProtocol {
             downloadRequest?.responseData(completionHandler: { [weak self] data in
                 guard let self else { return }
                 if let data = data.value, let url = self.videosFolderUrl() {
-                    self.saveFile(file: fileName, data: data, url: url)
+                    let fileUrl = self.saveFile(fileName: fileName, data: data, folderURL: url)
                     self.persistence.updateDownloadState(
                         id: download.id,
                         state: .finished,
+                        path: fileUrl?.absoluteString,
                         resumeData: nil
                     )
                     try? self.newDownload()
@@ -183,6 +188,7 @@ public class DownloadManager: DownloadManagerProtocol {
             self.persistence.updateDownloadState(
                 id: currentDownload.id,
                 state: .paused,
+                path: nil,
                 resumeData: resumeData
             )
         })
@@ -190,26 +196,29 @@ public class DownloadManager: DownloadManagerProtocol {
     
     public func deleteFile(blocks: [CourseBlock]) {
         for block in blocks {
-            if let url = block.videoUrl,
-               let fileName = URL(string: url)?.lastPathComponent, let folderUrl = videosFolderUrl() {
-                do {
-                    let fileUrl = folderUrl.appendingPathComponent(fileName)
-                    try persistence.deleteDownloadData(id: block.id)
-                    try FileManager.default.removeItem(at: fileUrl)
-                    print("File deleted successfully")
-                } catch {
-                    print("Error deleting file: \(error.localizedDescription)")
-                }
+            let downloadData = persistence.downloadData(by: block.id)
+            guard let path = persistence.downloadData(by: block.id)?.path,
+                  let fileUrl = URL(string: path) else { return }
+            
+            do {
+                try persistence.deleteDownloadData(id: block.id)
+                try FileManager.default.removeItem(at: fileUrl)
+                print("File deleted successfully")
+            } catch {
+                print("Error deleting file: \(error.localizedDescription)")
             }
         }
     }
     
     public func deleteAllFiles() {
-        if let folderUrl = videosFolderUrl() {
-            do {
-                try FileManager.default.removeItem(at: folderUrl)
-            } catch {
-                NSLog("Error deleting All files: \(error.localizedDescription)")
+        let downloadData = persistence.getAllDownloadData()
+        downloadData.forEach {
+            if let path = $0.path, let fileURL = URL(string: path) {
+                do {
+                    try FileManager.default.removeItem(at: fileURL)
+                } catch {
+                    NSLog("Error deleting All files: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -219,9 +228,7 @@ public class DownloadManager: DownloadManagerProtocol {
               data.url.count > 0,
               data.state == .finished else { return nil }
         
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let directoryURL = documentDirectoryURL.appendingPathComponent("Files", isDirectory: true)
-        return directoryURL.appendingPathComponent(data.fileName)
+        return URL(string: data.path ?? "")
     }
     
     private func videosFolderUrl() -> URL? {
@@ -245,13 +252,15 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
     
-    private func saveFile(file: String, data: Data, url: URL) {
-        let fileURL = url.appendingPathComponent(file)
+    private func saveFile(fileName: String, data: Data, folderURL: URL) -> URL? {
+        let fileURL = folderURL.appendingPathComponent(fileName)
         do {
             try data.write(to: fileURL)
+            return fileURL
         } catch {
             print("SaveFile Error", error.localizedDescription)
         }
+        return nil
     }
 }
 
