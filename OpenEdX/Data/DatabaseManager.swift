@@ -74,7 +74,11 @@ class DatabaseManager: CoreDataHandlerProtocol {
         }
 
         // Re-create the persistent container
-        persistentContainer = createContainer()
-        context = createContext()
+        persistentContainer.loadPersistentStores { _, error in
+            if let error = error {
+                print("Unresolved error \(error)")
+                fatalError()
+            }
+        }
     }
 }

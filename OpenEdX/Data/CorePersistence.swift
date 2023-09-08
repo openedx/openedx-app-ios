@@ -41,6 +41,24 @@ public class CorePersistence: CorePersistenceProtocol {
             .eraseToAnyPublisher()
     }
     
+    public func getAllDownloadData() -> [DownloadData] {
+        let request = CDDownloadData.fetchRequest()
+        guard let downloadData = try? context.fetch(request) else { return [] }
+        return downloadData.map {
+            DownloadData(
+                id: $0.id ?? "",
+                courseId: $0.courseId ?? "",
+                url: $0.url ?? "",
+                path: $0.path,
+                fileName: $0.fileName ?? "",
+                progress: $0.progress,
+                resumeData: $0.resumeData,
+                state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
+                type: DownloadType(rawValue: $0.type ?? "") ?? .video
+            )
+        }
+    }
+    
     public func addToDownloadQueue(blocks: [CourseBlock]) {
         for block in blocks {
             let request = CDDownloadData.fetchRequest()
@@ -72,6 +90,7 @@ public class CorePersistence: CorePersistenceProtocol {
             id: data.id ?? "",
             courseId: data.courseId ?? "",
             url: data.url ?? "",
+            path: data.path,
             fileName: data.fileName ?? "",
             progress: data.progress,
             resumeData: data.resumeData,
@@ -89,6 +108,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 id: $0.id ?? "",
                 courseId: $0.courseId ?? "",
                 url: $0.url ?? "",
+                path: $0.path,
                 fileName: $0.fileName ?? "",
                 progress: $0.progress,
                 resumeData: $0.resumeData,
@@ -106,6 +126,7 @@ public class CorePersistence: CorePersistenceProtocol {
             id: downloadData.id ?? "",
             courseId: downloadData.courseId ?? "",
             url: downloadData.url ?? "",
+            path: downloadData.path,
             fileName: downloadData.fileName ?? "",
             progress: downloadData.progress,
             resumeData: downloadData.resumeData,
@@ -114,12 +135,13 @@ public class CorePersistence: CorePersistenceProtocol {
         )
     }
     
-    public func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) {
+    public func updateDownloadState(id: String, state: DownloadState, path: String?, resumeData: Data?) {
         context.performAndWait {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", id)
             guard let downloadData = try? context.fetch(request).first else { return }
             downloadData.state = state.rawValue
+            downloadData.path = path
             downloadData.resumeData = resumeData
             do {
                 try context.save()
