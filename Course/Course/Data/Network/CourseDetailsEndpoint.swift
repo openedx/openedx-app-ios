@@ -1,5 +1,5 @@
 //
-//  CourseDetailsEndpoint.swift
+//  CourseEndpoint.swift
 //  CourseDetails
 //
 //  Created by  Stepanok Ivan on 26.09.2022.
@@ -9,7 +9,7 @@ import Foundation
 import Core
 import Alamofire
 
-enum CourseDetailsEndpoint: EndPointType {
+enum CourseEndpoint: EndPointType {
     case getCourseDetail(courseID: String)
     case getCourseBlocks(courseID: String, userName: String)
     case pageHTML(pageUrlString: String)
