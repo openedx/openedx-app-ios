@@ -1,10 +1,10 @@
-Title: Support for Limited iOS Versions in the OpenEdx Project
+Title: Strategy for maintaining iOS versions in the OpenEdx Project
 ==================================================
 Date: 13 September 2023
 
 Status
 ------
-Proposal
+Accepted
 
 Context
 ------
