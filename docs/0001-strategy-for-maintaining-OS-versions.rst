@@ -57,5 +57,6 @@ We will also inform users about the need to update their operating systems for o
 
 Alternatives
 ------
-An alternative decision would be to continue supporting a larger number of iOS versions. However, this would 
-require additional resources and could increase security and performance risks.
+Continuing to support older iOS versions would demand more resources, pose security and performance risks, 
+and limit our ability to adopt modern technologies and innovations, potentially slowing down development 
+and compromising user experience.
