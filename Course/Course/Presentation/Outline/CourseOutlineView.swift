@@ -37,9 +37,7 @@ public struct CourseOutlineView: View {
             GeometryReader { proxy in
                 VStack(alignment: .center) {
                     // MARK: - Page Body
-                    RefreshableScrollViewCompat(action: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
-                    }) {
+                    RefreshableScrollView {
                         VStack(alignment: .leading) {
                             ZStack {
                                 // MARK: - Course Banner
@@ -136,7 +134,10 @@ public struct CourseOutlineView: View {
                             }
                             Spacer(minLength: 84)
                         }
-                    }.frameLimit()
+                    } onRefresh: {
+                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                    }.coordinateSpace(name: "pullToRefresh")
+                    .frameLimit()
                         .onRightSwipeGesture {
                             viewModel.router.back()
                         }
@@ -146,7 +147,7 @@ public struct CourseOutlineView: View {
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
                     reloadAction: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
+                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
                     }
                 )
                 

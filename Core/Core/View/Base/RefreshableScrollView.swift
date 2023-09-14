@@ -1,5 +1,5 @@
 //
-//  LegacyScrollView.swift
+//  RefreshableScrollView.swift
 //  Core
 //
 //  Created by  Stepanok Ivan on 14.09.2023.
@@ -15,7 +15,9 @@ public struct RefreshableScrollView<Content: View>: View {
     private let showsIndicators: Bool
     private let onRefresh: () async -> Void
     
-   public init(showsIndicators: Bool = true, @ViewBuilder content: @escaping () -> Content, onRefresh: @escaping () async -> Void) {
+   public init(showsIndicators: Bool = true, 
+               @ViewBuilder content: @escaping () -> Content, 
+               onRefresh: @escaping () async -> Void) {
         self.content = content
         self.showsIndicators = showsIndicators
         self.onRefresh = onRefresh
@@ -41,6 +43,10 @@ public struct RefreshableScrollView<Content: View>: View {
     
     public var body: some View {
         VStack() {
+//            ProgressView()
+//                .progressViewStyle(.circular)
+//                .opacity(self.viewModel.isRefreshing ? 1 : 0)
+//            Activity
             ActivityIndicator(size: self.$viewModel.progressViewHeight, isAnimating: self.$viewModel.isRefreshing)
                 .frame(width: self.viewModel.progressViewHeight, height: self.viewModel.progressViewHeight)
                 .background { self.topGeometryReader }
@@ -196,7 +202,7 @@ extension View {
     }
 }
 
-final class ActivityIndicator: UIViewRepresentable {
+struct ActivityIndicator: UIViewRepresentable {
     @Binding var size: CGFloat
     @Binding var isAnimating: Bool
     private let style: UIActivityIndicatorView.Style

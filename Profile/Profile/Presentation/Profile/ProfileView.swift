@@ -22,9 +22,7 @@ public struct ProfileView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body
-            RefreshableScrollViewCompat(action: {
-                await viewModel.getMyProfile(withProgress: isIOS14)
-            }) {
+            RefreshableScrollView {
                 VStack {
                     if viewModel.isShowProgress {
                         ProgressBar(size: 40, lineWidth: 8)
@@ -79,16 +77,17 @@ public struct ProfileView: View {
                                 .padding(.horizontal, 24)
                                 .font(Theme.Fonts.labelLarge)
                             VStack(alignment: .leading, spacing: 27) {
-                                HStack {
                                     Button(action: {
                                         viewModel.trackProfileVideoSettingsClicked()
                                         viewModel.router.showSettings()
                                     }, label: {
+                                        HStack {
                                         Text(ProfileLocalization.settingsVideo)
                                         Spacer()
                                         Image(systemName: "chevron.right")
+                                        }
                                     })
-                                }
+                                
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
                                 strokeColor: .clear
@@ -156,7 +155,6 @@ public struct ProfileView: View {
                             
                             // MARK: - Log out
                             VStack {
-                                HStack {
                                     Button(action: {
                                         viewModel.router.presentView(transitionStyle: .crossDissolve) {
                                             AlertView(
@@ -175,12 +173,15 @@ public struct ProfileView: View {
                                             )
                                         }
                                     }, label: {
+                                        HStack {
                                         Text(ProfileLocalization.logout)
                                         Spacer()
                                         Image(systemName: "rectangle.portrait.and.arrow.right")
+                                        }
                                     })
-                                }
-                            }.foregroundColor(Theme.Colors.alert)
+                                
+                            }
+                            .foregroundColor(Theme.Colors.alert)
                                 .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
                                            strokeColor: .clear)
                                 .padding(.top, 24)
@@ -189,7 +190,12 @@ public struct ProfileView: View {
                         Spacer()
                     }
                 }
-            }.frameLimit(sizePortrait: 420)
+            } onRefresh: {
+                Task {
+                    await viewModel.getMyProfile(withProgress: false)
+                }
+            }.coordinateSpace(name: "pullToRefresh")
+            .frameLimit(sizePortrait: 420)
                 .padding(.top, 8)
                 .onChange(of: settingsTapped, perform: { _ in
                     if let userModel = viewModel.userModel {
@@ -214,7 +220,7 @@ public struct ProfileView: View {
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
                                 reloadAction: {
-                await viewModel.getMyProfile(withProgress: isIOS14)
+                await viewModel.getMyProfile(withProgress: false)
             })
             
             // MARK: - Error Alert

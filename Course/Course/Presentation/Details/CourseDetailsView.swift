@@ -47,9 +47,7 @@ public struct CourseDetailsView: View {
                                 .padding(.horizontal)
                         }.frame(width: proxy.size.width)
                     } else {
-                        RefreshableScrollViewCompat(action: {
-                            await viewModel.getCourseDetail(courseID: courseID, withProgress: isIOS14)
-                        }) {
+                        RefreshableScrollView {
                             VStack(alignment: .leading) {
                                 if let courseDetails = viewModel.courseDetails {
                                     
@@ -133,7 +131,12 @@ public struct CourseDetailsView: View {
                                     }
                                 }
                             }
-                        }.frameLimit()
+                        } onRefresh: {
+                            Task {
+                                await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
+                            }
+                        }.coordinateSpace(name: "pullToRefresh")
+                        .frameLimit()
                             .onRightSwipeGesture {
                                 viewModel.router.back()
                             }
@@ -154,7 +157,7 @@ public struct CourseDetailsView: View {
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
                                 reloadAction: {
-                await viewModel.getCourseDetail(courseID: courseID, withProgress: isIOS14)
+                await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
             })
             
             // MARK: - Error Alert
