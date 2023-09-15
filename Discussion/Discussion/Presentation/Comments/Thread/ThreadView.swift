@@ -141,7 +141,6 @@ public struct ThreadView: View {
                                 viewModel.sendUpdateUnreadState()
                             }
                         } onRefresh: {
-//                            viewModel.comments = []
                             Task {
                                 _ = await viewModel.getPosts(thread: thread, page: 1)
                             }

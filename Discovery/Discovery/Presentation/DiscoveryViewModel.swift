@@ -62,6 +62,8 @@ public class DiscoveryViewModel: ObservableObject {
             if connectivity.isInternetAvaliable {
                 if page == 1 {
                     await courses = try interactor.discovery(page: page)
+                    self.totalPages = 1
+                    self.nextPage = 1
                 } else {
                     await courses += try interactor.discovery(page: page)
                 }

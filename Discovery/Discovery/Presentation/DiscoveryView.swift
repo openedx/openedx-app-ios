@@ -123,9 +123,6 @@ public struct DiscoveryView: View {
             OfflineSnackBarView(
                 connectivity: viewModel.connectivity,
                 reloadAction: {
-                    viewModel.courses = []
-                    viewModel.totalPages = 1
-                    viewModel.nextPage = 1
                     await viewModel.discovery(page: 1, withProgress: false)
                 })
             
