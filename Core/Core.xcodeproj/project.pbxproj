@@ -32,7 +32,6 @@
 		024D865E28F02C6B0077E0A0 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024D865D28F02C6B0077E0A0 /* WebView.swift */; };
 		024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024FCCFF28EF1CD300232339 /* WebBrowser.swift */; };
 		02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02512FEF299533DE0024D438 /* CoreDataHandlerProtocol.swift */; };
-		0251ED0C299D16BD00E70450 /* RefreshableScrollViewCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0251ED0B299D16BC00E70450 /* RefreshableScrollViewCompat.swift */; };
 		0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0255D55729362839004DBC1A /* UploadBodyEncoding.swift */; };
 		0259104A29C4A5B6004B5A55 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259104929C4A5B6004B5A55 /* UserSettings.swift */; };
 		025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025B36742A13B7D5001A640E /* UnitButtonView.swift */; };
@@ -152,7 +151,6 @@
 		024D865D28F02C6B0077E0A0 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		024FCCFF28EF1CD300232339 /* WebBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowser.swift; sourceTree = "<group>"; };
 		02512FEF299533DE0024D438 /* CoreDataHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandlerProtocol.swift; sourceTree = "<group>"; };
-		0251ED0B299D16BC00E70450 /* RefreshableScrollViewCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollViewCompat.swift; sourceTree = "<group>"; };
 		0255D55729362839004DBC1A /* UploadBodyEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadBodyEncoding.swift; sourceTree = "<group>"; };
 		0259104929C4A5B6004B5A55 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		025B36742A13B7D5001A640E /* UnitButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitButtonView.swift; sourceTree = "<group>"; };
@@ -521,7 +519,6 @@
 				02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */,
 				024FCCFF28EF1CD300232339 /* WebBrowser.swift */,
 				028CE96829858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift */,
-				0251ED0B299D16BC00E70450 /* RefreshableScrollViewCompat.swift */,
 				023A4DD3299E66BD006C0E48 /* OfflineSnackBarView.swift */,
 				024D865D28F02C6B0077E0A0 /* WebView.swift */,
 				02C2DC0729B63D6200F4445D /* WebViewHTML.swift */,
@@ -802,7 +799,6 @@
 				027BD3B42909475900392132 /* KeyboardState.swift in Sources */,
 				027BD3922907D88F00392132 /* Data_RegistrationFields.swift in Sources */,
 				07460FE3294B72D700F70538 /* Notification.swift in Sources */,
-				0251ED0C299D16BD00E70450 /* RefreshableScrollViewCompat.swift in Sources */,
 				0727877F28D25B24002E9142 /* Alamofire+Error.swift in Sources */,
 				02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */,
 				0259104A29C4A5B6004B5A55 /* UserSettings.swift in Sources */,
@@ -951,7 +947,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1064,7 +1060,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1302,7 +1298,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1395,7 +1391,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1493,7 +1489,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1586,7 +1582,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1742,7 +1738,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1777,7 +1773,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

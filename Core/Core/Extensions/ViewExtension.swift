@@ -166,14 +166,6 @@ public extension View {
         )
     }
     
-    var isIOS14: Bool {
-        if #available(iOS 15.0, *) {
-            return false
-        } else {
-            return true
-        }
-    }
-    
     func onFirstAppear(_ action: @escaping () -> Void) -> some View {
         modifier(FirstAppear(action: action))
     }

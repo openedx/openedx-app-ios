@@ -6,418 +6,249 @@
 //
 
 import SwiftUI
+import Combine
 
-// There are two type of positioning views - one that scrolls with the content,
-// and one that stays fixed
-private enum PositionType {
-  case fixed, moving
-}
-
-// This struct is the currency of the Preferences, and has a type
-// (fixed or moving) and the actual Y-axis value.
-// It's Equatable because Swift requires it to be.
-private struct Position: Equatable {
-  let type: PositionType
-  let y: CGFloat
-}
-
-// This might seem weird, but it's necessary due to the funny nature of
-// how Preferences work. We can't just store the last position and merge
-// it with the next one - instead we have a queue of all the latest positions.
-private struct PositionPreferenceKey: PreferenceKey {
-  typealias Value = [Position]
-
-  static var defaultValue = [Position]()
-
-  static func reduce(value: inout [Position], nextValue: () -> [Position]) {
-    value.append(contentsOf: nextValue())
-  }
-}
-
-private struct PositionIndicator: View {
-  let type: PositionType
-
-  var body: some View {
-    GeometryReader { proxy in
-        // the View itself is an invisible Shape that fills as much as possible
-        Color.clear
-          // Compute the top Y position and emit it to the Preferences queue
-          .preference(key: PositionPreferenceKey.self, value: [Position(type: type, y: proxy.frame(in: .global).minY)])
-     }
-  }
-}
-
-// Callback that'll trigger once refreshing is done
-public typealias RefreshComplete = () -> Void
-
-// The actual refresh action that's called once refreshing starts. It has the
-// RefreshComplete callback to let the refresh action let the View know
-// once it's done refreshing.
-public typealias OnRefresh = (@escaping RefreshComplete) -> Void
-
-// The offset threshold. 68 is a good number, but you can play
-// with it to your liking.
-public let defaultRefreshThreshold: CGFloat = 68
-
-// Tracks the state of the RefreshableScrollView - it's either:
-// 1. waiting for a scroll to happen
-// 2. has been primed by pulling down beyond THRESHOLD
-// 3. is doing the refreshing.
-public enum RefreshState {
-  case waiting, primed, loading
-}
-
-// ViewBuilder for the custom progress View, that may render itself
-// based on the current RefreshState.
-public typealias RefreshProgressBuilder<Progress: View> = (RefreshState) -> Progress
-
-// Default color of the rectangle behind the progress spinner
-public let defaultLoadingViewBackgroundColor = Color(UIColor.clear)
-
-public struct RefreshableScrollView<Progress, Content>: View where Progress: View, Content: View {
-  let showsIndicators: Bool // if the ScrollView should show indicators
-  let shouldTriggerHapticFeedback: Bool // if key actions should trigger haptic feedback
-  let loadingViewBackgroundColor: Color
-  let threshold: CGFloat // what height do you have to pull down to trigger the refresh
-  let onRefresh: OnRefresh // the refreshing action
-  let progress: RefreshProgressBuilder<Progress> // custom progress view
-  let content: () -> Content // the ScrollView content
-  @State private var offset: CGFloat = 0
-  @State private var state = RefreshState.waiting // the current state
-  // Haptic Feedback
-  let finishedReloadingFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-  let primedFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
-
-  // We use a custom constructor to allow for usage of a @ViewBuilder for the content
-  public init(showsIndicators: Bool = true,
-              shouldTriggerHapticFeedback: Bool = false,
-              loadingViewBackgroundColor: Color = defaultLoadingViewBackgroundColor,
-              threshold: CGFloat = defaultRefreshThreshold,
-              onRefresh: @escaping OnRefresh,
-              @ViewBuilder progress: @escaping RefreshProgressBuilder<Progress>,
-              @ViewBuilder content: @escaping () -> Content) {
-    self.showsIndicators = showsIndicators
-    self.shouldTriggerHapticFeedback = shouldTriggerHapticFeedback
-    self.loadingViewBackgroundColor = loadingViewBackgroundColor
-    self.threshold = threshold
-    self.onRefresh = onRefresh
-    self.progress = progress
-    self.content = content
-  }
-
-  public var body: some View {
-    // The root view is a regular ScrollView
-    ScrollView(showsIndicators: showsIndicators) {
-      // The ZStack allows us to position the PositionIndicator,
-      // the content and the loading view, all on top of each other.
-      ZStack(alignment: .top) {
-        // The moving positioning indicator, that sits at the top
-        // of the ScrollView and scrolls down with the content
-        PositionIndicator(type: .moving)
-          .frame(height: 0)
-
-         // Your ScrollView content. If we're loading, we want
-         // to keep it below the loading view, hence the alignmentGuide.
-         content()
-           .alignmentGuide(.top, computeValue: { _ in
-             (state == .loading) ? -threshold + max(0, offset) : 0
-            })
-
-          // The loading view. It's offset to the top of the content unless we're loading.
-          ZStack {
-            Rectangle()
-              .foregroundColor(loadingViewBackgroundColor)
-              .frame(height: threshold)
-            progress(state)
-          }.offset(y: (state == .loading) ? -max(0, offset) : -threshold)
-        }
-      }
-      // Put a fixed PositionIndicator in the background so that we have
-      // a reference point to compute the scroll offset.
-      .background(PositionIndicator(type: .fixed))
-      // Once the scrolling offset changes, we want to see if there should
-      // be a state change.
-      .onPreferenceChange(PositionPreferenceKey.self) { values in
-          DispatchQueue.main.async {
-              // Compute the offset between the moving and fixed PositionIndicators
-              let movingY = values.first { $0.type == .moving }?.y ?? 0
-              let fixedY = values.first { $0.type == .fixed }?.y ?? 0
-              offset = movingY - fixedY
-              if state != .loading { // If we're already loading, ignore everything
-                // Map the preference change action to the UI thread
-                  // If the user pulled down below the threshold, prime the view
-                  if offset > threshold && state == .waiting {
-                    state = .primed
-                    if shouldTriggerHapticFeedback {
-                      self.primedFeedbackGenerator.impactOccurred()
-                    }
-
-                  // If the view is primed and we've crossed the threshold again on the
-                  // way back, trigger the refresh
-                  } else if offset < threshold && state == .primed {
-                    state = .loading
-                    onRefresh { // trigger the refreshing callback
-                      // once refreshing is done, smoothly move the loading view
-                      // back to the offset position
-                      withAnimation {
-                        self.state = .waiting
-                      }
-                      if shouldTriggerHapticFeedback {
-                        self.finishedReloadingFeedbackGenerator.impactOccurred()
-                      }
-                    }
-                  }
-              }
-          }
-      }
-  }
-}
-
-// Extension that uses default RefreshActivityIndicator so that you don't have to
-// specify it every time.
-public extension RefreshableScrollView where Progress == RefreshActivityIndicator {
-    init(showsIndicators: Bool = true,
-         loadingViewBackgroundColor: Color = defaultLoadingViewBackgroundColor,
-         threshold: CGFloat = defaultRefreshThreshold,
-         onRefresh: @escaping OnRefresh,
-         @ViewBuilder content: @escaping () -> Content) {
-        self.init(showsIndicators: showsIndicators,
-                  loadingViewBackgroundColor: loadingViewBackgroundColor,
-                  threshold: threshold,
-                  onRefresh: onRefresh,
-                  progress: { state in
-                    RefreshActivityIndicator(isAnimating: state == .loading) {
-                        $0.hidesWhenStopped = false
-                    }
-                 },
-                 content: content)
-    }
-}
-
-// Wraps a UIActivityIndicatorView as a loading spinner that works on all SwiftUI versions.
-public struct RefreshActivityIndicator: UIViewRepresentable {
-  public typealias UIView = UIActivityIndicatorView
-  public var isAnimating: Bool = true
-  public var configuration = { (indicator: UIView) in }
-
-  public init(isAnimating: Bool, configuration: ((UIView) -> Void)? = nil) {
-    self.isAnimating = isAnimating
-    if let configuration = configuration {
-      self.configuration = configuration
-    }
-  }
-
-  public func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView {
-    UIView()
-  }
-
-  public func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Self>) {
-    isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
-    configuration(uiView)
-  }
-}
-
-#if compiler(>=5.5)
-// Allows using RefreshableScrollView with an async block.
-@available(iOS 15.0, *)
-public extension RefreshableScrollView {
-    init(showsIndicators: Bool = true,
-         loadingViewBackgroundColor: Color = defaultLoadingViewBackgroundColor,
-         threshold: CGFloat = defaultRefreshThreshold,
-         action: @escaping @Sendable () async -> Void,
-         @ViewBuilder progress: @escaping RefreshProgressBuilder<Progress>,
-         @ViewBuilder content: @escaping () -> Content) {
-        self.init(showsIndicators: showsIndicators,
-                  loadingViewBackgroundColor: loadingViewBackgroundColor,
-                  threshold: threshold,
-                  onRefresh: { refreshComplete in
-                    Task {
-                        await action()
-                        refreshComplete()
-                    }
-                },
-                  progress: progress,
-                  content: content)
-    }
-}
-#endif
-
-public struct RefreshableCompat<Progress>: ViewModifier where Progress: View {
+public struct RefreshableScrollView<Content: View>: View {
+    @StateObject private var viewModel = RefreshableScrollViewModel()
+    
+    private let content: () -> Content
     private let showsIndicators: Bool
-    private let loadingViewBackgroundColor: Color
-    private let threshold: CGFloat
-    private let onRefresh: OnRefresh
-    private let progress: RefreshProgressBuilder<Progress>
-
-    public init(showsIndicators: Bool = true,
-                loadingViewBackgroundColor: Color = defaultLoadingViewBackgroundColor,
-                threshold: CGFloat = defaultRefreshThreshold,
-                onRefresh: @escaping OnRefresh,
-                @ViewBuilder progress: @escaping RefreshProgressBuilder<Progress>) {
+    private let onRefresh: () async -> Void
+    
+   public init(showsIndicators: Bool = true,
+               @ViewBuilder content: @escaping () -> Content,
+               onRefresh: @escaping () async -> Void) {
+        self.content = content
         self.showsIndicators = showsIndicators
-        self.loadingViewBackgroundColor = loadingViewBackgroundColor
-        self.threshold = threshold
         self.onRefresh = onRefresh
-        self.progress = progress
     }
-
-    public func body(content: Content) -> some View {
-        RefreshableScrollView(showsIndicators: showsIndicators,
-                              loadingViewBackgroundColor: loadingViewBackgroundColor,
-                              threshold: threshold,
-                              onRefresh: onRefresh,
-                              progress: progress) {
-            content
-        }
-    }
-}
-
-#if compiler(>=5.5)
-@available(iOS 15.0, *)
-public extension List {
-    @ViewBuilder func refreshableCompat<Progress: View>(showsIndicators: Bool = true,
-                                                        loadingViewBackgroundColor:
-                                                        Color = defaultLoadingViewBackgroundColor,
-                                                        threshold: CGFloat = defaultRefreshThreshold,
-                                                        onRefresh: @escaping OnRefresh,
-                                                        @ViewBuilder progress:
-                                                        @escaping RefreshProgressBuilder<Progress>) -> some View {
-        if #available(iOS 15.0, macOS 12.0, *) {
-            self.refreshable {
-                await withCheckedContinuation { cont in
-                    onRefresh {
-                        cont.resume()
-                    }
+    
+    private var topGeometryReader: some View {
+        GeometryReader { geometry in
+            Color.clear
+                .framePreferenceKey(geometry.frame(in: .global)) { frame in
+                    self.viewModel.update(topFrame: frame)
                 }
-            }
-        } else {
-            self.modifier(RefreshableCompat(showsIndicators: showsIndicators,
-                                            loadingViewBackgroundColor: loadingViewBackgroundColor,
-                                            threshold: threshold,
-                                            onRefresh: onRefresh,
-                                            progress: progress))
         }
     }
-}
-#endif
-
-public extension View {
-    @ViewBuilder func refreshableCompat<Progress: View>(showsIndicators: Bool = true,
-                                                        loadingViewBackgroundColor:
-                                                        Color = defaultLoadingViewBackgroundColor,
-                                                        threshold: CGFloat = defaultRefreshThreshold,
-                                                        onRefresh: @escaping OnRefresh,
-                                                        @ViewBuilder progress:
-                                                        @escaping RefreshProgressBuilder<Progress>) -> some View {
-        self.modifier(RefreshableCompat(showsIndicators: showsIndicators,
-                                        loadingViewBackgroundColor: loadingViewBackgroundColor,
-                                        threshold: threshold,
-                                        onRefresh: onRefresh,
-                                        progress: progress))
-    }
-}
-
-public struct RefreshableScrollViewIOS14<Content: View>: View {
-    public let onRefresh: OnRefresh // the refreshing action
-    public let content: Content // the ScrollView content
-    private let THRESHOLD: CGFloat = 100
     
-    @State private var state = RefreshState.waiting // the current state
-    
-    // We use a custom constructor to allow for usage of a @ViewBuilder for the content
-    public init(onRefresh: @escaping OnRefresh, @ViewBuilder content: () -> Content) {
-        self.onRefresh = onRefresh
-        self.content = content()
+    private var scrollViewGeometryReader: some View {
+        GeometryReader { geometry in
+            Color.clear
+                .framePreferenceKey(geometry.frame(in: .global)) { frame in
+                    self.viewModel.update(scrollFrame: frame)
+                }
+        }
     }
     
     public var body: some View {
-        // The root view is a regular ScrollView
-        ScrollView {
-            // The ZStack allows us to position the PositionIndicator,
-            // the content and the loading view, all on top of each other.
-            ZStack(alignment: .top) {
-                // The moving positioning indicator, that sits at the top
-                // of the ScrollView and scrolls down with the content
-                PositionIndicator(type: .moving)
-                    .frame(height: 0)
-                
-                // Your ScrollView content. If we're loading, we want
-                // to keep it below the loading view, hence the alignmentGuide.
-                content
-                    .alignmentGuide(.top, computeValue: { _ in
-                        (state == .loading) ? -THRESHOLD : 0
-                    })
-                
-                // The loading view. It's offset to the top of the content unless we're loading.
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(height: THRESHOLD)
-
-                    ActivityIndicator(isAnimating: state == .loading) {
-                        $0.hidesWhenStopped = false
-                    }
-                }.offset(y: (state == .loading) ? 0 : -THRESHOLD)
+        VStack() {
+//            ProgressView()
+//                .progressViewStyle(.circular)
+//                .opacity(self.viewModel.isRefreshing ? 1 : 0)
+//            Activity
+            ActivityIndicator(size: self.$viewModel.progressViewHeight, isAnimating: self.$viewModel.isRefreshing)
+                .frame(width: self.viewModel.progressViewHeight, height: self.viewModel.progressViewHeight)
+                .background { self.topGeometryReader }
+            
+            ScrollView(.vertical, showsIndicators: self.showsIndicators) {
+                self.content()
+                    .background { self.scrollViewGeometryReader }
             }
         }
-        // Put a fixed PositionIndicator in the background so that we have
-        // a reference point to compute the scroll offset.
-        .background(PositionIndicator(type: .fixed))
-        // Once the scrolling offset changes, we want to see if there should
-        // be a state change.
-        .onPreferenceChange(PositionPreferenceKey.self) { values in
-            if state != .loading { // If we're already loading, ignore everything
-                // Map the preference change action to the UI thread
-                DispatchQueue.main.async {
-                    // Compute the offset between the moving and fixed PositionIndicators
-                    let movingY = values.first { $0.type == .moving }?.y ?? 0
-                    let fixedY = values.first { $0.type == .fixed }?.y ?? 0
-                    let offset = movingY - fixedY
-                    
-                    // If the user pulled down below the threshold, prime the view
-                    if offset > THRESHOLD && state == .waiting {
-                        state = .primed
-                        
-                        // If the view is primed and we've crossed the threshold again on the
-                        // way back, trigger the refresh
-                    } else if offset < THRESHOLD && state == .primed {
-                        state = .loading
-                        self.state = .waiting
-
-                        onRefresh { // trigger the refreshing callback
-                            // once refreshing is done, smoothly move the loading view
-                            // back to the offset position
-                            //                withAnimation {
-                            //                  self.state = .waiting
-                            //                }
-                        }
-                    }
+        .onChange(of: self.viewModel.isRefreshing) { isRefreshing in
+            guard isRefreshing else { return }
+            
+            Task {
+                await self.onRefresh()
+                
+                // In case the async method returns quickly.
+                // We want to keep it refreshing for some time so it is smooth.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.viewModel.endRefreshing()
                 }
             }
         }
+    }
+}
+
+struct RefreshableScrollView_Previews: PreviewProvider {
+    static var previews: some View {
+        RefreshableScrollView(showsIndicators: true) {
+            Text("Hi")
+            Text("World")
+            Text("Hello")
+        } onRefresh: {
+            print("Refreshing")
+        }
+    }
+}
+
+final class RefreshableScrollViewModel: ObservableObject {
+    @Published var progressViewHeight: CGFloat = 0
+    @Published var isRefreshing = false
+    
+    let progressViewMaxHeight: CGFloat
+    private let scrollPositionSubject = CurrentValueSubject<CGFloat, Never>(0)
+    private let closingAnimationDuration: Double = 0.15
+    private var subscriptions: Set<AnyCancellable> = []
+    
+    private var topYValue: CGFloat?
+    private var scrollYValue: CGFloat?
+    private var startingDistance: CGFloat?
+    private var isClosing = false
+    
+    /// - Parameter activityIndicatorStyle: Used to derive the size of the indicator. Might be better to get in another way. In case Apple changes the sizes
+    init(activityIndicatorStyle: UIActivityIndicatorView.Style = .medium) {
+        self.progressViewMaxHeight = activityIndicatorStyle == .large ? 35 : 27
+        self.reactToScrollEnding()
+    }
+    
+    private func reactToScrollEnding() {
+        self.scrollPositionSubject
+            .debounce(for: 0.1, scheduler: RunLoop.main, options: nil)
+            .sink { [weak self] _ in
+                guard self?.progressViewHeight != 0,
+                      self?.isRefreshing != true
+                else { return }
+                
+                self?.reset()
+            }
+            .store(in: &self.subscriptions)
+    }
+    
+    /// Updates the progressViewHeight and progressViewIsAnimating properties based on the given topFrame and any existing scrollYValue, if any
+    /// - Parameter topFrame: CGRect
+    func update(topFrame: CGRect) {
+        let topY = topFrame.minY
+        self.topYValue = topY
+        guard let scrollY = self.scrollYValue else { return }
+        
+        self.update(topY: topY, scrollY: scrollY)
+    }
+    
+    /// Updates the progressViewHeight and progressViewIsAnimating properties based on the given scrollFrame and any existing topYValue, if any
+    /// - Parameter scrollFrame: CGRect
+    func update(scrollFrame: CGRect) {
+        let scrollY = scrollFrame.minY
+        self.scrollYValue = scrollY
+        self.scrollPositionSubject.send(scrollY)
+        guard let topY = self.topYValue else { return }
+        
+        self.update(topY: topY, scrollY: scrollY)
+    }
+    
+    /// Stops refreshing and hides the progress view
+    func endRefreshing() {
+        self.reset()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.closingAnimationDuration) {
+            self.isRefreshing = false
+        }
+    }
+    
+    private func reset() {
+        self.isClosing = true
+        let topY = self.topYValue ?? 0
+        let startDistance = self.startingDistance ?? 0
+        let startingScrollYValue = topY + startDistance
+        self.scrollYValue = startingScrollYValue
+        
+        withAnimation(.linear(duration: self.closingAnimationDuration)) {
+            self.progressViewHeight = 0
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.closingAnimationDuration) {
+            self.isClosing = false
+        }
+    }
+    
+    private func update(topY: CGFloat, scrollY: CGFloat) {
+        // Don't react to updates while animating closed
+        guard !self.isClosing else { return }
+        
+        let newDistance = max(scrollY - topY, 0)
+        
+        if self.startingDistance == nil {
+            self.startingDistance = newDistance
+        }
+        
+        let differenceFromStart = newDistance - self.startingDistance!
+        let constrainedDifference = min(max(differenceFromStart, 0), self.progressViewMaxHeight)
+        
+        // Don't change the height of the progress view if we are refreshing
+        guard !isRefreshing else { return }
+        
+        DispatchQueue.main.async {
+            self.progressViewHeight = constrainedDifference
+            self.isRefreshing = constrainedDifference == self.progressViewMaxHeight
+        }
+    }
+}
+
+struct FramePreferenceKey: PreferenceKey {
+    static var defaultValue: CGRect = .zero
+    
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+        value = nextValue()
+    }
+}
+
+extension View {
+    func framePreferenceKey(_ value: CGRect, onFrameChange: @escaping (CGRect) -> Void) -> some View {
+        self
+            .preference(key: FramePreferenceKey.self, value: value)
+            .onPreferenceChange(FramePreferenceKey.self, perform: onFrameChange)
     }
 }
 
 struct ActivityIndicator: UIViewRepresentable {
-    public typealias UIView = UIActivityIndicatorView
-    public var isAnimating: Bool = true
-    public var configuration = { (indicator: UIView) in }
+    @Binding var size: CGFloat
+    @Binding var isAnimating: Bool
+    private let style: UIActivityIndicatorView.Style
     
-    public init(isAnimating: Bool, configuration: ((UIView) -> Void)? = nil) {
-        self.isAnimating = isAnimating
-        if let configuration = configuration {
-            self.configuration = configuration
+    init(style: UIActivityIndicatorView.Style = .medium, size: Binding<CGFloat>, isAnimating: Binding<Bool>) {
+        self._size = size
+        self._isAnimating = isAnimating
+        self.style = style
+    }
+    
+    func makeUIView(context: Context) -> UIView {
+        let activityIndicator = UIActivityIndicatorView(style: self.style)
+        activityIndicator.hidesWhenStopped = false
+
+        if self.isAnimating {
+            activityIndicator.startAnimating()
+        }
+
+        let containerView = UIView()
+        containerView.layer.cornerRadius = self.size / 2
+        containerView.clipsToBounds = true
+        
+        containerView.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator
+            .centerXAnchor
+            .constraint(equalTo: containerView.centerXAnchor)
+            .isActive = true
+        activityIndicator
+            .centerYAnchor
+            .constraint(equalTo: containerView.centerYAnchor)
+            .isActive = true
+        
+        return containerView
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
+        uiView.layer.cornerRadius = self.size / 2
+        
+        guard let activityIndicator = uiView.subviews.first(where: { $0 is UIActivityIndicatorView }) as? UIActivityIndicatorView
+        else { return }
+        
+        if self.isAnimating {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
         }
     }
-    
-    public func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView {
-        let uiView = UIView()
-        uiView.startAnimating()
-        return uiView
-    }
-    
-    public func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Self>) {
-//        isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
-        configuration(uiView)
-    }
- }
+}

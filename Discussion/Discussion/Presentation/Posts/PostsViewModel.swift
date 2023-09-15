@@ -188,59 +188,112 @@ public class PostsViewModel: ObservableObject {
         }
     }
     
+    // swiftlint:disable function_body_length
     @MainActor
     public func getPosts(courseID: String, pageNumber: Int, withProgress: Bool = true) async -> Bool {
         fetchInProgress = true
         isShowProgress = withProgress
         do {
-            switch type {
-            case .allPosts:
-                threads.threads += try await interactor
-                    .getThreadsList(courseID: courseID,
-                                    type: .allPosts,
-                                    sort: sortTitle,
-                                    filter: filterTitle,
-                                    page: pageNumber).threads
-                if threads.threads.indices.contains(0) {
-                    self.totalPages = threads.threads[0].numPages
-                    self.nextPage += 1
+            if pageNumber == 1 {
+                switch type {
+                case .allPosts:
+                    threads.threads = try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .allPosts,
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage = 2
+                    }
+                case .followingPosts:
+                    threads.threads = try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .followingPosts,
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage = 2
+                    }
+                case .nonCourseTopics:
+                    threads.threads = try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .nonCourseTopics,
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage = 2
+                    }
+                case .courseTopics(topicID: let topicID):
+                    threads.threads = try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .courseTopics(topicID: topicID),
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage = 2
+                    }
+                case .none:
+                    isShowProgress = false
+                    return false
                 }
-            case .followingPosts:
-                threads.threads += try await interactor
-                    .getThreadsList(courseID: courseID,
-                                    type: .followingPosts,
-                                    sort: sortTitle,
-                                    filter: filterTitle,
-                                    page: pageNumber).threads
-                if threads.threads.indices.contains(0) {
-                    self.totalPages = threads.threads[0].numPages
-                    self.nextPage += 1
+            } else {
+                switch type {
+                case .allPosts:
+                    threads.threads += try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .allPosts,
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage += 1
+                    }
+                case .followingPosts:
+                    threads.threads += try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .followingPosts,
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage += 1
+                    }
+                case .nonCourseTopics:
+                    threads.threads += try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .nonCourseTopics,
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage += 1
+                    }
+                case .courseTopics(topicID: let topicID):
+                    threads.threads += try await interactor
+                        .getThreadsList(courseID: courseID,
+                                        type: .courseTopics(topicID: topicID),
+                                        sort: sortTitle,
+                                        filter: filterTitle,
+                                        page: pageNumber).threads
+                    if threads.threads.indices.contains(0) {
+                        self.totalPages = threads.threads[0].numPages
+                        self.nextPage += 1
+                    }
+                case .none:
+                    isShowProgress = false
+                    return false
                 }
-            case .nonCourseTopics:
-                threads.threads += try await interactor
-                    .getThreadsList(courseID: courseID,
-                                    type: .nonCourseTopics,
-                                    sort: sortTitle,
-                                    filter: filterTitle,
-                                    page: pageNumber).threads
-                if threads.threads.indices.contains(0) {
-                    self.totalPages = threads.threads[0].numPages
-                    self.nextPage += 1
-                }
-            case .courseTopics(topicID: let topicID):
-                threads.threads += try await interactor
-                    .getThreadsList(courseID: courseID,
-                                    type: .courseTopics(topicID: topicID),
-                                    sort: sortTitle,
-                                    filter: filterTitle,
-                                    page: pageNumber).threads
-                if threads.threads.indices.contains(0) {
-                    self.totalPages = threads.threads[0].numPages
-                    self.nextPage += 1
-                }
-            case .none:
-                isShowProgress = false
-                return false
             }
             discussionPosts = generatePosts(threads: threads)
             filteredPosts = discussionPosts
@@ -259,6 +312,7 @@ public class PostsViewModel: ObservableObject {
             return false
         }
     }
+    // swiftlint:enable function_body_length
     
     private func updateUnreadCommentsCount(id: String) {
         var threads = threads.threads

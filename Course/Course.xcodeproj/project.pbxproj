@@ -44,7 +44,7 @@
 		02B6B3B228E1C49400232911 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 02B6B3B428E1C49400232911 /* Localizable.strings */; };
 		02B6B3B728E1D11E00232911 /* CourseInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B6B3B628E1D11E00232911 /* CourseInteractor.swift */; };
 		02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B6B3BB28E1D14F00232911 /* CourseRepository.swift */; };
-		02B6B3BE28E1D15C00232911 /* CourseDetailsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B6B3BD28E1D15C00232911 /* CourseDetailsEndpoint.swift */; };
+		02B6B3BE28E1D15C00232911 /* CourseEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B6B3BD28E1D15C00232911 /* CourseEndpoint.swift */; };
 		02B6B3C128E1DBA100232911 /* Data_CourseDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B6B3C028E1DBA100232911 /* Data_CourseDetailsResponse.swift */; };
 		02B6B3C328E1DCD100232911 /* CourseDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B6B3C228E1DCD100232911 /* CourseDetails.swift */; };
 		02B6B3C928E1E68100232911 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B6B3C828E1E68100232911 /* Core.framework */; };
@@ -115,7 +115,7 @@
 		02B6B3B328E1C49400232911 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02B6B3B628E1D11E00232911 /* CourseInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseInteractor.swift; sourceTree = "<group>"; };
 		02B6B3BB28E1D14F00232911 /* CourseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRepository.swift; sourceTree = "<group>"; };
-		02B6B3BD28E1D15C00232911 /* CourseDetailsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailsEndpoint.swift; sourceTree = "<group>"; };
+		02B6B3BD28E1D15C00232911 /* CourseEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseEndpoint.swift; sourceTree = "<group>"; };
 		02B6B3C028E1DBA100232911 /* Data_CourseDetailsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CourseDetailsResponse.swift; sourceTree = "<group>"; };
 		02B6B3C228E1DCD100232911 /* CourseDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetails.swift; sourceTree = "<group>"; };
 		02B6B3C828E1E68100232911 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -278,7 +278,7 @@
 		02B6B3B928E1D13500232911 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				02B6B3BD28E1D15C00232911 /* CourseDetailsEndpoint.swift */,
+				02B6B3BD28E1D15C00232911 /* CourseEndpoint.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -715,7 +715,7 @@
 				022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */,
 				02E685BE28E4B60A000AE015 /* CourseDetailsView.swift in Sources */,
 				02F175372A4DAFD20019CD70 /* CourseAnalytics.swift in Sources */,
-				02B6B3BE28E1D15C00232911 /* CourseDetailsEndpoint.swift in Sources */,
+				02B6B3BE28E1D15C00232911 /* CourseEndpoint.swift in Sources */,
 				02B6B3C328E1DCD100232911 /* CourseDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -752,7 +752,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
@@ -773,7 +773,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
@@ -794,7 +794,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
@@ -815,7 +815,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
@@ -836,7 +836,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
@@ -857,7 +857,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
@@ -1007,7 +1007,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1042,7 +1042,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1140,7 +1140,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1239,7 +1239,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1332,7 +1332,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1424,7 +1424,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1522,7 +1522,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1550,7 +1550,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
@@ -1636,7 +1636,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1663,7 +1663,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
