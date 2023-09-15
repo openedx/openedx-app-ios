@@ -14,7 +14,6 @@ public struct PostsView: View {
     @ObservedObject private var viewModel: PostsViewModel
     @State private var isShowProgress: Bool = true
     @State private var showingAlert = false
-    @State private var listAnimation: Animation?
     private let router: DiscussionRouter
     private let title: String
     private let currentBlockID: String
@@ -55,7 +54,6 @@ public struct PostsView: View {
                                 HStack {
                                     Group {
                                         Button(action: {
-                                            listAnimation = .easeIn
                                             viewModel.generateButtons(type: .filter)
                                             showingAlert = true
                                         }, label: {
@@ -64,7 +62,6 @@ public struct PostsView: View {
                                         })
                                         Spacer()
                                         Button(action: {
-                                            listAnimation = .easeIn
                                             viewModel.generateButtons(type: .sort)
                                             showingAlert = true
                                         }, label: {
@@ -84,10 +81,8 @@ public struct PostsView: View {
                             }
                             .frameLimit()
                             RefreshableScrollViewCompat(action: {
-                                listAnimation = nil
                                 viewModel.resetPosts()
                                 _ = await viewModel.getPosts(
-                                    courseID: courseID,
                                     pageNumber: 1,
                                     withProgress: false
                                 )
@@ -134,7 +129,6 @@ public struct PostsView: View {
                                                 .onAppear {
                                                     Task {
                                                         await viewModel.getPostsPagination(
-                                                            courseID: self.courseID,
                                                             index: index
                                                         )
                                                     }
@@ -179,7 +173,7 @@ public struct PostsView: View {
                                 }
                             }
                         }.frameLimit()
-                            .animation(listAnimation)
+                            .animation(nil)
                             .onRightSwipeGesture {
                                 router.back()
                             }
@@ -197,7 +191,10 @@ public struct PostsView: View {
         }
         .onFirstAppear {
             Task {
-                await viewModel.getPosts(courseID: courseID, pageNumber: 1, withProgress: true)
+                await viewModel.getPosts(
+                    pageNumber: 1,
+                    withProgress: true
+                )
             }
         }
         .navigationBarHidden(!showTopMenu)
@@ -216,11 +213,11 @@ public struct PostsView: View {
     @MainActor
     private func reloadPage(onSuccess: @escaping () -> Void) {
         Task {
-            listAnimation = nil
             viewModel.resetPosts()
-            _ = await viewModel.getPosts(courseID: courseID,
-                                         pageNumber: 1,
-                                         withProgress: false)
+            _ = await viewModel.getPosts(
+                pageNumber: 1,
+                withProgress: false
+            )
             onSuccess()
         }
     }
