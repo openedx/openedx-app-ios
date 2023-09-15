@@ -22,7 +22,9 @@ public struct ProfileView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body
-            RefreshableScrollView {
+            RefreshableScrollViewCompat(action: {
+                await viewModel.getMyProfile(withProgress: false)
+            }) {
                 VStack {
                     if viewModel.isShowProgress {
                         ProgressBar(size: 40, lineWidth: 8)
@@ -190,12 +192,7 @@ public struct ProfileView: View {
                         Spacer()
                     }
                 }
-            } onRefresh: {
-                Task {
-                    await viewModel.getMyProfile(withProgress: false)
-                }
-            }.coordinateSpace(name: "pullToRefresh")
-            .frameLimit(sizePortrait: 420)
+            }.frameLimit(sizePortrait: 420)
                 .padding(.top, 8)
                 .onChange(of: settingsTapped, perform: { _ in
                     if let userModel = viewModel.userModel {

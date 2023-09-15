@@ -53,7 +53,9 @@ public struct DiscussionTopicsView: View {
                 // MARK: - Page Body
                 VStack {
                     ZStack(alignment: .top) {
-                        RefreshableScrollView {
+                        RefreshableScrollViewCompat(action: {
+                            await viewModel.getTopics(courseID: self.courseID, withProgress: false)
+                        }) {
                             VStack {
                                 if let topics = viewModel.discussionTopics {
                                     HStack {
@@ -125,12 +127,7 @@ public struct DiscussionTopicsView: View {
                                 }
                                 Spacer(minLength: 84)
                             }
-                        } onRefresh: {
-                            Task {
-                                await viewModel.getTopics(courseID: self.courseID, withProgress: false)
-                            }
-                        }.coordinateSpace(name: "pullToRefresh")
-                            .frameLimit()
+                        }.frameLimit()
                             .onRightSwipeGesture {
                                 router.back()
                             }

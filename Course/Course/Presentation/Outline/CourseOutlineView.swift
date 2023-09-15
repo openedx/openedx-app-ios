@@ -37,7 +37,9 @@ public struct CourseOutlineView: View {
             GeometryReader { proxy in
                 VStack(alignment: .center) {
                     // MARK: - Page Body
-                    RefreshableScrollView {
+                    RefreshableScrollViewCompat(action: {
+                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                    }) {
                         VStack(alignment: .leading) {
                             ZStack {
                                 // MARK: - Course Banner
@@ -134,10 +136,7 @@ public struct CourseOutlineView: View {
                             }
                             Spacer(minLength: 84)
                         }
-                    } onRefresh: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-                    }.coordinateSpace(name: "pullToRefresh")
-                    .frameLimit()
+                    }.frameLimit()
                         .onRightSwipeGesture {
                             viewModel.router.back()
                         }

@@ -51,39 +51,47 @@ public struct PostsView: View {
                 VStack {
                     ZStack(alignment: .top) {
                         VStack {
-                                VStack {
-                                    HStack {
-                                        Group {
-                                            Button(action: {
-                                                listAnimation = .easeIn
-                                                viewModel.generateButtons(type: .filter)
-                                                showingAlert = true
-                                            }, label: {
-                                                CoreAssets.filter.swiftUIImage
-                                                Text(viewModel.filterTitle.localizedValue)
-                                            })
-                                            Spacer()
-                                            Button(action: {
-                                                listAnimation = .easeIn
-                                                viewModel.generateButtons(type: .sort)
-                                                showingAlert = true
-                                            }, label: {
-                                                CoreAssets.sort.swiftUIImage
-                                                Text(viewModel.sortTitle.localizedValue)
-                                            })
-                                        }.foregroundColor(Theme.Colors.accentColor)
-                                    } .font(Theme.Fonts.labelMedium)
-                                        .padding(.horizontal, 24)
-                                        .padding(.vertical, 12)
-                                        .shadow(color: Theme.Colors.shadowColor,
-                                                radius: 12, y: 4)
-                                        .background(
-                                            Theme.Colors.background
-                                        )
-                                    Divider().offset(y: -8)
-                                }
+                            VStack {
+                                HStack {
+                                    Group {
+                                        Button(action: {
+                                            listAnimation = .easeIn
+                                            viewModel.generateButtons(type: .filter)
+                                            showingAlert = true
+                                        }, label: {
+                                            CoreAssets.filter.swiftUIImage
+                                            Text(viewModel.filterTitle.localizedValue)
+                                        })
+                                        Spacer()
+                                        Button(action: {
+                                            listAnimation = .easeIn
+                                            viewModel.generateButtons(type: .sort)
+                                            showingAlert = true
+                                        }, label: {
+                                            CoreAssets.sort.swiftUIImage
+                                            Text(viewModel.sortTitle.localizedValue)
+                                        })
+                                    }.foregroundColor(Theme.Colors.accentColor)
+                                } .font(Theme.Fonts.labelMedium)
+                                    .padding(.horizontal, 24)
+                                    .padding(.vertical, 12)
+                                    .shadow(color: Theme.Colors.shadowColor,
+                                            radius: 12, y: 4)
+                                    .background(
+                                        Theme.Colors.background
+                                    )
+                                Divider().offset(y: -8)
+                            }
                             .frameLimit()
-                            RefreshableScrollView {
+                            RefreshableScrollViewCompat(action: {
+                                listAnimation = nil
+                                viewModel.resetPosts()
+                                _ = await viewModel.getPosts(
+                                    courseID: courseID,
+                                    pageNumber: 1,
+                                    withProgress: false
+                                )
+                            }) {
                                 let posts = Array(viewModel.filteredPosts.enumerated())
                                 if posts.count >= 1 {
                                     LazyVStack {
@@ -95,15 +103,16 @@ public struct PostsView: View {
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                             Spacer()
                                             Button(action: {
-                                                router.createNewThread(courseID: courseID,
-                                                                       selectedTopic: currentBlockID,
-                                                                       onPostCreated: {
-                                                    reloadPage(onSuccess: {
-                                                        withAnimation {
-                                                            scroll.scrollTo(1)
-                                                        }
+                                                router.createNewThread(
+                                                    courseID: courseID,
+                                                    selectedTopic: currentBlockID,
+                                                    onPostCreated: {
+                                                        reloadPage(onSuccess: {
+                                                            withAnimation {
+                                                                scroll.scrollTo(1)
+                                                            }
+                                                        })
                                                     })
-                                                })
                                             }, label: {
                                                 VStack {
                                                     CoreAssets.addComment.swiftUIImage
@@ -168,15 +177,7 @@ public struct PostsView: View {
                                             .padding(.top, 100)
                                     }
                                 }
-                            } onRefresh: {
-                                listAnimation = nil
-                                viewModel.resetPosts()
-                                Task {
-                                    _ = await viewModel.getPosts(courseID: courseID,
-                                                                 pageNumber: 1,
-                                                                 withProgress: false)
-                                }
-                            }.coordinateSpace(name: "pullToRefresh")
+                            }
                         }.frameLimit()
                             .animation(listAnimation)
                             .onRightSwipeGesture {

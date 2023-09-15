@@ -66,56 +66,55 @@ public struct DiscoveryView: View {
                 .padding(.bottom, 20)
                 
                 ZStack {
-                    RefreshableScrollView {
-                            LazyVStack(spacing: 0) {
-                                HStack {
-                                    discoveryNew
-                                        .padding(.horizontal, 20)
-                                        .padding(.bottom, 20)
-                                    Spacer()
-                                }.padding(.leading, 10)
-                                ForEach(Array(viewModel.courses.enumerated()), id: \.offset) { index, course in
-                                    CourseCellView(
-                                        model: course,
-                                        type: .discovery,
-                                        index: index,
-                                        cellsCount: viewModel.courses.count
-                                    ).padding(.horizontal, 24)
-                                        .onAppear {
-                                            Task {
-                                                await viewModel.getDiscoveryCourses(index: index)
-                                            }
-                                        }
-                                        .onTapGesture {
-                                            viewModel.discoveryCourseClicked(
-                                                courseID: course.courseID,
-                                                courseName: course.name
-                                            )
-                                            router.showCourseDetais(
-                                                courseID: course.courseID,
-                                                title: course.name
-                                            )
-                                        }
-                                }
-                                
-                                // MARK: - ProgressBar
-                                if viewModel.nextPage <= viewModel.totalPages {
-                                    VStack(alignment: .center) {
-                                        ProgressBar(size: 40, lineWidth: 8)
-                                            .padding(.top, 20)
-                                    }.frame(maxWidth: .infinity,
-                                            maxHeight: .infinity)
-                                }
-                                VStack {}.frame(height: 40)
-                            }
-                    } onRefresh: {
+                    RefreshableScrollViewCompat(action: {
                         viewModel.totalPages = 1
                         viewModel.nextPage = 1
                         Task {
                             await viewModel.discovery(page: 1, withProgress: false)
                         }
+                    })  {
+                        LazyVStack(spacing: 0) {
+                            HStack {
+                                discoveryNew
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 20)
+                                Spacer()
+                            }.padding(.leading, 10)
+                            ForEach(Array(viewModel.courses.enumerated()), id: \.offset) { index, course in
+                                CourseCellView(
+                                    model: course,
+                                    type: .discovery,
+                                    index: index,
+                                    cellsCount: viewModel.courses.count
+                                ).padding(.horizontal, 24)
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.getDiscoveryCourses(index: index)
+                                        }
+                                    }
+                                    .onTapGesture {
+                                        viewModel.discoveryCourseClicked(
+                                            courseID: course.courseID,
+                                            courseName: course.name
+                                        )
+                                        router.showCourseDetais(
+                                            courseID: course.courseID,
+                                            title: course.name
+                                        )
+                                    }
+                            }
+                            
+                            // MARK: - ProgressBar
+                            if viewModel.nextPage <= viewModel.totalPages {
+                                VStack(alignment: .center) {
+                                    ProgressBar(size: 40, lineWidth: 8)
+                                        .padding(.top, 20)
+                                }.frame(maxWidth: .infinity,
+                                        maxHeight: .infinity)
+                            }
+                            VStack {}.frame(height: 40)
+                        }
                     }.frameLimit()
-                        .coordinateSpace(name: "pullToRefresh")
                 }
             }.padding(.top, 8)
             
