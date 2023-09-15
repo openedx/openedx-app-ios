@@ -83,13 +83,7 @@ public struct PostsView: View {
                                     Divider().offset(y: -8)
                                 }
                             .frameLimit()
-                            RefreshableScrollViewCompat(action: {
-                                listAnimation = nil
-                                viewModel.resetPosts()
-                                _ = await viewModel.getPosts(courseID: courseID,
-                                                             pageNumber: 1,
-                                                             withProgress: isIOS14)
-                            }) {
+                            RefreshableScrollView {
                                 let posts = Array(viewModel.filteredPosts.enumerated())
                                 if posts.count >= 1 {
                                     LazyVStack {
@@ -174,7 +168,15 @@ public struct PostsView: View {
                                             .padding(.top, 100)
                                     }
                                 }
-                            }
+                            } onRefresh: {
+                                listAnimation = nil
+                                viewModel.resetPosts()
+                                Task {
+                                    _ = await viewModel.getPosts(courseID: courseID,
+                                                                 pageNumber: 1,
+                                                                 withProgress: false)
+                                }
+                            }.coordinateSpace(name: "pullToRefresh")
                         }.frameLimit()
                             .animation(listAnimation)
                             .onRightSwipeGesture {
@@ -217,7 +219,7 @@ public struct PostsView: View {
             viewModel.resetPosts()
             _ = await viewModel.getPosts(courseID: courseID,
                                          pageNumber: 1,
-                                         withProgress: isIOS14)
+                                         withProgress: false)
             onSuccess()
         }
     }

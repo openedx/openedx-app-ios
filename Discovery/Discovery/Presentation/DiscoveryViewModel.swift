@@ -60,7 +60,11 @@ public class DiscoveryViewModel: ObservableObject {
         fetchInProgress = withProgress
         do {
             if connectivity.isInternetAvaliable {
-                await courses += try interactor.discovery(page: page)
+                if page == 1 {
+                    await courses = try interactor.discovery(page: page)
+                } else {
+                    await courses += try interactor.discovery(page: page)
+                }
                 self.nextPage += 1
                 if !courses.isEmpty {
                     totalPages = courses[0].numPages

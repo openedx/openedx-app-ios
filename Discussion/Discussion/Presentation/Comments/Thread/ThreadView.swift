@@ -34,10 +34,7 @@ public struct ThreadView: View {
             ScrollViewReader { scroll in
                 VStack {
                     ZStack(alignment: .top) {
-                        RefreshableScrollViewCompat(action: {
-                            viewModel.comments = []
-                            _ = await viewModel.getPosts(thread: thread, page: 1)
-                        }) {
+                        RefreshableScrollView {
                             VStack {
                                 if let comments = viewModel.postComments {
                                     ParentCommentView(
@@ -143,7 +140,12 @@ public struct ThreadView: View {
                                 onBackTapped()
                                 viewModel.sendUpdateUnreadState()
                             }
-                        }
+                        } onRefresh: {
+//                            viewModel.comments = []
+                            Task {
+                                _ = await viewModel.getPosts(thread: thread, page: 1)
+                            }
+                        }.coordinateSpace(name: "pullToRefresh")
                         if !thread.closed {
                             FlexibleKeyboardInputView(
                                 hint: DiscussionLocalization.Thread.addResponse,
