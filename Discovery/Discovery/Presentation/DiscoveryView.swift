@@ -115,7 +115,6 @@ public struct DiscoveryView: View {
                             VStack {}.frame(height: 40)
                         }
                     }.frameLimit()
-                        .coordinateSpace(name: "pullToRefresh")
                 }
             }.padding(.top, 8)
             

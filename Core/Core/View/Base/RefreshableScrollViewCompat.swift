@@ -20,7 +20,7 @@ public struct RefreshableScrollViewCompat<Content>: View where Content: View {
         if #available(iOS 16.0, *) {
             return ScrollView {
                 content()
-            } .refreshable {
+            }.refreshable {
                 Task {
                     await action()
                 }
