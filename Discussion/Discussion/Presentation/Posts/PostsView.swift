@@ -86,9 +86,11 @@ public struct PostsView: View {
                             RefreshableScrollViewCompat(action: {
                                 listAnimation = nil
                                 viewModel.resetPosts()
-                                _ = await viewModel.getPosts(courseID: courseID,
-                                                             pageNumber: 1,
-                                                             withProgress: false)
+                                _ = await viewModel.getPosts(
+                                    courseID: courseID,
+                                    pageNumber: 1,
+                                    withProgress: false
+                                )
                             }) {
                                 let posts = Array(viewModel.filteredPosts.enumerated())
                                 if posts.count >= 1 {
@@ -101,15 +103,16 @@ public struct PostsView: View {
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                             Spacer()
                                             Button(action: {
-                                                router.createNewThread(courseID: courseID,
-                                                                       selectedTopic: currentBlockID,
-                                                                       onPostCreated: {
-                                                    reloadPage(onSuccess: {
-                                                        withAnimation {
-                                                            scroll.scrollTo(1)
-                                                        }
+                                                router.createNewThread(
+                                                    courseID: courseID,
+                                                    selectedTopic: currentBlockID,
+                                                    onPostCreated: {
+                                                        reloadPage(onSuccess: {
+                                                            withAnimation {
+                                                                scroll.scrollTo(1)
+                                                            }
+                                                        })
                                                     })
-                                                })
                                             }, label: {
                                                 VStack {
                                                     CoreAssets.addComment.swiftUIImage

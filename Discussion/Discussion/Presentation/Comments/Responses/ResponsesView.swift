@@ -42,8 +42,11 @@ public struct ResponsesView: View {
                     ZStack(alignment: .top) {
                         RefreshableScrollViewCompat(action: {
                             viewModel.comments = []
-                            _ = await viewModel.getComments(commentID: commentID,
-                                                            parentComment: parentComment, page: 1)
+                            _ = await viewModel.getComments(
+                                commentID: commentID,
+                                parentComment: parentComment, 
+                                page: 1
+                            )
                         }) {
                             VStack {
                                 if let comments = viewModel.postComments {
