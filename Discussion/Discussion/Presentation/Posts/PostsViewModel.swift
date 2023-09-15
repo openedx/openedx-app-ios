@@ -109,9 +109,6 @@ public class PostsViewModel: ObservableObject {
     }
     
     public func resetPosts() {
-//        filteredPosts = []
-//        discussionPosts = []
-//        threads.threads = []
         nextPage = 1
         totalPages = 1
     }
