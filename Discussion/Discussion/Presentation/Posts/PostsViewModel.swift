@@ -109,11 +109,11 @@ public class PostsViewModel: ObservableObject {
     }
     
     public func resetPosts() {
-//        filteredPosts = []
-//        discussionPosts = []
-//        threads.threads = []
-//        nextPage = 1
-//        totalPages = 1
+        filteredPosts = []
+        discussionPosts = []
+        threads.threads = []
+        nextPage = 1
+        totalPages = 1
     }
     
     public func generateButtons(type: ButtonType) {
