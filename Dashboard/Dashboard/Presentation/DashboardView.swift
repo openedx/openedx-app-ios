@@ -33,7 +33,9 @@ public struct DashboardView: View {
             
             // MARK: - Page body
             VStack(alignment: .center) {
-                RefreshableScrollView {
+                RefreshableScrollViewCompat(action: {
+                    await viewModel.getMyCourses(page: 1, refresh: true)
+                }) {
                     Group {
                         if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
                             EmptyPageIcon()
@@ -89,12 +91,7 @@ public struct DashboardView: View {
                             }
                         }
                     }
-                } onRefresh: {
-                    Task {
-                        await viewModel.getMyCourses(page: 1, refresh: true)
-                    }
-                }.coordinateSpace(name: "pullToRefresh")
-                .frameLimit()
+                }.frameLimit()
             }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar

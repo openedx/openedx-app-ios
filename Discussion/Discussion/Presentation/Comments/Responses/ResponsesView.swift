@@ -40,7 +40,11 @@ public struct ResponsesView: View {
             ScrollViewReader { scroll in
                 VStack {
                     ZStack(alignment: .top) {
-                        RefreshableScrollView {
+                        RefreshableScrollViewCompat(action: {
+                            viewModel.comments = []
+                            _ = await viewModel.getComments(commentID: commentID,
+                                                            parentComment: parentComment, page: 1)
+                        }) {
                             VStack {
                                 if let comments = viewModel.postComments {
                                     ParentCommentView(
@@ -134,14 +138,7 @@ public struct ResponsesView: View {
                             .onRightSwipeGesture {
                                 viewModel.router.back()
                             }
-                        } onRefresh: {
-                            viewModel.comments = []
-                            Task {
-                                _ = await viewModel.getComments(commentID: commentID,
-                                                                parentComment: parentComment, page: 1)
-                            }
-                        }.coordinateSpace(name: "pullToRefresh")
-                        .frameLimit()
+                        }.frameLimit()
                         
                         if !parentComment.closed {
                             FlexibleKeyboardInputView(

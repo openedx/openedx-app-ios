@@ -47,7 +47,9 @@ public struct CourseDetailsView: View {
                                 .padding(.horizontal)
                         }.frame(width: proxy.size.width)
                     } else {
-                        RefreshableScrollView {
+                        RefreshableScrollViewCompat(action: {
+                            await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
+                        }) {
                             VStack(alignment: .leading) {
                                 if let courseDetails = viewModel.courseDetails {
                                     
@@ -131,12 +133,7 @@ public struct CourseDetailsView: View {
                                     }
                                 }
                             }
-                        } onRefresh: {
-                            Task {
-                                await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
-                            }
-                        }.coordinateSpace(name: "pullToRefresh")
-                        .frameLimit()
+                        }.frameLimit()
                             .onRightSwipeGesture {
                                 viewModel.router.back()
                             }

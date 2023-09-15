@@ -95,7 +95,11 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
                 .getCommentResponses(commentID: commentID, page: page)
             self.totalPages = pagination.numPages
             self.itemsCount = pagination.count
-            self.comments += comments
+            if page == 1 {
+                self.comments = comments
+            } else {
+                self.comments += comments
+            }
             postComments = generateCommentsResponses(comments: self.comments, parentComment: parentComment)
             return true
         } catch let error {

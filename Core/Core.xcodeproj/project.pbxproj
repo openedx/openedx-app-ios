@@ -68,6 +68,7 @@
 		02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833B29B8C57800D33F33 /* DownloadView.swift */; };
 		02B2B594295C5C7A00914876 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2B593295C5C7A00914876 /* Thread.swift */; };
 		02B3E3B32930198600A50475 /* AVPlayerViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */; };
+		02B3F16E2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */; };
 		02C2DC0829B63D6200F4445D /* WebViewHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2DC0729B63D6200F4445D /* WebViewHTML.swift */; };
 		02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */; };
 		02CF46C829546AA200A698EE /* NoCachedDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF46C729546AA200A698EE /* NoCachedDataError.swift */; };
@@ -186,6 +187,7 @@
 		02A4833B29B8C57800D33F33 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 		02B2B593295C5C7A00914876 /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerViewControllerExtension.swift; sourceTree = "<group>"; };
+		02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollViewCompat.swift; sourceTree = "<group>"; };
 		02C2DC0729B63D6200F4445D /* WebViewHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewHTML.swift; sourceTree = "<group>"; };
 		02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Dashboard.swift; sourceTree = "<group>"; };
 		02CF46C729546AA200A698EE /* NoCachedDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCachedDataError.swift; sourceTree = "<group>"; };
@@ -524,6 +526,7 @@
 				02C2DC0729B63D6200F4445D /* WebViewHTML.swift */,
 				021D925628DCF12900ACC565 /* AlertView.swift */,
 				0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */,
+				02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */,
 				0236F3B628F4351E0050F09B /* CourseButton.swift */,
 				0241666A28F5A78B00082765 /* HTMLFormattedText.swift */,
 				0282DA7228F98CC9003C3F07 /* WebUnitView.swift */,
@@ -821,6 +824,7 @@
 				028CE96929858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift in Sources */,
 				027BD3A92909474200392132 /* KeyboardAvoidingViewControllerRepr.swift in Sources */,
 				02F98A7F28F81EE900DE94C0 /* Container+App.swift in Sources */,
+				02B3F16E2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift in Sources */,
 				0727877B28D24A1D002E9142 /* HeadersRedirectHandler.swift in Sources */,
 				0236961B28F9A28B00EEF206 /* AuthInteractor.swift in Sources */,
 				0770DE3028D09793006D8A5D /* EndPointType.swift in Sources */,
