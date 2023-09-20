@@ -18,7 +18,6 @@ public struct HandoutsUpdatesDetailView: View {
     private var handouts: String?
     private var announcements: [CourseUpdate]?
     private let title: String
-    @State private var height: [Int: CGFloat] = [:]
     
     public init(
         handouts: String?,
@@ -100,12 +99,12 @@ public struct HandoutsUpdatesDetailView: View {
                                     type: .discovery,
                                     screenWidth: reader.size.width
                                 )
-                                HTMLFormattedText(
-                                    fixBrokenLinks(in: formattedAnnouncements),
-                                    isScrollEnabled: true,
-                                    textViewHeight: $height[index]
-                                )
-                                .frame(height: height[index])
+                                HStack {
+                                    HTMLFormattedText(formattedAnnouncements)
+                                    Spacer()
+                                }
+                                
+                                .id(UUID())
                                 
                                 if index != announcements.count - 1 {
                                     Divider()
@@ -122,13 +121,7 @@ public struct HandoutsUpdatesDetailView: View {
                         router.back()
                     }
                 Spacer(minLength: 84)
-                
-//                    .background(
-//                        Theme.Colors.background
-//                            .ignoresSafeArea()
-//                    )
             }
-            
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)

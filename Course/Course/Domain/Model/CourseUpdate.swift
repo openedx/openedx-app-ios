@@ -11,9 +11,9 @@ public struct CourseUpdate {
     public let id: Int
     public let date: String
     public var content: String
-    public let status: String
+    public let status: String?
     
-    public init(id: Int, date: String, content: String, status: String) {
+    public init(id: Int, date: String, content: String, status: String?) {
         self.id = id
         self.date = date
         self.content = content
