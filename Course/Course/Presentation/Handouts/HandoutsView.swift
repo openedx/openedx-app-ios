@@ -12,7 +12,7 @@ struct HandoutsView: View {
     
     private let courseID: String
     
-    @ObservedObject
+    @StateObject
     private var viewModel: HandoutsViewModel
     
     public init(
@@ -20,7 +20,8 @@ struct HandoutsView: View {
         viewModel: HandoutsViewModel
     ) {
         self.courseID = courseID
-        self.viewModel = viewModel
+//        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
     
     public var body: some View {

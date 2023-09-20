@@ -71,6 +71,7 @@ public struct CourseOutlineView: View {
                                             )
                                             .frame(width: 141)
                                             .padding(.top, 8)
+                                            
                                             .fullScreenCover(
                                                 isPresented: $openCertificateView,
                                                 content: {

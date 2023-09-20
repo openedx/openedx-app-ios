@@ -68,6 +68,8 @@ public struct HandoutsUpdatesDetailView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
+            Theme.Colors.background
+                                       .ignoresSafeArea()
             GeometryReader { reader in
                 
                 // MARK: - Page Body
@@ -121,10 +123,10 @@ public struct HandoutsUpdatesDetailView: View {
                     }
                 Spacer(minLength: 84)
                 
-                    .background(
-                        Theme.Colors.background
-                            .ignoresSafeArea()
-                    )
+//                    .background(
+//                        Theme.Colors.background
+//                            .ignoresSafeArea()
+//                    )
             }
             
         }

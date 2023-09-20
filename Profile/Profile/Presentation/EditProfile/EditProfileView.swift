@@ -199,9 +199,18 @@ public struct EditProfileView: View {
             }
         }
         .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden(true)
         .navigationTitle(ProfileLocalization.editProfile)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading, content: {
+                Button(action: {
+                    viewModel.backButtonTapped()
+                }, label: {
+                    CoreAssets.arrowLeft.swiftUIImage
+                        .renderingMode(.template)
+                        .foregroundColor(Theme.Colors.accentColor)
+                }).opacity(viewModel.isChanged ? 1 : 0.3)
+            })
             ToolbarItem(placement: .navigationBarTrailing, content: {
                 Button(action: {
                     if viewModel.isChanged {
@@ -212,7 +221,8 @@ public struct EditProfileView: View {
                     }
                 }, label: {
                     HStack(spacing: 2) {
-                        CoreAssets.done.swiftUIImage
+                        CoreAssets.done.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
                         Text(CoreLocalization.done)
                             .font(Theme.Fonts.labelLarge)
                             .foregroundColor(Theme.Colors.accentColor)
