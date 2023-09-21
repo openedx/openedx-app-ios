@@ -153,10 +153,12 @@ public class DownloadManager: DownloadManagerProtocol {
             } else {
                 downloadRequest = AF.download(url)
             }
+            #if DEBUG
             downloadRequest?.downloadProgress { prog in
                 let completed = Double(prog.fractionCompleted * 100)
                 print(">>>>> Downloading", download.url, completed, "%")
             }
+            #endif
             downloadRequest?.responseData(completionHandler: { [weak self] data in
                 guard let self else { return }
                 if let data = data.value, let url = self.videosFolderUrl() {
@@ -190,14 +192,12 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteFile(blocks: [CourseBlock]) {
         for block in blocks {
             do {
-                print(">>>>>", block.displayName, block.id)
                 try persistence.deleteDownloadData(id: block.id)
                 if let fileUrl = fileUrl(for: block.id) {
                     try FileManager.default.removeItem(at: fileUrl)
-                    print("File deleted successfully")
                 }
             } catch {
-                print("Error deleting file: \(error.localizedDescription)")
+                NSLog("Error deleting file: \(error.localizedDescription)")
             }
         }
     }
@@ -250,7 +250,7 @@ public class DownloadManager: DownloadManagerProtocol {
         do {
             try data.write(to: fileURL)
         } catch {
-            print("SaveFile Error", error.localizedDescription)
+            NSLog("SaveFile Error", error.localizedDescription)
         }
     }
 }
