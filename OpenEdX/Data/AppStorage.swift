@@ -1,14 +1,16 @@
 //
 //  AppStorage.swift
-//  Core
+//  OpenEdX
 //
-//  Created by Vladimir Chekyrta on 13.09.2022.
+//  Created by  Stepanok Ivan on 31.08.2023.
 //
 
 import Foundation
 import KeychainSwift
+import Core
+import Profile
 
-public class AppStorage {
+public class AppStorage: CoreStorage, ProfileStorage {
 
     private let keychain: KeychainSwift
     private let userDefaults: UserDefaults
@@ -17,7 +19,7 @@ public class AppStorage {
         self.keychain = keychain
         self.userDefaults = userDefaults
     }
-    
+
     public var accessToken: String? {
         get {
             return keychain.get(KEY_ACCESS_TOKEN)
@@ -30,7 +32,7 @@ public class AppStorage {
             }
         }
     }
-    
+
     public var refreshToken: String? {
         get {
             return keychain.get(KEY_REFRESH_TOKEN)
@@ -43,7 +45,7 @@ public class AppStorage {
             }
         }
     }
-    
+
     public var cookiesDate: String? {
         get {
             return userDefaults.string(forKey: KEY_COOKIES_DATE)
@@ -56,7 +58,7 @@ public class AppStorage {
             }
         }
     }
-    
+
     public var userProfile: DataLayer.UserProfile? {
         get {
             guard let userJson = userDefaults.data(forKey: KEY_USER_PROFILE) else {
@@ -75,7 +77,7 @@ public class AppStorage {
             }
         }
     }
-    
+
     public var userSettings: UserSettings? {
         get {
             guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
@@ -99,7 +101,7 @@ public class AppStorage {
             }
         }
     }
-    
+
     public var user: DataLayer.User? {
         get {
             guard let userJson = userDefaults.data(forKey: KEY_USER) else {
@@ -118,14 +120,14 @@ public class AppStorage {
             }
         }
     }
-    
+
     public func clear() {
         accessToken = nil
         refreshToken = nil
         cookiesDate = nil
         user = nil
     }
-    
+
     private let KEY_ACCESS_TOKEN = "accessToken"
     private let KEY_REFRESH_TOKEN = "refreshToken"
     private let KEY_COOKIES_DATE = "cookiesDate"
@@ -133,10 +135,3 @@ public class AppStorage {
     private let KEY_USER = "refreshToken"
     private let KEY_SETTINGS = "userSettings"
 }
-
-// Mark - For testing and SwiftUI preview
-#if DEBUG
-public extension AppStorage {
-    static let mock: AppStorage = .init(keychain: KeychainSwift(), userDefaults: UserDefaults.standard)
-}
-#endif

@@ -11,46 +11,38 @@ import Core
 
 public struct DiscussionTopicsView: View {
     
-    @ObservedObject private var viewModel: DiscussionTopicsViewModel
+    @StateObject private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
     
     public init(courseID: String, viewModel: DiscussionTopicsViewModel, router: DiscussionRouter) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
-        Task {
-            await viewModel.getTopics(courseID: courseID)
-        }
         self.router = router
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            
-            // MARK: - Page name
+        ZStack(alignment: .center) {
             VStack(alignment: .center) {
-                NavigationBar(title: DiscussionLocalization.title,
-                leftButtonAction: { router.back() })
-                
                 // MARK: - Search fake field
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
                         .padding(.leading, 16)
                         .padding(.top, 1)
                     Text(DiscussionLocalization.Topics.search)
-                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                        .foregroundColor(Theme.Colors.textSecondary)
                     Spacer()
                 }
                 .frame(maxWidth: 532)
                 .frame(minHeight: 48)
                 .background(
                     Theme.Shapes.textInputShape
-                        .fill(CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                        .fill(Theme.Colors.textInputUnfocusedBackground)
                 )
                 .overlay(
                     Theme.Shapes.textInputShape
                         .stroke(lineWidth: 1)
-                        .fill(CoreAssets.textInputUnfocusedStroke.swiftUIColor)
+                        .fill(Theme.Colors.textInputUnfocusedStroke)
                 )
                 .onTapGesture {
                     viewModel.router.showDiscussionsSearch(courseID: courseID)
@@ -62,20 +54,14 @@ public struct DiscussionTopicsView: View {
                 VStack {
                     ZStack(alignment: .top) {
                         RefreshableScrollViewCompat(action: {
-                            await viewModel.getTopics(courseID: self.courseID, withProgress: isIOS14)
+                            await viewModel.getTopics(courseID: self.courseID, withProgress: false)
                         }) {
                             VStack {
-                                if viewModel.isShowProgress {
-                                    ProgressBar(size: 40, lineWidth: 8)
-                                        .padding(.horizontal)
-                                        .padding(.top, 200)
-                                }
-                                
                                 if let topics = viewModel.discussionTopics {
                                     HStack {
                                         Text(DiscussionLocalization.Topics.mainCategories)
                                             .font(Theme.Fonts.titleMedium)
-                                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                            .foregroundColor(Theme.Colors.textSecondary)
                                             .padding(.horizontal, 24)
                                             .padding(.top, 40)
                                         Spacer()
@@ -94,7 +80,7 @@ public struct DiscussionTopicsView: View {
                                                     Spacer(minLength: 0)
                                                 }
                                                 .frame(maxWidth: .infinity)
-                                            }).cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                                            }).cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                 .padding(.trailing, -20)
                                         }
                                         if let followed = topics.first(where: {
@@ -110,7 +96,7 @@ public struct DiscussionTopicsView: View {
                                                     Spacer(minLength: 0)
                                                 }
                                                 .frame(maxWidth: .infinity)
-                                            }).cardStyle(bgColor: CoreAssets.textInputUnfocusedBackground.swiftUIColor)
+                                            }).cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                 .padding(.leading, -20)
                                             
                                         }
@@ -123,7 +109,7 @@ public struct DiscussionTopicsView: View {
                                                 HStack {
                                                     Text("\(topic.name):")
                                                         .font(Theme.Fonts.titleMedium)
-                                                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                                        .foregroundColor(Theme.Colors.textSecondary)
                                                     Spacer()
                                                 }.padding(.top, 32)
                                                     .padding(.bottom, 8)
@@ -142,15 +128,28 @@ public struct DiscussionTopicsView: View {
                                 Spacer(minLength: 84)
                             }
                         }.frameLimit()
-                                .onRightSwipeGesture {
-                                    router.back()
-                                }
+                            .onRightSwipeGesture {
+                                router.back()
+                            }
+                        
                     }
                 }.frame(maxWidth: .infinity)
+            }.padding(.top, 8)
+            if viewModel.isShowProgress {
+                ProgressBar(size: 40, lineWidth: 8)
+                    .padding(.horizontal)
             }
         }
+        .onFirstAppear {
+            Task {
+                await viewModel.getTopics(courseID: courseID)
+            }
+        }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(DiscussionLocalization.title)
         .background(
-            CoreAssets.background.swiftUIColor
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }
@@ -201,10 +200,10 @@ public struct TopicCell: View {
             HStack {
                 Text(topic.name)
                     .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
-                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                    .foregroundColor(Theme.Colors.accentColor)
             }
         })
         

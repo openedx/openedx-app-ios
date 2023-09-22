@@ -16,8 +16,8 @@ public struct CheckBoxView: View {
         HStack(spacing: 10) {
             Image(systemName: checked ? "checkmark.square.fill" : "square")
                 .foregroundColor(checked
-                                 ? CoreAssets.accentColor.swiftUIColor
-                                 : CoreAssets.textPrimary.swiftUIColor)
+                                 ? Theme.Colors.accentColor
+                                 : Theme.Colors.textPrimary)
             Text(text)
                 .font(Theme.Fonts.labelLarge)
         }

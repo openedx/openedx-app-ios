@@ -15,9 +15,9 @@ public extension View {
         top: CGFloat? = 0,
         bottom: CGFloat? = 0,
         leftLineEnabled: Bool = false,
-        bgColor: Color = CoreAssets.background.swiftUIColor,
-        strokeColor: Color = CoreAssets.cardViewStroke.swiftUIColor,
-        textColor: Color = CoreAssets.textPrimary.swiftUIColor
+        bgColor: Color = Theme.Colors.background,
+        strokeColor: Color = Theme.Colors.cardViewStroke,
+        textColor: Color = Theme.Colors.textPrimary
     ) -> some View {
         return self
             .padding(.all, 20)
@@ -53,8 +53,8 @@ public extension View {
     func shadowCardStyle(
         top: CGFloat? = 0,
         bottom: CGFloat? = 0,
-        bgColor: Color = CoreAssets.cardViewBackground.swiftUIColor,
-        textColor: Color = CoreAssets.textPrimary.swiftUIColor
+        bgColor: Color = Theme.Colors.cardViewBackground,
+        textColor: Color = Theme.Colors.textPrimary
     ) -> some View {
         return self
             .padding(.all, 16)
@@ -65,7 +65,7 @@ public extension View {
                    alignment: .topLeading)
             .background(Theme.Shapes.cardShape
                 .fill(bgColor)
-                .shadow(color: CoreAssets.shadowColor.swiftUIColor,
+                .shadow(color: Theme.Colors.shadowColor,
                         radius: 12, y: 4))
             .foregroundColor(textColor)
             .padding(.horizontal, 24)
@@ -77,7 +77,7 @@ public extension View {
     func titleSettings(
         top: CGFloat? = 10,
         bottom: CGFloat? = 20,
-        color: Color = CoreAssets.textPrimary.swiftUIColor
+        color: Color = Theme.Colors.textPrimary
     ) -> some View {
         return self
             .lineLimit(1)
@@ -98,8 +98,8 @@ public extension View {
     }
     
     func roundedBackground(
-        _ color: Color = CoreAssets.background.swiftUIColor,
-        strokeColor: Color = CoreAssets.backgroundStroke.swiftUIColor,
+        _ color: Color = Theme.Colors.background,
+        strokeColor: Color = Theme.Colors.backgroundStroke,
         ipadMaxHeight: CGFloat = .infinity,
         maxIpadWidth: CGFloat = 420
     ) -> some View {
@@ -166,14 +166,6 @@ public extension View {
         )
     }
     
-    var isIOS14: Bool {
-        if #available(iOS 15.0, *) {
-            return false
-        } else {
-            return true
-        }
-    }
-    
     func onFirstAppear(_ action: @escaping () -> Void) -> some View {
         modifier(FirstAppear(action: action))
     }
@@ -196,13 +188,13 @@ private struct FirstAppear: ViewModifier {
 }
 
 public extension Image {
-    func backButtonStyle(topPadding: CGFloat = -10, color: Color = CoreAssets.accentColor.swiftUIColor) -> some View {
+    func backButtonStyle(topPadding: CGFloat = -10, color: Color = Theme.Colors.accentColor) -> some View {
         return self
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
             .frame(height: 24)
-            .padding(.horizontal)
+            .padding(.horizontal, 8)
             .padding(.top, topPadding)
             .foregroundColor(color)
     }

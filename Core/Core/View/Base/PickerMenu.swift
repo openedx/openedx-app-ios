@@ -78,21 +78,21 @@ public struct PickerMenu: View {
                     Spacer()
                     VStack {
                         Text(titleText)
-                            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                            .foregroundColor(Theme.Colors.textPrimary)
                         TextField(CoreLocalization.Picker.search, text: $search)
                             .padding(.all, 8)
-                            .background(CoreAssets.textInputStroke.swiftUIColor.cornerRadius(6))
+                            .background(Theme.Colors.textInputStroke.cornerRadius(6))
                         Picker("", selection: $selectedItem) {
                             ForEach(filteredItems, id: \.self) { item in
                                 Text(item.value)
-                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                             }
                         }
                         .pickerStyle(.wheel)
                     }
                     .frame(minWidth: 0, maxWidth: idiom == .pad ? ipadPickerWidth : .infinity)
                     .padding()
-                    .background(CoreAssets.textInputBackground.swiftUIColor.cornerRadius(16))
+                    .background(Theme.Colors.textInputBackground.cornerRadius(16))
                     .padding(.horizontal, 16)
                     .onChange(of: search, perform: { _ in
                         if let first = filteredItems.first {
@@ -105,10 +105,10 @@ public struct PickerMenu: View {
                         router.dismiss(animated: true)
                     }) {
                         Text(CoreLocalization.Picker.accept)
-                            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                            .foregroundColor(Theme.Colors.textPrimary)
                             .frame(minWidth: 0, maxWidth: idiom == .pad ? ipadPickerWidth : .infinity)
                             .padding()
-                            .background(CoreAssets.textInputBackground.swiftUIColor.cornerRadius(16))
+                            .background(Theme.Colors.textInputBackground.cornerRadius(16))
                             .padding(.horizontal, 16)
                     }
                     .padding(.bottom, 4)

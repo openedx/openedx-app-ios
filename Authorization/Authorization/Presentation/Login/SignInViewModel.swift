@@ -30,21 +30,24 @@ public class SignInViewModel: ObservableObject {
         }
     }
     
-    private let interactor: AuthInteractorProtocol
     let router: AuthorizationRouter
-    let analytics: AuthorizationAnalytics
+    
+    private let interactor: AuthInteractorProtocol
+    private let analytics: AuthorizationAnalytics
     private let validator: Validator
     
-    public init(interactor: AuthInteractorProtocol,
-                router: AuthorizationRouter,
-                analytics: AuthorizationAnalytics,
-                validator: Validator) {
+    public init(
+        interactor: AuthInteractorProtocol,
+        router: AuthorizationRouter,
+        analytics: AuthorizationAnalytics,
+        validator: Validator
+    ) {
         self.interactor = interactor
         self.router = router
         self.analytics = analytics
         self.validator = validator
     }
-     
+    
     @MainActor
     func login(username: String, password: String) async {
         guard validator.isValidEmail(username) else {
@@ -75,5 +78,13 @@ public class SignInViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.unknownError
             }
         }
+    }
+    
+    func trackSignUpClicked() {
+        analytics.signUpClicked()
+    }
+    
+    func trackForgotPasswordClicked() {
+        analytics.forgotPasswordClicked()
     }
 }
