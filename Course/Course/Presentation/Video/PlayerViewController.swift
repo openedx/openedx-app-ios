@@ -38,13 +38,6 @@ struct PlayerViewController: UIViewControllerRepresentable {
                 self.seconds(seconds)
             }
         )
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
         return controller
     }
     

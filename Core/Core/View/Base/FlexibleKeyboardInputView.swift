@@ -46,15 +46,15 @@ public struct FlexibleKeyboardInputView: View {
                             .overlay(
                                 TextEditor(text: $commentText)
                                     .padding(.horizontal, 8)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                     .hideScrollContentBackground()
                                     .frame(maxHeight: commentSize)
                                     .background(
                                         ZStack(alignment: .leading) {
                                             Theme.Shapes.textInputShape
-                                                .fill(Theme.Colors.textInputBackground)
+                                                .fill(CoreAssets.textInputBackground.swiftUIColor)
                                             Text(commentText.count == 0 ? hint : "")
-                                                .foregroundColor(Theme.Colors.textSecondary)
+                                                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                                 .font(Theme.Fonts.labelLarge)
                                                 .padding(.leading, 14)
                                         }
@@ -63,7 +63,7 @@ public struct FlexibleKeyboardInputView: View {
                                         Theme.Shapes.textInputShape
                                             .stroke(lineWidth: 1)
                                             .fill(
-                                                Theme.Colors.textInputStroke
+                                                CoreAssets.textInputStroke.swiftUIColor
                                             )
                                     )
                             ).padding(8)
@@ -87,14 +87,14 @@ public struct FlexibleKeyboardInputView: View {
                 .padding(.trailing, 14)
             }.frame(maxWidth: .infinity, maxHeight: commentSize + 16)
                 .background(
-                    Theme.Colors.commentCellBackground
+                    CoreAssets.commentCellBackground.swiftUIColor
                         .ignoresSafeArea()
                 )
                 .overlay(
                     GeometryReader { proxy in
                         Rectangle()
                             .size(width: proxy.size.width, height: 1)
-                            .foregroundColor(Theme.Colors.cardViewStroke)
+                            .foregroundColor(CoreAssets.cardViewStroke.swiftUIColor)
                     }
                 )
         }

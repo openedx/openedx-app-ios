@@ -30,11 +30,9 @@ public class DiscoveryViewModel: ObservableObject {
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     
-    public init(
-        interactor: DiscoveryInteractorProtocol,
-        connectivity: ConnectivityProtocol,
-        analytics: DiscoveryAnalytics
-    ) {
+    public init(interactor: DiscoveryInteractorProtocol,
+                connectivity: ConnectivityProtocol,
+                analytics: DiscoveryAnalytics) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
@@ -60,13 +58,7 @@ public class DiscoveryViewModel: ObservableObject {
         fetchInProgress = withProgress
         do {
             if connectivity.isInternetAvaliable {
-                if page == 1 {
-                    await courses = try interactor.discovery(page: page)
-                    self.totalPages = 1
-                    self.nextPage = 1
-                } else {
-                    await courses += try interactor.discovery(page: page)
-                }
+                await courses += try interactor.discovery(page: page)
                 self.nextPage += 1
                 if !courses.isEmpty {
                     totalPages = courses[0].numPages

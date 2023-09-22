@@ -63,7 +63,6 @@ struct FieldsView: View {
                         type: .discovery,
                         fontSize: 90, screenWidth: proxy.size.width)
                 )
-                .id(UUID())
                 .padding(.horizontal, -6)
                 
             case .unknown:

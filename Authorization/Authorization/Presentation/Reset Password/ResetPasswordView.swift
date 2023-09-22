@@ -2,7 +2,7 @@
 //  ResetPasswordView.swift
 //  Authorization
 //
-//  Created by  Stepanok Ivan on 27.03.2023.
+//  Created by  Stepanok Ivan on 27.03.2023.
 //
 
 import SwiftUI
@@ -51,12 +51,12 @@ public struct ResetPasswordView: View {
                                     Text(AuthLocalization.Forgot.checkTitle)
                                         .font(Theme.Fonts.titleLarge)
                                         .multilineTextAlignment(.center)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                         .padding(.bottom, 4)
                                     Text(AuthLocalization.Forgot.checkDescription + email)
                                         .font(Theme.Fonts.bodyMedium)
                                         .multilineTextAlignment(.center)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                         .padding(.bottom, 20)
                                     StyledButton(AuthLocalization.SignIn.logInBtn) {
                                         viewModel.router.backToRoot(animated: true)
@@ -70,15 +70,15 @@ public struct ResetPasswordView: View {
                             VStack(alignment: .leading) {
                                 Text(AuthLocalization.Forgot.title)
                                     .font(Theme.Fonts.displaySmall)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                     .padding(.bottom, 4)
                                 Text(AuthLocalization.Forgot.description)
                                     .font(Theme.Fonts.titleSmall)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                     .padding(.bottom, 20)
                                 Text(AuthLocalization.SignIn.email)
                                     .font(Theme.Fonts.labelLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                 TextField(AuthLocalization.SignIn.email, text: $email)
                                     .keyboardType(.emailAddress)
                                     .textContentType(.emailAddress)
@@ -87,12 +87,12 @@ public struct ResetPasswordView: View {
                                     .padding(.all, 14)
                                     .background(
                                         Theme.Shapes.textInputShape
-                                            .fill(Theme.Colors.textInputBackground)
+                                            .fill(CoreAssets.textInputBackground.swiftUIColor)
                                     )
                                     .overlay(
                                         Theme.Shapes.textInputShape
                                             .stroke(lineWidth: 1)
-                                            .fill(Theme.Colors.textInputStroke)
+                                            .fill(CoreAssets.textInputStroke.swiftUIColor)
                                     )
                                 if viewModel.isShowProgress {
                                     HStack(alignment: .center) {
@@ -113,7 +113,7 @@ public struct ResetPasswordView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 50)
-                }.roundedBackground(Theme.Colors.background)
+                }.roundedBackground(CoreAssets.background.swiftUIColor)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
             }
@@ -122,7 +122,7 @@ public struct ResetPasswordView: View {
             if viewModel.showAlert {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
-                        .shadowCardStyle(bgColor: Theme.Colors.accentColor,
+                        .shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
                                          textColor: .white)
                         .padding(.top, 80)
                     Spacer()
@@ -149,8 +149,7 @@ public struct ResetPasswordView: View {
                     }
             }
         }
-        .background(Theme.Colors.background.ignoresSafeArea(.all))
-        .hideNavigationBar()
+        .background(CoreAssets.background.swiftUIColor.ignoresSafeArea(.all))
     }
 }
 

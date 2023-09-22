@@ -1,22 +1,38 @@
 //
 //  CoursePersistence.swift
-//  OpenEdX
+//  Course
 //
-//  Created by  Stepanok Ivan on 25.07.2023.
+//  Created by  Stepanok Ivan on 15.12.2022.
 //
 
-import Foundation
 import CoreData
-import Course
 import Core
+
+public protocol CoursePersistenceProtocol {
+    func loadCourseDetails(courseID: String) throws -> CourseDetails
+    func saveCourseDetails(course: CourseDetails)
+    func loadEnrollments() throws -> [Core.CourseItem]
+    func saveEnrollments(items: [Core.CourseItem])
+    func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure
+    func saveCourseStructure(structure: DataLayer.CourseStructure)
+    func saveSubtitles(url: String, subtitlesString: String)
+    func loadSubtitles(url: String) -> String?
+    func clear()
+}
 
 public class CoursePersistence: CoursePersistenceProtocol {
     
-    private var context: NSManagedObjectContext
+    public init() {}
     
-    public init(context: NSManagedObjectContext) {
-        self.context = context
-    }
+    private let model = "CourseCoreModel"
+    
+    private lazy var persistentContainer: NSPersistentContainer = {
+        return createContainer()
+    }()
+    
+    private lazy var context: NSManagedObjectContext = {
+        return createContext()
+    }()
     
     public func loadCourseDetails(courseID: String) throws -> CourseDetails {
         let request = CDCourseDetails.fetchRequest()
@@ -38,7 +54,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
     
     public func saveCourseDetails(course: CourseDetails) {
         context.performAndWait {
-            let newCourseDetails = CDCourseDetails(context: self.context)
+            let newCourseDetails = CDCourseDetails(context: context)
             newCourseDetails.courseID = course.courseID
             newCourseDetails.org = course.org
             newCourseDetails.courseTitle = course.courseTitle
@@ -157,7 +173,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
     
     public func saveCourseStructure(structure: DataLayer.CourseStructure) {
         context.performAndWait {
-            let newStructure = CDCourseStructure(context: self.context)
+            let newStructure = CDCourseStructure(context: context)
             newStructure.certificate = structure.certificate?.url
             newStructure.mediaSmall = structure.media.image.small
             newStructure.mediaLarge = structure.media.image.large
@@ -166,7 +182,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.rootItem = structure.rootItem
             
             for block in Array(structure.dict.values) {
-                let courseDetail = CDCourseBlock(context: self.context)
+                let courseDetail = CDCourseBlock(context: context)
                 courseDetail.allSources = block.allSources
                 courseDetail.descendants = block.descendants
                 courseDetail.graded = block.graded
@@ -214,5 +230,49 @@ public class CoursePersistence: CoursePersistenceProtocol {
             return subtitle.subtitle ?? ""
         }
         return nil
+    }
+    
+    public func clear() {
+        let storeContainer = persistentContainer.persistentStoreCoordinator
+        for store in storeContainer.persistentStores {
+            do {
+                try storeContainer.destroyPersistentStore(
+                    at: store.url!,
+                    ofType: store.type,
+                    options: nil
+                )
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
+            }
+        }
+        
+        // Re-create the persistent container
+        persistentContainer = createContainer()
+        context = createContext()
+    }
+    
+    private func createContainer() -> NSPersistentContainer {
+        let bundle = Bundle(for: Self.self)
+        let url = bundle.url(forResource: model, withExtension: "momd")
+        let managedObjectModel = NSManagedObjectModel(contentsOf: url!)
+        let container = NSPersistentContainer(name: model, managedObjectModel: managedObjectModel!)
+        container.loadPersistentStores(completionHandler: { (_, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        let description = NSPersistentStoreDescription()
+        description.shouldInferMappingModelAutomatically = true
+        description.shouldMigrateStoreAutomatically = true
+        container.persistentStoreDescriptions = [description]
+        
+        return container
+    }
+    
+    private func createContext() -> NSManagedObjectContext {
+        let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.automaticallyMergesChangesFromParent = true
+        return context
     }
 }

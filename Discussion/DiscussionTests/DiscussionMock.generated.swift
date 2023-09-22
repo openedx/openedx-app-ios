@@ -2534,12 +2534,6 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		perform?(`blocks`)
     }
 
-    open func deleteAllFiles() {
-        addInvocation(.m_deleteAllFiles)
-		let perform = methodPerformValue(.m_deleteAllFiles) as? () -> Void
-		perform?()
-    }
-
     open func fileUrl(for blockId: String) -> URL? {
         addInvocation(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`)))
 		let perform = methodPerformValue(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
@@ -2562,7 +2556,6 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_resumeDownloading
         case m_pauseDownloading
         case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
-        case m_deleteAllFiles
         case m_fileUrl__for_blockId(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -2594,8 +2587,6 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_deleteAllFiles, .m_deleteAllFiles): return .match
-
             case (.m_fileUrl__for_blockId(let lhsBlockid), .m_fileUrl__for_blockId(let rhsBlockid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
@@ -2613,7 +2604,6 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_resumeDownloading: return 0
             case .m_pauseDownloading: return 0
             case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
-            case .m_deleteAllFiles: return 0
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
             }
         }
@@ -2626,7 +2616,6 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_resumeDownloading: return ".resumeDownloading()"
             case .m_pauseDownloading: return ".pauseDownloading()"
             case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
-            case .m_deleteAllFiles: return ".deleteAllFiles()"
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
             }
         }
@@ -2713,7 +2702,6 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
         public static func pauseDownloading() -> Verify { return Verify(method: .m_pauseDownloading)}
         public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
-        public static func deleteAllFiles() -> Verify { return Verify(method: .m_deleteAllFiles)}
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
     }
 
@@ -2741,9 +2729,6 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func deleteFile(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
             return Perform(method: .m_deleteFile__blocks_blocks(`blocks`), performs: perform)
-        }
-        public static func deleteAllFiles(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_deleteAllFiles, performs: perform)
         }
         public static func fileUrl(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_fileUrl__for_blockId(`blockId`), performs: perform)

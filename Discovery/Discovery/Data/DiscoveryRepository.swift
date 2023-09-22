@@ -19,12 +19,12 @@ public protocol DiscoveryRepositoryProtocol {
 public class DiscoveryRepository: DiscoveryRepositoryProtocol {
     
     private let api: API
-    private let appStorage: CoreStorage
+    private let appStorage: AppStorage
     private let config: Config
     private let persistence: DiscoveryPersistenceProtocol
     
     public init(api: API,
-                appStorage: CoreStorage,
+                appStorage: AppStorage,
                 config: Config,
                 persistence: DiscoveryPersistenceProtocol) {
         self.api = api

@@ -30,7 +30,7 @@ public class Connectivity: ConnectivityProtocol {
     
     public var isMobileData: Bool {
         if let networkManager {
-           return networkManager.isReachableOnCellular
+           return !networkManager.isReachableOnCellular && networkManager.isReachableOnCellular
         } else {
             return false
         }

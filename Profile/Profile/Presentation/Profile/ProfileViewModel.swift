@@ -23,21 +23,17 @@ public class ProfileViewModel: ObservableObject {
         }
     }
     
-    
+    private let interactor: ProfileInteractorProtocol
     let router: ProfileRouter
+    let analytics: ProfileAnalytics
     let config: Config
     let connectivity: ConnectivityProtocol
     
-    private let interactor: ProfileInteractorProtocol
-    private let analytics: ProfileAnalytics
-    
-    public init(
-        interactor: ProfileInteractorProtocol,
-        router: ProfileRouter,
-        analytics: ProfileAnalytics,
-        config: Config,
-        connectivity: ConnectivityProtocol
-    ) {
+    public init(interactor: ProfileInteractorProtocol,
+                router: ProfileRouter,
+                analytics: ProfileAnalytics,
+                config: Config,
+                connectivity: ConnectivityProtocol) {
         self.interactor = interactor
         self.router = router
         self.analytics = analytics
@@ -83,9 +79,8 @@ public class ProfileViewModel: ObservableObject {
     @MainActor
     func logOut() async {
         do {
-            try await interactor.logOut()
-            router.showLoginScreen()
-            analytics.userLogout(force: false)
+            try await self.interactor.logOut()
+            self.router.showLoginScreen()
         } catch let error {
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -93,25 +88,5 @@ public class ProfileViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.unknownError
             }
         }
-    }
-    
-    func trackProfileVideoSettingsClicked() {
-        analytics.profileVideoSettingsClicked()
-    }
-    
-    func trackEmailSupportClicked() {
-        analytics.emailSupportClicked()
-    }
-    
-    func trackCookiePolicyClicked() {
-        analytics.cookiePolicyClicked()
-    }
-    
-    func trackPrivacyPolicyClicked() {
-        analytics.privacyPolicyClicked()
-    }
-    
-    func trackProfileEditClicked() {
-        analytics.profileEditClicked()
     }
 }

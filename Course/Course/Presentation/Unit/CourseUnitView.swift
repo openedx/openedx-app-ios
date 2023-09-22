@@ -25,7 +25,6 @@ public struct CourseUnitView: View {
     }
     @State var offsetView: CGFloat = 0
     @State var showDiscussion: Bool = false
-    @Environment(\.presentationMode) private var presentationMode
     
     private let sectionName: String
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
@@ -44,7 +43,13 @@ public struct CourseUnitView: View {
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
-                        VStack {}.frame(height: 100)
+                        if viewModel.connectivity.isInternetAvaliable {
+                            NavigationBar(title: "",
+                                          leftButtonAction: {
+                                viewModel.router.back()
+                                playerStateSubject.send(VideoPlayerState.kill)
+                            }).padding(.top, 50)
+                            
                             LazyVStack(spacing: 0) {
                                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                                 ForEach(data, id: \.offset) { index, block in
@@ -53,58 +58,41 @@ public struct CourseUnitView: View {
                                             switch LessonType.from(block) {
                                                 // MARK: YouTube
                                             case let .youtube(url, blockID):
-                                                if viewModel.connectivity.isInternetAvaliable {
-                                                    YouTubeView(
-                                                        name: block.displayName,
-                                                        url: url,
-                                                        courseID: viewModel.courseID,
-                                                        blockID: blockID,
-                                                        playerStateSubject: playerStateSubject,
-                                                        languages: block.subtitles ?? [],
-                                                        isOnScreen: index == viewModel.index
-                                                    ).frameLimit()
-                                                    Spacer(minLength: 100)
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
+                                                YouTubeView(
+                                                    name: block.displayName,
+                                                    url: url,
+                                                    courseID: viewModel.courseID,
+                                                    blockID: blockID,
+                                                    playerStateSubject: playerStateSubject,
+                                                    languages: block.subtitles ?? [],
+                                                    isOnScreen: index == viewModel.index
+                                                ).frameLimit()
+                                                Spacer(minLength: 100)
+                                                
                                                 // MARK: Encoded Video
                                             case let .video(encodedUrl, blockID):
-                                                let url = viewModel.urlForVideoFileOrFallback(
-                                                    blockId: blockID,
-                                                    url: encodedUrl
-                                                )
-                                                if viewModel.connectivity.isInternetAvaliable || url?.isFileURL == true {
-                                                    EncodedVideoView(
-                                                        name: block.displayName,
-                                                        url: url,
-                                                        courseID: viewModel.courseID,
-                                                        blockID: blockID,
-                                                        playerStateSubject: playerStateSubject,
-                                                        languages: block.subtitles ?? [],
-                                                        isOnScreen: index == viewModel.index
-                                                    ).frameLimit()
-                                                    Spacer(minLength: 100)
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
+                                                EncodedVideoView(
+                                                    name: block.displayName,
+                                                    url: viewModel.urlForVideoFileOrFallback(
+                                                        blockId: blockID,
+                                                        url: encodedUrl
+                                                    ),
+                                                    courseID: viewModel.courseID,
+                                                    blockID: blockID,
+                                                    playerStateSubject: playerStateSubject,
+                                                    languages: block.subtitles ?? [],
+                                                    isOnScreen: index == viewModel.index
+                                                ).frameLimit()
+                                                Spacer(minLength: 100)
                                                 // MARK: Web
                                             case .web(let url):
-                                                if viewModel.connectivity.isInternetAvaliable {
-                                                    WebView(url: url, viewModel: viewModel)
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
+                                                WebView(url: url, viewModel: viewModel)
                                                 // MARK: Unknown
                                             case .unknown(let url):
-                                                if viewModel.connectivity.isInternetAvaliable {
                                                 UnknownView(url: url, viewModel: viewModel)
                                                 Spacer()
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
                                                 // MARK: Discussion
                                             case let .discussion(blockID, blockKey, title):
-                                                if viewModel.connectivity.isInternetAvaliable {
                                                 VStack {
                                                     if showDiscussion {
                                                         DiscussionView(
@@ -116,14 +104,16 @@ public struct CourseUnitView: View {
                                                         )
                                                         Spacer(minLength: 100)
                                                     } else {
-                                                        VStack {
-                                                            Color.clear
-                                                        }
+                                                        DiscussionView(
+                                                            id: viewModel.courseID,
+                                                            blockID: blockID,
+                                                            blockKey: blockKey,
+                                                            title: title,
+                                                            viewModel: viewModel
+                                                        ).drawingGroup()
+                                                        Spacer(minLength: 100)
                                                     }
                                                 }.frameLimit()
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
                                             }
                                         } else {
                                             EmptyView()
@@ -133,20 +123,34 @@ public struct CourseUnitView: View {
                                     .id(index)
                                 }
                             }
-                            .offset(y: offsetView)
-                            .clipped()
-                            .onChange(of: viewModel.index, perform: { index in
-                                DispatchQueue.main.async {
-                                    withAnimation(Animation.easeInOut(duration: 0.2)) {
-                                        offsetView = -(reader.size.height * CGFloat(index))
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                            showDiscussion = viewModel.selectedLesson().type == .discussion
+                                .offset(y: offsetView)
+                                .clipped()
+                                .onChange(of: viewModel.index, perform: { index in
+                                    DispatchQueue.main.async {
+                                        withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                            offsetView = -(reader.size.height * CGFloat(index))
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                showDiscussion = viewModel.selectedLesson().type == .discussion
+                                            }
                                         }
                                     }
-                                }
-                                
-                            })
-                        
+                                    
+                                })
+                        } else {
+                            
+                            // MARK: No internet view
+                            VStack(spacing: 28) {
+                                Image(systemName: "wifi").resizable()
+                                    .scaledToFit()
+                                    .frame(width: 100)
+                                Text(CourseLocalization.Error.noInternet)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 20)
+                                UnitButtonView(type: .reload, action: {
+                                    playerStateSubject.send(VideoPlayerState.kill)
+                                }).frame(width: 100)
+                            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
                     }.frame(maxWidth: .infinity)
                         .clipped()
                     
@@ -165,7 +169,7 @@ public struct CourseUnitView: View {
                                     alertMessage = CourseLocalization.Alert.rotateDevice
                                 }
                             Text(alertMessage ?? "")
-                        }.shadowCardStyle(bgColor: Theme.Colors.accentColor,
+                        }.shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
                                           textColor: .white)
                         .transition(.move(edge: .bottom))
                         .onAppear {
@@ -179,6 +183,13 @@ public struct CourseUnitView: View {
                 
                 // MARK: - Course Navigation
                 VStack {
+                    NavigationBar(
+                        title: "",
+                        leftButtonAction: {
+                            viewModel.router.back()
+                            playerStateSubject.send(VideoPlayerState.kill)
+                        }).padding(.top, 50)
+                    Spacer()
                     CourseNavigationView(
                         sectionName: sectionName,
                         viewModel: viewModel,
@@ -191,18 +202,9 @@ public struct CourseUnitView: View {
                         viewModel.router.back()
                     }
             }
-            .onDisappear {
-                if !presentationMode.wrappedValue.isPresented {
-                    playerStateSubject.send(VideoPlayerState.kill)
-                }
-            }
-        }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle("")
-        .ignoresSafeArea()
+        }.ignoresSafeArea()
             .background(
-                Theme.Colors.background
+                CoreAssets.background.swiftUIColor
                     .ignoresSafeArea()
             )
     }
@@ -340,22 +342,3 @@ struct CourseUnitView_Previews: PreviewProvider {
 }
 //swiftlint:enable all
 #endif
-
-struct NoInternetView: View {
-    
-    let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    
-    var body: some View {
-        VStack(spacing: 28) {
-            Image(systemName: "wifi").resizable()
-                .scaledToFit()
-                .frame(width: 100)
-            Text(CourseLocalization.Error.noInternet)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-            UnitButtonView(type: .reload, action: {
-                playerStateSubject.send(VideoPlayerState.kill)
-            }).frame(width: 100)
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}

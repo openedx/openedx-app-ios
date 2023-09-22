@@ -36,11 +36,11 @@ public protocol DiscussionRepositoryProtocol {
 public class DiscussionRepository: DiscussionRepositoryProtocol {
     
     private let api: API
-    private let appStorage: CoreStorage
+    private let appStorage: AppStorage
     private let config: Config
     private let router: DiscussionRouter
     
-    public init(api: API, appStorage: CoreStorage, config: Config, router: DiscussionRouter) {
+    public init(api: API, appStorage: AppStorage, config: Config, router: DiscussionRouter) {
         self.api = api
         self.appStorage = appStorage
         self.config = config

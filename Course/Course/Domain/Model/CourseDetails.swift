@@ -8,18 +8,18 @@
 import Foundation
 
 public struct CourseDetails {
-    public let courseID: String
-    public let org: String
-    public let courseTitle: String
-    public let courseDescription: String
-    public let courseStart: Date?
-    public let courseEnd: Date?
-    public let enrollmentStart: Date?
-    public let enrollmentEnd: Date?
-    public var isEnrolled: Bool
-    public var overviewHTML: String
-    public let courseBannerURL: String
-    public let courseVideoURL: String?
+    let courseID: String
+    let org: String
+    let courseTitle: String
+    let courseDescription: String
+    let courseStart: Date?
+    let courseEnd: Date?
+    let enrollmentStart: Date?
+    let enrollmentEnd: Date?
+    var isEnrolled: Bool
+    var overviewHTML: String
+    let courseBannerURL: String
+    let courseVideoURL: String?
     
     public init(courseID: String,
                 org: String,

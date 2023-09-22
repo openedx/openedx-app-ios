@@ -22,7 +22,7 @@ public struct DownloadAvailableView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
     }
 }
 
@@ -37,7 +37,7 @@ public struct DownloadProgressView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                 .padding(6)
         }
     }
@@ -52,6 +52,6 @@ public struct DownloadFinishedView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
     }
 }

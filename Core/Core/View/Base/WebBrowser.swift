@@ -22,26 +22,28 @@ public struct WebBrowser: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            CoreAssets.background.swiftUIColor.ignoresSafeArea()
+            
             // MARK: - Page name
             VStack(alignment: .center) {
-                NavigationBar(title: pageTitle,
-                                     leftButtonAction: { presentationMode.wrappedValue.dismiss() })
+                NavigationBar(
+                    title: pageTitle,
+                    leftButtonAction: { presentationMode.wrappedValue.dismiss() }
+                )
                 
                 // MARK: - Page Body
                 VStack {
                     ZStack(alignment: .top) {
-//                        NavigationView {
+                        NavigationView {
                             WebView(
                                 viewModel: .init(url: url, baseURL: ""),
                                 isLoading: $isShowProgress,
                                 refreshCookies: {}
                             )
-                            
-//                        }
-                    }.navigationBarTitle(Text("")) // Needed for hide navBar on ios 14, 15
-                        .navigationBarHidden(true)
-                        .ignoresSafeArea()
+                            .navigationBarTitle(Text("")) // Needed for hide navBar on ios 14, 15
+                            .navigationBarHidden(true)
+                            .ignoresSafeArea()
+                        }
+                    }
                 }
             }
         }

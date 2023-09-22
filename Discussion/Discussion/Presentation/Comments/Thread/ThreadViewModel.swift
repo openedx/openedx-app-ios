@@ -22,10 +22,11 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
         config: Config,
+        storage: Core.AppStorage,
         postStateSubject: CurrentValueSubject<PostState?, Never>
     ) {
         self.postStateSubject = postStateSubject
-        super.init(interactor: interactor, router: router, config: config)
+        super.init(interactor: interactor, router: router, config: config, storage: storage)
         
         cancellable = threadStateSubject
             .receive(on: RunLoop.main)
@@ -135,22 +136,14 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                     .getQuestionComments(threadID: thread.id, page: page)
                 self.totalPages = pagination.numPages
                 self.itemsCount = pagination.count
-                if page == 1 {
-                    self.comments = comments
-                } else {
-                    self.comments += comments
-                }
+                self.comments += comments
                 postComments = generateComments(comments: self.comments, thread: thread)
             case .discussion:
                 let (comments, pagination) = try await interactor
                     .getDiscussionComments(threadID: thread.id, page: page)
                 self.totalPages = pagination.numPages
                 self.itemsCount = pagination.count
-                if page == 1 {
-                    self.comments = comments
-                } else {
-                    self.comments += comments
-                }
+                self.comments += comments
                 postComments = generateComments(comments: self.comments, thread: thread)
             }
             fetchInProgress = false

@@ -12,31 +12,39 @@ public struct DashboardView: View {
     private let dashboardCourses: some View = VStack(alignment: .leading) {
         Text(DashboardLocalization.Header.courses)
             .font(Theme.Fonts.displaySmall)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
         Text(DashboardLocalization.Header.welcomeBack)
             .font(Theme.Fonts.titleSmall)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
     }.listRowBackground(Color.clear)
         .padding(.top, 24)
     
-    @StateObject
+    @ObservedObject
     private var viewModel: DashboardViewModel
     private let router: DashboardRouter
     
     public init(viewModel: DashboardViewModel, router: DashboardRouter) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.router = router
+        Task {
+            await viewModel.getMyCourses(page: 1)
+        }
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
             
-            // MARK: - Page body
+            // MARK: - Page name
             VStack(alignment: .center) {
-                RefreshableScrollViewCompat(action: {
-                    await viewModel.getMyCourses(page: 1, refresh: true)
-                }) {
-                    Group {
+                ZStack {
+                    Text(DashboardLocalization.title)
+                        .titleSettings()
+                }
+                
+                ZStack {
+                    RefreshableScrollViewCompat(action: {
+                        await viewModel.getMyCourses(page: 1, refresh: true)
+                    }) {
                         if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
                             EmptyPageIcon()
                         } else {
@@ -90,9 +98,9 @@ public struct DashboardView: View {
                                 VStack {}.frame(height: 40)
                             }
                         }
-                    }
-                }.frameLimit()
-            }.padding(.top, 8)
+                    }.frameLimit()
+                }
+            }
             
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
@@ -116,13 +124,8 @@ public struct DashboardView: View {
                 }
             }
         }
-        .onFirstAppear {
-            Task {
-                await viewModel.getMyCourses(page: 1)
-            }
-        }
         .background(
-            Theme.Colors.background
+            CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
     }
@@ -156,11 +159,11 @@ struct EmptyPageIcon: View {
                 .padding(.bottom, 16)
             Text(DashboardLocalization.Empty.title)
                 .font(Theme.Fonts.titleMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                 .padding(.bottom, 8)
             Text(DashboardLocalization.Empty.subtitle)
                 .font(Theme.Fonts.bodySmall)
-                .foregroundColor(Theme.Colors.textSecondary)
+                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
         }
         .padding(.top, 200)
     }

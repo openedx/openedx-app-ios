@@ -28,7 +28,7 @@ public class PostsViewModel: ObservableObject {
     
     public var nextPage = 1
     public var totalPages = 1
-    @Published public private(set) var fetchInProgress = false
+    public private(set) var fetchInProgress = false
     
     public enum ButtonType {
         case sort
@@ -43,7 +43,7 @@ public class PostsViewModel: ObservableObject {
             if let courseID {
                 resetPosts()
                 Task {
-                    _ = await getPosts(pageNumber: 1)
+                    _ = await getPosts(courseID: courseID, pageNumber: 1)
                 }
             }
         }
@@ -53,7 +53,7 @@ public class PostsViewModel: ObservableObject {
             if let courseID {
                 resetPosts()
                 Task {
-                    _ = await getPosts(pageNumber: 1)
+                    _ = await getPosts(courseID: courseID, pageNumber: 1)
                 }
             }
         }
@@ -109,6 +109,9 @@ public class PostsViewModel: ObservableObject {
     }
     
     public func resetPosts() {
+        filteredPosts = []
+        discussionPosts = []
+        threads.threads = []
         nextPage = 1
         totalPages = 1
     }
@@ -167,42 +170,87 @@ public class PostsViewModel: ObservableObject {
     }
     
     @MainActor
-    func getPostsPagination(index: Int, withProgress: Bool = true) async {
-        guard !fetchInProgress else { return }
-        if totalPages > 1, index >= filteredPosts.count - 3, nextPage <= totalPages {
-            _ = await getPosts(
-                pageNumber: self.nextPage,
-                withProgress: withProgress
-            )
+    func getPostsPagination(courseID: String, index: Int, withProgress: Bool = true) async {
+        if !fetchInProgress {
+            if totalPages > 1 {
+                if index == filteredPosts.count - 3 {
+                    if totalPages != 1 {
+                        if nextPage <= totalPages {
+                            _ = await getPosts(courseID: courseID,
+                                               pageNumber: self.nextPage,
+                                               withProgress: withProgress)
+                        }
+                    }
+                }
+            }
         }
     }
     
     @MainActor
-    public func getPosts(pageNumber: Int, withProgress: Bool = true) async -> Bool {
+    public func getPosts(courseID: String, pageNumber: Int, withProgress: Bool = true) async -> Bool {
         fetchInProgress = true
         isShowProgress = withProgress
         do {
-            if pageNumber == 1 {
-                threads.threads = try await getThreadsList(type: type, page: pageNumber)
+            switch type {
+            case .allPosts:
+                threads.threads += try await interactor
+                    .getThreadsList(courseID: courseID,
+                                    type: .allPosts,
+                                    sort: sortTitle,
+                                    filter: filterTitle,
+                                    page: pageNumber).threads
                 if threads.threads.indices.contains(0) {
-                    totalPages = threads.threads[0].numPages
-                    nextPage = 2
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                    fetchInProgress = false
                 }
-            } else {
-                threads.threads += try await getThreadsList(type: type, page: pageNumber)
+            case .followingPosts:
+                threads.threads += try await interactor
+                    .getThreadsList(courseID: courseID,
+                                    type: .followingPosts,
+                                    sort: sortTitle,
+                                    filter: filterTitle,
+                                    page: pageNumber).threads
                 if threads.threads.indices.contains(0) {
-                    totalPages = threads.threads[0].numPages
-                    nextPage += 1
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                    fetchInProgress = false
                 }
+            case .nonCourseTopics:
+                threads.threads += try await interactor
+                    .getThreadsList(courseID: courseID,
+                                    type: .nonCourseTopics,
+                                    sort: sortTitle,
+                                    filter: filterTitle,
+                                    page: pageNumber).threads
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                    fetchInProgress = false
+                }
+            case .courseTopics(topicID: let topicID):
+                threads.threads += try await interactor
+                    .getThreadsList(courseID: courseID,
+                                    type: .courseTopics(topicID: topicID),
+                                    sort: sortTitle,
+                                    filter: filterTitle,
+                                    page: pageNumber).threads
+                if threads.threads.indices.contains(0) {
+                    self.totalPages = threads.threads[0].numPages
+                    self.nextPage += 1
+                    fetchInProgress = false
+                }
+            case .none:
+                isShowProgress = false
+                return false
             }
             discussionPosts = generatePosts(threads: threads)
             filteredPosts = discussionPosts
+            self.filteredPosts = self.discussionPosts
             isShowProgress = false
-            fetchInProgress = false
             return true
         } catch let error {
             isShowProgress = false
-            fetchInProgress = false
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
@@ -210,18 +258,6 @@ public class PostsViewModel: ObservableObject {
             }
             return false
         }
-    }
-    
-    @MainActor
-    private func getThreadsList(type: ThreadType, page: Int) async throws -> [UserThread] {
-        guard let courseID else { return [] }
-        return try await interactor.getThreadsList(
-            courseID: courseID,
-            type: type,
-            sort: sortTitle,
-            filter: filterTitle,
-            page: page
-        ).threads
     }
     
     private func updateUnreadCommentsCount(id: String) {

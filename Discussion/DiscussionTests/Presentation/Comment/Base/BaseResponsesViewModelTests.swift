@@ -54,7 +54,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         viewModel.postComments = post
@@ -76,8 +76,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         viewModel.postComments = post
@@ -100,8 +99,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         viewModel.postComments = post
@@ -123,8 +121,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
         
         viewModel.postComments = post
@@ -148,8 +145,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -170,8 +166,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
         
         Given(interactor, .voteThread(voted: .any, threadID: .any, willThrow: NSError()))
@@ -190,8 +185,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
         
         viewModel.postComments = post
@@ -213,8 +207,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
         
         viewModel.postComments = post
@@ -236,8 +229,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -258,8 +250,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         Given(interactor, .flagThread(abuseFlagged: .any, threadID: .any, willThrow: NSError()))
@@ -278,8 +269,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
         
         viewModel.postComments = post
@@ -301,8 +291,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -323,8 +312,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
-
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         var result = false
 
         Given(interactor, .followThread(following: .any, threadID: .any, willThrow: NSError()))
@@ -343,7 +331,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config, storage: .mock)
         
         viewModel.postComments = post
         

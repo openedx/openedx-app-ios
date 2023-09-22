@@ -33,108 +33,112 @@ public struct CourseVerticalView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            // MARK: - Page Body
-            GeometryReader { proxy in
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        // MARK: - Lessons list
-                        ForEach(viewModel.verticals, id: \.id) { vertical in
-                            if let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id}) {
-                                Button(action: {
-                                    let vertical = viewModel.verticals[index]
-                                    if let block = vertical.childs.first {
-                                        viewModel.trackVerticalClicked(
-                                            courseId: courseID,
-                                            courseName: courseName,
-                                            vertical: vertical
-                                        )
-                                        viewModel.router.showCourseUnit(
-                                            courseName: courseName,
-                                            blockId: block.id,
-                                            courseID: courseID,
-                                            sectionName: block.displayName,
-                                            verticalIndex: index,
-                                            chapters: viewModel.chapters,
-                                            chapterIndex: viewModel.chapterIndex,
-                                            sequentialIndex: viewModel.sequentialIndex
-                                        )
-                                    }
-                                }, label: {
-                                    HStack {
-                                        Group {
-                                            if vertical.completion == 1 {
-                                                CoreAssets.finished.swiftUIImage
-                                                    .renderingMode(.template)
-                                                    .foregroundColor(.accentColor)
-                                            } else {
-                                                vertical.type.image
-                                            }
-                                            Text(vertical.displayName)
-                                                .font(Theme.Fonts.titleMedium)
-                                                .lineLimit(1)
-                                                .frame(maxWidth: idiom == .pad
-                                                       ? proxy.size.width * 0.5
-                                                       : proxy.size.width * 0.6,
-                                                       alignment: .leading)
-                                                .multilineTextAlignment(.leading)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                        }.foregroundColor(Theme.Colors.textPrimary)
-                                        Spacer()
-                                        if let state = viewModel.downloadState[vertical.id] {
-                                            switch state {
-                                            case .available:
-                                                DownloadAvailableView()
-                                                    .onTapGesture {
-                                                        viewModel.onDownloadViewTap(
-                                                            blockId: vertical.id,
-                                                            state: state
-                                                        )
-                                                    }
-                                                    .onForeground {
-                                                        viewModel.onForeground()
-                                                    }
-                                            case .downloading:
-                                                DownloadProgressView()
-                                                    .onTapGesture {
-                                                        viewModel.onDownloadViewTap(
-                                                            blockId: vertical.id,
-                                                            state: state
-                                                        )
-                                                    }
-                                                    .onBackground {
-                                                        viewModel.onBackground()
-                                                    }
-                                            case .finished:
-                                                DownloadFinishedView()
-                                                    .onTapGesture {
-                                                        viewModel.onDownloadViewTap(
-                                                            blockId: vertical.id,
-                                                            state: state
-                                                        )
-                                                    }
-                                            }
+            VStack(alignment: .center) {
+                NavigationBar(title: title,
+                              leftButtonAction: { viewModel.router.back() })
+                
+                // MARK: - Page Body
+                GeometryReader { proxy in
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            // MARK: - Lessons list
+                            ForEach(viewModel.verticals, id: \.id) { vertical in
+                                if let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id}) {
+                                    Button(action: {
+                                        let vertical = viewModel.verticals[index]
+                                        if let block = vertical.childs.first {
+                                            viewModel.trackVerticalClicked(
+                                                courseId: courseID,
+                                                courseName: courseName,
+                                                vertical: vertical
+                                            )
+                                            viewModel.router.showCourseUnit(
+                                                courseName: courseName,
+                                                blockId: block.id,
+                                                courseID: courseID,
+                                                sectionName: block.displayName,
+                                                verticalIndex: index,
+                                                chapters: viewModel.chapters,
+                                                chapterIndex: viewModel.chapterIndex,
+                                                sequentialIndex: viewModel.sequentialIndex
+                                            )
                                         }
-                                        Image(systemName: "chevron.right")
-                                            .padding(.vertical, 8)
+                                    }, label: {
+                                        HStack {
+                                            Group {
+                                                if vertical.completion == 1 {
+                                                    CoreAssets.finished.swiftUIImage
+                                                        .renderingMode(.template)
+                                                        .foregroundColor(.accentColor)
+                                                } else {
+                                                    vertical.type.image
+                                                }
+                                                Text(vertical.displayName)
+                                                    .font(Theme.Fonts.titleMedium)
+                                                    .lineLimit(1)
+                                                    .frame(maxWidth: idiom == .pad
+                                                           ? proxy.size.width * 0.5
+                                                           : proxy.size.width * 0.6,
+                                                           alignment: .leading)
+                                                    .multilineTextAlignment(.leading)
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                            }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                            Spacer()
+                                            if let state = viewModel.downloadState[vertical.id] {
+                                                switch state {
+                                                case .available:
+                                                    DownloadAvailableView()
+                                                        .onTapGesture {
+                                                            viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
+                                                        }
+                                                        .onForeground {
+                                                            viewModel.onForeground()
+                                                        }
+                                                case .downloading:
+                                                    DownloadProgressView()
+                                                        .onTapGesture {
+                                                            viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
+                                                        }
+                                                        .onBackground {
+                                                            viewModel.onBackground()
+                                                        }
+                                                case .finished:
+                                                    DownloadFinishedView()
+                                                        .onTapGesture {
+                                                            viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
+                                                        }
+                                                }
+                                            }
+                                            Image(systemName: "chevron.right")
+                                                .padding(.vertical, 8)
+                                        }
+                                    }).padding(.horizontal, 36)
+                                        .padding(.vertical, 14)
+                                    if index != viewModel.verticals.count - 1 {
+                                        Divider()
+                                            .frame(height: 1)
+                                            .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                                            .padding(.horizontal, 24)
                                     }
-                                }).padding(.horizontal, 36)
-                                    .padding(.vertical, 14)
-                                if index != viewModel.verticals.count - 1 {
-                                    Divider()
-                                        .frame(height: 1)
-                                        .overlay(Theme.Colors.cardViewStroke)
-                                        .padding(.horizontal, 24)
                                 }
                             }
                         }
-                    }
-                    Spacer(minLength: 84)
-                }.frameLimit()
-                    .onRightSwipeGesture {
-                        viewModel.router.back()
-                    }
+                        Spacer(minLength: 84)
+                    }.frameLimit()
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
+                }
             }
-            .padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,
@@ -156,11 +160,8 @@ public struct CourseVerticalView: View {
                 }
             }
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle(title)
         .background(
-            Theme.Colors.background
+            CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
     }

@@ -24,7 +24,7 @@ public class BaseResponsesViewModel {
     public var totalPages = 1
     @Published public var itemsCount = 0
     public var fetchInProgress = false
-    
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -44,16 +44,19 @@ public class BaseResponsesViewModel {
     internal let interactor: DiscussionInteractorProtocol
     internal let router: DiscussionRouter
     internal let config: Config
+    internal let storage: Core.AppStorage
+    
     internal let addPostSubject = CurrentValueSubject<Post?, Never>(nil)
     
-    init(
-        interactor: DiscussionInteractorProtocol,
-        router: DiscussionRouter,
-        config: Config
+    init(interactor: DiscussionInteractorProtocol,
+         router: DiscussionRouter,
+         config: Config,
+         storage: Core.AppStorage
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
+        self.storage = storage
     }
     
     @MainActor
@@ -134,6 +137,7 @@ public class BaseResponsesViewModel {
     
     func addNewPost(_ post: Post) {
         var newPostWithAvatar = post
+        newPostWithAvatar.authorAvatar = storage.userProfile?.profileImage?.imageURLLarge ?? ""
         postComments?.comments.append(newPostWithAvatar)
         itemsCount += 1
     }

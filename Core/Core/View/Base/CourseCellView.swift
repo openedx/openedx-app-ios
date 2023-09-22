@@ -52,12 +52,12 @@ public struct CourseCellView: View {
                 VStack(alignment: .leading) {
                     Text(courseOrg)
                         .font(Theme.Fonts.labelMedium)
-                        .foregroundColor(Theme.Colors.textSecondary)
+                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                         .multilineTextAlignment(.leading)
                     
                     Text(courseName)
                         .font(Theme.Fonts.titleSmall)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                         .lineLimit(type == .discovery ? 3 : 2)
                         .multilineTextAlignment(.leading)
                         .padding(.top, 1)
@@ -67,18 +67,18 @@ public struct CourseCellView: View {
                             if courseEnd != "" {
                                 Text(courseEnd)
                                     .font(Theme.Fonts.labelMedium)
-                                    .foregroundColor(Theme.Colors.textSecondary)
+                                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                             } else {
                                 Text(courseStart)
                                     .font(Theme.Fonts.labelMedium)
-                                    .foregroundColor(Theme.Colors.textSecondary)
+                                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                             }
                             Spacer()
                             CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
                                 .resizable()
                                 .frame(width: 16, height: 16)
                                 .offset(x: 15)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                         }
                     }
                 }.padding(.horizontal, 10)
@@ -87,7 +87,7 @@ public struct CourseCellView: View {
             }
            
         }.frame(height: 105)
-            .background(Theme.Colors.background)
+            .background(CoreAssets.background.swiftUIColor)
             .opacity(showView ? 1 : 0)
             .offset(y: showView ? 0 : 20)
             .onAppear {
@@ -102,7 +102,7 @@ public struct CourseCellView: View {
             if Int(index) != cellsCount {
                 Divider()
                     .frame(height: 1)
-                    .overlay(Theme.Colors.cardViewStroke)
+                    .overlay(CoreAssets.cardViewStroke.swiftUIColor)
                     .padding(.vertical, 18)
                     .padding(.horizontal, 3)
             }

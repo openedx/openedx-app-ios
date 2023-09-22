@@ -27,7 +27,7 @@ public struct SearchView: View {
                 NavigationBar(title: DiscoveryLocalization.search,
                                      leftButtonAction: {
                     viewModel.router.backWithFade()
-                }).padding(.bottom, -7)
+                })
                 
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
@@ -35,8 +35,8 @@ public struct SearchView: View {
                         .padding(.top, -1)
                         .foregroundColor(
                             viewModel.isSearchActive
-                            ? Theme.Colors.accentColor
-                            : Theme.Colors.textPrimary
+                            ? CoreAssets.accentColor.swiftUIColor
+                            : CoreAssets.textPrimary.swiftUIColor
                         )
                     
                     TextField(
@@ -54,7 +54,7 @@ public struct SearchView: View {
                             self.becomeFirstResponderRunOnce = true
                         }
                     })
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
                         Button(action: { viewModel.searchText.removeAll() }, label: {
@@ -64,23 +64,24 @@ public struct SearchView: View {
                                 .frame(height: 24)
                                 .padding(.horizontal)
                         })
-                        .foregroundColor(Theme.Colors.styledButtonText)
+                        .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                     }
                 }
+                .padding(.top, 3)
                 .frame(minHeight: 48)
                 .frame(maxWidth: 532)
                 .background(
                     Theme.Shapes.textInputShape
                         .fill(viewModel.isSearchActive
-                              ? Theme.Colors.textInputBackground
-                              : Theme.Colors.textInputUnfocusedBackground)
+                              ? CoreAssets.textInputBackground.swiftUIColor
+                              : CoreAssets.textInputUnfocusedBackground.swiftUIColor)
                 )
                 .overlay(
                     Theme.Shapes.textInputShape
                         .stroke(lineWidth: 1)
                         .fill(viewModel.isSearchActive
-                              ? Theme.Colors.accentColor
-                              : Theme.Colors.textInputUnfocusedStroke)
+                              ? CoreAssets.accentColor.swiftUIColor
+                              : CoreAssets.textInputUnfocusedStroke.swiftUIColor)
                 )
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
@@ -146,9 +147,7 @@ public struct SearchView: View {
                     }
                 }
             }
-        }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
+        }.hideNavigationBar()
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     withAnimation(.easeIn(duration: 0.3)) {
@@ -156,7 +155,7 @@ public struct SearchView: View {
                     }
                 }
             }
-            .background(Theme.Colors.background.ignoresSafeArea())
+            .background(CoreAssets.background.swiftUIColor.ignoresSafeArea())
             .addTapToEndEditing(isForced: true)
     }
     
@@ -164,10 +163,10 @@ public struct SearchView: View {
         return VStack(alignment: .leading) {
             Text(DiscoveryLocalization.Search.title)
                 .font(Theme.Fonts.displaySmall)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
             Text(searchDescription(viewModel: viewModel))
                 .font(Theme.Fonts.titleSmall)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
         }.listRowBackground(Color.clear)
     }
     

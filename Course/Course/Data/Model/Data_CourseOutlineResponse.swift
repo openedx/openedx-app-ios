@@ -10,15 +10,13 @@ import CoreData
 import Core
 
 public extension DataLayer {
-    
-    typealias Blocks = [String: CourseBlock]
-    
     struct CourseStructure: Decodable {
-        public let rootItem: String
-        public var dict: Blocks
-        public let id: String
-        public let media: DataLayer.CourseMedia
-        public let certificate: Certificate?
+        let rootItem: String
+        typealias Blocks = [String: CourseBlock]
+        var dict: Blocks
+        let id: String
+        let media: DataLayer.CourseMedia
+        let certificate: Certificate?
         
         enum CodingKeys: String, CodingKey {
             case blocks
@@ -28,7 +26,7 @@ public extension DataLayer {
             case certificate
         }
         
-        public init(rootItem: String, dict: Blocks, id: String, media: DataLayer.CourseMedia, certificate: Certificate?) {
+        init(rootItem: String, dict: Blocks, id: String, media: DataLayer.CourseMedia, certificate: Certificate?) {
             self.rootItem = rootItem
             self.dict = dict
             self.id = id
@@ -49,40 +47,16 @@ public extension DataLayer {
 }
 public extension DataLayer {
     struct CourseBlock: Decodable {
-        public let blockId: String
-        public let id: String
-        public let graded: Bool
-        public let completion: Double?
-        public let studentUrl: String
-        public let type: String
-        public let displayName: String
-        public let descendants: [String]?
-        public let allSources: [String]?
-        public let userViewData: CourseDetailUserViewData?
-        
-        public init(
-            blockId: String,
-            id: String,
-            graded: Bool,
-            completion: Double?,
-            studentUrl: String,
-            type: String,
-            displayName: String,
-            descendants: [String]?,
-            allSources: [String]?,
-            userViewData: CourseDetailUserViewData?
-        ) {
-            self.blockId = blockId
-            self.id = id
-            self.graded = graded
-            self.completion = completion
-            self.studentUrl = studentUrl
-            self.type = type
-            self.displayName = displayName
-            self.descendants = descendants
-            self.allSources = allSources
-            self.userViewData = userViewData
-        }
+        let blockId: String
+        let id: String
+        let graded: Bool
+        let completion: Double?
+        let studentUrl: String
+        let type: String
+        let displayName: String
+        let descendants: [String]?
+        let allSources: [String]?
+        let userViewData: CourseDetailUserViewData?
         
         public enum CodingKeys: String, CodingKey {
             case id, type, descendants, graded, completion
@@ -107,19 +81,9 @@ public extension DataLayer {
     }
     
     struct CourseDetailUserViewData: Decodable {
-        public let transcripts: [String: String]?
-        public let encodedVideo: CourseDetailEncodedVideoData?
-        public let topicID: String?
-        
-        public init(
-            transcripts: [String: String]?,
-            encodedVideo: CourseDetailEncodedVideoData?,
-            topicID: String?
-        ) {
-            self.transcripts = transcripts
-            self.encodedVideo = encodedVideo
-            self.topicID = topicID
-        }
+        let transcripts: [String: String]?
+        let encodedVideo: CourseDetailEncodedVideoData?
+        let topicID: String?
         
         public enum CodingKeys: String, CodingKey {
             case encodedVideo = "encoded_videos"
@@ -129,16 +93,8 @@ public extension DataLayer {
     }
     
     struct CourseDetailEncodedVideoData: Decodable {
-        public let youTube: CourseDetailYouTubeData?
-        public let fallback: CourseDetailYouTubeData?
-        
-        public init(
-            youTube: CourseDetailYouTubeData?,
-            fallback: CourseDetailYouTubeData?
-        ) {
-            self.youTube = youTube
-            self.fallback = fallback
-        }
+        let youTube: CourseDetailYouTubeData?
+        let fallback: CourseDetailYouTubeData?
         
         enum CodingKeys: String, CodingKey {
             case youTube = "youtube"
@@ -147,11 +103,7 @@ public extension DataLayer {
     }
     
     struct CourseDetailYouTubeData: Decodable {
-        public let url: String?
-        
-        public init(url: String?) {
-            self.url = url
-        }
+        let url: String?
         
     }
 }

@@ -31,12 +31,12 @@ public struct CourseButton: View {
                     .foregroundColor(.accentColor)
             } else {
                 image
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
             }
             Text(displayName)
                 .font(Theme.Fonts.titleMedium)
                 .multilineTextAlignment(.leading)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
             Spacer()
             Image(systemName: "chevron.right")
                 .padding(.vertical, 8)

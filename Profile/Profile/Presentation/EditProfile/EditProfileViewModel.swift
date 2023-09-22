@@ -75,17 +75,14 @@ public class EditProfileViewModel: ObservableObject {
         }
     }
     
-    let router: ProfileRouter
-    
     private let interactor: ProfileInteractorProtocol
-    private let analytics: ProfileAnalytics
+    let router: ProfileRouter
+    let analytics: ProfileAnalytics
     
-    public init(
-        userModel: UserProfile,
-        interactor: ProfileInteractorProtocol,
-        router: ProfileRouter,
-        analytics: ProfileAnalytics
-    ) {
+    public init(userModel: UserProfile,
+                interactor: ProfileInteractorProtocol,
+                router: ProfileRouter,
+                analytics: ProfileAnalytics) {
         self.userModel = userModel
         self.interactor = interactor
         self.router = router
@@ -139,12 +136,12 @@ public class EditProfileViewModel: ObservableObject {
         withAnimation(.easeIn(duration: 0.1)) {
             self.isChanged =
             [spokenLanguageConfiguration.text.isEmpty ? false : spokenLanguageConfiguration.text != userModel.spokenLanguage,
-             yearsConfiguration.text.isEmpty ? false : yearsConfiguration.text != String(userModel.yearOfBirth),
-             countriesConfiguration.text.isEmpty ? false : countriesConfiguration.text != userModel.country,
-             userModel.shortBiography != profileChanges.shortBiography,
-             profileChanges.isAvatarChanged,
-             profileChanges.isAvatarDeleted,
-             userModel.isFullProfile != profileChanges.profileType.boolValue].contains(where: { $0 == true })
+            yearsConfiguration.text.isEmpty ? false : yearsConfiguration.text != String(userModel.yearOfBirth),
+            countriesConfiguration.text.isEmpty ? false : countriesConfiguration.text != userModel.country,
+            userModel.shortBiography != profileChanges.shortBiography,
+            profileChanges.isAvatarChanged,
+            profileChanges.isAvatarDeleted,
+            userModel.isFullProfile != profileChanges.profileType.boolValue].contains(where: { $0 == true })
         }
     }
     
@@ -343,13 +340,5 @@ public class EditProfileViewModel: ObservableObject {
             selectedItem: selectedSpokeLanguage)
         
         profileChanges.shortBiography = userModel.shortBiography
-    }
-    
-    func trackProfileDeleteAccountClicked() {
-        analytics.profileDeleteAccountClicked()
-    }
-    
-    func trackProfileEditDoneClicked() {
-        analytics.profileEditDoneClicked()
     }
 }

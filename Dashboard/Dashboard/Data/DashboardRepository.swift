@@ -16,20 +16,20 @@ public protocol DashboardRepositoryProtocol {
 public class DashboardRepository: DashboardRepositoryProtocol {
     
     private let api: API
-    private let storage: CoreStorage
+    private let appStorage: AppStorage
     private let config: Config
     private let persistence: DashboardPersistenceProtocol
     
-    public init(api: API, storage: CoreStorage, config: Config, persistence: DashboardPersistenceProtocol) {
+    public init(api: API, appStorage: AppStorage, config: Config, persistence: DashboardPersistenceProtocol) {
         self.api = api
-        self.storage = storage
+        self.appStorage = appStorage
         self.config = config
         self.persistence = persistence
     }
     
     public func getMyCourses(page: Int) async throws -> [CourseItem] {
         let result = try await api.requestData(
-            DashboardEndpoint.getMyCourses(username: storage.user?.username ?? "", page: page)
+            DashboardEndpoint.getMyCourses(username: appStorage.user?.username ?? "", page: page)
         )
             .mapResponse(DataLayer.CourseEnrollments.self)
             .domain(baseURL: config.baseURL.absoluteString)

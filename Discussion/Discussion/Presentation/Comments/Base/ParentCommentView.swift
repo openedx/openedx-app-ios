@@ -48,7 +48,7 @@ public struct ParentCommentView: View {
                     Text(comments.postDate
                         .dateToString(style: .lastPost))
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                 }
                 Spacer()
                 if isThread {
@@ -60,8 +60,8 @@ public struct ParentCommentView: View {
                              ? DiscussionLocalization.Comment.unfollow
                              : DiscussionLocalization.Comment.follow)
                     }).foregroundColor(comments.followed
-                                       ? Theme.Colors.accentColor
-                                       : Theme.Colors.textSecondary)
+                                       ? CoreAssets.accentColor.swiftUIColor
+                                       : CoreAssets.textSecondary.swiftUIColor)
                 }
             }.padding(.top, 31)
             Text(comments.postTitle)
@@ -85,7 +85,7 @@ public struct ParentCommentView: View {
                             Text(url.absoluteString)
                             .multilineTextAlignment(.leading)
                         }
-                    }.foregroundColor(Theme.Colors.accentColor)
+                    }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
                         .font(Theme.Fonts.bodyMedium)
                 }
             }
@@ -100,8 +100,8 @@ public struct ParentCommentView: View {
                     Text(DiscussionLocalization.votesCount(comments.votesCount))
                         .font(Theme.Fonts.labelLarge)
                 }).foregroundColor(comments.voted
-                                   ? Theme.Colors.accentColor
-                                   : Theme.Colors.textSecondary)
+                                   ? CoreAssets.accentColor.swiftUIColor
+                                   : CoreAssets.textSecondary.swiftUIColor)
                 Spacer()
                 Button(action: {
                     onReportTap()
@@ -115,8 +115,8 @@ public struct ParentCommentView: View {
                 })
             }
             .accentColor(comments.abuseFlagged
-                ? Theme.Colors.snackbarErrorColor
-                         : Theme.Colors.textSecondary)
+                ? CoreAssets.snackbarErrorColor.swiftUIColor
+                         : CoreAssets.textSecondary.swiftUIColor)
                 .font(Theme.Fonts.labelLarge)
                 .padding(.top, 8)
         }
@@ -124,7 +124,7 @@ public struct ParentCommentView: View {
         if isThread {
             Divider()
                 .frame(height: 1)
-                .overlay(Theme.Colors.cardViewStroke)
+                .overlay(CoreAssets.cardViewStroke.swiftUIColor)
                 .padding(.horizontal, 24)
         }
     }
