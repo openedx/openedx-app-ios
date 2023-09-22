@@ -2,7 +2,7 @@
 //  RefreshableScrollViewCompat.swift
 //  Core
 //
-//  Created by  Stepanok Ivan on 15.09.2023.
+//  Created by  Stepanok Ivan on 15.02.2023.
 //
 
 import SwiftUI
@@ -17,16 +17,17 @@ public struct RefreshableScrollViewCompat<Content>: View where Content: View {
     }
     
     public var body: some View {
-        if #available(iOS 16.0, *) {
-            return ScrollView {
-                content()
-            }.refreshable {
+        if #available(iOS 15.0, *) {
+            return RefreshableScrollView(onRefresh: { done in
                 Task {
                     await action()
+                    done()
                 }
+            }) {
+                content()
             }
         } else {
-            return RefreshableScrollView(onRefresh: { done in
+            return RefreshableScrollViewIOS14(onRefresh: { done in
                 Task {
                     await action()
                     done()

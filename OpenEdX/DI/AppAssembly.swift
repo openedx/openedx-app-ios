@@ -70,21 +70,13 @@ class AppAssembly: Assembly {
             Connectivity()
         }
         
-        container.register(DatabaseManager.self) { _ in
-            DatabaseManager(databaseName: "Database")
-        }.inObjectScope(.container)
-        
-        container.register(CoreDataHandlerProtocol.self) { r in
-            r.resolve(DatabaseManager.self)!
-        }.inObjectScope(.container)
-        
-        container.register(CorePersistenceProtocol.self) { r in
-            CorePersistence(context: r.resolve(DatabaseManager.self)!.context)
+        container.register(CorePersistenceProtocol.self) { _ in
+            CorePersistence()
         }.inObjectScope(.container)
         
         container.register(DownloadManagerProtocol.self, factory: { r in
             DownloadManager(persistence: r.resolve(CorePersistenceProtocol.self)!,
-                            appStorage: r.resolve(CoreStorage.self)!,
+                            appStorage: r.resolve(AppStorage.self)!,
                             connectivity: r.resolve(ConnectivityProtocol.self)!)
         }).inObjectScope(.container)
         
@@ -133,14 +125,6 @@ class AppAssembly: Assembly {
                 keychain: r.resolve(KeychainSwift.self)!,
                 userDefaults: r.resolve(UserDefaults.self)!
             )
-        }.inObjectScope(.container)
-        
-        container.register(CoreStorage.self) { r in
-            r.resolve(AppStorage.self)!
-        }.inObjectScope(.container)
-        
-        container.register(ProfileStorage.self) { r in
-            r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         
         container.register(Validator.self) { _ in

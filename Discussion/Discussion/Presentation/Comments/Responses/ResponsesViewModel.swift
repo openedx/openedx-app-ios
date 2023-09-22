@@ -20,10 +20,11 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
         config: Config,
+        storage: Core.AppStorage,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
     ) {
         self.threadStateSubject = threadStateSubject
-        super.init(interactor: interactor, router: router, config: config)
+        super.init(interactor: interactor, router: router, config: config, storage: storage)
     }
 
     func generateCommentsResponses(comments: [UserComment], parentComment: Post) -> Post? {
@@ -95,11 +96,7 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
                 .getCommentResponses(commentID: commentID, page: page)
             self.totalPages = pagination.numPages
             self.itemsCount = pagination.count
-            if page == 1 {
-                self.comments = comments
-            } else {
-                self.comments += comments
-            }
+            self.comments += comments
             postComments = generateCommentsResponses(comments: self.comments, parentComment: parentComment)
             return true
         } catch let error {

@@ -17,7 +17,7 @@ import Discovery
 import Dashboard
 import Profile
 import Combine
- 
+
 public class Router: AuthorizationRouter,
                      DiscoveryRouter,
                      ProfileRouter,
@@ -57,14 +57,13 @@ public class Router: AuthorizationRouter,
     }
     
     public func showMainScreen() {
-        showToolBar()
-        let controller = UIHostingController(rootView: MainScreenView())
+        let controller = SwiftUIHostController(view: MainScreenView())
         navigationController.setViewControllers([controller], animated: true)
     }
     
     public func showLoginScreen() {
         let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.setViewControllers([controller], animated: false)
     }
     
@@ -123,13 +122,13 @@ public class Router: AuthorizationRouter,
     
     public func showRegisterScreen() {
         let view = SignUpView(viewModel: Container.shared.resolve(SignUpViewModel.self)!)
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showForgotPasswordScreen() {
         let view = ResetPasswordView(viewModel: Container.shared.resolve(ResetPasswordViewModel.self)!)
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -139,7 +138,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             title: title
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -147,7 +146,7 @@ public class Router: AuthorizationRouter,
         let viewModel = Container.shared.resolve(SearchViewModel<RunLoop>.self)!
         let view = SearchView(viewModel: viewModel)
         
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushFade(viewController: controller)
     }
     
@@ -155,7 +154,7 @@ public class Router: AuthorizationRouter,
         let viewModel = Container.shared.resolve(DiscussionSearchTopicsViewModel<RunLoop>.self, argument: courseID)!
         let view = DiscussionSearchTopicsView(viewModel: viewModel)
         
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushFade(viewController: controller)
     }
     
@@ -180,7 +179,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             viewModel: viewModel
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -207,7 +206,7 @@ public class Router: AuthorizationRouter,
             title: title
         )
         
-        let controller = UIHostingController(rootView: screensView)
+        let controller = SwiftUIHostController(view: screensView)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -223,7 +222,7 @@ public class Router: AuthorizationRouter,
             router: router,
             cssInjector: cssInjector
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
 
@@ -248,7 +247,7 @@ public class Router: AuthorizationRouter,
             verticalIndex
         )!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -276,7 +275,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             viewModel: vmVertical
         )
-        let controllerVertical = UIHostingController(rootView: viewVertical)
+        let controllerVertical = SwiftUIHostController(view: viewVertical)
         
         let viewModel = Container.shared.resolve(
             CourseUnitViewModel.self,
@@ -289,7 +288,7 @@ public class Router: AuthorizationRouter,
             verticalIndex
         )!
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
-        let controllerUnit = UIHostingController(rootView: view)
+        let controllerUnit = SwiftUIHostController(view: view)
         var controllers = navigationController.viewControllers
         controllers.removeLast(2)
         controllers.append(contentsOf: [controllerVertical, controllerUnit])
@@ -308,14 +307,14 @@ public class Router: AuthorizationRouter,
             viewModel: viewModel,
             router: router
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>) {
         let viewModel = Container.shared.resolve(ThreadViewModel.self, argument: postStateSubject)!
         let view = ThreadView(thread: thread, viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -332,7 +331,7 @@ public class Router: AuthorizationRouter,
             router: router,
             parentComment: parentComment
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -348,7 +347,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             onPostCreated: onPostCreated
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -363,20 +362,20 @@ public class Router: AuthorizationRouter,
             avatar: avatar,
             profileDidEdit: profileDidEdit
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showSettings() {
         let viewModel = Container.shared.resolve(SettingsViewModel.self)!
         let view = SettingsView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showVideoQualityView(viewModel: SettingsViewModel) {
         let view = VideoQualityView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -392,7 +391,7 @@ public class Router: AuthorizationRouter,
         let viewModel = Container.shared.resolve(DeleteAccountViewModel.self)!
         let view = DeleteAccountView(viewModel: viewModel)
         
-        let controller = UIHostingController(rootView: view)
+        let controller = SwiftUIHostController(view: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -403,9 +402,5 @@ public class Router: AuthorizationRouter,
         hosting.modalTransitionStyle = transitionStyle
         hosting.modalPresentationStyle = .overFullScreen
         return hosting
-    }
-    
-    private func showToolBar() {
-        self.navigationController.setNavigationBarHidden(false, animated: false)
     }
 }

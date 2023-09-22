@@ -24,12 +24,12 @@ public protocol CourseRepositoryProtocol {
 public class CourseRepository: CourseRepositoryProtocol {
     
     private let api: API
-    private let appStorage: CoreStorage
+    private let appStorage: AppStorage
     private let config: Config
     private let persistence: CoursePersistenceProtocol
     
     public init(api: API,
-                appStorage: CoreStorage,
+                appStorage: AppStorage,
                 config: Config,
                 persistence: CoursePersistenceProtocol) {
         self.api = api
@@ -39,7 +39,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getCourseDetails(courseID: String) async throws -> CourseDetails {
-        let response = try await api.requestData(CourseEndpoint.getCourseDetail(courseID: courseID))
+        let response = try await api.requestData(CourseDetailsEndpoint.getCourseDetail(courseID: courseID))
             .mapResponse(DataLayer.CourseDetailsResponse.self)
             .domain(baseURL: config.baseURL.absoluteString)
         persistence.saveCourseDetails(course: response)
@@ -52,7 +52,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         let course = try await api.requestData(
-            CourseEndpoint.getCourseBlocks(courseID: courseID, userName: appStorage.user?.username ?? "")
+            CourseDetailsEndpoint.getCourseBlocks(courseID: courseID, userName: appStorage.user?.username ?? "")
         ).mapResponse(DataLayer.CourseStructure.self)
         persistence.saveCourseStructure(structure: course)
         let parsedStructure = parseCourseStructure(course: course)
@@ -65,7 +65,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func enrollToCourse(courseID: String) async throws -> Bool {
-        let enroll = try await api.request(CourseEndpoint.enrollToCourse(courseID: courseID))
+        let enroll = try await api.request(CourseDetailsEndpoint.enrollToCourse(courseID: courseID))
         if enroll.statusCode == 200 {
             return true
         } else {
@@ -74,7 +74,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
-        try await api.requestData(CourseEndpoint.blockCompletionRequest(
+        try await api.requestData(CourseDetailsEndpoint.blockCompletionRequest(
             username: appStorage.user?.username ?? "",
             courseID: courseID,
             blockID: blockID)
@@ -82,18 +82,18 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getHandouts(courseID: String) async throws -> String? {
-        return try await api.requestData(CourseEndpoint.getHandouts(courseID: courseID))
+        return try await api.requestData(CourseDetailsEndpoint.getHandouts(courseID: courseID))
             .mapResponse(DataLayer.HandoutsResponse.self)
             .handoutsHtml
     }
     
     public func getUpdates(courseID: String) async throws -> [CourseUpdate] {
-        return try await api.requestData(CourseEndpoint.getUpdates(courseID: courseID))
+        return try await api.requestData(CourseDetailsEndpoint.getUpdates(courseID: courseID))
             .mapResponse(DataLayer.CourseUpdates.self).map { $0.domain }
     }
     
     public func resumeBlock(courseID: String) async throws -> ResumeBlock {
-        return try await api.requestData(CourseEndpoint
+        return try await api.requestData(CourseDetailsEndpoint
             .resumeBlock(userName: appStorage.user?.username ?? "", courseID: courseID))
         .mapResponse(DataLayer.ResumeBlock.self).domain
     }
@@ -102,7 +102,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         if let subtitlesOffline = persistence.loadSubtitles(url: url + selectedLanguage) {
             return subtitlesOffline
         } else {
-            let result = try await api.requestData(CourseEndpoint.getSubtitles(
+            let result = try await api.requestData(CourseDetailsEndpoint.getSubtitles(
                 url: url,
                 selectedLanguage: selectedLanguage
             ))

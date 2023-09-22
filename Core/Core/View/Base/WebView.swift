@@ -75,19 +75,14 @@ public struct WebView: UIViewRepresentable {
             _ webView: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction
         ) async -> WKNavigationActionPolicy {
-            
-            guard let url = navigationAction.request.url else { return .cancel }
+            guard let url = navigationAction.request.url else {
+                return .cancel
+            }
             
             let baseURL = await parent.viewModel.baseURL
             if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
-                if navigationAction.navigationType == .other {
-                    return .allow
-                } else if navigationAction.navigationType == .linkActivated {
-                    await MainActor.run {
-                        UIApplication.shared.open(url, options: [:])
-                    }
-                } else if navigationAction.navigationType == .formSubmitted {
-                    return .allow
+                await MainActor.run {
+                    UIApplication.shared.open(url, options: [:])
                 }
                 return .cancel
             }

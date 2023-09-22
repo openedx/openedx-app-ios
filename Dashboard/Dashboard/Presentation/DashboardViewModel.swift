@@ -43,7 +43,7 @@ public class DashboardViewModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
-                    await self.getMyCourses(page: 1, refresh: true)
+                    await self.getMyCourses(page: 1)
                 }
             }
     }

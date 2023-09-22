@@ -64,7 +64,7 @@ struct ProfileBottomSheet: View {
                     VStack(alignment: .center, spacing: 4) {
                         HStack(alignment: .center) {
                             RoundedRectangle(cornerRadius: 2, style: .circular)
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                 .frame(width: 31, height: 4)
                                 .padding(.top, 4)
                         }.frame(maxWidth: .infinity)
@@ -97,7 +97,7 @@ struct ProfileBottomSheet: View {
                     }.padding(.horizontal, 24)
                     
                 }.frame(maxWidth: idiom == .pad ? 330 : .infinity, maxHeight: 290, alignment: .topLeading)
-                    .background(Theme.Colors.cardViewBackground)
+                    .background(CoreAssets.cardViewBackground.swiftUIColor)
                     .cornerRadius(8)
                     .padding(.horizontal, 22)
             }
@@ -159,7 +159,7 @@ extension ProfileBottomSheet {
         func bgColor() -> Color {
             switch self {
             case .gallery:
-                return Theme.Colors.accentColor
+                return CoreAssets.accentColor.swiftUIColor
             case .remove:
                 return .clear
             case .cancel:
@@ -170,11 +170,11 @@ extension ProfileBottomSheet {
         func frameColor() -> Color {
             switch self {
             case .gallery:
-                return Theme.Colors.accentColor
+                return CoreAssets.accentColor.swiftUIColor
             case .remove:
-                return Theme.Colors.alert
+                return CoreAssets.alert.swiftUIColor
             case .cancel:
-                return Theme.Colors.textInputStroke
+                return CoreAssets.textInputStroke.swiftUIColor
             }
         }
         
@@ -183,9 +183,9 @@ extension ProfileBottomSheet {
             case .gallery:
                 return .white
             case .remove:
-                return Theme.Colors.alert
+                return CoreAssets.alert.swiftUIColor
             case .cancel:
-                return Theme.Colors.textPrimary
+                return CoreAssets.textPrimary.swiftUIColor
             }
         }
     }

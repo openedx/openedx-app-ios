@@ -15,24 +15,23 @@ public struct StyledButton: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private let buttonColor: Color
     private let textColor: Color
-    private let isActive: Bool
     
     public init(_ title: String,
                 action: @escaping () -> Void,
                 isTransparent: Bool = false,
-                color: Color = Theme.Colors.accentColor,
+                color: Color = CoreAssets.accentColor.swiftUIColor,
                 isActive: Bool = true) {
         self.title = title
         self.action = action
         self.isTransparent = isTransparent
         if isActive {
             self.buttonColor = color
-            self.textColor = Theme.Colors.styledButtonText
+            self.textColor = CoreAssets.styledButtonText.swiftUIColor
         } else {
-            self.buttonColor = Theme.Colors.cardViewStroke
-            self.textColor = Theme.Colors.textPrimary
+            self.buttonColor = CoreAssets.cardViewStroke.swiftUIColor
+            self.textColor = CoreAssets.textPrimary.swiftUIColor
+
         }
-        self.isActive = isActive
     }
     
     public var body: some View {
@@ -44,7 +43,6 @@ public struct StyledButton: View {
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
         }
-        .disabled(!isActive)
         .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: isTransparent ? 36 : 42)
         .background(
             Theme.Shapes.buttonShape

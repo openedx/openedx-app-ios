@@ -18,6 +18,7 @@ public struct HandoutsUpdatesDetailView: View {
     private var handouts: String?
     private var announcements: [CourseUpdate]?
     private let title: String
+    @State private var height: [Int: CGFloat] = [:]
     
     public init(
         handouts: String?,
@@ -67,65 +68,71 @@ public struct HandoutsUpdatesDetailView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            Theme.Colors.background
-                                       .ignoresSafeArea()
             GeometryReader { reader in
-                
-                // MARK: - Page Body
-                VStack(alignment: .leading) {
+                // MARK: - Page name
+                VStack(alignment: .center) {
+                    NavigationBar(
+                        title: title,
+                        leftButtonAction: { router.back() }
+                    )
                     
-                    // MARK: - Handouts
-                    if let handouts {
-                        let formattedHandouts = cssInjector.injectCSS(
-                            colorScheme: colorScheme,
-                            html: handouts,
-                            type: .discovery,
-                            fontSize: idiom == .pad ? 100 : 300,
-                            screenWidth: .infinity
-                        )
+                    // MARK: - Page Body
+                    VStack(alignment: .leading) {
                         
-                        WebViewHtml(fixBrokenLinks(in: formattedHandouts))
-                    } else if let announcements {
-                        
-                        // MARK: - Announcements
-                        ScrollView {
-                            ForEach(Array(announcements.enumerated()), id: \.offset) { index, ann in
-                                
-                                Text(ann.date)
-                                    .font(Theme.Fonts.labelSmall)
-                                let formattedAnnouncements = cssInjector.injectCSS(
-                                    colorScheme: colorScheme,
-                                    html: ann.content,
-                                    type: .discovery,
-                                    screenWidth: reader.size.width
-                                )
-                                HStack {
-                                    HTMLFormattedText(formattedAnnouncements)
-                                    Spacer()
+                        // MARK: - Handouts
+                        if let handouts {
+                            let formattedHandouts = cssInjector.injectCSS(
+                                colorScheme: colorScheme,
+                                html: handouts,
+                                type: .discovery,
+                                fontSize: idiom == .pad ? 100 : 300,
+                                screenWidth: .infinity
+                            )
+                            
+                            WebViewHtml(fixBrokenLinks(in: formattedHandouts))
+                        } else if let announcements {
+                            
+                            // MARK: - Announcements
+                            ScrollView {
+                                ForEach(Array(announcements.enumerated()), id: \.offset) { index, ann in
+                                    
+                                    Text(ann.date)
+                                        .font(Theme.Fonts.labelSmall)
+                                    let formattedAnnouncements = cssInjector.injectCSS(
+                                        colorScheme: colorScheme,
+                                        html: ann.content,
+                                        type: .discovery,
+                                        screenWidth: reader.size.width
+                                    )
+                                    HTMLFormattedText(
+                                        fixBrokenLinks(in: formattedAnnouncements),
+                                        isScrollEnabled: true,
+                                        textViewHeight: $height[index]
+                                    )
+                                    .frame(height: height[index])
+                                    
+                                    if index != announcements.count - 1 {
+                                        Divider()
+                                    }
                                 }
-                                
-                                .id(UUID())
-                                
-                                if index != announcements.count - 1 {
-                                    Divider()
-                                }
-                            }
-                        }.frame(height: reader.size.height - 60)
-                    }
-                }.padding(.top, 8)
-                    .padding(.horizontal, 32)
-                    .frame(
-                        maxHeight: .infinity,
-                        alignment: .topLeading)
-                    .onRightSwipeGesture {
-                        router.back()
-                    }
-                Spacer(minLength: 84)
+                            }.frame(height: reader.size.height - 60)
+                        }
+                    }.padding(.horizontal, 32)
+                        .frame(
+                            maxHeight: .infinity,
+                            alignment: .topLeading)
+                        .onRightSwipeGesture {
+                            router.back()
+                        }
+                    Spacer(minLength: 84)
+                    
+                }.background(
+                    CoreAssets.background.swiftUIColor
+                        .ignoresSafeArea()
+                )
             }
+            
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle(title)
     }
 }
 

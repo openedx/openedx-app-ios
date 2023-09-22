@@ -27,14 +27,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         let fields = [
             PickerFields(type: .email, label: "", required: true, name: "email", instructions: "", options: []),
@@ -58,14 +56,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -84,14 +80,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         Given(interactor, .getRegistrationFields(willThrow: NSError()))
         
@@ -108,14 +102,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         Given(interactor, .registerUser(fields: .any, willReturn: .init(id: 1,
                                                                         username: "Name",
@@ -139,14 +131,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         viewModel.fields = [
             FieldConfiguration(field: .init(type: .email,
@@ -176,14 +166,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
         Given(interactor, .registerUser(fields: .any, willThrow: APIError.invalidGrant))
@@ -204,14 +192,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
         Given(interactor, .registerUser(fields: .any, willThrow: NSError()))
@@ -232,14 +218,12 @@ final class SignUpViewModelTests: XCTestCase {
         let router = AuthorizationRouterMock()
         let validator = Validator()
         let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
+        let viewModel = SignUpViewModel(interactor: interactor,
+                                        router: router,
+                                        analytics: analytics,
+                                        config: ConfigMock(),
+                                        cssInjector: CSSInjectorMock(),
+                                        validator: validator)
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -255,24 +239,5 @@ final class SignUpViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, true)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
-    }
-    
-    func testTrackCreateAccountClicked() {
-        let interactor = AuthInteractorProtocolMock()
-        let router = AuthorizationRouterMock()
-        let validator = Validator()
-        let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignUpViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            cssInjector: CSSInjectorMock(),
-            validator: validator
-        )
-        
-        viewModel.trackCreateAccountClicked()
-        
-        Verify(analytics, 1, .createAccountClicked())
     }
 }

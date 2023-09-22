@@ -135,7 +135,7 @@ public struct AlertView: View {
                                         .padding(.horizontal, 40)
                                         .multilineTextAlignment(.center)
                                         .font(Theme.Fonts.labelSmall)
-                                        .foregroundColor(Theme.Colors.textSecondary)
+                                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                                 }
                                
                             }
@@ -157,7 +157,7 @@ public struct AlertView: View {
                             })
                             .background(
                                 Theme.Shapes.buttonShape
-                                    .fill(Theme.Colors.warning)
+                                    .fill(CoreAssets.warning.swiftUIColor)
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
@@ -186,7 +186,7 @@ public struct AlertView: View {
                                 })
                                 .background(
                                     Theme.Shapes.buttonShape
-                                        .fill(Theme.Colors.warning)
+                                        .fill(CoreAssets.warning.swiftUIColor)
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
@@ -205,7 +205,7 @@ public struct AlertView: View {
                                 }, label: {
                                     ZStack {
                                         Text(CoreLocalization.Alert.keepEditing)
-                                            .foregroundColor(Theme.Colors.textPrimary)
+                                            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                             .font(Theme.Fonts.labelLarge)
                                             .frame(maxWidth: .infinity)
                                             .padding(.horizontal, 16)
@@ -224,7 +224,7 @@ public struct AlertView: View {
                                             lineJoin: .round,
                                             miterLimit: 1
                                         ))
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                 )
                                 .frame(maxWidth: 215)
                             }
@@ -235,7 +235,7 @@ public struct AlertView: View {
                 }
                 .background(
                     Theme.Shapes.cardShape
-                        .fill(Theme.Colors.cardViewBackground)
+                        .fill(CoreAssets.cardViewBackground.swiftUIColor)
                         .shadow(radius: 24)
                         .frame(width: reader.size.width < 420
                                ? reader.size.width - 80
@@ -244,7 +244,7 @@ public struct AlertView: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(Theme.Colors.backgroundStroke)
+                        .foregroundColor(CoreAssets.backgroundStroke.swiftUIColor)
                         .frame(width: reader.size.width < 420
                                ? reader.size.width - 80
                                : 360)

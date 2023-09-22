@@ -11,7 +11,7 @@ import Kingfisher
 
 public struct CourseOutlineView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @ObservedObject private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -26,7 +26,7 @@ public struct CourseOutlineView: View {
         isVideo: Bool
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.courseID = courseID
         self.isVideo = isVideo
     }
@@ -36,9 +36,14 @@ public struct CourseOutlineView: View {
             // MARK: - Page name
             GeometryReader { proxy in
                 VStack(alignment: .center) {
+                    NavigationBar(
+                        title: title,
+                        leftButtonAction: { viewModel.router.back() }
+                    )
+                    
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
                     }) {
                         VStack(alignment: .leading) {
                             ZStack {
@@ -55,7 +60,7 @@ public struct CourseOutlineView: View {
                                 // MARK: - Course Certificate
                                 if let certificate = viewModel.courseStructure?.certificate {
                                     if let url = certificate.url, url.count > 0 {
-                                        Theme.Colors.certificateForeground
+                                        CoreAssets.certificateForeground.swiftUIColor
                                         VStack(alignment: .center, spacing: 8) {
                                             CoreAssets.certificate.swiftUIImage
                                             Text(CourseLocalization.Outline.congratulations)
@@ -71,7 +76,6 @@ public struct CourseOutlineView: View {
                                             )
                                             .frame(width: 141)
                                             .padding(.top, 8)
-                                            
                                             .fullScreenCover(
                                                 isPresented: $openCertificateView,
                                                 content: {
@@ -141,13 +145,13 @@ public struct CourseOutlineView: View {
                         .onRightSwipeGesture {
                             viewModel.router.back()
                         }
-                }.padding(.top, 8)
-
+                }
+                
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
                     reloadAction: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: isIOS14)
                     }
                 )
                 
@@ -169,6 +173,7 @@ public struct CourseOutlineView: View {
                 if viewModel.isShowProgress {
                     VStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
+                            .padding(.top, 200)
                             .padding(.horizontal)
                     }.frame(maxWidth: .infinity,
                             maxHeight: .infinity)
@@ -176,7 +181,7 @@ public struct CourseOutlineView: View {
             }
         }
         .background(
-            Theme.Colors.background
+            CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
     }
@@ -202,7 +207,7 @@ struct CourseStructureView: View {
             Text(chapter.displayName)
                 .font(Theme.Fonts.titleMedium)
                 .multilineTextAlignment(.leading)
-                .foregroundColor(Theme.Colors.textSecondary)
+                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                 .padding(.horizontal, 24)
                 .padding(.top, 40)
             ForEach(chapter.childs, id: \.id) { child in
@@ -224,13 +229,7 @@ struct CourseStructureView: View {
                         },
                         label: {
                             Group {
-                                if child.completion == 1 {
-                                    CoreAssets.finished.swiftUIImage
-                                        .renderingMode(.template)
-                                        .foregroundColor(.accentColor)
-                                } else {
-                                    child.type.image
-                                }
+                                child.type.image
                                 Text(child.displayName)
                                     .font(Theme.Fonts.titleMedium)
                                     .multilineTextAlignment(.leading)
@@ -241,7 +240,7 @@ struct CourseStructureView: View {
                                         : proxy.size.width * 0.6,
                                         alignment: .leading
                                     )
-                            }.foregroundColor(Theme.Colors.textPrimary)
+                            }.foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                             Spacer()
                             if let state = viewModel.downloadState[child.id] {
                                 switch state {
@@ -281,13 +280,13 @@ struct CourseStructureView: View {
                                 }
                             }
                             Image(systemName: "chevron.right")
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                         }).padding(.horizontal, 36)
                         .padding(.vertical, 20)
                     if chapterIndex != chapters.count - 1 {
                         Divider()
                             .frame(height: 1)
-                            .overlay(Theme.Colors.cardViewStroke)
+                            .overlay(CoreAssets.cardViewStroke.swiftUIColor)
                             .padding(.horizontal, 24)
                     }
                 }

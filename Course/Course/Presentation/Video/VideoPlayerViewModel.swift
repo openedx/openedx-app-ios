@@ -50,7 +50,7 @@ public class VideoPlayerViewModel: ObservableObject {
     
     @MainActor
     func blockCompletionRequest() async {
-        let fullBlockID = "block-v1:\(courseID.dropFirst(10))+type@video+block@\(blockID)"
+        let fullBlockID = "block-v1:\(courseID.dropFirst(10))+type@discussion+block@\(blockID)"
         do {
             try await interactor.blockCompletionRequest(courseID: courseID, blockID: fullBlockID)
         } catch let error {

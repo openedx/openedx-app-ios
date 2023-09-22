@@ -34,30 +34,3 @@ extension UIApplication {
         return controller
     }
 }
-
-extension UINavigationController {
-    open override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        navigationBar.topItem?.backButtonDisplayMode = .minimal
-        navigationBar.barTintColor = .clear
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationBar.shadowImage = UIImage()
-        
-        let image = CoreAssets.arrowLeft.image
-        navigationBar.backIndicatorImage = image.withTintColor(CoreAssets.accentColor.color)
-        navigationBar.tintColor = .clear
-        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(CoreAssets.accentColor.color)
-        navigationBar.titleTextAttributes = [.foregroundColor: CoreAssets.textPrimary.color]
-    }
-}
-
-extension UINavigationController: UIGestureRecognizerDelegate {
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        interactivePopGestureRecognizer?.delegate = self
-    }
-
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
-    }
-}

@@ -25,11 +25,11 @@ public class SignUpViewModel: ObservableObject {
     @Published var fields: [FieldConfiguration] = []
     
     let router: AuthorizationRouter
+    let analytics: AuthorizationAnalytics
     let config: Config
     let cssInjector: CSSInjector
     
     private let interactor: AuthInteractorProtocol
-    private let analytics: AuthorizationAnalytics
     private let validator: Validator
     
     public init(
@@ -105,9 +105,5 @@ public class SignUpViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.unknownError
             }
         }
-    }
-    
-    func trackCreateAccountClicked() {
-        analytics.createAccountClicked()
     }
 }

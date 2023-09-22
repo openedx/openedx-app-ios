@@ -14,6 +14,7 @@ public struct PostsView: View {
     @ObservedObject private var viewModel: PostsViewModel
     @State private var isShowProgress: Bool = true
     @State private var showingAlert = false
+    @State private var listAnimation: Animation?
     private let router: DiscussionRouter
     private let title: String
     private let currentBlockID: String
@@ -31,6 +32,9 @@ public struct PostsView: View {
         self.viewModel.courseID = courseID
         self.viewModel.topics = topics
         viewModel.type = type
+        Task {
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1, withProgress: true)
+        }
     }
     
     public init(courseID: String, router: DiscussionRouter, viewModel: PostsViewModel) {
@@ -39,148 +43,161 @@ public struct PostsView: View {
         self.currentBlockID = ""
         self.router = router
         self.viewModel = viewModel
+        Task {
+            await viewModel.getPosts(courseID: courseID, pageNumber: 1, withProgress: true)
+        }
         self.showTopMenu = true
         self.viewModel.courseID = courseID
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
-            // MARK: - Page Body
-            ScrollViewReader { scroll in
-                VStack {
-                    ZStack(alignment: .top) {
+            
+            // MARK: - Page name
+                VStack(alignment: .center) {
+                    if showTopMenu {
+                        NavigationBar(title: title,
+                        leftButtonAction: { router.back() })
+                    }
+                    // MARK: - Page Body
+                    ScrollViewReader { scroll in
                         VStack {
-                            VStack {
-                                HStack {
-                                    Group {
-                                        Button(action: {
-                                            viewModel.generateButtons(type: .filter)
-                                            showingAlert = true
-                                        }, label: {
-                                            CoreAssets.filter.swiftUIImage
-                                            Text(viewModel.filterTitle.localizedValue)
-                                        })
-                                        Spacer()
-                                        Button(action: {
-                                            viewModel.generateButtons(type: .sort)
-                                            showingAlert = true
-                                        }, label: {
-                                            CoreAssets.sort.swiftUIImage
-                                            Text(viewModel.sortTitle.localizedValue)
-                                        })
-                                    }.foregroundColor(Theme.Colors.accentColor)
-                                } .font(Theme.Fonts.labelMedium)
-                                    .padding(.horizontal, 24)
-                                    .padding(.vertical, 12)
-                                    .shadow(color: Theme.Colors.shadowColor,
-                                            radius: 12, y: 4)
-                                    .background(
-                                        Theme.Colors.background
-                                    )
-                                Divider().offset(y: -8)
-                            }
-                            .frameLimit()
-                            RefreshableScrollViewCompat(action: {
-                                viewModel.resetPosts()
-                                _ = await viewModel.getPosts(
-                                    pageNumber: 1,
-                                    withProgress: false
-                                )
-                            }) {
-                                let posts = Array(viewModel.filteredPosts.enumerated())
-                                if posts.count >= 1 {
-                                    LazyVStack {
-                                        VStack {}.frame(height: 1)
-                                            .id(1)
-                                        HStack(alignment: .center) {
-                                            Text(title)
-                                                .font(Theme.Fonts.titleLarge)
-                                                .foregroundColor(Theme.Colors.textPrimary)
-                                            Spacer()
-                                            Button(action: {
-                                                router.createNewThread(
-                                                    courseID: courseID,
-                                                    selectedTopic: currentBlockID,
-                                                    onPostCreated: {
-                                                        reloadPage(onSuccess: {
-                                                            withAnimation {
-                                                                scroll.scrollTo(1)
-                                                            }
-                                                        })
+                            ZStack(alignment: .top) {
+                                VStack {
+                                    HStack(alignment: .top) {
+                                        VStack {
+                                            HStack {
+                                                Group {
+                                                    Button(action: {
+                                                        listAnimation = .easeIn
+                                                        viewModel.generateButtons(type: .filter)
+                                                        showingAlert = true
+                                                    }, label: {
+                                                        CoreAssets.filter.swiftUIImage
+                                                        Text(viewModel.filterTitle.localizedValue)
                                                     })
-                                            }, label: {
-                                                VStack {
-                                                    CoreAssets.addComment.swiftUIImage
-                                                        .font(Theme.Fonts.labelLarge)
-                                                        .padding(6)
-                                                }
-                                                .foregroundColor(.white)
+                                                    Spacer()
+                                                    Button(action: {
+                                                        listAnimation = .easeIn
+                                                        viewModel.generateButtons(type: .sort)
+                                                        showingAlert = true
+                                                    }, label: {
+                                                        CoreAssets.sort.swiftUIImage
+                                                        Text(viewModel.sortTitle.localizedValue)
+                                                    })
+                                                }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                            } .font(Theme.Fonts.labelMedium)
+                                                .padding(.horizontal, 24)
+                                                .padding(.vertical, 12)
+                                                .shadow(color: CoreAssets.shadowColor.swiftUIColor,
+                                                        radius: 12, y: 4)
                                                 .background(
-                                                    Circle()
-                                                        .foregroundColor(Theme.Colors.accentColor)
+                                                    CoreAssets.background.swiftUIColor
                                                 )
-                                            })
+                                            Divider().offset(y: -8)
                                         }
-                                        .padding(.horizontal, 24)
-                                        
-                                        ForEach(posts, id: \.offset) { index, post in
-                                            PostCell(post: post).padding(24)
-                                                .id(UUID())
-                                                .onAppear {
-                                                    Task {
-                                                        await viewModel.getPostsPagination(
-                                                            index: index
+                                    }.frameLimit()
+                                    RefreshableScrollViewCompat(action: {
+                                        listAnimation = nil
+                                        viewModel.resetPosts()
+                                        _ = await viewModel.getPosts(courseID: courseID,
+                                                                     pageNumber: 1,
+                                                                     withProgress: isIOS14)
+                                    }) {
+                                        let posts = Array(viewModel.filteredPosts.enumerated())
+                                        if posts.count >= 1 {
+                                            LazyVStack {
+                                                VStack {}.frame(height: 1)
+                                                    .id(1)
+                                                HStack(alignment: .center) {
+                                                    Text(title)
+                                                        .font(Theme.Fonts.titleLarge)
+                                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                    Spacer()
+                                                    Button(action: {
+                                                        router.createNewThread(courseID: courseID,
+                                                                               selectedTopic: currentBlockID,
+                                                                               onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
+                                                        })
+                                                    }, label: {
+                                                        VStack {
+                                                            CoreAssets.addComment.swiftUIImage
+                                                                .font(Theme.Fonts.labelLarge)
+                                                                .padding(6)
+                                                        }
+                                                        .foregroundColor(.white)
+                                                        .background(
+                                                            Circle()
+                                                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                                                         )
+                                                    })
+                                                }
+                                                .padding(.horizontal, 24)
+                                                
+                                                ForEach(posts, id: \.offset) { index, post in
+                                                    PostCell(post: post).padding(24)
+                                                        .id(UUID())
+                                                        .onAppear {
+                                                            Task {
+                                                                await viewModel.getPostsPagination(
+                                                                    courseID: self.courseID,
+                                                                    index: index
+                                                                )
+                                                            }
+                                                        }
+                                                    if posts.last?.element != post {
+                                                        Divider().padding(.horizontal, 24)
                                                     }
                                                 }
-                                            if posts.last?.element != post {
-                                                Divider().padding(.horizontal, 24)
+                                                Spacer(minLength: 84)
+                                            }
+                                        } else {
+                                            if !viewModel.isShowProgress {
+                                                VStack(spacing: 0) {
+                                                    CoreAssets.discussionIcon.swiftUIImage
+                                                        .renderingMode(.template)
+                                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                                    Text(DiscussionLocalization.Posts.NoDiscussion.title)
+                                                        .font(Theme.Fonts.titleLarge)
+                                                        .multilineTextAlignment(.center)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.top, 40)
+                                                    Text(DiscussionLocalization.Posts.NoDiscussion.description)
+                                                        .font(Theme.Fonts.bodyLarge)
+                                                        .multilineTextAlignment(.center)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.top, 12)
+                                                    StyledButton(DiscussionLocalization.Posts.NoDiscussion.createbutton,
+                                                                 action: {
+                                                        router.createNewThread(courseID: courseID,
+                                                                               selectedTopic: currentBlockID,
+                                                                               onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
+                                                        })
+                                                    }).frame(width: 215).padding(.top, 40)
+                                                }.padding(24)
+                                                    .padding(.top, 100)
                                             }
                                         }
-                                        Spacer(minLength: 84)
                                     }
-                                } else {
-                                    if !viewModel.fetchInProgress {
-                                        VStack(spacing: 0) {
-                                            CoreAssets.discussionIcon.swiftUIImage
-                                                .renderingMode(.template)
-                                                .foregroundColor(Theme.Colors.textPrimary)
-                                            Text(DiscussionLocalization.Posts.NoDiscussion.title)
-                                                .font(Theme.Fonts.titleLarge)
-                                                .multilineTextAlignment(.center)
-                                                .frame(maxWidth: .infinity)
-                                                .padding(.top, 40)
-                                            Text(DiscussionLocalization.Posts.NoDiscussion.description)
-                                                .font(Theme.Fonts.bodyLarge)
-                                                .multilineTextAlignment(.center)
-                                                .frame(maxWidth: .infinity)
-                                                .padding(.top, 12)
-                                            StyledButton(DiscussionLocalization.Posts.NoDiscussion.createbutton,
-                                                         action: {
-                                                router.createNewThread(courseID: courseID,
-                                                                       selectedTopic: currentBlockID,
-                                                                       onPostCreated: {
-                                                    reloadPage(onSuccess: {
-                                                        withAnimation {
-                                                            scroll.scrollTo(1)
-                                                        }
-                                                    })
-                                                })
-                                            }).frame(width: 215).padding(.top, 40)
-                                        }.padding(24)
-                                            .padding(.top, 100)
+                                }.frameLimit()
+                                    .animation(listAnimation)
+                                    .onRightSwipeGesture {
+                                        router.back()
                                     }
-                                }
                             }
-                        }.frameLimit()
-                            .animation(nil)
-                            .onRightSwipeGesture {
-                                router.back()
-                            }
+                        }.frame(maxWidth: .infinity)
                     }
-                }.frame(maxWidth: .infinity)
-            }
-            .padding(.top, 8)
+                }
             if viewModel.isShowProgress {
                 VStack(alignment: .center) {
                     ProgressBar(size: 40, lineWidth: 8)
@@ -189,19 +206,8 @@ public struct PostsView: View {
                         maxHeight: .infinity)
             }
         }
-        .onFirstAppear {
-            Task {
-                await viewModel.getPosts(
-                    pageNumber: 1,
-                    withProgress: true
-                )
-            }
-        }
-        .navigationBarHidden(!showTopMenu)
-        .navigationBarBackButtonHidden(!showTopMenu)
-        .navigationTitle(title)
         .background(
-            Theme.Colors.background
+            CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
         // MARK: - Action Sheet
@@ -213,11 +219,11 @@ public struct PostsView: View {
     @MainActor
     private func reloadPage(onSuccess: @escaping () -> Void) {
         Task {
+            listAnimation = nil
             viewModel.resetPosts()
-            _ = await viewModel.getPosts(
-                pageNumber: 1,
-                withProgress: false
-            )
+            _ = await viewModel.getPosts(courseID: courseID,
+                                         pageNumber: 1,
+                                         withProgress: isIOS14)
             onSuccess()
         }
     }
@@ -283,21 +289,21 @@ public struct PostCell: View {
                         Text(DiscussionLocalization.missedPostsCount(post.unreadCommentCount - 1))
                     }
                 }.font(Theme.Fonts.labelSmall)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                 Text(post.title)
                     .multilineTextAlignment(.leading)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                 Text("\(DiscussionLocalization.Post.lastPost) \(post.lastPostDateFormatted)")
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                 HStack {
                     CoreAssets.responses.swiftUIImage
                     Text("\(post.replies - 1)")
                     Text(DiscussionLocalization.responsesCount(post.replies - 1))
                         .font(Theme.Fonts.labelLarge)
                 }
-                .foregroundColor(Theme.Colors.accentColor)
+                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
             }
         })
     }

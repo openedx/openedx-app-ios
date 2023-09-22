@@ -12,7 +12,7 @@ struct HandoutsView: View {
     
     private let courseID: String
     
-    @StateObject
+    @ObservedObject
     private var viewModel: HandoutsViewModel
     
     public init(
@@ -20,13 +20,16 @@ struct HandoutsView: View {
         viewModel: HandoutsViewModel
     ) {
         self.courseID = courseID
-//        self.viewModel = viewModel
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
+            
+            // MARK: - Page name
             VStack(alignment: .center) {
+                NavigationBar(title: CourseLocalization.CourseContainer.handouts,
+                leftButtonAction: {viewModel.router.back() })
 
                 // MARK: - Page Body
                     if viewModel.isShowProgress {
@@ -38,9 +41,8 @@ struct HandoutsView: View {
                     } else {
                         VStack(alignment: .leading) {
                             HandoutsItemCell(type: .handouts, onTapAction: {
-                                guard let handouts = viewModel.handouts else { return }
                                 viewModel.router.showHandoutsUpdatesView(
-                                    handouts: handouts,
+                                    handouts: viewModel.handouts,
                                     announcements: nil,
                                     router: viewModel.router,
                                     cssInjector: viewModel.cssInjector)
@@ -94,7 +96,7 @@ struct HandoutsView: View {
             }
         }
         .background(
-            Theme.Colors.background
+            CoreAssets.background.swiftUIColor
                 .ignoresSafeArea()
         )
     }
@@ -163,20 +165,20 @@ struct HandoutsItemCell: View {
         }, label: {
             HStack(spacing: 12) {
                 type.image.renderingMode(.template)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     .frame(width: 24, height: 24)
                 VStack(alignment: .leading) {
                     Text(type.title)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                         .font(Theme.Fonts.titleSmall)
                     Text(type.description)
-                        .foregroundColor(Theme.Colors.textSecondary)
+                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
                         .font(Theme.Fonts.labelSmall)
                 }
                 Spacer()
                 Image(systemName: "chevron.right").resizable()
                     .frame(width: 7, height: 12)
-                    .foregroundColor(Theme.Colors.accentColor)
+                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
             }
         }).padding(.vertical, 16)
         

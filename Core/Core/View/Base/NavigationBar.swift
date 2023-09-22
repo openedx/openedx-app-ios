@@ -24,8 +24,8 @@ public struct NavigationBar: View {
     @Binding private var rightButtonIsActive: Bool
     
     public init(title: String,
-                titleColor: Color = Theme.Colors.textPrimary,
-                leftButtonColor: Color = Theme.Colors.accentColor,
+                titleColor: Color = CoreAssets.textPrimary.swiftUIColor,
+                leftButtonColor: Color = CoreAssets.accentColor.swiftUIColor,
                 leftButtonAction: (() -> Void)? = nil,
                 rightButtonType: ButtonType? = nil,
                 rightButtonAction: (() -> Void)? = nil,
@@ -56,7 +56,7 @@ public struct NavigationBar: View {
                         CoreAssets.arrowLeft.swiftUIImage
                             .backButtonStyle(color: leftButtonColor)
                     })
-                    .foregroundColor(Theme.Colors.styledButtonText)
+                    .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                     
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
@@ -76,7 +76,7 @@ public struct NavigationBar: View {
                                     .backButtonStyle(topPadding: 0)
                                 Text(CoreLocalization.done)
                                     .font(Theme.Fonts.labelLarge)
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(CoreAssets.accentColor.swiftUIColor)
                             }.offset(y: -6)
                         case .edit:
                             CoreAssets.edit.swiftUIImage
@@ -91,12 +91,12 @@ public struct NavigationBar: View {
                     })
                     .opacity(rightButtonIsActive ? 1 : 0.3)
                     .padding(.trailing, 16)
-                    .foregroundColor(Theme.Colors.styledButtonText)
+                    .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .topTrailing)
             }
-        }
+        } .frameLimit()
     }
 }
 

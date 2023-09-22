@@ -35,7 +35,7 @@ public struct RegistrationTextField: View {
             if config.field.label != "" {
                 Text(config.field.label)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     .padding(.top, 18)
             }
             if isTextArea {
@@ -46,7 +46,7 @@ public struct RegistrationTextField: View {
                     .hideScrollContentBackground()
                     .background(
                         Theme.Shapes.textInputShape
-                            .fill(Theme.Colors.textInputBackground)
+                            .fill(CoreAssets.textInputBackground.swiftUIColor)
                     )
                 
                     .overlay(
@@ -54,7 +54,7 @@ public struct RegistrationTextField: View {
                             .stroke(lineWidth: 1)
                             .fill(
                                 config.error == "" ?
-                                Theme.Colors.textInputStroke
+                                CoreAssets.textInputStroke.swiftUIColor
                                 : Color.red
                             )
                     )
@@ -69,14 +69,14 @@ public struct RegistrationTextField: View {
                         .padding(.all, 14)
                         .background(
                             Theme.Shapes.textInputShape
-                                .fill(Theme.Colors.textInputBackground)
+                                .fill(CoreAssets.textInputBackground.swiftUIColor)
                         )
                         .overlay(
                             Theme.Shapes.textInputShape
                                 .stroke(lineWidth: 1)
                                 .fill(
                                     config.error == "" ?
-                                    Theme.Colors.textInputStroke
+                                    CoreAssets.textInputStroke.swiftUIColor
                                     : Color.red
                                 )
                         )
@@ -90,14 +90,14 @@ public struct RegistrationTextField: View {
                         .padding(.all, 14)
                         .background(
                             Theme.Shapes.textInputShape
-                                .fill(Theme.Colors.textInputBackground)
+                                .fill(CoreAssets.textInputBackground.swiftUIColor)
                         )
                         .overlay(
                             Theme.Shapes.textInputShape
                                 .stroke(lineWidth: 1)
                                 .fill(
                                     config.error == "" ?
-                                    Theme.Colors.textInputStroke
+                                    CoreAssets.textInputStroke.swiftUIColor
                                     : Color.red
                                 )
                         )
@@ -108,7 +108,7 @@ public struct RegistrationTextField: View {
             Text(config.error == "" ? config.field.instructions : config.error)
                 .font(Theme.Fonts.bodySmall)
                 .foregroundColor(config.error == ""
-                                 ? Theme.Colors.textSecondary
+                                 ? CoreAssets.textSecondary.swiftUIColor
                                  : Color.red)
         }
     }

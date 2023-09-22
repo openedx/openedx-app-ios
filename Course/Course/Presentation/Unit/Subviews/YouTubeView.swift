@@ -37,7 +37,7 @@ struct YouTubeView: View {
                 )!
                 YouTubeVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
                 Spacer(minLength: 100)
-            }.background(Theme.Colors.background)
+            }.background(CoreAssets.background.swiftUIColor)
         }
     }
 }

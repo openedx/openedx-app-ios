@@ -23,7 +23,7 @@ public struct PickerView: View {
             Group {
                 Text(config.field.label)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     .padding(.top, 18)
                 HStack {
                     Button(action: {
@@ -48,16 +48,16 @@ public struct PickerView: View {
                         Image(systemName: "chevron.down")
                     })
                 }.padding(.all, 14)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                     .background(
                         Theme.Shapes.textInputShape
-                            .fill(Theme.Colors.textInputBackground)
+                            .fill(CoreAssets.textInputBackground.swiftUIColor)
                     )
                     .overlay(
                         Theme.Shapes.textInputShape
                             .stroke(lineWidth: 1)
                             .fill(config.error == "" ?
-                                  Theme.Colors.textInputStroke
+                                  CoreAssets.textInputStroke.swiftUIColor
                                   : Color.red)
                     )
                     .shake($config.shake)
@@ -65,7 +65,7 @@ public struct PickerView: View {
                      : config.error)
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(config.error == ""
-                                 ? Theme.Colors.textPrimary
+                                 ? CoreAssets.textPrimary.swiftUIColor
                                  : Color.red)
             }
         }
