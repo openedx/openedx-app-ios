@@ -2,7 +2,7 @@
 //  SignUpView.swift
 //  Authorization
 //
-//  Created by  Stepanok Ivan on 24.10.2022.
+//  Created by  Stepanok Ivan on 24.10.2022.
 //
 
 import SwiftUI
@@ -43,12 +43,11 @@ public struct SignUpView: View {
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .backButtonStyle(color: .white)
                         })
-                        .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                        .foregroundColor(Theme.Colors.styledButtonText)
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
                             alignment: .topLeading)
-                    .frameLimit()
                 }
                 
                 GeometryReader { proxy in
@@ -58,11 +57,11 @@ public struct SignUpView: View {
                                 
                                 Text(AuthLocalization.SignUp.title)
                                     .font(Theme.Fonts.displaySmall)
-                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
                                 Text(AuthLocalization.SignUp.subtitle)
                                     .font(Theme.Fonts.titleSmall)
-                                    .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
                                 
                                 let requiredFields = viewModel.fields.filter {$0.field.required}
@@ -80,7 +79,7 @@ public struct SignUpView: View {
                                                    router: viewModel.router,
                                                    configuration: viewModel.config,
                                                    cssInjector: viewModel.cssInjector,
-                                                   proxy: proxy)
+                                                   proxy: proxy).padding(.horizontal, 1)
                                     }, label: {
                                         Text(disclosureGroupOpen
                                              ? AuthLocalization.SignUp.hideFields
@@ -96,9 +95,9 @@ public struct SignUpView: View {
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         Task {
-                                            viewModel.analytics.createAccountClicked()
                                             await viewModel.registerUser()
                                         }
+                                        viewModel.trackCreateAccountClicked()
                                     }
                                     .padding(.top, 40)
                                     .padding(.bottom, 80)
@@ -109,7 +108,7 @@ public struct SignUpView: View {
                             .padding(.horizontal, 24)
                             .padding(.top, 24)
                             
-                        }.roundedBackground(CoreAssets.background.swiftUIColor)
+                        }.roundedBackground(Theme.Colors.background)
                             .onRightSwipeGesture {
                                 viewModel.router.back()
                             }
@@ -136,7 +135,8 @@ public struct SignUpView: View {
                     }
             }
         }
-        .background(CoreAssets.background.swiftUIColor.ignoresSafeArea(.all))
+        .background(Theme.Colors.background.ignoresSafeArea(.all))
+        .hideNavigationBar()
     }
 }
 

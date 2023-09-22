@@ -39,16 +39,16 @@ public struct SignInView: View {
                         VStack(alignment: .leading) {
                             Text(AuthLocalization.SignIn.logInTitle)
                                 .font(Theme.Fonts.displaySmall)
-                                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.bottom, 4)
                             Text(AuthLocalization.SignIn.welcomeBack)
                                 .font(Theme.Fonts.titleSmall)
-                                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.bottom, 20)
                             
                             Text(AuthLocalization.SignIn.email)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textPrimary)
                             TextField(AuthLocalization.SignIn.email, text: $email)
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
@@ -57,42 +57,42 @@ public struct SignInView: View {
                                 .padding(.all, 14)
                                 .background(
                                     Theme.Shapes.textInputShape
-                                        .fill(CoreAssets.textInputBackground.swiftUIColor)
+                                        .fill(Theme.Colors.textInputBackground)
                                 )
                                 .overlay(
                                     Theme.Shapes.textInputShape
                                         .stroke(lineWidth: 1)
-                                        .fill(CoreAssets.textInputStroke.swiftUIColor)
+                                        .fill(Theme.Colors.textInputStroke)
                                 )
                             
                             Text(AuthLocalization.SignIn.password)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.top, 18)
                             SecureField(AuthLocalization.SignIn.password, text: $password)
                                 .padding(.all, 14)
                                 .background(
                                     Theme.Shapes.textInputShape
-                                        .fill(CoreAssets.textInputBackground.swiftUIColor)
+                                        .fill(Theme.Colors.textInputBackground)
                                 )
                                 .overlay(
                                     Theme.Shapes.textInputShape
                                         .stroke(lineWidth: 1)
-                                        .fill(CoreAssets.textInputStroke.swiftUIColor)
+                                        .fill(Theme.Colors.textInputStroke)
                                 )
                             
                             HStack {
                                 Button(AuthLocalization.SignIn.registerBtn) {
-                                    viewModel.analytics.signUpClicked()
+                                    viewModel.trackSignUpClicked()
                                     viewModel.router.showRegisterScreen()
-                                }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                }.foregroundColor(Theme.Colors.accentColor)
                                 
                                 Spacer()
                                 
                                 Button(AuthLocalization.SignIn.forgotPassBtn) {
-                                    viewModel.analytics.forgotPasswordClicked()
+                                    viewModel.trackForgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
-                                }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                }.foregroundColor(Theme.Colors.accentColor)
                             }
                             .padding(.top, 10)
                             if viewModel.isShowProgress {
@@ -113,7 +113,7 @@ public struct SignInView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 50)
-                }.roundedBackground(CoreAssets.background.swiftUIColor)
+                }.roundedBackground(Theme.Colors.background)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
             }
@@ -122,7 +122,7 @@ public struct SignInView: View {
             if viewModel.showAlert {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
-                        .shadowCardStyle(bgColor: CoreAssets.accentColor.swiftUIColor,
+                        .shadowCardStyle(bgColor: Theme.Colors.accentColor,
                                          textColor: .white)
                         .padding(.top, 80)
                     Spacer()
@@ -149,7 +149,10 @@ public struct SignInView: View {
                     }
             }
         }
-        .background(CoreAssets.background.swiftUIColor.ignoresSafeArea(.all))
+        .hideNavigationBar()
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
+        .background(Theme.Colors.background.ignoresSafeArea(.all))
     }
 }
 

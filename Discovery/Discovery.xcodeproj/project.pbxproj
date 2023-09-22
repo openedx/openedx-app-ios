@@ -15,7 +15,7 @@
 		0284DBFC28D4856A00830893 /* DiscoveryEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */; };
 		0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DC0228D4922900830893 /* DiscoveryRepository.swift */; };
 		029737402949FB070051696B /* DiscoveryCoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0297373E2949FB070051696B /* DiscoveryCoreModel.xcdatamodeld */; };
-		029737422949FB3B0051696B /* DiscoveryPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029737412949FB3B0051696B /* DiscoveryPersistence.swift */; };
+		029737422949FB3B0051696B /* DiscoveryPersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029737412949FB3B0051696B /* DiscoveryPersistenceProtocol.swift */; };
 		02EF39D128D867690058F6BD /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 02EF39D028D867690058F6BD /* swiftgen.yml */; };
 		02EF39D728D86A380058F6BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 02EF39D928D86A380058F6BD /* Localizable.strings */; };
 		02EF39DC28D86BEF0058F6BD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EF39DB28D86BEF0058F6BD /* Strings.swift */; };
@@ -50,7 +50,7 @@
 		0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEndpoint.swift; sourceTree = "<group>"; };
 		0284DC0228D4922900830893 /* DiscoveryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryRepository.swift; sourceTree = "<group>"; };
 		0297373F2949FB070051696B /* DiscoveryCoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DiscoveryCoreModel.xcdatamodel; sourceTree = "<group>"; };
-		029737412949FB3B0051696B /* DiscoveryPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryPersistence.swift; sourceTree = "<group>"; };
+		029737412949FB3B0051696B /* DiscoveryPersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryPersistenceProtocol.swift; sourceTree = "<group>"; };
 		02ED50C729A649C9008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02ED50C829A649C9008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		02EF39D028D867690058F6BD /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 		0208666829CC6CD600BC05B2 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				029737412949FB3B0051696B /* DiscoveryPersistence.swift */,
+				029737412949FB3B0051696B /* DiscoveryPersistenceProtocol.swift */,
 				0297373E2949FB070051696B /* DiscoveryCoreModel.xcdatamodeld */,
 			);
 			path = Persistence;
@@ -466,7 +466,7 @@
 				02F3BFDF29252F2F0051930C /* DiscoveryRouter.swift in Sources */,
 				0283347928D49A8700C828FC /* DiscoveryViewModel.swift in Sources */,
 				072787B428D34D91002E9142 /* DiscoveryView.swift in Sources */,
-				029737422949FB3B0051696B /* DiscoveryPersistence.swift in Sources */,
+				029737422949FB3B0051696B /* DiscoveryPersistenceProtocol.swift in Sources */,
 				0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */,
 				02EF39DC28D86BEF0058F6BD /* Strings.swift in Sources */,
 				02F1752F2A4DA3B60019CD70 /* DiscoveryAnalytics.swift in Sources */,
@@ -514,7 +514,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -535,7 +535,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -556,7 +556,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -577,7 +577,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -598,7 +598,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -619,7 +619,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -711,7 +711,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -739,7 +739,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -825,7 +825,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -852,7 +852,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscoveryUnitTests;
@@ -1002,7 +1002,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1037,7 +1037,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1135,7 +1135,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1234,7 +1234,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1327,7 +1327,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1419,7 +1419,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

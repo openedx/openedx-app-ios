@@ -29,6 +29,26 @@ public struct DownloadData {
     public let resumeData: Data?
     public let state: DownloadState
     public let type: DownloadType
+    
+    public init(
+        id: String,
+        courseId: String,
+        url: String,
+        fileName: String,
+        progress: Double,
+        resumeData: Data?,
+        state: DownloadState,
+        type: DownloadType
+    ) {
+        self.id = id
+        self.courseId = courseId
+        self.url = url
+        self.fileName = fileName
+        self.progress = progress
+        self.resumeData = resumeData
+        self.state = state
+        self.type = type
+    }
 }
 
 public class NoWiFiError: LocalizedError {
@@ -44,13 +64,14 @@ public protocol DownloadManagerProtocol {
     func resumeDownloading() throws
     func pauseDownloading()
     func deleteFile(blocks: [CourseBlock])
+    func deleteAllFiles()
     func fileUrl(for blockId: String) -> URL?
 }
 
 public class DownloadManager: DownloadManagerProtocol {
     
     private let persistence: CorePersistenceProtocol
-    private let appStorage: Core.AppStorage
+    private let appStorage: CoreStorage
     private let connectivity: ConnectivityProtocol
     private var downloadRequest: DownloadRequest?
     private var currentDownload: DownloadData?
@@ -58,7 +79,7 @@ public class DownloadManager: DownloadManagerProtocol {
     
     public init(
         persistence: CorePersistenceProtocol,
-        appStorage: Core.AppStorage,
+        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol
     ) {
         self.persistence = persistence
@@ -127,20 +148,21 @@ public class DownloadManager: DownloadManagerProtocol {
                 resumeData: download.resumeData
             )
             self.isDownloadingInProgress = true
-            let fileName = url.lastPathComponent
             if let resumeData = download.resumeData {
                 downloadRequest = AF.download(resumingWith: resumeData)
             } else {
                 downloadRequest = AF.download(url)
             }
-//            downloadRequest?.downloadProgress { prog in
-//                let completed = Double(prog.fractionCompleted * 100)
-//                print(">>>>> Downloading", download.url, completed, "%")
-//            }
+            #if DEBUG
+            downloadRequest?.downloadProgress { prog in
+                let completed = Double(prog.fractionCompleted * 100)
+                print(">>>>> Downloading", download.url, completed, "%")
+            }
+            #endif
             downloadRequest?.responseData(completionHandler: { [weak self] data in
                 guard let self else { return }
                 if let data = data.value, let url = self.videosFolderUrl() {
-                    self.saveFile(file: fileName, data: data, url: url)
+                    self.saveFile(fileName: download.fileName, data: data, folderURL: url)
                     self.persistence.updateDownloadState(
                         id: download.id,
                         state: .finished,
@@ -169,15 +191,25 @@ public class DownloadManager: DownloadManagerProtocol {
     
     public func deleteFile(blocks: [CourseBlock]) {
         for block in blocks {
-            if let url = block.videoUrl,
-               let fileName = URL(string: url)?.lastPathComponent, let folderUrl = videosFolderUrl() {
-                do {
-                    let fileUrl = folderUrl.appendingPathComponent(fileName)
-                    try persistence.deleteDownloadData(id: block.id)
+            do {
+                try persistence.deleteDownloadData(id: block.id)
+                if let fileUrl = fileUrl(for: block.id) {
                     try FileManager.default.removeItem(at: fileUrl)
-                    print("File deleted successfully")
+                }
+            } catch {
+                NSLog("Error deleting file: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    public func deleteAllFiles() {
+        let downloadData = persistence.getAllDownloadData()
+        downloadData.forEach {
+            if let fileURL = fileUrl(for: $0.id) {
+                do {
+                    try FileManager.default.removeItem(at: fileURL)
                 } catch {
-                    print("Error deleting file: \(error.localizedDescription)")
+                    NSLog("Error deleting All files: \(error.localizedDescription)")
                 }
             }
         }
@@ -187,10 +219,9 @@ public class DownloadManager: DownloadManagerProtocol {
         guard let data = persistence.downloadData(by: blockId),
               data.url.count > 0,
               data.state == .finished else { return nil }
-        
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let directoryURL = documentDirectoryURL.appendingPathComponent("Files", isDirectory: true)
-        return directoryURL.appendingPathComponent(data.fileName)
+        let path = videosFolderUrl()
+        let fileName = data.fileName
+        return path?.appendingPathComponent(fileName)
     }
     
     private func videosFolderUrl() -> URL? {
@@ -214,12 +245,12 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
     
-    private func saveFile(file: String, data: Data, url: URL) {
-        let fileURL = url.appendingPathComponent(file)
+    private func saveFile(fileName: String, data: Data, folderURL: URL) {
+        let fileURL = folderURL.appendingPathComponent(fileName)
         do {
             try data.write(to: fileURL)
         } catch {
-            print("SaveFile Error", error.localizedDescription)
+            NSLog("SaveFile Error", error.localizedDescription)
         }
     }
 }
@@ -257,6 +288,10 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     }
     
     public func deleteFile(blocks: [CourseBlock]) {
+        
+    }
+    
+    public func deleteAllFiles() {
         
     }
     

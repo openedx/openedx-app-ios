@@ -31,7 +31,7 @@ struct LessonProgressView: View {
                         .foregroundColor(
                             selected == viewModel.selectedLesson()
                             ? .accentColor
-                            : CoreAssets.textSecondary.swiftUIColor
+                            : Theme.Colors.textSecondary
                         )
                 }
                 Spacer()

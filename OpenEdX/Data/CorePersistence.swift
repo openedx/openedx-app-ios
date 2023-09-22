@@ -1,37 +1,22 @@
 //
 //  CorePersistence.swift
-//  Core
+//  OpenEdX
 //
-//  Created by  Stepanok Ivan on 08.03.2023.
+//  Created by  Stepanok Ivan on 25.07.2023.
 //
 
+import Core
+import Foundation
 import CoreData
 import Combine
 
-public protocol CorePersistenceProtocol {
-    func publisher() -> AnyPublisher<Int, Never>
-    func addToDownloadQueue(blocks: [CourseBlock])
-    func getNextBlockForDownloading() -> DownloadData?
-    func getDownloadsForCourse(_ courseId: String) -> [DownloadData]
-    func downloadData(by blockId: String) -> DownloadData?
-    func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
-    func deleteDownloadData(id: String) throws
-    func saveDownloadData(data: DownloadData)
-}
-
 public class CorePersistence: CorePersistenceProtocol {
     
-    public init() {}
+    private var context: NSManagedObjectContext
     
-    private let model = "CoreDataModel"
-    
-    private lazy var persistentContainer: NSPersistentContainer = {
-      return createContainer()
-    }()
-    
-    private lazy var context: NSManagedObjectContext = {
-        return createContext()
-    }()
+    public init(context: NSManagedObjectContext) {
+        self.context = context
+    }
     
     public func publisher() -> AnyPublisher<Int, Never> {
         let notification = NSManagedObjectContext.didChangeObjectsNotification
@@ -56,13 +41,32 @@ public class CorePersistence: CorePersistenceProtocol {
             .eraseToAnyPublisher()
     }
     
+    public func getAllDownloadData() -> [DownloadData] {
+        let request = CDDownloadData.fetchRequest()
+        guard let downloadData = try? context.fetch(request) else { return [] }
+        return downloadData.map {
+            DownloadData(
+                id: $0.id ?? "",
+                courseId: $0.courseId ?? "",
+                url: $0.url ?? "",
+                fileName: $0.fileName ?? "",
+                progress: $0.progress,
+                resumeData: $0.resumeData,
+                state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
+                type: DownloadType(rawValue: $0.type ?? "") ?? .video
+            )
+        }
+    }
+    
     public func addToDownloadQueue(blocks: [CourseBlock]) {
         for block in blocks {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", block.id)
             guard (try? context.fetch(request).first) == nil else { continue }
             guard let url = block.videoUrl,
-                  let fileName = URL(string: url)?.lastPathComponent else { continue }
+                  let fileExtension = URL(string: url)?.pathExtension
+            else { continue }
+            let fileName = "\(block.id).\(fileExtension)"
             context.performAndWait {
                 let newDownloadData = CDDownloadData(context: context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -177,29 +181,5 @@ public class CorePersistence: CorePersistenceProtocol {
                 print("⛔️⛔️⛔️⛔️⛔️", error)
             }
         }
-    }
-    
-    private func createContainer() -> NSPersistentContainer {
-        let bundle = Bundle(for: Self.self)
-        let url = bundle.url(forResource: model, withExtension: "momd")
-        let managedObjectModel = NSManagedObjectModel(contentsOf: url!)
-        let container = NSPersistentContainer(name: model, managedObjectModel: managedObjectModel!)
-        container.loadPersistentStores(completionHandler: { (_, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        let description = NSPersistentStoreDescription()
-        description.shouldInferMappingModelAutomatically = true
-        description.shouldMigrateStoreAutomatically = true
-        container.persistentStoreDescriptions = [description]
-        
-        return container
-    }
-    
-    private func createContext() -> NSManagedObjectContext {
-        let context = persistentContainer.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
     }
 }

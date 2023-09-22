@@ -63,71 +63,71 @@ public struct UnitButtonView: View {
                     case .first:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .rotationEffect(Angle.degrees(-90))
                         }.padding(.horizontal, 16)
                     case .next, .nextBig:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
                             if type != .nextBig {
                                 Spacer()
                             }
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .rotationEffect(Angle.degrees(-90))
                                 .padding(.trailing, 20)
                         }
                     case .previous:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                .foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .padding(.leading, 20)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .rotationEffect(Angle.degrees(90))
                                 .padding(.trailing, 20)
-                                .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                .foregroundColor(Theme.Colors.accentColor)
                             
                         }
                     case .last:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .padding(.leading, 16)
                                 .font(Theme.Fonts.labelLarge)
                             Spacer()
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .padding(.trailing, 16)
                         }
                     case .finish:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                         }.padding(.horizontal, 16)
                     case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
-                                .foregroundColor(bgColor == nil ? .white : CoreAssets.accentColor.swiftUIColor)
+                                .foregroundColor(bgColor == nil ? .white : Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)
                         }.padding(.horizontal, 16)
                     case .continueLesson, .nextSection:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(CoreAssets.styledButtonText.swiftUIColor)
+                                .foregroundColor(Theme.Colors.styledButtonText)
                                 .rotationEffect(Angle.degrees(180))
                                 .padding(.trailing, 20)
                         }
@@ -140,8 +140,8 @@ public struct UnitButtonView: View {
                         case .first, .next, .nextBig, .previous, .last:
                             Theme.Shapes.buttonShape
                                 .fill(type == .previous
-                                      ? CoreAssets.background.swiftUIColor
-                                      : CoreAssets.accentColor.swiftUIColor)
+                                      ? Theme.Colors.background
+                                      : Theme.Colors.accentColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
@@ -151,12 +151,12 @@ public struct UnitButtonView: View {
                                             lineJoin: .round,
                                             miterLimit: 1)
                                         )
-                                        .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                        .foregroundColor(Theme.Colors.accentColor)
                                 )
                                 
                         case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
-                                .fill(bgColor ?? CoreAssets.accentColor.swiftUIColor)
+                                .fill(bgColor ?? Theme.Colors.accentColor)
                             
                                 .shadow(color: (type == .first
                                                 || type == .next
@@ -173,7 +173,7 @@ public struct UnitButtonView: View {
                                             lineJoin: .round,
                                             miterLimit: 1
                                         ))
-                                        .foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                                        .foregroundColor(Theme.Colors.accentColor)
                                 )
                         }
                     }

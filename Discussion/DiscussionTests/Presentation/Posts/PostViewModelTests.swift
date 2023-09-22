@@ -108,33 +108,30 @@ final class PostViewModelTests: XCTestCase {
         var result = false
         let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
         
+        viewModel.courseID = "1"
         viewModel.type = .allPosts
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willReturn: threads))
 
         viewModel.type = .allPosts
-        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
         result = false
         
         viewModel.type = .courseTopics(topicID: "")
-        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
         result = false
         
         viewModel.type = .followingPosts
-        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
         result = false
         
         viewModel.type = .nonCourseTopics
-        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
         result = false
-        
-        viewModel.type = .none
-        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
-        XCTAssertFalse(result)
 
         Verify(interactor, 4, .getThreadsList(courseID: .value("1"), type: .any, sort: .any, filter: .any, page: .value(1)))
         
@@ -154,8 +151,9 @@ final class PostViewModelTests: XCTestCase {
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: noInternetError))
 
+        viewModel.courseID = "1"
         viewModel.type = .allPosts
-        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        result = await viewModel.getPosts(pageNumber: 1)
 
         Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
         
@@ -174,8 +172,9 @@ final class PostViewModelTests: XCTestCase {
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError()))
 
+        viewModel.courseID = "1"
         viewModel.type = .allPosts
-        result = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        result = await viewModel.getPosts(pageNumber: 1)
 
         Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
         
@@ -193,9 +192,10 @@ final class PostViewModelTests: XCTestCase {
         
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any,
                                           willReturn: threads))
+        viewModel.courseID = "1"
         viewModel.type = .allPosts
         viewModel.sortTitle = .mostActivity
-        _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        _ = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
         
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .value(.recentActivity), filter: .any, page: .any,
@@ -203,7 +203,7 @@ final class PostViewModelTests: XCTestCase {
         
         viewModel.filterTitle = .unread
         viewModel.sortTitle = .recentActivity
-        _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        _ = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: {$0.unreadCommentCount == 4}))
         
@@ -212,7 +212,7 @@ final class PostViewModelTests: XCTestCase {
         
         viewModel.filterTitle = .unanswered
         viewModel.sortTitle = .mostVotes
-        _ = await viewModel.getPosts(courseID: "1", pageNumber: 1)
+        _ = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: { $0.hasEndorsed }))
         

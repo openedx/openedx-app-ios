@@ -53,7 +53,7 @@ public struct CommentCell: View {
                         .font(Theme.Fonts.titleSmall)
                     Text(comment.postDate.dateToString(style: .lastPost))
                         .font(Theme.Fonts.labelSmall)
-                        .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                        .foregroundColor(Theme.Colors.textSecondary)
                 }
                 Spacer()
                 Button(action: {
@@ -67,8 +67,8 @@ public struct CommentCell: View {
                          : DiscussionLocalization.Comment.report)
                     .font(Theme.Fonts.labelMedium)
                 }).foregroundColor(comment.abuseFlagged
-                                   ? CoreAssets.alert.swiftUIColor
-                                      : CoreAssets.textSecondary.swiftUIColor)
+                                   ? Theme.Colors.alert
+                                      : Theme.Colors.textSecondary)
             }
             Text(comment.postBodyHtml.hideHtmlTagsAndUrls())
                 .font(Theme.Fonts.bodyMedium)
@@ -90,7 +90,7 @@ public struct CommentCell: View {
                             Text(url.absoluteString)
                             .multilineTextAlignment(.leading)
                         }
-                    }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
+                    }.foregroundColor(Theme.Colors.accentColor)
                         .font(Theme.Fonts.bodyMedium)
                 }
             }
@@ -98,7 +98,7 @@ public struct CommentCell: View {
             LazyVStack {
                 VStack {}
                     .frame(height: 1)
-                    .overlay(CoreAssets.cardViewStroke.swiftUIColor)
+                    .overlay(Theme.Colors.cardViewStroke)
                     .padding(.horizontal, 24)
                     .onAppear {
                         onFetchMore()
@@ -115,8 +115,8 @@ public struct CommentCell: View {
                     Text(DiscussionLocalization.votesCount(comment.votesCount))
                         .font(Theme.Fonts.labelLarge)
                 }).foregroundColor(comment.voted
-                                   ? CoreAssets.accentColor.swiftUIColor
-                                   : CoreAssets.textSecondary.swiftUIColor)
+                                   ? Theme.Colors.accentColor
+                                   : Theme.Colors.textSecondary)
 
                 Spacer()
                 if addCommentAvailable {
@@ -124,14 +124,14 @@ public struct CommentCell: View {
                             Image(systemName: "message.fill")
                             Text("\(comment.responsesCount)")
                             Text(DiscussionLocalization.commentsCount(comment.responsesCount))
-                        }.foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                        }.foregroundColor(Theme.Colors.textSecondary)
                             .font(Theme.Fonts.labelLarge)
                 }
-            }.foregroundColor(CoreAssets.accentColor.swiftUIColor)
+            }.foregroundColor(Theme.Colors.accentColor)
                 .font(Theme.Fonts.labelMedium)
             
         }.cardStyle(top: leftLineEnabled ? 0 : 8, leftLineEnabled: leftLineEnabled,
-                    bgColor: CoreAssets.commentCellBackground.swiftUIColor)
+                    bgColor: Theme.Colors.commentCellBackground)
             .onTapGesture {
                 if addCommentAvailable {
                     onCommentsTap()
