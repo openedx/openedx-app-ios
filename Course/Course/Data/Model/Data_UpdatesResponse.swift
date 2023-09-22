@@ -13,7 +13,7 @@ public extension DataLayer {
         public let id: Int
         public let date: String
         public let content: String
-        public let status: String
+        public let status: String?
     }
     typealias CourseUpdates = [CourseUpdate]
 }
