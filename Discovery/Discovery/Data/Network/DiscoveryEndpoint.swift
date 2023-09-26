@@ -18,7 +18,7 @@ enum DiscoveryEndpoint: EndPointType {
         case .getDiscovery:
             return "/api/courses/v1/courses/"
         case .searchCourses:
-            return "/mobile_api_extensions/courses/v1/courses/"
+            return "/api/courses/v1/courses/"
         }
     }
     

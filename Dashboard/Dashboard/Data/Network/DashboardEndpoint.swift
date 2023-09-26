@@ -15,7 +15,7 @@ enum DashboardEndpoint: EndPointType {
     var path: String {
         switch self {
         case let .getMyCourses(username, _):
-            return "/mobile_api_extensions/v1/users/\(username)/course_enrollments"
+            return "/api/mobile/v3/users/\(username)/course_enrollments"
         }
     }
     
