@@ -35,8 +35,8 @@ jobs:
         run:
           source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
 
-      - run: |
-          xcversion installed
+#      - run: |
+#          xcversion installed
 
       - name: SwiftLint
         run:
