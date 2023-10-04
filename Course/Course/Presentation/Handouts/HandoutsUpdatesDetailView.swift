@@ -10,8 +10,9 @@ import Core
 
 public struct HandoutsUpdatesDetailView: View {
     
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorSchemeNative
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @State var colorScheme: ColorScheme = UITraitCollection.current.userInterfaceStyle == .light ? .light : .dark
     
     private var router: CourseRouter
     private let cssInjector: CSSInjector
@@ -34,6 +35,10 @@ public struct HandoutsUpdatesDetailView: View {
         self.announcements = announcements
         self.router = router
         self.cssInjector = cssInjector
+    }
+    
+    private func updateColorScheme() {
+        colorScheme = UITraitCollection.current.userInterfaceStyle == .light ? .light : .dark
     }
     
     private func fixBrokenLinks(in htmlString: String) -> String {
@@ -126,6 +131,10 @@ public struct HandoutsUpdatesDetailView: View {
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
+        .onChange(of: colorSchemeNative) { newValue in
+            guard UIApplication.shared.applicationState == .active else { return }
+            updateColorScheme()
+        }
     }
 }
 

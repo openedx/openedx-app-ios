@@ -31,6 +31,20 @@ public struct CourseVerticalView: View {
         self.viewModel = viewModel
     }
     
+    private func verticalImage(childs: [CourseBlock]) -> Image {
+        if childs.contains(where: { $0.type == .problem }) {
+            return CoreAssets.pen.swiftUIImage.renderingMode(.template)
+        } else if childs.contains(where: { $0.type == .video }) {
+            return CoreAssets.video.swiftUIImage.renderingMode(.template)
+        } else if childs.contains(where: { $0.type == .discussion }) {
+            return CoreAssets.discussion.swiftUIImage.renderingMode(.template)
+        } else if childs.contains(where: { $0.type == .html }) {
+            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
+        } else {
+            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
+        }
+    }
+    
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body
@@ -67,7 +81,7 @@ public struct CourseVerticalView: View {
                                                     .renderingMode(.template)
                                                     .foregroundColor(.accentColor)
                                             } else {
-                                                vertical.type.image
+                                                verticalImage(childs: vertical.childs)
                                             }
                                             Text(vertical.displayName)
                                                 .font(Theme.Fonts.titleMedium)

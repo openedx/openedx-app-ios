@@ -115,6 +115,10 @@ public class CSSInjector {
         
         let style = """
         <style>
+        a {
+            text-decoration: none;
+            color: \(CoreAssets.accentColor.color.cgColor.hexString ?? "");
+        }
         @font-face {
         font-family: "San Francisco";
         font-weight: 400;
@@ -133,7 +137,7 @@ public class CSSInjector {
           height: auto;
         }
         </style>
-        <table class="header">
+        <table class="header" style="width:100%">
         <tr>
         <td>
         """

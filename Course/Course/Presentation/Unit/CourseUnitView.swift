@@ -197,6 +197,11 @@ public struct CourseUnitView: View {
                 }
             }
         }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                showDiscussion = viewModel.selectedLesson().type == .discussion
+            }
+        }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle("")

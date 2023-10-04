@@ -68,6 +68,7 @@ public struct ParentCommentView: View {
                 .font(Theme.Fonts.titleLarge)
             Text(comments.postBodyHtml.hideHtmlTagsAndUrls())
                 .font(Theme.Fonts.bodyMedium)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 8)
             ForEach(Array(comments.postBody.extractURLs().enumerated()), id: \.offset) { _, url in
                 if url.isImage() {
