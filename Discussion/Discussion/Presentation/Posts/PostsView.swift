@@ -20,8 +20,16 @@ public struct PostsView: View {
     private let courseID: String
     private var showTopMenu: Bool
     
-    public init(courseID: String, currentBlockID: String, topics: Topics, title: String, type: ThreadType,
-                viewModel: PostsViewModel, router: DiscussionRouter, showTopMenu: Bool = true) {
+    public init(
+        courseID: String,
+        currentBlockID: String,
+        topics: Topics,
+        title: String,
+        type: ThreadType,
+        viewModel: PostsViewModel,
+        router: DiscussionRouter,
+        showTopMenu: Bool = true
+    ) {
         self.courseID = courseID
         self.title = title
         self.currentBlockID = currentBlockID
@@ -163,16 +171,16 @@ public struct PostsView: View {
                                                                            onPostCreated: {
                                                         reloadPage(onSuccess: {
                                                             withAnimation {
-                                                                scroll.scrollTo(
-                                                                    1
-                                                                )
+                                                                scroll.scrollTo(1)
                                                             }
                                                         })
                                                     })
                                                 },
-                                                isTransparent: true).frame(width: 215).padding(.top, 40)
-                                                .colorMultiply(.accentColor)
-
+                                                isTransparent: true)
+                                            .frame(width: 215)
+                                            .padding(.top, 40)
+                                            .colorMultiply(.accentColor)
+                                            
                                         }.padding(24)
                                             .padding(.top, 100)
                                     }
