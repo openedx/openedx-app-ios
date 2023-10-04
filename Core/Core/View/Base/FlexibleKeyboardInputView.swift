@@ -74,9 +74,17 @@ public struct FlexibleKeyboardInputView: View {
                             }
                         }, label: {
                             VStack {
-                                commentText.trimmingCharacters(in: .whitespacesAndNewlines).count > 0
-                                ? CoreAssets.send.swiftUIImage
-                                : CoreAssets.sendDisabled.swiftUIImage
+                                if commentText.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
+                                    ZStack {
+                                        Circle()
+                                            .frame(width: 36, height: 36)
+                                            .foregroundColor(.accentColor)
+                                        CoreAssets.send.swiftUIImage
+                                            .offset(y: 1)
+                                    }
+                                } else {
+                                    CoreAssets.sendDisabled.swiftUIImage
+                                }
                             }
                             .frame(width: 36, height: 36)
                             .foregroundColor(.white)

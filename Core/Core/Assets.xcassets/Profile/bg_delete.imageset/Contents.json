@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Group-2.svg",
+      "filename" : "delete_bg_light.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Group.svg",
+      "filename" : "bg_delete 1.svg",
       "idiom" : "universal"
     }
   ],

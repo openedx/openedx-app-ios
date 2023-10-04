@@ -155,18 +155,24 @@ public struct PostsView: View {
                                                 .multilineTextAlignment(.center)
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.top, 12)
-                                            StyledButton(DiscussionLocalization.Posts.NoDiscussion.createbutton,
-                                                         action: {
-                                                router.createNewThread(courseID: courseID,
-                                                                       selectedTopic: currentBlockID,
-                                                                       onPostCreated: {
-                                                    reloadPage(onSuccess: {
-                                                        withAnimation {
-                                                            scroll.scrollTo(1)
-                                                        }
+                                            StyledButton(
+                                                DiscussionLocalization.Posts.NoDiscussion.createbutton,
+                                                action: {
+                                                    router.createNewThread(courseID: courseID,
+                                                                           selectedTopic: currentBlockID,
+                                                                           onPostCreated: {
+                                                        reloadPage(onSuccess: {
+                                                            withAnimation {
+                                                                scroll.scrollTo(
+                                                                    1
+                                                                )
+                                                            }
+                                                        })
                                                     })
-                                                })
-                                            }).frame(width: 215).padding(.top, 40)
+                                                },
+                                                isTransparent: true).frame(width: 215).padding(.top, 40)
+                                                .colorMultiply(.accentColor)
+
                                         }.padding(24)
                                             .padding(.top, 100)
                                     }
