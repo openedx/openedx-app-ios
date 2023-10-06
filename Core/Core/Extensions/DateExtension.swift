@@ -70,6 +70,19 @@ public enum DateStringStyle {
 }
 
 public extension Date {
+    
+    func secondsSinceMidnight() -> Double {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute, .second], from: self)
+
+        guard let hours = components.hour, let minutes = components.minute, let seconds = components.second else {
+            return 0.0
+        }
+
+        let totalSeconds = Double(hours) * 3600.0 + Double(minutes) * 60.0 + Double(seconds)
+        return totalSeconds
+    }
+    
     func dateToString(style: DateStringStyle) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")

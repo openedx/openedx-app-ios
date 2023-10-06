@@ -16,7 +16,6 @@ public struct YouTubeVideoPlayer: View {
     @StateObject
     private var viewModel: YouTubeVideoPlayerViewModel
     private var isOnScreen: Bool
-    
     @State
     private var showAlert = false
     @State
@@ -69,7 +68,11 @@ public struct YouTubeVideoPlayer: View {
                 SubtittlesView(
                     languages: viewModel.languages,
                     currentTime: $viewModel.currentTime,
-                    viewModel: viewModel
+                    viewModel: viewModel, scrollTo: { date in
+                        viewModel.youtubePlayer.seek(to: date.secondsSinceMidnight(), allowSeekAhead: true)
+                        viewModel.pauseScrolling()
+                        viewModel.currentTime = date.secondsSinceMidnight() + 1
+                    }
                 )
             }
             

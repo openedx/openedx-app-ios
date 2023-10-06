@@ -30,6 +30,7 @@ public struct EncodedVideoPlayer: View {
     @State private var isViewedOnce: Bool = false
     @State private var currentTime: Double = 0
     @State private var isOrientationChanged: Bool = false
+    @State private var pause: Bool = false
     
     @State var showAlert = false
     @State var alertMessage: String? {
@@ -64,7 +65,9 @@ public struct EncodedVideoPlayer: View {
                             }
                         }
                     }, seconds: { seconds in
-                        currentTime = seconds
+                        if !pause {
+                            currentTime = seconds
+                        }
                     })
                 .aspectRatio(16 / 9, contentMode: .fit)
                 .cornerRadius(12)
@@ -89,8 +92,13 @@ public struct EncodedVideoPlayer: View {
                     }
                 }
                 SubtittlesView(languages: viewModel.languages,
-                               currentTime: $currentTime,
-                               viewModel: viewModel)
+                                        currentTime: $currentTime,
+                                        viewModel: viewModel, scrollTo: { date in
+                             viewModel.controller.player?.seek(to: CMTime(seconds: date.secondsSinceMidnight(),
+                                                                          preferredTimescale: 10000))
+                             pauseScrolling()
+                             currentTime = (date.secondsSinceMidnight() + 1)
+                         })
                 Spacer()
                 if !orientation.isLandscape || idiom != .pad {
                     VStack {}.onAppear {
@@ -118,6 +126,12 @@ public struct EncodedVideoPlayer: View {
                     }
                 }
             }
+        }
+    }
+    private func pauseScrolling() {
+        pause = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.pause = false
         }
     }
 }
