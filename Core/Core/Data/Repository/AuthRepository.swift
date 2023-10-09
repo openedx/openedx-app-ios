@@ -33,7 +33,8 @@ public class AuthRepository: AuthRepositoryProtocol {
         let endPoint = AuthEndpoint.getAccessToken(
             username: username,
             password: password,
-            clientId: config.oAuthClientId
+            clientId: config.oAuthClientId,
+            tokenType: config.tokenType.rawValue
         )
         let authResponse = try await api.requestData(endPoint).mapResponse(DataLayer.AuthResponse.self)
         guard let accessToken = authResponse.accessToken,

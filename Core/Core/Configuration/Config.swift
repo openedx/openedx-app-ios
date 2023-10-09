@@ -11,6 +11,7 @@ public class Config {
     
     public let baseURL: URL
     public let oAuthClientId: String
+    public let tokenType: TokenType = .jwt
     
     public lazy var termsOfUse: URL? = {
         URL(string: "\(baseURL.description)/tos")
@@ -28,6 +29,13 @@ public class Config {
         }
         self.baseURL = url
         self.oAuthClientId = oAuthClientId
+    }
+}
+
+public extension Config {
+    enum TokenType: String {
+        case jwt = "JWT"
+        case bearer = "BEARER"
     }
 }
 
