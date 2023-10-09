@@ -63,6 +63,7 @@ public struct SubtittlesView: View {
                                     HStack {
                                         Button(action: {
                                             scrollTo(subtitle.fromTo.start)
+                                            pause = false
                                         }, label: {
                                         Text(subtitle.text)
                                             .padding(.vertical, 16)
