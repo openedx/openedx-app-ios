@@ -10,6 +10,7 @@ import Core
 import Alamofire
 
 enum DiscussionEndpoint: EndPointType {
+    case getUserProfile(username: String)
     case getCourseDiscussionInfo(courseID: String)
     case getThreads(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int)
     case getTopics(courseID: String)
@@ -28,6 +29,8 @@ enum DiscussionEndpoint: EndPointType {
     
     var path: String {
         switch self {
+        case .getUserProfile(let username):
+            return "api/user/v1/accounts/\(username)"
         case let .getCourseDiscussionInfo(courseID):
             return "/api/discussion/v1/courses/\(courseID)"
         case .getThreads:
@@ -64,6 +67,8 @@ enum DiscussionEndpoint: EndPointType {
     
     var httpMethod: HTTPMethod {
         switch self {
+        case .getUserProfile:
+            return .get
         case .getCourseDiscussionInfo:
             return .get
         case .getThreads:
@@ -99,7 +104,8 @@ enum DiscussionEndpoint: EndPointType {
     
     var headers: HTTPHeaders? {
         switch self {
-        case .getCourseDiscussionInfo,
+        case .getUserProfile,
+                .getCourseDiscussionInfo,
                 .getThreads,
                 .getTopics,
                 .getDiscussionComments,
@@ -116,6 +122,8 @@ enum DiscussionEndpoint: EndPointType {
     
     var task: HTTPTask {
         switch self {
+        case .getUserProfile:
+            return .request
         case .getCourseDiscussionInfo:
             return .requestParameters(encoding: URLEncoding.queryString)
         case let .getThreads(courseID, type, sort, filter, page):

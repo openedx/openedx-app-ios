@@ -19,6 +19,8 @@
 		0218197228F735B300202564 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0218197128F735B300202564 /* Strings.swift */; };
 		0218197828F7363000202564 /* DiscussionEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0218197728F7363000202564 /* DiscussionEndpoint.swift */; };
 		0218197A28F7369A00202564 /* DiscussionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0218197928F7369A00202564 /* DiscussionInteractor.swift */; };
+		022042052AD59F4F002E81C8 /* UserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022042042AD59F4F002E81C8 /* UserDetailsView.swift */; };
+		022042072AD59FA4002E81C8 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022042062AD59FA4002E81C8 /* UserDetailsViewModel.swift */; };
 		023F14A9291BC02200FD0EFF /* ParentCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F14A8291BC02200FD0EFF /* ParentCommentView.swift */; };
 		023F14AB291BF30300FD0EFF /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F14AA291BF30300FD0EFF /* CommentCell.swift */; };
 		0240D8D22987FE1F003CFE50 /* PostViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0240D8D12987FE1F003CFE50 /* PostViewModelTests.swift */; };
@@ -85,6 +87,8 @@
 		0218197128F735B300202564 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		0218197728F7363000202564 /* DiscussionEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionEndpoint.swift; sourceTree = "<group>"; };
 		0218197928F7369A00202564 /* DiscussionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionInteractor.swift; sourceTree = "<group>"; };
+		022042042AD59F4F002E81C8 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
+		022042062AD59FA4002E81C8 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
 		023F14A8291BC02200FD0EFF /* ParentCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentCommentView.swift; sourceTree = "<group>"; };
 		023F14AA291BF30300FD0EFF /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		0240D8CF2987FE1F003CFE50 /* DiscussionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiscussionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -241,6 +245,7 @@
 		0218197428F735C800202564 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				022042032AD59F3E002E81C8 /* UserDetails */,
 				029A941A2913EF3D00DADA5B /* CreateNewThread */,
 				02F28A5C28FF23BD00AFDE1B /* Comments */,
 				0282DA5D28F893B7003C3F07 /* Posts */,
@@ -270,6 +275,15 @@
 				02D1266D28F73BA700C8E689 /* DiscussionRepository.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		022042032AD59F3E002E81C8 /* UserDetails */ = {
+			isa = PBXGroup;
+			children = (
+				022042042AD59F4F002E81C8 /* UserDetailsView.swift */,
+				022042062AD59FA4002E81C8 /* UserDetailsViewModel.swift */,
+			);
+			path = UserDetails;
 			sourceTree = "<group>";
 		};
 		0240D8D02987FE1F003CFE50 /* DiscussionTests */ = {
@@ -671,6 +685,7 @@
 				029A941E2913EF7800DADA5B /* CreateNewThreadViewModel.swift in Sources */,
 				029A941C2913EF6800DADA5B /* CreateNewThreadView.swift in Sources */,
 				027BD39A2908256200392132 /* ThreadList.swift in Sources */,
+				022042072AD59FA4002E81C8 /* UserDetailsViewModel.swift in Sources */,
 				029B78F3292518FA0097ACD8 /* ResponsesView.swift in Sources */,
 				02D1267428F75BB700C8E689 /* Data_TopicsResponse.swift in Sources */,
 				02D1266E28F73BA700C8E689 /* DiscussionRepository.swift in Sources */,
@@ -684,6 +699,7 @@
 				0282DA6128F893E9003C3F07 /* PostsViewModel.swift in Sources */,
 				0766DFC4299AA2C200EBEF6A /* Post.swift in Sources */,
 				02F175392A4DD5AB0019CD70 /* DiscussionAnalytics.swift in Sources */,
+				022042052AD59F4F002E81C8 /* UserDetailsView.swift in Sources */,
 				021078E929A50BA30000938D /* DiscussionSearchTopicsViewModel.swift in Sources */,
 				02F3BFEB2926A5B50051930C /* Data_CommentsResponse.swift in Sources */,
 				075DBBB329267D1D00E56134 /* PostState.swift in Sources */,

@@ -10,6 +10,8 @@ import Core
 
 //sourcery: AutoMockable
 public protocol DiscussionInteractorProtocol {
+    func getUserProfile(username: String) async throws -> UserProfile
+
     func getThreadsList(courseID: String,
                         type: ThreadType,
                         sort: SortType,
@@ -36,6 +38,10 @@ public class DiscussionInteractor: DiscussionInteractorProtocol {
     
     public init(repository: DiscussionRepositoryProtocol) {
         self.repository = repository
+    }
+    
+    public func getUserProfile(username: String) async throws -> UserProfile {
+        return try await repository.getUserProfile(username: username)
     }
 
     public func getThreadsList(courseID: String,

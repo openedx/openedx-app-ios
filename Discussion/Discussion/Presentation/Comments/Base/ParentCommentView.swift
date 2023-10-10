@@ -13,6 +13,7 @@ public struct ParentCommentView: View {
     
     private let comments: Post
     private var isThread: Bool
+    private var onAvatarTap: ((String) -> Void)
     private var onLikeTap: (() -> Void)
     private var onReportTap: (() -> Void)
     private var onFollowTap: (() -> Void)
@@ -22,12 +23,14 @@ public struct ParentCommentView: View {
     public init(
         comments: Post,
         isThread: Bool,
+        onAvatarTap: @escaping (String) -> Void,
         onLikeTap: @escaping () -> Void,
         onReportTap: @escaping () -> Void,
         onFollowTap: @escaping () -> Void
     ) {
         self.comments = comments
         self.isThread = isThread
+        self.onAvatarTap = onAvatarTap
         self.onLikeTap = onLikeTap
         self.onReportTap = onReportTap
         self.onFollowTap = onFollowTap
@@ -36,12 +39,16 @@ public struct ParentCommentView: View {
     public var body: some View {
         VStack(alignment: .leading) {
             HStack {
+                Button(action: {
+                    onAvatarTap(comments.authorName)
+                }, label: {
                 KFImage(URL(string: comments.authorAvatar))
                     .onFailureImage(KFCrossPlatformImage(systemName: "person"))
                     .resizable()
                     .background(Color.gray)
                     .frame(width: 48, height: 48)
                     .cornerRadius(isThread ? 8 : 24)
+                })
                 VStack(alignment: .leading) {
                     Text(comments.authorName)
                         .font(Theme.Fonts.titleMedium)
@@ -156,6 +163,7 @@ struct ParentCommentView_Previews: PreviewProvider {
             ParentCommentView(
                 comments: comment,
                 isThread: true,
+                onAvatarTap: {_ in},
                 onLikeTap: {},
                 onReportTap: {},
                 onFollowTap: {}

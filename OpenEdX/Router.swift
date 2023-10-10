@@ -352,6 +352,17 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showUserDetails(username: String) {
+        let interactor = container.resolve(DiscussionInteractorProtocol.self)!
+        let analytics = container.resolve(DiscussionAnalytics.self)!
+        let vm = UserDetailsViewModel(interactor: interactor,
+                                      analytics: analytics,
+                                      username: username)
+        let view = UserDetailsView(viewModel: vm)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     public func showEditProfile(
         userModel: Core.UserProfile,
         avatar: UIImage?,
