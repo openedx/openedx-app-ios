@@ -191,10 +191,9 @@ public struct CourseUnitView: View {
                         .clipped()
                     
                     // MARK: Progress Dots
-                    if viewModel.verticals[viewModel.verticalIndex].childs.count > 1 {
                         LessonProgressView(viewModel: viewModel)
-                    }
                 }
+                
                 // MARK: - Alert
                 if showAlert {
                     ZStack(alignment: .bottomLeading) {
