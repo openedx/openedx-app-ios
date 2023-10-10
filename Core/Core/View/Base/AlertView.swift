@@ -77,7 +77,6 @@ public struct AlertView: View {
                         onCloseTapped()
                     }
                 adaptiveStack(spacing: isHorizontal ? 10 : 20, isHorizontal: (type == .leaveProfile && isHorizontal)) {
-//                VStack(alignment: .center, spacing: isHorizontal ? 10 : 20) {
                     if type == .logOut {
                         HStack {
                             Spacer(minLength: 100)
@@ -281,18 +280,12 @@ public struct AlertView: View {
                     Theme.Shapes.cardShape
                         .fill(CoreAssets.cardViewBackground.swiftUIColor)
                         .shadow(radius: 24)
-//                        .frame(width: reader.size.width < 420
-//                               ? reader.size.width - 80
-//                               : 530)
                         .fixedSize(horizontal: false, vertical: false)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                         .foregroundColor(CoreAssets.backgroundStroke.swiftUIColor)
-//                        .frame(width: reader.size.width < 420
-//                               ? reader.size.width - 80
-//                               : 360)
                         .fixedSize(horizontal: false, vertical: false)
                 )
                 .frame(maxWidth: isHorizontal ? nil : 390)
@@ -307,9 +300,9 @@ public struct AlertView: View {
 struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
         AlertView(
-            alertTitle: "Warning",
-            alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
-            nextSectionName: "Ahmad tea is a power",
+            alertTitle: "Congratulations!",
+            alertMessage: "You've passed the course",
+            nextSectionName: "Continue",
             mainAction: "Back to outline",
             image: CoreAssets.goodWork.swiftUIImage,
             onCloseTapped: {},
@@ -333,16 +326,6 @@ struct AlertView_Previews: PreviewProvider {
                   okTapped: {},
                   type: .leaveProfile)
         
-//        AlertView(
-//            alertTitle: "Warning",
-//            alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
-//            nextSectionName: "Ahmad tea is a power",
-//            mainAction: "Back to outline",
-//            image: CoreAssets.goodWork.swiftUIImage,
-//            onCloseTapped: {},
-//            okTapped: {},
-//            nextSectionTapped: {}
-//        )
         .previewLayout(.sizeThatFits)
         .background(Color.gray)
     }

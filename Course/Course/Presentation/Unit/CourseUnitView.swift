@@ -44,7 +44,8 @@ public struct CourseUnitView: View {
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
-                        VStack {CoreAssets.background.swiftUIColor}.frame(width: reader.size.width, height: isHorizontal ? 50 : 100)
+                        VStack {CoreAssets.background.swiftUIColor}.frame(width: reader.size.width, 
+                                                                          height: isHorizontal ? 50 : 100)
                         LazyVStack(alignment: .leading, spacing: 0) {
                             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                             ForEach(data, id: \.offset) { index, block in
@@ -63,12 +64,7 @@ public struct CourseUnitView: View {
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
                                                 ).frameLimit()
-                                                //                                                    .frame(
-                                                //                                                        width: isHorizontal
-                                                //                                                        ? reader.size.width - 240
-                                                //                                                        : reader.size.width,
-                                                //                                                        height: reader.size.height
-                                                //                                                    )
+                                               
                                                 if !isHorizontal {
                                                     Spacer(minLength: 100)
                                                 }
@@ -91,12 +87,7 @@ public struct CourseUnitView: View {
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
                                                 ).frameLimit()
-                                                //                                                    .frame(
-                                                //                                                        width: isHorizontal
-                                                //                                                        ? reader.size.width - 240
-                                                //                                                        : reader.size.width,
-                                                //                                                        height: reader.size.height
-                                                //                                                    )
+                                                
                                                 if !isHorizontal {
                                                     Spacer(minLength: 100)
                                                 }
@@ -238,7 +229,7 @@ public struct CourseUnitView: View {
                                 sectionName: sectionName,
                                 viewModel: viewModel,
                                 playerStateSubject: playerStateSubject
-                            )//.fixedSize(horizontal: true, vertical: false)
+                            )
                             Spacer()
                         }.frame(height: isHorizontal ? nil : 44)
                         
@@ -255,7 +246,6 @@ public struct CourseUnitView: View {
         .ignoresSafeArea(.all, edges: .top)
         .ignoresSafeArea(.all, edges: .bottom)
         .ignoresSafeArea(.all, edges: UIDevice.current.orientation == .landscapeLeft ? .trailing : .bottom)
-        //        .ignoresSafeArea(.all, edges: UIDevice.current.orientation == .landscapeRight ? .leading : .bottom)
         
         .onRightSwipeGesture {
             playerStateSubject.send(VideoPlayerState.kill)
