@@ -157,7 +157,7 @@ public struct ResponsesView: View {
                                         }
                                     }
                                 }
-                            )
+                            ).ignoresSafeArea(.all, edges: .horizontal)
                         }
                     }
                 }
@@ -192,6 +192,7 @@ public struct ResponsesView: View {
                 }
             }
         }
+        .ignoresSafeArea(.all, edges: .horizontal)
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)

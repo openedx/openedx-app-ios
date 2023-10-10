@@ -40,6 +40,8 @@ public struct EncodedVideoPlayer: View {
         }
     }
     
+    @Environment(\.isHorizontal) private var isHorizontal
+    
     public init(
         viewModel: EncodedVideoPlayerViewModel,
         isOnScreen: Bool
@@ -50,72 +52,37 @@ public struct EncodedVideoPlayer: View {
     
     public var body: some View {
         ZStack {
-            VStack(alignment: .leading) {
-                PlayerViewController(
-                    videoURL: viewModel.url,
-                    controller: viewModel.controller,
-                    progress: { progress in
-                        if progress >= 0.8 {
-                            if !isViewedOnce {
-                                Task {
-                                    await viewModel.blockCompletionRequest()
+            VStack {
+                HStack {
+                    PlayerViewController(
+                        videoURL: viewModel.url,
+                        controller: viewModel.controller,
+                        progress: { progress in
+                            if progress >= 0.8 {
+                                if !isViewedOnce {
+                                    Task {
+                                        await viewModel.blockCompletionRequest()
+                                    }
+                                    isViewedOnce = true
                                 }
-                                isViewedOnce = true
                             }
-                        }
-                    }, seconds: { seconds in
-                        currentTime = seconds
-                    })
-                .aspectRatio(16 / 9, contentMode: .fit)
-                .cornerRadius(12)
-                .padding(.horizontal, 6)
-                .onReceive(NotificationCenter.Publisher(
-                    center: .default,
-                    name: UIDevice.orientationDidChangeNotification)
-                ) { _ in
-                    if isOnScreen {
-                        self.orientation = UIDevice.current.orientation
-                        if self.orientation.isLandscape {
-                            viewModel.controller.enterFullScreen(animated: true)
-                            viewModel.controller.player?.play()
-                            isOrientationChanged = true
-                        } else {
-                            if isOrientationChanged {
-                                viewModel.controller.exitFullScreen(animated: true)
-                                viewModel.controller.player?.pause()
-                                isOrientationChanged = false
-                            }
-                        }
+                        }, seconds: { seconds in
+                            currentTime = seconds
+                        })
+                    .aspectRatio(16 / 9, contentMode: .fit)
+                    .frame(minWidth: 380)
+                    .cornerRadius(12)
+                    .padding(.horizontal, 6)
+                    if isHorizontal {
+                        SubtittlesView(languages: viewModel.languages,
+                                       currentTime: $currentTime,
+                                       viewModel: viewModel)
                     }
                 }
-                SubtittlesView(languages: viewModel.languages,
-                               currentTime: $currentTime,
-                               viewModel: viewModel)
-                Spacer()
-                if !orientation.isLandscape || idiom != .pad {
-                    VStack {}.onAppear {
-                        isLoading = false
-                        alertMessage = CourseLocalization.Alert.rotateDevice
-                    }
-                }
-            }
-            
-            // MARK: - Alert
-            if showAlert, let alertMessage {
-                VStack(alignment: .center) {
-                    Spacer()
-                    HStack(spacing: 6) {
-                        CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
-                        Text(alertMessage)
-                    }.shadowCardStyle(bgColor: Theme.Colors.snackbarInfoAlert,
-                                      textColor: .white)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            self.alertMessage = nil
-                            showAlert = false
-                        }
-                    }
+                if !isHorizontal {
+                    SubtittlesView(languages: viewModel.languages,
+                                   currentTime: $currentTime,
+                                   viewModel: viewModel)
                 }
             }
         }

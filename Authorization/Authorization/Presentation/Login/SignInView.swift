@@ -13,6 +13,8 @@ public struct SignInView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     
+    @Environment (\.isHorizontal) private var isHorizontal
+    
     @ObservedObject
     private var viewModel: SignInViewModel
     
@@ -32,7 +34,8 @@ public struct SignInView: View {
                 CoreAssets.appLogo.swiftUIImage
                     .resizable()
                     .frame(maxWidth: 189, maxHeight: 54)
-                    .padding(.vertical, 40)
+                    .padding(.top, isHorizontal ? 20 : 40)
+                    .padding(.bottom, isHorizontal ? 10 : 40)
                 
                 ScrollView {
                     VStack {
@@ -152,6 +155,7 @@ public struct SignInView: View {
         .hideNavigationBar()
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
     }
 }

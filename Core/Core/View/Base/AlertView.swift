@@ -33,6 +33,8 @@ public struct AlertView: View {
     private var nextSectionTapped: (() -> Void) = {}
     private let type: AlertViewType
     
+    @Environment(\.isHorizontal) private var isHorizontal
+
     public init(
         alertTitle: String,
         alertMessage: String,
@@ -74,38 +76,77 @@ public struct AlertView: View {
                     .onTapGesture {
                         onCloseTapped()
                     }
-                VStack(alignment: .center, spacing: 20) {
-                    if case let .action(_, image) = type {
-                        image.padding(.top, 48)
-                    }
+                adaptiveStack(spacing: isHorizontal ? 10 : 20, isHorizontal: (type == .leaveProfile && isHorizontal)) {
+//                VStack(alignment: .center, spacing: isHorizontal ? 10 : 20) {
                     if type == .logOut {
-                        CoreAssets.logOut.swiftUIImage
-                            .padding(.top, 54)
+                        HStack {
+                            Spacer(minLength: 100)
+                            CoreAssets.logOut.swiftUIImage
+                                .padding(.top, isHorizontal ? 20 : 54)
+                            Spacer(minLength: 100)
+                        }
                         Text(alertMessage)
                             .font(Theme.Fonts.titleLarge)
-                            .padding(.vertical, 40)
+                            .padding(.vertical, isHorizontal ? 6 : 40)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                             .frame(maxWidth: 250)
                     } else if type == .leaveProfile {
-                        CoreAssets.leaveProfile.swiftUIImage
-                            .padding(.top, 54)
-                        Text(alertTitle)
-                            .font(Theme.Fonts.titleLarge)
-                            .padding(.horizontal, 40)
-                        Text(alertMessage)
-                            .font(Theme.Fonts.bodyMedium)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 40)
+                        VStack(spacing: 20) {
+                            CoreAssets.leaveProfile.swiftUIImage
+                                .padding(.top, isHorizontal ? 20 : 54)
+                            Text(alertTitle)
+                                .font(Theme.Fonts.titleLarge)
+                                .padding(.horizontal, 40)
+                            Text(alertMessage)
+                                .font(Theme.Fonts.bodyMedium)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 40)
+                                
+                        }.padding(.bottom, 20)
                     } else {
-                        Text(alertTitle)
-                            .font(Theme.Fonts.titleLarge)
-                            .padding(.horizontal, 40)
-                        Text(alertMessage)
-                            .font(Theme.Fonts.bodyMedium)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 40)
-                            .frame(maxWidth: 250)
+                        HStack {
+                            VStack(alignment: .center, spacing: 10) {
+                                if case let .action(_, image) = type {
+                                    image.padding(.top, 48)
+                                }
+                                Text(alertTitle)
+                                    .font(Theme.Fonts.titleLarge)
+                                    .padding(.horizontal, 40)
+                                Text(alertMessage)
+                                    .font(Theme.Fonts.bodyMedium)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 40)
+                                    .frame(maxWidth: 250)
+                            }
+                            if isHorizontal {
+                                if case let .action(action, _) = type {
+                                    VStack(spacing: 20) {
+                                        if nextSectionName != nil {
+                                            UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
+                                                .frame(maxWidth: 215)
+                                        }
+                                        UnitButtonView(type: .custom(action),
+                                                       bgColor: .clear,
+                                                       action: { okTapped() })
+                                        .frame(maxWidth: 215)
+                                        
+                                        if let nextSectionName {
+                                            Group {
+                                                Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
+                                                Text(nextSectionName) +
+                                                Text(CoreLocalization.Courseware.nextSectionDescriptionLast)
+                                            }.frame(maxWidth: 215)
+                                                .padding(.horizontal, 40)
+                                                .multilineTextAlignment(.center)
+                                                .font(Theme.Fonts.labelSmall)
+                                                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                        }
+                                    }.padding(.top, 70)
+                                        .padding(.trailing, 20)
+                                }
+                            }
+                        }
                     }
                     HStack {
                         switch type {
@@ -116,28 +157,31 @@ public struct AlertView: View {
                                 .frame(maxWidth: 135)
                                 .saturation(0)
                         case let .action(action, _):
-                            VStack(spacing: 20) {
-                                if nextSectionName != nil {
-                                    UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
-                                        .frame(maxWidth: 215)
-                                }
-                                UnitButtonView(type: .custom(action),
-                                               bgColor: .clear,
-                                               action: { okTapped() })
+                            if !isHorizontal {
+                                VStack(spacing: 20) {
+                                    if nextSectionName != nil {
+                                        UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
+                                            .frame(maxWidth: 215)
+                                    }
+                                    UnitButtonView(type: .custom(action),
+                                                   bgColor: .clear,
+                                                   action: { okTapped() })
                                     .frame(maxWidth: 215)
-                                
-                                if let nextSectionName {
-                                    Group {
-                                        Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
-                                        Text(nextSectionName) +
-                                        Text(CoreLocalization.Courseware.nextSectionDescriptionLast)
-                                    }.frame(maxWidth: 215)
-                                        .padding(.horizontal, 40)
-                                        .multilineTextAlignment(.center)
-                                        .font(Theme.Fonts.labelSmall)
-                                        .foregroundColor(Theme.Colors.textSecondary)
+                                    
+                                    if let nextSectionName {
+                                        Group {
+                                            Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
+                                            Text(nextSectionName) +
+                                            Text(CoreLocalization.Courseware.nextSectionDescriptionLast)
+                                        }.frame(maxWidth: 215)
+                                            .padding(.horizontal, 40)
+                                            .multilineTextAlignment(.center)
+                                            .font(Theme.Fonts.labelSmall)
+                                            .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                    }
                                 }
-                               
+                            } else {
+                                EmptyView()
                             }
                         case .logOut:
                             Button(action: {
@@ -157,7 +201,7 @@ public struct AlertView: View {
                             })
                             .background(
                                 Theme.Shapes.buttonShape
-                                    .fill(Theme.Colors.warning)
+                                    .fill(CoreAssets.warning.swiftUIColor)
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
@@ -186,7 +230,7 @@ public struct AlertView: View {
                                 })
                                 .background(
                                     Theme.Shapes.buttonShape
-                                        .fill(Theme.Colors.warning)
+                                        .fill(CoreAssets.warning.swiftUIColor)
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
@@ -199,13 +243,13 @@ public struct AlertView: View {
                                         .foregroundColor(.clear)
                                 )
                                 .frame(maxWidth: 215)
-                                .padding(.bottom, 24)
+                                .padding(.bottom, isHorizontal ? 10 : 24)
                                 Button(action: {
                                     onCloseTapped()
                                 }, label: {
                                     ZStack {
                                         Text(CoreLocalization.Alert.keepEditing)
-                                            .foregroundColor(Theme.Colors.textPrimary)
+                                            .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                             .font(Theme.Fonts.labelLarge)
                                             .frame(maxWidth: .infinity)
                                             .padding(.horizontal, 16)
@@ -224,34 +268,36 @@ public struct AlertView: View {
                                             lineJoin: .round,
                                             miterLimit: 1
                                         ))
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(CoreAssets.textPrimary.swiftUIColor)
                                 )
                                 .frame(maxWidth: 215)
-                            }
+                            }.padding(.trailing, isHorizontal ? 20 : 0)
                         }
                     }
                     .padding(.top, 5)
-                    .padding(.bottom, type.contentPadding)
+                    .padding(.bottom, isHorizontal ? 16 : type.contentPadding)
                 }
                 .background(
                     Theme.Shapes.cardShape
-                        .fill(Theme.Colors.cardViewBackground)
+                        .fill(CoreAssets.cardViewBackground.swiftUIColor)
                         .shadow(radius: 24)
-                        .frame(width: reader.size.width < 420
-                               ? reader.size.width - 80
-                               : 360)
+//                        .frame(width: reader.size.width < 420
+//                               ? reader.size.width - 80
+//                               : 530)
+                        .fixedSize(horizontal: false, vertical: false)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(Theme.Colors.backgroundStroke)
-                        .frame(width: reader.size.width < 420
-                               ? reader.size.width - 80
-                               : 360)
+                        .foregroundColor(CoreAssets.backgroundStroke.swiftUIColor)
+//                        .frame(width: reader.size.width < 420
+//                               ? reader.size.width - 80
+//                               : 360)
+                        .fixedSize(horizontal: false, vertical: false)
                 )
-                .padding()
+                .frame(maxWidth: isHorizontal ? nil : 390)
+                .padding(40)
             }
-            
             .ignoresSafeArea()
         }
     }
@@ -270,6 +316,33 @@ struct AlertView_Previews: PreviewProvider {
             okTapped: {},
             nextSectionTapped: {}
         )
+        .previewLayout(.sizeThatFits)
+        .background(Color.gray)
+        
+        AlertView(alertTitle: "Comfirm log out",
+                  alertMessage: "Are you sure you want to log out?",
+                  positiveAction: "Yes",
+                  onCloseTapped: {},
+                  okTapped: {},
+                  type: .logOut)
+        
+        AlertView(alertTitle: "Leave profile?",
+                  alertMessage: "Changes you have made not be saved.",
+                  positiveAction: "Yes",
+                  onCloseTapped: {},
+                  okTapped: {},
+                  type: .leaveProfile)
+        
+//        AlertView(
+//            alertTitle: "Warning",
+//            alertMessage: "Something goes wrong. Do you want to exterminate your phone, right now",
+//            nextSectionName: "Ahmad tea is a power",
+//            mainAction: "Back to outline",
+//            image: CoreAssets.goodWork.swiftUIImage,
+//            onCloseTapped: {},
+//            okTapped: {},
+//            nextSectionTapped: {}
+//        )
         .previewLayout(.sizeThatFits)
         .background(Color.gray)
     }

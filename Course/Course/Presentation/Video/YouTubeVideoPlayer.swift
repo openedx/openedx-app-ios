@@ -28,6 +28,8 @@ public struct YouTubeVideoPlayer: View {
         }
     }
     
+    @Environment(\.isHorizontal) private var isHorizontal
+
     public init(viewModel: YouTubeVideoPlayerViewModel, isOnScreen: Bool) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.isOnScreen = isOnScreen
@@ -35,7 +37,7 @@ public struct YouTubeVideoPlayer: View {
     
     public var body: some View {
         ZStack {
-            VStack {
+            adaptiveStack(isHorizontal: isHorizontal) {
                 YouTubePlayerView(
                     viewModel.youtubePlayer,
                     transaction: .init(animation: .easeIn),
@@ -46,26 +48,7 @@ public struct YouTubeVideoPlayer: View {
                 .cornerRadius(12)
                 .padding(.horizontal, 6)
                 .aspectRatio(16 / 8.8, contentMode: .fit)
-                .onReceive(NotificationCenter.Publisher(
-                    center: .default, name: UIDevice.orientationDidChangeNotification
-                )) { _ in
-                    if isOnScreen {
-                        let orientation = UIDevice.current.orientation
-                        if orientation.isPortrait {
-                            viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
-                                $0.playInline = true
-                                $0.autoPlay = viewModel.play
-                                $0.startTime = Int(viewModel.currentTime)
-                            }))
-                        } else {
-                            viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
-                                $0.playInline = false
-                                $0.autoPlay = true
-                                $0.startTime = Int(viewModel.currentTime)
-                            }))
-                        }
-                    }
-                }
+                .frame(minWidth: 380)
                 SubtittlesView(
                     languages: viewModel.languages,
                     currentTime: $viewModel.currentTime,
@@ -75,25 +58,6 @@ public struct YouTubeVideoPlayer: View {
             
             if viewModel.isLoading {
                 ProgressBar(size: 40, lineWidth: 8)
-            }
-            
-            // MARK: - Alert
-            if showAlert, let alertMessage {
-                VStack(alignment: .center) {
-                    Spacer()
-                    HStack(spacing: 6) {
-                        CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
-                        Text(alertMessage)
-                    }.shadowCardStyle(bgColor: Theme.Colors.snackbarInfoAlert,
-                                      textColor: .white)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            self.alertMessage = nil
-                            showAlert = false
-                        }
-                    }
-                }
             }
         }
     }

@@ -15,6 +15,7 @@ struct CourseNavigationView: View {
     private var viewModel: CourseUnitViewModel
     private let sectionName: String
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    @Environment(\.isHorizontal) private var isHorizontal
     
     init(
         sectionName: String,
@@ -27,13 +28,20 @@ struct CourseNavigationView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 7) {
+        adaptiveNavigationStack(spacing: 7, isHorizontal: !isHorizontal) {
             if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
                 && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 {
-                UnitButtonView(type: .nextBig, action: {
-                    playerStateSubject.send(VideoPlayerState.pause)
-                    viewModel.select(move: .next)
-                }).frame(width: 215)
+                if isHorizontal {
+                    UnitButtonView(type: .nextBig, action: {
+                        playerStateSubject.send(VideoPlayerState.pause)
+                        viewModel.select(move: .next)
+                    }).fixedSize()
+                } else {
+                    UnitButtonView(type: .nextBig, action: {
+                        playerStateSubject.send(VideoPlayerState.pause)
+                        viewModel.select(move: .next)
+                    }).frame(width: 215)
+                }
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
@@ -72,8 +80,9 @@ struct CourseNavigationView: View {
                             okTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
-
-                                viewModel.trackFinishVerticalBackToOutlineClicked()
+                                viewModel.analytics
+                                    .finishVerticalBackToOutlineClicked(courseId: viewModel.courseID,
+                                                                        courseName: viewModel.courseName)
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.back(animated: true)
                             },
@@ -143,7 +152,7 @@ struct CourseNavigationView: View {
                     })
                 }
             }
-        }.frame(minWidth: 0, maxWidth: .infinity)
+        }//.frame(minWidth: 0, maxWidth: .infinity)
             .padding(.horizontal, 24)
     }
 }
@@ -165,12 +174,14 @@ struct CourseNavigationView_Previews: PreviewProvider {
             connectivity: Connectivity(),
             manager: DownloadManagerMock()
         )
-        
-        CourseNavigationView(
-            sectionName: "Name",
-            viewModel: viewModel,
-            playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
-        )
+        HStack(alignment: .center) {
+            Spacer()
+            CourseNavigationView(
+                sectionName: "Name",
+                viewModel: viewModel,
+                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
+            )
+        }
     }
 }
 #endif

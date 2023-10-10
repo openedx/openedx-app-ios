@@ -25,6 +25,7 @@ public struct PickerMenu: View {
     
     @State private var search: String = ""
     @State public var selectedItem: PickerItem = PickerItem(key: "", value: "")
+    @Environment (\.isHorizontal) private var isHorizontal
     private let ipadPickerWidth: CGFloat = 300
     private var items: [PickerItem]
     private let titleText: String
@@ -90,7 +91,11 @@ public struct PickerMenu: View {
                         }
                         .pickerStyle(.wheel)
                     }
-                    .frame(minWidth: 0, maxWidth: idiom == .pad ? ipadPickerWidth : .infinity)
+                    .frame(minWidth: 0, 
+                           maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
+                           ? ipadPickerWidth
+                           : .infinity)
+
                     .padding()
                     .background(Theme.Colors.textInputBackground.cornerRadius(16))
                     .padding(.horizontal, 16)
@@ -106,13 +111,17 @@ public struct PickerMenu: View {
                     }) {
                         Text(CoreLocalization.Picker.accept)
                             .foregroundColor(Theme.Colors.textPrimary)
-                            .frame(minWidth: 0, maxWidth: idiom == .pad ? ipadPickerWidth : .infinity)
+                            .frame(minWidth: 0,
+                                   maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
+                                   ? ipadPickerWidth
+                                   : .infinity)
                             .padding()
                             .background(Theme.Colors.textInputBackground.cornerRadius(16))
                             .padding(.horizontal, 16)
                     }
                     .padding(.bottom, 4)
                     .disabled(acceptButtonDisabled)
+
                 }
                 .avoidKeyboard(dismissKeyboardByTap: true)
                 .transition(.move(edge: .bottom))

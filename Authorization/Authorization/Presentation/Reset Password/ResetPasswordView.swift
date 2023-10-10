@@ -14,6 +14,8 @@ public struct ResetPasswordView: View {
     
     @State private var isRecovered: Bool = false
     
+    @Environment (\.isHorizontal) private var isHorizontal
+    
     @ObservedObject
     private var viewModel: ResetPasswordViewModel
     
@@ -35,7 +37,7 @@ public struct ResetPasswordView: View {
                              leftButtonColor: .white,
                              leftButtonAction: {
                    viewModel.router.back()
-               })
+               })                        .padding(.leading, isHorizontal ? 48 : 0)
                 
                 ScrollView {
                     VStack {
@@ -149,7 +151,10 @@ public struct ResetPasswordView: View {
                     }
             }
         }
+        .ignoresSafeArea(.all, edges: .horizontal)
+
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+        
         .hideNavigationBar()
     }
 }

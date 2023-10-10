@@ -89,11 +89,52 @@ public extension View {
             .padding(.horizontal, 48)
     }
     
+    @ViewBuilder
     func frameLimit(sizePortrait: CGFloat = 560, sizeLandscape: CGFloat = 648) -> some View {
-        return HStack {
-            Spacer(minLength: 0)
-            self.frame(maxWidth: UIDevice.current.orientation == .portrait ? sizePortrait : sizeLandscape)
-            Spacer(minLength: 0)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            HStack {
+                Spacer(minLength: 0)
+                self.frame(maxWidth: UIDevice.current.orientation.isPortrait ? sizePortrait : sizeLandscape)
+                Spacer(minLength: 0)
+            }
+        } else { self }
+    }
+    
+    @ViewBuilder
+       func adaptiveHStack<Content: View>(spacing: CGFloat = 0, currentOrientation: UIInterfaceOrientation,
+                                          @ViewBuilder content: () -> Content) -> some View {
+           if currentOrientation.isLandscape && UIDevice.current.userInterfaceIdiom != .pad {
+               VStack(alignment: .center, spacing: spacing, content: content)
+           } else if currentOrientation.isPortrait && UIDevice.current.userInterfaceIdiom != .pad {
+               HStack(spacing: spacing, content: content)
+           } else if UIDevice.current.userInterfaceIdiom != .phone {
+               HStack(spacing: spacing, content: content)
+           }
+       }
+    
+    @ViewBuilder
+    func adaptiveStack<Content: View>(spacing: CGFloat = 0,
+                                      isHorizontal: Bool,
+                                      @ViewBuilder content: () -> Content) -> some View {
+        if isHorizontal, UIDevice.current.userInterfaceIdiom != .pad {
+            HStack(spacing: spacing, content: content)
+        } else {
+            VStack(alignment: .center, spacing: spacing, content: content)
+        }
+    }
+    
+    @ViewBuilder
+    func adaptiveNavigationStack<Content: View>(spacing: CGFloat = 0,
+                                      isHorizontal: Bool,
+                                      @ViewBuilder content: () -> Content) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            HStack(spacing: spacing, content: content)
+        } else {
+            if isHorizontal {
+                HStack(spacing: spacing, content: content)
+            } else {
+                VStack(alignment: .center, spacing: spacing, content: content)
+            }
         }
     }
     
@@ -197,5 +238,16 @@ public extension Image {
             .padding(.horizontal, 8)
             .padding(.top, topPadding)
             .foregroundColor(color)
+    }
+}
+
+public extension EnvironmentValues {
+    var isHorizontal: Bool {
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                return windowScene.windows.first?.windowScene?.interfaceOrientation.isLandscape ?? true
+            }
+        }
+        return false
     }
 }
