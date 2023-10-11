@@ -132,13 +132,15 @@ struct ProfileAvatar: View {
 }
 
 #if DEBUG
-#Preview {
-    
-    let vm = UserProfileViewModel(
-        interactor: ProfileInteractor.mock,
-        username: "demo"
-    )
-    
-    return UserProfileView(viewModel: vm)
+struct UserProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        
+        let vm = UserProfileViewModel(
+            interactor: ProfileInteractor.mock,
+            username: "demo"
+        )
+        
+        return UserProfileView(viewModel: vm)
+    }
 }
 #endif
