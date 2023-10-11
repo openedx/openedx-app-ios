@@ -1,21 +1,20 @@
 //
-//  UserDetailsView.swift
-//  Discussion
+//  UserProfileView.swift
+//  Profile
 //
 //  Created by  Stepanok Ivan on 10.10.2023.
 //
 
 import SwiftUI
 import Core
-import Profile
 import Kingfisher
 
-public struct UserDetailsView: View {
+public struct UserProfileView: View {
     
-    @StateObject private var viewModel: UserDetailsViewModel
+    @ObservedObject private var viewModel: UserProfileViewModel
     
-    public init(viewModel: UserDetailsViewModel) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+    public init(viewModel: UserProfileViewModel) {
+        self.viewModel = viewModel
     }
     
     public var body: some View {
@@ -30,11 +29,12 @@ public struct UserDetailsView: View {
                             .padding(.top, 200)
                             .padding(.horizontal)
                     } else {
-                        UserAvatar(url: viewModel.userModel?.avatarUrl ?? "")
-                        Text(viewModel.userModel?.name ?? "")
-                            .font(Theme.Fonts.headlineSmall)
-                            .padding(.top, 20)
-                        
+                        ProfileAvatar(url: viewModel.userModel?.avatarUrl ?? "")
+                        if let name = viewModel.userModel?.name, name != "" {
+                            Text(name)
+                                .font(Theme.Fonts.headlineSmall)
+                                .padding(.top, 20)
+                        }
                         Text("@\(viewModel.userModel?.username ?? "")")
                             .font(Theme.Fonts.labelLarge)
                             .padding(.top, 4)
@@ -104,17 +104,7 @@ public struct UserDetailsView: View {
     }
 }
 
-#Preview {
-    
-    let router = DiscussionRouterMock()
-    let vm = UserDetailsViewModel(interactor: DiscussionInteractor.mock,
-                                  analytics: DiscussionAnalyticsMock(),
-                                  username: "demo")
-    
-    return UserDetailsView(viewModel: vm)
-}
-
-struct UserAvatar: View {
+struct ProfileAvatar: View {
     
     private var url: URL?
     
@@ -140,3 +130,15 @@ struct UserAvatar: View {
         }
     }
 }
+
+#if DEBUG
+#Preview {
+    
+    let vm = UserProfileViewModel(
+        interactor: ProfileInteractor.mock,
+        username: "demo"
+    )
+    
+    return UserProfileView(viewModel: vm)
+}
+#endif

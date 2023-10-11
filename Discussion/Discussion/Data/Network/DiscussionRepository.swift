@@ -10,7 +10,6 @@ import Core
 import Combine
 
 public protocol DiscussionRepositoryProtocol {
-    func getUserProfile(username: String) async throws -> UserProfile
     func getThreads(courseID: String,
                     type: ThreadType,
                     sort: SortType,
@@ -46,14 +45,6 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         self.appStorage = appStorage
         self.config = config
         self.router = router
-    }
-    
-    public func getUserProfile(username: String) async throws -> UserProfile {
-        let user =
-        try await api.requestData(
-            DiscussionEndpoint.getUserProfile(username: username)
-        ).mapResponse(DataLayer.UserProfile.self)
-        return user.domain
     }
     
     public func getThreads(courseID: String,
@@ -190,18 +181,7 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
 #if DEBUG
 // swiftlint:disable all
 public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
-    public func getUserProfile(username: String) async throws -> Core.UserProfile {
-        return Core.UserProfile(avatarUrl: "", 
-                                name: "",
-                                username: "",
-                                dateJoined: Date(),
-                                yearOfBirth: 0,
-                                country: "",
-                                shortBiography: "",
-                                isFullProfile: false)
-    }
-    
-    
+
     var comments = [
             UserComment(authorName: "Bill",
                         authorAvatar: "",

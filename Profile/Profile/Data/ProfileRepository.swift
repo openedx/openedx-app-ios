@@ -10,6 +10,7 @@ import Core
 import Alamofire
 
 public protocol ProfileRepositoryProtocol {
+    func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
     func getMyProfileOffline() throws -> UserProfile
     func logOut() async throws
@@ -43,6 +44,14 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         self.coreDataHandler = coreDataHandler
         self.downloadManager = downloadManager
         self.config = config
+    }
+    
+    public func getUserProfile(username: String) async throws -> UserProfile {
+        let user =
+        try await api.requestData(
+            ProfileEndpoint.getUserProfile(username: username)
+        ).mapResponse(DataLayer.UserProfile.self)
+        return user.domain
     }
     
     public func getMyProfile() async throws -> UserProfile {
@@ -154,6 +163,18 @@ public class ProfileRepository: ProfileRepositoryProtocol {
 #if DEBUG
 // swiftlint:disable all
 class ProfileRepositoryMock: ProfileRepositoryProtocol {
+    
+    public func getUserProfile(username: String) async throws -> Core.UserProfile {
+        return Core.UserProfile(avatarUrl: "",
+                                name: "",
+                                username: "",
+                                dateJoined: Date(),
+                                yearOfBirth: 0,
+                                country: "",
+                                shortBiography: "",
+                                isFullProfile: false)
+    }
+    
     func getMyProfileOffline() throws -> Core.UserProfile {
         return UserProfile(
             avatarUrl: "",

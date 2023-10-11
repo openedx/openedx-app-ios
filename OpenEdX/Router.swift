@@ -353,12 +353,11 @@ public class Router: AuthorizationRouter,
     }
     
     public func showUserDetails(username: String) {
-        let interactor = container.resolve(DiscussionInteractorProtocol.self)!
-        let analytics = container.resolve(DiscussionAnalytics.self)!
-        let vm = UserDetailsViewModel(interactor: interactor,
-                                      analytics: analytics,
+        let interactor = container.resolve(ProfileInteractorProtocol.self)!
+        
+        let vm = UserProfileViewModel(interactor: interactor,
                                       username: username)
-        let view = UserDetailsView(viewModel: vm)
+        let view = UserProfileView(viewModel: vm)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
