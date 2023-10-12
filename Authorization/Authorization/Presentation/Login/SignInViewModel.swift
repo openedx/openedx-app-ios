@@ -79,7 +79,16 @@ public class SignInViewModel: ObservableObject {
             }
         }
     }
-    
+
+    func sign(with result: Result<Socials, Error>) {
+        result.success { social in
+            debugLog(social)
+        }
+        result.failure { error in
+            errorMessage = error.localizedDescription
+        }
+    }
+
     func trackSignUpClicked() {
         analytics.signUpClicked()
     }

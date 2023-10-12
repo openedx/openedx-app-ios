@@ -26,6 +26,8 @@
 		0770DE6B28D0C035006D8A5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE6D28D0C035006D8A5D /* Localizable.strings */; };
 		0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7028D0C0E7006D8A5D /* Strings.swift */; };
 		5FB79D2802949372CDAF08D6 /* Pods_App_Authorization_AuthorizationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAE9B7FD61FF88C9C4FE1E8 /* Pods_App_Authorization_AuthorizationTests.framework */; };
+		BA8B3A322AD5487300D25EF5 /* SocialSignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B3A312AD5487300D25EF5 /* SocialSignView.swift */; };
+		BADB3F552AD6DFC3004D5CFA /* SocialSignViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADB3F542AD6DFC3004D5CFA /* SocialSignViewModel.swift */; };
 		DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +77,8 @@
 		96C85172770225EB81A6D2DA /* Pods-App-Authorization.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasedev.xcconfig"; sourceTree = "<group>"; };
 		9BF6A1004A955E24527FCF0F /* Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; sourceTree = "<group>"; };
+		BA8B3A312AD5487300D25EF5 /* SocialSignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialSignView.swift; sourceTree = "<group>"; };
+		BADB3F542AD6DFC3004D5CFA /* SocialSignViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialSignViewModel.swift; sourceTree = "<group>"; };
 		E78971D8E6ED2116BBF9FD66 /* Pods-App-Authorization.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.release.xcconfig"; sourceTree = "<group>"; };
 		F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasestage.xcconfig"; sourceTree = "<group>"; };
 		F5802BBA113276950ABCD9B3 /* Pods-App-Authorization.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releaseprod.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 		071009CC28D1E24000344290 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				BA8B3A302AD5485100D25EF5 /* SocialSign */,
 				020C31BD290AADA700D6DEA2 /* Base */,
 				071009C528D1D9FA00344290 /* Login */,
 				07169462296D93E000E3DED6 /* Registration */,
@@ -256,6 +261,15 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		BA8B3A302AD5485100D25EF5 /* SocialSign */ = {
+			isa = PBXGroup;
+			children = (
+				BA8B3A312AD5487300D25EF5 /* SocialSignView.swift */,
+				BADB3F542AD6DFC3004D5CFA /* SocialSignViewModel.swift */,
+			);
+			path = SocialSign;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -467,6 +481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BADB3F552AD6DFC3004D5CFA /* SocialSignViewModel.swift in Sources */,
 				02066B442906D72400F4307E /* SignUpView.swift in Sources */,
 				0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */,
 				025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */,
@@ -477,6 +492,7 @@
 				0770DE4E28D0A677006D8A5D /* SignInView.swift in Sources */,
 				02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */,
 				071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */,
+				BA8B3A322AD5487300D25EF5 /* SocialSignView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

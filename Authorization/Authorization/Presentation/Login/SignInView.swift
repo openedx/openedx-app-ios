@@ -109,6 +109,7 @@ public struct SignInView: View {
                                     .padding(.top, 40)
                             }
                         }
+                        SocialSignView(onSigned: viewModel.sign)
                         Spacer()
                     }
                     .padding(.horizontal, 24)

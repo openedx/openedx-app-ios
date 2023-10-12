@@ -29,3 +29,11 @@
 "FORGOT.REQUEST" = "Reset password";
 "FORGOT.CHECK_TITLE" = "Check your email";
 "FORGOT.CHECK_Description" = "We have sent a password recover instructions to your email ";
+
+"SIGN_IN_WITH" = "Sign in with";
+"SIGN_IN_REGISTER" = "Register with";
+"APPLE" = "Apple";
+"GOOGLE" = "Google";
+"FACEBOOK" = "Facebook";
+"MICROSOFT" = "Microsoft";
+"OR" = "Or";

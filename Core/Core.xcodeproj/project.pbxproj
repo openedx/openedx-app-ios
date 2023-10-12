@@ -112,6 +112,17 @@
 		0770DE7928D0C4A9006D8A5D /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7828D0C4A9006D8A5D /* RoundedCorners.swift */; };
 		0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7A28D0C78C006D8A5D /* Theme.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
+		BA8B3A2F2AD546A700D25EF5 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */; };
+		BA8FA6612AD5974300EA029A /* AppleSingInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6602AD5974300EA029A /* AppleSingInProvider.swift */; };
+		BA8FA6642AD597DC00EA029A /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6632AD597DC00EA029A /* CustomError.swift */; };
+		BA8FA6682AD59A5700EA029A /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6672AD59A5700EA029A /* LabelButton.swift */; };
+		BA8FA66A2AD59B5500EA029A /* GoogleSingInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6692AD59B5500EA029A /* GoogleSingInProvider.swift */; };
+		BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */; };
+		BA8FA66E2AD59E7D00EA029A /* FacebookSingInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66D2AD59E7D00EA029A /* FacebookSingInProvider.swift */; };
+		BA8FA6702AD59EA300EA029A /* MicrosoftSingInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66F2AD59EA300EA029A /* MicrosoftSingInProvider.swift */; };
+		BADB3F532AD6B3A5004D5CFA /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BADB3F522AD6B3A5004D5CFA /* MSAL */; };
+		BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */; };
+		BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */; };
 		C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 /* End PBXBuildFile section */
@@ -241,6 +252,14 @@
 		3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
+		BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLog.swift; sourceTree = "<group>"; };
+		BA8FA6602AD5974300EA029A /* AppleSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSingInProvider.swift; sourceTree = "<group>"; };
+		BA8FA6632AD597DC00EA029A /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		BA8FA6672AD59A5700EA029A /* LabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
+		BA8FA6692AD59B5500EA029A /* GoogleSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSingInProvider.swift; sourceTree = "<group>"; };
+		BA8FA66D2AD59E7D00EA029A /* FacebookSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookSingInProvider.swift; sourceTree = "<group>"; };
+		BA8FA66F2AD59EA300EA029A /* MicrosoftSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftSingInProvider.swift; sourceTree = "<group>"; };
+		BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -258,8 +277,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */,
 				025EF2F62971740000B838AB /* YouTubePlayerKit in Frameworks */,
 				C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */,
+				BADB3F532AD6B3A5004D5CFA /* MSAL in Frameworks */,
+				BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +299,8 @@
 		027BD3A12909470F00392132 /* AvoidingHelpers */ = {
 			isa = PBXGroup;
 			children = (
+				BA8FA6622AD597D300EA029A /* Error */,
+				BA8FA65F2AD5973500EA029A /* Providers */,
 				027BD3A22909471900392132 /* Avoider */,
 				027BD3A32909471F00392132 /* Scroller */,
 				027BD3A42909472500392132 /* State */,
@@ -341,6 +365,8 @@
 				0727878228D31287002E9142 /* DispatchQueue+App.swift */,
 				07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */,
 				02284C172A3B1AE00007117F /* UIApplicationExtension.swift */,
+				BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */,
+				BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -536,8 +562,28 @@
 				027BD3C42909707700392132 /* Shake.swift */,
 				023A1135291432B200D0D354 /* RegistrationTextField.swift */,
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
+				BA8FA6672AD59A5700EA029A /* LabelButton.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		BA8FA65F2AD5973500EA029A /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				BA8FA6602AD5974300EA029A /* AppleSingInProvider.swift */,
+				BA8FA6692AD59B5500EA029A /* GoogleSingInProvider.swift */,
+				BA8FA66D2AD59E7D00EA029A /* FacebookSingInProvider.swift */,
+				BA8FA66F2AD59EA300EA029A /* MicrosoftSingInProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		BA8FA6622AD597D300EA029A /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				BA8FA6632AD597DC00EA029A /* CustomError.swift */,
+			);
+			path = Error;
 			sourceTree = "<group>";
 		};
 		C9DFE47E699CFFA85A77AF2C /* Pods */ = {
@@ -621,6 +667,9 @@
 			name = Core;
 			packageProductDependencies = (
 				025EF2F52971740000B838AB /* YouTubePlayerKit */,
+				BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */,
+				BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */,
+				BADB3F522AD6B3A5004D5CFA /* MSAL */,
 			);
 			productName = Core;
 			productReference = 0770DE0828D07831006D8A5D /* Core.framework */;
@@ -657,6 +706,9 @@
 			mainGroup = 0770DDFE28D07831006D8A5D;
 			packageReferences = (
 				025EF2F42971740000B838AB /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
+				BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				BADB3F512AD6B3A5004D5CFA /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 			);
 			productRefGroup = 0770DE0928D07831006D8A5D /* Products */;
 			projectDirPath = "";
@@ -775,6 +827,7 @@
 				028F9F37293A44C700DE65D0 /* Data_ResetPassword.swift in Sources */,
 				022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */,
 				0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */,
+				BA8FA66A2AD59B5500EA029A /* GoogleSingInProvider.swift in Sources */,
 				02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */,
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,
 				0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */,
@@ -783,6 +836,7 @@
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
+				BA8FA6642AD597DC00EA029A /* CustomError.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
 				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
@@ -794,6 +848,8 @@
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */,
 				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
+				BA8FA6612AD5974300EA029A /* AppleSingInProvider.swift in Sources */,
+				BA8FA6702AD59EA300EA029A /* MicrosoftSingInProvider.swift in Sources */,
 				020306CC2932C0C4000949EA /* PickerView.swift in Sources */,
 				027BD3C52909707700392132 /* Shake.swift in Sources */,
 				027BD39C2908810C00392132 /* RegisterUser.swift in Sources */,
@@ -815,11 +871,14 @@
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
+				BA8FA6682AD59A5700EA029A /* LabelButton.swift in Sources */,
 				02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */,
 				027BD3AD2909475000392132 /* KeyboardScroller.swift in Sources */,
 				070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */,
 				024D723529C8BB1A006D36ED /* NavigationBar.swift in Sources */,
+				BA8B3A2F2AD546A700D25EF5 /* DebugLog.swift in Sources */,
 				0727877928D23BE0002E9142 /* RequestInterceptor.swift in Sources */,
+				BA8FA66E2AD59E7D00EA029A /* FacebookSingInProvider.swift in Sources */,
 				0770DE2E28D09743006D8A5D /* API.swift in Sources */,
 				028CE96929858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift in Sources */,
 				027BD3A92909474200392132 /* KeyboardAvoidingViewControllerRepr.swift in Sources */,
@@ -834,6 +893,7 @@
 				024D865E28F02C6B0077E0A0 /* WebView.swift in Sources */,
 				02F164372902A9EB0090DDEF /* StringExtension.swift in Sources */,
 				0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */,
+				BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */,
 				0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */,
 				023A1136291432B200D0D354 /* RegistrationTextField.swift in Sources */,
 				02C2DC0829B63D6200F4445D /* WebViewHTML.swift in Sources */,
@@ -1855,6 +1915,30 @@
 				minimumVersion = 1.5.0;
 			};
 		};
+		BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
+		BADB3F512AD6B3A5004D5CFA /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.17;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1862,6 +1946,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 025EF2F42971740000B838AB /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
 			productName = YouTubePlayerKit;
+		};
+		BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		BADB3F522AD6B3A5004D5CFA /* MSAL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BADB3F512AD6B3A5004D5CFA /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;
+			productName = MSAL;
+		};
+		BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
 

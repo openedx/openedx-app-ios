@@ -103,6 +103,10 @@ public struct SignUpView: View {
                                     .padding(.bottom, 80)
                                     .frame(maxWidth: .infinity)
                                 }
+                                SocialSignView(
+                                    signType: .register,
+                                    onSigned: viewModel.register
+                                )
                                 Spacer()
                             }
                             .padding(.horizontal, 24)

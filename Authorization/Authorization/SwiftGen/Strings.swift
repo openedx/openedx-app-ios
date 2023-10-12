@@ -10,6 +10,20 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum AuthLocalization {
+  /// Apple
+  public static let apple = AuthLocalization.tr("Localizable", "APPLE", fallback: "Apple")
+  /// Facebook
+  public static let facebook = AuthLocalization.tr("Localizable", "FACEBOOK", fallback: "Facebook")
+  /// Google
+  public static let google = AuthLocalization.tr("Localizable", "GOOGLE", fallback: "Google")
+  /// Microsoft
+  public static let microsoft = AuthLocalization.tr("Localizable", "MICROSOFT", fallback: "Microsoft")
+  /// Or
+  public static let or = AuthLocalization.tr("Localizable", "OR", fallback: "Or")
+  /// Register with
+  public static let signInRegister = AuthLocalization.tr("Localizable", "SIGN_IN_REGISTER", fallback: "Register with")
+  /// Sign in with
+  public static let signInWith = AuthLocalization.tr("Localizable", "SIGN_IN_WITH", fallback: "Sign in with")
   public enum Error {
     /// Invalid email address
     public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
