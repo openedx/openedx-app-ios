@@ -1738,6 +1738,22 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 
 
 
+    open func getUserProfile(username: String) throws -> UserProfile {
+        addInvocation(.m_getUserProfile__username_username(Parameter<String>.value(`username`)))
+		let perform = methodPerformValue(.m_getUserProfile__username_username(Parameter<String>.value(`username`))) as? (String) -> Void
+		perform?(`username`)
+		var __value: UserProfile
+		do {
+		    __value = try methodReturnValue(.m_getUserProfile__username_username(Parameter<String>.value(`username`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getUserProfile(username: String). Use given")
+			Failure("Stub return value not specified for getUserProfile(username: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
     open func getMyProfile() throws -> UserProfile {
         addInvocation(.m_getMyProfile)
 		let perform = methodPerformValue(.m_getMyProfile) as? () -> Void
@@ -1894,6 +1910,7 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 
 
     fileprivate enum MethodType {
+        case m_getUserProfile__username_username(Parameter<String>)
         case m_getMyProfile
         case m_getMyProfileOffline
         case m_logOut
@@ -1908,6 +1925,11 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
+            case (.m_getUserProfile__username_username(let lhsUsername), .m_getUserProfile__username_username(let rhsUsername)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUsername, rhs: rhsUsername, with: matcher), lhsUsername, rhsUsername, "username"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_getMyProfile, .m_getMyProfile): return .match
 
             case (.m_getMyProfileOffline, .m_getMyProfileOffline): return .match
@@ -1947,6 +1969,7 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 
         func intValue() -> Int {
             switch self {
+            case let .m_getUserProfile__username_username(p0): return p0.intValue
             case .m_getMyProfile: return 0
             case .m_getMyProfileOffline: return 0
             case .m_logOut: return 0
@@ -1962,6 +1985,7 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         }
         func assertionName() -> String {
             switch self {
+            case .m_getUserProfile__username_username: return ".getUserProfile(username:)"
             case .m_getMyProfile: return ".getMyProfile()"
             case .m_getMyProfileOffline: return ".getMyProfileOffline()"
             case .m_logOut: return ".logOut()"
@@ -1986,6 +2010,9 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         }
 
 
+        public static func getUserProfile(username: Parameter<String>, willReturn: UserProfile...) -> MethodStub {
+            return Given(method: .m_getUserProfile__username_username(`username`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         public static func getMyProfile(willReturn: UserProfile...) -> MethodStub {
             return Given(method: .m_getMyProfile, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
@@ -2028,6 +2055,16 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
             let willReturn: [UserSettings] = []
 			let given: Given = { return Given(method: .m_getSettings, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (UserSettings).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getUserProfile(username: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getUserProfile__username_username(`username`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getUserProfile(username: Parameter<String>, willProduce: (StubberThrows<UserProfile>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getUserProfile__username_username(`username`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (UserProfile).self)
 			willProduce(stubber)
 			return given
         }
@@ -2106,6 +2143,7 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
+        public static func getUserProfile(username: Parameter<String>) -> Verify { return Verify(method: .m_getUserProfile__username_username(`username`))}
         public static func getMyProfile() -> Verify { return Verify(method: .m_getMyProfile)}
         public static func getMyProfileOffline() -> Verify { return Verify(method: .m_getMyProfileOffline)}
         public static func logOut() -> Verify { return Verify(method: .m_logOut)}
@@ -2123,6 +2161,9 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
+        public static func getUserProfile(username: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getUserProfile__username_username(`username`), performs: perform)
+        }
         public static func getMyProfile(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_getMyProfile, performs: perform)
         }

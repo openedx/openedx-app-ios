@@ -286,6 +286,11 @@ public struct CourseUnitView: View {
             playerStateSubject.send(VideoPlayerState.kill)
             viewModel.router.back()
         }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                showDiscussion = viewModel.selectedLesson().type == .discussion
+            }
+        }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")

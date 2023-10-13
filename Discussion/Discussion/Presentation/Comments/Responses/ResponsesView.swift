@@ -52,7 +52,9 @@ public struct ResponsesView: View {
                                 if let comments = viewModel.postComments {
                                     ParentCommentView(
                                         comments: comments,
-                                        isThread: false,
+                                        isThread: false, onAvatarTap: { username in
+                                            viewModel.router.showUserDetails(username: username)
+                                        },
                                         onLikeTap: {
                                             Task {
                                                 if await viewModel.vote(
@@ -93,7 +95,10 @@ public struct ResponsesView: View {
                                     ) { index, comment in
                                         CommentCell(
                                             comment: comment,
-                                            addCommentAvailable: false, leftLineEnabled: true,
+                                            addCommentAvailable: false, leftLineEnabled: true, 
+                                            onAvatarTap: { username in
+                                                viewModel.router.showUserDetails(username: username)
+                                            },
                                             onLikeTap: {
                                                 Task {
                                                     await viewModel.vote(

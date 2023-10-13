@@ -17,6 +17,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
     private (set) var play = false
     @Published var isLoading: Bool = true
     @Published var currentTime: Double = 0
+    @Published var pause: Bool = false
     
     private var subscription = Set<AnyCancellable>()
     private var duration: Double?
@@ -68,6 +69,13 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         subscrube(playerStateSubject: playerStateSubject)
     }
     
+    func pauseScrolling() {
+        pause = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.pause = false
+        }
+    }
+    
     private func subscrube(playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) {
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
@@ -84,7 +92,9 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
 
         youtubePlayer.currentTimePublisher(updateInterval: 0.1).sink(receiveValue: { [weak self] time in
             guard let self else { return }
-            self.currentTime = time
+            if !self.pause {
+                self.currentTime = time
+            }
 
             if let duration = self.duration {
                 if (time / duration) >= 0.8 {

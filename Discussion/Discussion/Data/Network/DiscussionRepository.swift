@@ -181,7 +181,7 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
 #if DEBUG
 // swiftlint:disable all
 public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
-    
+
     var comments = [
             UserComment(authorName: "Bill",
                         authorAvatar: "",
