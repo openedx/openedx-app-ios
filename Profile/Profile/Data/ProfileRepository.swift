@@ -47,16 +47,14 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     }
     
     public func getUserProfile(username: String) async throws -> UserProfile {
-        let user =
-        try await api.requestData(
+        let user = try await api.requestData(
             ProfileEndpoint.getUserProfile(username: username)
         ).mapResponse(DataLayer.UserProfile.self)
         return user.domain
     }
     
     public func getMyProfile() async throws -> UserProfile {
-        let user =
-        try await api.requestData(
+        let user = try await api.requestData(
             ProfileEndpoint.getUserProfile(username: storage.user?.username ?? "")
         ).mapResponse(DataLayer.UserProfile.self)
         storage.userProfile = user
