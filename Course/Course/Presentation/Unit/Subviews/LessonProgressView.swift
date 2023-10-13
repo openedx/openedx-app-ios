@@ -36,7 +36,7 @@ struct LessonProgressView: View {
                 }
                 Spacer()
             }
-            .padding(.trailing, 6)
+            //.padding(.trailing, 6)
         }
     }
 }

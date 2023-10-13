@@ -137,7 +137,7 @@ public struct CourseUnitView: View {
                                     }
                                 }
                                 .frame(
-                                    width: reader.size.width,
+                                    width: isHorizontal ? reader.size.width - 16 : reader.size.width,
                                     height: reader.size.height
                                 )
                                 .id(index)
@@ -191,8 +191,8 @@ public struct CourseUnitView: View {
                     
                     // MARK: Progress Dots
                         LessonProgressView(viewModel: viewModel)
-                            .ignoresSafeArea(.all, edges: .leading)
-                            .ignoresSafeArea(.all, edges: .trailing)
+//                            .ignoresSafeArea(.all, edges: .leading)
+//                            .ignoresSafeArea(.all, edges: .trailing)
                 }
                 
                 // MARK: - Alert
