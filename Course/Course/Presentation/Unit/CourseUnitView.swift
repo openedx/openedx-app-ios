@@ -45,7 +45,7 @@ public struct CourseUnitView: View {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
                         VStack {CoreAssets.background.swiftUIColor}.frame(width: reader.size.width, 
-                                                                          height: isHorizontal ? 50 : 100)
+                                                                          height: isHorizontal ? 75 : 50)
                         LazyVStack(alignment: .leading, spacing: 0) {
                             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                             ForEach(data, id: \.offset) { index, block in
@@ -66,7 +66,7 @@ public struct CourseUnitView: View {
                                                 ).frameLimit()
                                                
                                                 if !isHorizontal {
-                                                    Spacer(minLength: 100)
+                                                    Spacer(minLength: 150)
                                                 }
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
@@ -89,7 +89,7 @@ public struct CourseUnitView: View {
                                                 ).frameLimit()
                                                 
                                                 if !isHorizontal {
-                                                    Spacer(minLength: 100)
+                                                    Spacer(minLength: 150)
                                                 }
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
@@ -137,9 +137,7 @@ public struct CourseUnitView: View {
                                     }
                                 }
                                 .frame(
-                                    width: isHorizontal
-                                    ? reader.size.width - 140
-                                    : reader.size.width,
+                                    width: reader.size.width,
                                     height: reader.size.height
                                 )
                                 .id(index)
@@ -176,6 +174,7 @@ public struct CourseUnitView: View {
                             
                         })
                         .onChange(of: viewModel.index, perform: { index in
+//                            self.title = viewModel.verticals[viewModel.verticalIndex].childs[index].displayName
                             DispatchQueue.main.async {
                                 withAnimation(Animation.easeInOut(duration: 0.2)) {
                                     offsetView = -(reader.size.height * CGFloat(index))
@@ -192,6 +191,8 @@ public struct CourseUnitView: View {
                     
                     // MARK: Progress Dots
                         LessonProgressView(viewModel: viewModel)
+                            .ignoresSafeArea(.all, edges: .leading)
+                            .ignoresSafeArea(.all, edges: .trailing)
                 }
                 
                 // MARK: - Alert
@@ -218,22 +219,59 @@ public struct CourseUnitView: View {
                 
                 // MARK: - Course Navigation
                 VStack {
-                    HStack(alignment: .center) {
-                        if isHorizontal {
-                            Spacer()
+                    ZStack {
+                        GeometryReader { reader in
+                            VStack {
+                                HStack {
+                                    let currentBlock = viewModel.verticals[viewModel.verticalIndex]
+                                        .childs[viewModel.index]
+                                    if currentBlock.type == .video {
+                                        let title = currentBlock.displayName
+                                        Text(title)
+                                            .lineLimit(1)
+                                            .frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
+                                            .font(Theme.Fonts.titleLarge)
+                                            .foregroundStyle(Theme.Colors.textPrimary)
+                                            .padding(.leading, isHorizontal ? 30 : 42)
+                                            .padding(.top, isHorizontal ? 14 : 2)
+                                        Spacer()
+                                    }
+                                }
+                                Spacer()
+                            }
                         }
                         VStack {
-                            Spacer()
-                            CourseNavigationView(
-                                sectionName: sectionName,
-                                viewModel: viewModel,
-                                playerStateSubject: playerStateSubject
-                            )
-                            Spacer()
-                        }.frame(height: isHorizontal ? nil : 44)
-                        
+                            NavigationBar(
+                                title: "",
+                                leftButtonAction: {
+                                    viewModel.router.back()
+                                    playerStateSubject.send(VideoPlayerState.kill)
+                                }).padding(.top, isHorizontal ? 10 : 0)
+                                .padding(.leading, isHorizontal ? -16 : 0)
+                                                    Spacer()
+                        }
+                        HStack(alignment: .center) {
+                            if isHorizontal {
+                                Spacer()
+                            }
+                            VStack {
+                                if !isHorizontal {
+                                    Spacer()
+                                }
+                                CourseNavigationView(
+                                    sectionName: sectionName,
+                                    viewModel: viewModel,
+                                    playerStateSubject: playerStateSubject
+                                )
+                                if isHorizontal {
+                                    Spacer()
+                                }
+                            }//.frame(height: isHorizontal ? nil : 44)
+                            
                             .padding(.bottom, isHorizontal ? 0 : 50)
-                    }.frameLimit(sizePortrait: 420)
+                            .padding(.top, isHorizontal ? 12 : 0)
+                        }.frameLimit(sizePortrait: 420)
+                    }
                 }.frame(maxWidth: .infinity)
             }
             .onDisappear {
@@ -242,18 +280,15 @@ public struct CourseUnitView: View {
                 }
             }
         }
-        .ignoresSafeArea(.all, edges: .top)
         .ignoresSafeArea(.all, edges: .bottom)
-        .ignoresSafeArea(.all, edges: UIDevice.current.orientation == .landscapeLeft ? .trailing : .bottom)
         
         .onRightSwipeGesture {
             playerStateSubject.send(VideoPlayerState.kill)
             viewModel.router.back()
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .navigationTitle("")
-        //        .ignoresSafeArea()
         
         .background(
             Theme.Colors.background

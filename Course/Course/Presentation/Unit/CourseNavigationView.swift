@@ -15,7 +15,6 @@ struct CourseNavigationView: View {
     private var viewModel: CourseUnitViewModel
     private let sectionName: String
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    @Environment(\.isHorizontal) private var isHorizontal
     
     init(
         sectionName: String,
@@ -28,20 +27,13 @@ struct CourseNavigationView: View {
     }
     
     var body: some View {
-        adaptiveNavigationStack(spacing: 7, isHorizontal: !isHorizontal) {
+        HStack(alignment: .top, spacing: 7) {
             if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
                 && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 {
-                if isHorizontal {
-                    UnitButtonView(type: .nextBig, action: {
-                        playerStateSubject.send(VideoPlayerState.pause)
-                        viewModel.select(move: .next)
-                    }).fixedSize()
-                } else {
-                    UnitButtonView(type: .nextBig, action: {
-                        playerStateSubject.send(VideoPlayerState.pause)
-                        viewModel.select(move: .next)
-                    }).frame(width: 215)
-                }
+                UnitButtonView(type: .nextBig, action: {
+                    playerStateSubject.send(VideoPlayerState.pause)
+                    viewModel.select(move: .next)
+                }).frame(width: 215)
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
@@ -67,7 +59,7 @@ struct CourseNavigationView: View {
                                 if viewModel.verticals.count > viewModel.verticalIndex + 1 {
                                     return viewModel.verticals[viewModel.verticalIndex + 1].displayName
                                 } else if sequentials.count > viewModel.sequentialIndex + 1 {
-                                    return sequentials[viewModel.sequentialIndex + 1].childs.first?.displayName
+                                    return sequentials[viewModel.sequentialIndex + 1].childs.first?.displayName ?? ""
                                 } else if chapters.count > viewModel.chapterIndex + 1 {
                                     return chapters[viewModel.chapterIndex + 1].childs.first?.childs.first?.displayName
                                 } else {
@@ -80,9 +72,8 @@ struct CourseNavigationView: View {
                             okTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
-                                viewModel.analytics
-                                    .finishVerticalBackToOutlineClicked(courseId: viewModel.courseID,
-                                                                        courseName: viewModel.courseName)
+                                
+                                viewModel.trackFinishVerticalBackToOutlineClicked()
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.back(animated: true)
                             },
@@ -131,6 +122,7 @@ struct CourseNavigationView: View {
                                     sequentialIndex: sequentialIndex)
                             }
                         )
+                        playerStateSubject.send(VideoPlayerState.pause)
                         viewModel.analytics.finishVerticalClicked(
                             courseId: viewModel.courseID,
                             courseName: viewModel.courseName,
@@ -174,14 +166,12 @@ struct CourseNavigationView_Previews: PreviewProvider {
             connectivity: Connectivity(),
             manager: DownloadManagerMock()
         )
-        HStack(alignment: .center) {
-            Spacer()
-            CourseNavigationView(
-                sectionName: "Name",
-                viewModel: viewModel,
-                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
-            )
-        }
+        
+        CourseNavigationView(
+            sectionName: "Name",
+            viewModel: viewModel,
+            playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
+        )
     }
 }
 #endif

@@ -36,31 +36,38 @@ public struct YouTubeVideoPlayer: View {
     }
     
     public var body: some View {
-        ZStack {
-            adaptiveStack(isHorizontal: isHorizontal) {
-                YouTubePlayerView(
-                    viewModel.youtubePlayer,
-                    transaction: .init(animation: .easeIn),
-                    overlay: { _ in })
-                .onAppear {
-                    alertMessage = CourseLocalization.Alert.rotateDevice
+            ZStack {
+                GeometryReader { reader in
+                    adaptiveStack(isHorizontal: isHorizontal) {
+                        VStack {
+                            YouTubePlayerView(
+                                viewModel.youtubePlayer,
+                                transaction: .init(animation: .easeIn),
+                                overlay: { _ in })
+                            .onAppear {
+                                alertMessage = CourseLocalization.Alert.rotateDevice
+                            }
+                            .cornerRadius(12)
+                            .padding(.horizontal, isHorizontal ? 0 : 8)
+                            .aspectRatio(16 / 8.8, contentMode: .fit)
+                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
+                            // Adjust the width based on the horizontal state
+                            if isHorizontal {
+                                Spacer()
+                            }
+                        }
+                        SubtittlesView(
+                            languages: viewModel.languages,
+                            currentTime: $viewModel.currentTime,
+                            viewModel: viewModel
+                        )
+                    }
                 }
-                .cornerRadius(12)
-                .padding(.horizontal, 6)
-                .aspectRatio(16 / 8.8, contentMode: .fit)
-                .frame(minWidth: 380)
-                SubtittlesView(
-                    languages: viewModel.languages,
-                    currentTime: $viewModel.currentTime,
-                    viewModel: viewModel
-                )
-            }
-            
-            if viewModel.isLoading {
-                ProgressBar(size: 40, lineWidth: 8)
+                if viewModel.isLoading {
+                    ProgressBar(size: 40, lineWidth: 8)
+                }
             }
         }
-    }
 }
 
 #if DEBUG

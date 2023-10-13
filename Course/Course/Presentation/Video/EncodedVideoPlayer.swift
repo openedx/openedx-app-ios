@@ -52,38 +52,44 @@ public struct EncodedVideoPlayer: View {
     
     public var body: some View {
         ZStack {
-            VStack {
-                HStack {
-                    PlayerViewController(
-                        videoURL: viewModel.url,
-                        controller: viewModel.controller,
-                        progress: { progress in
-                            if progress >= 0.8 {
-                                if !isViewedOnce {
-                                    Task {
-                                        await viewModel.blockCompletionRequest()
+            GeometryReader {reader in
+                VStack {
+                    HStack {
+                        VStack {
+                            PlayerViewController(
+                                videoURL: viewModel.url,
+                                controller: viewModel.controller,
+                                progress: { progress in
+                                    if progress >= 0.8 {
+                                        if !isViewedOnce {
+                                            Task {
+                                                await viewModel.blockCompletionRequest()
+                                            }
+                                            isViewedOnce = true
+                                        }
                                     }
-                                    isViewedOnce = true
-                                }
+                                }, seconds: { seconds in
+                                    currentTime = seconds
+                                })
+                            .aspectRatio(16 / 9, contentMode: .fit)
+                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
+                            .cornerRadius(12)
+                            if isHorizontal {
+                                Spacer()
                             }
-                        }, seconds: { seconds in
-                            currentTime = seconds
-                        })
-                    .aspectRatio(16 / 9, contentMode: .fit)
-                    .frame(minWidth: 380)
-                    .cornerRadius(12)
-                    .padding(.horizontal, 6)
-                    if isHorizontal {
+                        }
+                        if isHorizontal {
+                            SubtittlesView(languages: viewModel.languages,
+                                           currentTime: $currentTime,
+                                           viewModel: viewModel)
+                        }
+                    }
+                    if !isHorizontal {
                         SubtittlesView(languages: viewModel.languages,
                                        currentTime: $currentTime,
                                        viewModel: viewModel)
                     }
-                }
-                if !isHorizontal {
-                    SubtittlesView(languages: viewModel.languages,
-                                   currentTime: $currentTime,
-                                   viewModel: viewModel)
-                }
+                }.padding(.horizontal, isHorizontal ? 0 : 8)
             }
         }
     }

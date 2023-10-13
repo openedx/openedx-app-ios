@@ -34,7 +34,7 @@ public struct AlertView: View {
     private let type: AlertViewType
     
     @Environment(\.isHorizontal) private var isHorizontal
-
+    
     public init(
         alertTitle: String,
         alertMessage: String,
@@ -70,12 +70,12 @@ public struct AlertView: View {
     }
     
     public var body: some View {
-        GeometryReader { reader in
-            ZStack(alignment: .center) {
-                Color.black.opacity(0.5)
-                    .onTapGesture {
-                        onCloseTapped()
-                    }
+        ZStack(alignment: .center) {
+            Color.black.opacity(0.5)
+                .onTapGesture {
+                    onCloseTapped()
+                }
+            ZStack(alignment: .topTrailing) {
                 adaptiveStack(spacing: isHorizontal ? 10 : 20, isHorizontal: (type == .leaveProfile && isHorizontal)) {
                     if type == .logOut {
                         HStack {
@@ -101,7 +101,7 @@ public struct AlertView: View {
                                 .font(Theme.Fonts.bodyMedium)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 40)
-                                
+                            
                         }.padding(.bottom, 20)
                     } else {
                         HStack {
@@ -276,23 +276,31 @@ public struct AlertView: View {
                     .padding(.top, 5)
                     .padding(.bottom, isHorizontal ? 16 : type.contentPadding)
                 }
-                .background(
-                    Theme.Shapes.cardShape
-                        .fill(CoreAssets.cardViewBackground.swiftUIColor)
-                        .shadow(radius: 24)
-                        .fixedSize(horizontal: false, vertical: false)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(CoreAssets.backgroundStroke.swiftUIColor)
-                        .fixedSize(horizontal: false, vertical: false)
-                )
-                .frame(maxWidth: isHorizontal ? nil : 390)
-                .padding(40)
-            }
-            .ignoresSafeArea()
+                Button(action: {
+                    onCloseTapped()
+                }, label: {
+                    Image(systemName: "xmark")
+                        .padding(.trailing, 40)
+                        .padding(.top, 24)
+                })
+                
+            }.frame(maxWidth: type == .logOut ? 390 : nil)
+            .background(
+                Theme.Shapes.cardShape
+                    .fill(CoreAssets.cardViewBackground.swiftUIColor)
+                    .shadow(radius: 24)
+                    .fixedSize(horizontal: false, vertical: false)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                    .foregroundColor(CoreAssets.backgroundStroke.swiftUIColor)
+                    .fixedSize(horizontal: false, vertical: false)
+            )
+            .frame(maxWidth: isHorizontal ? nil : 390)
+            .padding(40)
         }
+        .ignoresSafeArea()
     }
 }
 

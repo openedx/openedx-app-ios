@@ -102,12 +102,12 @@ public struct UnitButtonView: View {
                                 .padding(.leading, 8)
                                 .font(Theme.Fonts.labelLarge)
                                 .scaledToFit()
-                                .minimumScaleFactor(0.4)
+//                                .minimumScaleFactor(0.4)
                             Spacer()
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .padding(.trailing, 8)
-                        }.frame(maxWidth: 110)
+                        }//.frame(maxWidth: 110)
                     case .finish:
                         HStack {
                             Text(type.stringValue())
