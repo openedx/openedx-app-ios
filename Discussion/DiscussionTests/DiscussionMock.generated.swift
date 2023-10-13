@@ -1967,6 +1967,12 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 
 
 
+    open func showUserDetails(username: String) {
+        addInvocation(.m_showUserDetails__username_username(Parameter<String>.value(`username`)))
+		let perform = methodPerformValue(.m_showUserDetails__username_username(Parameter<String>.value(`username`))) as? (String) -> Void
+		perform?(`username`)
+    }
+
     open func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
         addInvocation(.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(Parameter<String>.value(`courseID`), Parameter<Topics>.value(`topics`), Parameter<String>.value(`title`), Parameter<ThreadType>.value(`type`)))
 		let perform = methodPerformValue(.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(Parameter<String>.value(`courseID`), Parameter<Topics>.value(`topics`), Parameter<String>.value(`title`), Parameter<ThreadType>.value(`type`))) as? (String, Topics, String, ThreadType) -> Void
@@ -2077,6 +2083,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 
 
     fileprivate enum MethodType {
+        case m_showUserDetails__username_username(Parameter<String>)
         case m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(Parameter<String>, Parameter<Topics>, Parameter<String>, Parameter<ThreadType>)
         case m_showThread__thread_threadpostStateSubject_postStateSubject(Parameter<UserThread>, Parameter<CurrentValueSubject<PostState?, Never>>)
         case m_showDiscussionsSearch__courseID_courseID(Parameter<String>)
@@ -2098,6 +2105,11 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
+            case (.m_showUserDetails__username_username(let lhsUsername), .m_showUserDetails__username_username(let rhsUsername)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUsername, rhs: rhsUsername, with: matcher), lhsUsername, rhsUsername, "username"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(let lhsCourseid, let lhsTopics, let lhsTitle, let lhsType), .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(let rhsCourseid, let rhsTopics, let rhsTitle, let rhsType)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
@@ -2200,6 +2212,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 
         func intValue() -> Int {
             switch self {
+            case let .m_showUserDetails__username_username(p0): return p0.intValue
             case let .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_showThread__thread_threadpostStateSubject_postStateSubject(p0, p1): return p0.intValue + p1.intValue
             case let .m_showDiscussionsSearch__courseID_courseID(p0): return p0.intValue
@@ -2222,6 +2235,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         }
         func assertionName() -> String {
             switch self {
+            case .m_showUserDetails__username_username: return ".showUserDetails(username:)"
             case .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type: return ".showThreads(courseID:topics:title:type:)"
             case .m_showThread__thread_threadpostStateSubject_postStateSubject: return ".showThread(thread:postStateSubject:)"
             case .m_showDiscussionsSearch__courseID_courseID: return ".showDiscussionsSearch(courseID:)"
@@ -2258,6 +2272,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
+        public static func showUserDetails(username: Parameter<String>) -> Verify { return Verify(method: .m_showUserDetails__username_username(`username`))}
         public static func showThreads(courseID: Parameter<String>, topics: Parameter<Topics>, title: Parameter<String>, type: Parameter<ThreadType>) -> Verify { return Verify(method: .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(`courseID`, `topics`, `title`, `type`))}
         public static func showThread(thread: Parameter<UserThread>, postStateSubject: Parameter<CurrentValueSubject<PostState?, Never>>) -> Verify { return Verify(method: .m_showThread__thread_threadpostStateSubject_postStateSubject(`thread`, `postStateSubject`))}
         public static func showDiscussionsSearch(courseID: Parameter<String>) -> Verify { return Verify(method: .m_showDiscussionsSearch__courseID_courseID(`courseID`))}
@@ -2282,6 +2297,9 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
+        public static func showUserDetails(username: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_showUserDetails__username_username(`username`), performs: perform)
+        }
         public static func showThreads(courseID: Parameter<String>, topics: Parameter<Topics>, title: Parameter<String>, type: Parameter<ThreadType>, perform: @escaping (String, Topics, String, ThreadType) -> Void) -> Perform {
             return Perform(method: .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(`courseID`, `topics`, `title`, `type`), performs: perform)
         }

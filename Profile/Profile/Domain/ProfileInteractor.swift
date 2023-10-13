@@ -11,6 +11,7 @@ import UIKit
 
 //sourcery: AutoMockable
 public protocol ProfileInteractorProtocol {
+    func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
     func getMyProfileOffline() throws -> UserProfile
     func logOut() async throws
@@ -30,6 +31,10 @@ public class ProfileInteractor: ProfileInteractorProtocol {
     
     public init(repository: ProfileRepositoryProtocol) {
         self.repository = repository
+    }
+    
+    public func getUserProfile(username: String) async throws -> UserProfile {
+        return try await repository.getUserProfile(username: username)
     }
     
     public func getMyProfile() async throws -> UserProfile {

@@ -12,6 +12,8 @@ import Combine
 //sourcery: AutoMockable
 public protocol DiscussionRouter: BaseRouter {
     
+    func showUserDetails(username: String)
+    
     func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType)
     
     func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>)
@@ -32,6 +34,8 @@ public protocol DiscussionRouter: BaseRouter {
 public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
     
     public override init() {}
+    
+    public func showUserDetails(username: String) {}
     
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {}
     

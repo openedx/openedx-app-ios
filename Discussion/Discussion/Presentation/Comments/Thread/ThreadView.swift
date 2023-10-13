@@ -41,7 +41,10 @@ public struct ThreadView: View {
                                 if let comments = viewModel.postComments {
                                     ParentCommentView(
                                         comments: comments,
-                                        isThread: true,
+                                        isThread: true, 
+                                        onAvatarTap: { username in
+                                            viewModel.router.showUserDetails(username: username)
+                                        },
                                         onLikeTap: {
                                             Task {
                                                 if await viewModel.vote(
@@ -91,7 +94,9 @@ public struct ThreadView: View {
                                         CommentCell(
                                             comment: comment,
                                             addCommentAvailable: true,
-                                            onLikeTap: {
+                                            onAvatarTap: { username in
+                                                viewModel.router.showUserDetails(username: username)
+                                            }, onLikeTap: {
                                                 Task {
                                                     await viewModel.vote(
                                                         id: comment.commentID,
