@@ -98,6 +98,8 @@ public struct CourseCellView: View {
                         }
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(courseName + " " + (type == .dashboard ? courseStart : ""))
         VStack {
             if Int(index) != cellsCount {
                 Divider()

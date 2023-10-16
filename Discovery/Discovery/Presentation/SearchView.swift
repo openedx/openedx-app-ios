@@ -38,6 +38,7 @@ public struct SearchView: View {
                             ? Theme.Colors.accentColor
                             : Theme.Colors.textPrimary
                         )
+                        .accessibilityHidden(true)
                     
                     TextField(
                         !viewModel.isSearchActive
@@ -169,6 +170,8 @@ public struct SearchView: View {
                 .font(Theme.Fonts.titleSmall)
                 .foregroundColor(Theme.Colors.textPrimary)
         }.listRowBackground(Color.clear)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(DiscoveryLocalization.Search.title + searchDescription(viewModel: viewModel))
     }
     
     private func searchDescription(viewModel: SearchViewModel<RunLoop>) -> String {

@@ -58,6 +58,7 @@ public struct NavigationBar: View {
                     })
                     .foregroundColor(Theme.Colors.styledButtonText)
                     
+                
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .topLeading)

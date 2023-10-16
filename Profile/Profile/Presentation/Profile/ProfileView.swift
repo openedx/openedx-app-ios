@@ -66,6 +66,15 @@ public struct ProfileView: View {
                                         }
                                     }
                                 }
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(
+                                    (viewModel.userModel?.yearOfBirth != 0 ?
+                                        ProfileLocalization.Edit.Fields.yearOfBirth + String(viewModel.userModel?.yearOfBirth ?? 0) :
+                                        "") +
+                                    (viewModel.userModel?.shortBiography != nil ?
+                                        ProfileLocalization.bio + (viewModel.userModel?.shortBiography ?? "") :
+                                        "")
+                                )
                                 .cardStyle(
                                     bgColor: Theme.Colors.textInputUnfocusedBackground,
                                     strokeColor: .clear
@@ -90,7 +99,10 @@ public struct ProfileView: View {
                                         }
                                     })
                                 
-                            }.cardStyle(
+                            }
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(ProfileLocalization.settingsVideo)
+                            .cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
                                 strokeColor: .clear
                             )
@@ -113,6 +125,8 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.supportInfo)
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
@@ -131,6 +145,8 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.terms)
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
@@ -149,6 +165,8 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.privacy)
                                 }
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -180,7 +198,9 @@ public struct ProfileView: View {
                                         Spacer()
                                         Image(systemName: "rectangle.portrait.and.arrow.right")
                                         }
-                                    })
+                                    })                                    
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.logout)
                                 
                             }
                             .foregroundColor(Theme.Colors.alert)

@@ -23,6 +23,8 @@ public struct DiscoveryView: View {
             .font(Theme.Fonts.titleSmall)
             .foregroundColor(Theme.Colors.textPrimary)
     }.listRowBackground(Color.clear)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(DiscoveryLocalization.Header.title1 + DiscoveryLocalization.Header.title2)
     
     public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
@@ -64,6 +66,8 @@ public struct DiscoveryView: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(DiscoveryLocalization.search)
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {
@@ -114,7 +118,8 @@ public struct DiscoveryView: View {
                             }
                             VStack {}.frame(height: 40)
                         }
-                    }.frameLimit()
+                    }.accessibilityAction {}
+                    .frameLimit()
                 }
             }.padding(.top, 8)
             
