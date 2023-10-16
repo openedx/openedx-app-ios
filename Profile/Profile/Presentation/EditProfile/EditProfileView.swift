@@ -209,7 +209,7 @@ public struct EditProfileView: View {
                     CoreAssets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
                         .foregroundColor(Theme.Colors.accentColor)
-                }).opacity(viewModel.isChanged ? 1 : 0.3)
+                })
             })
             ToolbarItem(placement: .navigationBarTrailing, content: {
                 Button(action: {

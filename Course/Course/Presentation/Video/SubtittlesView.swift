@@ -96,7 +96,7 @@ public struct SubtittlesView: View {
                         }))
                 }
             }.padding(.horizontal, 24)
-                .padding(.top, 34)
+                .padding(.top, 16)
         }
     }
     
