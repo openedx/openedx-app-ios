@@ -37,7 +37,7 @@ public struct ResetPasswordView: View {
                              leftButtonColor: .white,
                              leftButtonAction: {
                    viewModel.router.back()
-               })                        .padding(.leading, isHorizontal ? 48 : 0)
+               }).padding(.leading, isHorizontal ? 48 : 0)
                 
                 ScrollView {
                     VStack {

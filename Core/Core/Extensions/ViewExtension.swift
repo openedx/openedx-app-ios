@@ -101,21 +101,26 @@ public extension View {
     }
     
     @ViewBuilder
-       func adaptiveHStack<Content: View>(spacing: CGFloat = 0, currentOrientation: UIInterfaceOrientation,
-                                          @ViewBuilder content: () -> Content) -> some View {
-           if currentOrientation.isLandscape && UIDevice.current.userInterfaceIdiom != .pad {
-               VStack(alignment: .center, spacing: spacing, content: content)
-           } else if currentOrientation.isPortrait && UIDevice.current.userInterfaceIdiom != .pad {
-               HStack(spacing: spacing, content: content)
-           } else if UIDevice.current.userInterfaceIdiom != .phone {
-               HStack(spacing: spacing, content: content)
-           }
-       }
+    func adaptiveHStack<Content: View>(
+        spacing: CGFloat = 0,
+        currentOrientation: UIInterfaceOrientation,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        if currentOrientation.isLandscape && UIDevice.current.userInterfaceIdiom != .pad {
+            VStack(alignment: .center, spacing: spacing, content: content)
+        } else if currentOrientation.isPortrait && UIDevice.current.userInterfaceIdiom != .pad {
+            HStack(spacing: spacing, content: content)
+        } else if UIDevice.current.userInterfaceIdiom != .phone {
+            HStack(spacing: spacing, content: content)
+        }
+    }
     
     @ViewBuilder
-    func adaptiveStack<Content: View>(spacing: CGFloat = 0,
-                                      isHorizontal: Bool,
-                                      @ViewBuilder content: () -> Content) -> some View {
+    func adaptiveStack<Content: View>(
+        spacing: CGFloat = 0,
+        isHorizontal: Bool,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
         if isHorizontal, UIDevice.current.userInterfaceIdiom != .pad {
             HStack(spacing: spacing, content: content)
         } else {

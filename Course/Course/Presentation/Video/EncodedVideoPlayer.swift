@@ -80,31 +80,43 @@ public struct EncodedVideoPlayer: View {
                             }
                         }
                         if isHorizontal {
-                            SubtittlesView(languages: viewModel.languages,
-                                           currentTime: $currentTime,
-                                           viewModel: viewModel, scrollTo: { date in
-                                viewModel.controller.player?.seek(to: CMTime(seconds: date.secondsSinceMidnight(),
-                                                                             preferredTimescale: 10000))
-                                pauseScrolling()
-                                currentTime = (date.secondsSinceMidnight() + 1)
-                            })
+                            SubtittlesView(
+                                languages: viewModel.languages,
+                                currentTime: $currentTime,
+                                viewModel: viewModel,
+                                scrollTo: { date in
+                                    viewModel.controller.player?.seek(
+                                        to: CMTime(
+                                            seconds: date.secondsSinceMidnight(),
+                                            preferredTimescale: 10000
+                                        )
+                                    )
+                                    pauseScrolling()
+                                    currentTime = (date.secondsSinceMidnight() + 1)
+                                })
                         }
                     }
                     if !isHorizontal {
-                        SubtittlesView(languages: viewModel.languages,
-                                       currentTime: $currentTime,
-                                       viewModel: viewModel, scrollTo: { date in
-                            viewModel.controller.player?.seek(to: CMTime(seconds: date.secondsSinceMidnight(),
-                                                                         preferredTimescale: 10000))
-                            pauseScrolling()
-                            currentTime = (date.secondsSinceMidnight() + 1)
-                        })
+                        SubtittlesView(
+                            languages: viewModel.languages,
+                            currentTime: $currentTime,
+                            viewModel: viewModel,
+                            scrollTo: { date in
+                                viewModel.controller.player?.seek(
+                                    to: CMTime(
+                                        seconds: date.secondsSinceMidnight(),
+                                        preferredTimescale: 10000
+                                    )
+                                )
+                                pauseScrolling()
+                                currentTime = (date.secondsSinceMidnight() + 1)
+                            })
                     }
                 }
             }
         }.padding(.horizontal, isHorizontal ? 0 : 8)
     }
-
+    
     private func pauseScrolling() {
         pause = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

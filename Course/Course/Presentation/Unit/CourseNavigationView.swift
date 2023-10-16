@@ -144,8 +144,7 @@ struct CourseNavigationView: View {
                     })
                 }
             }
-        }//.frame(minWidth: 0, maxWidth: .infinity)
-            .padding(.horizontal, 24)
+        }.padding(.horizontal, 24)
     }
 }
 

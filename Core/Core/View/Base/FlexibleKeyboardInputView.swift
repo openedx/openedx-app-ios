@@ -92,7 +92,6 @@ public struct FlexibleKeyboardInputView: View {
                 }.frame(maxWidth: .infinity, maxHeight: commentSize + 16)
                     .background(
                         Theme.Colors.commentCellBackground
-                        //                        .ignoresSafeArea()
                     )
                     .overlay(
                         GeometryReader { proxy in
