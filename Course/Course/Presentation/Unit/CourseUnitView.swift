@@ -174,7 +174,6 @@ public struct CourseUnitView: View {
                             
                         })
                         .onChange(of: viewModel.index, perform: { index in
-//                            self.title = viewModel.verticals[viewModel.verticalIndex].childs[index].displayName
                             DispatchQueue.main.async {
                                 withAnimation(Animation.easeInOut(duration: 0.2)) {
                                     offsetView = -(reader.size.height * CGFloat(index))
@@ -191,8 +190,6 @@ public struct CourseUnitView: View {
                     
                     // MARK: Progress Dots
                         LessonProgressView(viewModel: viewModel)
-//                            .ignoresSafeArea(.all, edges: .leading)
-//                            .ignoresSafeArea(.all, edges: .trailing)
                 }
                 
                 // MARK: - Alert
@@ -229,14 +226,13 @@ public struct CourseUnitView: View {
                                         let title = currentBlock.displayName
                                         Text(title)
                                             .lineLimit(1)
-                                            .frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
                                             .font(Theme.Fonts.titleLarge)
                                             .foregroundStyle(Theme.Colors.textPrimary)
                                             .padding(.leading, isHorizontal ? 30 : 42)
                                             .padding(.top, isHorizontal ? 14 : 2)
                                         Spacer()
                                     }
-                                }
+                                }.frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
                                 Spacer()
                             }
                         }
@@ -281,7 +277,6 @@ public struct CourseUnitView: View {
             }
         }
         .ignoresSafeArea(.all, edges: .bottom)
-        
         .onRightSwipeGesture {
             playerStateSubject.send(VideoPlayerState.kill)
             viewModel.router.back()
@@ -294,7 +289,6 @@ public struct CourseUnitView: View {
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")
-        
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
