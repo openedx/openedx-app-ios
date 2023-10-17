@@ -38,6 +38,8 @@ struct ProfileBottomSheet: View {
     private var removePhoto: () -> Void
     @Binding private var showingBottomSheet: Bool
     
+    @Environment (\.isHorizontal) private var isHorizontal
+    
     init(
         showingBottomSheet: Binding<Bool>,
         openGallery: @escaping () -> Void,
@@ -96,7 +98,12 @@ struct ProfileBottomSheet: View {
                         }).padding(.top, 34)
                     }.padding(.horizontal, 24)
                     
-                }.frame(maxWidth: idiom == .pad ? 330 : .infinity, maxHeight: 290, alignment: .topLeading)
+                }
+                .frame(minWidth: 0,
+                         maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
+                         ? 330
+                         : .infinity,
+                       maxHeight: 290, alignment: .topLeading)
                     .background(Theme.Colors.cardViewBackground)
                     .cornerRadius(8)
                     .padding(.horizontal, 22)

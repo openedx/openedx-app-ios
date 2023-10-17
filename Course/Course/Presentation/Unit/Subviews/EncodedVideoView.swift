@@ -21,11 +21,6 @@ struct EncodedVideoView: View {
     let isOnScreen: Bool
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(name)
-                .font(Theme.Fonts.titleLarge)
-                .padding(.horizontal, 24)
-            
             let vm = Container.shared.resolve(
                 EncodedVideoPlayerViewModel.self,
                 arguments: url,
@@ -35,7 +30,5 @@ struct EncodedVideoView: View {
                 playerStateSubject
             )!
             EncodedVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
-            Spacer(minLength: 100)
-        }
     }
 }
