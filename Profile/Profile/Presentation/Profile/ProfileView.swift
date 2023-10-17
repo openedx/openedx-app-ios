@@ -212,7 +212,8 @@ public struct ProfileView: View {
                         Spacer()
                     }
                 }
-            }.frameLimit(sizePortrait: 420)
+            }.accessibilityAction {}
+            .frameLimit(sizePortrait: 420)
                 .padding(.top, 8)
                 .onChange(of: settingsTapped, perform: { _ in
                     if let userModel = viewModel.userModel {

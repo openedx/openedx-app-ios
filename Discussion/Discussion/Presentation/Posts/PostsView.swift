@@ -193,7 +193,7 @@ public struct PostsView: View {
                             }
                     }
                 }.frame(maxWidth: .infinity)
-            }
+            }.accessibilityAction {}
             .padding(.top, 8)
             if viewModel.isShowProgress {
                 VStack(alignment: .center) {

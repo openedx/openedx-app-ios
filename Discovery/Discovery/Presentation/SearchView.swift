@@ -10,10 +10,12 @@ import Core
 
 public struct SearchView: View {
     
+    @FocusState
+    private var focused: Bool
+    
     @ObservedObject
     private var viewModel: SearchViewModel<RunLoop>
     @State private var animated: Bool = false
-    @State private var becomeFirstResponderRunOnce = false
     
     public init(viewModel: SearchViewModel<RunLoop>) {
         self.viewModel = viewModel
@@ -48,13 +50,10 @@ public struct SearchView: View {
                         onEditingChanged: { editing in
                             viewModel.isSearchActive = editing
                         }
-                    )
-                    .introspect(.textField, on: .iOS(.v14, .v15, .v16, .v17), customize: { textField in
-                        if !becomeFirstResponderRunOnce {
-                            textField.becomeFirstResponder()
-                            self.becomeFirstResponderRunOnce = true
+                    ).focused($focused)
+                        .onAppear {
+                            self.focused = true
                         }
-                    })
                     .foregroundColor(Theme.Colors.textPrimary)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {

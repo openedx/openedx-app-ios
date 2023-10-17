@@ -60,7 +60,8 @@ public struct DiscoveryView: View {
                     Theme.Shapes.textInputShape
                         .stroke(lineWidth: 1)
                         .fill(Theme.Colors.textInputUnfocusedStroke)
-                ).onTapGesture {
+                )
+                .onTapGesture {
                     router.showDiscoverySearch()
                     viewModel.discoverySearchBarClicked()
                 }
@@ -118,9 +119,9 @@ public struct DiscoveryView: View {
                             }
                             VStack {}.frame(height: 40)
                         }
-                    }.accessibilityAction {}
+                    }
                     .frameLimit()
-                }
+                }.accessibilityAction {}
             }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
