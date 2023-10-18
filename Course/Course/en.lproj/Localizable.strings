@@ -51,3 +51,7 @@
 "NOT_AVALIABLE.BUTTON" = "Open in browser";
 
 "SUBTITLES.TITLE" = "Subtitles";
+
+"ACCESSIBILITY.DOWNLOAD" = "Download";
+"ACCESSIBILITY.CANCEL_DOWNLOAD" = "Cancel download";
+"ACCESSIBILITY.DELETE_DOWNLOAD" = "Delete download";

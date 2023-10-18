@@ -49,6 +49,8 @@ public struct DiscussionTopicsView: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(DiscussionLocalization.Topics.search)
                 
                 // MARK: - Page Body
                 VStack {

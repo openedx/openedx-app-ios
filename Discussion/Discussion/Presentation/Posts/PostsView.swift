@@ -186,14 +186,15 @@ public struct PostsView: View {
                                     }
                                 }
                             }
-                        }.frameLimit()
+                        }.accessibilityAction {}
+                        .frameLimit()
                             .animation(nil)
                             .onRightSwipeGesture {
                                 router.back()
                             }
                     }
                 }.frame(maxWidth: .infinity)
-            }.accessibilityAction {}
+            }
             .padding(.top, 8)
             if viewModel.isShowProgress {
                 VStack(alignment: .center) {

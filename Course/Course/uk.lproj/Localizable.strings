@@ -50,3 +50,7 @@
 "NOT_AVALIABLE.BUTTON" = "Відкрити в браузері";
 
 "SUBTITLES.TITLE" = "Субтитри";
+
+"ACCESSIBILITY.DOWNLOAD" = "Скачати";
+"ACCESSIBILITY.CANCEL_DOWNLOAD" = "Скасувати завантаження";
+"ACCESSIBILITY.DELETE_DOWNLOAD" = "Видалити файл";
