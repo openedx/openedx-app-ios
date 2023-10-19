@@ -30,6 +30,8 @@
 		02A9A91E2978194A00B55797 /* Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 020F834A28DB4CCD0062FA70 /* Profile.framework */; platformFilter = ios; };
 		02A9A92B29781A6300B55797 /* ProfileMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A92A29781A6300B55797 /* ProfileMock.generated.swift */; };
 		02B089432A9F832200754BD4 /* ProfileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B089422A9F832200754BD4 /* ProfileStorage.swift */; };
+		02D0FD092AD698380020D752 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FD082AD698380020D752 /* UserProfileView.swift */; };
+		02D0FD0B2AD6984D0020D752 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */; };
 		02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */; };
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
@@ -72,6 +74,8 @@
 		02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
 		02A9A92A29781A6300B55797 /* ProfileMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMock.generated.swift; sourceTree = "<group>"; };
 		02B089422A9F832200754BD4 /* ProfileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStorage.swift; sourceTree = "<group>"; };
+		02D0FD082AD698380020D752 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		02ED50CE29A64BAD008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE6292539850051930C /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
@@ -131,6 +135,7 @@
 		0203DC3D29AE79F80017BD05 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				02D0FD072AD695E10020D752 /* UserProfile */,
 				021D924528DC634300ACC565 /* ProfileView.swift */,
 				021D925128DC918D00ACC565 /* ProfileViewModel.swift */,
 			);
@@ -285,6 +290,15 @@
 				02B089422A9F832200754BD4 /* ProfileStorage.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		02D0FD072AD695E10020D752 /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				02D0FD082AD698380020D752 /* UserProfileView.swift */,
+				02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */,
+			);
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		0766DFD3299AD9D800EBEF6A /* Presentation */ = {
@@ -551,6 +565,7 @@
 				021D924C28DC884A00ACC565 /* ProfileEndpoint.swift in Sources */,
 				020306C82932B13F000949EA /* EditProfileView.swift in Sources */,
 				0262149229AE57A1008BD75A /* DeleteAccountView.swift in Sources */,
+				02D0FD092AD698380020D752 /* UserProfileView.swift in Sources */,
 				0259104629C39CCF004B5A55 /* SettingsViewModel.swift in Sources */,
 				021D925528DC92F800ACC565 /* ProfileInteractor.swift in Sources */,
 				029301DA2938948500E99AB8 /* ProfileType.swift in Sources */,
@@ -562,6 +577,7 @@
 				0259104829C3A5F0004B5A55 /* VideoQualityView.swift in Sources */,
 				021D924628DC634300ACC565 /* ProfileView.swift in Sources */,
 				02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */,
+				02D0FD0B2AD6984D0020D752 /* UserProfileViewModel.swift in Sources */,
 				02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */,
 				0262149429AE57B1008BD75A /* DeleteAccountViewModel.swift in Sources */,
 			);

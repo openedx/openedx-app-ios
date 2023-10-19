@@ -18,17 +18,21 @@ public struct SubtittlesView: View {
     
     @ObservedObject
     private var viewModel: VideoPlayerViewModel
+    private var scrollTo: ((Date) -> Void) = { _ in }
     
     @Binding var currentTime: Double
     @State var id = 0
+    @State var pause: Bool = false
     @State var languages: [SubtitleUrl]
     
     public init(languages: [SubtitleUrl],
                 currentTime: Binding<Double>,
-                viewModel: VideoPlayerViewModel) {
+                viewModel: VideoPlayerViewModel,
+                scrollTo: @escaping (Date) -> Void) {
         self.languages = languages
         self.viewModel = viewModel
         self._currentTime = currentTime
+        self.scrollTo = scrollTo
     }
     
     public var body: some View {
@@ -51,40 +55,55 @@ public struct SubtittlesView: View {
                     }
                 }
                 ZStack {
+                    
                     ScrollView {
                         if viewModel.subtitles.count > 0 {
                             VStack(alignment: .leading, spacing: 0) {
                                 ForEach(viewModel.subtitles, id: \.id) { subtitle in
                                     HStack {
+                                        Button(action: {
+                                            scrollTo(subtitle.fromTo.start)
+                                            pause = false
+                                        }, label: {
                                         Text(subtitle.text)
                                             .padding(.vertical, 16)
                                             .font(Theme.Fonts.bodyMedium)
+                                            .multilineTextAlignment(.leading)
                                             .foregroundColor(subtitle.fromTo.contains(Date(milliseconds: currentTime))
                                                              ? Theme.Colors.textPrimary
                                                              : Theme.Colors.textSecondary)
+                                            
                                             .onChange(of: currentTime, perform: { _ in
                                                 if subtitle.fromTo.contains(Date(milliseconds: currentTime)) {
                                                     if id != subtitle.id {
                                                         withAnimation {
-                                                            scroll.scrollTo(subtitle.id, anchor: .top)
+                                                            if !pause {
+                                                                scroll.scrollTo(subtitle.id, anchor: .top)
+                                                            }
                                                         }
                                                     }
                                                     self.id = subtitle.id
                                                 }
                                             })
+                                        })
                                     }.id(subtitle.id)
                                 }
                             }
-                            .introspect(.scrollView, on: .iOS(.v14, .v15, .v16, .v17), customize: { scrollView in
-                                scrollView.isScrollEnabled = false
-                            })
                         }
-                    }
-                    // Forced disable scrolling for iOS 14, 15
-                    Color.white.opacity(0)
+                    }.simultaneousGesture(
+                        DragGesture().onChanged({ _ in
+                            pauseScrolling()
+                        }))
                 }
             }.padding(.horizontal, 24)
-                .padding(.top, 34)
+                .padding(.top, 16)
+        }
+    }
+    
+    private func pauseScrolling() {
+        pause = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.pause = false
         }
     }
 }
@@ -103,7 +122,7 @@ struct SubtittlesView_Previews: PreviewProvider {
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
                 router: CourseRouterMock(),
                 connectivity: Connectivity()
-            )
+            ), scrollTo: {_ in }
         )
     }
 }

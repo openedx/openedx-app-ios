@@ -16,7 +16,6 @@ public struct YouTubeVideoPlayer: View {
     @StateObject
     private var viewModel: YouTubeVideoPlayerViewModel
     private var isOnScreen: Bool
-    
     @State
     private var showAlert = false
     @State
@@ -28,75 +27,50 @@ public struct YouTubeVideoPlayer: View {
         }
     }
     
+    @Environment(\.isHorizontal) private var isHorizontal
+
     public init(viewModel: YouTubeVideoPlayerViewModel, isOnScreen: Bool) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.isOnScreen = isOnScreen
     }
     
     public var body: some View {
-        ZStack {
-            VStack {
-                YouTubePlayerView(
-                    viewModel.youtubePlayer,
-                    transaction: .init(animation: .easeIn),
-                    overlay: { _ in })
-                .onAppear {
-                    alertMessage = CourseLocalization.Alert.rotateDevice
-                }
-                .cornerRadius(12)
-                .padding(.horizontal, 6)
-                .aspectRatio(16 / 8.8, contentMode: .fit)
-                .onReceive(NotificationCenter.Publisher(
-                    center: .default, name: UIDevice.orientationDidChangeNotification
-                )) { _ in
-                    if isOnScreen {
-                        let orientation = UIDevice.current.orientation
-                        if orientation.isPortrait {
-                            viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
-                                $0.playInline = true
-                                $0.autoPlay = viewModel.play
-                                $0.startTime = Int(viewModel.currentTime)
-                            }))
-                        } else {
-                            viewModel.youtubePlayer.update(configuration: YouTubePlayer.Configuration(configure: {
-                                $0.playInline = false
-                                $0.autoPlay = true
-                                $0.startTime = Int(viewModel.currentTime)
-                            }))
+            ZStack {
+                GeometryReader { reader in
+                    adaptiveStack(isHorizontal: isHorizontal) {
+                        VStack {
+                            YouTubePlayerView(
+                                viewModel.youtubePlayer,
+                                transaction: .init(animation: .easeIn),
+                                overlay: { _ in })
+                            .onAppear {
+                                alertMessage = CourseLocalization.Alert.rotateDevice
+                            }
+                            .cornerRadius(12)
+                            .padding(.horizontal, isHorizontal ? 0 : 8)
+                            .aspectRatio(16 / 8.8, contentMode: .fit)
+                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
+                            // Adjust the width based on the horizontal state
+                            if isHorizontal {
+                                Spacer()
+                            }
                         }
+                        SubtittlesView(
+                            languages: viewModel.languages,
+                            currentTime: $viewModel.currentTime,
+                            viewModel: viewModel, scrollTo: { date in
+                                viewModel.youtubePlayer.seek(to: date.secondsSinceMidnight(), allowSeekAhead: true)
+                                viewModel.pauseScrolling()
+                                viewModel.currentTime = date.secondsSinceMidnight() + 1
+                            }
+                        )
                     }
                 }
-                SubtittlesView(
-                    languages: viewModel.languages,
-                    currentTime: $viewModel.currentTime,
-                    viewModel: viewModel
-                )
-            }
-            
-            if viewModel.isLoading {
-                ProgressBar(size: 40, lineWidth: 8)
-            }
-            
-            // MARK: - Alert
-            if showAlert, let alertMessage {
-                VStack(alignment: .center) {
-                    Spacer()
-                    HStack(spacing: 6) {
-                        CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
-                        Text(alertMessage)
-                    }.shadowCardStyle(bgColor: Theme.Colors.snackbarInfoAlert,
-                                      textColor: .white)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            self.alertMessage = nil
-                            showAlert = false
-                        }
-                    }
+                if viewModel.isLoading {
+                    ProgressBar(size: 40, lineWidth: 8)
                 }
             }
         }
-    }
 }
 
 #if DEBUG

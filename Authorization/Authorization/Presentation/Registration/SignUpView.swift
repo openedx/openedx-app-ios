@@ -13,6 +13,8 @@ public struct SignUpView: View {
     @State
     private var disclosureGroupOpen: Bool = false
     
+    @Environment (\.isHorizontal) private var isHorizontal
+    
     @ObservedObject
     private var viewModel: SignUpViewModel
     
@@ -44,6 +46,7 @@ public struct SignUpView: View {
                                 .backButtonStyle(color: .white)
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)
+                        .padding(.leading, isHorizontal ? 48 : 0)
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
@@ -139,6 +142,7 @@ public struct SignUpView: View {
                     }
             }
         }
+        .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .hideNavigationBar()
     }

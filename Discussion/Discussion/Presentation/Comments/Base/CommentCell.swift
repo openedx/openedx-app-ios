@@ -13,6 +13,7 @@ public struct CommentCell: View {
     
     private let comment: Post
     private let addCommentAvailable: Bool
+    private var onAvatarTap: ((String) -> Void)
     private var onLikeTap: (() -> Void)
     private var onReportTap: (() -> Void)
     private var onCommentsTap: (() -> Void)
@@ -25,6 +26,7 @@ public struct CommentCell: View {
         comment: Post,
         addCommentAvailable: Bool,
         leftLineEnabled: Bool = false,
+        onAvatarTap: @escaping (String) -> Void,
         onLikeTap: @escaping () -> Void,
         onReportTap: @escaping () -> Void,
         onCommentsTap: @escaping () -> Void,
@@ -33,6 +35,7 @@ public struct CommentCell: View {
         self.comment = comment
         self.addCommentAvailable = addCommentAvailable
         self.leftLineEnabled = leftLineEnabled
+        self.onAvatarTap = onAvatarTap
         self.onLikeTap = onLikeTap
         self.onReportTap = onReportTap
         self.onCommentsTap = onCommentsTap
@@ -42,11 +45,15 @@ public struct CommentCell: View {
     public var body: some View {
         VStack(alignment: .leading) {
             HStack {
+                Button(action: {
+                    onAvatarTap(comment.authorName)
+                }, label: {
                 KFImage(URL(string: comment.authorAvatar))
                     .onFailureImage(KFCrossPlatformImage(systemName: "person.circle"))
                     .resizable()
                     .frame(width: 32, height: 32)
                     .cornerRadius(16)
+                })
                 
                 VStack(alignment: .leading) {
                     Text(comment.authorName)
@@ -170,6 +177,7 @@ struct CommentView_Previews: PreviewProvider {
                 comment: comment,
                 addCommentAvailable: true,
                 leftLineEnabled: false,
+                onAvatarTap: {_ in},
                 onLikeTap: {},
                 onReportTap: {},
                 onCommentsTap: {},
@@ -178,6 +186,7 @@ struct CommentView_Previews: PreviewProvider {
                 comment: comment,
                 addCommentAvailable: true,
                 leftLineEnabled: false,
+                onAvatarTap: {_ in},
                 onLikeTap: {},
                 onReportTap: {},
                 onCommentsTap: {},
@@ -192,6 +201,7 @@ struct CommentView_Previews: PreviewProvider {
                 comment: comment,
                 addCommentAvailable: true,
                 leftLineEnabled: false,
+                onAvatarTap: {_ in},
                 onLikeTap: {},
                 onReportTap: {},
                 onCommentsTap: {},
@@ -200,6 +210,7 @@ struct CommentView_Previews: PreviewProvider {
                 comment: comment,
                 addCommentAvailable: true,
                 leftLineEnabled: false,
+                onAvatarTap: {_ in},
                 onLikeTap: {},
                 onReportTap: {},
                 onCommentsTap: {},

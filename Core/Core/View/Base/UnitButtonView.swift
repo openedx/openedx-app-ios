@@ -99,12 +99,13 @@ public struct UnitButtonView: View {
                         HStack {
                             Text(type.stringValue())
                                 .foregroundColor(Theme.Colors.styledButtonText)
-                                .padding(.leading, 16)
+                                .padding(.leading, 8)
                                 .font(Theme.Fonts.labelLarge)
+                                .scaledToFit()
                             Spacer()
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
-                                .padding(.trailing, 16)
+                                .padding(.trailing, 8)
                         }
                     case .finish:
                         HStack {

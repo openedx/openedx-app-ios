@@ -13,7 +13,7 @@ public extension Date {
         var dateFormatter: DateFormatter?
         dateFormatter = DateFormatter()
         dateFormatter?.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        
+        dateFormatter?.locale = Locale(identifier: "en_US_POSIX")
         date = dateFormatter?.date(from: iso8601) ?? Date()
         defer {
             dateFormatter = nil
@@ -25,6 +25,7 @@ public extension Date {
         let formatter = RelativeDateTimeFormatter()
         formatter.locale = .current
         formatter.unitsStyle = .full
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         if self.description == Date().description {
             return CoreLocalization.Date.justNow
         } else {
@@ -38,6 +39,7 @@ public extension Date {
         let components = calendar.dateComponents([.year, .month, .day], from: now)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss,SSS"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         let dateString = "\(components.year!)-\(components.month!)-\(components.day!) \(subtitleTime)"
         guard let date = dateFormatter.date(from: dateString) else {
             self = now
@@ -70,6 +72,19 @@ public enum DateStringStyle {
 }
 
 public extension Date {
+    
+    func secondsSinceMidnight() -> Double {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute, .second], from: self)
+
+        guard let hours = components.hour, let minutes = components.minute, let seconds = components.second else {
+            return 0.0
+        }
+
+        let totalSeconds = Double(hours) * 3600.0 + Double(minutes) * 60.0 + Double(seconds)
+        return totalSeconds
+    }
+    
     func dateToString(style: DateStringStyle) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")

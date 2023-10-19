@@ -134,14 +134,14 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(Config.self)!
             )
         }
-        container.register(ProfileInteractor.self) { r in
+        container.register(ProfileInteractorProtocol.self) { r in
             ProfileInteractor(
                 repository: r.resolve(ProfileRepositoryProtocol.self)!
             )
         }
         container.register(ProfileViewModel.self) { r in
             ProfileViewModel(
-                interactor: r.resolve(ProfileInteractor.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(Config.self)!,
@@ -151,7 +151,7 @@ class ScreenAssembly: Assembly {
         container.register(EditProfileViewModel.self) { r, userModel in
             EditProfileViewModel(
                 userModel: userModel,
-                interactor: r.resolve(ProfileInteractor.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!
 
@@ -160,14 +160,14 @@ class ScreenAssembly: Assembly {
         
         container.register(SettingsViewModel.self) { r in
             SettingsViewModel(
-                interactor: r.resolve(ProfileInteractor.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!
             )
         }
         
         container.register(DeleteAccountViewModel.self) { r in
             DeleteAccountViewModel(
-                interactor: r.resolve(ProfileInteractor.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )

@@ -59,7 +59,7 @@ struct CourseNavigationView: View {
                                 if viewModel.verticals.count > viewModel.verticalIndex + 1 {
                                     return viewModel.verticals[viewModel.verticalIndex + 1].displayName
                                 } else if sequentials.count > viewModel.sequentialIndex + 1 {
-                                    return sequentials[viewModel.sequentialIndex + 1].childs.first?.displayName
+                                    return sequentials[viewModel.sequentialIndex + 1].childs.first?.displayName ?? ""
                                 } else if chapters.count > viewModel.chapterIndex + 1 {
                                     return chapters[viewModel.chapterIndex + 1].childs.first?.childs.first?.displayName
                                 } else {
@@ -72,7 +72,7 @@ struct CourseNavigationView: View {
                             okTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)
                                 playerStateSubject.send(VideoPlayerState.kill)
-
+                                
                                 viewModel.trackFinishVerticalBackToOutlineClicked()
                                 viewModel.router.dismiss(animated: false)
                                 viewModel.router.back(animated: true)
@@ -122,6 +122,7 @@ struct CourseNavigationView: View {
                                     sequentialIndex: sequentialIndex)
                             }
                         )
+                        playerStateSubject.send(VideoPlayerState.pause)
                         viewModel.analytics.finishVerticalClicked(
                             courseId: viewModel.courseID,
                             courseName: viewModel.courseName,
@@ -143,8 +144,7 @@ struct CourseNavigationView: View {
                     })
                 }
             }
-        }.frame(minWidth: 0, maxWidth: .infinity)
-            .padding(.horizontal, 24)
+        }.padding(.horizontal, 24)
     }
 }
 
