@@ -10,7 +10,7 @@ import Core
 import SwiftUI
 
 public class ProfileViewModel: ObservableObject {
-    
+
     @Published public var userModel: UserProfile?
     @Published public var updatedAvatar: UIImage?
     @Published private(set) var isShowProgress = false
@@ -22,8 +22,7 @@ public class ProfileViewModel: ObservableObject {
             }
         }
     }
-    
-    
+
     let router: ProfileRouter
     let config: Config
     let connectivity: ConnectivityProtocol
