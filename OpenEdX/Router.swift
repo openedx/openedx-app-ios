@@ -16,9 +16,11 @@ import Discussion
 import Discovery
 import Dashboard
 import Profile
+import WhatsNew
 import Combine
  
 public class Router: AuthorizationRouter,
+                     WhatsNewRouter,
                      DiscoveryRouter,
                      ProfileRouter,
                      DashboardRouter,

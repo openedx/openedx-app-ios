@@ -9,6 +9,8 @@ import UIKit
 import SwiftUI
 import Core
 import Authorization
+import WhatsNew
+import Swinject
 
 class RouteController: UIViewController {
     
@@ -48,8 +50,26 @@ class RouteController: UIViewController {
     }
     
     private func showMainScreen() {
-        let controller = UIHostingController(rootView: MainScreenView())
-        navigation.viewControllers = [controller]
+        let viewModel = WhatsNewViewModel(router: Container.shared.resolve(WhatsNewRouter.self)!)
+        let whatsNew = WhatsNewView(viewModel: viewModel)
+        let storage = Container.shared.resolve(AppStorage.self)!
+        let showWhatsNew = viewModel.shouldShowWhatsNew(savedVersion: storage.whatsNewVersion)
+        
+        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            print("App version: \(appVersion)")
+            // is appVersion logic are needed?
+        }
+        
+        if showWhatsNew {
+            if let jsonVersion = viewModel.getVersion() {
+                storage.whatsNewVersion = jsonVersion
+            }
+            let controller = UIHostingController(rootView: whatsNew)
+            navigation.viewControllers = [controller]
+        } else {
+            let controller = UIHostingController(rootView: MainScreenView())
+            navigation.viewControllers = [controller]
+        }
         present(navigation, animated: false)
     }
 }

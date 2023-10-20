@@ -15,6 +15,7 @@ import Course
 import Discussion
 import Authorization
 import Profile
+import WhatsNew
 
 // swiftlint:disable function_body_length
 class AppAssembly: Assembly {
@@ -109,6 +110,10 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(DiscussionRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
+        container.register(WhatsNewRouter.self) { r in
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
