@@ -11,17 +11,21 @@ import _AVKit_SwiftUI
 struct PlayerViewController: UIViewControllerRepresentable {
     
     var videoURL: URL?
+    var bitrate: Double
     var controller: AVPlayerViewController
     var progress: ((Float) -> Void)
     var seconds: ((Double) -> Void)
     
     init(
-        videoURL: URL?, controller: AVPlayerViewController,
+        videoURL: URL?, 
+        controller: AVPlayerViewController,
+        bitrate: Double,
         progress: @escaping ((Float) -> Void),
         seconds: @escaping ((Double) -> Void)
     ) {
         self.videoURL = videoURL
         self.controller = controller
+        self.bitrate = bitrate
         self.progress = progress
         self.seconds = seconds
     }
@@ -75,6 +79,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
                     playerController.player = AVPlayer()
                 }
                 playerController.player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
+                playerController.player?.currentItem?.preferredPeakBitRate = bitrate
                 addPeriodicTimeObserver(playerController, currentProgress: { progress, seconds in
                     self.progress(progress)
                     self.seconds(seconds)

@@ -60,6 +60,7 @@ public struct EncodedVideoPlayer: View {
                             PlayerViewController(
                                 videoURL: viewModel.url,
                                 controller: viewModel.controller,
+                                bitrate: viewModel.getBitRate(),
                                 progress: { progress in
                                     if progress >= 0.8 {
                                         if !isViewedOnce {
@@ -136,7 +137,8 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
+                router: CourseRouterMock(), 
+                appStorage: CoreStorageMock(),
                 connectivity: Connectivity()
             ),
             isOnScreen: true

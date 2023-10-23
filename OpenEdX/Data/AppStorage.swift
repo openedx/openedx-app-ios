@@ -81,7 +81,7 @@ public class AppStorage: CoreStorage, ProfileStorage {
     public var userSettings: UserSettings? {
         get {
             guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
-                let defaultSettings = UserSettings(wifiOnly: true, downloadQuality: .auto)
+                let defaultSettings = UserSettings(wifiOnly: true, streamingQuality: .auto)
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(defaultSettings) {
                     userDefaults.set(encoded, forKey: KEY_SETTINGS)

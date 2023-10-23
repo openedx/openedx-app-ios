@@ -24,6 +24,7 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
+        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol
     ) {
         self.url = url
@@ -32,7 +33,8 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
                    courseID: courseID,
                    languages: languages,
                    interactor: interactor,
-                   router: router,
+                   router: router, 
+                   appStorage: appStorage,
                    connectivity: connectivity)
         
         playerStateSubject.sink(receiveValue: { [weak self] state in
@@ -45,5 +47,20 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
                 break
             }
         }).store(in: &subscription)
+    }
+    
+    func getBitRate() -> Double {
+        switch appStorage.userSettings?.streamingQuality {
+        case .auto:
+            return 0
+        case .low:
+            return 1500000
+        case .medium:
+            return 2000000
+        case .high:
+            return 4000000
+        case .none:
+            return 0
+        }
     }
 }

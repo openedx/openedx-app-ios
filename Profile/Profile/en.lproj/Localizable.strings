@@ -58,7 +58,7 @@
 "SETTINGS.VIDEO_SETTINGS_TITLE" = "Video settings";
 "SETTINGS.WIFI_TITLE" = "Wi-fi only download";
 "SETTINGS.WIFI_DESCRIPTION" = "Only download content when wi-fi is turned on";
-"SETTINGS.VIDEO_QUALITY_TITLE" = "Video download quality";
+"SETTINGS.VIDEO_QUALITY_TITLE" = "Video streaming quality";
 "SETTINGS.VIDEO_QUALITY_DESCRIPTION" = "Auto (Recommended)";
 
 "SETTINGS.QUALITY_AUTO_TITLE" = "Auto";

@@ -120,8 +120,8 @@ public enum ProfileLocalization {
     public static let qualityAutoTitle = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_AUTO_TITLE", fallback: "Auto")
     /// Auto (Recommended)
     public static let videoQualityDescription = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_DESCRIPTION", fallback: "Auto (Recommended)")
-    /// Video download quality
-    public static let videoQualityTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_TITLE", fallback: "Video download quality")
+    /// Video streaming quality
+    public static let videoQualityTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_TITLE", fallback: "Video streaming quality")
     /// Video settings
     public static let videoSettingsTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_SETTINGS_TITLE", fallback: "Video settings")
     /// Only download content when wi-fi is turned on

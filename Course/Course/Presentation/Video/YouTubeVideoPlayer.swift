@@ -84,7 +84,8 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
+                router: CourseRouterMock(), 
+                appStorage: CoreStorageMock(),
                 connectivity: Connectivity()),
             isOnScreen: true)
     }
