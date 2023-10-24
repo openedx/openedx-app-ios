@@ -73,15 +73,25 @@ public final class API {
             encoding: encoding,
             headers: route.headers
         ).validateResponse().serializingData()
-        if let lastDate = await result.response.response?.headers["EDX-APP-VERSION-LAST-SUPPORTED-DATE"] {
-            NotificationCenter.default.post(name: .appVersionLastSupportedDate, object: lastDate)
+        
+        if config.appUpdateEnabled {
+            let lastDate = await result.response.response?.headers["EDX-APP-VERSION-LAST-SUPPORTED-DATE"]
+            let latestVersion = await result.response.response?.headers["EDX-APP-LATEST-VERSION"]
+            
+            if await result.response.response?.statusCode != 426 {
+                if let lastDate = lastDate {
+                    print(">>>> lastDate", lastDate)
+                    NotificationCenter.default.post(name: .appVersionLastSupportedDate, object: lastDate)
+                }
+                if let latestVersion = latestVersion {
+                    print(">>>> latestVersion", latestVersion)
+                    NotificationCenter.default.post(name: .appLatestVersion, object: latestVersion)
+                }
+            }
         }
-        if let latestVersion = await result.response.response?.headers["EDX-APP-LATEST-VERSION"] {
-            NotificationCenter.default.post(name: .appLatestVersion, object: latestVersion)
-        }
-        await print(">>>> 1", result.response.response?.headers["EDX-APP-VERSION-LAST-SUPPORTED-DATE"])
-        await print(">>>> 1", result.response.response?.headers["EDX-APP-LATEST-VERSION"])
+        
         return try await result.value
+
     }
     
     private func callCookies(

@@ -13,4 +13,5 @@ public extension Notification.Name {
     static let appVersionLastSupportedDate = Notification.Name("appVersionLastSupportedDate")
     static let appLatestVersion = Notification.Name("appLatestVersion")
     static let blockAppBeforeUpdate = Notification.Name("blockAppBeforeUpdate")
+    static let showUpdateNotification = Notification.Name("showUpdateNotification")
 }

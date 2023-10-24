@@ -150,6 +150,57 @@ public struct ProfileView: View {
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
                                 }
+                                
+                                // MARK: Version
+                                if viewModel.config.appUpdateEnabled {
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                    Button(action: {
+                                        viewModel.openAppStore()
+                                    }, label: {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 0) {
+                                                HStack {
+                                                    if viewModel.versionState == .updateRequired {
+                                                        CoreAssets.warningFilled.swiftUIImage
+                                                            .resizable()
+                                                            .frame(width: 24, height: 24)
+                                                    }
+                                                    Text("Version: \(viewModel.currentVersion)")
+                                                }
+                                                switch viewModel.versionState {
+                                                case .actual:
+                                                    HStack {
+                                                        CoreAssets.checkmark.swiftUIImage
+                                                            .renderingMode(.template)
+                                                            .foregroundColor(.green)
+                                                        Text("Up-to-date")
+                                                            .font(Theme.Fonts.labelMedium)
+                                                            .foregroundStyle(Theme.Colors.textSecondary)
+                                                    }
+                                                case .updateNeeded:
+                                                    Text("Tap to update to version \(viewModel.latestVersion)")
+                                                        .font(Theme.Fonts.labelMedium)
+                                                        .foregroundStyle(Theme.Colors.accentColor)
+                                                case .updateRequired:
+                                                    Text("Tap to install required app update")
+                                                        .font(Theme.Fonts.labelMedium)
+                                                        .foregroundStyle(Theme.Colors.accentColor)
+                                                }
+                                            }
+                                            Spacer()
+                                            if viewModel.versionState != .actual {
+                                                Image(systemName: "arrow.up.circle")
+                                                    .resizable()
+                                                    .frame(width: 24, height: 24)
+                                                    .foregroundStyle(Theme.Colors.accentColor)
+                                            }
+                                            
+                                        }
+                                    })
+                                }
+                                
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
                                 strokeColor: .clear

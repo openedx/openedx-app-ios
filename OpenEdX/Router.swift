@@ -406,18 +406,21 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showUpdateRequiredView() {
-        let view = UpdateRequiredView(router: self)
+    public func showUpdateRequiredView(showAccountLink: Bool = true) {
+        let view = UpdateRequiredView(
+            router: self,
+            config: Container.shared.resolve(Config.self)!,
+            showAccountLink: showAccountLink
+        )
         let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: false)
     }
     
     public func showUpdateRecomendedView() {
-        let view = UpdateRecommendedView()
+        let view = UpdateRecommendedView(router: self, config: Container.shared.resolve(Config.self)!)
         DispatchQueue.main.async {
             self.presentView(transitionStyle: .crossDissolve, view: view)
         }
-//        navigationController.pushViewController(controller, animated: true)
     }
     
     private func prepareToPresent <ToPresent: View> (_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)

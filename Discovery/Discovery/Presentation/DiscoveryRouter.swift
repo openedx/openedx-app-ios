@@ -12,7 +12,7 @@ public protocol DiscoveryRouter: BaseRouter {
 
     func showCourseDetais(courseID: String, title: String)
     func showDiscoverySearch()
-    func showUpdateRequiredView()
+    func showUpdateRequiredView(showAccountLink: Bool)
     func showUpdateRecomendedView()
 }
 
@@ -24,7 +24,7 @@ public class DiscoveryRouterMock: BaseRouterMock, DiscoveryRouter {
     
     public func showCourseDetais(courseID: String, title: String) {}
     public func showDiscoverySearch() {}
-    public func showUpdateRequiredView() {}
+    public func showUpdateRequiredView(showAccountLink: Bool) {}
     public func showUpdateRecomendedView() {}    
 }
 #endif

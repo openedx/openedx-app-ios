@@ -19,7 +19,7 @@
 "UPDATE_WHY_NEED" = "Чому я маю оновити програму?";
 "UPDATE_DEPRECATED_APP" = "Застаріла версія додатка";
 "UPDATE_BUTTON" = "Оновити";
-"UPDATE_ACCOUNT_SETTINGS" = "Налаштування користувача";
+"UPDATE_ACCOUNT_SETTINGS" = "Налаштування";
 
 "UPDATE_NEEDED_TITLE" = "Оновлення додатку";
 "UPDATE_NEEDED_DESCRIPTION" = "Ми рекомендуємо вам оновити додаток до останньої версії. Оновіть зараз, щоб отримати нові функції та виправлення.";

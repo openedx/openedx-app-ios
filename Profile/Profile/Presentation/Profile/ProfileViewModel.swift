@@ -5,7 +5,7 @@
 //  Created by  Stepanok Ivan on 22.09.2022.
 //
 
-import Foundation
+import Combine
 import Core
 import SwiftUI
 
@@ -22,7 +22,17 @@ public class ProfileViewModel: ObservableObject {
             }
         }
     }
+    var cancellables = Set<AnyCancellable>()
     
+    enum VersionState {
+        case actual
+        case updateNeeded
+        case updateRequired
+    }
+    
+    @Published var versionState: VersionState = .actual
+    @Published var currentVersion: String = ""
+    @Published var latestVersion: String = ""
     
     let router: ProfileRouter
     let config: Config
@@ -43,6 +53,30 @@ public class ProfileViewModel: ObservableObject {
         self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
+        if config.appUpdateEnabled {
+            generateVersionState()
+        }
+    }
+    
+    func openAppStore() {
+        guard let appStoreURL = URL(string: config.appStoreLink) else { return }
+            UIApplication.shared.open(appStoreURL)
+    }
+    
+    func generateVersionState() {
+        guard let info = Bundle.main.infoDictionary else { return }
+        guard let currentVersion: AnyObject = info["CFBundleShortVersionString"] as AnyObject? else { return }
+        guard let currentVersion = currentVersion as? String else { return }
+        self.currentVersion = currentVersion
+        NotificationCenter.default.publisher(for: .appLatestVersion)
+            .sink { [weak self] notification in
+                guard let latestVersion = notification.object as? String else { return }
+                self?.latestVersion = latestVersion
+                
+                if latestVersion != currentVersion {
+                    self?.versionState = .updateNeeded
+                }
+            }.store(in: &cancellables)
     }
     
     func contactSupport() -> URL? {
@@ -71,7 +105,11 @@ public class ProfileViewModel: ObservableObject {
             }
         } catch let error {
             isShowProgress = false
-            if error.isInternetError || error is NoCachedDataError {
+            if error.asAFError?.responseCode == 426 {
+                DispatchQueue.main.async {
+                    self.versionState = .updateRequired
+                }
+            } else if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
                 errorMessage = CoreLocalization.Error.unknownError

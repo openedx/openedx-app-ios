@@ -18,6 +18,7 @@ struct MainScreenView: View {
     @State private var selection: MainTab = .discovery
     @State private var settingsTapped: Bool = false
     @State private var block: Bool = false
+    @State private var updateNeeded: Bool = false
     
     enum MainTab {
         case discovery
@@ -33,41 +34,47 @@ struct MainScreenView: View {
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondary)
-//        NotificationCenter.default.publisher(for: .blockAppBeforeUpdate)
-//            .sink { self _ in
-//                self?.selection = .profile
-//            }
-//            .store(in: &cancellables)
     }
     
     var body: some View {
         TabView(selection: $selection) {
-            DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!)
+            ZStack {
+                DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!)
+                if updateNeeded {
+                    UpdateNotificationView()
+                }
+            }
             .tabItem {
                 CoreAssets.discovery.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.discovery)
-            }.disabled(block)
+            }
             .tag(MainTab.discovery)
             
-            VStack {
+            ZStack {
                 DashboardView(
                     viewModel: Container.shared.resolve(DashboardViewModel.self)!,
                     router: Container.shared.resolve(DashboardRouter.self)!
                 )
+                if updateNeeded {
+                    UpdateNotificationView()
+                }
             }
             .tabItem {
                 CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.dashboard)
-            }.disabled(block)
+            }
             .tag(MainTab.dashboard)
             
-            VStack {
+            ZStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
+                if updateNeeded {
+                    UpdateNotificationView()
+                }
             }
             .tabItem {
                 CoreAssets.programs.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.programs)
-            }.disabled(block)
+            }
             .tag(MainTab.programs)
             
             VStack {
@@ -81,10 +88,22 @@ struct MainScreenView: View {
             }
             .tag(MainTab.profile)
         }
-        .onChange(of: NotificationCenter.default.publisher(for: .blockAppBeforeUpdate), perform: { _ in
-            self.selection = .profile
-            self.block = true
-        })
+        .onAppear {
+            NotificationCenter.default.addObserver(forName: .blockAppBeforeUpdate,
+                                                   object: nil, queue: .main) { _ in
+                self.selection = .profile
+                self.block = true
+            }
+            NotificationCenter.default.addObserver(forName: .showUpdateNotification,
+                                                   object: nil, queue: .main) { _ in
+                self.updateNeeded = true
+            }
+        }
+        .onChange(of: selection) { newValue in
+            if block {
+                selection = .profile
+            }
+        }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())

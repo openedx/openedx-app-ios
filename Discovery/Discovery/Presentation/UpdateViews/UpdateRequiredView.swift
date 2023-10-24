@@ -12,9 +12,13 @@ public struct UpdateRequiredView: View {
     
     @Environment (\.isHorizontal) private var isHorizontal
     private let router: DiscoveryRouter
+    private let config: Config
+    private let showAccountLink: Bool
     
-    public init(router: DiscoveryRouter) {
+    public init(router: DiscoveryRouter, config: Config, showAccountLink: Bool = true) {
         self.router = router
+        self.config = config
+        self.showAccountLink = showAccountLink
     }
     
     public var body: some View {
@@ -29,41 +33,51 @@ public struct UpdateRequiredView: View {
                 Text(DiscoveryLocalization.updateRequiredDescription)
                     .font(Theme.Fonts.titleSmall)
                     .multilineTextAlignment(.center)
-                    Button(action: {
-                        // ACTION
-                    }, label: {
-                        HStack {
-                            Image(systemName: "questionmark.circle")
-                                .resizable()
-                                .frame(width: 16, height: 16)
+                Button(action: {
+                    // ACTION
+                }, label: {
+                    HStack {
+                        Image(systemName: "questionmark.circle")
+                            .resizable()
+                            .frame(width: 16, height: 16)
                         Text(DiscoveryLocalization.updateWhyNeed)
                             .font(Theme.Fonts.labelSmall)
-                        }
-                    })
+                    }
+                })
                 
                 HStack(spacing: 28) {
-                    Button(action: {
-                        NotificationCenter.default.post(name: .blockAppBeforeUpdate, object: "block")
-                        router.back(animated: false)
-                    }, label: {
-                        HStack {
-                        Text(DiscoveryLocalization.updateAccountSettings)
-                            .font(Theme.Fonts.labelLarge)
-                        }.padding(8)
-                    })
-                    
+                    if showAccountLink {
+                        Button(action: {
+                            NotificationCenter.default.post(name: .blockAppBeforeUpdate, object: "block")
+                            router.back(animated: false)
+                        }, label: {
+                            HStack {
+                                Text(DiscoveryLocalization.updateAccountSettings)
+                                    .font(Theme.Fonts.labelLarge)
+                            }.padding(8)
+                        })
+                    }
                     StyledButton(DiscoveryLocalization.updateButton, action: {
-                        
+                        openAppStore()
                     }).fixedSize()
                 }.padding(.top, isHorizontal ? 10 : 44)
-
+                
             }.padding(40)
                 .frame(maxWidth: 400)
         }.navigationTitle(DiscoveryLocalization.updateDeprecatedApp)
+            .navigationBarBackButtonHidden()
+    }
+    
+    private func openAppStore() {
+        guard let appStoreURL = URL(string: config.appStoreLink) else { return }
+        UIApplication.shared.open(appStoreURL)
     }
 }
 
 #Preview {
-    UpdateRequiredView(router: DiscoveryRouterMock())
-        .loadFonts()
+    UpdateRequiredView(
+        router: DiscoveryRouterMock(),
+        config: ConfigMock()
+    )
+    .loadFonts()
 }

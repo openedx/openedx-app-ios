@@ -22,6 +22,12 @@ public class Config {
     
     public let feedbackEmail = "support@example.com"
     
+    public let appUpdateEnabled: Bool = true
+    private let appStoreId = "0000000000"
+    public var appStoreLink: String {
+        "itms-apps://itunes.apple.com/app/id\(appStoreId)?mt=8"
+    }
+    
     public init(baseURL: String, oAuthClientId: String) {
         guard let url = URL(string: baseURL) else {
             fatalError("Ivalid baseURL")

@@ -38,6 +38,7 @@ class ScreenAssembly: Assembly {
             SignInViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(Config.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )
@@ -82,6 +83,7 @@ class ScreenAssembly: Assembly {
         container.register(DiscoveryViewModel.self) { r in
             DiscoveryViewModel(
                 router: r.resolve(DiscoveryRouter.self)!,
+                config: r.resolve(Config.self)!,
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DiscoveryAnalytics.self)!

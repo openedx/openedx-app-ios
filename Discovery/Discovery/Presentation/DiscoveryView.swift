@@ -122,9 +122,6 @@ public struct DiscoveryView: View {
                 reloadAction: {
                     await viewModel.discovery(page: 1, withProgress: false)
                 })
-            if viewModel.updateNeeded {
-                UpdateNotificationView()
-            }
             
             // MARK: - Error Alert
             if viewModel.showError {
@@ -146,6 +143,7 @@ public struct DiscoveryView: View {
             Task {
                 await viewModel.discovery(page: 1)
             }
+            viewModel.setupNotifications()
         }
         .background(Theme.Colors.background.ignoresSafeArea())
     }
@@ -155,6 +153,7 @@ public struct DiscoveryView: View {
 struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                    config: ConfigMock(),
                                     interactor: DiscoveryInteractor.mock,
                                     connectivity: Connectivity(),
                                     analytics: DiscoveryAnalyticsMock())

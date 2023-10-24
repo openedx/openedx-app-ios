@@ -15,10 +15,10 @@ public class DiscoveryViewModel: ObservableObject {
     public var totalPages = 1
     public private(set) var fetchInProgress = false
     var cancellables = Set<AnyCancellable>()
+    private var updateShowedOnce: Bool = false
     
     @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
-    @Published var updateNeeded: Bool = false
     
     var errorMessage: String? {
         didSet {
@@ -29,52 +29,23 @@ public class DiscoveryViewModel: ObservableObject {
     }
     
     let router: DiscoveryRouter
+    let config: Config
     let connectivity: ConnectivityProtocol
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     
     public init(
         router: DiscoveryRouter,
+        config: Config,
         interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
         analytics: DiscoveryAnalytics
     ) {
         self.router = router
+        self.config = config
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
-        
-        NotificationCenter.default.publisher(for: .appLatestVersion)
-            .sink { [weak self] notification in
-                if let latestVersion = notification.object as? String {
-                    if let info = Bundle.main.infoDictionary {
-                        guard let currentVersion: AnyObject = info["CFBundleShortVersionString"] as AnyObject?
-                        else { return }
-                        print(">>>> 🤡", latestVersion, currentVersion)
-                        guard let currentVersion = currentVersion as? String else { return }
-                        switch self?.compareVersions(currentVersion, latestVersion) {
-                        case .orderedAscending:
-                            print("Show alert to update app")
-                            router.showUpdateRecomendedView()
-                            self?.updateNeeded = true
-                            print("\(currentVersion) меньше, чем \(latestVersion)")
-                        case .orderedSame, .none, .orderedDescending:
-                            print("All okay")
-                            print("\(currentVersion) и \(latestVersion) равны")
-                        }
-                    }
-                }
-            }
-            .store(in: &cancellables)
-        
-        NotificationCenter.default.publisher(for: .appVersionLastSupportedDate)
-            .sink { [weak self] notification in
-                if let lastSupportedDate = notification.object as? String {
-                    print(">>>> 🤡", lastSupportedDate)
-                    self?.checkDate(supportDate: lastSupportedDate)
-                }
-            }
-            .store(in: &cancellables)
     }
     
     @MainActor
@@ -90,6 +61,38 @@ public class DiscoveryViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func setupNotifications() {
+        NotificationCenter.default.publisher(for: .appLatestVersion)
+            .sink { [weak self] notification in
+                if let latestVersion = notification.object as? String {
+                    if let info = Bundle.main.infoDictionary {
+                        guard let currentVersion: AnyObject = info["CFBundleShortVersionString"] as AnyObject?
+                        else { return }
+                        guard let currentVersion = currentVersion as? String else { return }
+                        switch self?.compareVersions(currentVersion, latestVersion) {
+                        case .orderedAscending:
+                            if self?.updateShowedOnce == false {
+                                self?.router.showUpdateRecomendedView()
+                                self?.updateShowedOnce = true
+                            }
+                            NotificationCenter.default.post(name: .showUpdateNotification, object: "update")
+                        case .orderedSame, .none, .orderedDescending:
+                            return
+                        }
+                    }
+                }
+            }.store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: .appVersionLastSupportedDate)
+            .sink { [weak self] notification in
+                if let lastSupportedDate = notification.object as? String {
+                    print(">>>> 🤡", lastSupportedDate)
+                    self?.checkDate(supportDate: lastSupportedDate)
+                }
+            }
+            .store(in: &cancellables)
     }
     
     @MainActor
@@ -120,8 +123,11 @@ public class DiscoveryViewModel: ObservableObject {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else if error.asAFError?.responseCode == 426 {
-                print(">>>> Попап, призывающий срочно обновится")
-                router.showUpdateRequiredView()
+                if self.config.appUpdateEnabled {
+                    DispatchQueue.main.async {
+                        self.router.showUpdateRequiredView(showAccountLink: true)
+                    }
+                }
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
@@ -144,7 +150,6 @@ public class DiscoveryViewModel: ObservableObject {
               let minor1 = Int(components1.last ?? ""),
               let major2 = Int(components2.first ?? ""),
               let minor2 = Int(components2.last ?? "") else {
-            // Обработка ошибок, если компоненты не могут быть преобразованы в числа
             return .orderedSame
         }
         
@@ -153,7 +158,6 @@ public class DiscoveryViewModel: ObservableObject {
         } else if major1 > major2 {
             return .orderedDescending
         } else {
-            // Основные версии равны, сравниваем второстепенные версии
             if minor1 < minor2 {
                 return .orderedAscending
             } else if minor1 > minor2 {
@@ -171,8 +175,10 @@ public class DiscoveryViewModel: ObservableObject {
         
         guard let date = dateFormatter.date(from: supportDate) else { return }
         if date < Date() {
-            router.showUpdateRequiredView()
-            print("Хардкод на пора обновится")
+            DispatchQueue.main.async {
+                self.router.showUpdateRequiredView(showAccountLink: true)
+                print("Хардкод на пора обновится")
+            }
         }
     }
 }

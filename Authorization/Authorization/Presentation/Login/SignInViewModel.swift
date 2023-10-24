@@ -31,7 +31,7 @@ public class SignInViewModel: ObservableObject {
     }
     
     let router: AuthorizationRouter
-    
+    private let config: Config
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
@@ -39,11 +39,13 @@ public class SignInViewModel: ObservableObject {
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
+        config: Config,
         analytics: AuthorizationAnalytics,
         validator: Validator
     ) {
         self.interactor = interactor
         self.router = router
+        self.config = config
         self.analytics = analytics
         self.validator = validator
     }
@@ -67,7 +69,11 @@ public class SignInViewModel: ObservableObject {
             router.showMainScreen()
         } catch let error {
             isShowProgress = false
-            if let validationError = error.validationError,
+            if error.asAFError?.responseCode == 426 {
+                if config.appUpdateEnabled {
+                    router.showUpdateRequiredView(showAccountLink: false)
+                }
+            } else if let validationError = error.validationError,
                let value = validationError.data?["error_description"] as? String {
                 errorMessage = value
             } else if case APIError.invalidGrant = error {

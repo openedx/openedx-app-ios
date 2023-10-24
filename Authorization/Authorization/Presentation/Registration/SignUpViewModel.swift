@@ -71,6 +71,10 @@ public class SignUpViewModel: ObservableObject {
             isShowProgress = false
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else if error.asAFError?.responseCode == 426 {
+                if config.appUpdateEnabled {
+                    router.showUpdateRequiredView(showAccountLink: false)
+                }
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }

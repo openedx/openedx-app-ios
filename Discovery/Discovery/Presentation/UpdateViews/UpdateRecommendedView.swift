@@ -7,14 +7,17 @@
 
 import SwiftUI
 import Core
+import StoreKit
 
 public struct UpdateRecommendedView: View {
     
     @Environment (\.isHorizontal) private var isHorizontal
     private let router: DiscoveryRouter
+    private let config: Config
     
-    public init(router: DiscoveryRouter) {
+    public init(router: DiscoveryRouter, config: Config) {
         self.router = router
+        self.config = config
     }
     
     public var body: some View {
@@ -47,7 +50,7 @@ public struct UpdateRecommendedView: View {
                     })
                     
                     StyledButton(DiscoveryLocalization.updateButton, action: {
-                        
+                        openAppStore()
                     }).fixedSize()
                 }.padding(.top, isHorizontal ? 0 : 44)
 
@@ -59,8 +62,16 @@ public struct UpdateRecommendedView: View {
                 .shadow(color: Color.black.opacity(0.4), radius: 12, x: 0, y: 0)
         }.navigationTitle(DiscoveryLocalization.updateDeprecatedApp)
     }
+    
+    private func openAppStore() {
+        guard let appStoreURL = URL(string: config.appStoreLink) else { return }
+            UIApplication.shared.open(appStoreURL)
+    }
 }
 
 #Preview {
-    UpdateRecommendedView()
+    UpdateRecommendedView(
+        router: DiscoveryRouterMock(),
+        config: ConfigMock()
+    )
 }
