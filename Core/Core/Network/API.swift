@@ -65,13 +65,23 @@ public final class API {
         if !route.path.isEmpty {
             url = url.appendingPathComponent(route.path)
         }
-        return try await session.request(
+        
+        let result = session.request(
             url,
             method: route.httpMethod,
             parameters: parameters,
             encoding: encoding,
             headers: route.headers
-        ).validateResponse().serializingData().value
+        ).validateResponse().serializingData()
+        if let lastDate = await result.response.response?.headers["EDX-APP-VERSION-LAST-SUPPORTED-DATE"] {
+            NotificationCenter.default.post(name: .appVersionLastSupportedDate, object: lastDate)
+        }
+        if let latestVersion = await result.response.response?.headers["EDX-APP-LATEST-VERSION"] {
+            NotificationCenter.default.post(name: .appLatestVersion, object: latestVersion)
+        }
+        await print(">>>> 1", result.response.response?.headers["EDX-APP-VERSION-LAST-SUPPORTED-DATE"])
+        await print(">>>> 1", result.response.response?.headers["EDX-APP-LATEST-VERSION"])
+        return try await result.value
     }
     
     private func callCookies(

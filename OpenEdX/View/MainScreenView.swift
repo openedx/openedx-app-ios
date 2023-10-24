@@ -17,6 +17,7 @@ struct MainScreenView: View {
     
     @State private var selection: MainTab = .discovery
     @State private var settingsTapped: Bool = false
+    @State private var block: Bool = false
     
     enum MainTab {
         case discovery
@@ -32,18 +33,20 @@ struct MainScreenView: View {
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondary)
+//        NotificationCenter.default.publisher(for: .blockAppBeforeUpdate)
+//            .sink { self _ in
+//                self?.selection = .profile
+//            }
+//            .store(in: &cancellables)
     }
     
     var body: some View {
         TabView(selection: $selection) {
-            DiscoveryView(
-                viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
-                router: Container.shared.resolve(DiscoveryRouter.self)!
-            )
+            DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!)
             .tabItem {
                 CoreAssets.discovery.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.discovery)
-            }
+            }.disabled(block)
             .tag(MainTab.discovery)
             
             VStack {
@@ -55,7 +58,7 @@ struct MainScreenView: View {
             .tabItem {
                 CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.dashboard)
-            }
+            }.disabled(block)
             .tag(MainTab.dashboard)
             
             VStack {
@@ -64,7 +67,7 @@ struct MainScreenView: View {
             .tabItem {
                 CoreAssets.programs.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.programs)
-            }
+            }.disabled(block)
             .tag(MainTab.programs)
             
             VStack {
@@ -78,6 +81,10 @@ struct MainScreenView: View {
             }
             .tag(MainTab.profile)
         }
+        .onChange(of: NotificationCenter.default.publisher(for: .blockAppBeforeUpdate), perform: { _ in
+            self.selection = .profile
+            self.block = true
+        })
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())

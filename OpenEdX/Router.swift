@@ -406,6 +406,20 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showUpdateRequiredView() {
+        let view = UpdateRequiredView(router: self)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showUpdateRecomendedView() {
+        let view = UpdateRecommendedView()
+        DispatchQueue.main.async {
+            self.presentView(transitionStyle: .crossDissolve, view: view)
+        }
+//        navigationController.pushViewController(controller, animated: true)
+    }
+    
     private func prepareToPresent <ToPresent: View> (_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)
     -> UIViewController {
         let hosting = UIHostingController(rootView: toPresent)

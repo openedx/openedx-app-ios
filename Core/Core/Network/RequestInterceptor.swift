@@ -38,6 +38,22 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
                 urlRequest.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
             }
             
+            let userAgent: String = {
+                if let info = Bundle.main.infoDictionary {
+                    let bundle: AnyObject = "edX/org.edx.mobile" as AnyObject
+                    let version: AnyObject = info["CFBundleShortVersionString"] as AnyObject? ?? "Unknown" as AnyObject
+                    let os: AnyObject = ProcessInfo.processInfo.operatingSystemVersionString as AnyObject
+                    var mutableUserAgent = NSMutableString(string: "\(bundle) (\(version); OS \(os))") as CFMutableString
+                    let transform = NSString(string: "Any-Latin; Latin-ASCII; [:^ASCII:] Remove") as CFString
+                    if CFStringTransform(mutableUserAgent, nil, transform, false) == true {
+                        return mutableUserAgent as String
+                    }
+                }
+                return "Alamofire"
+            }()
+            
+            urlRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+            
             completion(.success(urlRequest))
         }
     

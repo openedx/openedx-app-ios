@@ -81,6 +81,7 @@ class ScreenAssembly: Assembly {
         }
         container.register(DiscoveryViewModel.self) { r in
             DiscoveryViewModel(
+                router: r.resolve(DiscoveryRouter.self)!,
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DiscoveryAnalytics.self)!
