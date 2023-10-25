@@ -32,7 +32,7 @@ class RouteController: UIViewController {
         if let user = appStorage.user, appStorage.accessToken != nil {
             analytics.setUserID("\(user.id)")
             DispatchQueue.main.async {
-                self.showMainScreen()
+                self.showMainOrWhatsNewScreen()
             }
         } else {
             DispatchQueue.main.async {
@@ -49,22 +49,22 @@ class RouteController: UIViewController {
         present(navigation, animated: false)
     }
     
-    private func showMainScreen() {
-        let viewModel = WhatsNewViewModel(router: Container.shared.resolve(WhatsNewRouter.self)!)
-        let whatsNew = WhatsNewView(viewModel: viewModel)
-        let storage = Container.shared.resolve(AppStorage.self)!
-        let showWhatsNew = viewModel.shouldShowWhatsNew(savedVersion: storage.whatsNewVersion)
-        
-        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            print("App version: \(appVersion)")
-            // is appVersion logic are needed?
-        }
-        
-        if showWhatsNew {
+    private func showMainOrWhatsNewScreen() {
+        var storage = Container.shared.resolve(WhatsNewStorage.self)!
+        let config = Container.shared.resolve(Config.self)!
+
+        let viewModel = WhatsNewViewModel(storage: storage)
+        let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
+
+        if shouldShowWhatsNew && config.whatsNewEnabled {
             if let jsonVersion = viewModel.getVersion() {
                 storage.whatsNewVersion = jsonVersion
             }
-            let controller = UIHostingController(rootView: whatsNew)
+            let whatsNewView = WhatsNewView(
+                router: Container.shared.resolve(WhatsNewRouter.self)!,
+                viewModel: viewModel
+            )
+            let controller = UIHostingController(rootView: whatsNewView)
             navigation.viewControllers = [controller]
         } else {
             let controller = UIHostingController(rootView: MainScreenView())

@@ -22,6 +22,8 @@ public class Config {
     
     public let feedbackEmail = "support@example.com"
     
+    public let whatsNewEnabled: Bool = true
+    
     public init(baseURL: String, oAuthClientId: String) {
         guard let url = URL(string: baseURL) else {
             fatalError("Ivalid baseURL")

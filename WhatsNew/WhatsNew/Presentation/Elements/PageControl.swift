@@ -9,12 +9,12 @@ import SwiftUI
 import Core
 
 struct PageControl: View {
-    var numberOfPages: Int
+    let numberOfPages: Int
     var currentPage: Int
 
     private var dots: some View {
         HStack(spacing: 8) {
-            ForEach(0..<numberOfPages) { page in
+            ForEach(0 ..< numberOfPages) { page in
                 RoundedRectangle(cornerRadius: 4)
                     .frame(width: page == currentPage ? 24 : 8, height: 8)
                     .foregroundColor(page == currentPage ? Theme.Colors.accentColor : Theme.Colors.textSecondary)

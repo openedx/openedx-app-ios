@@ -9,8 +9,9 @@ import Foundation
 import KeychainSwift
 import Core
 import Profile
+import WhatsNew
 
-public class AppStorage: CoreStorage, ProfileStorage {
+public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
 
     private let keychain: KeychainSwift
     private let userDefaults: UserDefaults

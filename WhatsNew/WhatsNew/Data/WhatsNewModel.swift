@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 // MARK: - WhatsNewModelElement
 public struct WhatsNewModelElement: Codable {
@@ -60,9 +59,11 @@ extension WhatsNewModel {
     var domain: [WhatsNewPage] {
         guard let latestVersion = findLatestVersion(self.map { $0.version }) else { return [] }
         return self.first(where: { $0.version == latestVersion })?.messages.map {
-                WhatsNewPage(image: $0.image,
-                             title: $0.title,
-                             description: $0.message)
+            WhatsNewPage(
+                image: $0.image,
+                title: $0.title,
+                description: $0.message
+            )
         } ?? []
     }
 }

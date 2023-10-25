@@ -144,6 +144,10 @@ class AppAssembly: Assembly {
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         
+        container.register(WhatsNewStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
+        
         container.register(ProfileStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)

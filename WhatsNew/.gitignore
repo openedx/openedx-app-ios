@@ -4,8 +4,8 @@
 
 ## User settings
 xcuserdata/*
-/Profile.xcodeproj/xcuserdata/
-/Profile.xcworkspace/xcuserdata/
+/WhatsNew.xcodeproj/xcuserdata/
+/WhatsNew.xcworkspace/xcuserdata/
 
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint

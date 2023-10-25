@@ -9,7 +9,9 @@ import SwiftUI
 import Core
 
 public struct WhatsNewView: View {
-
+    
+    private let router: WhatsNewRouter
+    
     @ObservedObject
     private var viewModel: WhatsNewViewModel
     
@@ -18,7 +20,8 @@ public struct WhatsNewView: View {
     
     @State var index = 0
     
-    public init(viewModel: WhatsNewViewModel) {
+    public init(router: WhatsNewRouter, viewModel: WhatsNewViewModel) {
+        self.router = router
         self.viewModel = viewModel
     }
     
@@ -32,7 +35,7 @@ public struct WhatsNewView: View {
                         ForEach(Array(viewModel.newItems.enumerated()), id: \.offset) { _, new in
                             adaptiveStack(isHorizontal: isHorizontal) {
                                 ZStack(alignment: .center) {
-                                    Image(new.image, bundle: Bundle(for: ___.self))
+                                    Image(new.image, bundle: Bundle(for: BundleToken.self))
                                         .resizable()
                                         .scaledToFit()
                                         .frame(minWidth: 250, maxWidth: 300)
@@ -86,36 +89,25 @@ public struct WhatsNewView: View {
                             .allowsHitTesting(false)
                         
                         HStack(spacing: 36) {
-                            CustomButton(type: .previous, action: {
+                            WhatsNewNavigationButton(type: .previous, action: {
                                 if index != 0 {
                                     withAnimation(.linear(duration: 0.3)) {
                                         index -= 1
                                     }
                                 }
                             }).opacity(index != 0 ? 1 : 0)
-                            CustomButton(type: viewModel.index < viewModel.newItems.count - 1 ? .next : .done, action: {
-                                if index < viewModel.newItems.count - 1 {
-                                    withAnimation(.linear(duration: 0.3)) {
-                                        index += 1
+                            WhatsNewNavigationButton(
+                                type: viewModel.index < viewModel.newItems.count - 1 ? .next : .done,
+                                action: {
+                                    if index < viewModel.newItems.count - 1 {
+                                        withAnimation(.linear(duration: 0.3)) {
+                                            index += 1
+                                        }
+                                    } else {
+                                        router.showMainOrWhatsNewScreen()
                                     }
-                                } else {
-                                    viewModel.router.showMainScreen()
                                 }
-                            }
-                                         )
-//                            if viewModel.index < viewModel.newItems.count - 1 {
-//                                CustomButton(type: .next, action: {
-//                                    if index < viewModel.newItems.count - 1 {
-//                                        withAnimation(.linear(duration: 0.3)) {
-//                                            index += 1
-//                                        }
-//                                    }
-//                                })
-//                            } else {
-//                                CustomButton(type: .done, action: {
-//                                    viewModel.router.showMainScreen()
-//                                })
-//                            }
+                            )
                         }
                     }
                     .padding(.bottom, isHorizontal ? 0 : 52)
@@ -138,11 +130,11 @@ public struct WhatsNewView: View {
                     viewModel.index = ind
                 }
             }
-            .navigationTitle("What's New?")
+            .navigationTitle(WhatsNewLocalization.title)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button(action: {
-                        viewModel.router.showMainScreen()
+                        router.showMainOrWhatsNewScreen()
                     }, label: {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentColor)
@@ -152,17 +144,17 @@ public struct WhatsNewView: View {
         }
     }
     
-    // swiftlint:disable type_name
-    class ___ {}
-    // swiftlint:enable type_name
-    
+    class BundleToken {}
 }
 
 #if DEBUG
 struct WhatsNewView_Previews: PreviewProvider {
     static var previews: some View {
-        WhatsNewView(viewModel: WhatsNewViewModel(router: WhatsNewRouterMock()))
-            .loadFonts()
+        WhatsNewView(
+            router: WhatsNewRouterMock(),
+            viewModel: WhatsNewViewModel(storage: WhatsNewStorageMock())
+        )
+        .loadFonts()
     }
 }
 #endif

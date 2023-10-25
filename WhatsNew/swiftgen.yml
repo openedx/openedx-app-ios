@@ -7,12 +7,12 @@ strings:
         publicAccess: true
         enumName: WhatsNewLocalization
       output: WhatsNew/SwiftGen/Strings.swift
-xcassets:
-  inputs:
-    - WhatsNew/Assets.xcassets
-  outputs:
-    templateName: swift5
-    params:
-        publicAccess: true
-        enumName: WhatsNewAssets
-    output: WhatsNew/SwiftGen/Assets.swift
+#xcassets:
+#  inputs:
+#    - WhatsNew/Assets.xcassets
+#  outputs:
+#    templateName: swift5
+#    params:
+#        publicAccess: true
+#        enumName: WhatsNewAssets
+#    output: WhatsNew/SwiftGen/Assets.swift

@@ -58,14 +58,16 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(viewControllers, animated: true)
     }
     
-    public func showMainScreen() {
+    public func showMainOrWhatsNewScreen() {
         showToolBar()
-        let viewModel = WhatsNewViewModel(router: Container.shared.resolve(WhatsNewRouter.self)!)
-        let whatsNew = WhatsNewView(viewModel: viewModel)
-        let storage = Container.shared.resolve(AppStorage.self)!
-        let showWhatsNew = viewModel.shouldShowWhatsNew(savedVersion: storage.whatsNewVersion)
-        
-        if showWhatsNew {
+        var storage = Container.shared.resolve(WhatsNewStorage.self)!
+        let config = Container.shared.resolve(Config.self)!
+
+        let viewModel = WhatsNewViewModel(storage: storage)
+        let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
+        let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
+               
+        if shouldShowWhatsNew && config.whatsNewEnabled {
             if let jsonVersion = viewModel.getVersion() {
                 storage.whatsNewVersion = jsonVersion
             }
@@ -78,12 +80,6 @@ public class Router: AuthorizationRouter,
             navigationController.setViewControllers([controller], animated: true)
         }
     }
-    
-//    public func showMainScreen() {
-//        showToolBar()
-//        let controller = UIHostingController(rootView: MainScreenView())
-//        navigationController.setViewControllers([controller], animated: true)
-//    }
     
     public func showLoginScreen() {
         let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
