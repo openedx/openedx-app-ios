@@ -50,6 +50,10 @@ public struct UpdateNotificationView: View {
     }
 }
 
-#Preview {
-    UpdateNotificationView()
+#if DEBUG
+struct UpdateNotificationView_Previews: PreviewProvider {
+    static var previews: some View {
+        UpdateNotificationView()
+    }
 }
+#endif

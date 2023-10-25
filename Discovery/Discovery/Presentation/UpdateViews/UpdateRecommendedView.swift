@@ -69,9 +69,13 @@ public struct UpdateRecommendedView: View {
     }
 }
 
-#Preview {
-    UpdateRecommendedView(
-        router: DiscoveryRouterMock(),
-        config: ConfigMock()
-    )
+#if DEBUG
+struct UpdateRecommendedView_Previews: PreviewProvider {
+    static var previews: some View {
+        UpdateRecommendedView(
+            router: DiscoveryRouterMock(),
+            config: ConfigMock()
+        )
+    }
 }
+#endif

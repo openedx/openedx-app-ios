@@ -1786,17 +1786,10 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 		return __value
     }
 
-    open func logOut() throws {
+    open func logOut() {
         addInvocation(.m_logOut)
 		let perform = methodPerformValue(.m_logOut) as? () -> Void
 		perform?()
-		do {
-		    _ = try methodReturnValue(.m_logOut).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
     }
 
     open func getSpokenLanguages() -> [PickerFields.Option] {
@@ -2085,16 +2078,6 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getMyProfileOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (UserProfile).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func logOut(willThrow: Error...) -> MethodStub {
-            return Given(method: .m_logOut, products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func logOut(willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_logOut, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
 			willProduce(stubber)
 			return given
         }

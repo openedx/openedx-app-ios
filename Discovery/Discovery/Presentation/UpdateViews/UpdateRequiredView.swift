@@ -74,10 +74,14 @@ public struct UpdateRequiredView: View {
     }
 }
 
-#Preview {
-    UpdateRequiredView(
+#if DEBUG
+struct UpdateRequiredView_Previews: PreviewProvider {
+    static var previews: some View {
+        UpdateRequiredView(
         router: DiscoveryRouterMock(),
         config: ConfigMock()
     )
     .loadFonts()
+    }
 }
+#endif
