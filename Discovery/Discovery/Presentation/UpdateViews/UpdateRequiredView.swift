@@ -33,18 +33,7 @@ public struct UpdateRequiredView: View {
                 Text(DiscoveryLocalization.updateRequiredDescription)
                     .font(Theme.Fonts.titleSmall)
                     .multilineTextAlignment(.center)
-                Button(action: {
-                    // ACTION
-                }, label: {
-                    HStack {
-                        Image(systemName: "questionmark.circle")
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                        Text(DiscoveryLocalization.updateWhyNeed)
-                            .font(Theme.Fonts.labelSmall)
-                    }
-                })
-                
+
                 HStack(spacing: 28) {
                     if showAccountLink {
                         Button(action: {
