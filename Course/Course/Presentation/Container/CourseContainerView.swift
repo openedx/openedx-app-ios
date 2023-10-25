@@ -74,6 +74,15 @@ public struct CourseContainerView: View {
                         }
                         .tag(CourseTab.videos)
                         
+                        CourseDatesView(courseID: courseID,
+                                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
+                                                                            argument: courseID)!)
+                        .tabItem {
+                            CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
+                            Text("Dates")
+                        }
+                        .tag("Dates")
+                        
                         DiscussionTopicsView(courseID: courseID,
                                              viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                                                  argument: title)!,

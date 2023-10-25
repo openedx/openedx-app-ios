@@ -11,7 +11,7 @@ public struct CourseDetails {
     public let courseID: String
     public let org: String
     public let courseTitle: String
-    public let courseDescription: String
+    public let courseDescription: String?
     public let courseStart: Date?
     public let courseEnd: Date?
     public let enrollmentStart: Date?
@@ -24,7 +24,7 @@ public struct CourseDetails {
     public init(courseID: String,
                 org: String,
                 courseTitle: String,
-                courseDescription: String,
+                courseDescription: String?,
                 courseStart: Date?,
                 courseEnd: Date?,
                 enrollmentStart: Date?,

@@ -9,7 +9,7 @@ import Foundation
 import Core
 
 public protocol ProfileStorage {
-    var userProfile: DataLayer.UserProfile? {get set}
+    var userProfile: DataLayer.UserProfile? { get set }
 }
 
 #if DEBUG

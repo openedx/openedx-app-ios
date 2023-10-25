@@ -28,22 +28,22 @@ class BuildConfiguration {
     var baseURL: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "https://example-dev.com"
+            return "https://raccoonapis.sandbox.edx.org"
         case .debugStage, .releaseStage:
-            return "https://example-stage.com"
+            return "https://raccoonapis.sandbox.edx.org"
         case .debugProd, .releaseProd:
-            return "https://example.com"
+            return "https://raccoonapis.sandbox.edx.org"
         }
     }
     
     var clientId: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "DEV_CLIENT_ID"
+            return "rg-edx-oauth-client-id"
         case .debugStage, .releaseStage:
-            return "STAGE_CLIENT_ID"
+            return "rg-edx-oauth-client-id"
         case .debugProd, .releaseProd:
-            return "PROD_CLIENT_ID"
+            return "rg-edx-oauth-client-id"
         }
     }
     

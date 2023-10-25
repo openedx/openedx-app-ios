@@ -11,7 +11,7 @@ public class Config {
     
     public let baseURL: URL
     public let oAuthClientId: String
-    public let tokenType: TokenType = .jwt
+    public let tokenType: TokenType = .bearer
     
     public lazy var termsOfUse: URL? = {
         URL(string: "\(baseURL.description)/tos")

@@ -8,10 +8,10 @@
 import Foundation
 
 public protocol CoreStorage {
-    var accessToken: String? {get set}
-    var refreshToken: String? {get set}
-    var cookiesDate: String? {get set}
-    var user: DataLayer.User? {get set}
+    var accessToken: String? { get set }
+    var refreshToken: String? { get set }
+    var cookiesDate: String? { get set }
+    var user: DataLayer.User? { get set }
     var userSettings: UserSettings? {get set}
     func clear()
 }

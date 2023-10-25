@@ -298,6 +298,15 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(CourseDatesViewModel.self) { r, courseID in
+            CourseDatesViewModel(
+                interactor: r.resolve(CourseInteractorProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!,
+                cssInjector: r.resolve(CSSInjector.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                courseID: courseID)
+        }
+        
         // MARK: Discussion
         container.register(DiscussionRepositoryProtocol.self) { r in
             DiscussionRepository(
