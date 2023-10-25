@@ -36,15 +36,14 @@ class RouteController: UIViewController {
             }
         } else {
             DispatchQueue.main.async {
-                self.showAuthorization()
+                self.showStartupScreen()
             }
         }
     }
     
-    private func showAuthorization() {
+    private func showStartupScreen() {
         let controller = UIHostingController(
-            rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
-        )
+            rootView: StartupView(viewModel: diContainer.resolve(StartupViewModel.self)!))
         navigation.viewControllers = [controller]
         present(navigation, animated: false)
     }

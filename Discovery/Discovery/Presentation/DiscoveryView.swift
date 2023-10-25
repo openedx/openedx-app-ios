@@ -14,6 +14,12 @@ public struct DiscoveryView: View {
     private var viewModel: DiscoveryViewModel
     @State private var isRefreshing: Bool = false
     
+    private var fromStartupScreen: Bool = false
+    private var router: DiscoveryRouter
+    
+    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.presentationMode) private var presentationMode
+    
     private let discoveryNew: some View = VStack(alignment: .leading) {
         Text(DiscoveryLocalization.Header.title1)
             .font(Theme.Fonts.displaySmall)
@@ -23,8 +29,11 @@ public struct DiscoveryView: View {
             .foregroundColor(Theme.Colors.textPrimary)
     }.listRowBackground(Color.clear)
     
-    public init(viewModel: DiscoveryViewModel) {
+    public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter, searchQuery: String? = nil, fromStartupScreen: Bool = false) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.router = router
+        self.fromStartupScreen = fromStartupScreen
+        viewModel.searchQuery = searchQuery
     }
     
     public var body: some View {
@@ -43,11 +52,11 @@ public struct DiscoveryView: View {
                     Spacer()
                 }
                 .onTapGesture {
-                    viewModel.router.showDiscoverySearch()
+                    router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
                     viewModel.discoverySearchBarClicked()
                 }
                 .frame(minHeight: 48)
-                .frame(maxWidth: 532)
+                .frame(maxWidth: .infinity)
                 .background(
                     Theme.Shapes.textInputShape
                         .fill(Theme.Colors.textInputUnfocusedBackground)
@@ -57,9 +66,10 @@ public struct DiscoveryView: View {
                         .stroke(lineWidth: 1)
                         .fill(Theme.Colors.textInputUnfocusedStroke)
                 ).onTapGesture {
-                    viewModel.router.showDiscoverySearch()
+                    router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
                     viewModel.discoverySearchBarClicked()
                 }
+                .padding(.top, 11.5)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
                 
@@ -139,11 +149,18 @@ public struct DiscoveryView: View {
                 }
             }
         }
+        .navigationBarHidden(fromStartupScreen ? false : true)
         .onFirstAppear {
+            if !(viewModel.searchQuery?.isEmpty ?? true) {
+                router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
+            }
             Task {
                 await viewModel.discovery(page: 1)
             }
             viewModel.setupNotifications()
+        }
+        .onDisappear {
+            viewModel.searchQuery = ""
         }
         .background(Theme.Colors.background.ignoresSafeArea())
     }
@@ -159,11 +176,11 @@ struct DiscoveryView_Previews: PreviewProvider {
                                     analytics: DiscoveryAnalyticsMock())
         let router = DiscoveryRouterMock()
         
-        DiscoveryView(viewModel: vm)
+        DiscoveryView(viewModel: vm, router: router)
             .preferredColorScheme(.light)
             .previewDisplayName("DiscoveryView Light")
         
-        DiscoveryView(viewModel: vm)
+        DiscoveryView(viewModel: vm, router: router)
             .preferredColorScheme(.dark)
             .previewDisplayName("DiscoveryView Dark")
     }

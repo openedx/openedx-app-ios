@@ -19,6 +19,7 @@ public class DiscoveryViewModel: ObservableObject {
     
     @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
+    @Published var searchQuery: String?
     
     var errorMessage: String? {
         didSet {

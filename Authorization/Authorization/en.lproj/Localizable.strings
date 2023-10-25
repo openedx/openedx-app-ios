@@ -29,3 +29,8 @@
 "FORGOT.REQUEST" = "Reset password";
 "FORGOT.CHECK_TITLE" = "Check your email";
 "FORGOT.CHECK_Description" = "We have sent a password recover instructions to your email ";
+
+"STARTUP.INFO_MESSAGE" = "Courses and programs from the world's best universities in your pocket.";
+"STARTUP.SEARCH_TITLE" = "What do you want to learn?";
+"STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
+"STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";

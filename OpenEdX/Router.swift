@@ -85,7 +85,14 @@ public class Router: AuthorizationRouter,
     public func showLoginScreen() {
         let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
         let controller = UIHostingController(rootView: view)
-        navigationController.setViewControllers([controller], animated: false)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showStartupScreen() {
+        let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
+        
+        let controller = UIHostingController(rootView: view)
+        navigationController.setViewControllers([controller], animated: true)
     }
     
     public func presentAppReview() {
@@ -175,12 +182,23 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showDiscoverySearch() {
+    public func showDiscoverySearch(searchQuery: String? = nil) {
         let viewModel = Container.shared.resolve(SearchViewModel<RunLoop>.self)!
-        let view = SearchView(viewModel: viewModel)
+        let view = SearchView(viewModel: viewModel, searchQuery: searchQuery)
         
         let controller = UIHostingController(rootView: view)
         navigationController.pushFade(viewController: controller)
+    }
+    
+    public func showDiscoveryScreen(searchQuery: String? = nil, fromStartupScreen: Bool = false) {
+        let view = DiscoveryView(
+            viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
+            router: Container.shared.resolve(DiscoveryRouter.self)!,
+            searchQuery: searchQuery,
+            fromStartupScreen: fromStartupScreen
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showDiscussionsSearch(courseID: String) {
