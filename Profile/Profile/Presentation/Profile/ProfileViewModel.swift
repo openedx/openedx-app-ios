@@ -120,17 +120,9 @@ public class ProfileViewModel: ObservableObject {
     
     @MainActor
     func logOut() async {
-        do {
-            try await interactor.logOut()
+            await interactor.logOut()
             router.showLoginScreen()
             analytics.userLogout(force: false)
-        } catch let error {
-            if error.isInternetError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
-        }
     }
     
     func trackProfileVideoSettingsClicked() {
