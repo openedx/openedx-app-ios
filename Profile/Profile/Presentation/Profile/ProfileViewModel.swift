@@ -105,7 +105,7 @@ public class ProfileViewModel: ObservableObject {
             }
         } catch let error {
             isShowProgress = false
-            if error.asAFError?.responseCode == 426 {
+            if error.isUpdateRequeiredError {
                 DispatchQueue.main.async {
                     self.versionState = .updateRequired
                 }

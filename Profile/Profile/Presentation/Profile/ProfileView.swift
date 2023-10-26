@@ -246,21 +246,20 @@ public struct ProfileView: View {
             }.frameLimit(sizePortrait: 420)
                 .padding(.top, 8)
                 .onChange(of: settingsTapped, perform: { _ in
-                    if let userModel = viewModel.userModel {
-                        viewModel.trackProfileEditClicked()
-                        viewModel.router.showEditProfile(
-                            userModel: userModel,
-                            avatar: viewModel.updatedAvatar,
-                            profileDidEdit: { updatedProfile, updatedImage in
-                                if let updatedProfile {
-                                    self.viewModel.userModel = updatedProfile
-                                }
-                                if let updatedImage {
-                                    self.viewModel.updatedAvatar = updatedImage
-                                }
+                    let userModel = viewModel.userModel ?? UserProfile()
+                    viewModel.trackProfileEditClicked()
+                    viewModel.router.showEditProfile(
+                        userModel: userModel,
+                        avatar: viewModel.updatedAvatar,
+                        profileDidEdit: { updatedProfile, updatedImage in
+                            if let updatedProfile {
+                                self.viewModel.userModel = updatedProfile
                             }
-                        )
-                    }
+                            if let updatedImage {
+                                self.viewModel.updatedAvatar = updatedImage
+                            }
+                        }
+                    )
                 })
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)

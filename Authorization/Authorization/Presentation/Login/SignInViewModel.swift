@@ -69,7 +69,7 @@ public class SignInViewModel: ObservableObject {
             router.showMainScreen()
         } catch let error {
             isShowProgress = false
-            if error.asAFError?.responseCode == 426 {
+            if error.isUpdateRequeiredError {
                 if config.appUpdateEnabled {
                     router.showUpdateRequiredView(showAccountLink: false)
                 }

@@ -77,7 +77,6 @@ public class DiscoveryViewModel: ObservableObject {
                                 self?.router.showUpdateRecomendedView()
                                 self?.updateShowedOnce = true
                             }
-                            NotificationCenter.default.post(name: .showUpdateNotification, object: "update")
                         case .orderedSame, .none, .orderedDescending:
                             return
                         }
@@ -121,7 +120,7 @@ public class DiscoveryViewModel: ObservableObject {
             fetchInProgress = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else if error.asAFError?.responseCode == 426 {
+            } else if error.isUpdateRequeiredError {
                 if self.config.appUpdateEnabled {
                     DispatchQueue.main.async {
                         self.router.showUpdateRequiredView(showAccountLink: true)

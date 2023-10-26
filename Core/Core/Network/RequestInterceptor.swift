@@ -40,7 +40,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
             
             let userAgent: String = {
                 if let info = Bundle.main.infoDictionary {
-                    let bundle: AnyObject = "edX/org.edx.mobile" as AnyObject
+                    let bundle: AnyObject = info[kCFBundleIdentifierKey as String] as AnyObject? ?? "Unknown" as AnyObject
                     let version: AnyObject = info["CFBundleShortVersionString"] as AnyObject? ?? "Unknown" as AnyObject
                     let os: AnyObject = ProcessInfo.processInfo.operatingSystemVersionString as AnyObject
                     var mutableUserAgent = NSMutableString(string: "\(bundle) (\(version); OS \(os))") as CFMutableString

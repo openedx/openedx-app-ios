@@ -26,6 +26,7 @@ public struct UpdateRecommendedView: View {
                 .ignoresSafeArea()
                 .onTapGesture {
                     router.dismiss(animated: true)
+                    NotificationCenter.default.post(name: .showUpdateNotification, object: "update")
                 }
             VStack(spacing: 10) {
                 Image(systemName: "arrow.up.circle")
@@ -33,19 +34,23 @@ public struct UpdateRecommendedView: View {
                     .frame(width: isHorizontal ? 50 : 110,
                            height: isHorizontal ? 50 : 110)
                     .foregroundColor(Theme.Colors.accentColor)
+                    .padding(.bottom, isHorizontal ? 0 : 20)
                 Text(DiscoveryLocalization.updateNeededTitle)
                     .font(Theme.Fonts.titleMedium)
                 Text(DiscoveryLocalization.updateNeededDescription)
                     .font(Theme.Fonts.titleSmall)
+                    .foregroundColor(Theme.Colors.avatarStroke)
                     .multilineTextAlignment(.center)
                 
                 HStack(spacing: 28) {
                     Button(action: {
                         router.dismiss(animated: true)
+                        NotificationCenter.default.post(name: .showUpdateNotification, object: "update")
                     }, label: {
                         HStack {
                         Text(DiscoveryLocalization.updateNeededNotNow)
                             .font(Theme.Fonts.labelLarge)
+                            .foregroundColor(Theme.Colors.accentColor)
                         }.padding(8)
                     })
                     
