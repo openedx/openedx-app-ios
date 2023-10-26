@@ -38,7 +38,7 @@ struct WhatsNewNavigationButton: View {
                 }
                 
                 if type == .done {
-                    CoreAssets.check.swiftUIImage
+                    CoreAssets.checkmark.swiftUIImage
                         .renderingMode(.template)
                         .foregroundColor(Color.white)
                 }

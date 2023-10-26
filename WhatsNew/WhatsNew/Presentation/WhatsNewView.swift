@@ -95,7 +95,7 @@ public struct WhatsNewView: View {
                                         index -= 1
                                     }
                                 }
-                            }).opacity(index != 0 ? 1 : 0)
+                            }).opacity(viewModel.index != 0 ? 1 : 0)
                             WhatsNewNavigationButton(
                                 type: viewModel.index < viewModel.newItems.count - 1 ? .next : .done,
                                 action: {
