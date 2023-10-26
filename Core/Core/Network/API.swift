@@ -12,9 +12,9 @@ import WebKit
 public final class API {
     
     private let session: Alamofire.Session
-    private let config: Config
-    
-    public init(session: Session, config: Config) {
+    private let config: Configurable
+
+    public init(session: Session, config: Configurable) {
         self.session = session
         self.config = config
     }

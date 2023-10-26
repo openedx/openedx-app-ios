@@ -25,7 +25,7 @@ public class ProfileViewModel: ObservableObject {
     
     
     let router: ProfileRouter
-    let config: Config
+    let config: Configurable
     let connectivity: ConnectivityProtocol
     
     private let interactor: ProfileInteractorProtocol
@@ -35,7 +35,7 @@ public class ProfileViewModel: ObservableObject {
         interactor: ProfileInteractorProtocol,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
-        config: Config,
+        config: Configurable,
         connectivity: ConnectivityProtocol
     ) {
         self.interactor = interactor

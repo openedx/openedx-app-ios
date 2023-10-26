@@ -17,10 +17,10 @@ public class DashboardRepository: DashboardRepositoryProtocol {
     
     private let api: API
     private let storage: CoreStorage
-    private let config: Config
+    private let config: Configurable
     private let persistence: DashboardPersistenceProtocol
     
-    public init(api: API, storage: CoreStorage, config: Config, persistence: DashboardPersistenceProtocol) {
+    public init(api: API, storage: CoreStorage, config: Configurable, persistence: DashboardPersistenceProtocol) {
         self.api = api
         self.storage = storage
         self.config = config

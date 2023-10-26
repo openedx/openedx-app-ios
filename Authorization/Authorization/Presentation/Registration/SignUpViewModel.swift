@@ -25,7 +25,7 @@ public class SignUpViewModel: ObservableObject {
     @Published var fields: [FieldConfiguration] = []
     
     let router: AuthorizationRouter
-    let config: Config
+    let config: Configurable
     let cssInjector: CSSInjector
     
     private let interactor: AuthInteractorProtocol
@@ -36,7 +36,7 @@ public class SignUpViewModel: ObservableObject {
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
         analytics: AuthorizationAnalytics,
-        config: Config,
+        config: Configurable,
         cssInjector: CSSInjector,
         validator: Validator
     ) {

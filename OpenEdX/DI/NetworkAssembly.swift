@@ -13,7 +13,7 @@ import Swinject
 class NetworkAssembly: Assembly {
     func assemble(container: Container) {
         container.register(RequestInterceptor.self) { r in
-            RequestInterceptor(config: r.resolve(Config.self)!, storage: r.resolve(CoreStorage.self)!)
+            RequestInterceptor(config: r.resolve(Configurable.self)!, storage: r.resolve(CoreStorage.self)!)
         }.inObjectScope(.container)
         
         container.register(Alamofire.Session.self) { r in
@@ -38,7 +38,7 @@ class NetworkAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(API.self) {r in
-            API(session: r.resolve(Alamofire.Session.self)!, config: r.resolve(Config.self)!)
+            API(session: r.resolve(Alamofire.Session.self)!, config: r.resolve(Configurable.self)!)
         }.inObjectScope(.container)
     }
 }

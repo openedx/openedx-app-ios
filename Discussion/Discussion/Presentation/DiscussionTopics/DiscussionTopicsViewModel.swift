@@ -30,13 +30,13 @@ public class DiscussionTopicsViewModel: ObservableObject {
     let interactor: DiscussionInteractorProtocol
     let router: DiscussionRouter
     let analytics: DiscussionAnalytics
-    let config: Config
-    
+    let config: Configurable
+
     public init(title: String,
                 interactor: DiscussionInteractorProtocol,
                 router: DiscussionRouter,
                 analytics: DiscussionAnalytics,
-                config: Config) {
+                config: Configurable) {
         self.title = title
         self.interactor = interactor
         self.router = router

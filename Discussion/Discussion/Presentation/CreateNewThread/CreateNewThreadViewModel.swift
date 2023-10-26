@@ -26,12 +26,12 @@ public class CreateNewThreadViewModel: ObservableObject {
     
     public let interactor: DiscussionInteractorProtocol
     public let router: DiscussionRouter
-    public let config: Config
-    
+    public let config: Configurable
+
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
-        config: Config
+        config: Configurable
     ) {
         self.interactor = interactor
         self.router = router

@@ -43,13 +43,13 @@ public class BaseResponsesViewModel {
     
     internal let interactor: DiscussionInteractorProtocol
     internal let router: DiscussionRouter
-    internal let config: Config
+    internal let config: Configurable
     internal let addPostSubject = CurrentValueSubject<Post?, Never>(nil)
     
     init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
-        config: Config
+        config: Configurable
     ) {
         self.interactor = interactor
         self.router = router

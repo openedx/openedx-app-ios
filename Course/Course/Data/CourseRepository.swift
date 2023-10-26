@@ -25,12 +25,12 @@ public class CourseRepository: CourseRepositoryProtocol {
     
     private let api: API
     private let appStorage: CoreStorage
-    private let config: Config
+    private let config: Configurable
     private let persistence: CoursePersistenceProtocol
     
     public init(api: API,
                 appStorage: CoreStorage,
-                config: Config,
+                config: Configurable,
                 persistence: CoursePersistenceProtocol) {
         self.api = api
         self.appStorage = appStorage

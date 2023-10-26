@@ -25,17 +25,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var assembler: Assembler?
     
     private var lastForceLogoutTime: TimeInterval = 0
-    
+
+    let environment: BuildEnvironment = EdxBuildEnvironment()
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
-        if BuildConfiguration.shared.firebaseOptions.apiKey != "" {
-            FirebaseApp.configure(options: BuildConfiguration.shared.firebaseOptions)
+        if let firebaseOptions = environment.firebaseOptions, environment.firebaseOptions?.apiKey != "" {
+            FirebaseApp.configure(options: firebaseOptions)
             Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
         }
-        
+
         initDI()
         
         Theme.Fonts.registerFonts()

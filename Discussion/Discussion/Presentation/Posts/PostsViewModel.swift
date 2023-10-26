@@ -76,14 +76,14 @@ public class PostsViewModel: ObservableObject {
     private var threads: ThreadLists = ThreadLists(threads: [])
     private let interactor: DiscussionInteractorProtocol
     private let router: DiscussionRouter
-    private let config: Config
+    private let config: Configurable
     internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     private var cancellable: AnyCancellable?
     
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
-        config: Config
+        config: Configurable
     ) {
         self.interactor = interactor
         self.router = router

@@ -112,14 +112,17 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
-        container.register(Config.self) { _ in
-            Config(baseURL: BuildConfiguration.shared.baseURL, oAuthClientId: BuildConfiguration.shared.clientId)
+        container.register(Configurable.self) { _ in
+            EdxConfig(
+                baseURL: AppDelegate.shared.environment.baseURL,
+                oAuthClientId: AppDelegate.shared.environment.clientId
+            )
         }.inObjectScope(.container)
-        
+
         container.register(CSSInjector.self) { _ in
-            CSSInjector(baseURL: BuildConfiguration.shared.baseURL)
+            CSSInjector(baseURL: AppDelegate.shared.environment.baseURL)
         }.inObjectScope(.container)
-        
+
         container.register(KeychainSwift.self) { _ in
             KeychainSwift()
         }.inObjectScope(.container)

@@ -11,8 +11,8 @@ import SwiftUI
 public class WebUnitViewModel: ObservableObject {
     
     let authInteractor: AuthInteractorProtocol
-    let config: Config
-    
+    let config: Configurable
+
     @Published var updatingCookies: Bool = false
     @Published var cookiesReady: Bool = false
     @Published var showError: Bool = false
@@ -26,7 +26,7 @@ public class WebUnitViewModel: ObservableObject {
         }
     }
     
-    public init(authInteractor: AuthInteractorProtocol, config: Config) {
+    public init(authInteractor: AuthInteractorProtocol, config: Configurable) {
         self.authInteractor = authInteractor
         self.config = config
     }

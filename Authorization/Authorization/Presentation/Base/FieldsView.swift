@@ -12,7 +12,7 @@ struct FieldsView: View {
     
     let fields: [FieldConfiguration]
     let router: BaseRouter
-    let configuration: Config
+    let configuration: Configurable
     let cssInjector: CSSInjector
     let proxy: GeometryProxy
     @Environment(\.colorScheme) var colorScheme
