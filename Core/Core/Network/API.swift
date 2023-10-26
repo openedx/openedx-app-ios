@@ -80,11 +80,9 @@ public final class API {
             
             if await result.response.response?.statusCode != 426 {
                 if let lastDate = lastDate {
-                    print(">>>> lastDate", lastDate)
                     NotificationCenter.default.post(name: .appVersionLastSupportedDate, object: lastDate)
                 }
                 if let latestVersion = latestVersion {
-                    print(">>>> latestVersion", latestVersion)
                     NotificationCenter.default.post(name: .appLatestVersion, object: latestVersion)
                 }
             }

@@ -88,7 +88,6 @@ public class DiscoveryViewModel: ObservableObject {
         NotificationCenter.default.publisher(for: .appVersionLastSupportedDate)
             .sink { [weak self] notification in
                 if let lastSupportedDate = notification.object as? String {
-                    print(">>>> 🤡", lastSupportedDate)
                     self?.checkDate(supportDate: lastSupportedDate)
                 }
             }
@@ -177,7 +176,6 @@ public class DiscoveryViewModel: ObservableObject {
         if date < Date() {
             DispatchQueue.main.async {
                 self.router.showUpdateRequiredView(showAccountLink: true)
-                print("Хардкод на пора обновится")
             }
         }
     }
