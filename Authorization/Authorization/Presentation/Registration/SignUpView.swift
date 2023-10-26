@@ -103,13 +103,13 @@ public struct SignUpView: View {
                                         viewModel.trackCreateAccountClicked()
                                     }
                                     .padding(.top, 40)
-                                    .padding(.bottom, 80)
                                     .frame(maxWidth: .infinity)
                                 }
                                 SocialSignView(
                                     signType: .register,
                                     onSigned: viewModel.register
                                 )
+                                .padding(.bottom, 30)
                                 Spacer()
                             }
                             .padding(.horizontal, 24)
