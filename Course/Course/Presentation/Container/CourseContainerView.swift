@@ -15,6 +15,7 @@ public struct CourseContainerView: View {
     enum CourseTab {
         case course
         case videos
+        case dates
         case discussion
         case handounds
     }
@@ -79,9 +80,9 @@ public struct CourseContainerView: View {
                                                                             argument: courseID)!)
                         .tabItem {
                             CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
-                            Text("Dates")
+                            Text(CourseLocalization.CourseContainer.dates)
                         }
-                        .tag("Dates")
+                        .tag(CourseTab.dates)
                         
                         DiscussionTopicsView(courseID: courseID,
                                              viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
@@ -131,6 +132,8 @@ public struct CourseContainerView: View {
             return DiscussionLocalization.title
         case .handounds:
             return CourseLocalization.CourseContainer.handouts
+        case .dates:
+            return CourseLocalization.CourseContainer.dates
         }
     }
 }
