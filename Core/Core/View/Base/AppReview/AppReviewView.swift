@@ -40,6 +40,8 @@ public struct AppReviewView: View {
         }
     }
     
+    @ObservedObject private var viewModel: AppReviewViewModel
+    
     @State private var state: ReviewState = .vote
     @State private var rating = 0
     
@@ -47,8 +49,9 @@ public struct AppReviewView: View {
     @Environment (\.presentationMode) private var presentationMode
     private let config: Config
     
-    public init(config: Config) {
+    public init(config: Config, viewModel: AppReviewViewModel) {
         self.config = config
+        self.viewModel = viewModel
     }
     
     public var body: some View {
@@ -97,7 +100,7 @@ public struct AppReviewView: View {
 
 struct AppReviewView_Previews: PreviewProvider {
     static var previews: some View {
-        AppReviewView(config: ConfigMock())
+        AppReviewView(config: ConfigMock(), viewModel: AppReviewViewModel())
     }
 }
 
