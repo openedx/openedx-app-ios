@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import Core
 import Authorization
+import Swinject
 
 class RouteController: UIViewController {
     
@@ -40,10 +41,22 @@ class RouteController: UIViewController {
     }
     
     private func showAuthorization() {
-        let controller = UIHostingController(
-            rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
-        )
-        navigation.viewControllers = [controller]
+        guard let config = Container.shared.resolve(Configurable.self) else {
+            return
+        }
+        let viewModel = diContainer.resolve(SignInViewModel.self)!
+        if config.app == .openEdx {
+            let controller = UIHostingController(
+                rootView: SignInView(viewModel: viewModel)
+            )
+            navigation.viewControllers = [controller]
+        } else {
+            let controller = UIHostingController(
+                rootView: EdxSignInView(viewModel: viewModel)
+            )
+            navigation.viewControllers = [controller]
+        }
+
         present(navigation, animated: false)
     }
     

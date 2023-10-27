@@ -26,7 +26,6 @@
 		02ED50D829A66007008341CD /* languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 02ED50DA29A66007008341CD /* languages.json */; };
 		02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */; };
 		071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C828D1DB3F00344290 /* ScreenAssembly.swift */; };
-		0727876D28D23312002E9142 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0727876C28D23312002E9142 /* Environment.swift */; };
 		0727878E28D347C7002E9142 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0727878D28D347C7002E9142 /* MainScreenView.swift */; };
 		072787B128D34D83002E9142 /* Discovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 072787B028D34D83002E9142 /* Discovery.framework */; };
 		072787B228D34D83002E9142 /* Discovery.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 072787B028D34D83002E9142 /* Discovery.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -43,9 +42,10 @@
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		07D5DA4128D075AB00752FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3F28D075AB00752FD9 /* LaunchScreen.storyboard */; };
 		95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */; };
-		BAD56D0F2AEA73B20064918E /* EdxBuildEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D0C2AEA73B10064918E /* EdxBuildEnvironment.swift */; };
-		BAD56D102AEA73B20064918E /* BuildEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D0D2AEA73B10064918E /* BuildEnvironment.swift */; };
-		BAD56D112AEA73B20064918E /* OpenEdxBuildEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D0E2AEA73B10064918E /* OpenEdxBuildEnvironment.swift */; };
+		BAD56D132AEAB4A20064918E /* OpenEdxRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */; };
+		BAD56D152AEAB4D60064918E /* EdxRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D142AEAB4D60064918E /* EdxRouter.swift */; };
+		BAD56D342AEBF9430064918E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D312AEBF8DC0064918E /* Environment.swift */; };
+		BAD56D362AEBF9AB0064918E /* BuildEnvironmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D352AEBF9AB0064918E /* BuildEnvironmentProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -91,7 +91,6 @@
 		02ED50DB29A6600B008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = uk.lproj/languages.json; sourceTree = "<group>"; };
 		02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenAnalytics.swift; sourceTree = "<group>"; };
 		071009C828D1DB3F00344290 /* ScreenAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAssembly.swift; sourceTree = "<group>"; };
-		0727876C28D23312002E9142 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		0727878D28D347C7002E9142 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		072787B028D34D83002E9142 /* Discovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE1228D07845006D8A5D /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,9 +110,10 @@
 		8284179FC05AEE2591573E20 /* Pods-App-OpenEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A24D6A8E1BC4DF46AD68904C /* Pods-App-OpenEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
-		BAD56D0C2AEA73B10064918E /* EdxBuildEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdxBuildEnvironment.swift; sourceTree = "<group>"; };
-		BAD56D0D2AEA73B10064918E /* BuildEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildEnvironment.swift; sourceTree = "<group>"; };
-		BAD56D0E2AEA73B10064918E /* OpenEdxBuildEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenEdxBuildEnvironment.swift; sourceTree = "<group>"; };
+		BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenEdxRouter.swift; sourceTree = "<group>"; };
+		BAD56D142AEAB4D60064918E /* EdxRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdxRouter.swift; sourceTree = "<group>"; };
+		BAD56D312AEBF8DC0064918E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		BAD56D352AEBF9AB0064918E /* BuildEnvironmentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildEnvironmentProtocol.swift; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_OpenEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -193,10 +193,12 @@
 				07D5DA3428D075AA00752FD9 /* AppDelegate.swift */,
 				0770DE1628D080A1006D8A5D /* RouteController.swift */,
 				0770DE1F28D0858A006D8A5D /* Router.swift */,
+				BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */,
+				BAD56D142AEAB4D60064918E /* EdxRouter.swift */,
 				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
 				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
+				BAD56D322AEBF8DC0064918E /* Environment */,
 				0293A2012A6FC9E30090A336 /* Data */,
-				BAD56D0B2AEA73910064918E /* Environment */,
 				0727878C28D347B2002E9142 /* View */,
 				0770DE1A28D084BC006D8A5D /* DI */,
 				07D5DA3D28D075AB00752FD9 /* Assets.xcassets */,
@@ -240,13 +242,11 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		BAD56D0B2AEA73910064918E /* Environment */ = {
+		BAD56D322AEBF8DC0064918E /* Environment */ = {
 			isa = PBXGroup;
 			children = (
-				BAD56D0D2AEA73B10064918E /* BuildEnvironment.swift */,
-				BAD56D0C2AEA73B10064918E /* EdxBuildEnvironment.swift */,
-				BAD56D0E2AEA73B10064918E /* OpenEdxBuildEnvironment.swift */,
-				0727876C28D23312002E9142 /* Environment.swift */,
+				BAD56D312AEBF8DC0064918E /* Environment.swift */,
+				BAD56D352AEBF9AB0064918E /* BuildEnvironmentProtocol.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -390,12 +390,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAD56D362AEBF9AB0064918E /* BuildEnvironmentProtocol.swift in Sources */,
+				BAD56D342AEBF9430064918E /* Environment.swift in Sources */,
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
-				BAD56D102AEA73B20064918E /* BuildEnvironment.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
-				BAD56D0F2AEA73B20064918E /* EdxBuildEnvironment.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
 				02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */,
 				0727878E28D347C7002E9142 /* MainScreenView.swift in Sources */,
@@ -404,8 +404,8 @@
 				0770DE1E28D084E8006D8A5D /* AppAssembly.swift in Sources */,
 				025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */,
 				0770DE2028D0858A006D8A5D /* Router.swift in Sources */,
-				0727876D28D23312002E9142 /* Environment.swift in Sources */,
-				BAD56D112AEA73B20064918E /* OpenEdxBuildEnvironment.swift in Sources */,
+				BAD56D152AEAB4D60064918E /* EdxRouter.swift in Sources */,
+				BAD56D132AEAB4A20064918E /* OpenEdxRouter.swift in Sources */,
 				0293A2092A6FCDE50090A336 /* DashboardPersistence.swift in Sources */,
 				0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */,
 				071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */,

@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private var lastForceLogoutTime: TimeInterval = 0
 
-    let environment: BuildEnvironment = EdxBuildEnvironment()
+    let environment: BuildEnvironment = BuildEnvironment()
 
     func application(
         _ application: UIApplication,

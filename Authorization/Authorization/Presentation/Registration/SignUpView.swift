@@ -126,16 +126,11 @@ public struct SignUpView: View {
                 }
             }
             
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }.transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
-                        }
-                    }
+            SnackBarErrorView(
+                showError: viewModel.showError,
+                errorMessage: viewModel.errorMessage
+            ) {
+                viewModel.errorMessage = nil
             }
         }
         .ignoresSafeArea(.all, edges: .horizontal)

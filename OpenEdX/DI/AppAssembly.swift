@@ -29,9 +29,20 @@ class AppAssembly: Assembly {
         container.register(UINavigationController.self) { _ in
             self.navigation
         }.inObjectScope(.container)
-        
-        container.register(Router.self) { r in
-            Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
+
+        let  config = Config(
+            baseURL: AppDelegate.shared.environment.baseURL,
+            oAuthClientId: AppDelegate.shared.environment.clientId
+        )
+
+        if config.app == .edX {
+            container.register(Router.self) { r in
+                EdxRouter(navigationController: r.resolve(UINavigationController.self)!, container: container)
+            }
+        } else {
+            container.register(Router.self) { r in
+                OpenEdxRouter(navigationController: r.resolve(UINavigationController.self)!, container: container)
+            }
         }
         
         container.register(AnalyticsManager.self) { _ in
@@ -113,10 +124,7 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(Configurable.self) { _ in
-            EdxConfig(
-                baseURL: AppDelegate.shared.environment.baseURL,
-                oAuthClientId: AppDelegate.shared.environment.clientId
-            )
+            config
         }.inObjectScope(.container)
 
         container.register(CSSInjector.self) { _ in

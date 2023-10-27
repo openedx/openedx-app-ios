@@ -1,14 +1,14 @@
 //
-//  SignInView.swift
+//  EdxSignInView.swift
 //  Authorization
 //
-//  Created by Vladimir Chekyrta on 13.09.2022.
+//  Created by Eugene Yatsenko on 27.10.2023.
 //
 
 import SwiftUI
 import Core
 
-public struct SignInView: View {
+public struct EdxSignInView: View {
 
     @ObservedObject
     private var viewModel: SignInViewModel
@@ -40,26 +40,3 @@ public struct SignInView: View {
         .background(Theme.Colors.background.ignoresSafeArea(.all))
     }
 }
-
-#if DEBUG
-struct SignInView_Previews: PreviewProvider {
-    static var previews: some View {
-        let vm = SignInViewModel(
-            interactor: AuthInteractor.mock,
-            router: AuthorizationRouterMock(),
-            analytics: AuthorizationAnalyticsMock(),
-            validator: Validator()
-        )
-        
-        SignInView(viewModel: vm)
-            .preferredColorScheme(.light)
-            .previewDisplayName("SignInView Light")
-            .loadFonts()
-        
-        SignInView(viewModel: vm)
-            .preferredColorScheme(.dark)
-            .previewDisplayName("SignInView Dark")
-            .loadFonts()
-    }
-}
-#endif

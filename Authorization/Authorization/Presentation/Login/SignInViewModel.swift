@@ -11,7 +11,7 @@ import SwiftUI
 import Alamofire
 
 public class SignInViewModel: ObservableObject {
-    
+
     @Published private(set) var isShowProgress = false
     @Published private(set) var showError: Bool = false
     @Published private(set) var showAlert: Bool = false
