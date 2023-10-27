@@ -45,7 +45,7 @@
 		BAD56D132AEAB4A20064918E /* OpenEdxRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */; };
 		BAD56D152AEAB4D60064918E /* EdxRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D142AEAB4D60064918E /* EdxRouter.swift */; };
 		BAD56D342AEBF9430064918E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D312AEBF8DC0064918E /* Environment.swift */; };
-		BAD56D362AEBF9AB0064918E /* BuildEnvironmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D352AEBF9AB0064918E /* BuildEnvironmentProtocol.swift */; };
+		BAD56D362AEBF9AB0064918E /* BuildConfiguratable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D352AEBF9AB0064918E /* BuildConfiguratable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,7 +113,7 @@
 		BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenEdxRouter.swift; sourceTree = "<group>"; };
 		BAD56D142AEAB4D60064918E /* EdxRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdxRouter.swift; sourceTree = "<group>"; };
 		BAD56D312AEBF8DC0064918E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		BAD56D352AEBF9AB0064918E /* BuildEnvironmentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildEnvironmentProtocol.swift; sourceTree = "<group>"; };
+		BAD56D352AEBF9AB0064918E /* BuildConfiguratable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguratable.swift; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_OpenEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -191,12 +191,9 @@
 			children = (
 				025EF2F7297177F300B838AB /* OpenEdX.entitlements */,
 				07D5DA3428D075AA00752FD9 /* AppDelegate.swift */,
-				0770DE1628D080A1006D8A5D /* RouteController.swift */,
-				0770DE1F28D0858A006D8A5D /* Router.swift */,
-				BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */,
-				BAD56D142AEAB4D60064918E /* EdxRouter.swift */,
 				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
 				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
+				BA1CFE692AEC014E00ED7496 /* Routers */,
 				BAD56D322AEBF8DC0064918E /* Environment */,
 				0293A2012A6FC9E30090A336 /* Data */,
 				0727878C28D347B2002E9142 /* View */,
@@ -242,11 +239,22 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		BA1CFE692AEC014E00ED7496 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				0770DE1628D080A1006D8A5D /* RouteController.swift */,
+				0770DE1F28D0858A006D8A5D /* Router.swift */,
+				BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */,
+				BAD56D142AEAB4D60064918E /* EdxRouter.swift */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
 		BAD56D322AEBF8DC0064918E /* Environment */ = {
 			isa = PBXGroup;
 			children = (
+				BAD56D352AEBF9AB0064918E /* BuildConfiguratable.swift */,
 				BAD56D312AEBF8DC0064918E /* Environment.swift */,
-				BAD56D352AEBF9AB0064918E /* BuildEnvironmentProtocol.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -390,7 +398,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BAD56D362AEBF9AB0064918E /* BuildEnvironmentProtocol.swift in Sources */,
+				BAD56D362AEBF9AB0064918E /* BuildConfiguratable.swift in Sources */,
 				BAD56D342AEBF9430064918E /* Environment.swift in Sources */,
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,

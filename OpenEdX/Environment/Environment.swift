@@ -9,36 +9,25 @@ import Foundation
 import Core
 import FirebaseCore
 
-enum `Environment`: String {
-    case debugDev = "DebugDev"
-    case releaseDev = "ReleaseDev"
-    
-    case debugStage = "DebugStage"
-    case releaseStage = "ReleaseStage"
-    
-    case debugProd = "DebugProd"
-    case releaseProd = "ReleaseProd"
-}
-
-final class BuildEnvironment: BuildEnvironmentProtocol {
+final class BuildConfiguration: BuildConfiguratable {
 
     var environment: Environment
 
     var baseURL: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "https://raccoonapis.sandbox.edx.org"
+            return "https://example-dev.com"
         case .debugStage, .releaseStage:
             return "https://example-stage.com"
         case .debugProd, .releaseProd:
             return "https://example.com"
         }
     }
-
+    
     var clientId: String {
         switch environment {
         case .debugDev, .releaseDev:
-            return "rg-edx-oauth-client-id"
+            return "DEV_CLIENT_ID"
         case .debugStage, .releaseStage:
             return "STAGE_CLIENT_ID"
         case .debugProd, .releaseProd:

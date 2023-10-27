@@ -9,10 +9,20 @@ import Foundation
 import Core
 import FirebaseCore
 
-protocol BuildEnvironmentProtocol {
+enum `Environment`: String {
+    case debugDev = "DebugDev"
+    case releaseDev = "ReleaseDev"
+
+    case debugStage = "DebugStage"
+    case releaseStage = "ReleaseStage"
+
+    case debugProd = "DebugProd"
+    case releaseProd = "ReleaseProd"
+}
+
+protocol BuildConfiguratable {
     var environment: Environment { get }
     var baseURL: String { get }
     var clientId: String { get }
-
     var firebaseOptions: FirebaseOptions? { get }
 }

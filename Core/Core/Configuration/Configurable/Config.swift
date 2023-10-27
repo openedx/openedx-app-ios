@@ -8,7 +8,7 @@
 import Foundation
 
 public class Config: Configurable {
-    public var app: Apps { .edX }
+    public var app: Apps { .openEdx }
     public let baseURL: URL
     public let oAuthClientId: String
     public let tokenType: TokenType = .jwt

@@ -13,7 +13,8 @@ public enum TokenType: String {
 }
 
 public enum Apps {
-    case openEdx, edX
+    case openEdx
+    case edX
 }
 
 public protocol Configurable {
