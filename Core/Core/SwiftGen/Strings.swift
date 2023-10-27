@@ -123,6 +123,24 @@ public enum CoreLocalization {
     /// Search
     public static let search = CoreLocalization.tr("Localizable", "PICKER.SEARCH", fallback: "Search")
   }
+  public enum Review {
+    /// We’re sorry to hear your learning experience has had some issues. We appreciate all feedback.
+    public static let feedbackDescription = CoreLocalization.tr("Localizable", "REVIEW.FEEDBACK_DESCRIPTION", fallback: "We’re sorry to hear your learning experience has had some issues. We appreciate all feedback.")
+    /// Leave Us Feedback
+    public static let feedbackTitle = CoreLocalization.tr("Localizable", "REVIEW.FEEDBACK_TITLE", fallback: "Leave Us Feedback")
+    /// We received your feedback and will use it to help improve your learning experience going forward. Thank you for sharing!
+    public static let thanksForFeedbackDescription = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_FEEDBACK_DESCRIPTION", fallback: "We received your feedback and will use it to help improve your learning experience going forward. Thank you for sharing!")
+    /// Thank You
+    public static let thanksForFeedbackTitle = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_FEEDBACK_TITLE", fallback: "Thank You")
+    /// Thank you for sharing your feedback with us. Would you like to share your review of this app with other users on the app store?
+    public static let thanksForVoteDescription = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_VOTE_DESCRIPTION", fallback: "Thank you for sharing your feedback with us. Would you like to share your review of this app with other users on the app store?")
+    /// Thank You
+    public static let thanksForVoteTitle = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_VOTE_TITLE", fallback: "Thank You")
+    /// Your feedback matters to us. Would you take a moment to rate the app by tapping a star below? Thanks for your support!
+    public static let voteDescription = CoreLocalization.tr("Localizable", "REVIEW.VOTE_DESCRIPTION", fallback: "Your feedback matters to us. Would you take a moment to rate the app by tapping a star below? Thanks for your support!")
+    /// Enjoying Open edX?
+    public static let voteTitle = CoreLocalization.tr("Localizable", "REVIEW.VOTE_TITLE", fallback: "Enjoying Open edX?")
+  }
   public enum View {
     public enum Snackbar {
       /// Try Again
