@@ -16,9 +16,11 @@ import Discussion
 import Discovery
 import Dashboard
 import Profile
+import WhatsNew
 import Combine
  
 public class Router: AuthorizationRouter,
+                     WhatsNewRouter,
                      DiscoveryRouter,
                      ProfileRouter,
                      DashboardRouter,
@@ -56,10 +58,27 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(viewControllers, animated: true)
     }
     
-    public func showMainScreen() {
+    public func showMainOrWhatsNewScreen() {
         showToolBar()
-        let controller = UIHostingController(rootView: MainScreenView())
-        navigationController.setViewControllers([controller], animated: true)
+        var storage = Container.shared.resolve(WhatsNewStorage.self)!
+        let config = Container.shared.resolve(Config.self)!
+
+        let viewModel = WhatsNewViewModel(storage: storage)
+        let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
+        let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
+               
+        if shouldShowWhatsNew && config.whatsNewEnabled {
+            if let jsonVersion = viewModel.getVersion() {
+                storage.whatsNewVersion = jsonVersion
+            }
+            let controller = UIHostingController(rootView: whatsNew)
+            navigationController.viewControllers = [controller]
+            navigationController.setViewControllers([controller], animated: true)
+        } else {
+            let controller = UIHostingController(rootView: MainScreenView())
+            navigationController.viewControllers = [controller]
+            navigationController.setViewControllers([controller], animated: true)
+        }
     }
     
     public func showLoginScreen() {

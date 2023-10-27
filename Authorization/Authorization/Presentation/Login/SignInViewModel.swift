@@ -64,7 +64,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(username: username, password: password)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: .password)
-            router.showMainScreen()
+            router.showMainOrWhatsNewScreen()
         } catch let error {
             isShowProgress = false
             if let validationError = error.validationError,

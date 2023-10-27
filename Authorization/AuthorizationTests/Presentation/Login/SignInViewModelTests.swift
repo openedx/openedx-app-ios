@@ -37,7 +37,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "email", password: "")
         
         Verify(interactor, 0, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(router, 0, .showMainOrWhatsNewScreen())
         
         XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidEmailAddress)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -57,7 +57,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "")
         
         Verify(interactor, 0, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(router, 0, .showMainOrWhatsNewScreen())
         
         XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidPasswordLenght)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -82,7 +82,7 @@ final class SignInViewModelTests: XCTestCase {
         
         Verify(interactor, 1, .login(username: .any, password: .any))
         Verify(analytics, .userLogin(method: .any))
-        Verify(router, 1, .showMainScreen())
+        Verify(router, 1, .showMainOrWhatsNewScreen())
         
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
@@ -109,7 +109,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(router, 0, .showMainOrWhatsNewScreen())
         
         XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -132,7 +132,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(router, 0, .showMainOrWhatsNewScreen())
         
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.invalidCredentials)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -155,7 +155,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(router, 0, .showMainOrWhatsNewScreen())
         
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -180,7 +180,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(router, 0, .showMainOrWhatsNewScreen())
         
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertEqual(viewModel.isShowProgress, false)

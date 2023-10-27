@@ -1,0 +1,17 @@
+sourceryCommand: null
+sourceryTemplate: null
+unit.tests.mock:
+  sources:
+    include:
+    - ./../WhatsNew
+    - ./WhatsNew
+    exclude: []
+  output: ./WhatsNewTests/WhatsNewMock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - WhatsNew
+  - Foundation
+  - SwiftUI
+  - Combine
