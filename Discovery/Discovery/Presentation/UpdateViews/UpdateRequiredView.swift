@@ -37,7 +37,7 @@ public struct UpdateRequiredView: View {
                 HStack(spacing: 28) {
                     if showAccountLink {
                         Button(action: {
-                            NotificationCenter.default.post(name: .blockAppBeforeUpdate, object: "block")
+                            NotificationCenter.default.post(name: .onAppUpgradeAccountSettingsTapped, object: "block")
                             router.back(animated: false)
                         }, label: {
                             HStack {

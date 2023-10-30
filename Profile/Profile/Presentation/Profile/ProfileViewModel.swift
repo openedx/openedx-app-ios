@@ -22,7 +22,7 @@ public class ProfileViewModel: ObservableObject {
             }
         }
     }
-    var cancellables = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
     
     enum VersionState {
         case actual
@@ -53,28 +53,29 @@ public class ProfileViewModel: ObservableObject {
         self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
-        if config.appUpdateEnabled {
+        if config.appUpdateFeatureEnabled {
             generateVersionState()
         }
     }
     
     func openAppStore() {
         guard let appStoreURL = URL(string: config.appStoreLink) else { return }
-            UIApplication.shared.open(appStoreURL)
+        UIApplication.shared.open(appStoreURL)
     }
     
     func generateVersionState() {
         guard let info = Bundle.main.infoDictionary else { return }
-        guard let currentVersion: AnyObject = info["CFBundleShortVersionString"] as AnyObject? else { return }
-        guard let currentVersion = currentVersion as? String else { return }
+        guard let currentVersion = info["CFBundleShortVersionString"] as? String else { return }
         self.currentVersion = currentVersion
-        NotificationCenter.default.publisher(for: .appLatestVersion)
+        NotificationCenter.default.publisher(for: .onActualVersionReceived)
             .sink { [weak self] notification in
                 guard let latestVersion = notification.object as? String else { return }
-                self?.latestVersion = latestVersion
-                
-                if latestVersion != currentVersion {
-                    self?.versionState = .updateNeeded
+                DispatchQueue.main.async { [weak self] in
+                    self?.latestVersion = latestVersion
+                    
+                    if latestVersion != currentVersion {
+                        self?.versionState = .updateNeeded
+                    }
                 }
             }.store(in: &cancellables)
     }
@@ -106,9 +107,7 @@ public class ProfileViewModel: ObservableObject {
         } catch let error {
             isShowProgress = false
             if error.isUpdateRequeiredError {
-                DispatchQueue.main.async {
-                    self.versionState = .updateRequired
-                }
+                self.versionState = .updateRequired
             } else if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
@@ -120,9 +119,9 @@ public class ProfileViewModel: ObservableObject {
     
     @MainActor
     func logOut() async {
-            await interactor.logOut()
-            router.showLoginScreen()
-            analytics.userLogout(force: false)
+        try? await interactor.logOut()
+        router.showLoginScreen()
+        analytics.userLogout(force: false)
     }
     
     func trackProfileVideoSettingsClicked() {

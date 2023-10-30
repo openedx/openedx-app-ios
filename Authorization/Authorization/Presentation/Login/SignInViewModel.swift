@@ -69,12 +69,10 @@ public class SignInViewModel: ObservableObject {
             router.showMainScreen()
         } catch let error {
             isShowProgress = false
-            if error.isUpdateRequeiredError {
-                if config.appUpdateEnabled {
-                    router.showUpdateRequiredView(showAccountLink: false)
-                }
+            if error.isUpdateRequeiredError, config.appUpdateFeatureEnabled {
+                router.showUpdateRequiredView(showAccountLink: false)
             } else if let validationError = error.validationError,
-               let value = validationError.data?["error_description"] as? String {
+                      let value = validationError.data?["error_description"] as? String {
                 errorMessage = value
             } else if case APIError.invalidGrant = error {
                 errorMessage = CoreLocalization.Error.invalidCredentials

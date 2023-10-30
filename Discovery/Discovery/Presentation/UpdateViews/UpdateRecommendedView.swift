@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Core
-import StoreKit
 
 public struct UpdateRecommendedView: View {
     
@@ -26,7 +25,7 @@ public struct UpdateRecommendedView: View {
                 .ignoresSafeArea()
                 .onTapGesture {
                     router.dismiss(animated: true)
-                    NotificationCenter.default.post(name: .showUpdateNotification, object: "update")
+                    NotificationCenter.default.post(name: .onNewVersionAvaliable, object: nil)
                 }
             VStack(spacing: 10) {
                 Image(systemName: "arrow.up.circle")
@@ -45,12 +44,12 @@ public struct UpdateRecommendedView: View {
                 HStack(spacing: 28) {
                     Button(action: {
                         router.dismiss(animated: true)
-                        NotificationCenter.default.post(name: .showUpdateNotification, object: "update")
+                        NotificationCenter.default.post(name: .onNewVersionAvaliable, object: nil)
                     }, label: {
                         HStack {
-                        Text(DiscoveryLocalization.updateNeededNotNow)
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(Theme.Colors.accentColor)
+                            Text(DiscoveryLocalization.updateNeededNotNow)
+                                .font(Theme.Fonts.labelLarge)
+                                .foregroundColor(Theme.Colors.accentColor)
                         }.padding(8)
                     })
                     
@@ -58,7 +57,7 @@ public struct UpdateRecommendedView: View {
                         openAppStore()
                     }).fixedSize()
                 }.padding(.top, isHorizontal ? 0 : 44)
-
+                
             }.padding(isHorizontal ? 40 : 40)
                 .background(Theme.Colors.background)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -70,7 +69,7 @@ public struct UpdateRecommendedView: View {
     
     private func openAppStore() {
         guard let appStoreURL = URL(string: config.appStoreLink) else { return }
-            UIApplication.shared.open(appStoreURL)
+        UIApplication.shared.open(appStoreURL)
     }
 }
 

@@ -79,16 +79,16 @@ public struct ProfileView: View {
                                 .padding(.horizontal, 24)
                                 .font(Theme.Fonts.labelLarge)
                             VStack(alignment: .leading, spacing: 27) {
-                                    Button(action: {
-                                        viewModel.trackProfileVideoSettingsClicked()
-                                        viewModel.router.showSettings()
-                                    }, label: {
-                                        HStack {
+                                Button(action: {
+                                    viewModel.trackProfileVideoSettingsClicked()
+                                    viewModel.router.showSettings()
+                                }, label: {
+                                    HStack {
                                         Text(ProfileLocalization.settingsVideo)
                                         Spacer()
                                         Image(systemName: "chevron.right")
-                                        }
-                                    })
+                                    }
+                                })
                                 
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -152,7 +152,7 @@ public struct ProfileView: View {
                                 }
                                 
                                 // MARK: Version
-                                if viewModel.config.appUpdateEnabled {
+                                if viewModel.config.appUpdateFeatureEnabled {
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
@@ -167,7 +167,7 @@ public struct ProfileView: View {
                                                             .resizable()
                                                             .frame(width: 24, height: 24)
                                                     }
-                                                    Text("Version: \(viewModel.currentVersion)")
+                                                    Text("\(ProfileLocalization.Settings.version) \(viewModel.currentVersion)")
                                                 }
                                                 switch viewModel.versionState {
                                                 case .actual:
@@ -175,16 +175,16 @@ public struct ProfileView: View {
                                                         CoreAssets.checkmark.swiftUIImage
                                                             .renderingMode(.template)
                                                             .foregroundColor(.green)
-                                                        Text("Up-to-date")
+                                                        Text(ProfileLocalization.Settings.upToDate)
                                                             .font(Theme.Fonts.labelMedium)
                                                             .foregroundStyle(Theme.Colors.textSecondary)
                                                     }
                                                 case .updateNeeded:
-                                                    Text("Tap to update to version \(viewModel.latestVersion)")
+                                                    Text("\(ProfileLocalization.Settings.tapToUpdate) \(viewModel.latestVersion)")
                                                         .font(Theme.Fonts.labelMedium)
                                                         .foregroundStyle(Theme.Colors.accentColor)
                                                 case .updateRequired:
-                                                    Text("Tap to install required app update")
+                                                    Text(ProfileLocalization.Settings.tapToInstall)
                                                         .font(Theme.Fonts.labelMedium)
                                                         .foregroundStyle(Theme.Colors.accentColor)
                                                 }
@@ -208,37 +208,37 @@ public struct ProfileView: View {
                             
                             // MARK: - Log out
                             VStack {
-                                    Button(action: {
-                                        viewModel.router.presentView(transitionStyle: .crossDissolve) {
-                                            AlertView(
-                                                alertTitle: ProfileLocalization.LogoutAlert.title,
-                                                alertMessage: ProfileLocalization.LogoutAlert.text,
-                                                positiveAction: CoreLocalization.Alert.accept,
-                                                onCloseTapped: {
-                                                    viewModel.router.dismiss(animated: true)
-                                                },
-                                                okTapped: {
-                                                    viewModel.router.dismiss(animated: true)
-                                                    Task {
-                                                        await viewModel.logOut()
-                                                    }
-                                                }, type: .logOut
-                                            )
-                                        }
-                                    }, label: {
-                                        HStack {
+                                Button(action: {
+                                    viewModel.router.presentView(transitionStyle: .crossDissolve) {
+                                        AlertView(
+                                            alertTitle: ProfileLocalization.LogoutAlert.title,
+                                            alertMessage: ProfileLocalization.LogoutAlert.text,
+                                            positiveAction: CoreLocalization.Alert.accept,
+                                            onCloseTapped: {
+                                                viewModel.router.dismiss(animated: true)
+                                            },
+                                            okTapped: {
+                                                viewModel.router.dismiss(animated: true)
+                                                Task {
+                                                    await viewModel.logOut()
+                                                }
+                                            }, type: .logOut
+                                        )
+                                    }
+                                }, label: {
+                                    HStack {
                                         Text(ProfileLocalization.logout)
                                         Spacer()
                                         Image(systemName: "rectangle.portrait.and.arrow.right")
-                                        }
-                                    })
+                                    }
+                                })
                                 
                             }
                             .foregroundColor(Theme.Colors.alert)
-                                .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
-                                           strokeColor: .clear)
-                                .padding(.top, 24)
-                                .padding(.bottom, 60)
+                            .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
+                                       strokeColor: .clear)
+                            .padding(.top, 24)
+                            .padding(.bottom, 60)
                         }
                         Spacer()
                     }

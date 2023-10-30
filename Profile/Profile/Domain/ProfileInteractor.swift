@@ -14,7 +14,7 @@ public protocol ProfileInteractorProtocol {
     func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
     func getMyProfileOffline() throws -> UserProfile
-    func logOut() async
+    func logOut() async throws
     func getSpokenLanguages() -> [PickerFields.Option]
     func getCountries() -> [PickerFields.Option]
     func uploadProfilePicture(pictureData: Data) async throws
@@ -45,12 +45,8 @@ public class ProfileInteractor: ProfileInteractorProtocol {
         return try repository.getMyProfileOffline()
     }
     
-    public func logOut() async {
-        do {
-            try await repository.logOut()
-        } catch {
-            //
-        }
+    public func logOut() async throws {
+        try await repository.logOut()
     }
     
     public func getSpokenLanguages() -> [PickerFields.Option] {

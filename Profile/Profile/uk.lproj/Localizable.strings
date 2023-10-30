@@ -68,3 +68,8 @@
 "SETTINGS.QUALITY_540_TITLE" = "540p";
 "SETTINGS.QUALITY_720_TITLE" = "720p";
 "SETTINGS.QUALITY_AUTO_DESCRIPTION" = "Найкраща якість";
+
+"SETTINGS.VERSION" = "Версія:";
+"SETTINGS.UP_TO_DATE" = "Оновлено";
+"SETTINGS.TAP_TO_UPDATE" = "Клацніть, щоб оновити до версії";
+"SETTINGS.TAP_TO_INSTALL" = "Клацніть, щоб встановити обов'язкове оновлення програми";

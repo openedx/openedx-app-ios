@@ -418,9 +418,7 @@ public class Router: AuthorizationRouter,
     
     public func showUpdateRecomendedView() {
         let view = UpdateRecommendedView(router: self, config: Container.shared.resolve(Config.self)!)
-        DispatchQueue.main.async {
-            self.presentView(transitionStyle: .crossDissolve, view: view)
-        }
+        self.presentView(transitionStyle: .crossDissolve, view: view)
     }
     
     private func prepareToPresent <ToPresent: View> (_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)

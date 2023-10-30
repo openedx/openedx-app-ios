@@ -11,10 +11,10 @@ import SwiftUI
 
 public class DiscoveryViewModel: ObservableObject {
     
-    public var nextPage = 1
-    public var totalPages = 1
-    public private(set) var fetchInProgress = false
-    var cancellables = Set<AnyCancellable>()
+    var nextPage = 1
+    var totalPages = 1
+    private(set) var fetchInProgress = false
+    private var cancellables = Set<AnyCancellable>()
     private var updateShowedOnce: Bool = false
     
     @Published var courses: [CourseItem] = []
@@ -64,33 +64,26 @@ public class DiscoveryViewModel: ObservableObject {
     }
     
     func setupNotifications() {
-        NotificationCenter.default.publisher(for: .appLatestVersion)
+        NotificationCenter.default.publisher(for: .onActualVersionReceived)
             .sink { [weak self] notification in
                 if let latestVersion = notification.object as? String {
                     if let info = Bundle.main.infoDictionary {
-                        guard let currentVersion: AnyObject = info["CFBundleShortVersionString"] as AnyObject?
-                        else { return }
-                        guard let currentVersion = currentVersion as? String else { return }
-                        switch self?.compareVersions(currentVersion, latestVersion) {
+                        guard let currentVersion = info["CFBundleShortVersionString"] as? String,
+                                let self else { return }
+                        switch self.compareVersions(currentVersion, latestVersion) {
                         case .orderedAscending:
-                            if self?.updateShowedOnce == false {
-                                self?.router.showUpdateRecomendedView()
-                                self?.updateShowedOnce = true
+                            if self.updateShowedOnce == false {
+                                DispatchQueue.main.async {
+                                    self.router.showUpdateRecomendedView()
+                                }
+                                self.updateShowedOnce = true
                             }
-                        case .orderedSame, .none, .orderedDescending:
+                        default:
                             return
                         }
                     }
                 }
             }.store(in: &cancellables)
-        
-        NotificationCenter.default.publisher(for: .appVersionLastSupportedDate)
-            .sink { [weak self] notification in
-                if let lastSupportedDate = notification.object as? String {
-                    self?.checkDate(supportDate: lastSupportedDate)
-                }
-            }
-            .store(in: &cancellables)
     }
     
     @MainActor
@@ -120,12 +113,8 @@ public class DiscoveryViewModel: ObservableObject {
             fetchInProgress = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else if error.isUpdateRequeiredError {
-                if self.config.appUpdateEnabled {
-                    DispatchQueue.main.async {
-                        self.router.showUpdateRequiredView(showAccountLink: true)
-                    }
-                }
+            } else if error.isUpdateRequeiredError, self.config.appUpdateFeatureEnabled {
+                self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
@@ -162,19 +151,6 @@ public class DiscoveryViewModel: ObservableObject {
                 return .orderedDescending
             } else {
                 return .orderedSame
-            }
-        }
-    }
-    
-    private func checkDate(supportDate: String) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
-        guard let date = dateFormatter.date(from: supportDate) else { return }
-        if date < Date() {
-            DispatchQueue.main.async {
-                self.router.showUpdateRequiredView(showAccountLink: true)
             }
         }
     }

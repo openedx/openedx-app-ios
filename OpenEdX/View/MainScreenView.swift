@@ -17,8 +17,8 @@ struct MainScreenView: View {
     
     @State private var selection: MainTab = .discovery
     @State private var settingsTapped: Bool = false
-    @State private var block: Bool = false
-    @State private var updateNeeded: Bool = false
+    @State private var disableAllTabs: Bool = false
+    @State private var updateAvaliable: Bool = false
     
     enum MainTab {
         case discovery
@@ -28,6 +28,7 @@ struct MainScreenView: View {
     }
     
     private let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
+    private let config = Container.shared.resolve(Config.self)!
     
     init() {
         UITabBar.appearance().isTranslucent = false
@@ -40,8 +41,8 @@ struct MainScreenView: View {
         TabView(selection: $selection) {
             ZStack {
                 DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!)
-                if updateNeeded {
-                    UpdateNotificationView()
+                if updateAvaliable {
+                    UpdateNotificationView(config: config)
                 }
             }
             .tabItem {
@@ -55,8 +56,8 @@ struct MainScreenView: View {
                     viewModel: Container.shared.resolve(DashboardViewModel.self)!,
                     router: Container.shared.resolve(DashboardRouter.self)!
                 )
-                if updateNeeded {
-                    UpdateNotificationView()
+                if updateAvaliable {
+                    UpdateNotificationView(config: config)
                 }
             }
             .tabItem {
@@ -67,8 +68,8 @@ struct MainScreenView: View {
             
             ZStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
-                if updateNeeded {
-                    UpdateNotificationView()
+                if updateAvaliable {
+                    UpdateNotificationView(config: config)
                 }
             }
             .tabItem {
@@ -88,22 +89,6 @@ struct MainScreenView: View {
             }
             .tag(MainTab.profile)
         }
-        .onAppear {
-            NotificationCenter.default.addObserver(forName: .blockAppBeforeUpdate,
-                                                   object: nil, queue: .main) { _ in
-                self.selection = .profile
-                self.block = true
-            }
-            NotificationCenter.default.addObserver(forName: .showUpdateNotification,
-                                                   object: nil, queue: .main) { _ in
-                self.updateNeeded = true
-            }
-        }
-        .onChange(of: selection) { newValue in
-            if block {
-                selection = .profile
-            }
-        }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())
@@ -120,6 +105,18 @@ struct MainScreenView: View {
                     VStack {}
                 }
             })
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
+            selection = .profile
+            disableAllTabs = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
+            updateAvaliable = true
+        }
+        .onChange(of: selection) { _ in
+            if disableAllTabs {
+                selection = .profile
+            }
         }
         .onChange(of: selection, perform: { selection in
             switch selection {

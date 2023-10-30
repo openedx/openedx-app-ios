@@ -74,16 +74,12 @@ public final class API {
             headers: route.headers
         ).validateResponse().serializingData()
         
-        if config.appUpdateEnabled {
-            let lastDate = await result.response.response?.headers["EDX-APP-VERSION-LAST-SUPPORTED-DATE"]
+        if config.appUpdateFeatureEnabled {
             let latestVersion = await result.response.response?.headers["EDX-APP-LATEST-VERSION"]
             
             if await result.response.response?.statusCode != 426 {
-                if let lastDate = lastDate {
-                    NotificationCenter.default.post(name: .appVersionLastSupportedDate, object: lastDate)
-                }
                 if let latestVersion = latestVersion {
-                    NotificationCenter.default.post(name: .appLatestVersion, object: latestVersion)
+                    NotificationCenter.default.post(name: .onActualVersionReceived, object: latestVersion)
                 }
             }
         }

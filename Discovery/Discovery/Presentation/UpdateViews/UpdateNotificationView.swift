@@ -7,13 +7,14 @@
 
 import SwiftUI
 import Core
-import Swinject
 
 public struct UpdateNotificationView: View {
     
-    private let config = Container.shared.resolve(Config.self)!
+    private let config: Config
     
-    public init() {}
+    public init(config: Config) {
+        self.config = config
+    }
     
     public var body: some View {
         ZStack {
@@ -53,7 +54,7 @@ public struct UpdateNotificationView: View {
 #if DEBUG
 struct UpdateNotificationView_Previews: PreviewProvider {
     static var previews: some View {
-        UpdateNotificationView()
+        UpdateNotificationView(config: ConfigMock())
     }
 }
 #endif
