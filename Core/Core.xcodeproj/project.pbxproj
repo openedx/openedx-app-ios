@@ -67,6 +67,8 @@
 		02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */; };
 		02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833929B8A9AB00D33F33 /* DownloadManager.swift */; };
 		02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833B29B8C57800D33F33 /* DownloadView.swift */; };
+		02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */; };
+		02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */; };
 		02B2B594295C5C7A00914876 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2B593295C5C7A00914876 /* Thread.swift */; };
 		02B3E3B32930198600A50475 /* AVPlayerViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */; };
 		02B3F16E2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */; };
@@ -188,6 +190,8 @@
 		02A4833729B8A8F800D33F33 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		02A4833929B8A9AB00D33F33 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		02A4833B29B8C57800D33F33 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
+		02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyMailClient.swift; sourceTree = "<group>"; };
+		02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyMailer.swift; sourceTree = "<group>"; };
 		02B2B593295C5C7A00914876 /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerViewControllerExtension.swift; sourceTree = "<group>"; };
 		02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollViewCompat.swift; sourceTree = "<group>"; };
@@ -357,6 +361,15 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		02AFCC162AEFDB0F000360F0 /* ThirdPartyMailer */ = {
+			isa = PBXGroup;
+			children = (
+				02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */,
+				02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */,
+			);
+			path = ThirdPartyMailer;
+			sourceTree = "<group>";
+		};
 		02CF46C92954A42100A698EE /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
@@ -370,6 +383,7 @@
 		02E93F862AEBAED4006C4750 /* AppReview */ = {
 			isa = PBXGroup;
 			children = (
+				02AFCC162AEFDB0F000360F0 /* ThirdPartyMailer */,
 				02A463102AEA966C00331037 /* AppReviewView.swift */,
 				02E93F842AEBAEBC006C4750 /* AppReviewViewModel.swift */,
 			);
@@ -797,6 +811,7 @@
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
+				02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
 				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
@@ -827,6 +842,7 @@
 				0248C92329C075EF00DC8402 /* CourseBlockModel.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
+				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,

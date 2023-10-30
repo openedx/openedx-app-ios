@@ -44,6 +44,7 @@ public class AppReviewViewModel: ObservableObject {
     @Published var rating: Int = 0
     @Published var showReview: Bool = false
     @Published var feedback: String = ""
+    let clients = ThirdPartyMailClient.clients
     
     public init() {}
     
@@ -63,9 +64,15 @@ public class AppReviewViewModel: ObservableObject {
     }
     
     func showThanksForFeedback() {
+        writeFeedbackToMail()
         withAnimation(Animation.easeIn(duration: 0.2)) {
             showReview = false
                 self.state = .thanksForFeedback
         }
+    }
+    
+    func writeFeedbackToMail() {
+        guard let client = clients.first(where: { ThirdPartyMailer.isMailClientAvailable($0) }) else { return }
+        print(">>>> CLIENT", client.name)
     }
 }
