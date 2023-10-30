@@ -22,7 +22,6 @@ public class Config {
     
     public let feedbackEmail = "support@example.com"
     
-    public let appUpdateFeatureEnabled: Bool = false
     private let appStoreId = "0000000000"
     public var appStoreLink: String {
         "itms-apps://itunes.apple.com/app/id\(appStoreId)?mt=8"

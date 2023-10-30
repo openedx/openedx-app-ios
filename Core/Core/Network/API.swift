@@ -74,7 +74,6 @@ public final class API {
             headers: route.headers
         ).validateResponse().serializingData()
         
-        if config.appUpdateFeatureEnabled {
             let latestVersion = await result.response.response?.headers["EDX-APP-LATEST-VERSION"]
             
             if await result.response.response?.statusCode != 426 {
@@ -82,7 +81,6 @@ public final class API {
                     NotificationCenter.default.post(name: .onActualVersionReceived, object: latestVersion)
                 }
             }
-        }
         
         return try await result.value
 

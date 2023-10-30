@@ -113,7 +113,7 @@ public class DiscoveryViewModel: ObservableObject {
             fetchInProgress = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else if error.isUpdateRequeiredError, self.config.appUpdateFeatureEnabled {
+            } else if error.isUpdateRequeiredError {
                 self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError

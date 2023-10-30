@@ -53,9 +53,7 @@ public class ProfileViewModel: ObservableObject {
         self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
-        if config.appUpdateFeatureEnabled {
-            generateVersionState()
-        }
+        generateVersionState()
     }
     
     func openAppStore() {

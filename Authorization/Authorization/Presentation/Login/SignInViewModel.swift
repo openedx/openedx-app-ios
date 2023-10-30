@@ -69,7 +69,7 @@ public class SignInViewModel: ObservableObject {
             router.showMainScreen()
         } catch let error {
             isShowProgress = false
-            if error.isUpdateRequeiredError, config.appUpdateFeatureEnabled {
+            if error.isUpdateRequeiredError {
                 router.showUpdateRequiredView(showAccountLink: false)
             } else if let validationError = error.validationError,
                       let value = validationError.data?["error_description"] as? String {

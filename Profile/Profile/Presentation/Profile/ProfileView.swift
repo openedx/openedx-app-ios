@@ -152,7 +152,6 @@ public struct ProfileView: View {
                                 }
                                 
                                 // MARK: Version
-                                if viewModel.config.appUpdateFeatureEnabled {
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
@@ -199,7 +198,6 @@ public struct ProfileView: View {
                                             
                                         }
                                     })
-                                }
                                 
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
