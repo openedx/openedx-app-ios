@@ -8,43 +8,9 @@
 import SwiftUI
 
 public struct AppReviewView: View {
-    
-    enum ReviewState {
-        case vote
-        case feedback
-        case thanksForVote
-        case thanksForFeedback
         
-        var title: String {
-            switch self {
-            case .vote:
-                CoreLocalization.Review.voteTitle
-            case .feedback:
-                CoreLocalization.Review.feedbackTitle
-            case .thanksForVote, .thanksForFeedback:
-                CoreLocalization.Review.thanksForVoteTitle
-            }
-        }
-        
-        var description: String {
-            switch self {
-            case .vote:
-                CoreLocalization.Review.voteDescription
-            case .feedback:
-                CoreLocalization.Review.feedbackDescription
-            case .thanksForVote:
-                CoreLocalization.Review.thanksForVoteDescription
-            case .thanksForFeedback:
-                CoreLocalization.Review.thanksForFeedbackDescription
-            }
-        }
-    }
-    
     @ObservedObject private var viewModel: AppReviewViewModel
-    
-    @State private var state: ReviewState = .vote
-    @State private var rating = 0
-    
+
     @Environment (\.isHorizontal) private var isHorizontal
     @Environment (\.presentationMode) private var presentationMode
     private let config: Config
@@ -61,37 +27,86 @@ public struct AppReviewView: View {
                 .onTapGesture {
                     presentationMode.wrappedValue.dismiss()
                 }
-            VStack(spacing: 30) {
-                if state == .thanksForFeedback && state == .thanksForVote {
-                    Image(systemName: "arrow.up.circle")
+            VStack(spacing: 20) {
+                if viewModel.state == .thanksForFeedback || viewModel.state == .thanksForVote {
+                    CoreAssets.favorite.swiftUIImage
                         .resizable()
-                        .frame(width: isHorizontal ? 50 : 110,
-                               height: isHorizontal ? 50 : 110)
+                        .frame(width: isHorizontal ? 50 : 100,
+                               height: isHorizontal ? 50 : 100)
                         .foregroundColor(Theme.Colors.accentColor)
-                        .padding(.bottom, isHorizontal ? 0 : 20)
                 }
-                Text(state.title)
+                Text(viewModel.state.title)
                     .font(Theme.Fonts.titleMedium)
-                Text(state.description)
+                Text(viewModel.state.description)
                     .font(Theme.Fonts.titleSmall)
                     .foregroundColor(Theme.Colors.avatarStroke)
                     .multilineTextAlignment(.center)
-                StarRatingView(rating: $rating)
-                
-                HStack(spacing: 28) {
-                    Text("Not Now")
-                        .font(Theme.Fonts.labelLarge)
-                        .foregroundColor(Theme.Colors.accentColor)
+                if viewModel.state == .vote {
+                    StarRatingView(rating: $viewModel.rating)
                     
-                    AppReviewButton(type: .submit, action: {
+                    HStack(spacing: 28) {
+                        Text("Not Now")
+                            .font(Theme.Fonts.labelLarge)
+                            .foregroundColor(Theme.Colors.accentColor)
+                            .onTapGesture { presentationMode.wrappedValue.dismiss() }
                         
-                    }, isLoading: .constant(false))
+                        AppReviewButton(type: .submit, action: {
+                            viewModel.reviewAction()
+                        }, isActive: .constant(viewModel.rating != 0))
+                    }
+                } else if viewModel.state == .feedback {
+                    TextEditor(text: $viewModel.feedback)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                        .frame(height: viewModel.showReview ? 162 : 0)
+                        .hideScrollContentBackground()
+                        .background(
+                            Theme.Shapes.textInputShape
+                                .fill(Theme.Colors.commentCellBackground)
+                        )
+                        .overlay(
+                            ZStack(alignment: .topLeading) {
+                                Theme.Shapes.textInputShape
+                                    .stroke(lineWidth: 1)
+                                    .fill(
+                                        Theme.Colors.textInputStroke
+                                    )
+                                if viewModel.feedback.isEmpty {
+                                    Text("What could have been better?")
+                                        .font(Theme.Fonts.bodyMedium)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                        .padding(16)
+                                }
+                            }
+                        )
+                    
+                    HStack(spacing: 28) {
+                        Text("Not Now")
+                            .font(Theme.Fonts.labelLarge)
+                            .foregroundColor(Theme.Colors.accentColor)
+                            .onTapGesture { presentationMode.wrappedValue.dismiss() }
+                        
+                        AppReviewButton(type: .shareFeedback, action: {
+                            viewModel.showThanksForFeedback()
+                        }, isActive: .constant(viewModel.feedback.count >= 3))
+                    }
+                } else if viewModel.state == .thanksForVote {
+                    HStack(spacing: 28) {
+                        Text("Not Now")
+                            .font(Theme.Fonts.labelLarge)
+                            .foregroundColor(Theme.Colors.accentColor)
+                            .onTapGesture { presentationMode.wrappedValue.dismiss() }
+                        
+                        AppReviewButton(type: .rateUs, action: {
+                            
+                        }, isActive: .constant(true))
+                    }
                 }
 
             }.padding(isHorizontal ? 40 : 40)
                 .background(Theme.Colors.background)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
-                .frame(maxWidth: 400, maxHeight: 400)
+                .frame(maxWidth: 400)
                 .padding(24)
                 .shadow(color: Color.black.opacity(0.4), radius: 12, x: 0, y: 0)
         }
@@ -133,43 +148,34 @@ struct StarRatingView: View {
 struct AppReviewButton: View {
     let type: ButtonType
     let action: () -> Void
-    @Binding var isLoading: Bool
+    @Binding var isActive: Bool
     
     enum ButtonType {
-        case submit, shareFeedback, done
+        case submit, shareFeedback, rateUs
     }
     
     var body: some View {
+        Button(action: {
+            if isActive { action() }
+        }, label: {
         Group {
             HStack(spacing: 4) {
                 Text(type == .submit ? "Submit"
                      : (type == .shareFeedback ? "Share Feedback" : "Rate Us" ))
-                .foregroundColor(Color.white)
+                .foregroundColor(isActive ? Color.white : Color.black.opacity(0.6))
                 .font(Theme.Fonts.labelLarge)
                 .padding(3)
                 
-                if type == .shareFeedback {
-                    CoreAssets.arrowLeft.swiftUIImage
-                        .renderingMode(.template)
-                        .rotationEffect(Angle(degrees: 180))
-                        .foregroundColor(Color.white)
-                }
-                
-                if type == .done {
-                    CoreAssets.checkmark.swiftUIImage
-                        .renderingMode(.template)
-                        .foregroundColor(Color.white)
-                }
             }.padding(.horizontal, 20)
                 .padding(.vertical, 9)
         }.fixedSize()
-            .background(isLoading
-                        ? Theme.Colors.background
-                        : Theme.Colors.accentColor)
+            .background(isActive
+                        ? Theme.Colors.accentColor
+                        : Theme.Colors.cardViewStroke)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(type == .submit ? "WhatsNewLocalization.buttonPrevious"
                                 : (type == .shareFeedback ? "WhatsNewLocalization.buttonNext" : "WhatsNewLocalization.buttonDone" ))
             .cornerRadius(8)
-            .onTapGesture { action() }
+        })
     }
 }

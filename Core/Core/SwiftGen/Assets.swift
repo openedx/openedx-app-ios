@@ -104,6 +104,7 @@ public enum CoreAssets {
   public static let check = ImageAsset(name: "check")
   public static let clearInput = ImageAsset(name: "clearInput")
   public static let edit = ImageAsset(name: "edit")
+  public static let favorite = ImageAsset(name: "favorite")
   public static let goodWork = ImageAsset(name: "goodWork")
   public static let noCourseImage = ImageAsset(name: "noCourseImage")
   public static let notAvaliable = ImageAsset(name: "notAvaliable")
