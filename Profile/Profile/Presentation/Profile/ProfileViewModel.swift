@@ -95,25 +95,26 @@ public class ProfileViewModel: ObservableObject {
     
     @MainActor
     func getMyProfile(withProgress: Bool = true) async {
-        isShowProgress = withProgress
         do {
-            if connectivity.isInternetAvaliable {
-                userModel = try await interactor.getMyProfile()
-                isShowProgress = false
+            let userModel = interactor.getMyProfileOffline()
+            if userModel == nil && connectivity.isInternetAvaliable {
+                isShowProgress = withProgress
             } else {
-                userModel = try interactor.getMyProfileOffline()
-                isShowProgress = false
+                self.userModel = userModel
             }
+            if connectivity.isInternetAvaliable {
+                self.userModel = try await interactor.getMyProfile()
+            }
+            isShowProgress = false
         } catch let error {
             isShowProgress = false
             if error.isUpdateRequeiredError {
                 self.versionState = .updateRequired
-            } else if error.isInternetError || error is NoCachedDataError {
+            } else if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
-            
         }
     }
     

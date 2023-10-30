@@ -58,7 +58,8 @@ public class Router: AuthorizationRouter,
     
     public func showMainScreen() {
         showToolBar()
-        let controller = UIHostingController(rootView: MainScreenView())
+        let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+        let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
         navigationController.setViewControllers([controller], animated: true)
     }
     

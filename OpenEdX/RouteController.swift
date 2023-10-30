@@ -48,7 +48,8 @@ class RouteController: UIViewController {
     }
     
     private func showMainScreen() {
-        let controller = UIHostingController(rootView: MainScreenView())
+        let viewModel = diContainer.resolve(MainScreenViewModel.self)!
+        let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
         navigation.viewControllers = [controller]
         present(navigation, animated: false)
     }

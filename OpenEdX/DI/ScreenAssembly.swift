@@ -33,6 +33,15 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        // MARK: MainScreenView
+        container.register(MainScreenViewModel.self) { r in
+            MainScreenViewModel(
+                analytics: r.resolve(MainScreenAnalytics.self)!,
+                config: r.resolve(Config.self)!,
+                profileInteractor: r.resolve(ProfileInteractorProtocol.self)!
+            )
+        }
+        
         // MARK: SignIn
         container.register(SignInViewModel.self) { r in
             SignInViewModel(

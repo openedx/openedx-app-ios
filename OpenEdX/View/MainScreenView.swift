@@ -27,10 +27,10 @@ struct MainScreenView: View {
         case profile
     }
     
-    private let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
-    private let config = Container.shared.resolve(Config.self)!
-    
-    init() {
+    @ObservedObject private var viewModel: MainScreenViewModel
+ 
+    init(viewModel: MainScreenViewModel) {
+        self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
@@ -42,7 +42,7 @@ struct MainScreenView: View {
             ZStack {
                 DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!)
                 if updateAvaliable {
-                    UpdateNotificationView(config: config)
+                    UpdateNotificationView(config: viewModel.config)
                 }
             }
             .tabItem {
@@ -57,7 +57,7 @@ struct MainScreenView: View {
                     router: Container.shared.resolve(DashboardRouter.self)!
                 )
                 if updateAvaliable {
-                    UpdateNotificationView(config: config)
+                    UpdateNotificationView(config: viewModel.config)
                 }
             }
             .tabItem {
@@ -69,7 +69,7 @@ struct MainScreenView: View {
             ZStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
                 if updateAvaliable {
-                    UpdateNotificationView(config: config)
+                    UpdateNotificationView(config: viewModel.config)
                 }
             }
             .tabItem {
@@ -121,15 +121,20 @@ struct MainScreenView: View {
         .onChange(of: selection, perform: { selection in
             switch selection {
             case .discovery:
-                analytics.mainDiscoveryTabClicked()
+                viewModel.trackMainDiscoveryTabClicked()
             case .dashboard:
-                analytics.mainDashboardTabClicked()
+                viewModel.trackMainDashboardTabClicked()
             case .programs:
-                analytics.mainProgramsTabClicked()
+                viewModel.trackMainProgramsTabClicked()
             case .profile:
-                analytics.mainProfileTabClicked()
+                viewModel.trackMainProfileTabClicked()
             }
         })
+        .onFirstAppear {
+            Task {
+                await viewModel.prefetchDataForOffline()
+            }
+        }
     }
     
     private func titleBar() -> String {
@@ -142,12 +147,6 @@ struct MainScreenView: View {
             return CoreLocalization.Mainscreen.programs
         case .profile:
             return ProfileLocalization.title
-        }
-    }
-    
-    struct MainScreenView_Previews: PreviewProvider {
-        static var previews: some View {
-            MainScreenView()
         }
     }
 }
