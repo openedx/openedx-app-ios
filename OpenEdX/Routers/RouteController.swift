@@ -52,7 +52,7 @@ class RouteController: UIViewController {
             navigation.viewControllers = [controller]
         } else {
             let controller = UIHostingController(
-                rootView: EdxSignInView(viewModel: viewModel)
+                rootView: SignInView(viewModel: viewModel)
             )
             navigation.viewControllers = [controller]
         }

@@ -26,14 +26,6 @@
 		0770DE6B28D0C035006D8A5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE6D28D0C035006D8A5D /* Localizable.strings */; };
 		0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7028D0C0E7006D8A5D /* Strings.swift */; };
 		5FB79D2802949372CDAF08D6 /* Pods_App_Authorization_AuthorizationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAE9B7FD61FF88C9C4FE1E8 /* Pods_App_Authorization_AuthorizationTests.framework */; };
-		BAD56D172AEBC2720064918E /* ProgressStyledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D162AEBC2720064918E /* ProgressStyledButton.swift */; };
-		BAD56D1B2AEBC2D40064918E /* AuthBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D1A2AEBC2D40064918E /* AuthBackgroundView.swift */; };
-		BAD56D1D2AEBC2F10064918E /* AuthLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D1C2AEBC2F10064918E /* AuthLogoView.swift */; };
-		BAD56D1F2AEBC3860064918E /* AuthWelcomeBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D1E2AEBC3860064918E /* AuthWelcomeBackView.swift */; };
-		BAD56D232AEBC3F00064918E /* ForgotRegisterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D222AEBC3F00064918E /* ForgotRegisterButtonView.swift */; };
-		BAD56D252AEBC5600064918E /* SignInContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D242AEBC5600064918E /* SignInContentView.swift */; };
-		BAD56D272AEBC8560064918E /* AuthAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D262AEBC8560064918E /* AuthAlertView.swift */; };
-		BAD56D292AEBCB3F0064918E /* EdxSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D282AEBCB3F0064918E /* EdxSignInView.swift */; };
 		DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,14 +75,6 @@
 		96C85172770225EB81A6D2DA /* Pods-App-Authorization.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasedev.xcconfig"; sourceTree = "<group>"; };
 		9BF6A1004A955E24527FCF0F /* Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; sourceTree = "<group>"; };
-		BAD56D162AEBC2720064918E /* ProgressStyledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStyledButton.swift; sourceTree = "<group>"; };
-		BAD56D1A2AEBC2D40064918E /* AuthBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthBackgroundView.swift; sourceTree = "<group>"; };
-		BAD56D1C2AEBC2F10064918E /* AuthLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthLogoView.swift; sourceTree = "<group>"; };
-		BAD56D1E2AEBC3860064918E /* AuthWelcomeBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthWelcomeBackView.swift; sourceTree = "<group>"; };
-		BAD56D222AEBC3F00064918E /* ForgotRegisterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotRegisterButtonView.swift; sourceTree = "<group>"; };
-		BAD56D242AEBC5600064918E /* SignInContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInContentView.swift; sourceTree = "<group>"; };
-		BAD56D262AEBC8560064918E /* AuthAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAlertView.swift; sourceTree = "<group>"; };
-		BAD56D282AEBCB3F0064918E /* EdxSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdxSignInView.swift; sourceTree = "<group>"; };
 		E78971D8E6ED2116BBF9FD66 /* Pods-App-Authorization.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.release.xcconfig"; sourceTree = "<group>"; };
 		F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasestage.xcconfig"; sourceTree = "<group>"; };
 		F5802BBA113276950ABCD9B3 /* Pods-App-Authorization.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releaseprod.xcconfig"; sourceTree = "<group>"; };
@@ -122,12 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				020C31CA290BF49900D6DEA2 /* FieldsView.swift */,
-				BAD56D162AEBC2720064918E /* ProgressStyledButton.swift */,
-				BAD56D1A2AEBC2D40064918E /* AuthBackgroundView.swift */,
-				BAD56D1C2AEBC2F10064918E /* AuthLogoView.swift */,
-				BAD56D1E2AEBC3860064918E /* AuthWelcomeBackView.swift */,
-				BAD56D222AEBC3F00064918E /* ForgotRegisterButtonView.swift */,
-				BAD56D262AEBC8560064918E /* AuthAlertView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -153,8 +131,6 @@
 			isa = PBXGroup;
 			children = (
 				0770DE4D28D0A677006D8A5D /* SignInView.swift */,
-				BAD56D282AEBCB3F0064918E /* EdxSignInView.swift */,
-				BAD56D242AEBC5600064918E /* SignInContentView.swift */,
 				071009C628D1DA4F00344290 /* SignInViewModel.swift */,
 			);
 			path = Login;
@@ -491,21 +467,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BAD56D252AEBC5600064918E /* SignInContentView.swift in Sources */,
 				02066B442906D72400F4307E /* SignUpView.swift in Sources */,
 				0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */,
-				BAD56D172AEBC2720064918E /* ProgressStyledButton.swift in Sources */,
-				BAD56D232AEBC3F00064918E /* ForgotRegisterButtonView.swift in Sources */,
 				025F40E229D360E20064C183 /* ResetPasswordViewModel.swift in Sources */,
-				BAD56D292AEBCB3F0064918E /* EdxSignInView.swift in Sources */,
-				BAD56D1F2AEBC3860064918E /* AuthWelcomeBackView.swift in Sources */,
-				BAD56D272AEBC8560064918E /* AuthAlertView.swift in Sources */,
-				BAD56D1B2AEBC2D40064918E /* AuthBackgroundView.swift in Sources */,
 				02066B462906D72F00F4307E /* SignUpViewModel.swift in Sources */,
 				02A2ACDB2A4B016100FBBBBB /* AuthorizationAnalytics.swift in Sources */,
 				025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */,
 				020C31CB290BF49900D6DEA2 /* FieldsView.swift in Sources */,
-				BAD56D1D2AEBC2F10064918E /* AuthLogoView.swift in Sources */,
 				0770DE4E28D0A677006D8A5D /* SignInView.swift in Sources */,
 				02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */,
 				071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */,

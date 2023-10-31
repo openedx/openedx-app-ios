@@ -21,7 +21,7 @@ import Combine
 public class EdxRouter: OpenEdxRouter {
 
     public override func showLoginScreen() {
-        let view = EdxSignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+        let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
         let controller = UIHostingController(rootView: view)
         navigationController.setViewControllers([controller], animated: false)
     }
