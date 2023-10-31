@@ -77,7 +77,7 @@ public class Configuration: Configurable {
 
     // MARK: - Configuratable -
 
-    var socialLoginEnable: Bool {
+    public var socialLoginEnable: Bool {
         false
     }
 
