@@ -77,6 +77,10 @@ public class Configuration: Configurable {
 
     // MARK: - Configuratable -
 
+    var socialLoginEnable: Bool {
+        false
+    }
+
     public var termsOfService: URL? {
         URL(string: "\(baseURL.description)/tos")
     }
