@@ -11,10 +11,12 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum AuthLocalization {
   public enum Error {
-    /// Invalid email address
-    public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
+    /// Invalid email
+    public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email")
+    /// Invalid email or username
+    public static let invalidEmailAddressOrUsername = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME", fallback: "Invalid email or username")
     /// Invalid password lenght
-    public static let invalidPasswordLenght = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGHT", fallback: "Invalid password lenght")
+    public static let invalidPasswordLength = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGTH", fallback: "Invalid password lenght")
   }
   public enum Forgot {
     /// We have sent a password recover instructions to your email 
@@ -31,6 +33,8 @@ public enum AuthLocalization {
   public enum SignIn {
     /// Email
     public static let email = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL", fallback: "Email")
+    /// Email or username
+    public static let emailOrUsername = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL_OR_USERNAME", fallback: "Email or username")
     /// Forgot password?
     public static let forgotPassBtn = AuthLocalization.tr("Localizable", "SIGN_IN.FORGOT_PASS_BTN", fallback: "Forgot password?")
     /// Sign in

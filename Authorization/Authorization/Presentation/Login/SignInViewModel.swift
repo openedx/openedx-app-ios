@@ -50,12 +50,12 @@ public class SignInViewModel: ObservableObject {
     
     @MainActor
     func login(username: String, password: String) async {
-        guard validator.isValidEmail(username) else {
-            errorMessage = AuthLocalization.Error.invalidEmailAddress
+        guard validator.isValidUsernameOrEmail(username) else {
+            errorMessage = AuthLocalization.Error.invalidEmailAddressOrUsername
             return
         }
         guard validator.isValidPassword(password) else {
-            errorMessage = AuthLocalization.Error.invalidPasswordLenght
+            errorMessage = AuthLocalization.Error.invalidPasswordLength
             return
         }
         
