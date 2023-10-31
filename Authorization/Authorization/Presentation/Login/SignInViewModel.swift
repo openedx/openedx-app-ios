@@ -81,9 +81,7 @@ public class SignInViewModel: ObservableObject {
     }
 
     func sign(with result: Result<Socials, Error>) {
-        result.success { social in
-            debugLog(social)
-        }
+        result.success(social)
         result.failure { error in
             errorMessage = error.localizedDescription
         }
@@ -95,5 +93,9 @@ public class SignInViewModel: ObservableObject {
     
     func trackForgotPasswordClicked() {
         analytics.forgotPasswordClicked()
+    }
+
+    private func social(result: Socials) {
+        debugLog(social)
     }
 }
