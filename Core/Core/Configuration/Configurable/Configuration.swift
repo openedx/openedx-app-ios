@@ -1,5 +1,5 @@
 //
-//  Config.swift
+//  Configuration.swift
 //  Core
 //
 //  Created by Vladimir Chekyrta on 14.09.2022.
