@@ -35,13 +35,13 @@ public class AppStorage: CoreStorage, ProfileStorage {
     
     public var reviewLastShownVersion: String? {
         get {
-            return keychain.get(KEY_REVIEW_LAST_SHOWN_VERSION)
+            return userDefaults.string(forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
         }
         set(newValue) {
             if let newValue {
-                keychain.set(newValue, forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+                userDefaults.set(newValue, forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
             } else {
-                keychain.delete(KEY_REVIEW_LAST_SHOWN_VERSION)
+                userDefaults.removeObject(forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
             }
         }
     }

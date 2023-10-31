@@ -66,9 +66,11 @@ public struct EncodedVideoPlayer: View {
                                             Task {
                                                 await viewModel.blockCompletionRequest()
                                             }
-                                            viewModel.router.presentAppReview()
                                             isViewedOnce = true
                                         }
+                                    }
+                                    if progress >= 0.99 {
+                                        viewModel.router.presentAppReview()
                                     }
                                 }, seconds: { seconds in
                                     currentTime = seconds

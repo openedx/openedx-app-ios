@@ -77,3 +77,10 @@
 "REVIEW.THANKS_FOR_VOTE_DESCRIPTION" = "Дякуємо, що поділилися своїми враженнями з нами. Бажаєте залишити свій відгук про цей додаток для інших користувачів в магазині додатків?";
 "REVIEW.THANKS_FOR_FEEDBACK_TITLE" = "Дякуємо";
 "REVIEW.THANKS_FOR_FEEDBACK_DESCRIPTION" = "Ми отримали ваш відгук і використовуватимемо його для покращення вашого навчального досвіду в майбутньому!";
+"REVIEW.BETTER" = "Що можна було б зробити краще?";
+"REVIEW.NOT_NOW" = "Не зараз";
+
+"REVIEW.BUTTON.SUBMIT" = "Надіслати";
+"REVIEW.BUTTON.SHARE_FEEDBACK" = "Поділитися відгуком";
+"REVIEW.BUTTON.RATE_US" = "Оцінити нас";
+"REVIEW.EMAIL.TITLE" = "Виберіть поштового клієнта:";

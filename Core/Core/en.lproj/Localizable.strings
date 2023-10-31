@@ -77,3 +77,10 @@
 "REVIEW.THANKS_FOR_VOTE_DESCRIPTION" = "Thank you for sharing your feedback with us. Would you like to share your review of this app with other users on the app store?";
 "REVIEW.THANKS_FOR_FEEDBACK_TITLE" = "Thank You";
 "REVIEW.THANKS_FOR_FEEDBACK_DESCRIPTION" = "We received your feedback and will use it to help improve your learning experience going forward. Thank you for sharing!";
+"REVIEW.BETTER" = "What could have been better?";
+"REVIEW.NOT_NOW" = "Not now";
+
+"REVIEW.BUTTON.SUBMIT" = "Submit";
+"REVIEW.BUTTON.SHARE_FEEDBACK" = "Share Feedback";
+"REVIEW.BUTTON.RATE_US" = "Rate Us";
+"REVIEW.EMAIL.TITLE" = "Select email client:";

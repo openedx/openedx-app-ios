@@ -17,6 +17,9 @@
 		02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02284C172A3B1AE00007117F /* UIApplicationExtension.swift */; };
 		022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64E329AE0191000F532B /* TextWithUrls.swift */; };
 		0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231CDBD2922422D00032416 /* CSSInjector.swift */; };
+		0233D56F2AF13EB200BAC8BD /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */; };
+		0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233D5702AF13EC800BAC8BD /* SelectMailClientView.swift */; };
+		0233D5732AF13EEE00BAC8BD /* AppReviewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233D5722AF13EEE00BAC8BD /* AppReviewButton.swift */; };
 		0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0236961828F9A26900EEF206 /* AuthRepository.swift */; };
 		0236961B28F9A28B00EEF206 /* AuthInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0236961A28F9A28B00EEF206 /* AuthInteractor.swift */; };
 		0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0236961C28F9A2D200EEF206 /* Data_AuthResponse.swift */; };
@@ -141,6 +144,9 @@
 		02284C172A3B1AE00007117F /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		022C64E329AE0191000F532B /* TextWithUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWithUrls.swift; sourceTree = "<group>"; };
 		0231CDBD2922422D00032416 /* CSSInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSInjector.swift; sourceTree = "<group>"; };
+		0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
+		0233D5702AF13EC800BAC8BD /* SelectMailClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectMailClientView.swift; sourceTree = "<group>"; };
+		0233D5722AF13EEE00BAC8BD /* AppReviewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewButton.swift; sourceTree = "<group>"; };
 		0236961828F9A26900EEF206 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		0236961A28F9A28B00EEF206 /* AuthInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInteractor.swift; sourceTree = "<group>"; };
 		0236961C28F9A2D200EEF206 /* Data_AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_AuthResponse.swift; sourceTree = "<group>"; };
@@ -274,6 +280,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0233D56D2AF13EA400BAC8BD /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */,
+				0233D5702AF13EC800BAC8BD /* SelectMailClientView.swift */,
+				0233D5722AF13EEE00BAC8BD /* AppReviewButton.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
 		0236961728F9A21600EEF206 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,6 +399,7 @@
 		02E93F862AEBAED4006C4750 /* AppReview */ = {
 			isa = PBXGroup;
 			children = (
+				0233D56D2AF13EA400BAC8BD /* Elements */,
 				02AFCC162AEFDB0F000360F0 /* ThirdPartyMailer */,
 				02A463102AEA966C00331037 /* AppReviewView.swift */,
 				02E93F842AEBAEBC006C4750 /* AppReviewViewModel.swift */,
@@ -804,6 +821,7 @@
 				022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */,
 				0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */,
 				02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */,
+				0233D5732AF13EEE00BAC8BD /* AppReviewButton.swift in Sources */,
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,
 				0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */,
 				02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */,
@@ -843,6 +861,7 @@
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
 				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
+				0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
@@ -871,6 +890,7 @@
 				02A463112AEA966C00331037 /* AppReviewView.swift in Sources */,
 				025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */,
 				028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */,
+				0233D56F2AF13EB200BAC8BD /* StarRatingView.swift in Sources */,
 				027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */,
 				024BE3DF29B2615500BCDEE2 /* CGColorExtension.swift in Sources */,
 				0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */,

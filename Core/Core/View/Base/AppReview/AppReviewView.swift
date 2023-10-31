@@ -53,7 +53,7 @@ public struct AppReviewView: View {
                         StarRatingView(rating: $viewModel.rating)
                         
                         HStack(spacing: 28) {
-                            Text("Not Now")
+                            Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.accentColor)
                                 .onTapGesture { presentationMode.wrappedValue.dismiss() }
@@ -79,7 +79,7 @@ public struct AppReviewView: View {
                                             Theme.Colors.textInputStroke
                                         )
                                     if viewModel.feedback.isEmpty {
-                                        Text("What could have been better?")
+                                        Text(CoreLocalization.Review.better)
                                             .font(Theme.Fonts.bodyMedium)
                                             .foregroundColor(Theme.Colors.textSecondary)
                                             .padding(16)
@@ -90,7 +90,7 @@ public struct AppReviewView: View {
                             .opacity(viewModel.showReview ? 1 : 0)
                         
                         HStack(spacing: 28) {
-                            Text("Not Now")
+                            Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.accentColor)
                                 .onTapGesture { presentationMode.wrappedValue.dismiss() }
@@ -101,7 +101,7 @@ public struct AppReviewView: View {
                         }
                     } else if viewModel.state == .thanksForVote {
                         HStack(spacing: 28) {
-                            Text("Not Now")
+                            Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.accentColor)
                                 .onTapGesture { presentationMode.wrappedValue.dismiss() }
@@ -124,145 +124,10 @@ public struct AppReviewView: View {
     }
 }
 
+#if DEBUG
 struct AppReviewView_Previews: PreviewProvider {
     static var previews: some View {
         AppReviewView(viewModel: AppReviewViewModel(config: ConfigMock(), storage: CoreStorageMock()))
     }
 }
-
-struct StarRatingView: View {
-    @Binding var rating: Int
-    
-    var body: some View {
-        HStack {
-            ForEach(1 ..< 6) { index in
-                Group {
-                    if index <= rating {
-                        CoreAssets.star.swiftUIImage
-                            .resizable()
-                            .frame(width: 48, height: 48)
-                    } else {
-                        CoreAssets.starOutline.swiftUIImage
-                            .resizable()
-                            .frame(width: 48, height: 48)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                    }
-                }
-                    .onTapGesture {
-                        self.rating = index
-                    }
-            }
-        }
-    }
-}
-
-struct SelectMailClientView: View {
-    
-    let clients: [ThirdPartyMailClient]
-    
-    var onMailTapped: (ThirdPartyMailClient) -> Void
-    
-    init(clients: [ThirdPartyMailClient], onMailTapped: @escaping (ThirdPartyMailClient) -> Void) {
-        self.clients = clients
-        self.onMailTapped = onMailTapped
-    }
-    
-    @State var isOpen: Bool = false
-    
-    var body: some View {
-        ZStack {
-            VStack {
-                Spacer()
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Select email client:")
-                        .font(Theme.Fonts.labelLarge)
-                        .padding(.leading, 16)
-                        .padding(.top, 8)
-                    ScrollView(.horizontal) {
-                        HStack {
-                            Image(.defaultMail).resizable()
-                                .frame(width: 50, height: 50)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .padding(.leading, 14)
-                                    .shadow(color: .black.opacity(0.2), radius: 8)
-                                    
-                            ForEach(clients, id: \.name) { client in
-                                Group {
-                                    Button(action: {
-                                        onMailTapped(client)
-                                    }, label: {
-                                        client.icon?.resizable()
-                                    })
-                                }.frame(width: 50, height: 50)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .shadow(color: .black.opacity(0.2), radius: 8)
-                                    .padding(.leading, 4)
-                                    .padding(.vertical, 16)
-                            }
-                        }
-                    }
-                    
-                }.background( Theme.Colors.background)
-                    .offset(y: isOpen ? 0 : 200)
-            }
-        }.onAppear {
-            withAnimation(Animation.bouncy.delay(0.3)) {
-                isOpen = true
-            }
-        }
-    }
-}
-
-struct SelectMailClientView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let clients: [ThirdPartyMailClient] = [
-            ThirdPartyMailClient(name: "googlegmail", icon: Image(.googlegmail), URLScheme: ""),
-            ThirdPartyMailClient(name: "readdle-spark", icon: Image(.readdleSpark), URLScheme: ""),
-        ThirdPartyMailClient(name: "airmail", icon: Image(.airmail), URLScheme: ""),
-        ThirdPartyMailClient(name: "ms-outlook", icon: Image(.msOutlook), URLScheme: ""),
-        ThirdPartyMailClient(name: "ymail", icon: Image(.ymail), URLScheme: ""),
-        ThirdPartyMailClient(name: "fastmail", icon: Image(.fastmail), URLScheme: ""),
-        ThirdPartyMailClient(name: "protonmail", icon: Image(.proton), URLScheme: "")
-        ]
-        
-        SelectMailClientView(clients: clients, onMailTapped: { _ in
-            
-        })
-    }
-}
-
-struct AppReviewButton: View {
-    let type: ButtonType
-    let action: () -> Void
-    @Binding var isActive: Bool
-    
-    enum ButtonType {
-        case submit, shareFeedback, rateUs
-    }
-    
-    var body: some View {
-        Button(action: {
-            if isActive { action() }
-        }, label: {
-        Group {
-            HStack(spacing: 4) {
-                Text(type == .submit ? "Submit"
-                     : (type == .shareFeedback ? "Share Feedback" : "Rate Us" ))
-                .foregroundColor(isActive ? Color.white : Color.black.opacity(0.6))
-                .font(Theme.Fonts.labelLarge)
-                .padding(3)
-                
-            }.padding(.horizontal, 20)
-                .padding(.vertical, 9)
-        }.fixedSize()
-            .background(isActive
-                        ? Theme.Colors.accentColor
-                        : Theme.Colors.cardViewStroke)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(type == .submit ? "WhatsNewLocalization.buttonPrevious"
-                                : (type == .shareFeedback ? "WhatsNewLocalization.buttonNext" : "WhatsNewLocalization.buttonDone" ))
-            .cornerRadius(8)
-        })
-    }
-}
+#endif
