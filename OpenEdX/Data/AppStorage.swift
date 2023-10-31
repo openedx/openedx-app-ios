@@ -32,6 +32,19 @@ public class AppStorage: CoreStorage, ProfileStorage {
             }
         }
     }
+    
+    public var reviewLastShownVersion: String? {
+        get {
+            return keychain.get(KEY_REVIEW_LAST_SHOWN_VERSION)
+        }
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+            } else {
+                keychain.delete(KEY_REVIEW_LAST_SHOWN_VERSION)
+            }
+        }
+    }
 
     public var refreshToken: String? {
         get {
@@ -134,4 +147,5 @@ public class AppStorage: CoreStorage, ProfileStorage {
     private let KEY_USER_PROFILE = "userProfile"
     private let KEY_USER = "refreshToken"
     private let KEY_SETTINGS = "userSettings"
+    private let KEY_REVIEW_LAST_SHOWN_VERSION = "reviewLastShownVersion"
 }

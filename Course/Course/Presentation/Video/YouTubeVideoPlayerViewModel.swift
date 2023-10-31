@@ -101,6 +101,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                     if !isViewedOnce {
                         Task {
                             await self.blockCompletionRequest()
+                            self.router.presentAppReview()
                         }
                         isViewedOnce = true
                     }

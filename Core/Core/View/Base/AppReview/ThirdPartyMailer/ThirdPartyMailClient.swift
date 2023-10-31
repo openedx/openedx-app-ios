@@ -5,7 +5,7 @@
 //  Created by  Stepanok Ivan on 30.10.2023.
 //
 
-import Foundation
+import SwiftUI
 
 /// A third-party mail client, offering a custom URL scheme.
 public struct ThirdPartyMailClient {
@@ -27,9 +27,12 @@ public struct ThirdPartyMailClient {
 
     /// The URL query items key for the message body, or `nil` if this client doesn’t support setting the message body.
     let URLBodyKey: String?
+    
+    let icon: Image?
 
-    public init(name: String, URLScheme: String, URLRoot: String? = nil, URLRecipientKey: String? = nil, URLSubjectKey: String? = "subject", URLBodyKey: String? = "body") {
+    public init(name: String, icon: Image?, URLScheme: String, URLRoot: String? = nil, URLRecipientKey: String? = nil, URLSubjectKey: String? = "subject", URLBodyKey: String? = "body") {
         self.name = name
+        self.icon = icon
         self.URLScheme = URLScheme
         self.URLRoot = URLRoot
         self.URLRecipientKey = URLRecipientKey
@@ -104,7 +107,7 @@ public extension ThirdPartyMailClient {
     static var systemDefault: ThirdPartyMailClient {
         get {
             // mailto:
-            return ThirdPartyMailClient(name: "System Default", URLScheme: "mailto")
+            return ThirdPartyMailClient(name: "System Default", icon: Image(.defaultMail),  URLScheme: "mailto")
         }
     }
 
@@ -113,31 +116,31 @@ public extension ThirdPartyMailClient {
         get {
             return [
                 // sparrow:[to]?subject=[subject]&body=[body]
-                ThirdPartyMailClient(name: "Sparrow", URLScheme: "sparrow"),
+                ThirdPartyMailClient(name: "Sparrow", icon: nil, URLScheme: "sparrow"),
 
                 // googlegmail:///co?to=[to]&subject=[subject]&body=[body]
-                ThirdPartyMailClient(name: "Gmail", URLScheme: "googlegmail", URLRoot: "///co", URLRecipientKey: "to"),
+                ThirdPartyMailClient(name: "Gmail", icon: Image(.googlegmail), URLScheme: "googlegmail", URLRoot: "///co", URLRecipientKey: "to"),
                 
                 // x-dispatch:///compose?to=[to]&subject=[subject]&body=[body]
-                ThirdPartyMailClient(name: "Dispatch", URLScheme: "x-dispatch", URLRoot: "///compose", URLRecipientKey: "to"),
+                ThirdPartyMailClient(name: "Dispatch", icon: nil, URLScheme: "x-dispatch", URLRoot: "///compose", URLRecipientKey: "to"),
 
                 // readdle-spark://compose?subject=[subject]&body=[body]&recipient=[recipient]
-                ThirdPartyMailClient(name: "Spark", URLScheme: "readdle-spark", URLRoot: "//compose", URLRecipientKey: "recipient"),
+                ThirdPartyMailClient(name: "Spark", icon: Image(.readdleSpark), URLScheme: "readdle-spark", URLRoot: "//compose", URLRecipientKey: "recipient"),
 
                 // airmail://compose?subject=[subject]&from=[from]&to=[to]&cc=[cc]&bcc=[bcc]&plainBody=[plainBody]&htmlBody=[htmlBody]
-                ThirdPartyMailClient(name: "Airmail", URLScheme: "airmail", URLRoot: "//compose", URLRecipientKey: "to", URLBodyKey: "plainBody"),
+                ThirdPartyMailClient(name: "Airmail", icon: Image(.airmail), URLScheme: "airmail", URLRoot: "//compose", URLRecipientKey: "to", URLBodyKey: "plainBody"),
 
                 // ms-outlook://compose?subject=[subject]&body=[body]&to=[to]
-                ThirdPartyMailClient(name: "Microsoft Outlook", URLScheme: "ms-outlook", URLRoot: "//compose", URLRecipientKey: "to"),
+                ThirdPartyMailClient(name: "Microsoft Outlook", icon: Image(.msOutlook), URLScheme: "ms-outlook", URLRoot: "//compose", URLRecipientKey: "to"),
 
                 // ymail://mail/compose?subject=[subject]&body=[body]&to=[to]
-                ThirdPartyMailClient(name: "Yahoo Mail", URLScheme: "ymail", URLRoot: "//mail/compose", URLRecipientKey: "to"),
+                ThirdPartyMailClient(name: "Yahoo Mail", icon: Image(.ymail), URLScheme: "ymail", URLRoot: "//mail/compose", URLRecipientKey: "to"),
 
                 // fastmail://mail/compose?subject=[subject]&body=[body]&to=[to]
-                ThirdPartyMailClient(name: "Fastmail", URLScheme: "fastmail", URLRoot: "//mail/compose", URLRecipientKey: "to"),
+                ThirdPartyMailClient(name: "Fastmail", icon: Image(.fastmail), URLScheme: "fastmail", URLRoot: "//mail/compose", URLRecipientKey: "to"),
 
                 // protonmail://mailto:foobar@foobar.org?subject=SubjectTitleOfEMail&body=MessageBodyFooBar
-                ThirdPartyMailClient(name: "ProtonMail", URLScheme: "protonmail", URLRoot: "//mailto", URLRecipientKey: ":")
+                ThirdPartyMailClient(name: "ProtonMail", icon: Image(.proton), URLScheme: "protonmail", URLRoot: "//mailto", URLRecipientKey: ":")
             ]
         }
     }

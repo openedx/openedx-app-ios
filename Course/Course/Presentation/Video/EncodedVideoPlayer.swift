@@ -66,6 +66,7 @@ public struct EncodedVideoPlayer: View {
                                             Task {
                                                 await viewModel.blockCompletionRequest()
                                             }
+                                            viewModel.router.presentAppReview()
                                             isViewedOnce = true
                                         }
                                     }
