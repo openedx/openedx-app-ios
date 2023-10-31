@@ -233,13 +233,13 @@ struct BlockStatusView: View {
     func getStatusDetails(for blockStatus: BlockStatus) -> (String, Color, Color) {
         switch blockStatus {
         case .verifiedOnly:
-            return ("Verified Only", Color.white, Color.black.opacity(0.5))
+            return (CoreLocalization.CourseDates.verifiedOnly, Color.white, Color.black.opacity(0.5))
         case .pastDue:
-            return ("Past Due", Color.black, Color.gray.opacity(0.4))
+            return (CoreLocalization.CourseDates.pastDue, Color.black, Color.gray.opacity(0.4))
         case .dueNext:
-            return ("Due Next", Color.white, Color.black.opacity(0.5))
+            return (CoreLocalization.CourseDates.dueNext, Color.white, Color.black.opacity(0.5))
         case .unreleased:
-            return ("Unreleased", Color.white.opacity(0), Color.white.opacity(0))
+            return (CoreLocalization.CourseDates.unreleased, Color.white.opacity(0), Color.white.opacity(0))
         default:
             return ("", Color.white.opacity(0), Color.white.opacity(0))
         }

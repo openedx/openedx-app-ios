@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 public struct CourseDates {
     let datesBannerInfo: DatesBannerInfo
@@ -36,7 +37,7 @@ public struct CourseDates {
                 description: "",
                 learnerHasAccess: true,
                 link: "", linkText: nil,
-                title: "Today",
+                title: CoreLocalization.CourseDates.today,
                 extraInfo: nil,
                 firstComponentBlockID: "uniqueIDForToday")
             dateToCourseDateBlockDict[today] = [todayBlock]
@@ -194,15 +195,15 @@ public enum BlockStatus {
     var title: String {
         switch self {
         case .completed:
-            return "Completed"
+            return CoreLocalization.CourseDates.completed
         case .pastDue:
-            return "Past due"
+            return CoreLocalization.CourseDates.pastDue
         case .dueNext:
-            return "Due next"
+            return CoreLocalization.CourseDates.dueNext
         case .unreleased:
-            return "Unreleased"
+            return CoreLocalization.CourseDates.unreleased
         case .verifiedOnly:
-            return "Verified Only"
+            return CoreLocalization.CourseDates.verifiedOnly
         default:
             return ""
         }

@@ -79,7 +79,7 @@ public struct CourseContainerView: View {
                                         viewModel: Container.shared.resolve(CourseDatesViewModel.self,
                                                                             argument: courseID)!)
                         .tabItem {
-                            CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
+                            Image(systemName: "calendar").renderingMode(.template)
                             Text(CourseLocalization.CourseContainer.dates)
                         }
                         .tag(CourseTab.dates)

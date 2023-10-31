@@ -41,11 +41,11 @@ public class CourseDatesViewModel: ObservableObject {
         self.connectivity = connectivity
     }
         
-    public var sortedDates: [Date] {
+    var sortedDates: [Date] {
         courseDates?.sortedDateToCourseDateBlockDict.keys.sorted() ?? []
     }
     
-    public func blocks(for date: Date) -> [CourseDateBlock] {
+    func blocks(for date: Date) -> [CourseDateBlock] {
         courseDates?.sortedDateToCourseDateBlockDict[date] ?? []
     }
     
@@ -54,7 +54,7 @@ public class CourseDatesViewModel: ObservableObject {
         isShowProgress = true
         do {
             courseDates = try await interactor.getCourseDates(courseID: courseID)
-            guard let _ = courseDates?.courseDateBlocks else {
+            if courseDates?.courseDateBlocks == nil {
                 isShowProgress = false
                 errorMessage = CoreLocalization.Error.unknownError
                 return
