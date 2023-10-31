@@ -44,8 +44,6 @@
 		95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */; };
 		BAD56D132AEAB4A20064918E /* OpenEdxRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */; };
 		BAD56D152AEAB4D60064918E /* EdxRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D142AEAB4D60064918E /* EdxRouter.swift */; };
-		BAD56D342AEBF9430064918E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D312AEBF8DC0064918E /* Environment.swift */; };
-		BAD56D362AEBF9AB0064918E /* BuildConfiguratable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD56D352AEBF9AB0064918E /* BuildConfiguratable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -112,8 +110,6 @@
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BAD56D122AEAB4A10064918E /* OpenEdxRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenEdxRouter.swift; sourceTree = "<group>"; };
 		BAD56D142AEAB4D60064918E /* EdxRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdxRouter.swift; sourceTree = "<group>"; };
-		BAD56D312AEBF8DC0064918E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		BAD56D352AEBF9AB0064918E /* BuildConfiguratable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguratable.swift; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_OpenEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -194,7 +190,6 @@
 				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
 				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
 				BA1CFE692AEC014E00ED7496 /* Routers */,
-				BAD56D322AEBF8DC0064918E /* Environment */,
 				0293A2012A6FC9E30090A336 /* Data */,
 				0727878C28D347B2002E9142 /* View */,
 				0770DE1A28D084BC006D8A5D /* DI */,
@@ -248,15 +243,6 @@
 				BAD56D142AEAB4D60064918E /* EdxRouter.swift */,
 			);
 			path = Routers;
-			sourceTree = "<group>";
-		};
-		BAD56D322AEBF8DC0064918E /* Environment */ = {
-			isa = PBXGroup;
-			children = (
-				BAD56D352AEBF9AB0064918E /* BuildConfiguratable.swift */,
-				BAD56D312AEBF8DC0064918E /* Environment.swift */,
-			);
-			path = Environment;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -398,8 +384,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BAD56D362AEBF9AB0064918E /* BuildConfiguratable.swift in Sources */,
-				BAD56D342AEBF9430064918E /* Environment.swift in Sources */,
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,

@@ -21,17 +21,8 @@ public struct SignInView: View {
         ZStack(alignment: .top) {
             AuthBackgroundView(image: CoreAssets.authBackground.swiftUIImage)
             SignInContentView(viewModel: viewModel)
-            AuthAlertView(
-                showAlert: viewModel.showAlert,
-                alertMessage: viewModel.alertMessage
-            ) {
-                viewModel.alertMessage = nil
-            }
-            SnackBarErrorView(
-                showError: viewModel.showError,
-                errorMessage: viewModel.errorMessage
-            ) {
-                viewModel.errorMessage = nil
+            if case .error(let type, let message) = viewModel.state {
+                AlertView(message: message, type: type)
             }
         }
         .hideNavigationBar()

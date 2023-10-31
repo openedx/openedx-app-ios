@@ -12,7 +12,14 @@ import Alamofire
 
 public class SignInViewModel: ObservableObject {
 
-    @Published private(set) var isShowProgress = false
+    enum State: Equatable {
+        case loading
+        case loaded
+        case error(AlertView.AlertType, String)
+    }
+    @Published private(set) var state: State = .loaded
+
+
     @Published private(set) var showError: Bool = false
     @Published private(set) var showAlert: Bool = false
     var errorMessage: String? {
@@ -59,14 +66,14 @@ public class SignInViewModel: ObservableObject {
             return
         }
         
-        isShowProgress = true
+        state = .loading
         do {
             let user = try await interactor.login(username: username, password: password)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: .password)
             router.showMainScreen()
         } catch let error {
-            isShowProgress = false
+            state = .loaded
             if let validationError = error.validationError,
                let value = validationError.data?["error_description"] as? String {
                 errorMessage = value

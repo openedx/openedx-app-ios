@@ -55,7 +55,7 @@ struct SignInContentView: View {
                             viewModel.router.showForgotPasswordScreen()
                         }
                     ).padding(.top, 10)
-                    ProgressStyledButton(isShowProgress: viewModel.isShowProgress) {
+                    ProgressStyledButton(isShowProgress: viewModel.state == .loading) {
                         Task {
                             await viewModel.login(username: email, password: password)
                         }

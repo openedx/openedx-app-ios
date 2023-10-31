@@ -9,34 +9,32 @@ import SwiftUI
 
 public struct SnackBarErrorView: View {
 
+    @Environment(\.dismiss) var dismiss
+
     public init(
-        showError: Bool,
         errorMessage: String?,
-        onHide: @escaping () -> Void
+        onDismiss: (() -> Void)? = nil
     ) {
-        self.showError = showError
         self.errorMessage = errorMessage
-        self.onHide = onHide
+        self.onDismiss = onDismiss
     }
 
-    public var showError: Bool
     public var errorMessage: String?
-    public let onHide: () -> Void
+    public let onDismiss: (() -> Void)?
 
     public var body: some View {
-        if showError {
-            VStack {
-                Spacer()
-                SnackBarView(message: errorMessage)
-            }
-            .transition(.move(edge: .bottom))
-            .onTapGesture {
-                onHide()
-            }
-            .onAppear {
-                doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                    onHide()
-                }
+        VStack {
+            Spacer()
+            SnackBarView(message: errorMessage)
+        }
+        .transition(.move(edge: .bottom))
+        .onTapGesture {
+            onDismiss?()
+        }
+        .onAppear {
+            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                dismiss()
+                onDismiss?()
             }
         }
     }

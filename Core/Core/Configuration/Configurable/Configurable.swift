@@ -6,22 +6,39 @@
 //
 
 import Foundation
-
-public enum TokenType: String {
-    case jwt = "JWT"
-    case bearer = "BEARER"
-}
+import FirebaseCore
 
 public enum Apps {
     case openEdx
     case edX
 }
 
-public protocol Configurable {
+public enum TokenType: String {
+    case jwt = "JWT"
+    case bearer = "BEARER"
+}
+
+public enum BuildConfiguration: String {
+    case debugDev = "DebugDev"
+    case releaseDev = "ReleaseDev"
+
+    case debugStage = "DebugStage"
+    case releaseStage = "ReleaseStage"
+
+    case debugProd = "DebugProd"
+    case releaseProd = "ReleaseProd"
+}
+
+public protocol AppConfiguratable {
     var app: Apps { get }
+    var environment: BuildConfiguration { get }
     var baseURL: URL { get }
     var oAuthClientId: String { get }
     var tokenType: TokenType { get }
+    var firebaseOptions: FirebaseOptions? { get }
+}
+
+public protocol Configurable: AppConfiguratable {
     var termsOfService: URL? { get }
     var privacyPolicy: URL? { get }
     var feedbackEmail: String { get }

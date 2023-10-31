@@ -26,14 +26,11 @@ class AppAssembly: Assembly {
     }
     
     func assemble(container: Container) {
+        let config = Configuration()
+        
         container.register(UINavigationController.self) { _ in
             self.navigation
         }.inObjectScope(.container)
-
-        let  config = Config(
-            baseURL: AppDelegate.shared.environment.baseURL,
-            oAuthClientId: AppDelegate.shared.environment.clientId
-        )
 
         if config.app == .edX {
             container.register(Router.self) { r in
@@ -128,7 +125,7 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
 
         container.register(CSSInjector.self) { _ in
-            CSSInjector(baseURL: AppDelegate.shared.environment.baseURL)
+            CSSInjector(baseURL: config.baseURL.absoluteString)
         }.inObjectScope(.container)
 
         container.register(KeychainSwift.self) { _ in

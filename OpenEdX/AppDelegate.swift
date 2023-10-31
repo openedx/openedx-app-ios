@@ -26,20 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private var lastForceLogoutTime: TimeInterval = 0
 
-    let environment: BuildConfiguratable = BuildConfiguration()
-
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
-        if let firebaseOptions = environment.firebaseOptions, environment.firebaseOptions?.apiKey != "" {
-            FirebaseApp.configure(options: firebaseOptions)
-            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-        }
+        configure()
 
-        initDI()
-        
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = RouteController()
@@ -68,7 +60,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             container: Container.shared
         )
     }
-    
+
+    private func configure() {
+        initDI()
+        
+        guard let configuration = Container.shared.resolve(Configurable.self) else {
+            return
+        }
+
+        if let firebaseOptions = configuration.firebaseOptions,
+            configuration.firebaseOptions?.apiKey != "" {
+            FirebaseApp.configure(options: firebaseOptions)
+            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        }
+    }
+
     @objc private func forceLogoutUser() {
         guard Date().timeIntervalSince1970 - lastForceLogoutTime > 5 else {
             return

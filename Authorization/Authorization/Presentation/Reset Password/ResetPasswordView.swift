@@ -119,17 +119,36 @@ public struct ResetPasswordView: View {
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
             }
-            AuthAlertView(
-                showAlert: viewModel.showAlert,
-                alertMessage: viewModel.alertMessage
-            ) {
-                viewModel.alertMessage = nil
+            
+            // MARK: - Alert
+            if viewModel.showAlert {
+                VStack {
+                    Text(viewModel.alertMessage ?? "")
+                        .shadowCardStyle(bgColor: Theme.Colors.accentColor,
+                                         textColor: .white)
+                        .padding(.top, 80)
+                    Spacer()
+
+                }
+                .transition(.move(edge: .top))
+                .onAppear {
+                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                        viewModel.alertMessage = nil
+                    }
+                }
             }
-            SnackBarErrorView(
-                showError: viewModel.showError,
-                errorMessage: viewModel.errorMessage
-            ) {
-                viewModel.errorMessage = nil
+
+            // MARK: - Show error
+            if viewModel.showError {
+                VStack {
+                    Spacer()
+                    SnackBarView(message: viewModel.errorMessage)
+                }.transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
+                    }
             }
         }
         .ignoresSafeArea(.all, edges: .horizontal)

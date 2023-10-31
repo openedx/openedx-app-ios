@@ -8,38 +8,70 @@
 import SwiftUI
 import Core
 
-struct AuthAlertView: View {
+struct AlertView: View {
 
-    public init(
-        showAlert: Bool,
-        alertMessage: String?,
-        onHide: @escaping () -> Void
-    ) {
-        self.showAlert = showAlert
-        self.alertMessage = alertMessage
-        self.onHide = onHide
+    enum AlertType {
+        case alert
+        case bar
     }
 
-    public var showAlert: Bool
-    public var alertMessage: String?
-    public let onHide: () -> Void
+    @Environment(\.dismiss) var dismiss
+
+    public var message: String?
+    public var type: AlertType
+    public var onDismiss: (() -> Void)?
+
+    public init(
+        message: String?,
+        type: AlertType = .alert,
+        onDismiss: (() -> Void)? = nil
+    ) {
+        self.message = message
+        self.type = type
+        self.onDismiss = onDismiss
+    }
 
     var body: some View {
-        if showAlert {
-            VStack {
-                Text(alertMessage ?? "")
-                    .shadowCardStyle(
-                        bgColor: Theme.Colors.accentColor,
-                        textColor: .white
-                    )
-                    .padding(.top, 80)
-                Spacer()
+        switch type {
+        case .alert:
+            alert
+        case .bar:
+            snack
+        }
+    }
+
+    private var alert: some View {
+        VStack {
+            Text(message ?? "")
+                .shadowCardStyle(
+                    bgColor: Theme.Colors.accentColor,
+                    textColor: .white
+                )
+                .padding(.top, 80)
+            Spacer()
+        }
+        .transition(.move(edge: .top))
+        .onAppear {
+            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                dismiss()
+                onDismiss?()
             }
-            .transition(.move(edge: .top))
-            .onAppear {
-                doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                    onHide()
-                }
+        }
+    }
+
+    private var snack: some View {
+        VStack {
+            Spacer()
+            SnackBarView(message: message)
+        }
+        .transition(.move(edge: .bottom))
+        .onTapGesture {
+            onDismiss?()
+        }
+        .onAppear {
+            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                dismiss()
+                onDismiss?()
             }
         }
     }
