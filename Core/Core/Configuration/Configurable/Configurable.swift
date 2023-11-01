@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseCore
+import Swinject
 
 public enum Apps {
     case openEdx
@@ -27,6 +28,11 @@ public enum BuildConfiguration: String {
 
     case debugProd = "DebugProd"
     case releaseProd = "ReleaseProd"
+}
+
+public protocol AppDelegateConfigurable {
+    var assembler: Assembler? { get }
+    func didFinishLaunching()
 }
 
 public protocol AppConfiguratable {

@@ -32,16 +32,13 @@ class AppAssembly: Assembly {
             self.navigation
         }.inObjectScope(.container)
 
-        if config.app == .edX {
-            container.register(Router.self) { r in
-                EdxRouter(navigationController: r.resolve(UINavigationController.self)!, container: container)
-            }
-        } else {
-            container.register(Router.self) { r in
-                OpenEdxRouter(navigationController: r.resolve(UINavigationController.self)!, container: container)
-            }
+        container.register(Router.self) { r in
+            Router(
+                navigationController: r.resolve(UINavigationController.self)!,
+                container: container
+            )
         }
-        
+
         container.register(AnalyticsManager.self) { _ in
             AnalyticsManager()
         }

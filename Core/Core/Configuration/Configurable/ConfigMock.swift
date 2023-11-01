@@ -1,14 +1,15 @@
 //
-//  Configuration.swift
+//  ConfigMock.swift
 //  Core
 //
-//  Created by Vladimir Chekyrta on 14.09.2022.
+//  Created by Eugene Yatsenko on 01.11.2023.
 //
 
 import Foundation
 import FirebaseCore
 
-public class Configuration: Configurable {
+#if DEBUG
+public class ConfigMock: Configurable {
 
     // MARK: - App Configuratable -
 
@@ -70,7 +71,7 @@ public class Configuration: Configurable {
             firebaseOptions.bundleID = ""
             firebaseOptions.clientID = ""
             firebaseOptions.storageBucket = ""
-            
+
             return firebaseOptions
         }
     }
@@ -82,11 +83,11 @@ public class Configuration: Configurable {
     }
 
     public var termsOfService: URL? {
-        URL(string: "\(baseURL.description)/tos")
+        nil
     }
 
     public var privacyPolicy: URL? {
-        URL(string: "\(baseURL.description)/privacy")
+        nil
     }
 
     public let feedbackEmail = "support@example.com"
@@ -96,8 +97,4 @@ public class Configuration: Configurable {
         environment = BuildConfiguration(rawValue: currentConfiguration)!
     }
 }
-
-// Mark - For testing and SwiftUI preview
-#if DEBUG
-public class ConfigMock: Configuration {}
 #endif

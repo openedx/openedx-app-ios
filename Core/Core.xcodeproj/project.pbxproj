@@ -112,7 +112,7 @@
 		0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7A28D0C78C006D8A5D /* Theme.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
 		BA62C5902AF10986002056F5 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA62C58D2AF10915002056F5 /* Configurable.swift */; };
-		BA62C5912AF10988002056F5 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA62C58E2AF10915002056F5 /* Configuration.swift */; };
+		BA62C5992AF2617C002056F5 /* ConfigMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA62C5982AF2617C002056F5 /* ConfigMock.swift */; };
 		C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 /* End PBXBuildFile section */
@@ -242,7 +242,7 @@
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		BA62C58D2AF10915002056F5 /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
-		BA62C58E2AF10915002056F5 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		BA62C5982AF2617C002056F5 /* ConfigMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigMock.swift; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -546,7 +546,7 @@
 			isa = PBXGroup;
 			children = (
 				BA62C58D2AF10915002056F5 /* Configurable.swift */,
-				BA62C58E2AF10915002056F5 /* Configuration.swift */,
+				BA62C5982AF2617C002056F5 /* ConfigMock.swift */,
 			);
 			path = Configurable;
 			sourceTree = "<group>";
@@ -799,6 +799,7 @@
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
 				027BD3B52909475900392132 /* KeyboardStateObserver.swift in Sources */,
 				0283347D28D4D3DE00C828FC /* Data_Discovery.swift in Sources */,
+				BA62C5992AF2617C002056F5 /* ConfigMock.swift in Sources */,
 				07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */,
 				023A4DD4299E66BD006C0E48 /* OfflineSnackBarView.swift in Sources */,
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
@@ -843,7 +844,6 @@
 				02F6EF3B28D9B8EC00835477 /* CourseCellView.swift in Sources */,
 				023A1138291432FD00D0D354 /* FieldConfiguration.swift in Sources */,
 				024D865E28F02C6B0077E0A0 /* WebView.swift in Sources */,
-				BA62C5912AF10988002056F5 /* Configuration.swift in Sources */,
 				02F164372902A9EB0090DDEF /* StringExtension.swift in Sources */,
 				0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */,
 				0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */,

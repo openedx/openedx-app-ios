@@ -21,16 +21,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     var window: UIWindow?
-        
-    private var assembler: Assembler?
     
     private var lastForceLogoutTime: TimeInterval = 0
+
+    private let appDelegateConfiguration: AppDelegateConfiguration = .init()
 
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        configure()
+        appDelegateConfiguration.didFinishLaunching()
 
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -45,34 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         return true
-    }
-
-    private func initDI() {
-        let navigation = UINavigationController()
-        navigation.modalPresentationStyle = .fullScreen
-        
-        assembler = Assembler(
-            [
-                AppAssembly(navigation: navigation),
-                NetworkAssembly(),
-                ScreenAssembly()
-            ],
-            container: Container.shared
-        )
-    }
-
-    private func configure() {
-        initDI()
-        
-        guard let configuration = Container.shared.resolve(Configurable.self) else {
-            return
-        }
-
-        if let firebaseOptions = configuration.firebaseOptions,
-            configuration.firebaseOptions?.apiKey != "" {
-            FirebaseApp.configure(options: firebaseOptions)
-            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-        }
     }
 
     @objc private func forceLogoutUser() {
