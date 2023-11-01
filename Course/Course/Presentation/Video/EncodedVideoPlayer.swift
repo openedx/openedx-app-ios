@@ -91,6 +91,7 @@ public struct EncodedVideoPlayer: View {
                                             preferredTimescale: 10000
                                         )
                                     )
+                                    viewModel.controller.player?.play()
                                     pauseScrolling()
                                     currentTime = (date.secondsSinceMidnight() + 1)
                                 })
@@ -108,6 +109,7 @@ public struct EncodedVideoPlayer: View {
                                         preferredTimescale: 10000
                                     )
                                 )
+                                viewModel.controller.player?.play()
                                 pauseScrolling()
                                 currentTime = (date.secondsSinceMidnight() + 1)
                             })
