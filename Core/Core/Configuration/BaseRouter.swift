@@ -10,7 +10,9 @@ import SwiftUI
 
 //sourcery: AutoMockable
 public protocol BaseRouter {
-    
+
+    var navigationController: UINavigationController { get }
+
     func backToRoot(animated: Bool)
     
     func back(animated: Bool)
@@ -69,7 +71,11 @@ extension BaseRouter {
 #if DEBUG
 open class BaseRouterMock: BaseRouter {
 
-    public init() {}
+    public let navigationController: UINavigationController
+
+    public init() {
+        navigationController = .init()
+    }
 
     public func dismiss(animated: Bool) {}
 

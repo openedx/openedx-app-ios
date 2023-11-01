@@ -27,7 +27,7 @@ public class Router: AuthorizationRouter,
 
     public var container: Container
 
-    let navigationController: UINavigationController
+    public let navigationController: UINavigationController
 
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
