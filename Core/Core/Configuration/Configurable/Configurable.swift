@@ -45,7 +45,10 @@ public protocol AppConfiguratable {
 }
 
 public protocol Configurable: AppConfiguratable {
-    var socialLoginEnable: Bool { get }
+    var isAppleSignInEnabled: Bool { get }
+    var isGoogleSignInEnabled: Bool { get }
+    var isFacebookSignInEnabled: Bool { get }
+    var isMicrosoftSignInEnabled: Bool { get }
     var termsOfService: URL? { get }
     var privacyPolicy: URL? { get }
     var feedbackEmail: String { get }

@@ -78,7 +78,19 @@ public class ConfigMock: Configurable {
 
     // MARK: - Configuratable -
 
-    public var socialLoginEnable: Bool {
+    public var isAppleSignInEnabled: Bool {
+        false
+    }
+
+    public var isGoogleSignInEnabled: Bool {
+        false
+    }
+
+    public var isFacebookSignInEnabled: Bool {
+        false
+    }
+
+    public var isMicrosoftSignInEnabled: Bool {
         false
     }
 
