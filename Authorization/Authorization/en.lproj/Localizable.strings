@@ -17,7 +17,7 @@
 
 "ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email";
 "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME" = "Invalid email or username";
-"ERROR.INVALID_PASSWORD_LENGTH" = "Invalid password lenght";
+"ERROR.INVALID_PASSWORD_LENGTH" = "Invalid password length";
 
 "SIGN_UP.TITLE" = "Sign up";
 "SIGN_UP.SUBTITLE" = "Create new account.";

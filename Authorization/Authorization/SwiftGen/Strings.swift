@@ -15,8 +15,8 @@ public enum AuthLocalization {
     public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email")
     /// Invalid email or username
     public static let invalidEmailAddressOrUsername = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME", fallback: "Invalid email or username")
-    /// Invalid password lenght
-    public static let invalidPasswordLength = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGTH", fallback: "Invalid password lenght")
+    /// Invalid password length
+    public static let invalidPasswordLength = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGTH", fallback: "Invalid password length")
   }
   public enum Forgot {
     /// We have sent a password recover instructions to your email 

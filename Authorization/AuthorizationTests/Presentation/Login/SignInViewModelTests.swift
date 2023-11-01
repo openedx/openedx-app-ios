@@ -34,12 +34,12 @@ final class SignInViewModelTests: XCTestCase {
             validator: validator
         )
         
-        await viewModel.login(username: "email", password: "")
+        await viewModel.login(username: "", password: "")
         
         Verify(interactor, 0, .login(username: .any, password: .any))
         Verify(router, 0, .showMainOrWhatsNewScreen())
         
-        XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidEmailAddress)
+        XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidEmailAddressOrUsername)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
     
