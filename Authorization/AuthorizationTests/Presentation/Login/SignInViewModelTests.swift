@@ -59,7 +59,7 @@ final class SignInViewModelTests: XCTestCase {
         Verify(interactor, 0, .login(username: .any, password: .any))
         Verify(router, 0, .showMainOrWhatsNewScreen())
         
-        XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidPasswordLenght)
+        XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidPasswordLength)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
     
