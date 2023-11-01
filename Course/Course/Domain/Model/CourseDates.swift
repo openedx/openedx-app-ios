@@ -88,7 +88,7 @@ public struct CourseDateBlock {
     
     var blockTitle: String {
         if isToday {
-            return "Today"
+            return CoreLocalization.CourseDates.today
         } else {
             return blockStatus.title
         }
