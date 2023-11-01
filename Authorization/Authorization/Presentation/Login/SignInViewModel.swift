@@ -113,23 +113,58 @@ public class SignInViewModel: ObservableObject {
     }
 
     private func appleLogin(_ credentials: AppleCredentials) {
-        //credentials.email
-        //credentials.name
-        //credentials.token
+        socialLogin(
+            externalToken: credentials.token,
+            backend: "apple-id"
+        )
     }
 
     private func facebookLogin(_ managerLoginResult: LoginManagerLoginResult) {
-        //let currentAccessToken = AccessToken.current?.tokenString
+        guard let currentAccessToken = AccessToken.current?.tokenString else {
+            return
+        }
+        socialLogin(
+            externalToken: currentAccessToken,
+            backend: "facebook"
+        )
     }
 
     private func googleLogin(_ gIDSignInResult: GIDSignInResult) {
-//        gIDSignInResult.user.accessToken
-//        gIDSignInResult.user.profile?.email
-//        gIDSignInResult.user.profile?.name
+        socialLogin(
+            externalToken: gIDSignInResult.user.accessToken.tokenString,
+            backend: "google-oauth2"
+        )
     }
 
     private func microsoftLogin(_ account: MSALAccount, _ token: String) {
-        
+        socialLogin(
+            externalToken: token,
+            backend: "azuread-oauth2"
+        )
+    }
+
+    private func socialLogin(externalToken: String, backend: String) {
+        Task {
+            isShowProgress = true
+            do {
+                let user = try await interactor.login(externalToken: externalToken, backend: backend)
+                analytics.setUserID("\(user.id)")
+                analytics.userLogin(method: .password)
+                router.showMainScreen()
+            } catch let error {
+                isShowProgress = false
+                if let validationError = error.validationError,
+                   let value = validationError.data?["error_description"] as? String {
+                    errorMessage = value
+                } else if case APIError.invalidGrant = error {
+                    errorMessage = CoreLocalization.Error.invalidCredentials
+                } else if error.isInternetError {
+                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                } else {
+                    errorMessage = CoreLocalization.Error.unknownError
+                }
+            }
+        }
     }
 
 }

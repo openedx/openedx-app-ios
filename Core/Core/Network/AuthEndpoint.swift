@@ -10,6 +10,7 @@ import Alamofire
 
 enum AuthEndpoint: EndPointType {
     case getAccessToken(username: String, password: String, clientId: String)
+    case socialLogin(externalToken: String, backend: String, clientId: String)
     case getUserInfo
     case getAuthCookies
     case getRegisterFields
@@ -21,6 +22,8 @@ enum AuthEndpoint: EndPointType {
         switch self {
         case .getAccessToken:
             return "/oauth2/access_token"
+        case let .socialLogin(_, backend, _):
+            return "/oauth2/exchange_access_token/\(backend)/"
         case .getUserInfo:
             return "/api/mobile/v0.5/my_user_info"
         case .getAuthCookies:
@@ -38,7 +41,7 @@ enum AuthEndpoint: EndPointType {
 
     var httpMethod: HTTPMethod {
         switch self {
-        case .getAccessToken:
+        case .getAccessToken, .socialLogin:
             return .post
         case .getUserInfo:
             return .get
@@ -67,6 +70,14 @@ enum AuthEndpoint: EndPointType {
                 "client_id": clientId,
                 "username": username,
                 "password": password
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
+        case let .socialLogin(externalToken, _, clientId):
+            let params: [String: Encodable] = [
+                "client_id": clientId,
+                "jwt": "token_type",
+                "access_token": externalToken,
+                "asymmetric_jwt": "true"
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
         case .getUserInfo:
