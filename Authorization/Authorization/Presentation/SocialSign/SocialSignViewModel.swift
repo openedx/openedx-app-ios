@@ -13,7 +13,7 @@ import GoogleSignIn
 import MSAL
 
 enum Socials {
-    case apple(ASAuthorizationAppleIDCredential)
+    case apple(AppleCredentials)
     case facebook(LoginManagerLoginResult)
     case google(GIDSignInResult)
     case microsoft(MSALAccount, String)

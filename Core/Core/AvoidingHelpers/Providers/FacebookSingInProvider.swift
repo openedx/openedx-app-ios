@@ -19,7 +19,7 @@ public final class FacebookSingInProvider {
         completion: @escaping ((LoginManagerLoginResult?, Error?) -> Void)
     ) {
         loginManager.logIn(
-            permissions: ["public_profile"],
+            permissions: ["email", "public_profile"],
             from: withPresenting,
             handler: completion
         )

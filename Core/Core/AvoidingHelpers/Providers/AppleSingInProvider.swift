@@ -8,14 +8,21 @@
 import Foundation
 import AuthenticationServices
 
+public struct AppleCredentials: Codable {
+    public var name: String
+    public var email: String
+    public var birthYear: String? = nil
+    public var token: String
+}
+
 public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDelegate {
 
     public override init() {}
 
-    private var completion: ((Result<ASAuthorizationAppleIDCredential, Error>) -> Void)?
+    private var completion: ((Result<AppleCredentials, Error>) -> Void)?
     private let appleIDProvider = ASAuthorizationAppleIDProvider()
 
-    public func request(completion: ((Result<ASAuthorizationAppleIDCredential, Error>) -> Void)?) {
+    public func request(completion: ((Result<AppleCredentials, Error>) -> Void)?) {
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.fullName, .email]
 
@@ -30,18 +37,31 @@ public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDeleg
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
     ) {
-        guard let appleIDCredential = authorization.credential as?  ASAuthorizationAppleIDCredential else {
+        guard let credentials = authorization.credential as?  ASAuthorizationAppleIDCredential else {
             completion?(.failure(CustomError.error(text: "ASAuthorizationAppleIDCredential is nil")))
             return
         }
 
-        let userIdentifier = appleIDCredential.user
-        let fullName = appleIDCredential.fullName
-        let email = appleIDCredential.email
+        let firstName = credentials.fullName?.givenName ?? ""
+        let lastName = credentials.fullName?.familyName ?? ""
+        let email = credentials.email ?? ""
+        var name = "\(firstName) \(lastName)"
 
-        debugLog("User id is \(userIdentifier) \n Full Name is \(String(describing: fullName)) \n Email id is \(String(describing: email))")
+        guard let data = credentials.identityToken,
+            let code = String(data: data, encoding: .utf8) else {
+            completion?(.failure(CustomError.error(text: "Token is nil")))
+            return
+        }
 
-        completion?(.success(appleIDCredential))
+        debugLog("User id is \(data) \n Full Name is \(name) \n Email id is \(email)")
+
+        let appleCredentials = AppleCredentials(
+            name: name,
+            email: email,
+            token: code
+        )
+
+        completion?(.success(appleCredentials))
     }
 
     public func authorizationController(

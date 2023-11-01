@@ -9,6 +9,10 @@ import Foundation
 import Core
 import SwiftUI
 import Alamofire
+import AuthenticationServices
+import FacebookLogin
+import GoogleSignIn
+import MSAL
 
 public class SignInViewModel: ObservableObject {
     
@@ -96,6 +100,36 @@ public class SignInViewModel: ObservableObject {
     }
 
     private func social(result: Socials) {
-        debugLog(social)
+        switch result {
+        case .apple(let credential):
+            appleLogin(credential)
+        case .facebook(let loginManagerLoginResult):
+            facebookLogin(loginManagerLoginResult)
+        case .google(let gIDSignInResult):
+            googleLogin(gIDSignInResult)
+        case .microsoft(let account, let token):
+            microsoftLogin(account, token)
+        }
     }
+
+    private func appleLogin(_ credentials: AppleCredentials) {
+        //credentials.email
+        //credentials.name
+        //credentials.token
+    }
+
+    private func facebookLogin(_ managerLoginResult: LoginManagerLoginResult) {
+        //let currentAccessToken = AccessToken.current?.tokenString
+    }
+
+    private func googleLogin(_ gIDSignInResult: GIDSignInResult) {
+//        gIDSignInResult.user.accessToken
+//        gIDSignInResult.user.profile?.email
+//        gIDSignInResult.user.profile?.name
+    }
+
+    private func microsoftLogin(_ account: MSALAccount, _ token: String) {
+        
+    }
+
 }
