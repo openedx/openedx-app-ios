@@ -28,4 +28,7 @@
    <FileRef
       location = "group:../OpenEdX.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../WhatsNew/WhatsNew.xcodeproj">
+   </FileRef>
 </Workspace>

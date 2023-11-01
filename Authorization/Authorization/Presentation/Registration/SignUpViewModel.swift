@@ -93,7 +93,7 @@ public class SignUpViewModel: ObservableObject {
             analytics.setUserID("\(user.id)")
             analytics.registrationSuccess()
             isShowProgress = false
-            router.showMainScreen()
+            router.showMainOrWhatsNewScreen()
             
         } catch let error {
             isShowProgress = false

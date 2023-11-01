@@ -11,6 +11,7 @@ import Core
 import Swinject
 import Dashboard
 import Profile
+import WhatsNew
 import SwiftUIIntrospect
 
 struct MainScreenView: View {
