@@ -1,8 +1,8 @@
 //
-//  OpenEdxRouter.swift
+//  Router.swift
 //  OpenEdX
 //
-//  Created by Eugene Yatsenko on 26.10.2023.
+//  Created by Vladimir Chekyrta on 13.09.2022.
 //
 
 import UIKit
