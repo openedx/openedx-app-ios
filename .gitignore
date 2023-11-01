@@ -3,7 +3,8 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## User settings
-xcuserdata/*
+xcuserdata/
+*.xcuserdata/*
 /OpenEdX.xcodeproj/xcuserdata/
 /OpenEdX.xcworkspace/xcuserdata/
 /OpenEdX.xcworkspace/xcshareddata/swiftpm/Package.resolved
@@ -24,6 +25,13 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
 
 ## Obj-C/Swift specific
 *.hmap
