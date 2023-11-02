@@ -36,6 +36,7 @@
 
 "COURSE_CONTAINER.COURSE" =  "Курс";
 "COURSE_CONTAINER.VIDEOS" =  "Всі відео";
+//"COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSION" =  "Дискусії";
 "COURSE_CONTAINER.HANDOUTS" =  "Матеріали";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Матеріали в процесі розробки";

@@ -68,3 +68,10 @@
 
 "WEBVIEW.ALERT.OK" = "Так";
 "WEBVIEW.ALERT.CANCEL" = "Скасувати";
+
+"COURSE_DATES.TODAY" = "Today";
+"COURSE_DATES.COMPLETED" = "Completed";
+"COURSE_DATES.PAST_DUE" = "Past due";
+"COURSE_DATES.DUE_NEXT" = "Due next";
+"COURSE_DATES.UNRELEASED" = "Unreleased";
+"COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
