@@ -197,7 +197,7 @@ public struct ProfileView: View {
                                             }
                                             
                                         }
-                                    })
+                                    }).disabled(viewModel.versionState == .actual)
                                 
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
