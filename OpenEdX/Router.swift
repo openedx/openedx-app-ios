@@ -75,7 +75,8 @@ public class Router: AuthorizationRouter,
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let controller = UIHostingController(rootView: MainScreenView())
+            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         }
