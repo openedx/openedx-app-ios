@@ -69,6 +69,7 @@ public enum DateStringStyle {
     case monthYear
     case lastPost
     case iso8601
+    case shortWeekdayMonthDayYear
 }
 
 public extension Date {
@@ -102,6 +103,8 @@ public extension Date {
             dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmDdYyyy
         case .iso8601:
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        case .shortWeekdayMonthDayYear:
+            dateFormatter.dateFormat = "EEE, MMM d, yyyy"
         }
         
         let date = dateFormatter.string(from: self)
@@ -129,6 +132,8 @@ public extension Date {
                 return date
             }
         case .iso8601:
+            return date
+        case .shortWeekdayMonthDayYear:
             return date
         }
     }

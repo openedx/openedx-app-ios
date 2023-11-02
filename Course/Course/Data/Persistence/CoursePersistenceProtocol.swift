@@ -17,6 +17,8 @@ public protocol CoursePersistenceProtocol {
     func saveCourseStructure(structure: DataLayer.CourseStructure)
     func saveSubtitles(url: String, subtitlesString: String)
     func loadSubtitles(url: String) -> String?
+    func saveCourseDates(courseID: String, courseDates: CourseDates)
+    func loadCourseDates(courseID: String) throws -> CourseDates
 }
 
 public final class CourseBundle {

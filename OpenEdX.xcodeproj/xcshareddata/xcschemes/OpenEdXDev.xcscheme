@@ -97,6 +97,16 @@
                ReferencedContainer = "container:Profile/Profile.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "028A37242ADFF3F7008CA604"
+               BuildableName = "WhatsNewTests.xctest"
+               BlueprintName = "WhatsNewTests"
+               ReferencedContainer = "container:WhatsNew/WhatsNew.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

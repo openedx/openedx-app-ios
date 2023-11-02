@@ -18,6 +18,8 @@
 		025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 027DB32F28D8A063002B6862 /* Dashboard.framework */; };
 		027DB33128D8A063002B6862 /* Dashboard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 027DB32F28D8A063002B6862 /* Dashboard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		028A37362ADFF404008CA604 /* WhatsNew.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028A37352ADFF404008CA604 /* WhatsNew.framework */; };
+		028A37372ADFF404008CA604 /* WhatsNew.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 028A37352ADFF404008CA604 /* WhatsNew.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0293A2032A6FCA590090A336 /* CorePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293A2022A6FCA590090A336 /* CorePersistence.swift */; };
 		0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293A2042A6FCD430090A336 /* CoursePersistence.swift */; };
 		0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0293A2062A6FCDA30090A336 /* DiscoveryPersistence.swift */; };
@@ -60,6 +62,7 @@
 				0219C67828F4347600D64452 /* Course.framework in Embed Frameworks */,
 				025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */,
 				027DB33128D8A063002B6862 /* Dashboard.framework in Embed Frameworks */,
+				028A37372ADFF404008CA604 /* WhatsNew.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,6 +80,7 @@
 		025DE1A328DB4DAE0053E0F4 /* Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		025EF2F7297177F300B838AB /* OpenEdX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenEdX.entitlements; sourceTree = "<group>"; };
 		027DB32F28D8A063002B6862 /* Dashboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dashboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		028A37352ADFF404008CA604 /* WhatsNew.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WhatsNew.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0293A2022A6FCA590090A336 /* CorePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorePersistence.swift; sourceTree = "<group>"; };
 		0293A2042A6FCD430090A336 /* CoursePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePersistence.swift; sourceTree = "<group>"; };
 		0293A2062A6FCDA30090A336 /* DiscoveryPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryPersistence.swift; sourceTree = "<group>"; };
@@ -120,6 +124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07A7D78F28F5C9060000BE81 /* Core.framework in Frameworks */,
+				028A37362ADFF404008CA604 /* WhatsNew.framework in Frameworks */,
 				025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */,
 				0770DE4B28D0A462006D8A5D /* Authorization.framework in Frameworks */,
 				072787B128D34D83002E9142 /* Discovery.framework in Frameworks */,
@@ -209,6 +214,7 @@
 		4E6FB43543890E90BB88D64D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				028A37352ADFF404008CA604 /* WhatsNew.framework */,
 				0218196328F734FA00202564 /* Discussion.framework */,
 				07A7D78E28F5C9060000BE81 /* Core.framework */,
 				0219C67628F4347600D64452 /* Course.framework */,
