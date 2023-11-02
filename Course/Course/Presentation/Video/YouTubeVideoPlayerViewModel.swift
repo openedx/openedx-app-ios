@@ -80,7 +80,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
             case .pause:
-                self?.youtubePlayer.pause()
+                self?.youtubePlayer.stop()
             case .kill, .none:
                 break
             }
