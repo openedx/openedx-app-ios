@@ -49,18 +49,18 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         }).store(in: &subscription)
     }
     
-    func getBitRate() -> Double {
+    func getBitRate() -> CGSize {
         switch appStorage.userSettings?.streamingQuality {
         case .auto:
-            return 0
+            return CGSize(width: 1280, height: 720)
         case .low:
-            return 1500000
+            return CGSize(width: 640, height: 360)
         case .medium:
-            return 2000000
+            return CGSize(width: 854, height: 480)
         case .high:
-            return 4000000
+            return CGSize(width: 1280, height: 720)
         case .none:
-            return 0
+            return CGSize(width: 1280, height: 720)
         }
     }
 }
