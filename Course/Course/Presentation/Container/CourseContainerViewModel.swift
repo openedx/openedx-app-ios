@@ -165,6 +165,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             analytics.courseOutlineCourseTabClicked(courseId: courseId, courseName: courseName)
         case .videos:
             analytics.courseOutlineVideosTabClicked(courseId: courseId, courseName: courseName)
+        case .dates:
+            analytics.courseOutlineDatesTabClicked(courseId: courseId, courseName: courseName)
         case .discussion:
             analytics.courseOutlineDiscussionTabClicked(courseId: courseId, courseName: courseName)
         case .handounds:

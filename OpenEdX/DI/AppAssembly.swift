@@ -15,6 +15,7 @@ import Course
 import Discussion
 import Authorization
 import Profile
+import WhatsNew
 
 // swiftlint:disable function_body_length
 class AppAssembly: Assembly {
@@ -112,6 +113,10 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
+        container.register(WhatsNewRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
         container.register(Config.self) { _ in
             Config(baseURL: BuildConfiguration.shared.baseURL, oAuthClientId: BuildConfiguration.shared.clientId)
         }.inObjectScope(.container)
@@ -136,6 +141,10 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(CoreStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
+        
+        container.register(WhatsNewStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         

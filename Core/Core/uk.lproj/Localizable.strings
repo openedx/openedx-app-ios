@@ -69,6 +69,7 @@
 "WEBVIEW.ALERT.OK" = "Так";
 "WEBVIEW.ALERT.CANCEL" = "Скасувати";
 
+
 "REVIEW.VOTE_TITLE" = "Вам подобається Open edX?";
 "REVIEW.VOTE_DESCRIPTION" = "Ваш відгук важливий для нас. Можливо, ви візьмете хвилинку, щоб оцінити додаток, натиснувши на зірку нижче? Дякуємо за вашу підтримку!";
 "REVIEW.FEEDBACK_TITLE" = "Залиште відгук";
@@ -84,3 +85,11 @@
 "REVIEW.BUTTON.SHARE_FEEDBACK" = "Поділитися відгуком";
 "REVIEW.BUTTON.RATE_US" = "Оцінити нас";
 "REVIEW.EMAIL.TITLE" = "Виберіть поштового клієнта:";
+
+"COURSE_DATES.TODAY" = "Today";
+"COURSE_DATES.COMPLETED" = "Completed";
+"COURSE_DATES.PAST_DUE" = "Past due";
+"COURSE_DATES.DUE_NEXT" = "Due next";
+"COURSE_DATES.UNRELEASED" = "Unreleased";
+"COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
+

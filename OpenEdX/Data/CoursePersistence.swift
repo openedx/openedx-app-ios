@@ -215,4 +215,12 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
         return nil
     }
+    
+    public func saveCourseDates(courseID: String, courseDates: CourseDates) {
+        
+    }
+    
+    public func loadCourseDates(courseID: String) throws -> CourseDates {
+        throw NoCachedDataError()
+    }
 }

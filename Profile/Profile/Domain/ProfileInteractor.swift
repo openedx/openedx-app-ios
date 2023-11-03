@@ -13,7 +13,7 @@ import UIKit
 public protocol ProfileInteractorProtocol {
     func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
-    func getMyProfileOffline() throws -> UserProfile
+    func getMyProfileOffline() -> UserProfile?
     func logOut() async throws
     func getSpokenLanguages() -> [PickerFields.Option]
     func getCountries() -> [PickerFields.Option]
@@ -41,8 +41,8 @@ public class ProfileInteractor: ProfileInteractorProtocol {
         return try await repository.getMyProfile()
     }
     
-    public func getMyProfileOffline() throws -> UserProfile {
-        return try repository.getMyProfileOffline()
+    public func getMyProfileOffline() -> UserProfile? {
+        return repository.getMyProfileOffline()
     }
     
     public func logOut() async throws {
