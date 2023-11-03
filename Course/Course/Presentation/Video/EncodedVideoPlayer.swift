@@ -60,7 +60,7 @@ public struct EncodedVideoPlayer: View {
                             PlayerViewController(
                                 videoURL: viewModel.url,
                                 controller: viewModel.controller,
-                                bitrate: viewModel.getBitRate(),
+                                bitrate: viewModel.getVideoResolution(),
                                 progress: { progress in
                                     if progress >= 0.8 {
                                         if !isViewedOnce {
