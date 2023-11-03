@@ -108,6 +108,7 @@ public enum CoreAssets {
   public static let noCourseImage = ImageAsset(name: "noCourseImage")
   public static let notAvaliable = ImageAsset(name: "notAvaliable")
   public static let playVideo = ImageAsset(name: "playVideo")
+  public static let warningFilled = ImageAsset(name: "warning_filled")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

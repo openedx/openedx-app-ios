@@ -75,7 +75,8 @@ public class Router: AuthorizationRouter,
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let controller = UIHostingController(rootView: MainScreenView())
+            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         }
@@ -423,6 +424,21 @@ public class Router: AuthorizationRouter,
         
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showUpdateRequiredView(showAccountLink: Bool = true) {
+        let view = UpdateRequiredView(
+            router: self,
+            config: Container.shared.resolve(Config.self)!,
+            showAccountLink: showAccountLink
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: false)
+    }
+    
+    public func showUpdateRecomendedView() {
+        let view = UpdateRecommendedView(router: self, config: Container.shared.resolve(Config.self)!)
+        self.presentView(transitionStyle: .crossDissolve, view: view)
     }
     
     private func prepareToPresent <ToPresent: View> (_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)

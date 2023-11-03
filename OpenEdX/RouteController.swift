@@ -67,7 +67,8 @@ class RouteController: UIViewController {
             let controller = UIHostingController(rootView: whatsNewView)
             navigation.viewControllers = [controller]
         } else {
-            let controller = UIHostingController(rootView: MainScreenView())
+            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigation.viewControllers = [controller]
         }
         present(navigation, animated: false)

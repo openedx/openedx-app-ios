@@ -18,6 +18,8 @@ struct MainScreenView: View {
     
     @State private var selection: MainTab = .discovery
     @State private var settingsTapped: Bool = false
+    @State private var disableAllTabs: Bool = false
+    @State private var updateAvaliable: Bool = false
     
     enum MainTab {
         case discovery
@@ -26,9 +28,10 @@ struct MainScreenView: View {
         case profile
     }
     
-    private let analytics = Container.shared.resolve(MainScreenAnalytics.self)!
-    
-    init() {
+    @ObservedObject private var viewModel: MainScreenViewModel
+ 
+    init(viewModel: MainScreenViewModel) {
+        self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
@@ -37,21 +40,26 @@ struct MainScreenView: View {
     
     var body: some View {
         TabView(selection: $selection) {
-            DiscoveryView(
-                viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
-                router: Container.shared.resolve(DiscoveryRouter.self)!
-            )
+            ZStack {
+                DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!)
+                if updateAvaliable {
+                    UpdateNotificationView(config: viewModel.config)
+                }
+            }
             .tabItem {
                 CoreAssets.discovery.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
             
-            VStack {
+            ZStack {
                 DashboardView(
                     viewModel: Container.shared.resolve(DashboardViewModel.self)!,
                     router: Container.shared.resolve(DashboardRouter.self)!
                 )
+                if updateAvaliable {
+                    UpdateNotificationView(config: viewModel.config)
+                }
             }
             .tabItem {
                 CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
@@ -59,8 +67,11 @@ struct MainScreenView: View {
             }
             .tag(MainTab.dashboard)
             
-            VStack {
+            ZStack {
                 Text(CoreLocalization.Mainscreen.inDeveloping)
+                if updateAvaliable {
+                    UpdateNotificationView(config: viewModel.config)
+                }
             }
             .tabItem {
                 CoreAssets.programs.swiftUIImage.renderingMode(.template)
@@ -96,18 +107,35 @@ struct MainScreenView: View {
                 }
             })
         }
+        .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
+            selection = .profile
+            disableAllTabs = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
+            updateAvaliable = true
+        }
+        .onChange(of: selection) { _ in
+            if disableAllTabs {
+                selection = .profile
+            }
+        }
         .onChange(of: selection, perform: { selection in
             switch selection {
             case .discovery:
-                analytics.mainDiscoveryTabClicked()
+                viewModel.trackMainDiscoveryTabClicked()
             case .dashboard:
-                analytics.mainDashboardTabClicked()
+                viewModel.trackMainDashboardTabClicked()
             case .programs:
-                analytics.mainProgramsTabClicked()
+                viewModel.trackMainProgramsTabClicked()
             case .profile:
-                analytics.mainProfileTabClicked()
+                viewModel.trackMainProfileTabClicked()
             }
         })
+        .onFirstAppear {
+            Task {
+                await viewModel.prefetchDataForOffline()
+            }
+        }
     }
     
     private func titleBar() -> String {
@@ -120,12 +148,6 @@ struct MainScreenView: View {
             return CoreLocalization.Mainscreen.programs
         case .profile:
             return ProfileLocalization.title
-        }
-    }
-    
-    struct MainScreenView_Previews: PreviewProvider {
-        static var previews: some View {
-            MainScreenView()
         }
     }
 }

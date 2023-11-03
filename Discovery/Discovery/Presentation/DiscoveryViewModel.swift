@@ -5,15 +5,17 @@
 //  Created by  Stepanok Ivan on 16.09.2022.
 //
 
-import Foundation
+import Combine
 import Core
 import SwiftUI
 
 public class DiscoveryViewModel: ObservableObject {
     
-    public var nextPage = 1
-    public var totalPages = 1
-    public private(set) var fetchInProgress = false
+    var nextPage = 1
+    var totalPages = 1
+    private(set) var fetchInProgress = false
+    private var cancellables = Set<AnyCancellable>()
+    private var updateShowedOnce: Bool = false
     
     @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
@@ -26,15 +28,21 @@ public class DiscoveryViewModel: ObservableObject {
         }
     }
     
+    let router: DiscoveryRouter
+    let config: Config
     let connectivity: ConnectivityProtocol
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     
     public init(
+        router: DiscoveryRouter,
+        config: Config,
         interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
         analytics: DiscoveryAnalytics
     ) {
+        self.router = router
+        self.config = config
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
@@ -53,6 +61,29 @@ public class DiscoveryViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func setupNotifications() {
+        NotificationCenter.default.publisher(for: .onActualVersionReceived)
+            .sink { [weak self] notification in
+                if let latestVersion = notification.object as? String {
+                    if let info = Bundle.main.infoDictionary {
+                        guard let currentVersion = info["CFBundleShortVersionString"] as? String,
+                                let self else { return }
+                        switch self.compareVersions(currentVersion, latestVersion) {
+                        case .orderedAscending:
+                            if self.updateShowedOnce == false {
+                                DispatchQueue.main.async {
+                                    self.router.showUpdateRecomendedView()
+                                }
+                                self.updateShowedOnce = true
+                            }
+                        default:
+                            return
+                        }
+                    }
+                }
+            }.store(in: &cancellables)
     }
     
     @MainActor
@@ -82,6 +113,8 @@ public class DiscoveryViewModel: ObservableObject {
             fetchInProgress = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else if error.isUpdateRequeiredError {
+                self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
@@ -94,5 +127,31 @@ public class DiscoveryViewModel: ObservableObject {
     
     func discoverySearchBarClicked() {
         analytics.discoverySearchBarClicked()
+    }
+    
+    private func compareVersions(_ version1: String, _ version2: String) -> ComparisonResult {
+        let components1 = version1.components(separatedBy: ".").prefix(2)
+        let components2 = version2.components(separatedBy: ".").prefix(2)
+        
+        guard let major1 = Int(components1.first ?? ""),
+              let minor1 = Int(components1.last ?? ""),
+              let major2 = Int(components2.first ?? ""),
+              let minor2 = Int(components2.last ?? "") else {
+            return .orderedSame
+        }
+        
+        if major1 < major2 {
+            return .orderedAscending
+        } else if major1 > major2 {
+            return .orderedDescending
+        } else {
+            if minor1 < minor2 {
+                return .orderedAscending
+            } else if minor1 > minor2 {
+                return .orderedDescending
+            } else {
+                return .orderedSame
+            }
+        }
     }
 }
