@@ -68,3 +68,8 @@
 "SETTINGS.QUALITY_540_TITLE" = "540p";
 "SETTINGS.QUALITY_720_TITLE" = "720p";
 "SETTINGS.QUALITY_720_DESCRIPTION" = "Best quality";
+
+"SETTINGS.VERSION" = "Version:";
+"SETTINGS.UP_TO_DATE" = "Up-to-date";
+"SETTINGS.TAP_TO_UPDATE" = "Tap to update to version";
+"SETTINGS.TAP_TO_INSTALL" = "Tap to install required app update";

@@ -14,6 +14,9 @@
 		0283347928D49A8700C828FC /* DiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283347828D49A8700C828FC /* DiscoveryViewModel.swift */; };
 		0284DBFC28D4856A00830893 /* DiscoveryEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */; };
 		0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DC0228D4922900830893 /* DiscoveryRepository.swift */; };
+		029242E72AE6978400A940EC /* UpdateRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029242E62AE6978400A940EC /* UpdateRequiredView.swift */; };
+		029242E92AE6A3AB00A940EC /* UpdateRecommendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029242E82AE6A3AB00A940EC /* UpdateRecommendedView.swift */; };
+		029242EB2AE6AB7B00A940EC /* UpdateNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029242EA2AE6AB7B00A940EC /* UpdateNotificationView.swift */; };
 		029737402949FB070051696B /* DiscoveryCoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0297373E2949FB070051696B /* DiscoveryCoreModel.xcdatamodeld */; };
 		029737422949FB3B0051696B /* DiscoveryPersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029737412949FB3B0051696B /* DiscoveryPersistenceProtocol.swift */; };
 		02EF39D128D867690058F6BD /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 02EF39D028D867690058F6BD /* swiftgen.yml */; };
@@ -49,6 +52,9 @@
 		0283347828D49A8700C828FC /* DiscoveryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryViewModel.swift; sourceTree = "<group>"; };
 		0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEndpoint.swift; sourceTree = "<group>"; };
 		0284DC0228D4922900830893 /* DiscoveryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryRepository.swift; sourceTree = "<group>"; };
+		029242E62AE6978400A940EC /* UpdateRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRequiredView.swift; sourceTree = "<group>"; };
+		029242E82AE6A3AB00A940EC /* UpdateRecommendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRecommendedView.swift; sourceTree = "<group>"; };
+		029242EA2AE6AB7B00A940EC /* UpdateNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateNotificationView.swift; sourceTree = "<group>"; };
 		0297373F2949FB070051696B /* DiscoveryCoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DiscoveryCoreModel.xcdatamodel; sourceTree = "<group>"; };
 		029737412949FB3B0051696B /* DiscoveryPersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryPersistenceProtocol.swift; sourceTree = "<group>"; };
 		02ED50C729A649C9008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -151,6 +157,16 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		029242E52AE6976E00A940EC /* UpdateViews */ = {
+			isa = PBXGroup;
+			children = (
+				029242E62AE6978400A940EC /* UpdateRequiredView.swift */,
+				029242E82AE6A3AB00A940EC /* UpdateRecommendedView.swift */,
+				029242EA2AE6AB7B00A940EC /* UpdateNotificationView.swift */,
+			);
+			path = UpdateViews;
+			sourceTree = "<group>";
+		};
 		02EF39CB28D866C50058F6BD /* SwiftGen */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +178,7 @@
 		070019A228F6EF2700D5FC78 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				029242E52AE6976E00A940EC /* UpdateViews */,
 				072787B328D34D91002E9142 /* DiscoveryView.swift */,
 				0283347828D49A8700C828FC /* DiscoveryViewModel.swift */,
 				CFC849422996A5150055E497 /* SearchView.swift */,
@@ -459,15 +476,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFC849452996A52A0055E497 /* SearchViewModel.swift in Sources */,
+				029242E92AE6A3AB00A940EC /* UpdateRecommendedView.swift in Sources */,
 				CFC849432996A5150055E497 /* SearchView.swift in Sources */,
 				0284DBFC28D4856A00830893 /* DiscoveryEndpoint.swift in Sources */,
 				029737402949FB070051696B /* DiscoveryCoreModel.xcdatamodeld in Sources */,
+				029242E72AE6978400A940EC /* UpdateRequiredView.swift in Sources */,
 				0283347728D499BC00C828FC /* DiscoveryInteractor.swift in Sources */,
 				02F3BFDF29252F2F0051930C /* DiscoveryRouter.swift in Sources */,
 				0283347928D49A8700C828FC /* DiscoveryViewModel.swift in Sources */,
 				072787B428D34D91002E9142 /* DiscoveryView.swift in Sources */,
 				029737422949FB3B0051696B /* DiscoveryPersistenceProtocol.swift in Sources */,
 				0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */,
+				029242EB2AE6AB7B00A940EC /* UpdateNotificationView.swift in Sources */,
 				02EF39DC28D86BEF0058F6BD /* Strings.swift in Sources */,
 				02F1752F2A4DA3B60019CD70 /* DiscoveryAnalytics.swift in Sources */,
 			);

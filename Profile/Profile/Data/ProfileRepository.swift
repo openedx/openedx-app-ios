@@ -12,7 +12,7 @@ import Alamofire
 public protocol ProfileRepositoryProtocol {
     func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
-    func getMyProfileOffline() throws -> UserProfile
+    func getMyProfileOffline() -> UserProfile?
     func logOut() async throws
     func uploadProfilePicture(pictureData: Data) async throws
     func deleteProfilePicture() async throws -> Bool
@@ -61,12 +61,8 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         return user.domain
     }
     
-    public func getMyProfileOffline() throws -> UserProfile {
-        if let user = storage.userProfile {
-            return user.domain
-        } else {
-            throw NoCachedDataError()
-        }
+    public func getMyProfileOffline() -> UserProfile? {
+        return storage.userProfile?.domain
     }
     
     public func logOut() async throws {
@@ -173,7 +169,7 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
                                 isFullProfile: false)
     }
     
-    func getMyProfileOffline() throws -> Core.UserProfile {
+    func getMyProfileOffline() -> Core.UserProfile? {
         return UserProfile(
             avatarUrl: "",
             name: "John Lennon",

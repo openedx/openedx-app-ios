@@ -9,8 +9,9 @@ import Foundation
 import KeychainSwift
 import Core
 import Profile
+import WhatsNew
 
-public class AppStorage: CoreStorage, ProfileStorage {
+public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
 
     private let keychain: KeychainSwift
     private let userDefaults: UserDefaults
@@ -55,6 +56,19 @@ public class AppStorage: CoreStorage, ProfileStorage {
                 userDefaults.set(newValue, forKey: KEY_COOKIES_DATE)
             } else {
                 userDefaults.removeObject(forKey: KEY_COOKIES_DATE)
+            }
+        }
+    }
+    
+    public var whatsNewVersion: String? {
+        get {
+            return userDefaults.string(forKey: KEY_WHATSNEW_VERSION)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_WHATSNEW_VERSION)
+            } else {
+                userDefaults.removeObject(forKey: KEY_WHATSNEW_VERSION)
             }
         }
     }
@@ -134,4 +148,5 @@ public class AppStorage: CoreStorage, ProfileStorage {
     private let KEY_USER_PROFILE = "userProfile"
     private let KEY_USER = "refreshToken"
     private let KEY_SETTINGS = "userSettings"
+    private let KEY_WHATSNEW_VERSION = "whatsNewVersion"
 }

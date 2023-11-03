@@ -54,6 +54,20 @@ public enum CoreLocalization {
     /// Section “
     public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
   }
+  public enum CourseDates {
+    /// Completed
+    public static let completed = CoreLocalization.tr("Localizable", "COURSE_DATES.COMPLETED", fallback: "Completed")
+    /// Due next
+    public static let dueNext = CoreLocalization.tr("Localizable", "COURSE_DATES.DUE_NEXT", fallback: "Due next")
+    /// Past due
+    public static let pastDue = CoreLocalization.tr("Localizable", "COURSE_DATES.PAST_DUE", fallback: "Past due")
+    /// Today
+    public static let today = CoreLocalization.tr("Localizable", "COURSE_DATES.TODAY", fallback: "Today")
+    /// Unreleased
+    public static let unreleased = CoreLocalization.tr("Localizable", "COURSE_DATES.UNRELEASED", fallback: "Unreleased")
+    /// Verified Only
+    public static let verifiedOnly = CoreLocalization.tr("Localizable", "COURSE_DATES.VERIFIED_ONLY", fallback: "Verified Only")
+  }
   public enum Date {
     /// Ended
     public static let ended = CoreLocalization.tr("Localizable", "DATE.ENDED", fallback: "Ended")

@@ -11,6 +11,7 @@ public class Config {
     
     public let baseURL: URL
     public let oAuthClientId: String
+    public let tokenType: TokenType = .jwt
     
     public lazy var termsOfUse: URL? = {
         URL(string: "\(baseURL.description)/tos")
@@ -22,12 +23,25 @@ public class Config {
     
     public let feedbackEmail = "support@example.com"
     
+    private let appStoreId = "0000000000"
+    public var appStoreLink: String {
+        "itms-apps://itunes.apple.com/app/id\(appStoreId)?mt=8"
+    }
+    public let whatsNewEnabled: Bool = false
+    
     public init(baseURL: String, oAuthClientId: String) {
         guard let url = URL(string: baseURL) else {
             fatalError("Ivalid baseURL")
         }
         self.baseURL = url
         self.oAuthClientId = oAuthClientId
+    }
+}
+
+public extension Config {
+    enum TokenType: String {
+        case jwt = "JWT"
+        case bearer = "BEARER"
     }
 }
 

@@ -1,4 +1,4 @@
-// Generated using Sourcery 1.8.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -490,9 +490,9 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainScreen() {
-        addInvocation(.m_showMainScreen)
-		let perform = methodPerformValue(.m_showMainScreen) as? () -> Void
+    open func showMainOrWhatsNewScreen() {
+        addInvocation(.m_showMainOrWhatsNewScreen)
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen) as? () -> Void
 		perform?()
     }
 
@@ -545,7 +545,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainScreen
+        case m_showMainOrWhatsNewScreen
         case m_showLoginScreen
         case m_showRegisterScreen
         case m_showForgotPasswordScreen
@@ -578,7 +578,7 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainScreen, .m_showMainScreen): return .match
+            case (.m_showMainOrWhatsNewScreen, .m_showMainOrWhatsNewScreen): return .match
 
             case (.m_showLoginScreen, .m_showLoginScreen): return .match
 
@@ -630,7 +630,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case .m_showMainScreen: return 0
+            case .m_showMainOrWhatsNewScreen: return 0
             case .m_showLoginScreen: return 0
             case .m_showRegisterScreen: return 0
             case .m_showForgotPasswordScreen: return 0
@@ -647,7 +647,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainScreen: return ".showMainScreen()"
+            case .m_showMainOrWhatsNewScreen: return ".showMainOrWhatsNewScreen()"
             case .m_showLoginScreen: return ".showLoginScreen()"
             case .m_showRegisterScreen: return ".showRegisterScreen()"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
@@ -678,7 +678,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainScreen() -> Verify { return Verify(method: .m_showMainScreen)}
+        public static func showMainOrWhatsNewScreen() -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen)}
         public static func showLoginScreen() -> Verify { return Verify(method: .m_showLoginScreen)}
         public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
@@ -707,8 +707,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showMainScreen, performs: perform)
+        public static func showMainOrWhatsNewScreen(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen, performs: perform)
         }
         public static func showLoginScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showLoginScreen, performs: perform)
@@ -1770,18 +1770,15 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getMyProfileOffline() throws -> UserProfile {
+    open func getMyProfileOffline() -> UserProfile? {
         addInvocation(.m_getMyProfileOffline)
 		let perform = methodPerformValue(.m_getMyProfileOffline) as? () -> Void
 		perform?()
-		var __value: UserProfile
+		var __value: UserProfile? = nil
 		do {
 		    __value = try methodReturnValue(.m_getMyProfileOffline).casted()
-		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getMyProfileOffline(). Use given")
-			Failure("Stub return value not specified for getMyProfileOffline(). Use given")
 		} catch {
-		    throw error
+			// do nothing
 		}
 		return __value
     }
@@ -2016,7 +2013,7 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         public static func getMyProfile(willReturn: UserProfile...) -> MethodStub {
             return Given(method: .m_getMyProfile, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getMyProfileOffline(willReturn: UserProfile...) -> MethodStub {
+        public static func getMyProfileOffline(willReturn: UserProfile?...) -> MethodStub {
             return Given(method: .m_getMyProfileOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getSpokenLanguages(willReturn: [PickerFields.Option]...) -> MethodStub {
@@ -2036,6 +2033,13 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         }
         public static func getSettings(willReturn: UserSettings...) -> MethodStub {
             return Given(method: .m_getSettings, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getMyProfileOffline(willProduce: (Stubber<UserProfile?>) -> Void) -> MethodStub {
+            let willReturn: [UserProfile?] = []
+			let given: Given = { return Given(method: .m_getMyProfileOffline, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (UserProfile?).self)
+			willProduce(stubber)
+			return given
         }
         public static func getSpokenLanguages(willProduce: (Stubber<[PickerFields.Option]>) -> Void) -> MethodStub {
             let willReturn: [[PickerFields.Option]] = []
@@ -2074,16 +2078,6 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         public static func getMyProfile(willProduce: (StubberThrows<UserProfile>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getMyProfile, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (UserProfile).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func getMyProfileOffline(willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getMyProfileOffline, products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func getMyProfileOffline(willProduce: (StubberThrows<UserProfile>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getMyProfileOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (UserProfile).self)
 			willProduce(stubber)
 			return given
@@ -2370,9 +2364,9 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainScreen() {
-        addInvocation(.m_showMainScreen)
-		let perform = methodPerformValue(.m_showMainScreen) as? () -> Void
+    open func showMainOrWhatsNewScreen() {
+        addInvocation(.m_showMainOrWhatsNewScreen)
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen) as? () -> Void
 		perform?()
     }
 
@@ -2429,7 +2423,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainScreen
+        case m_showMainOrWhatsNewScreen
         case m_showLoginScreen
         case m_showRegisterScreen
         case m_showForgotPasswordScreen
@@ -2478,7 +2472,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainScreen, .m_showMainScreen): return .match
+            case (.m_showMainOrWhatsNewScreen, .m_showMainOrWhatsNewScreen): return .match
 
             case (.m_showLoginScreen, .m_showLoginScreen): return .match
 
@@ -2534,7 +2528,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case .m_showMainScreen: return 0
+            case .m_showMainOrWhatsNewScreen: return 0
             case .m_showLoginScreen: return 0
             case .m_showRegisterScreen: return 0
             case .m_showForgotPasswordScreen: return 0
@@ -2555,7 +2549,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainScreen: return ".showMainScreen()"
+            case .m_showMainOrWhatsNewScreen: return ".showMainOrWhatsNewScreen()"
             case .m_showLoginScreen: return ".showLoginScreen()"
             case .m_showRegisterScreen: return ".showRegisterScreen()"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
@@ -2590,7 +2584,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainScreen() -> Verify { return Verify(method: .m_showMainScreen)}
+        public static func showMainOrWhatsNewScreen() -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen)}
         public static func showLoginScreen() -> Verify { return Verify(method: .m_showLoginScreen)}
         public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
@@ -2631,8 +2625,8 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showMainScreen, performs: perform)
+        public static func showMainOrWhatsNewScreen(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen, performs: perform)
         }
         public static func showLoginScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showLoginScreen, performs: perform)
