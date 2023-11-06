@@ -54,7 +54,7 @@ public class SignInViewModel: ObservableObject {
             errorMessage = AuthLocalization.Error.invalidEmailAddressOrUsername
             return
         }
-        guard validator.isValidPassword(password) else {
+        guard !password.isEmpty else {
             errorMessage = AuthLocalization.Error.invalidPasswordLength
             return
         }
