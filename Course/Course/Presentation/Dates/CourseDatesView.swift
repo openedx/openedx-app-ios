@@ -35,7 +35,7 @@ public struct CourseDatesView: View {
                     }
                 } else if let courseDates = viewModel.courseDates, !courseDates.courseDateBlocks.isEmpty {
                     CourseDateListView(viewModel: viewModel, courseDates: courseDates)
-                        .padding(.top)
+                        .padding(.top, 10)
                 }
             }
             if viewModel.showError {
@@ -189,9 +189,10 @@ struct BlockStatusView: View {
                 }
             }
 
-            ForEach(blocks, id: \.firstComponentBlockID) { block in
+            ForEach(blocks) { block in
                 styleBlock(block: block, allHaveSameStatus: allHaveSameStatus)
             }
+            .padding(.top, 0.2)
         }
         .padding(.vertical, 0)
         .padding(.leading, 5)
@@ -205,7 +206,7 @@ struct BlockStatusView: View {
             attributedString += AttributedString("\(prefix): ")
         }
         
-        attributedString += attributedSubtitle(string: block.title, underline: block.canShowLink)
+        attributedString += styleTitle(block: block)
         
         if !allHaveSameStatus {
             attributedString.appendSpaces(2)
@@ -216,14 +217,23 @@ struct BlockStatusView: View {
         }
         
         return Text(attributedString)
-            .padding(.bottom, 2)
             .font(Theme.Fonts.bodyMedium)
+            .foregroundColor({
+                if block.isAssignment {
+                    return block.isAvailable ? Color.black : Color.gray.opacity(0.6)
+                } else {
+                    return Color.black
+                }
+            }())
+            .onTapGesture {
+                
+            }
     }
     
-    func attributedSubtitle(string: String, underline: Bool) -> AttributedString {
-        var attributedString = AttributedString(string)
+    func styleTitle(block: CourseDateBlock) -> AttributedString {
+        var attributedString = AttributedString(block.title)
         attributedString.font = Theme.Fonts.bodyMedium
-        if underline {
+        if block.canShowLink && !block.firstComponentBlockID.isEmpty {
             attributedString.underlineStyle = .single
         }
         return attributedString

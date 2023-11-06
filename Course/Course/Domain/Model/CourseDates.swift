@@ -82,7 +82,9 @@ extension Date {
     }
 }
 
-public struct CourseDateBlock {
+public struct CourseDateBlock: Identifiable {
+    public let id: UUID = UUID()
+    
     let assignmentType: String?
     let complete: Bool?
     let date: Date
@@ -140,6 +142,10 @@ public struct CourseDateBlock {
     
     var canShowLink: Bool {
         return !isUnreleased && isLearnerAssignment
+    }
+    
+    var isAvailable: Bool {
+        return learnerHasAccess && (!isUnreleased || !isLearnerAssignment)
     }
     
     var blockStatus: BlockStatus {

@@ -1103,7 +1103,7 @@ And there are various ways of describing it-- call it oral poetry or
                 "date_type": "assignment-due-date",
                 "description": "",
                 "learner_has_access": true,
-                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@ca19e125470846f2a36ad1225410e39aa",
+                "link": "",
                 "link_text": "",
                 "title": "Problem Set 1.1",
                 "extra_info": null,
