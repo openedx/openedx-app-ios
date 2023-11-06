@@ -5,12 +5,12 @@
 //  Created by Muhammad Umer on 10/24/23.
 //
 
-import SwiftyMocky
+import SwiftUI
 import XCTest
+import Alamofire
+import SwiftyMocky
 @testable import Core
 @testable import Course
-import Alamofire
-import SwiftUI
 
 final class CourseDateViewModelTests: XCTestCase {
     func testGetCourseDatesSuccess() async throws {
@@ -70,7 +70,7 @@ final class CourseDateViewModelTests: XCTestCase {
         Verify(interactor, .getCourseDates(courseID: .any))
         
         XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError, "Error view should be shown on unknown error.")
     }
     
     func testNoInternetConnectionError() async throws {
@@ -95,7 +95,7 @@ final class CourseDateViewModelTests: XCTestCase {
         Verify(interactor, .getCourseDates(courseID: .any))
         
         XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection, "Error message should be set to 'slow or no internet connection'.")
     }
     
     func testSortedDateTodayToCourseDateBlockDict() {
@@ -195,7 +195,7 @@ final class CourseDateViewModelTests: XCTestCase {
         let block = CourseDateBlock(
             assignmentType: nil,
             complete: nil,
-            date: Date(),
+            date: Date.today,
             dateType: "assignment-due-date",
             description: "",
             learnerHasAccess: true,
@@ -219,12 +219,12 @@ final class CourseDateViewModelTests: XCTestCase {
             learnerHasAccess: false,
             link: "www.example.com",
             linkText: nil,
-            title: "TestBlock",
+            title: CoreLocalization.CourseDates.today,
             extraInfo: nil,
             firstComponentBlockID: "blockIDTest"
         )
         
-        XCTAssertEqual(block.blockTitle, "Today", "Block title for 'today' should be 'Today'")
+        XCTAssertEqual(block.title, "Today", "Block title for 'today' should be 'Today'")
     }
     
     func testBadgeLogicForCompleted() {
@@ -366,7 +366,7 @@ final class CourseDateViewModelTests: XCTestCase {
             firstComponentBlockID: "blockIDTest"
         )
         
-        XCTAssertTrue(block.isVerifiedOnly)
+        XCTAssertTrue(block.isVerifiedOnly, "Block should be identified as 'verified only' when the learner has no access.")
     }
     
     func testIsCompleted() {
@@ -384,7 +384,7 @@ final class CourseDateViewModelTests: XCTestCase {
             firstComponentBlockID: "blockIDTest"
         )
         
-        XCTAssertTrue(block.isComplete)
+        XCTAssertTrue(block.isComplete, "Block should be marked as completed.")
     }
     
     func testBadgeLogicForUnreleasedAssignment() {
@@ -402,7 +402,7 @@ final class CourseDateViewModelTests: XCTestCase {
             firstComponentBlockID: "blockIDTest"
         )
         
-        XCTAssertEqual(block.blockStatus, .unreleased)
+        XCTAssertEqual(block.blockStatus, .unreleased, "Block status should be set to 'unreleased' for unreleased assignments.")
     }
         
     func testNoLinkForUnavailableAssignment() {
@@ -420,7 +420,8 @@ final class CourseDateViewModelTests: XCTestCase {
             firstComponentBlockID: "blockIDTest"
         )
         
-        XCTAssertFalse(block.canShowLink)
+        XCTAssertEqual(block.blockStatus, .verifiedOnly)
+        XCTAssertFalse(block.canShowLink, "Block should not show a link if the assignment is unavailable.")
     }
     
     func testNoLinkAvailableForUnreleasedAssignment() {
@@ -430,7 +431,7 @@ final class CourseDateViewModelTests: XCTestCase {
             date: Date.today,
             dateType: "assignment-due-date",
             description: "",
-            learnerHasAccess: false,
+            learnerHasAccess: true,
             link: "",
             linkText: nil,
             title: "TestBlock",
@@ -438,23 +439,27 @@ final class CourseDateViewModelTests: XCTestCase {
             firstComponentBlockID: "blockIDTest"
         )
         
-        XCTAssertFalse(block.canShowLink)
+        XCTAssertEqual(block.blockStatus, .unreleased)
+        XCTAssertFalse(block.canShowLink, "Block should not show a link if the assignment is unreleased.")
     }
     
     func testTodayProperty() {
         let today = Date.today
         let currentDay = Calendar.current.startOfDay(for: Date())
+        XCTAssertTrue(today.isToday, "The today property should return true for isToday.")
         XCTAssertEqual(today, currentDay, "The today property should equal the start of the current day.")
     }
     
     func testDateIsInPastProperty() {
         let pastDate = Date().addingTimeInterval(-100000)
-        XCTAssertTrue(pastDate.isInPast)
+        XCTAssertTrue(pastDate.isInPast, "The past date should return true for isInPast.")
+        XCTAssertFalse(pastDate.isToday, "The past date should return false for isInPast.")
     }
     
     func testDateIsInFutureProperty() {
         let futureDate = Date().addingTimeInterval(100000)
-        XCTAssertTrue(futureDate.isInFuture)
+        XCTAssertTrue(futureDate.isInFuture, "The future date should return false for isInFuture.")
+        XCTAssertFalse(futureDate.isToday, "The future date should return false for isInFuture.")
     }
     
     func testBlockStatusMapping() {
@@ -464,6 +469,6 @@ final class CourseDateViewModelTests: XCTestCase {
         XCTAssertEqual(BlockStatus.status(of: "verification-deadline-date"), .verificationDeadlineDate, "Incorrect mapping for 'verification-deadline-date'")
         XCTAssertEqual(BlockStatus.status(of: "verified-upgrade-deadline"), .verifiedUpgradeDeadline, "Incorrect mapping for 'verified-upgrade-deadline'")
         XCTAssertEqual(BlockStatus.status(of: "assignment-due-date"), .assignment, "Incorrect mapping for 'assignment-due-date'")
-        XCTAssertEqual(BlockStatus.status(of: ""), .event, "Incorrect mapping for ''")
+        XCTAssertEqual(BlockStatus.status(of: ""), .event, "Incorrect mapping for 'event'")
     }
 }

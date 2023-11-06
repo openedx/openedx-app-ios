@@ -19,9 +19,14 @@ public struct CourseDates {
         var hasToday = false
         let today = Date.today
         
+        let calendar = Calendar.current
+        let todayComponents = calendar.dateComponents([.year, .month, .day], from: .today)
+        
         for block in courseDateBlocks {
             let date = block.date
-            if date == today {
+            let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+            
+            if dateComponents == todayComponents {
                 hasToday = true
             }
             
@@ -66,7 +71,10 @@ extension Date {
     }
     
     var isToday: Bool {
-        return Date.compare(self, to: .today) == .orderedSame
+        let calendar = Calendar.current
+        let selfComponents = calendar.dateComponents([.year, .month, .day], from: self)
+        let todayComponents = calendar.dateComponents([.year, .month, .day], from: .today)
+        return selfComponents == todayComponents
     }
     
     var isInFuture: Bool {
@@ -86,12 +94,8 @@ public struct CourseDateBlock {
     let extraInfo: String?
     let firstComponentBlockID: String
     
-    var blockTitle: String {
-        if isToday {
-            return CoreLocalization.CourseDates.today
-        } else {
-            return blockStatus.title
-        }
+    var formattedDate: String {
+        return date.dateToString(style: .shortWeekdayMonthDayYear)
     }
     
     var isInPast: Bool {
@@ -189,23 +193,6 @@ public enum BlockStatus {
         case "course-start-date": return .courseStartDate
         case "course-end-date": return .courseEndDate
         default: return .event
-        }
-    }
-    
-    var title: String {
-        switch self {
-        case .completed:
-            return CoreLocalization.CourseDates.completed
-        case .pastDue:
-            return CoreLocalization.CourseDates.pastDue
-        case .dueNext:
-            return CoreLocalization.CourseDates.dueNext
-        case .unreleased:
-            return CoreLocalization.CourseDates.unreleased
-        case .verifiedOnly:
-            return CoreLocalization.CourseDates.verifiedOnly
-        default:
-            return ""
         }
     }
 }

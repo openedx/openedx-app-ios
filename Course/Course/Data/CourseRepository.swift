@@ -1085,7 +1085,7 @@ And there are various ways of describing it-- call it oral poetry or
             },
             {
                 "assignment_type": "Problem Set",
-                "complete": false,
+                "complete": true,
                 "date": "2023-09-14T23:30:00Z",
                 "date_type": "assignment-due-date",
                 "description": "",
@@ -1096,19 +1096,19 @@ And there are various ways of describing it-- call it oral poetry or
                 "extra_info": null,
                 "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@problem+block@bd89c1dd129240f99bb8c5cbe3f56530"
             },
-                {
-                    "assignment_type": "Problem Set",
-                    "complete": false,
-                    "date": "2023-09-14T23:30:00Z",
-                    "date_type": "assignment-due-date",
-                    "description": "",
-                    "learner_has_access": true,
-                    "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@ca19e125470846f2a36ad1225410e39aa",
-                    "link_text": "",
-                    "title": "Problem Set 1.1",
-                    "extra_info": null,
-                    "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@problem+block@bd89c1dd129240f99bb8c5cbe3f56530a"
-                },
+            {
+                "assignment_type": "Problem Set",
+                "complete": false,
+                "date": "2023-09-14T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@ca19e125470846f2a36ad1225410e39aa",
+                "link_text": "",
+                "title": "Problem Set 1.1",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@problem+block@bd89c1dd129240f99bb8c5cbe3f56530a"
+            },
             {
                 "assignment_type": "Problem Set",
                 "complete": false,
