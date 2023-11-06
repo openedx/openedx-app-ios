@@ -73,6 +73,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
             if asset?.url.absoluteString != videoURL?.absoluteString {
                 if playerController.player == nil {
                     playerController.player = AVPlayer()
+                    playerController.player?.allowsExternalPlayback = true
                 }
                 playerController.player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
                 addPeriodicTimeObserver(playerController, currentProgress: { progress, seconds in
