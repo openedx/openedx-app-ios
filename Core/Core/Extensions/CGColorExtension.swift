@@ -42,3 +42,9 @@ public extension Color {
         return UIColor(red: r, green: g, blue: b, alpha: a)
     }
 }
+
+public extension UIColor {
+    var sui: Color {
+        Color(self)
+    }
+}

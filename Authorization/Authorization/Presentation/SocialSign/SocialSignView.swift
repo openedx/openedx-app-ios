@@ -59,28 +59,29 @@ struct SocialSignView: View {
     private var buttonsView: some View {
         Group {
             LabelButton(
-                image: CoreAssets.iconApple.swiftUIImage,
-                title: "\(title) \(AuthLocalization.apple)",
-                backgroundColor: .black,
-                action: viewModel.signInWithApple
-            )
-            LabelButton(
                 image: CoreAssets.iconGoogleWhite.swiftUIImage,
                 title: "\(title) \(AuthLocalization.google)",
-                backgroundColor: .blue,
+                textColor: .black,
+                backgroundColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.00).sui,
                 action: viewModel.signInWithGoogle
             )
             LabelButton(
                 image: CoreAssets.iconFacebookWhite.swiftUIImage,
                 title: "\(title) \(AuthLocalization.facebook)",
-                backgroundColor: .blue,
+                backgroundColor: UIColor(red: 0.09, green: 0.46, blue: 0.95, alpha: 1.00).sui,
                 action: viewModel.signInWithFacebook
             )
             LabelButton(
                 image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
                 title: "\(title) \(AuthLocalization.microsoft)",
-                backgroundColor: .black,
+                backgroundColor: UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1.00).sui,
                 action: viewModel.signInWithMicrosoft
+            )
+            LabelButton(
+                image: CoreAssets.iconApple.swiftUIImage,
+                title: "\(title) \(AuthLocalization.apple)",
+                backgroundColor: .black,
+                action: viewModel.signInWithApple
             )
         }
     }

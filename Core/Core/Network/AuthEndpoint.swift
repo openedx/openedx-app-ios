@@ -41,7 +41,9 @@ enum AuthEndpoint: EndPointType {
 
     var httpMethod: HTTPMethod {
         switch self {
-        case .getAccessToken, .socialLogin:
+        case .getAccessToken:
+            return .post
+        case .socialLogin:
             return .post
         case .getUserInfo:
             return .get
@@ -75,7 +77,7 @@ enum AuthEndpoint: EndPointType {
         case let .socialLogin(externalToken, _, clientId):
             let params: [String: Encodable] = [
                 "client_id": clientId,
-                "jwt": "token_type",
+                "token_type": "jwt",
                 "access_token": externalToken,
                 "asymmetric_jwt": "true"
             ]

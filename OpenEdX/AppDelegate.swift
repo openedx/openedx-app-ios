@@ -12,6 +12,8 @@ import FirebaseCore
 import FirebaseAnalytics
 import FirebaseCrashlytics
 import Profile
+import GoogleSignIn
+import FacebookCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,12 +32,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
+
         if BuildConfiguration.shared.firebaseOptions.apiKey != "" {
             FirebaseApp.configure(options: BuildConfiguration.shared.firebaseOptions)
             Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
         }
-        
+
         initDI()
         
         Theme.Fonts.registerFonts()
@@ -51,6 +57,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         return true
+    }
+
+    func application(
+        _ app: UIApplication,
+        open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        ApplicationDelegate.shared.application(
+            app,
+            open: url,
+            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+        )
+        if GIDSignIn.sharedInstance.handle(url) {
+            return true
+        }
+        return false
     }
 
     private func initDI() {

@@ -12,7 +12,7 @@ public protocol AuthRepositoryProtocol {
     func login(externalToken: String, backend: String) async throws -> User
     func getCookies(force: Bool) async throws
     func getRegistrationFields() async throws -> [PickerFields]
-    func registerUser(fields: [String: String]) async throws -> User
+    func registerUser(fields: [String: String], isSocial: Bool) async throws -> User
     func validateRegistrationFields(fields: [String: String]) async throws -> [String: String]
     func resetPassword(email: String) async throws -> ResetPassword
 }
@@ -105,11 +105,14 @@ public class AuthRepository: AuthRepositoryProtocol {
     }
     
     @discardableResult
-    public func registerUser(fields: [String: String]) async throws -> User {
+    public func registerUser(fields: [String: String], isSocial: Bool) async throws -> User {
         try await api.requestData(AuthEndpoint.registerUser(fields))
+        if isSocial {
+            return try await login(externalToken: fields["access_token"] ?? "", backend: fields["provider"] ?? "")
+        }
         return try await login(username: fields["username"] ?? "", password: fields["password"] ?? "")
     }
-    
+
     public func validateRegistrationFields(fields: [String: String]) async throws -> [String: String] {
         let result = try await api.requestData(AuthEndpoint.validateRegistrationFields(fields))
         if let fieldsResult = try JSONSerialization.jsonObject(with: result, options: []) as? [String: Any] {
@@ -172,7 +175,7 @@ class AuthRepositoryMock: AuthRepositoryProtocol {
         return fields
     }
     
-    func registerUser(fields: [String: String]) async throws -> User {
+    func registerUser(fields: [String: String], isSocial: Bool) async throws -> User {
         User(id: 1, username: "User", email: "email@gmail.com", name: "User Name", userAvatar: "")
     }
     

@@ -91,14 +91,6 @@ public class SignInViewModel: ObservableObject {
         }
     }
 
-    func trackSignUpClicked() {
-        analytics.signUpClicked()
-    }
-    
-    func trackForgotPasswordClicked() {
-        analytics.forgotPasswordClicked()
-    }
-
     private func social(result: Socials) {
         switch result {
         case .apple(let credential):
@@ -115,7 +107,8 @@ public class SignInViewModel: ObservableObject {
     private func appleLogin(_ credentials: AppleCredentials) {
         socialLogin(
             externalToken: credentials.token,
-            backend: "apple-id"
+            backend: "apple-id",
+            loginMethod: .apple
         )
     }
 
@@ -125,31 +118,34 @@ public class SignInViewModel: ObservableObject {
         }
         socialLogin(
             externalToken: currentAccessToken,
-            backend: "facebook"
+            backend: "facebook",
+            loginMethod: .facebook
         )
     }
 
     private func googleLogin(_ gIDSignInResult: GIDSignInResult) {
         socialLogin(
             externalToken: gIDSignInResult.user.accessToken.tokenString,
-            backend: "google-oauth2"
+            backend: "google-oauth2",
+            loginMethod: .google
         )
     }
 
     private func microsoftLogin(_ account: MSALAccount, _ token: String) {
         socialLogin(
             externalToken: token,
-            backend: "azuread-oauth2"
+            backend: "azuread-oauth2",
+            loginMethod: .microsoft
         )
     }
 
-    private func socialLogin(externalToken: String, backend: String) {
-        Task {
+    private func socialLogin(externalToken: String, backend: String, loginMethod: LoginMethod) {
+        Task { @MainActor in
             isShowProgress = true
             do {
                 let user = try await interactor.login(externalToken: externalToken, backend: backend)
                 analytics.setUserID("\(user.id)")
-                analytics.userLogin(method: .password)
+                analytics.userLogin(method: loginMethod)
                 router.showMainScreen()
             } catch let error {
                 isShowProgress = false
@@ -165,6 +161,14 @@ public class SignInViewModel: ObservableObject {
                 }
             }
         }
+    }
+
+    func trackSignUpClicked() {
+        analytics.signUpClicked()
+    }
+
+    func trackForgotPasswordClicked() {
+        analytics.forgotPasswordClicked()
     }
 
 }

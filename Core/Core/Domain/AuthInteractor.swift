@@ -16,12 +16,11 @@ public protocol AuthInteractorProtocol {
     func resetPassword(email: String) async throws -> ResetPassword
     func getCookies(force: Bool) async throws
     func getRegistrationFields() async throws -> [PickerFields]
-    func registerUser(fields: [String: String]) async throws -> User
+    func registerUser(fields: [String: String], isSocial: Bool) async throws -> User
     func validateRegistrationFields(fields: [String: String]) async throws -> [String: String]
 }
 
 public class AuthInteractor: AuthInteractorProtocol {
-    
     private let repository: AuthRepositoryProtocol
     
     public init(repository: AuthRepositoryProtocol) {
@@ -50,8 +49,8 @@ public class AuthInteractor: AuthInteractorProtocol {
         return try await repository.getRegistrationFields()
     }
 
-    public func registerUser(fields: [String: String]) async throws -> User {
-        return try await repository.registerUser(fields: fields)
+    public func registerUser(fields: [String: String], isSocial: Bool) async throws -> User {
+        return try await repository.registerUser(fields: fields, isSocial: isSocial)
     }
 
     public func validateRegistrationFields(fields: [String: String]) async throws -> [String: String] {
