@@ -17,6 +17,7 @@ public class VideoPlayerViewModel: ObservableObject {
     private let interactor: CourseInteractorProtocol
     public let connectivity: ConnectivityProtocol
     public let router: CourseRouter
+    public let appStorage: CoreStorage
     
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
@@ -37,6 +38,7 @@ public class VideoPlayerViewModel: ObservableObject {
         languages: [SubtitleUrl],
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
+        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol
     ) {
         self.blockID = blockID
@@ -44,6 +46,7 @@ public class VideoPlayerViewModel: ObservableObject {
         self.languages = languages
         self.interactor = interactor
         self.router = router
+        self.appStorage = appStorage
         self.connectivity = connectivity
         self.prepareLanguages()
     }

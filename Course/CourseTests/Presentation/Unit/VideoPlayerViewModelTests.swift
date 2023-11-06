@@ -37,7 +37,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
                                              courseID: "",
                                              languages: [],
                                              interactor: interactor,
-                                             router: router,
+                                             router: router, 
+                                             appStorage: CoreStorageMock(),
                                              connectivity: connectivity)
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
@@ -64,6 +65,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
                                              languages: [],
                                              interactor: interactor,
                                              router: router,
+                                             appStorage: CoreStorageMock(),
                                              connectivity: connectivity)
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
@@ -85,6 +87,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
                                              languages: [],
                                              interactor: interactor,
                                              router: router,
+                                             appStorage: CoreStorageMock(),
                                              connectivity: connectivity)
         
         viewModel.languages = [
@@ -112,6 +115,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
                                              languages: [],
                                              interactor: interactor,
                                              router: router,
+                                             appStorage: CoreStorageMock(),
                                              connectivity: connectivity)
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willProduce: {_ in}))
@@ -131,6 +135,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
                                              languages: [],
                                              interactor: interactor,
                                              router: router,
+                                             appStorage: CoreStorageMock(),
                                              connectivity: connectivity)
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: NSError()))
@@ -155,6 +160,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
                                              languages: [],
                                              interactor: interactor,
                                              router: router,
+                                             appStorage: CoreStorageMock(),
                                              connectivity: connectivity)
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: noInternetError))

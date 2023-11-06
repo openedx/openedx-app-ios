@@ -104,8 +104,8 @@ public enum ProfileLocalization {
     public static let title = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TITLE", fallback: "Comfirm log out")
   }
   public enum Settings {
-    /// Smallest video quality
-    public static let quality360Description = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_DESCRIPTION", fallback: "Smallest video quality")
+    /// Lower data usage
+    public static let quality360Description = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_DESCRIPTION", fallback: "Lower data usage")
     /// 360p
     public static let quality360Title = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_TITLE", fallback: "360p")
     /// 540p
@@ -128,8 +128,8 @@ public enum ProfileLocalization {
     public static let version = ProfileLocalization.tr("Localizable", "SETTINGS.VERSION", fallback: "Version:")
     /// Auto (Recommended)
     public static let videoQualityDescription = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_DESCRIPTION", fallback: "Auto (Recommended)")
-    /// Video download quality
-    public static let videoQualityTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_TITLE", fallback: "Video download quality")
+    /// Video streaming quality
+    public static let videoQualityTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_TITLE", fallback: "Video streaming quality")
     /// Video settings
     public static let videoSettingsTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_SETTINGS_TITLE", fallback: "Video settings")
     /// Only download content when wi-fi is turned on
