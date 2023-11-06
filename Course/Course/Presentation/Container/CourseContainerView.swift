@@ -12,16 +12,49 @@ import Swinject
 
 public struct CourseContainerView: View {
     
-    enum CourseTab {
+    enum CourseTab: Int, CaseIterable, Identifiable {
+        var id: Int {
+            rawValue
+        }
+
         case course
         case videos
         case discussion
         case handounds
+
+        var title: String {
+            switch self {
+            case .course:
+                return CourseLocalization.CourseContainer.course
+            case .videos:
+                return CourseLocalization.CourseContainer.videos
+            case .discussion:
+                return CourseLocalization.CourseContainer.discussion
+            case .handounds:
+                return CourseLocalization.CourseContainer.handouts
+            }
+        }
+
+        var image: Image {
+            switch self {
+            case .course:
+                return CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
+            case .videos:
+                return CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
+            case .discussion:
+                return  CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
+            case .handounds:
+                return CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
+            }
+        }
+
     }
     
     @ObservedObject
     private var viewModel: CourseContainerViewModel
     @State private var selection: CourseTab = .course
+    @State private var selectionTab: Int = CourseTab.course.rawValue
+    @State private var isAnimatingForTap: Bool = false
     private var courseID: String
     private var title: String
     
@@ -49,52 +82,67 @@ public struct CourseContainerView: View {
                         isVideo: false
                     )
                 } else {
-                    TabView(selection: $selection) {
-                        CourseOutlineView(
-                            viewModel: self.viewModel,
-                            title: title,
-                            courseID: courseID,
-                            isVideo: false
-                        )
-                        .tabItem {
-                            CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
-                            Text(CourseLocalization.CourseContainer.course)
+                    VStack {
+                        SlidingTabBar(
+                            selection: $selectionTab,
+                            tabs: CourseTab.allCases.map { $0.title }
+                        ) { newValue in
+                            isAnimatingForTap = true
+                            selection = .init(rawValue: newValue) ?? .course
+                            selectionTab = newValue
+                            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(300))) {
+                                isAnimatingForTap = false
+                            }
                         }
-                        .tag(CourseTab.course)
-                        
-                        CourseOutlineView(
-                            viewModel: self.viewModel,
-                            title: title,
-                            courseID: courseID,
-                            isVideo: true
-                        )
-                        .tabItem {
-                            CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
-                            Text(CourseLocalization.CourseContainer.videos)
+                        TabView(selection: $selection) {
+                            CourseOutlineView(
+                                viewModel: self.viewModel,
+                                title: title,
+                                courseID: courseID,
+                                isVideo: false
+                            )
+                            .tabItem {
+                                CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
+                                Text(CourseLocalization.CourseContainer.course)
+                            }
+                            .tag(CourseTab.course)
+
+                            CourseOutlineView(
+                                viewModel: self.viewModel,
+                                title: title,
+                                courseID: courseID,
+                                isVideo: true
+                            )
+                            .tabItem {
+                                CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
+                                Text(CourseLocalization.CourseContainer.videos)
+                            }
+                            .tag(CourseTab.videos)
+
+                            DiscussionTopicsView(courseID: courseID,
+                                                 viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
+                                                                                     argument: title)!,
+                                                 router: Container.shared.resolve(DiscussionRouter.self)!)
+                            .tabItem {
+                                CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
+                                Text(CourseLocalization.CourseContainer.discussion)
+                            }
+                            .tag(CourseTab.discussion)
+
+                            HandoutsView(courseID: courseID,
+                                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
+                            .tabItem {
+                                CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
+                                Text(CourseLocalization.CourseContainer.handouts)
+                            }
+                            .tag(CourseTab.handounds)
                         }
-                        .tag(CourseTab.videos)
-                        
-                        DiscussionTopicsView(courseID: courseID,
-                                             viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
-                                                                                 argument: title)!,
-                                             router: Container.shared.resolve(DiscussionRouter.self)!)
-                        .tabItem {
-                            CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
-                            Text(CourseLocalization.CourseContainer.discussion)
-                        }
-                        .tag(CourseTab.discussion)
-                        
-                        HandoutsView(courseID: courseID,
-                                     viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
-                        .tabItem {
-                            CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
-                            Text(CourseLocalization.CourseContainer.handouts)
-                        }
-                        .tag(CourseTab.handounds)
-                    }
-                    .onFirstAppear {
-                        Task {
-                            await viewModel.tryToRefreshCookies()
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        .animation(.default, value: selection)
+                        .onFirstAppear {
+                            Task {
+                                await viewModel.tryToRefreshCookies()
+                            }
                         }
                     }
                 }
@@ -104,6 +152,7 @@ public struct CourseContainerView: View {
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())
         .onChange(of: selection, perform: { selection in
+            self.selectionTab = selection.rawValue
             viewModel.trackSelectedTab(
                 selection: selection,
                 courseId: courseID,
