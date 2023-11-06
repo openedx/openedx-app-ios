@@ -70,10 +70,6 @@ public struct YouTubeVideoPlayer: View {
                     ProgressBar(size: 40, lineWidth: 8)
                 }
             }
-//            .onDisappear {
-//                viewModel.youtubePlayer.st
-////                viewModel.controller.player?.allowsExternalPlayback = false
-//            }
         }
 }
 
