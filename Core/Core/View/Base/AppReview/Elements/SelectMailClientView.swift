@@ -31,11 +31,15 @@ struct SelectMailClientView: View {
                         .padding(.top, 8)
                     ScrollView(.horizontal) {
                         HStack {
+                            Button(action: {
+                                onMailTapped(.systemDefault)
+                            }, label: {
                             Image(.defaultMail).resizable()
                                 .frame(width: 50, height: 50)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .padding(.leading, 14)
                                     .shadow(color: .black.opacity(0.2), radius: 8)
+                            })
                                     
                             ForEach(clients, id: \.name) { client in
                                 Group {

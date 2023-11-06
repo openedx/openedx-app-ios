@@ -86,7 +86,7 @@ public struct AppReviewView: View {
                                     }
                                 }
                             )
-                            .frame(height: viewModel.showReview ? 162 : 0)
+                            .frame(height: viewModel.showReview ? (isHorizontal ? 80 : 162) : 0)
                             .opacity(viewModel.showReview ? 1 : 0)
                         
                         HStack(spacing: 28) {
@@ -113,11 +113,17 @@ public struct AppReviewView: View {
                         }
                     }
                     
-                }.padding(isHorizontal ? 40 : 40)
+                }.onTapGesture {
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil, from: nil, for: nil
+                    )
+                }
+                .padding(isHorizontal ? 20 : 40)
                     .background(Theme.Colors.background)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .frame(maxWidth: 400)
-                    .padding(24)
+                    .padding(isHorizontal ? 14 : 24)
                     .shadow(color: Color.black.opacity(0.4), radius: 12, x: 0, y: 0)
             }
         }

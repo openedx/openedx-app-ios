@@ -99,10 +99,16 @@ public class AppReviewViewModel: ObservableObject {
     }
     
     func openMailClient(_ with: ThirdPartyMailClient) {
+        
+        let osVersion = UIDevice.current.systemVersion
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let deviceModel = UIDevice.current.model
+        let feedbackDetails = "\n\n OS version: \(osVersion)\nApp version: \(appVersion)\nDevice model: \(deviceModel)"
+        
         let mailUrl = with.composeURL(
             to: config.feedbackEmail,
             subject: "Feedback",
-            body: feedback,
+            body: feedback + feedbackDetails,
             cc: nil,
             bcc: nil
         )

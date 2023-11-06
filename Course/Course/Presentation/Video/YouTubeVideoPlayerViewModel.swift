@@ -106,7 +106,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                         isViewedOnce = true
                     }
                 }
-                if (time / duration) >= 0.99 {
+                if (time / duration) >= 0.999 {
                     self.router.presentAppReview()
                 }
             }
