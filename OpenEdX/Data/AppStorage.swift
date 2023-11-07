@@ -9,8 +9,9 @@ import Foundation
 import KeychainSwift
 import Core
 import Profile
+import WhatsNew
 
-public class AppStorage: CoreStorage, ProfileStorage {
+public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
 
     private let keychain: KeychainSwift
     private let userDefaults: UserDefaults
@@ -58,6 +59,19 @@ public class AppStorage: CoreStorage, ProfileStorage {
             }
         }
     }
+    
+    public var whatsNewVersion: String? {
+        get {
+            return userDefaults.string(forKey: KEY_WHATSNEW_VERSION)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_WHATSNEW_VERSION)
+            } else {
+                userDefaults.removeObject(forKey: KEY_WHATSNEW_VERSION)
+            }
+        }
+    }
 
     public var userProfile: DataLayer.UserProfile? {
         get {
@@ -81,7 +95,7 @@ public class AppStorage: CoreStorage, ProfileStorage {
     public var userSettings: UserSettings? {
         get {
             guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
-                let defaultSettings = UserSettings(wifiOnly: true, downloadQuality: .auto)
+                let defaultSettings = UserSettings(wifiOnly: true, streamingQuality: .auto)
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(defaultSettings) {
                     userDefaults.set(encoded, forKey: KEY_SETTINGS)
@@ -134,4 +148,5 @@ public class AppStorage: CoreStorage, ProfileStorage {
     private let KEY_USER_PROFILE = "userProfile"
     private let KEY_USER = "refreshToken"
     private let KEY_SETTINGS = "userSettings"
+    private let KEY_WHATSNEW_VERSION = "whatsNewVersion"
 }

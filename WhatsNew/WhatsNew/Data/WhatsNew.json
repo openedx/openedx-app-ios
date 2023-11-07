@@ -1,0 +1,52 @@
+[
+    {
+        "version": "1.0",
+        "messages": [
+            {
+                "image": "image1_1.0",
+                "title": "Improved language support",
+                "message": "We have added more translations throughout the app so you can learn on edX your way!"
+            },
+            {
+                "image": "image2_1.0",
+                "title": "Download videos offline",
+                "message": "Easily download videos without having an internet connection, so you can keep learning when there isn’t a network around"
+            },
+            {
+                "image": "image3_1.0",
+                "title": "Reduced Network Usage",
+                "message": "Now you can download your content faster to get right into your next lesson!"
+            },
+            {
+                "image": "image4_1.0",
+                "title": "Learning Site Switching",
+                "message": "Switch more easily between multiple learning sites. Find the new options within account settings and easily manage your accounts"
+            }
+        ]
+    },
+    {
+        "version": "0.9",
+        "messages": [
+            {
+                "image": "image1_1.0",
+                "title": "1.3 Improved language support",
+                "message": "We have added more translations throughout the app so you can learn on edX your way!"
+            },
+            {
+                "image": "image2_1.0",
+                "title": "Download videos offline",
+                "message": "Easily download videos without having an internet connection, so you can keep learning when there isn’t a network around"
+            },
+            {
+                "image": "image3_1.0",
+                "title": "Reduced Network Usage",
+                "message": "Now you can download your content faster to get right into your next lesson!"
+            },
+            {
+                "image": "image4_1.0",
+                "title": "Learning Site Switching",
+                "message": "Switch more easily between multiple learning sites. Find the new options within account settings and easily manage your accounts"
+            }
+        ]
+    }
+]

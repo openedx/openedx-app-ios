@@ -32,6 +32,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
+        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol
     ) {
         self.url = url
@@ -61,6 +62,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
             languages: languages,
             interactor: interactor,
             router: router,
+            appStorage: appStorage,
             connectivity: connectivity
         )
         
@@ -80,7 +82,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
             case .pause:
-                self?.youtubePlayer.pause()
+                self?.youtubePlayer.stop()
             case .kill, .none:
                 break
             }

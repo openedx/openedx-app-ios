@@ -33,11 +33,21 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        // MARK: MainScreenView
+        container.register(MainScreenViewModel.self) { r in
+            MainScreenViewModel(
+                analytics: r.resolve(MainScreenAnalytics.self)!,
+                config: r.resolve(Config.self)!,
+                profileInteractor: r.resolve(ProfileInteractorProtocol.self)!
+            )
+        }
+        
         // MARK: SignIn
         container.register(SignInViewModel.self) { r in
             SignInViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(Config.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )
@@ -81,6 +91,8 @@ class ScreenAssembly: Assembly {
         }
         container.register(DiscoveryViewModel.self) { r in
             DiscoveryViewModel(
+                router: r.resolve(DiscoveryRouter.self)!,
+                config: r.resolve(Config.self)!,
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DiscoveryAnalytics.self)!
@@ -269,6 +281,7 @@ class ScreenAssembly: Assembly {
                 playerStateSubject: playerStateSubject,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
+                appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
@@ -283,7 +296,8 @@ class ScreenAssembly: Assembly {
                 languages: languages,
                 playerStateSubject: playerStateSubject,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
+                router: r.resolve(CourseRouter.self)!, 
+                appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
@@ -296,6 +310,15 @@ class ScreenAssembly: Assembly {
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 courseID: courseID
             )
+        }
+        
+        container.register(CourseDatesViewModel.self) { r, courseID in
+            CourseDatesViewModel(
+                interactor: r.resolve(CourseInteractorProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!,
+                cssInjector: r.resolve(CSSInjector.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                courseID: courseID)
         }
         
         // MARK: Discussion

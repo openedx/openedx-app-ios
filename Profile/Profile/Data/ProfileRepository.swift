@@ -12,7 +12,7 @@ import Alamofire
 public protocol ProfileRepositoryProtocol {
     func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
-    func getMyProfileOffline() throws -> UserProfile
+    func getMyProfileOffline() -> UserProfile?
     func logOut() async throws
     func uploadProfilePicture(pictureData: Data) async throws
     func deleteProfilePicture() async throws -> Bool
@@ -61,12 +61,8 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         return user.domain
     }
     
-    public func getMyProfileOffline() throws -> UserProfile {
-        if let user = storage.userProfile {
-            return user.domain
-        } else {
-            throw NoCachedDataError()
-        }
+    public func getMyProfileOffline() -> UserProfile? {
+        return storage.userProfile?.domain
     }
     
     public func logOut() async throws {
@@ -148,7 +144,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         if let userSettings = storage.userSettings {
             return userSettings
         } else {
-            return UserSettings(wifiOnly: true, downloadQuality: VideoQuality.auto)
+            return UserSettings(wifiOnly: true, streamingQuality: StreamingQuality.auto)
         }
     }
     
@@ -173,7 +169,7 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
                                 isFullProfile: false)
     }
     
-    func getMyProfileOffline() throws -> Core.UserProfile {
+    func getMyProfileOffline() -> Core.UserProfile? {
         return UserProfile(
             avatarUrl: "",
             name: "John Lennon",
@@ -237,7 +233,7 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
     public func deleteAccount(password: String) async throws -> Bool { return false }
     
     public func getSettings() -> UserSettings {
-        return UserSettings(wifiOnly: true, downloadQuality: .auto)
+        return UserSettings(wifiOnly: true, streamingQuality: .auto)
     }
     public func saveSettings(_ settings: UserSettings) {}
 }

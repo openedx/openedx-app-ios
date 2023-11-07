@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Eugene Yatsenko on 06/11/2023.
 //

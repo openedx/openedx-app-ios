@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  WhatsNew
+
+  Created by  Stepanok Ivan on 18.10.2023.
+  
+*/
+
+"TITLE" = "What's New";
+"BUTTON_PREVIOUS" = "Previous";
+"BUTTON_NEXT" = "Next";
+"BUTTON_DONE" = "Done";
+

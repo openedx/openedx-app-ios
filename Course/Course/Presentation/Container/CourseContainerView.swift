@@ -19,6 +19,7 @@ public struct CourseContainerView: View {
 
         case course
         case videos
+        case dates
         case discussion
         case handounds
 
@@ -28,6 +29,8 @@ public struct CourseContainerView: View {
                 return CourseLocalization.CourseContainer.course
             case .videos:
                 return CourseLocalization.CourseContainer.videos
+            case .dates:
+                return CourseLocalization.CourseContainer.dates
             case .discussion:
                 return CourseLocalization.CourseContainer.discussion
             case .handounds:
@@ -41,6 +44,8 @@ public struct CourseContainerView: View {
                 return CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
             case .videos:
                 return CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
+            case .dates:
+                return Image(systemName: "calendar").renderingMode(.template)
             case .discussion:
                 return  CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
             case .handounds:
@@ -100,7 +105,7 @@ public struct CourseContainerView: View {
     }
 
     private var topTabBar: some View {
-        SlidingTabBar(
+        ScrollSlidingTabBar(
             selection: $selection,
             tabs: CourseTab.allCases.map { $0.title }
         ) { newValue in
@@ -130,6 +135,13 @@ public struct CourseContainerView: View {
                         title: title,
                         courseID: courseID,
                         isVideo: true
+                    )
+                    .tag(tab)
+                case .dates:
+                    CourseDatesView(
+                        courseID: courseID,
+                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
+                                                            argument: courseID)!
                     )
                     .tag(tab)
                 case .discussion:
@@ -174,6 +186,8 @@ public struct CourseContainerView: View {
             return self.title
         case .videos:
             return self.title
+        case .dates:
+            return CourseLocalization.CourseContainer.dates
         case .discussion:
             return DiscussionLocalization.title
         case .handounds:
