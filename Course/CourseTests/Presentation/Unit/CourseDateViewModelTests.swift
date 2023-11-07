@@ -5,7 +5,6 @@
 //  Created by Muhammad Umer on 10/24/23.
 //
 
-import SwiftUI
 import XCTest
 import Alamofire
 import SwiftyMocky
