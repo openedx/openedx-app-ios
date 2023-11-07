@@ -20,6 +20,7 @@ struct SocialSignView: View {
     ) {
         let viewModel: SocialSignViewModel = .init(onSigned: onSigned)
         self._viewModel = .init(wrappedValue: viewModel)
+        self.signType = signType
     }
 
     enum SignType {
