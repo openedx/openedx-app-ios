@@ -52,8 +52,7 @@ public struct CourseContainerView: View {
     
     @ObservedObject
     private var viewModel: CourseContainerViewModel
-    @State private var selection: CourseTab = .course
-    @State private var selectionTab: Int = CourseTab.course.rawValue
+    @State private var selection: Int = CourseTab.course.rawValue
     @State private var isAnimatingForTap: Bool = false
     private var courseID: String
     private var title: String
@@ -73,96 +72,104 @@ public struct CourseContainerView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            if let courseStart = viewModel.courseStart {
-                if courseStart > Date() {
-                    CourseOutlineView(
-                        viewModel: viewModel,
-                        title: title,
-                        courseID: courseID,
-                        isVideo: false
-                    )
-                } else {
-                    VStack {
-                        SlidingTabBar(
-                            selection: $selectionTab,
-                            tabs: CourseTab.allCases.map { $0.title }
-                        ) { newValue in
-                            isAnimatingForTap = true
-                            selection = .init(rawValue: newValue) ?? .course
-                            selectionTab = newValue
-                            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(300))) {
-                                isAnimatingForTap = false
-                            }
-                        }
-                        TabView(selection: $selection) {
-                            CourseOutlineView(
-                                viewModel: self.viewModel,
-                                title: title,
-                                courseID: courseID,
-                                isVideo: false
-                            )
-                            .tabItem {
-                                CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
-                                Text(CourseLocalization.CourseContainer.course)
-                            }
-                            .tag(CourseTab.course)
-
-                            CourseOutlineView(
-                                viewModel: self.viewModel,
-                                title: title,
-                                courseID: courseID,
-                                isVideo: true
-                            )
-                            .tabItem {
-                                CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
-                                Text(CourseLocalization.CourseContainer.videos)
-                            }
-                            .tag(CourseTab.videos)
-
-                            DiscussionTopicsView(courseID: courseID,
-                                                 viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
-                                                                                     argument: title)!,
-                                                 router: Container.shared.resolve(DiscussionRouter.self)!)
-                            .tabItem {
-                                CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
-                                Text(CourseLocalization.CourseContainer.discussion)
-                            }
-                            .tag(CourseTab.discussion)
-
-                            HandoutsView(courseID: courseID,
-                                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
-                            .tabItem {
-                                CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
-                                Text(CourseLocalization.CourseContainer.handouts)
-                            }
-                            .tag(CourseTab.handounds)
-                        }
-                        .tabViewStyle(.page(indexDisplayMode: .never))
-                        .animation(.default, value: selection)
-                        .onFirstAppear {
-                            Task {
-                                await viewModel.tryToRefreshCookies()
-                            }
-                        }
-                    }
-                }
-            }
+            content
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())
-        .onChange(of: selection, perform: { selection in
-            self.selectionTab = selection.rawValue
+        .onChange(of: selection, perform: didSelect)
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if let courseStart = viewModel.courseStart {
+            if courseStart > Date() {
+                CourseOutlineView(
+                    viewModel: viewModel,
+                    title: title,
+                    courseID: courseID,
+                    isVideo: false
+                )
+            } else {
+                VStack {
+                    topTabBar
+                    tabs
+                }
+            }
+        }
+    }
+
+    private var topTabBar: some View {
+        SlidingTabBar(
+            selection: $selection,
+            tabs: CourseTab.allCases.map { $0.title }
+        ) { newValue in
+            isAnimatingForTap = true
+            selection = newValue
+            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(300))) {
+                isAnimatingForTap = false
+            }
+        }
+    }
+
+    private var tabs: some View {
+        TabView(selection: $selection) {
+            ForEach(CourseTab.allCases) { tab in
+                switch tab {
+                case .course:
+                    CourseOutlineView(
+                        viewModel: self.viewModel,
+                        title: title,
+                        courseID: courseID,
+                        isVideo: false
+                    )
+                    .tag(tab)
+                case .videos:
+                    CourseOutlineView(
+                        viewModel: self.viewModel,
+                        title: title,
+                        courseID: courseID,
+                        isVideo: true
+                    )
+                    .tag(tab)
+                case .discussion:
+                    DiscussionTopicsView(
+                        courseID: courseID,
+                        viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
+                                                            argument: title)!,
+                        router: Container.shared.resolve(DiscussionRouter.self)!
+                    )
+                    .tag(tab)
+                case .handounds:
+                    HandoutsView(
+                        courseID: courseID,
+                        viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!
+                    )
+                    .tag(tab)
+                }
+            }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .animation(.default, value: selection)
+        .onFirstAppear {
+            Task {
+                await viewModel.tryToRefreshCookies()
+            }
+        }
+    }
+
+    private func didSelect(_ selection: Int) {
+        CourseTab(rawValue: selection).flatMap {
             viewModel.trackSelectedTab(
-                selection: selection,
+                selection: $0,
                 courseId: courseID,
                 courseName: title
             )
-        })
+        }
     }
-    
+
     private func titleBar() -> String {
-        switch selection {
+        switch CourseTab(rawValue: selection) {
         case .course:
             return self.title
         case .videos:
@@ -171,6 +178,8 @@ public struct CourseContainerView: View {
             return DiscussionLocalization.title
         case .handounds:
             return CourseLocalization.CourseContainer.handouts
+        default:
+            return ""
         }
     }
 }
