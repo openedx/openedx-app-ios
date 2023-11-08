@@ -50,7 +50,7 @@ public class SignInViewModel: ObservableObject {
     
     @MainActor
     func login(username: String, password: String) async {
-        guard !username.isEmpty else {
+        guard !validator.containsWhitespace(username) else {
             errorMessage = AuthLocalization.Error.invalidEmailAddressOrUsername
             return
         }

@@ -24,4 +24,14 @@ public class Validator {
     public func isValidPassword(_ password: String) -> Bool {
         return password.count >= 2
     }
+    
+    public func containsWhitespace(_ string: String) -> Bool {
+        return string.containsWhitespace
+    }
+}
+
+fileprivate extension String {
+    var containsWhitespace : Bool {
+        return(rangeOfCharacter(from: .whitespacesAndNewlines) != nil)
+    }
 }
