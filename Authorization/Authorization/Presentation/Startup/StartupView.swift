@@ -34,52 +34,53 @@ public struct StartupView: View {
                     .colorMultiply(Theme.Colors.accentColor)
                 
                 VStack {
-                        VStack(alignment: .leading) {
-                            Text(AuthLocalization.Startup.infoMessage)
-                                .font(Theme.Fonts.titleLarge)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .padding(.bottom, isHorizontal ? 10 : 20 )
-                            
-                            Text(AuthLocalization.Startup.searchTitle)
-                                .font(Theme.Fonts.bodyLarge).bold()
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .padding(.top, isHorizontal ? 0 : 24)
-                            
-                            HStack(spacing: 11) {
-                                Image(systemName: "magnifyingglass")
-                                    .padding(.leading, 16)
-                                    .padding(.top, 1)
-                                TextField(AuthLocalization.Startup.searchPlaceholder, text: $searchQuery, onCommit: {
-                                    if searchQuery.isEmpty { return }
-                                    viewModel.router.showDiscoveryScreen(searchQuery: searchQuery, fromStartupScreen: true)
-                                })
-                                .autocapitalization(.none)
-                                .autocorrectionDisabled()
-                                .frame(minHeight: 50)
-                                .submitLabel(.search)
-                                
-                            }.overlay(
-                                Theme.Shapes.textInputShape
-                                    .stroke(lineWidth: 1)
-                                    .fill(Theme.Colors.textInputStroke)
-                            )
-                            .background(
-                                Theme.Shapes.textInputShape
-                                    .fill(Theme.Colors.textInputBackground)
-                            )
-                            
-                            Button {
+                    VStack(alignment: .leading) {
+                        Text(AuthLocalization.Startup.infoMessage)
+                            .font(Theme.Fonts.titleLarge)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .padding(.bottom, isHorizontal ? 10 : 20 )
+                        
+                        Text(AuthLocalization.Startup.searchTitle)
+                            .font(Theme.Fonts.bodyLarge)
+                            .bold()
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .padding(.top, isHorizontal ? 0 : 24)
+                        
+                        HStack(spacing: 11) {
+                            Image(systemName: "magnifyingglass")
+                                .padding(.leading, 16)
+                                .padding(.top, 1)
+                            TextField(AuthLocalization.Startup.searchPlaceholder, text: $searchQuery, onCommit: {
+                                if searchQuery.isEmpty { return }
                                 viewModel.router.showDiscoveryScreen(searchQuery: searchQuery, fromStartupScreen: true)
-                            }label: {
-                                Text(AuthLocalization.Startup.exploreAllCourses)
-                                    .underline()
-                                    .foregroundColor(Theme.Colors.accentColor)
-                                    .font(Theme.Fonts.bodyLarge)
-                            }.padding(.top, isHorizontal ? 0 : 5)
+                            })
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
+                            .frame(minHeight: 50)
+                            .submitLabel(.search)
                             
-                            Spacer()
+                        }.overlay(
+                            Theme.Shapes.textInputShape
+                                .stroke(lineWidth: 1)
+                                .fill(Theme.Colors.textInputStroke)
+                        )
+                        .background(
+                            Theme.Shapes.textInputShape
+                                .fill(Theme.Colors.textInputBackground)
+                        )
+                        
+                        Button {
+                            viewModel.router.showDiscoveryScreen(searchQuery: searchQuery, fromStartupScreen: true)
+                        } label: {
+                            Text(AuthLocalization.Startup.exploreAllCourses)
+                                .underline()
+                                .foregroundColor(Theme.Colors.accentColor)
+                                .font(Theme.Fonts.bodyLarge)
                         }
-                        .padding(.horizontal, isHorizontal ? 10 : 24)
+                        .padding(.top, isHorizontal ? 0 : 5)
+                        Spacer()
+                    }
+                    .padding(.horizontal, isHorizontal ? 10 : 24)
                     
                     LogistrationBottomView(viewModel: viewModel)
                 }
@@ -99,25 +100,25 @@ public struct StartupView: View {
         }
     }
 }
-    
+
 #if DEBUG
-    struct StartupView_Previews: PreviewProvider {
-        static var previews: some View {
-            let vm = StartupViewModel(
-                interactor: AuthInteractor.mock,
-                router: AuthorizationRouterMock(),
-                analytics: AuthorizationAnalyticsMock()
-            )
-            
-            StartupView(viewModel: vm)
-                .preferredColorScheme(.light)
-                .previewDisplayName("StartupView Light")
-                .loadFonts()
-            
-            StartupView(viewModel: vm)
-                .preferredColorScheme(.dark)
-                .previewDisplayName("StartupView Dark")
-                .loadFonts()
-        }
+struct StartupView_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = StartupViewModel(
+            interactor: AuthInteractor.mock,
+            router: AuthorizationRouterMock(),
+            analytics: AuthorizationAnalyticsMock()
+        )
+        
+        StartupView(viewModel: vm)
+            .preferredColorScheme(.light)
+            .previewDisplayName("StartupView Light")
+            .loadFonts()
+        
+        StartupView(viewModel: vm)
+            .preferredColorScheme(.dark)
+            .previewDisplayName("StartupView Dark")
+            .loadFonts()
     }
+}
 #endif
