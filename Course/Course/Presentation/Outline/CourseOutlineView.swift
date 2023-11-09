@@ -123,7 +123,7 @@ public struct CourseOutlineView: View {
                                 : viewModel.courseStructure {
                                 
                                 // MARK: - Sections
-                                CourseStructureView(
+                                CourseExpandableContentView(
                                     proxy: proxy,
                                     course: course,
                                     viewModel: viewModel
@@ -243,7 +243,7 @@ struct CourseStructureView: View {
                                     )
                             }.foregroundColor(Theme.Colors.textPrimary)
                             Spacer()
-                            if let state = viewModel.downloadState[child.id] {
+                            if let state = viewModel.sequentialsDownloadState[child.id] {
                                 switch state {
                                 case .available:
                                     DownloadAvailableView()

@@ -16,7 +16,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var courseVideosStructure: CourseStructure?
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
-    @Published var downloadState: [String: DownloadViewState] = [:]
+    @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
+    @Published var verticalsDownloadState: [String: DownloadViewState] = [:]
     @Published var continueWith: ContinueWith?
     
     var errorMessage: String? {
@@ -140,13 +141,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             switch state {
             case .available:
                 try manager.addToDownloadQueue(blocks: blocks)
-                downloadState[blockId] = .downloading
+                sequentialsDownloadState[blockId] = .downloading
             case .downloading:
                 try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
-                downloadState[blockId] = .available
+                sequentialsDownloadState[blockId] = .available
             case .finished:
                 manager.deleteFile(blocks: blocks)
-                downloadState[blockId] = .available
+                sequentialsDownloadState[blockId] = .available
             }
         } catch let error {
             if error is NoWiFiError {
@@ -154,7 +155,28 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-    
+
+    func onDownloadViewTap(courseVertical: CourseVertical, state: DownloadViewState) {
+        let blocks = courseVertical.childs.filter { $0.isDownloadable }
+        do {
+            switch state {
+            case .available:
+                try manager.addToDownloadQueue(blocks: blocks)
+                verticalsDownloadState[courseVertical.id] = .downloading
+            case .downloading:
+                try manager.cancelDownloading(courseId: courseVertical.courseId, blocks: blocks)
+                verticalsDownloadState[courseVertical.id] = .available
+            case .finished:
+                manager.deleteFile(blocks: blocks)
+                verticalsDownloadState[courseVertical.id] = .available
+            }
+        } catch let error {
+            if error is NoWiFiError {
+                errorMessage = CoreLocalization.Error.wifi
+            }
+        }
+    }
+
     func trackSelectedTab(
         selection: CourseContainerView.CourseTab,
         courseId: String,
@@ -173,7 +195,20 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             analytics.courseOutlineHandoutsTabClicked(courseId: courseId, courseName: courseName)
         }
     }
-    
+
+    func trackVerticalClicked(
+        courseId: String,
+        courseName: String,
+        vertical: CourseVertical
+    ) {
+        analytics.verticalClicked(
+            courseId: courseId,
+            courseName: courseName,
+            blockId: vertical.blockId,
+            blockName: vertical.displayName
+        )
+    }
+
     func trackSequentialClicked(_ sequential: CourseSequential) {
         guard let course = courseStructure else { return }
         analytics.sequentialClicked(
@@ -197,7 +232,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private func setDownloadsStates() {
         guard let course = courseStructure else { return }
         let downloads = manager.getDownloadsForCourse(course.id)
-        var states: [String: DownloadViewState] = [:]
+        var sequentialsStates: [String: DownloadViewState] = [:]
+        var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
                 var childs: [DownloadViewState] = []
@@ -216,16 +252,24 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                             childs.append(.available)
                         }
                     }
+                    if childs.first(where: { $0 == .downloading }) != nil {
+                        verticalsStates[vertical.id] = .downloading
+                    } else if childs.allSatisfy({ $0 == .finished }) {
+                        verticalsStates[vertical.id] = .finished
+                    } else {
+                        verticalsStates[vertical.id] = .available
+                    }
                 }
                 if childs.first(where: { $0 == .downloading }) != nil {
-                    states[sequential.id] = .downloading
+                    sequentialsStates[sequential.id] = .downloading
                 } else if childs.allSatisfy({ $0 == .finished }) {
-                    states[sequential.id] = .finished
+                    sequentialsStates[sequential.id] = .finished
                 } else {
-                    states[sequential.id] = .available
+                    sequentialsStates[sequential.id] = .available
                 }
             }
-            self.downloadState = states
+            self.sequentialsDownloadState = sequentialsStates
+            self.verticalsDownloadState = verticalsStates
         }
     }
     
