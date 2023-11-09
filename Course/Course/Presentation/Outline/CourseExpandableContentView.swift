@@ -278,7 +278,8 @@ struct CourseExpandableContentView: View {
 
             }
         })
-        .padding(.horizontal, 40)
+        .padding(.leading, 40)
+        .padding(.trailing, 28)
         .padding(.vertical, 14)
     }
 
