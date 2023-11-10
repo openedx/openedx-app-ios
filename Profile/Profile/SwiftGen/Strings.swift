@@ -104,8 +104,8 @@ public enum ProfileLocalization {
     public static let title = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TITLE", fallback: "Comfirm log out")
   }
   public enum Settings {
-    /// Smallest video quality
-    public static let quality360Description = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_DESCRIPTION", fallback: "Smallest video quality")
+    /// Lower data usage
+    public static let quality360Description = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_DESCRIPTION", fallback: "Lower data usage")
     /// 360p
     public static let quality360Title = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_TITLE", fallback: "360p")
     /// 540p
@@ -118,10 +118,18 @@ public enum ProfileLocalization {
     public static let qualityAutoDescription = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_AUTO_DESCRIPTION", fallback: "Recommended")
     /// Auto
     public static let qualityAutoTitle = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_AUTO_TITLE", fallback: "Auto")
+    /// Tap to install required app update
+    public static let tapToInstall = ProfileLocalization.tr("Localizable", "SETTINGS.TAP_TO_INSTALL", fallback: "Tap to install required app update")
+    /// Tap to update to version
+    public static let tapToUpdate = ProfileLocalization.tr("Localizable", "SETTINGS.TAP_TO_UPDATE", fallback: "Tap to update to version")
+    /// Up-to-date
+    public static let upToDate = ProfileLocalization.tr("Localizable", "SETTINGS.UP_TO_DATE", fallback: "Up-to-date")
+    /// Version:
+    public static let version = ProfileLocalization.tr("Localizable", "SETTINGS.VERSION", fallback: "Version:")
     /// Auto (Recommended)
     public static let videoQualityDescription = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_DESCRIPTION", fallback: "Auto (Recommended)")
-    /// Video download quality
-    public static let videoQualityTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_TITLE", fallback: "Video download quality")
+    /// Video streaming quality
+    public static let videoQualityTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_TITLE", fallback: "Video streaming quality")
     /// Video settings
     public static let videoSettingsTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_SETTINGS_TITLE", fallback: "Video settings")
     /// Only download content when wi-fi is turned on

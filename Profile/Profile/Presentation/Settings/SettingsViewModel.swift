@@ -22,15 +22,15 @@ public class SettingsViewModel: ObservableObject {
         }
     }
     
-    @Published var selectedQuality: VideoQuality {
+    @Published var selectedQuality: StreamingQuality {
         willSet {
             if newValue != selectedQuality {
-                userSettings.downloadQuality = newValue
+                userSettings.streamingQuality = newValue
                 interactor.saveSettings(userSettings)
             }
         }
     }
-    let quality = Array([VideoQuality.auto, VideoQuality.low, VideoQuality.medium, VideoQuality.high].enumerated())
+    let quality = Array([StreamingQuality.auto, StreamingQuality.low, StreamingQuality.medium, StreamingQuality.high].enumerated())
     
     var errorMessage: String? {
         didSet {
@@ -51,11 +51,11 @@ public class SettingsViewModel: ObservableObject {
         
         self.userSettings = interactor.getSettings()
         self.wifiOnly = userSettings.wifiOnly
-        self.selectedQuality = userSettings.downloadQuality
+        self.selectedQuality = userSettings.streamingQuality
     }
 }
 
-extension VideoQuality {
+extension StreamingQuality {
     
     func title() -> String {
         switch self {

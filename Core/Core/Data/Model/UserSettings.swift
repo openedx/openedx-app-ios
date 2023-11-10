@@ -9,15 +9,15 @@ import Foundation
 
 public struct UserSettings: Codable {
     public var wifiOnly: Bool
-    public var downloadQuality: VideoQuality
+    public var streamingQuality: StreamingQuality
     
-    public init(wifiOnly: Bool, downloadQuality: VideoQuality) {
+    public init(wifiOnly: Bool, streamingQuality: StreamingQuality) {
         self.wifiOnly = wifiOnly
-        self.downloadQuality = downloadQuality
+        self.streamingQuality = streamingQuality
     }
 }
 
-public enum VideoQuality: Codable {
+public enum StreamingQuality: Codable {
     case auto
     case low
     case medium

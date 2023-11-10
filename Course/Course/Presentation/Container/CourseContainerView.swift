@@ -15,6 +15,7 @@ public struct CourseContainerView: View {
     enum CourseTab {
         case course
         case videos
+        case dates
         case discussion
         case handounds
     }
@@ -74,6 +75,15 @@ public struct CourseContainerView: View {
                         }
                         .tag(CourseTab.videos)
                         
+                        CourseDatesView(courseID: courseID,
+                                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
+                                                                            argument: courseID)!)
+                        .tabItem {
+                            Image(systemName: "calendar").renderingMode(.template)
+                            Text(CourseLocalization.CourseContainer.dates)
+                        }
+                        .tag(CourseTab.dates)
+                        
                         DiscussionTopicsView(courseID: courseID,
                                              viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                                                  argument: title)!,
@@ -122,6 +132,8 @@ public struct CourseContainerView: View {
             return DiscussionLocalization.title
         case .handounds:
             return CourseLocalization.CourseContainer.handouts
+        case .dates:
+            return CourseLocalization.CourseContainer.dates
         }
     }
 }

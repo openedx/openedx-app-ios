@@ -39,4 +39,16 @@ public struct UserProfile: Hashable {
         self.shortBiography = shortBiography
         self.isFullProfile = isFullProfile
     }
+    
+    public init() {
+        self.avatarUrl = ""
+        self.name = ""
+        self.username = ""
+        self.dateJoined = Date()
+        self.yearOfBirth = 0
+        self.country = ""
+        self.spokenLanguage = ""
+        self.shortBiography = ""
+        self.isFullProfile = true
+    }
 }

@@ -21,7 +21,7 @@ public protocol BaseRouter {
     
     func removeLastView(controllers: Int)
 
-    func showMainScreen()
+    func showMainOrWhatsNewScreen()
 
     func showLoginScreen()
 
@@ -73,7 +73,7 @@ open class BaseRouterMock: BaseRouter {
 
     public func dismiss(animated: Bool) {}
 
-    public func showMainScreen() {}
+    public func showMainOrWhatsNewScreen() {}
 
     public func showLoginScreen() {}
 
