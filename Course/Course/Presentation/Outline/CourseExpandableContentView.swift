@@ -74,12 +74,12 @@ struct CourseExpandableContentView: View {
     ) -> some View {
         CustomDisclosureGroup(
             animation: .easeInOut(duration: 0.2),
-            isExpanded: .constant(isExpandedIds.contains(where: {$0 == chapter.id})),
+            isExpanded: .constant(isExpandedIds.contains(where: {$0 == courseSequential.id})),
             onClick: {
-                if let index = isExpandedIds.firstIndex(where: {$0 == chapter.id}) {
+                if let index = isExpandedIds.firstIndex(where: {$0 == courseSequential.id}) {
                     isExpandedIds.remove(at: index)
                 } else {
-                    isExpandedIds.append(chapter.id)
+                    isExpandedIds.append(courseSequential.id)
                 }
             },
             header: { isExpanded in
