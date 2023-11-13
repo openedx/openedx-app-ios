@@ -69,7 +69,6 @@ class ConfigTests: XCTestCase {
         XCTAssertEqual(config.firebaseConfig.reversedClientID, "testReversedClientID")
         XCTAssertEqual(config.firebaseConfig.storageBucket, "testStorageBucket")
         XCTAssertEqual(config.firebaseConfig.isAnalyticsSourceFirebase, true)
-        XCTAssertEqual(config.firebaseConfig.cloudMessagingEnabled, true)        
+        XCTAssertEqual(config.firebaseConfig.cloudMessagingEnabled, true)
     }
-    
 }

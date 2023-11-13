@@ -15,6 +15,7 @@ public protocol ConfigProtocol {
     var whatsNewEnabled: Bool { get }
     var appStoreLink: String { get }
     var agreementConfig: AgreementConfigProtocol { get }
+    var firebaseConfig: FirebaseConfigProtocol { get }
 }
 
 public enum TokenType: String {
@@ -43,11 +44,11 @@ public class Config {
     
     private var properties: [String: Any] = [:]
     
-    init(properties: [String: Any] = [:]) {
+    internal init(properties: [String: Any] = [:]) {
         self.properties = properties
     }
     
-    convenience init() {
+    internal convenience init() {
         self.init(properties: [:])
         loadConfigPlist()
     }
@@ -58,7 +59,6 @@ public class Config {
               let dict = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else { return }
         
         properties = dict
-        print(properties)
     }
     
     internal subscript(key: String) -> Any? {

@@ -203,21 +203,43 @@ class ConfigurationManager:
             print(f"Error reading or writing plist file: {e}")
             sys.exit(1)            
 
+def parse_yaml(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            return yaml.safe_load(file)
+    except Exception as e:
+        print(f"Error opening or reading the file '{file_path}': {e}")
+        sys.exit(1)
+
 def main():
-    def parse_yaml(file_path):
-        try:
-            with open(file_path, 'r') as file:
-                return yaml.safe_load(file)
-        except Exception:
-            print(f"Error opening or reading the file '{file_path}', No config file was written.")
-            sys.exit(0)
+    if len(sys.argv) < 2:
+        print("Configuration not provided. Using empty configuration.")
+        configuration = ""
+    else:
+        configuration = sys.argv[1]
+        print(f"Running with configuration: {configuration}")    
 
     yaml_path = 'config.yaml'
     yaml_files = ['shared.yaml', 'ios.yaml']
-    
+
     config_data = parse_yaml(yaml_path)
     directory = config_data.get('directory')
-    config_name = config_data.get('config')
+    
+    config_name = ""
+
+    if configuration:
+        if configuration in ["DebugDev", "ReleaseDev"]:
+            config_name = "prod_test"
+            print(f"Processing for Development environment using config name {config_name}")
+        elif configuration in ["DebugStage", "ReleaseStage"]:
+            config_name = "stage"
+            print(f"Processing for Staging environment using config name {config_name}")
+        elif configuration in ["DebugProd", "ReleaseProd"]:
+            config_name = "prod"
+            print(f"Processing for Production environment using config name {config_name}")
+    else:
+        config_name = config_data.get('config')
+
     print(f'directory: {directory}')
     print(f'config: {config_name}')
 

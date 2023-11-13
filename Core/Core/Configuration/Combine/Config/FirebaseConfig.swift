@@ -8,6 +8,23 @@
 import Foundation
 import FirebaseCore
 
+public protocol FirebaseConfigProtocol {
+    var enabled: Bool { get }
+    var cloudMessagingEnabled: Bool { get }
+    var apiKey: String? { get }
+    var bundleID: String? { get }
+    var clientID: String? { get }
+    var databaseURL: String? { get }
+    var gcmSenderID: String? { get }
+    var googleAppID: String? { get }
+    var projectID: String? { get }
+    var reversedClientID: String? { get }
+    var storageBucket: String? { get }
+    var isAnalyticsSourceSegment: Bool { get }
+    var isAnalyticsSourceFirebase: Bool { get }
+    var firebaseOptions: FirebaseOptions? { get }
+}
+
 private enum FirebaseKeys: String {
     case enabled = "ENABLED"
     case analyticsSource = "ANALYTICS_SOURCE"
@@ -29,7 +46,7 @@ enum AnalyticsSource: String {
     case none
 }
 
-public class FirebaseConfig: NSObject {
+public class FirebaseConfig: NSObject, FirebaseConfigProtocol {
     public var enabled: Bool = false
     public var cloudMessagingEnabled: Bool = false
     public let apiKey: String?
@@ -99,7 +116,7 @@ public class FirebaseConfig: NSObject {
 
 private let key = "FIREBASE"
 extension Config {
-    public var firebaseConfig: FirebaseConfig {
+    public var firebaseConfig: FirebaseConfigProtocol {
         return FirebaseConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
     }
 }

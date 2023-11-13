@@ -331,7 +331,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "case $CONFIGURATION in\n    \"DebugDev\" | \"ReleaseDev\" )\n        googleAppID=$(grep -A 4 'case .debugDev, .releaseDev:' ${PROJECT_DIR}/${TARGET_NAME}/Environment.swift | grep 'googleAppID:' | awk -F'\"' '{print $2}')\n        ;;\n    \"DebugStage\" | \"ReleaseStage\" )\n        googleAppID=$(grep -A 4 'case .debugStage, .releaseStage:' ${PROJECT_DIR}/${TARGET_NAME}/Environment.swift | grep 'googleAppID:' | awk -F'\"' '{print $2}')\n        ;;\n    \"DebugProd\" | \"RelesaseProd\" )\n        googleAppID=$(grep -A 4 'case .debugProd, .releaseProd:' ${PROJECT_DIR}/${TARGET_NAME}/Environment.swift | grep 'googleAppID:' | awk -F'\"' '{print $2}')\n        ;;\n    *)\n    echo \"Unknown configuration\"\n    ;;\nesac\n\nif [ -z \"$googleAppID\" ]\nthen\n      echo \"GoogleAppID is empty. The FirebaseCrashlytics script will be skipped.\"\nelse\n      \"${PODS_ROOT}/FirebaseCrashlytics/run\" --app-id \"$googleAppID\" -p ios ${DWARF_DSYM_FOLDER_PATH}\nfi\n";
+			shellScript = "plistPath=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/GoogleService-Info.plist\"\n\ngoogleAppID=$(/usr/libexec/PlistBuddy -c \"Print :GOOGLE_APP_ID\" \"$plistPath\")\n\nif [ -z \"$googleAppID\" ]\nthen\n    echo \"GoogleAppID is empty. The FirebaseCrashlytics script will be skipped.\"\nelse\n    \"${PODS_ROOT}/FirebaseCrashlytics/run\" --app-id \"$googleAppID\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\nfi\n";
 		};
 		0770DE2328D08647006D8A5D /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -375,6 +375,7 @@
 		};
 		DB97C0542B002EF00035C36F /* Process Config */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -389,7 +390,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n./process_config.sh\n";
+			shellScript = "#!/bin/bash\n\nVENV_PATH=\"${SRCROOT}/venv\"\n\nif [ ! -d \"$VENV_PATH\" ]; then\n    /usr/bin/python3 -m venv \"$VENV_PATH\"\nfi\n\nsource \"$VENV_PATH/bin/activate\"\n\npip install --upgrade pip\npip install PyYAML\n\npython process_config.py \"$CONFIGURATION\"\n\ndeactivate\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
