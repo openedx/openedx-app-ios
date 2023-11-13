@@ -21,7 +21,7 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
-        config: Config,
+        config: ConfigProtocol,
         postStateSubject: CurrentValueSubject<PostState?, Never>
     ) {
         self.postStateSubject = postStateSubject

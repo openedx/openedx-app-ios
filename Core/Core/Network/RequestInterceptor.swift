@@ -10,10 +10,10 @@ import Alamofire
 
 final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
-    private let config: Config
+    private let config: ConfigProtocol
     private var storage: CoreStorage
     
-    public init(config: Config, storage: CoreStorage) {
+    public init(config: ConfigProtocol, storage: CoreStorage) {
         self.config = config
         self.storage = storage
     }

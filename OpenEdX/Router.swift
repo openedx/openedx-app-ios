@@ -61,7 +61,7 @@ public class Router: AuthorizationRouter,
     public func showMainOrWhatsNewScreen() {
         showToolBar()
         var storage = Container.shared.resolve(WhatsNewStorage.self)!
-        let config = Container.shared.resolve(Config.self)!
+        let config = Container.shared.resolve(ConfigProtocol.self)!
 
         let viewModel = WhatsNewViewModel(storage: storage)
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
@@ -429,7 +429,7 @@ public class Router: AuthorizationRouter,
     public func showUpdateRequiredView(showAccountLink: Bool = true) {
         let view = UpdateRequiredView(
             router: self,
-            config: Container.shared.resolve(Config.self)!,
+            config: Container.shared.resolve(ConfigProtocol.self)!,
             showAccountLink: showAccountLink
         )
         let controller = UIHostingController(rootView: view)
@@ -437,7 +437,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func showUpdateRecomendedView() {
-        let view = UpdateRecommendedView(router: self, config: Container.shared.resolve(Config.self)!)
+        let view = UpdateRecommendedView(router: self, config: Container.shared.resolve(ConfigProtocol.self)!)
         self.presentView(transitionStyle: .crossDissolve, view: view)
     }
     

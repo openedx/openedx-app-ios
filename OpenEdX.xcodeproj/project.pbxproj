@@ -29,7 +29,6 @@
 		02ED50D829A66007008341CD /* languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 02ED50DA29A66007008341CD /* languages.json */; };
 		02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */; };
 		071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C828D1DB3F00344290 /* ScreenAssembly.swift */; };
-		0727876D28D23312002E9142 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0727876C28D23312002E9142 /* Environment.swift */; };
 		0727878E28D347C7002E9142 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0727878D28D347C7002E9142 /* MainScreenView.swift */; };
 		072787B128D34D83002E9142 /* Discovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 072787B028D34D83002E9142 /* Discovery.framework */; };
 		072787B228D34D83002E9142 /* Discovery.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 072787B028D34D83002E9142 /* Discovery.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -94,7 +93,6 @@
 		02ED50DB29A6600B008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = uk.lproj/languages.json; sourceTree = "<group>"; };
 		02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenAnalytics.swift; sourceTree = "<group>"; };
 		071009C828D1DB3F00344290 /* ScreenAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAssembly.swift; sourceTree = "<group>"; };
-		0727876C28D23312002E9142 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		0727878D28D347C7002E9142 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		072787B028D34D83002E9142 /* Discovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE1228D07845006D8A5D /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,7 +196,6 @@
 				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
 				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
 				0293A2012A6FC9E30090A336 /* Data */,
-				0727876C28D23312002E9142 /* Environment.swift */,
 				0727878C28D347B2002E9142 /* View */,
 				0770DE1A28D084BC006D8A5D /* DI */,
 				07D5DA3D28D075AB00752FD9 /* Assets.xcassets */,
@@ -256,6 +253,7 @@
 				07D5DA2E28D075AA00752FD9 /* Frameworks */,
 				07D5DA2F28D075AA00752FD9 /* Resources */,
 				0770DE1528D07845006D8A5D /* Embed Frameworks */,
+				DB97C0542B002EF00035C36F /* Process Config */,
 				02F175442A4E3B320019CD70 /* FirebaseCrashlytics */,
 			);
 			buildRules = (
@@ -375,6 +373,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		DB97C0542B002EF00035C36F /* Process Config */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Process Config";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n./process_config.sh\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -395,7 +411,6 @@
 				025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */,
 				024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */,
 				0770DE2028D0858A006D8A5D /* Router.swift in Sources */,
-				0727876D28D23312002E9142 /* Environment.swift in Sources */,
 				0293A2092A6FCDE50090A336 /* DashboardPersistence.swift in Sources */,
 				0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */,
 				071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */,

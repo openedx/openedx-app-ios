@@ -51,7 +51,7 @@ class RouteController: UIViewController {
     
     private func showMainOrWhatsNewScreen() {
         var storage = Container.shared.resolve(WhatsNewStorage.self)!
-        let config = Container.shared.resolve(Config.self)!
+        let config = Container.shared.resolve(ConfigProtocol.self)!
 
         let viewModel = WhatsNewViewModel(storage: storage)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
