@@ -12,6 +12,7 @@ public struct DiscoveryView: View {
     
     @StateObject
     private var viewModel: DiscoveryViewModel
+    private var router: DiscoveryRouter
     @State private var isRefreshing: Bool = false
     
     private var fromStartupScreen: Bool = false
