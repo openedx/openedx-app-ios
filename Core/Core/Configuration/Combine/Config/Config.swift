@@ -131,8 +131,10 @@ public class ConfigMock: Config {
         "API_HOST_URL": "https://www.example.com",
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
-        "TOKEN_TYPE": TokenType.jwt.rawValue,
-        "WHATS_NEW_ENABLED": false,
+        "TOKEN_TYPE": "JWT",
+        "FEATURES": [
+            "WHATS_NEW_ENABLED": false
+        ],
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos"

@@ -15,7 +15,9 @@ class ConfigTests: XCTestCase {
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
         "TOKEN_TYPE": "JWT",
-        "WHATS_NEW_ENABLED": false,
+        "FEATURES": [
+            "WHATS_NEW_ENABLED": false
+        ],
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos"
@@ -45,30 +47,36 @@ class ConfigTests: XCTestCase {
         XCTAssertEqual(config.oAuthClientId, "oauth_client_id")
         XCTAssertEqual(config.feedbackEmail, "example@mail.com")
         XCTAssertEqual(config.tokenType, TokenType.jwt)
-        XCTAssertFalse(config.whatsNewEnabled)
+        XCTAssertFalse(config.features.whatNewEnabled)
+    }
+    
+    func testFeaturesConfigInitialization() {
+        let config = Config(properties: properties)
+        
+        XCTAssertFalse(config.features.whatNewEnabled)
     }
     
     func testAgreementConfigInitialization() {
         let config = Config(properties: properties)
         
-        XCTAssertEqual(config.agreementConfig.privacyPolicyURL, URL(string: "https://www.example.com/privacy"))
-        XCTAssertEqual(config.agreementConfig.tosURL, URL(string: "https://www.example.com/tos"))
+        XCTAssertEqual(config.agreement.privacyPolicyURL, URL(string: "https://www.example.com/privacy"))
+        XCTAssertEqual(config.agreement.tosURL, URL(string: "https://www.example.com/tos"))
     }
     
     func testFirebaseConfigInitialization() {
         let config = Config(properties: properties)
         
-        XCTAssertTrue(config.firebaseConfig.enabled)
-        XCTAssertEqual(config.firebaseConfig.apiKey, "testApiKey")
-        XCTAssertEqual(config.firebaseConfig.bundleID, "testBundleID")
-        XCTAssertEqual(config.firebaseConfig.clientID, "testClientID")
-        XCTAssertEqual(config.firebaseConfig.databaseURL, "https://test.database.url")
-        XCTAssertEqual(config.firebaseConfig.gcmSenderID, "testGCMSenderID")
-        XCTAssertEqual(config.firebaseConfig.googleAppID, "testGoogleAppID")
-        XCTAssertEqual(config.firebaseConfig.projectID, "testProjectID")
-        XCTAssertEqual(config.firebaseConfig.reversedClientID, "testReversedClientID")
-        XCTAssertEqual(config.firebaseConfig.storageBucket, "testStorageBucket")
-        XCTAssertEqual(config.firebaseConfig.isAnalyticsSourceFirebase, true)
-        XCTAssertEqual(config.firebaseConfig.cloudMessagingEnabled, true)
+        XCTAssertTrue(config.firebase.enabled)
+        XCTAssertEqual(config.firebase.apiKey, "testApiKey")
+        XCTAssertEqual(config.firebase.bundleID, "testBundleID")
+        XCTAssertEqual(config.firebase.clientID, "testClientID")
+        XCTAssertEqual(config.firebase.databaseURL, "https://test.database.url")
+        XCTAssertEqual(config.firebase.gcmSenderID, "testGCMSenderID")
+        XCTAssertEqual(config.firebase.googleAppID, "testGoogleAppID")
+        XCTAssertEqual(config.firebase.projectID, "testProjectID")
+        XCTAssertEqual(config.firebase.reversedClientID, "testReversedClientID")
+        XCTAssertEqual(config.firebase.storageBucket, "testStorageBucket")
+        XCTAssertEqual(config.firebase.isAnalyticsSourceFirebase, true)
+        XCTAssertEqual(config.firebase.cloudMessagingEnabled, true)
     }
 }
