@@ -201,7 +201,7 @@ class ConfigurationManager:
             sys.exit(1)
         except Exception as e:
             print(f"Error reading or writing plist file: {e}")
-            sys.exit(1)            
+            sys.exit(1)
 
 def parse_yaml(file_path):
     try:
@@ -211,60 +211,66 @@ def parse_yaml(file_path):
         print(f"Error opening or reading the file '{file_path}': {e}")
         sys.exit(1)
 
+def get_configuration_name(configuration, config_mapping):
+    if configuration in ["DebugDev", "ReleaseDev"]:
+        return config_mapping.get("dev")
+    elif configuration in ["DebugStage", "ReleaseStage"]:
+        return config_mapping.get("stage")
+    elif configuration in ["DebugProd", "ReleaseProd"]:
+        return config_mapping.get("prod")
+    else:
+        return None
+
+def process_plist_files(configuration_manager, plist_manager, config):
+    firebase_info_plist_path = plist_manager.get_firebase_config_path()
+    app_info_plist_path = plist_manager.get_app_info_plist_path()
+
+    plist = {}
+    configuration_manager.add_firebase_config(config, plist, firebase_info_plist_path)
+    configuration_manager.add_facebook_config(config, plist)
+    configuration_manager.add_google_config(config, plist)
+    configuration_manager.add_microsoft_config(config, plist)
+    configuration_manager.update_info_plist(plist, app_info_plist_path)
+
+    bundle_config_path = plist_manager.get_bundle_config_path()
+    config_plist = plist_manager.yaml_to_plist()
+    plist_manager.write_to_plist_file(config_plist, bundle_config_path)
+
 def main():
     if len(sys.argv) < 2:
         print("Configuration not provided. Using empty configuration.")
         configuration = ""
     else:
         configuration = sys.argv[1]
-        print(f"Running with configuration: {configuration}")    
-
-    yaml_path = 'config.yaml'
-    yaml_files = ['shared.yaml', 'ios.yaml']
-
-    config_data = parse_yaml(yaml_path)
-    directory = config_data.get('directory')
+        print(f"Running with configuration: {configuration}")
     
-    config_name = ""
+    config_data = parse_yaml('config.yaml')
 
-    if configuration:
-        if configuration in ["DebugDev", "ReleaseDev"]:
-            config_name = "prod_test"
-            print(f"Processing for Development environment using config name {config_name}")
-        elif configuration in ["DebugStage", "ReleaseStage"]:
-            config_name = "stage"
-            print(f"Processing for Staging environment using config name {config_name}")
-        elif configuration in ["DebugProd", "ReleaseProd"]:
-            config_name = "prod"
-            print(f"Processing for Production environment using config name {config_name}")
-    else:
-        config_name = config_data.get('config')
+    config_directory = config_data.get('config_directory', "")
+    config_mapping = config_data.get('config_mapping', {})
 
-    print(f'directory: {directory}')
-    print(f'config: {config_name}')
+    config_name = get_configuration_name(configuration, config_mapping)
+    
+    if config_name is None:
+        print("Using default directory")
+        config_directory = 'default_config'
+        config_name = "default"
 
-    config_dir = os.path.join(directory, config_name)
-    plist_manager = PlistManager(config_dir, yaml_files)
+    path = os.path.join(config_directory, config_name, "config.yaml")
+    print(config_directory)
+    print(path)
+    data = parse_yaml(path)
+    ios_files = data.get('ios').get('files')
+    
+    plist_manager = PlistManager(os.path.join(config_directory, config_name), ios_files)
     config = plist_manager.load_config()
     
     if not config:
         print("Config is empty. Skipping")
     else:
         configuration_manager = ConfigurationManager(plist_manager)
-        info_plist_path = plist_manager.get_info_plist_path()
-        firebase_info_plist_path = plist_manager.get_firebase_config_path()
-        app_info_plist_path = plist_manager.get_app_info_plist_path()
-
-        plist = {}
-        configuration_manager.add_firebase_config(config, plist, firebase_info_plist_path)
-        configuration_manager.add_facebook_config(config, plist)
-        configuration_manager.add_google_config(config, plist)
-        configuration_manager.add_microsoft_config(config, plist)
-        configuration_manager.update_info_plist(plist, app_info_plist_path)
-        
-        bundle_config_path = plist_manager.get_bundle_config_path()
-        config_plist = plist_manager.yaml_to_plist()
-        plist_manager.write_to_plist_file(config_plist, bundle_config_path)
+        process_plist_files(configuration_manager, plist_manager, config)
 
 if __name__ == "__main__":
     main()
+    # test()

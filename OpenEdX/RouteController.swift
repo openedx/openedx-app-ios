@@ -56,7 +56,7 @@ class RouteController: UIViewController {
         let viewModel = WhatsNewViewModel(storage: storage)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
 
-        if shouldShowWhatsNew && config.whatsNewEnabled {
+        if shouldShowWhatsNew && config.features.whatNewEnabled {
             if let jsonVersion = viewModel.getVersion() {
                 storage.whatsNewVersion = jsonVersion
             }

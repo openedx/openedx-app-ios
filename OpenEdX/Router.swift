@@ -67,7 +67,7 @@ public class Router: AuthorizationRouter,
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
-        if shouldShowWhatsNew && config.whatsNewEnabled {
+        if shouldShowWhatsNew && config.features.whatNewEnabled {
             if let jsonVersion = viewModel.getVersion() {
                 storage.whatsNewVersion = jsonVersion
             }

@@ -112,6 +112,5 @@ xcode-frameworks
 vendor/
 .bundle/
 
-config.yaml
 venv/
 Podfile.lock

@@ -7,17 +7,12 @@
 
 import Foundation
 
-public protocol AgreementConfigProtocol {
-    var privacyPolicyURL: URL? { get }
-    var tosURL: URL? { get }
-}
-
 private enum AgreementKeys: String {
     case privacyPolicyURL = "PRIVACY_POLICY_URL"
     case tosURL = "TOS_URL"
 }
 
-public class AgreementConfig: NSObject, AgreementConfigProtocol {
+public class AgreementConfig: NSObject {
     public var privacyPolicyURL: URL?
     public var tosURL: URL?
     
@@ -30,7 +25,7 @@ public class AgreementConfig: NSObject, AgreementConfigProtocol {
 
 private let key = "AGREEMENT_URLS"
 extension Config {
-    public var agreementConfig: AgreementConfigProtocol {
+    public var agreement: AgreementConfig {
         return AgreementConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
     }
 }

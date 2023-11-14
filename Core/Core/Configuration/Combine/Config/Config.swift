@@ -12,10 +12,10 @@ public protocol ConfigProtocol {
     var oAuthClientId: String { get }
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
-    var whatsNewEnabled: Bool { get }
     var appStoreLink: String { get }
-    var agreementConfig: AgreementConfigProtocol { get }
-    var firebaseConfig: FirebaseConfigProtocol { get }
+    var agreement: AgreementConfig { get }
+    var firebase: FirebaseConfig { get }
+    var features: FeaturesConfig { get }
 }
 
 public enum TokenType: String {
@@ -26,12 +26,11 @@ public enum TokenType: String {
 private enum ConfigKeys: String {
     case baseURL = "API_HOST_URL"
     case oAuthClientID = "OAUTH_CLIENT_ID"
-    case feedbackEmailAddress = "FEEDBACK_EMAIL_ADDRESS"
     case tokenType = "TOKEN_TYPE"
+    case feedbackEmailAddress = "FEEDBACK_EMAIL_ADDRESS"
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
     case platformName = "PLATFORM_NAME"
     case organizationCode = "ORGANIZATION_CODE"
-    case whatsnewEnabled = "WHATS_NEW_ENABLED"
     case appstoreID = "APP_STORE_ID"
 }
 
@@ -114,10 +113,6 @@ extension Config: ConfigProtocol {
     
     public var feedbackEmail: String {
         return string(for: ConfigKeys.feedbackEmailAddress.rawValue) ?? ""
-    }
-    
-    public var whatsNewEnabled: Bool {
-        return bool(for: ConfigKeys.whatsnewEnabled.rawValue)
     }
     
     private var appStoreId: String {

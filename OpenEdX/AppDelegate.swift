@@ -31,8 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
-        if Config.shared.firebaseConfig.enabled, 
-            let configuration = Config.shared.firebaseConfig.firebaseOptions {
+        if Config.shared.firebase.enabled,
+            let configuration = Config.shared.firebase.firebaseOptions {
             FirebaseApp.configure(options: configuration)
             Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
         }
