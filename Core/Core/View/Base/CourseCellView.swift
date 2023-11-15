@@ -48,6 +48,7 @@ public struct CourseCellView: View {
                     .cornerRadius(8)
                     .clipShape(RoundedRectangle(cornerRadius: Theme.Shapes.cardImageRadius))
                     .padding(.leading, 3)
+                    .accessibilityElement(children: .ignore)
                 
                 VStack(alignment: .leading) {
                     Text(courseOrg)
@@ -90,6 +91,8 @@ public struct CourseCellView: View {
             .background(Theme.Colors.background)
             .opacity(showView ? 1 : 0)
             .offset(y: showView ? 0 : 20)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(courseName + " " + (type == .dashboard ? (courseEnd == "" ? courseStart : courseEnd) : ""))
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     withAnimation(.easeInOut(duration: (index <= 5 ? 0.3 : 0.1))
@@ -98,8 +101,7 @@ public struct CourseCellView: View {
                         }
                 }
             }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(courseName + " " + (type == .dashboard ? courseStart : ""))
+           
         VStack {
             if Int(index) != cellsCount {
                 Divider()
