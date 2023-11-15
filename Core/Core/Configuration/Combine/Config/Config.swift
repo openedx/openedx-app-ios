@@ -41,7 +41,7 @@ public class Config {
         return config
     }()
     
-    private var properties: [String: Any] = [:]
+    internal var properties: [String: Any] = [:]
     
     internal init(properties: [String: Any] = [:]) {
         self.properties = properties
@@ -127,14 +127,12 @@ extension Config: ConfigProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public class ConfigMock: Config {
-    private let properties: [String: Any] = [
+    private let config: [String: Any] = [
         "API_HOST_URL": "https://www.example.com",
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
         "TOKEN_TYPE": "JWT",
-        "FEATURES": [
-            "WHATS_NEW_ENABLED": false
-        ],
+        "WHATS_NEW_ENABLED": false,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos"
@@ -142,7 +140,7 @@ public class ConfigMock: Config {
     ]
     
     public init() {
-        super.init(properties: properties)
+        super.init(properties: config)
     }
 }
 #endif

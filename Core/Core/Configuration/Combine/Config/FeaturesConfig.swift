@@ -14,15 +14,14 @@ private enum FeaturesKeys: String {
 public class FeaturesConfig: NSObject {
     public var whatNewEnabled: Bool
     
-    init(dictionary: [String: AnyObject]) {
+    init(dictionary: [String: Any]) {
         whatNewEnabled = dictionary[FeaturesKeys.whatNewEnabled.rawValue] as? Bool ?? false
         super.init()
     }
 }
 
-private let key = "FEATURES"
 extension Config {
     public var features: FeaturesConfig {
-        return FeaturesConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
+        return FeaturesConfig(dictionary: properties)
     }
 }

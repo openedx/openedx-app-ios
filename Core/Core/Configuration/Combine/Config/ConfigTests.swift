@@ -15,29 +15,24 @@ class ConfigTests: XCTestCase {
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
         "TOKEN_TYPE": "JWT",
-        "FEATURES": [
-            "WHATS_NEW_ENABLED": false
-        ],
+        "WHATS_NEW_ENABLED": false,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos"
         ],
-        "FIREBASE": firebaseProperties
-    ]
-    
-    private lazy var firebaseProperties: [String: Any] = [
-        "ENABLED": true,
-        "API_KEY": "testApiKey",
-        "BUNDLE_ID": "testBundleID",
-        "CLIENT_ID": "testClientID",
-        "DATABASE_URL": "https://test.database.url",
-        "GCM_SENDER_ID": "testGCMSenderID",
-        "GOOGLE_APP_ID": "testGoogleAppID",
-        "PROJECT_ID": "testProjectID",
-        "REVERSED_CLIENT_ID": "testReversedClientID",
-        "STORAGE_BUCKET": "testStorageBucket",
-        "ANALYTICS_SOURCE": "firebase",
-        "CLOUD_MESSAGING_ENABLED": true
+        "FIREBASE": [
+            "ENABLED": true,
+            "API_KEY": "testApiKey",
+            "BUNDLE_ID": "testBundleID",
+            "CLIENT_ID": "testClientID",
+            "DATABASE_URL": "https://test.database.url",
+            "GCM_SENDER_ID": "testGCMSenderID",
+            "GOOGLE_APP_ID": "testGoogleAppID",
+            "PROJECT_ID": "testProjectID",
+            "REVERSED_CLIENT_ID": "testReversedClientID",
+            "STORAGE_BUCKET": "testStorageBucket",
+            "ANALYTICS_SOURCE": "firebase",
+            "CLOUD_MESSAGING_ENABLED": true]
     ]
     
     func testConfigInitialization() {
@@ -46,7 +41,7 @@ class ConfigTests: XCTestCase {
         XCTAssertEqual(config.baseURL.absoluteString, "https://www.example.com")
         XCTAssertEqual(config.oAuthClientId, "oauth_client_id")
         XCTAssertEqual(config.feedbackEmail, "example@mail.com")
-        XCTAssertEqual(config.tokenType, TokenType.jwt)
+        XCTAssertEqual(config.tokenType.rawValue, "JWT")
         XCTAssertFalse(config.features.whatNewEnabled)
     }
     
