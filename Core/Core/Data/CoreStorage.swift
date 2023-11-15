@@ -12,6 +12,7 @@ public protocol CoreStorage {
     var refreshToken: String? {get set}
     var cookiesDate: String? {get set}
     var reviewLastShownVersion: String? {get set}
+    var lastReviewDate: Date? {get set}
     var user: DataLayer.User? {get set}
     var userSettings: UserSettings? {get set}
     func clear()
@@ -23,6 +24,7 @@ struct CoreStorageMock: CoreStorage {
     var refreshToken: String?
     var cookiesDate: String?
     var reviewLastShownVersion: String?
+    var lastReviewDate: Date?
     var user: DataLayer.User?
     var userSettings: UserSettings?
     func clear() {}

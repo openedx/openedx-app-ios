@@ -63,10 +63,26 @@ public class AppReviewViewModel: ObservableObject {
         }
         guard let lastShownVersion = storage.reviewLastShownVersion else {
             storage.reviewLastShownVersion = currentVersion
-            return true
+            
+            if let lastReviewDate = storage.lastReviewDate {
+                return hasPassedFourMonths(from: lastReviewDate)
+            } else {
+                return true
+            }
         }
         return isNewerVersion(currentVersion: currentVersion, lastVersion: lastShownVersion)
     }
+    
+    private func hasPassedFourMonths(from date: Date) -> Bool {
+        let currentDate = Date()
+        let calendar = Calendar.current
+         
+        if let futureDate = calendar.date(byAdding: .month, value: 4, to: date) {
+          return currentDate >= futureDate
+        }
+         
+        return false
+      }
     
     func reviewAction() {
         withAnimation(Animation.easeIn(duration: 0.2)) {
@@ -96,6 +112,7 @@ public class AppReviewViewModel: ObservableObject {
     
     func requestReview() {
         SKStoreReviewController.requestReview()
+        storage.lastReviewDate = Date()
     }
     
     func openMailClient(_ with: ThirdPartyMailClient) {

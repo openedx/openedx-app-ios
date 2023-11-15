@@ -1,9 +1,9 @@
 //
-//  ThirdPartyMailer.swift
-//  Core
+// ThirdPartyMailClient.swift
 //
-//  Created by  Stepanok Ivan on 30.10.2023.
+// Copyright (c) 2016-2022 Vincent Tourraine (https://www.vtourraine.net)
 //
+// Licensed under MIT License
 
 import UIKit
 
