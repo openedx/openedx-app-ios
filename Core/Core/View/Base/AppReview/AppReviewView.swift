@@ -13,6 +13,7 @@ public struct AppReviewView: View {
 
     @Environment (\.isHorizontal) private var isHorizontal
     @Environment (\.presentationMode) private var presentationMode
+    @Environment(\.requestReview) var requestReview
     
     public init(viewModel: AppReviewViewModel) {
         self.viewModel = viewModel
@@ -49,7 +50,8 @@ public struct AppReviewView: View {
                         .font(Theme.Fonts.titleSmall)
                         .foregroundColor(Theme.Colors.avatarStroke)
                         .multilineTextAlignment(.center)
-                    if viewModel.state == .vote {
+                    switch viewModel.state {
+                    case .vote:
                         StarRatingView(rating: $viewModel.rating)
                         
                         HStack(spacing: 28) {
@@ -62,7 +64,8 @@ public struct AppReviewView: View {
                                 viewModel.reviewAction()
                             }, isActive: .constant(viewModel.rating != 0))
                         }
-                    } else if viewModel.state == .feedback {
+                        
+                    case .feedback:
                         TextEditor(text: $viewModel.feedback)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 4)
@@ -99,7 +102,8 @@ public struct AppReviewView: View {
                                 viewModel.writeFeedbackToMail()
                             }, isActive: .constant(viewModel.feedback.count >= 3))
                         }
-                    } else if viewModel.state == .thanksForVote {
+                        
+                    case .thanksForVote:
                         HStack(spacing: 28) {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
@@ -108,7 +112,8 @@ public struct AppReviewView: View {
                             
                             AppReviewButton(type: .rateUs, action: {
                                 presentationMode.wrappedValue.dismiss()
-                                viewModel.requestReview()
+                                requestReview()
+                                viewModel.storage.lastReviewDate = Date()
                             }, isActive: .constant(true))
                         }
                     }

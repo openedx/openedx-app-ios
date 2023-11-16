@@ -50,7 +50,7 @@ public class AppReviewViewModel: ObservableObject {
     let allClients = ThirdPartyMailClient.clients
     
     private let config: Config
-    private var storage: CoreStorage
+    var storage: CoreStorage
     
     public init(config: Config, storage: CoreStorage) {
         self.config = config
@@ -108,11 +108,6 @@ public class AppReviewViewModel: ObservableObject {
         } else {
             openMailClient(ThirdPartyMailClient.systemDefault)
         }
-    }
-    
-    func requestReview() {
-        SKStoreReviewController.requestReview()
-        storage.lastReviewDate = Date()
     }
     
     func openMailClient(_ with: ThirdPartyMailClient) {
