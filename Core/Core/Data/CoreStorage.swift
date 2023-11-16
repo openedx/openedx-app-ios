@@ -19,14 +19,16 @@ public protocol CoreStorage {
 }
 
 #if DEBUG
-struct CoreStorageMock: CoreStorage {
-    var accessToken: String?
-    var refreshToken: String?
-    var cookiesDate: String?
-    var reviewLastShownVersion: String?
-    var lastReviewDate: Date?
-    var user: DataLayer.User?
-    var userSettings: UserSettings?
-    func clear() {}
+public class CoreStorageMock: CoreStorage {
+    public var accessToken: String?
+    public var refreshToken: String?
+    public var cookiesDate: String?
+    public var reviewLastShownVersion: String?
+    public var lastReviewDate: Date?
+    public var user: DataLayer.User?
+    public var userSettings: UserSettings?
+    public func clear() {}
+    
+    public init() {}
 }
 #endif

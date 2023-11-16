@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 public struct AppReviewView: View {
         
@@ -13,7 +14,6 @@ public struct AppReviewView: View {
 
     @Environment (\.isHorizontal) private var isHorizontal
     @Environment (\.presentationMode) private var presentationMode
-    @Environment(\.requestReview) var requestReview
     
     public init(viewModel: AppReviewViewModel) {
         self.viewModel = viewModel
@@ -103,7 +103,7 @@ public struct AppReviewView: View {
                             }, isActive: .constant(viewModel.feedback.count >= 3))
                         }
                         
-                    case .thanksForVote:
+                    case .thanksForVote, .thanksForFeedback:
                         HStack(spacing: 28) {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
@@ -112,7 +112,7 @@ public struct AppReviewView: View {
                             
                             AppReviewButton(type: .rateUs, action: {
                                 presentationMode.wrappedValue.dismiss()
-                                requestReview()
+                                SKStoreReviewController.requestReviewInCurrentScene()
                                 viewModel.storage.lastReviewDate = Date()
                             }, isActive: .constant(true))
                         }
