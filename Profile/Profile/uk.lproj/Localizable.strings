@@ -58,13 +58,13 @@
 "SETTINGS.VIDEO_SETTINGS_TITLE" = "Налаштування відео";
 "SETTINGS.WIFI_TITLE" = "Тільки Wi-fi";
 "SETTINGS.WIFI_DESCRIPTION" = "Завантажувати відео, лише коли Wi-Fi увімкнено";
-"SETTINGS.VIDEO_QUALITY_TITLE" = "Якість відео";
+"SETTINGS.VIDEO_QUALITY_TITLE" = "Якість потокового відео";
 "SETTINGS.VIDEO_QUALITY_DESCRIPTION" = "Авто (Рекомендовано)";
 
 "SETTINGS.QUALITY_AUTO_TITLE" = "Авто";
 "SETTINGS.QUALITY_AUTO_DESCRIPTION" = "Рекомендовано";
 "SETTINGS.QUALITY_360_TITLE" = "360p";
-"SETTINGS.QUALITY_360_DESCRIPTION" = "Найменша якість відео";
+"SETTINGS.QUALITY_360_DESCRIPTION" = "економія трафіку";
 "SETTINGS.QUALITY_540_TITLE" = "540p";
 "SETTINGS.QUALITY_720_TITLE" = "720p";
 "SETTINGS.QUALITY_AUTO_DESCRIPTION" = "Найкраща якість";

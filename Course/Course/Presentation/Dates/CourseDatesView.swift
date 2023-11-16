@@ -21,7 +21,7 @@ public struct CourseDatesView: View {
         viewModel: CourseDatesViewModel
     ) {
         self.courseID = courseID
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
@@ -35,6 +35,7 @@ public struct CourseDatesView: View {
                     }
                 } else if let courseDates = viewModel.courseDates, !courseDates.courseDateBlocks.isEmpty {
                     CourseDateListView(viewModel: viewModel, courseDates: courseDates)
+                        .padding(.top, 10)
                 }
             }
             if viewModel.showError {
@@ -59,7 +60,6 @@ public struct CourseDatesView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
-        
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
@@ -74,28 +74,23 @@ struct Line: Shape {
 }
 
 struct TimeLineView: View {
+    let block: CourseDateBlock
     let date: Date
     let firstDate: Date?
     let lastDate: Date?
+    let allHaveSameStatus: Bool
     
     var body: some View {
         ZStack(alignment: .top) {
-            if lastDate == date {
-                VStack {
-                    Line()
-                        .stroke(style: StrokeStyle(lineWidth: 1))
-                        .frame(maxHeight: 10.0, alignment: .top)
+            VStack {
+                Line()
+                    .stroke(style: StrokeStyle(lineWidth: 1))
+                    .frame(maxHeight: lastDate == date ? 10 : .infinity, alignment: .top)
+                    .padding(.top, firstDate == date && lastDate != date ? 10 : 0)
+
+                if lastDate == date {
                     Spacer()
                 }
-            } else if firstDate == date {
-                Line()
-                    .stroke(style: StrokeStyle(lineWidth: 1))
-                    .frame(maxHeight: .infinity, alignment: .top)
-                    .padding(.top, 10)
-            } else {
-                Line()
-                    .stroke(style: StrokeStyle(lineWidth: 1))
-                    .frame(maxHeight: .infinity, alignment: .top)
             }
             
             Circle()
@@ -104,9 +99,17 @@ struct TimeLineView: View {
                     if date.isToday {
                         return Theme.Colors.warning
                     } else if date.isInPast {
-                        return Color.gray
-                    } else {
+                        switch block.blockStatus {
+                        case .completed: return allHaveSameStatus ? Color.white : Color.gray
+                        case .courseStartDate: return Color.white
+                        case .verifiedOnly: return Color.black
+                        case .pastDue: return Color.gray
+                        default: return Color.gray
+                        }
+                    } else if date.isInFuture {
                         return Color.black
+                    } else {
+                        return Color.white
                     }
                 }())
                 .overlay(Circle().stroke(Color.black, lineWidth: 1))
@@ -126,17 +129,18 @@ struct CourseDateListView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(viewModel.sortedDates, id: \.self) { date in
                         let blocks = courseDates.sortedDateToCourseDateBlockDict[date]!
+                        let block = blocks[0]
                         
                         HStack(alignment: .center) {
-                            TimeLineView(date: date,
-                                         firstDate: viewModel.sortedDates.first,
-                                         lastDate: viewModel.sortedDates.last)
-                            
                             let ignoredStatuses: [BlockStatus] = [.courseStartDate, .courseEndDate]
-                            let block = blocks[0]
                             let allHaveSameStatus = blocks
                                 .filter { !ignoredStatuses.contains($0.blockStatus) }
                                 .allSatisfy { $0.blockStatus == block.blockStatus }
+                            
+                            TimeLineView(block: block, date: date,
+                                         firstDate: viewModel.sortedDates.first,
+                                         lastDate: viewModel.sortedDates.last,
+                                         allHaveSameStatus: allHaveSameStatus)
                             
                             BlockStatusView(block: block,
                                             allHaveSameStatus: allHaveSameStatus,
@@ -161,13 +165,13 @@ struct BlockStatusView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(block.date.dateToString(style: .shortWeekdayMonthDayYear))
-                    .font(.subheadline)
+                Text(block.formattedDate)
+                    .font(Theme.Fonts.bodyLarge)
                     .bold()
 
                 if block.isToday {
-                    Text(block.blockTitle)
-                        .font(.footnote)
+                    Text(CoreLocalization.CourseDates.today)
+                        .font(Theme.Fonts.bodySmall)
                         .foregroundColor(Color.black)
                         .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 8))
                         .background(Theme.Colors.warning)
@@ -176,26 +180,89 @@ struct BlockStatusView: View {
 
                 if allHaveSameStatus {
                     let lockImageText = block.isVerifiedOnly ? Text(Image(systemName: "lock.fill")) : Text("")
-                    Text("\(lockImageText) \(block.blockTitle)")
-                        .font(.footnote)
-                        .foregroundColor(determineForegroundColor(for: block.blockStatus))
+                    Text("\(lockImageText) \(block.blockStatus.title)")
+                        .font(Theme.Fonts.bodySmall)
+                        .foregroundColor(block.blockStatus.foregroundColor)
                         .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 8))
-                        .background(determineBackgroundColor(for: block.blockStatus))
+                        .background(block.blockStatus.backgroundColor)
                         .cornerRadius(5)
                 }
             }
 
-            ForEach(blocks, id: \.firstComponentBlockID) { block in
+            ForEach(blocks) { block in
                 styleBlock(block: block, allHaveSameStatus: allHaveSameStatus)
             }
+            .padding(.top, 0.2)
         }
         .padding(.vertical, 0)
         .padding(.leading, 5)
         .padding(.bottom, 10)
     }
     
-    private func determineForegroundColor(for status: BlockStatus) -> Color {
-        switch status {
+    func styleBlock(block: CourseDateBlock, allHaveSameStatus: Bool) -> some View {
+        var attributedString = AttributedString("")
+        
+        if let prefix = block.assignmentType, !prefix.isEmpty {
+            attributedString += AttributedString("\(prefix): ")
+        }
+        
+        attributedString += styleTitle(block: block)
+        
+        if !allHaveSameStatus {
+            attributedString.appendSpaces(2)
+            attributedString += applyStyle(
+                string: block.blockStatus.title,
+                forgroundColor: block.blockStatus.foregroundColor,
+                backgroundColor: block.blockStatus.backgroundColor)
+        }
+        
+        return Text(attributedString)
+            .font(Theme.Fonts.bodyMedium)
+            .foregroundColor({
+                if block.isAssignment {
+                    return block.isAvailable ? Color.black : Color.gray.opacity(0.6)
+                } else {
+                    return Color.black
+                }
+            }())
+            .onTapGesture {
+                
+            }
+    }
+    
+    func styleTitle(block: CourseDateBlock) -> AttributedString {
+        var attributedString = AttributedString(block.title)
+        attributedString.font = Theme.Fonts.bodyMedium
+        if block.canShowLink && !block.firstComponentBlockID.isEmpty {
+            attributedString.underlineStyle = .single
+        }
+        return attributedString
+    }
+        
+    func applyStyle(string: String, forgroundColor: Color, backgroundColor: Color) -> AttributedString {
+        var attributedString = AttributedString(string)
+        attributedString.font = Theme.Fonts.bodySmall
+        attributedString.foregroundColor = forgroundColor
+        attributedString.backgroundColor = backgroundColor
+        return attributedString
+    }
+}
+
+fileprivate extension BlockStatus {
+    var title: String {
+        switch self {
+        case .completed: return CoreLocalization.CourseDates.completed
+        case .pastDue: return CoreLocalization.CourseDates.pastDue
+        case .dueNext: return CoreLocalization.CourseDates.dueNext
+        case .unreleased: return CoreLocalization.CourseDates.unreleased
+        case .verifiedOnly: return CoreLocalization.CourseDates.verifiedOnly
+        default: return ""
+        }
+    }
+    
+    var foregroundColor: Color {
+        switch self {
+        case .completed: return Color.white
         case .verifiedOnly: return Color.white
         case .pastDue: return Color.black
         case .dueNext: return Color.white
@@ -203,61 +270,20 @@ struct BlockStatusView: View {
         }
     }
     
-    private func determineBackgroundColor(for status: BlockStatus) -> Color {
-        switch status {
+    var backgroundColor: Color {
+        switch self {
+        case .completed: return Color.black.opacity(0.5)
         case .verifiedOnly: return Color.black.opacity(0.5)
         case .pastDue: return Color.gray.opacity(0.4)
         case .dueNext: return Color.black.opacity(0.5)
         default: return Color.white.opacity(0)
         }
     }
-    
-    func styleBlock(block: CourseDateBlock, allHaveSameStatus: Bool) -> some View {
-        var attrString = AttributedString("")
-        
-        if let prefix = block.assignmentType, !prefix.isEmpty {
-            attrString += AttributedString("\(prefix): ")
-        }
-        
-        attrString += block.canShowLink ? getAttributedUnderlineString(string: block.title) : AttributedString(block.title)
-        
-        if !allHaveSameStatus {
-            attrString += "  "
-            let (status, foregroundColor, backgroundColor) = getStatusDetails(for: block.blockStatus)
-            attrString += getAttributedString(string: status, forgroundColor: foregroundColor, backgroundColor: backgroundColor)
-        }
-        
-        return Text(attrString).padding(.bottom, 2).font(.footnote)
-    }
-    
-    func getStatusDetails(for blockStatus: BlockStatus) -> (String, Color, Color) {
-        switch blockStatus {
-        case .verifiedOnly:
-            return (CoreLocalization.CourseDates.verifiedOnly, Color.white, Color.black.opacity(0.5))
-        case .pastDue:
-            return (CoreLocalization.CourseDates.pastDue, Color.black, Color.gray.opacity(0.4))
-        case .dueNext:
-            return (CoreLocalization.CourseDates.dueNext, Color.white, Color.black.opacity(0.5))
-        case .unreleased:
-            return (CoreLocalization.CourseDates.unreleased, Color.white.opacity(0), Color.white.opacity(0))
-        default:
-            return ("", Color.white.opacity(0), Color.white.opacity(0))
-        }
-    }
-    
-    func getAttributedUnderlineString(string: String) -> AttributedString {
-        var attributedString = AttributedString(string)
-        attributedString.font = .footnote
-        attributedString.underlineStyle = .single
-        return attributedString
-    }
-    
-    func getAttributedString(string: String, forgroundColor: Color, backgroundColor: Color) -> AttributedString {
-        var attributedString = AttributedString(string)
-        attributedString.font = .footnote
-        attributedString.foregroundColor = forgroundColor
-        attributedString.backgroundColor = backgroundColor
-        return attributedString
+}
+
+fileprivate extension AttributedString {
+    mutating func appendSpaces(_ count: Int = 1) {
+        self += AttributedString(String(repeating: " ", count: count))
     }
 }
 
