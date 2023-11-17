@@ -3,6 +3,7 @@ import os
 import yaml
 from pathlib import Path
 import sys
+import json
 
 class PlistManager:
     def __init__(self, config_dir, config_files):
@@ -104,6 +105,17 @@ class PlistManager:
             print(plist_contents)
         except Exception as e:
             print(f"Error reading plist file: {e}")
+
+    def get_info_plist_contents(self, plist_path):
+        if not plist_path:
+            print(f"Path is not set. {plist_path}")
+        try:
+            with open(plist_path, 'rb') as plist_file:
+                plist_contents = plistlib.load(plist_file)
+            return plist_contents
+        except Exception as e:
+            print(f"Error reading plist file: {e}")
+            return None
             
 
 class ConfigurationManager:
@@ -120,15 +132,19 @@ class ConfigurationManager:
         }
         existing = plist.get('CFBundleURLTypes', [])
         found = any(scheme in entry.get('CFBundleURLSchemes', []) for entry in existing)
+        
         if not found:
             existing.append(body)
             plist['CFBundleURLTypes'] = existing
+        
+        return plist
 
-    def add_firebase_config(self, config, plist, firebase_info_plist_path):
+    def add_firebase_config(self, config, firebase_info_plist_path):
+        plist = {}
         firebase = config.get('FIREBASE', {})
         
-        if firebase_info_plist_path:
-            plist['BUNDLE_ID'] = firebase.get('BUNDLE_ID', '')
+        if firebase_info_plist_path and firebase:
+            plist['BUNDLE_ID'] = self.plist_manager.get_bundle_identifier()
             plist['API_KEY'] = firebase.get('API_KEY', '')
             plist['CLIENT_ID'] = firebase.get('CLIENT_ID', '')
             plist['GOOGLE_APP_ID'] = firebase.get('GOOGLE_APP_ID', '')
@@ -195,7 +211,6 @@ class ConfigurationManager:
                 sys.exit(1)
 
             self.plist_manager.write_to_plist_file(plist_contents, plist_path)
-
         except FileNotFoundError:
             print(f"Plist file not found: {plist_path}")
             sys.exit(1)
@@ -208,86 +223,85 @@ def parse_yaml(file_path):
         with open(file_path, 'r') as file:
             return yaml.safe_load(file)
     except Exception as e:
-        print(f"Error opening or reading the file '{file_path}': {e}")
-        sys.exit(1)
+        print(f"Unable to open or read the file '{file_path}': {e}")
+        return None
 
-def get_configuration_name(configuration, config_mapping):
-    if configuration in ["DebugDev", "ReleaseDev"]:
-        return config_mapping.get("dev")
-    elif configuration in ["DebugStage", "ReleaseStage"]:
-        return config_mapping.get("stage")
-    elif configuration in ["DebugProd", "ReleaseProd"]:
-        return config_mapping.get("prod")
-    else:
-        return None
-    
-def get_configuration_name_two(scheme_mapping, config_mapping):
-    if scheme_mapping.get('dev'):
-        return config_mapping.get("dev")
-    
-    if configuration in ["dev"]:
-        return 
-    elif configuration in ["prod"]:
-        return config_mapping.get("prod")
-    elif configuration in ["DebugProd", "ReleaseProd"]:
-        return config_mapping.get("prod")
-    else:
-        return None
+CONFIG_SETTINGS_YAML_FILENAME = 'config_settings.yaml'
+DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_YAML_FILENAME
+CONFIG_DIRECTORY_NAME = 'config_directory'
+
+CONFIG_MAPPINGS = 'config_mapping'
+MAPPINGS_FILENAME = 'file_mappings.yaml'
+
+def get_current_config(configuration, scheme_mappings):
+    for key, values in scheme_mappings.items():
+        if configuration in values:
+            return key
+    return None
 
 def process_plist_files(configuration_manager, plist_manager, config):
     firebase_info_plist_path = plist_manager.get_firebase_config_path()
-    app_info_plist_path = plist_manager.get_app_info_plist_path()
+    info_plist_path = plist_manager.get_app_info_plist_path()
+    info_plist_content = plist_manager.get_info_plist_contents(info_plist_path)
 
-    plist = {}
-    configuration_manager.add_firebase_config(config, plist, firebase_info_plist_path)
-    configuration_manager.add_facebook_config(config, plist)
-    configuration_manager.add_google_config(config, plist)
-    configuration_manager.add_microsoft_config(config, plist)
-    configuration_manager.update_info_plist(plist, app_info_plist_path)
+    configuration_manager.add_firebase_config(config, firebase_info_plist_path)
+    configuration_manager.add_facebook_config(config, info_plist_content)
+    configuration_manager.add_google_config(config, info_plist_content)
+    configuration_manager.add_microsoft_config(config, info_plist_content)
+
+    configuration_manager.update_info_plist(info_plist_content, info_plist_path)
 
     bundle_config_path = plist_manager.get_bundle_config_path()
     config_plist = plist_manager.yaml_to_plist()
     plist_manager.write_to_plist_file(config_plist, bundle_config_path)
 
-def main():
-    if len(sys.argv) < 2:
-        print("Configuration not provided. Using empty configuration.")
-        configuration = ""
+def main(configuration, scheme_mappings):
+    current_config = get_current_config(configuration, scheme_mappings)
+    
+    if current_config is None:
+        print("Config not found in mappings. Exiting.")
+        sys.exit(1)
+
+    config_settings = parse_yaml(CONFIG_SETTINGS_YAML_FILENAME)
+    
+    if not config_settings:
+        print("Parsing default config.")
+        config_settings = parse_yaml(DEFAULT_CONFIG_PATH)
+
+    config_directory = config_settings.get(CONFIG_DIRECTORY_NAME)
+    config_name = config_settings.get(CONFIG_MAPPINGS, {}).get(current_config)
+
+    if config_directory and config_name:
+        path = os.path.join(config_directory, config_name)
+        mappings_path = os.path.join(path, MAPPINGS_FILENAME)
+        data = parse_yaml(mappings_path)
+        
+        if data:
+            ios_files = data.get('ios', {}).get('files', [])
+            plist_manager = PlistManager(path, ios_files)
+            config = plist_manager.load_config()
+
+            if config:
+                configuration_manager = ConfigurationManager(plist_manager)
+                process_plist_files(configuration_manager, plist_manager, config)
+                print(f"Config {configuration} parsed and written successfully.")
+            else:
+                print("Unable to parse config files")
+                sys.exit(1)
+
+        else:
+            print("Files mappings not found")
+            sys.exit(1)
+
     else:
-        configuration = sys.argv[1]
-        print(f"Running with configuration: {configuration}")
-
-    config_data = parse_yaml('config.yaml')
-
-    config_directory = config_data.get('config_directory', "")
-    config_mapping = config_data.get('config_mapping', {})
-
-    config_name = get_configuration_name(configuration, config_mapping)
-    
-    if config_name is None:
-        print("Using default directory")
-        config_directory = 'default_config'
-        config_name = "default"
-
-    path = os.path.join(config_directory, config_name, "config.yaml")
-    print(config_directory)
-    print(path)
-    data = parse_yaml(path)
-    ios_files = data.get('ios').get('files')
-    
-    plist_manager = PlistManager(os.path.join(config_directory, config_name), ios_files)
-    config = plist_manager.load_config()
-    
-    if not config:
-        print("Config is empty. Skipping")
-    else:
-        configuration_manager = ConfigurationManager(plist_manager)
-        process_plist_files(configuration_manager, plist_manager, config)
+        print("Config directory or config name is not provided")
+        sys.exit(1)
 
 if __name__ == "__main__":
-    # main()
-    path = os.path.join("default_config", "config_settings.yaml")
-    content = parse_yaml(path)
-    print(content)
+    if len(sys.argv) < 3:
+        print("Usage: script.py <configuration> <mappings>")
+        sys.exit(1)
 
-# check main directory if config_settings.yaml exists else go in default_config and read from there
+    configuration = sys.argv[1]
+    scheme_mappings = json.loads(sys.argv[2])
+    main(configuration, scheme_mappings)

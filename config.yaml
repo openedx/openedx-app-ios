@@ -1,5 +1,0 @@
-config_directory: '../config'
-config_mapping:
-  dev: 'prod_test'
-  prod: 'prod'
-  stage: 'stage'

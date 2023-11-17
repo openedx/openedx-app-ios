@@ -114,3 +114,4 @@ vendor/
 
 venv/
 Podfile.lock
+config_settings.yaml
