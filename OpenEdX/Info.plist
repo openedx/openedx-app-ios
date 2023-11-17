@@ -4,8 +4,6 @@
 <dict>
 	<key>Configuration</key>
 	<string>$(CONFIGURATION)</string>
-	<key>ExampleKey</key>
-	<string>ExampleValue</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>

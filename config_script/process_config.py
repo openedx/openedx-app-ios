@@ -229,7 +229,6 @@ def parse_yaml(file_path):
 CONFIG_SETTINGS_YAML_FILENAME = 'config_settings.yaml'
 DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_YAML_FILENAME
 CONFIG_DIRECTORY_NAME = 'config_directory'
-
 CONFIG_MAPPINGS = 'config_mapping'
 MAPPINGS_FILENAME = 'file_mappings.yaml'
 
