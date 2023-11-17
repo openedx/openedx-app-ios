@@ -17,6 +17,9 @@
 		02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02284C172A3B1AE00007117F /* UIApplicationExtension.swift */; };
 		022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64E329AE0191000F532B /* TextWithUrls.swift */; };
 		0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231CDBD2922422D00032416 /* CSSInjector.swift */; };
+		0233D56F2AF13EB200BAC8BD /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */; };
+		0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233D5702AF13EC800BAC8BD /* SelectMailClientView.swift */; };
+		0233D5732AF13EEE00BAC8BD /* AppReviewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233D5722AF13EEE00BAC8BD /* AppReviewButton.swift */; };
 		0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0236961828F9A26900EEF206 /* AuthRepository.swift */; };
 		0236961B28F9A28B00EEF206 /* AuthInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0236961A28F9A28B00EEF206 /* AuthInteractor.swift */; };
 		0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0236961C28F9A2D200EEF206 /* Data_AuthResponse.swift */; };
@@ -62,18 +65,23 @@
 		028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F9F38293A452B00DE65D0 /* ResetPassword.swift */; };
 		0295B1DC297FF114003B0C65 /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0295B1DA297FF0E9003B0C65 /* SF-Pro.ttf */; };
 		0295C885299B99DD00ABE571 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */; };
+		02A463112AEA966C00331037 /* AppReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A463102AEA966C00331037 /* AppReviewView.swift */; };
 		02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */; };
 		02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */; };
 		02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833929B8A9AB00D33F33 /* DownloadManager.swift */; };
 		02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833B29B8C57800D33F33 /* DownloadView.swift */; };
+		02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */; };
+		02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */; };
 		02B2B594295C5C7A00914876 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2B593295C5C7A00914876 /* Thread.swift */; };
 		02B3E3B32930198600A50475 /* AVPlayerViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */; };
 		02B3F16E2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */; };
 		02C2DC0829B63D6200F4445D /* WebViewHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2DC0729B63D6200F4445D /* WebViewHTML.swift */; };
 		02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */; };
 		02CF46C829546AA200A698EE /* NoCachedDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF46C729546AA200A698EE /* NoCachedDataError.swift */; };
+		02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */; };
 		02D800CC29348F460099CF16 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D800CB29348F460099CF16 /* ImagePicker.swift */; };
 		02E225B0291D29EB0067769A /* UrlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E225AF291D29EB0067769A /* UrlExtension.swift */; };
+		02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E93F842AEBAEBC006C4750 /* AppReviewViewModel.swift */; };
 		02F164372902A9EB0090DDEF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F164362902A9EB0090DDEF /* StringExtension.swift */; };
 		02F6EF3B28D9B8EC00835477 /* CourseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */; };
 		02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF4928D9F0A700835477 /* DateExtension.swift */; };
@@ -137,6 +145,9 @@
 		02284C172A3B1AE00007117F /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		022C64E329AE0191000F532B /* TextWithUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWithUrls.swift; sourceTree = "<group>"; };
 		0231CDBD2922422D00032416 /* CSSInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSInjector.swift; sourceTree = "<group>"; };
+		0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
+		0233D5702AF13EC800BAC8BD /* SelectMailClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectMailClientView.swift; sourceTree = "<group>"; };
+		0233D5722AF13EEE00BAC8BD /* AppReviewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewButton.swift; sourceTree = "<group>"; };
 		0236961828F9A26900EEF206 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		0236961A28F9A28B00EEF206 /* AuthInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInteractor.swift; sourceTree = "<group>"; };
 		0236961C28F9A2D200EEF206 /* Data_AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_AuthResponse.swift; sourceTree = "<group>"; };
@@ -181,18 +192,23 @@
 		028F9F38293A452B00DE65D0 /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		0295B1DA297FF0E9003B0C65 /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
 		0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
+		02A463102AEA966C00331037 /* AppReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewView.swift; sourceTree = "<group>"; };
 		02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorePersistenceProtocol.swift; sourceTree = "<group>"; };
 		02A4833729B8A8F800D33F33 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		02A4833929B8A9AB00D33F33 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		02A4833B29B8C57800D33F33 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
+		02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyMailClient.swift; sourceTree = "<group>"; };
+		02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyMailer.swift; sourceTree = "<group>"; };
 		02B2B593295C5C7A00914876 /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
 		02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerViewControllerExtension.swift; sourceTree = "<group>"; };
 		02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollViewCompat.swift; sourceTree = "<group>"; };
 		02C2DC0729B63D6200F4445D /* WebViewHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewHTML.swift; sourceTree = "<group>"; };
 		02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Dashboard.swift; sourceTree = "<group>"; };
 		02CF46C729546AA200A698EE /* NoCachedDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCachedDataError.swift; sourceTree = "<group>"; };
+		02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStoreReviewControllerExtension.swift; sourceTree = "<group>"; };
 		02D800CB29348F460099CF16 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		02E225AF291D29EB0067769A /* UrlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtension.swift; sourceTree = "<group>"; };
+		02E93F842AEBAEBC006C4750 /* AppReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewViewModel.swift; sourceTree = "<group>"; };
 		02ED50CB29A64B84008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F164362902A9EB0090DDEF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCellView.swift; sourceTree = "<group>"; };
@@ -266,6 +282,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0233D56D2AF13EA400BAC8BD /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */,
+				0233D5702AF13EC800BAC8BD /* SelectMailClientView.swift */,
+				0233D5722AF13EEE00BAC8BD /* AppReviewButton.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
 		0236961728F9A21600EEF206 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +367,7 @@
 				0727878228D31287002E9142 /* DispatchQueue+App.swift */,
 				07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */,
 				02284C172A3B1AE00007117F /* UIApplicationExtension.swift */,
+				02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -353,6 +380,15 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		02AFCC162AEFDB0F000360F0 /* ThirdPartyMailer */ = {
+			isa = PBXGroup;
+			children = (
+				02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */,
+				02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */,
+			);
+			path = ThirdPartyMailer;
+			sourceTree = "<group>";
+		};
 		02CF46C92954A42100A698EE /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +397,17 @@
 				02CF46C729546AA200A698EE /* NoCachedDataError.swift */,
 			);
 			path = Persistence;
+			sourceTree = "<group>";
+		};
+		02E93F862AEBAED4006C4750 /* AppReview */ = {
+			isa = PBXGroup;
+			children = (
+				0233D56D2AF13EA400BAC8BD /* Elements */,
+				02AFCC162AEFDB0F000360F0 /* ThirdPartyMailer */,
+				02A463102AEA966C00331037 /* AppReviewView.swift */,
+				02E93F842AEBAEBC006C4750 /* AppReviewViewModel.swift */,
+			);
+			path = AppReview;
 			sourceTree = "<group>";
 		};
 		0727876E28D233EC002E9142 /* Configuration */ = {
@@ -536,6 +583,7 @@
 				027BD3C42909707700392132 /* Shake.swift */,
 				023A1135291432B200D0D354 /* RegistrationTextField.swift */,
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
+				02E93F862AEBAED4006C4750 /* AppReview */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -776,6 +824,7 @@
 				022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */,
 				0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */,
 				02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */,
+				0233D5732AF13EEE00BAC8BD /* AppReviewButton.swift in Sources */,
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,
 				0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */,
 				02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */,
@@ -783,6 +832,7 @@
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
+				02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
 				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
@@ -793,6 +843,7 @@
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */,
+				02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */,
 				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
 				020306CC2932C0C4000949EA /* PickerView.swift in Sources */,
 				027BD3C52909707700392132 /* Shake.swift in Sources */,
@@ -812,9 +863,12 @@
 				0248C92329C075EF00DC8402 /* CourseBlockModel.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
+				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
+				0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
+				02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */,
 				02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */,
 				027BD3AD2909475000392132 /* KeyboardScroller.swift in Sources */,
 				070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */,
@@ -837,8 +891,10 @@
 				0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */,
 				023A1136291432B200D0D354 /* RegistrationTextField.swift in Sources */,
 				02C2DC0829B63D6200F4445D /* WebViewHTML.swift in Sources */,
+				02A463112AEA966C00331037 /* AppReviewView.swift in Sources */,
 				025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */,
 				028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */,
+				0233D56F2AF13EB200BAC8BD /* StarRatingView.swift in Sources */,
 				027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */,
 				024BE3DF29B2615500BCDEE2 /* CGColorExtension.swift in Sources */,
 				0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */,

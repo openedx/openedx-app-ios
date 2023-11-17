@@ -88,6 +88,18 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers([controller], animated: false)
     }
     
+    public func presentAppReview() {
+        let config = Container.shared.resolve(Config.self)!
+        let storage = Container.shared.resolve(CoreStorage.self)!
+        let vm = AppReviewViewModel(config: config, storage: storage)
+        if vm.shouldShowRatingView() {
+            presentView(
+                transitionStyle: .crossDissolve,
+                view: AppReviewView(viewModel: vm)
+            )
+        }
+    }
+    
     public func presentAlert(
         alertTitle: String,
         alertMessage: String,
