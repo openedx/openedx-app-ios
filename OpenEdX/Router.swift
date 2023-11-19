@@ -89,10 +89,16 @@ public class Router: AuthorizationRouter,
     }
     
     public func showStartupScreen() {
-        let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
-        
-        let controller = UIHostingController(rootView: view)
-        navigationController.setViewControllers([controller], animated: true)
+        let config = Container.shared.resolve(Config.self)!
+        if config.startupScreenEnabled {
+            let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
+            let controller = UIHostingController(rootView: view)
+            navigationController.setViewControllers([controller], animated: true)
+        } else {
+            let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+            let controller = UIHostingController(rootView: view)
+            navigationController.setViewControllers([controller], animated: false)
+        }
     }
     
     public func presentAppReview() {
