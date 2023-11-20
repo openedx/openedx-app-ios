@@ -9,7 +9,7 @@ import Foundation
 
 public class Validator {
     
-    private let emailRegEx = ".+@.+\\..+"
+    private let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
     private lazy var emailPredicate = {
         NSPredicate(format: "SELF MATCHES %@", emailRegEx)
     }()
@@ -26,6 +26,11 @@ public class Validator {
     }
     
     public func isValidUsername(_ string: String) -> Bool {
-        return !string.trimmingCharacters(in: .whitespaces).isEmpty
+        let trimmedString = string.trimmingCharacters(in: .whitespaces)
+        if trimmedString.contains("@") {
+            return emailPredicate.evaluate(with: trimmedString)
+        } else {
+            return !trimmedString.isEmpty
+        }
     }
 }
