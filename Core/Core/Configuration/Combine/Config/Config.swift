@@ -35,11 +35,7 @@ private enum ConfigKeys: String {
 }
 
 public class Config {
-    public static let shared: Config = {
-        let config = Config()
-        config.loadAndParseConfig()
-        return config
-    }()
+    public static let shared = Config()
     
     internal var properties: [String: Any] = [:]
     

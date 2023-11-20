@@ -390,7 +390,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nVENV_PATH=\"${SRCROOT}/venv\"\n\nif [ ! -d \"$VENV_PATH\" ]; then\n    /usr/bin/python3 -m venv \"$VENV_PATH\"\nfi\n\nsource \"$VENV_PATH/bin/activate\"\n\npip install --upgrade pip\npip install PyYAML\n\nscheme_mapping='{\n  \"prod\": [\"ReleaseProd\", \"DebugProd\"],\n  \"stage\": [\"ReleaseStage\", \"DebugStage\"],\n  \"dev\": [\"ReleaseDev\", \"DebugDev\"]\n}'\n\npython config_script/process_config.py \"$CONFIGURATION\" \"$scheme_mapping\"\n\ndeactivate\n";
+			shellScript = "#!/bin/bash\n\nVENV_PATH=\"${SRCROOT}/venv\"\n\n/usr/bin/python3 -m venv \"$VENV_PATH\"\n\nsource \"$VENV_PATH/bin/activate\"\n\npip install --upgrade pip\npip install PyYAML\n\nscheme_mapping='{\n  \"prod\": [\"ReleaseProd\", \"DebugProd\"],\n  \"stage\": [\"ReleaseStage\", \"DebugStage\"],\n  \"dev\": [\"ReleaseDev\", \"DebugDev\"]\n}'\n\npython config_script/process_config.py \"$CONFIGURATION\" \"$scheme_mapping\"\n\ndeactivate\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
