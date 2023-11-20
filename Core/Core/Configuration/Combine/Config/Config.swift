@@ -37,7 +37,7 @@ private enum ConfigKeys: String {
 public class Config {
     public static let shared: Config = {
         let config = Config()
-        config.loadConfigPlist()
+        config.loadAndParseConfig()
         return config
     }()
     
@@ -49,10 +49,10 @@ public class Config {
     
     internal convenience init() {
         self.init(properties: [:])
-        loadConfigPlist()
+        loadAndParseConfig()
     }
     
-    private func loadConfigPlist() {
+    private func loadAndParseConfig() {
         guard let path = Bundle.main.path(forResource: "config", ofType: "plist"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let dict = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else { return }
@@ -103,12 +103,10 @@ extension Config: ConfigProtocol {
     }
     
     public var tokenType: TokenType {
-        if let tokenTypeValue = string(for: ConfigKeys.tokenType.rawValue),
-           let tokenType = TokenType(rawValue: tokenTypeValue) {
-            return tokenType
-        } else {
-            return .jwt
-        }
+        guard let tokenTypeValue = string(for: ConfigKeys.tokenType.rawValue),
+              let tokenType = TokenType(rawValue: tokenTypeValue)
+        else  { return .jwt }
+        return tokenType
     }
     
     public var feedbackEmail: String {
