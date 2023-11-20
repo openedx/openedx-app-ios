@@ -130,7 +130,16 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             courseStructure: courseStructure
         )
     }
-    
+
+    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
+        verticalsDownloadState.filter { dict in
+            courseSequential.childs.contains(where: { item in
+                let state = verticalsDownloadState[dict.key]
+                return (state == .available || state == .downloading) && dict.key == item.id
+            })
+        }
+    }
+
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
         let blocks = chapter.childs
             .first(where: { $0.id == blockId })?.childs
@@ -236,33 +245,38 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
-                var childs: [DownloadViewState] = []
+                var sequentialsChilds: [DownloadViewState] = []
                 for vertical in sequential.childs where vertical.isDownloadable {
+                    var verticalsChilds: [DownloadViewState] = []
                     for block in vertical.childs where block.isDownloadable {
                         if let download = downloads.first(where: { $0.id == block.id }) {
                             switch download.state {
                             case .waiting, .inProgress:
-                                childs.append(.downloading)
+                                sequentialsChilds.append(.downloading)
+                                verticalsChilds.append(.downloading)
                             case .paused:
-                                childs.append(.available)
+                                sequentialsChilds.append(.available)
+                                verticalsChilds.append(.available)
                             case .finished:
-                                childs.append(.finished)
+                                sequentialsChilds.append(.finished)
+                                verticalsChilds.append(.finished)
                             }
                         } else {
-                            childs.append(.available)
+                            sequentialsChilds.append(.available)
+                            verticalsChilds.append(.available)
                         }
                     }
-                    if childs.first(where: { $0 == .downloading }) != nil {
+                    if verticalsChilds.first(where: { $0 == .downloading }) != nil {
                         verticalsStates[vertical.id] = .downloading
-                    } else if childs.allSatisfy({ $0 == .finished }) {
+                    } else if verticalsChilds.allSatisfy({ $0 == .finished }) {
                         verticalsStates[vertical.id] = .finished
                     } else {
                         verticalsStates[vertical.id] = .available
                     }
                 }
-                if childs.first(where: { $0 == .downloading }) != nil {
+                if sequentialsChilds.first(where: { $0 == .downloading }) != nil {
                     sequentialsStates[sequential.id] = .downloading
-                } else if childs.allSatisfy({ $0 == .finished }) {
+                } else if sequentialsChilds.allSatisfy({ $0 == .finished }) {
                     sequentialsStates[sequential.id] = .finished
                 } else {
                     sequentialsStates[sequential.id] = .available

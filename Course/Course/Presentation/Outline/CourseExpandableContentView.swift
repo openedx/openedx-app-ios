@@ -173,15 +173,11 @@ struct CourseExpandableContentView: View {
                         }
                 }
             }
-            if !disabledIcon {
-                if isExpanded {
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(Theme.Colors.accentColor)
-                        .rotationEffect(.degrees(90))
-                } else {
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(Theme.Colors.accentColor)
-                }
+           
+            let downloadable = viewModel.verticalsBlocksDownloadable(by: courseSequential)
+            if !downloadable.isEmpty {
+                Text(String(downloadable.count))
+                    .foregroundColor(Color(UIColor.label))
             }
         }
     }
@@ -272,10 +268,6 @@ struct CourseExpandableContentView: View {
                             }
                     }
                 }
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.gray)
-                    .padding(.vertical, 8)
-
             }
         })
         .padding(.leading, 40)

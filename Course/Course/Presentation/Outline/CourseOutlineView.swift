@@ -43,14 +43,14 @@ public struct CourseOutlineView: View {
                         VStack(alignment: .leading) {
                             ZStack {
                                 // MARK: - Course Banner
-                                if let banner = viewModel.courseStructure?.media.image.raw
-                                    .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
-                                        .onFailureImage(CoreAssets.noCourseImage.image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
-                                }
+//                                if let banner = viewModel.courseStructure?.media.image.raw
+//                                    .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+//                                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+//                                        .onFailureImage(CoreAssets.noCourseImage.image)
+//                                        .resizable()
+//                                        .aspectRatio(contentMode: .fill)
+//                                        .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+//                                }
                                 
                                 // MARK: - Course Certificate
                                 if let certificate = viewModel.courseStructure?.certificate {
