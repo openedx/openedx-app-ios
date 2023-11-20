@@ -39,11 +39,11 @@ public class Config {
     
     internal var properties: [String: Any] = [:]
     
-    internal init(properties: [String: Any] = [:]) {
+    internal init(properties: [String: Any]) {
         self.properties = properties
     }
     
-    internal convenience init() {
+    private convenience init() {
         self.init(properties: [:])
         loadAndParseConfig()
     }
@@ -91,17 +91,24 @@ public class Config {
 
 extension Config: ConfigProtocol {
     public var baseURL: URL {
-        return URL(string: string(for: ConfigKeys.baseURL.rawValue)!)!
+        guard let urlString = string(for: ConfigKeys.baseURL.rawValue),
+              let url = URL(string: urlString) else {
+            fatalError("Unable to find base url in config.")
+        }
+        return url
     }
     
     public var oAuthClientId: String {
-        return string(for: ConfigKeys.oAuthClientID.rawValue) ?? ""
+        guard let clientID = string(for: ConfigKeys.oAuthClientID.rawValue) else {
+            fatalError("Unable to find OAuth ClientID in config.")
+        }
+        return clientID
     }
     
     public var tokenType: TokenType {
         guard let tokenTypeValue = string(for: ConfigKeys.tokenType.rawValue),
               let tokenType = TokenType(rawValue: tokenTypeValue)
-        else  { return .jwt }
+        else { return .jwt }
         return tokenType
     }
     
