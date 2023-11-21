@@ -16,9 +16,11 @@ import Discussion
 import Discovery
 import Dashboard
 import Profile
+import WhatsNew
 import Combine
  
 public class Router: AuthorizationRouter,
+                     WhatsNewRouter,
                      DiscoveryRouter,
                      ProfileRouter,
                      DashboardRouter,
@@ -56,16 +58,46 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(viewControllers, animated: true)
     }
     
-    public func showMainScreen() {
+    public func showMainOrWhatsNewScreen() {
         showToolBar()
-        let controller = UIHostingController(rootView: MainScreenView())
-        navigationController.setViewControllers([controller], animated: true)
+        var storage = Container.shared.resolve(WhatsNewStorage.self)!
+        let config = Container.shared.resolve(ConfigProtocol.self)!
+
+        let viewModel = WhatsNewViewModel(storage: storage)
+        let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
+        let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
+               
+        if shouldShowWhatsNew && config.features.whatNewEnabled {
+            if let jsonVersion = viewModel.getVersion() {
+                storage.whatsNewVersion = jsonVersion
+            }
+            let controller = UIHostingController(rootView: whatsNew)
+            navigationController.viewControllers = [controller]
+            navigationController.setViewControllers([controller], animated: true)
+        } else {
+            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
+            navigationController.viewControllers = [controller]
+            navigationController.setViewControllers([controller], animated: true)
+        }
     }
     
     public func showLoginScreen() {
         let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
         let controller = UIHostingController(rootView: view)
         navigationController.setViewControllers([controller], animated: false)
+    }
+    
+    public func presentAppReview() {
+        let config = Container.shared.resolve(Config.self)!
+        let storage = Container.shared.resolve(CoreStorage.self)!
+        let vm = AppReviewViewModel(config: config, storage: storage)
+        if vm.shouldShowRatingView() {
+            presentView(
+                transitionStyle: .crossDissolve,
+                view: AppReviewView(viewModel: vm)
+            )
+        }
     }
     
     public func presentAlert(
@@ -404,6 +436,21 @@ public class Router: AuthorizationRouter,
         
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showUpdateRequiredView(showAccountLink: Bool = true) {
+        let view = UpdateRequiredView(
+            router: self,
+            config: Container.shared.resolve(ConfigProtocol.self)!,
+            showAccountLink: showAccountLink
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: false)
+    }
+    
+    public func showUpdateRecomendedView() {
+        let view = UpdateRecommendedView(router: self, config: Container.shared.resolve(ConfigProtocol.self)!)
+        self.presentView(transitionStyle: .crossDissolve, view: view)
     }
     
     private func prepareToPresent <ToPresent: View> (_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)

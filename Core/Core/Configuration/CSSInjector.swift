@@ -12,11 +12,8 @@ public class CSSInjector {
     
     public let baseURL: URL
     
-    public init(baseURL: String) {
-        guard let url = URL(string: baseURL) else {
-            fatalError("Ivalid baseURL")
-        }
-        self.baseURL = url
+    public init(config: ConfigProtocol) {
+        self.baseURL = config.baseURL
     }
     
     public enum CssType {
@@ -151,7 +148,7 @@ public class CSSInjector {
 #if DEBUG
 public class CSSInjectorMock: CSSInjector {
     public convenience init() {
-        self.init(baseURL: "https://google.com/")
+        self.init(config: ConfigMock())
     }
 }
 #endif

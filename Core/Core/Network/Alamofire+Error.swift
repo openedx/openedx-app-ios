@@ -8,6 +8,10 @@
 import Alamofire
 
 public extension Error {
+    var isUpdateRequeiredError: Bool {
+        self.asAFError?.responseCode == 426
+    }
+    
     var isInternetError: Bool {
         guard let afError = self.asAFError,
               let urlError = afError.underlyingError as? URLError else {

@@ -246,7 +246,7 @@ private struct CourseTitleView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(courseDetails.courseDescription)
+            Text(courseDetails.courseDescription ?? "")
                 .font(Theme.Fonts.labelSmall)
                 .padding(.horizontal, 26)
             

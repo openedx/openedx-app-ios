@@ -10,6 +10,8 @@ import Core
 
 public protocol CourseRouter: BaseRouter {
     
+    func presentAppReview()
+    
     func showCourseScreens(
         courseID: String,
         isActive: Bool?,
@@ -64,6 +66,8 @@ public protocol CourseRouter: BaseRouter {
 public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public override init() {}
+    
+    public func presentAppReview() {}
     
     public func showCourseScreens(
         courseID: String,

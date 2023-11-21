@@ -9,7 +9,8 @@ import Foundation
 import Alamofire
 
 enum AuthEndpoint: EndPointType {
-    case getAccessToken(username: String, password: String, clientId: String)
+    case getAccessToken(username: String, password: String, clientId: String, tokenType: String)
+
     case socialLogin(externalToken: String, backend: String, clientId: String)
     case getUserInfo
     case getAuthCookies
@@ -66,12 +67,14 @@ enum AuthEndpoint: EndPointType {
 
     var task: HTTPTask {
         switch self {
-        case let .getAccessToken(username, password, clientId):
+        case let .getAccessToken(username, password, clientId, tokenType):
             let params: [String: Encodable] = [
                 "grant_type": Constants.GrantTypePassword,
                 "client_id": clientId,
                 "username": username,
-                "password": password
+                "password": password,
+                "token_type": tokenType,
+                "asymmetric_jwt": true
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
         case let .socialLogin(externalToken, _, clientId):

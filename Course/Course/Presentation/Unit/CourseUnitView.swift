@@ -50,10 +50,10 @@ public struct CourseUnitView: View {
                             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                             ForEach(data, id: \.offset) { index, block in
                                 VStack(spacing: 0) {
-                                    if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                         switch LessonType.from(block) {
                                             // MARK: YouTube
                                         case let .youtube(url, blockID):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
                                                 YouTubeView(
                                                     name: block.displayName,
@@ -71,8 +71,12 @@ public struct CourseUnitView: View {
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
+                                        } else {
+                                            EmptyView()
+                                        }
                                             // MARK: Encoded Video
                                         case let .video(encodedUrl, blockID):
+                                            if index == viewModel.index {
                                             let url = viewModel.urlForVideoFileOrFallback(
                                                 blockId: blockID,
                                                 url: encodedUrl
@@ -94,23 +98,33 @@ public struct CourseUnitView: View {
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
+                                        }
                                             // MARK: Web
                                         case .web(let url):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
                                                 WebView(url: url, viewModel: viewModel)
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
+                                        } else {
+                                            EmptyView()
+                                        }
                                             // MARK: Unknown
                                         case .unknown(let url):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
                                                 UnknownView(url: url, viewModel: viewModel)
                                                 Spacer()
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
+                                        } else {
+                                            EmptyView()
+                                        }
                                             // MARK: Discussion
                                         case let .discussion(blockID, blockKey, title):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
                                                 VStack {
                                                     if showDiscussion {
@@ -131,10 +145,11 @@ public struct CourseUnitView: View {
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
+                                        } else {
+                                            EmptyView()
                                         }
-                                    } else {
-                                        EmptyView()
-                                    }
+                                        }
+                                    
                                 }
                                 .frame(
                                     width: isHorizontal ? reader.size.width - 16 : reader.size.width,

@@ -53,13 +53,14 @@ public struct EncodedVideoPlayer: View {
     
     public var body: some View {
         ZStack {
-            GeometryReader {reader in
+            GeometryReader { reader in
                 VStack {
                     HStack {
                         VStack {
                             PlayerViewController(
                                 videoURL: viewModel.url,
                                 controller: viewModel.controller,
+                                bitrate: viewModel.getVideoResolution(),
                                 progress: { progress in
                                     if progress >= 0.8 {
                                         if !isViewedOnce {
@@ -69,9 +70,13 @@ public struct EncodedVideoPlayer: View {
                                             isViewedOnce = true
                                         }
                                     }
+                                    if progress == 1 {
+                                        viewModel.router.presentAppReview()
+                                    }
                                 }, seconds: { seconds in
                                     currentTime = seconds
                                 })
+                            .statusBarHidden(false)
                             .aspectRatio(16 / 9, contentMode: .fit)
                             .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
                             .cornerRadius(12)
@@ -91,6 +96,7 @@ public struct EncodedVideoPlayer: View {
                                             preferredTimescale: 10000
                                         )
                                     )
+                                    viewModel.controller.player?.play()
                                     pauseScrolling()
                                     currentTime = (date.secondsSinceMidnight() + 1)
                                 })
@@ -108,6 +114,7 @@ public struct EncodedVideoPlayer: View {
                                         preferredTimescale: 10000
                                     )
                                 )
+                                viewModel.controller.player?.play()
                                 pauseScrolling()
                                 currentTime = (date.secondsSinceMidnight() + 1)
                             })
@@ -115,6 +122,9 @@ public struct EncodedVideoPlayer: View {
                 }
             }
         }.padding(.horizontal, isHorizontal ? 0 : 8)
+            .onDisappear {
+                viewModel.controller.player?.allowsExternalPlayback = false
+            }
     }
     
     private func pauseScrolling() {
@@ -136,7 +146,8 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
+                router: CourseRouterMock(), 
+                appStorage: CoreStorageMock(),
                 connectivity: Connectivity()
             ),
             isOnScreen: true

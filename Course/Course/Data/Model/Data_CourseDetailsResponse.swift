@@ -22,7 +22,7 @@ public extension DataLayer {
         public let name: String
         public let number: String
         public let org: String
-        public let shortDescription: String
+        public let shortDescription: String?
         public let start: String?
         public let startDisplay: String?
         public let startType: String?

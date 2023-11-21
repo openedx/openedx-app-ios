@@ -32,7 +32,7 @@ public class CourseDetailsViewModel: ObservableObject {
     private let interactor: CourseInteractorProtocol
     private let analytics: CourseAnalytics
     let router: CourseRouter
-    let config: Config
+    let config: ConfigProtocol
     let cssInjector: CSSInjector
     let connectivity: ConnectivityProtocol
     
@@ -40,7 +40,7 @@ public class CourseDetailsViewModel: ObservableObject {
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
-        config: Config,
+        config: ConfigProtocol,
         cssInjector: CSSInjector,
         connectivity: ConnectivityProtocol
     ) {

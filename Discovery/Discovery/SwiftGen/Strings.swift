@@ -21,6 +21,26 @@ public enum DiscoveryLocalization {
   /// 
   ///   Created by  Stepanok Ivan on 19.09.2022.
   public static let title = DiscoveryLocalization.tr("Localizable", "TITLE", fallback: "Discover")
+  /// Account Settings
+  public static let updateAccountSettings = DiscoveryLocalization.tr("Localizable", "UPDATE_ACCOUNT_SETTINGS", fallback: "Account Settings")
+  /// Update
+  public static let updateButton = DiscoveryLocalization.tr("Localizable", "UPDATE_BUTTON", fallback: "Update")
+  /// Deprecated App Version
+  public static let updateDeprecatedApp = DiscoveryLocalization.tr("Localizable", "UPDATE_DEPRECATED_APP", fallback: "Deprecated App Version")
+  /// We recommend that you update to the latest version. Upgrade now to receive the latest features and fixes.
+  public static let updateNeededDescription = DiscoveryLocalization.tr("Localizable", "UPDATE_NEEDED_DESCRIPTION", fallback: "We recommend that you update to the latest version. Upgrade now to receive the latest features and fixes.")
+  /// Not Now
+  public static let updateNeededNotNow = DiscoveryLocalization.tr("Localizable", "UPDATE_NEEDED_NOT_NOW", fallback: "Not Now")
+  /// App Update
+  public static let updateNeededTitle = DiscoveryLocalization.tr("Localizable", "UPDATE_NEEDED_TITLE", fallback: "App Update")
+  /// New update available! Upgrade now to receive the latest features and fixes
+  public static let updateNewAvaliable = DiscoveryLocalization.tr("Localizable", "UPDATE_NEW_AVALIABLE", fallback: "New update available! Upgrade now to receive the latest features and fixes")
+  /// This version of the OpenEdX app is out-of-date. To continue learning and get the latest features and fixes, please upgrade to the latest version.
+  public static let updateRequiredDescription = DiscoveryLocalization.tr("Localizable", "UPDATE_REQUIRED_DESCRIPTION", fallback: "This version of the OpenEdX app is out-of-date. To continue learning and get the latest features and fixes, please upgrade to the latest version.")
+  /// App Update Required
+  public static let updateRequiredTitle = DiscoveryLocalization.tr("Localizable", "UPDATE_REQUIRED_TITLE", fallback: "App Update Required")
+  /// Why do I need to update?
+  public static let updateWhyNeed = DiscoveryLocalization.tr("Localizable", "UPDATE_WHY_NEED", fallback: "Why do I need to update?")
   public enum Header {
     /// Discover new
     public static let title1 = DiscoveryLocalization.tr("Localizable", "HEADER.TITLE_1", fallback: "Discover new")

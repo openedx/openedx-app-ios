@@ -15,7 +15,7 @@ Modern vision of the mobile application for the Open EdX platform from Raccoon G
 
 4. Ensure that the ``OpenEdXDev`` or ``OpenEdXProd`` scheme is selected.
 
-5. Configure the [``Environment.swift`` file](https://github.com/raccoongang/new-edx-app-ios/blob/main/OpenEdX/Environment.swift) with URLs and OAuth credentials for your Open edX instance.
+5. Configure `config_settings.yaml` inside `default_config` and `config.yaml` inside sub direcroties to point to your OpenEdx configuration [Configuration Docuementation](./Documentation/CONFIGURATION_MANAGEMENT.md)
 
 6. Click the **Run** button.
 

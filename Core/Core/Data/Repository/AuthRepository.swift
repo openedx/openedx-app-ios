@@ -21,9 +21,9 @@ public class AuthRepository: AuthRepositoryProtocol {
     
     private let api: API
     private var appStorage: CoreStorage
-    private let config: Config
+    private let config: ConfigProtocol
     
-    public init(api: API, appStorage: CoreStorage, config: Config) {
+    public init(api: API, appStorage: CoreStorage, config: ConfigProtocol) {
         self.api = api
         self.appStorage = appStorage
         self.config = config
@@ -34,7 +34,8 @@ public class AuthRepository: AuthRepositoryProtocol {
         let endPoint = AuthEndpoint.getAccessToken(
             username: username,
             password: password,
-            clientId: config.oAuthClientId
+            clientId: config.oAuthClientId,
+            tokenType: config.tokenType.rawValue
         )
         let authResponse = try await api.requestData(endPoint).mapResponse(DataLayer.AuthResponse.self)
         guard let accessToken = authResponse.accessToken,

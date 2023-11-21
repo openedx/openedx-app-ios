@@ -72,7 +72,7 @@ public struct SignUpView: View {
                                 
                                 FieldsView(fields: requiredFields,
                                            router: viewModel.router,
-                                           configuration: viewModel.config,
+                                           config: viewModel.config,
                                            cssInjector: viewModel.cssInjector,
                                            proxy: proxy)
                                 
@@ -80,7 +80,7 @@ public struct SignUpView: View {
                                     DisclosureGroup(isExpanded: $disclosureGroupOpen, content: {
                                         FieldsView(fields: nonRequiredFields,
                                                    router: viewModel.router,
-                                                   configuration: viewModel.config,
+                                                   config: viewModel.config,
                                                    cssInjector: viewModel.cssInjector,
                                                    proxy: proxy).padding(.horizontal, 1)
                                     }, label: {

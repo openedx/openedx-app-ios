@@ -48,6 +48,15 @@ abstract_target "App" do
     end
   end
   
+  target "WhatsNew" do
+    project './WhatsNew/WhatsNew.xcodeproj'
+    workspace './WhatsNew/WhatsNew.xcodeproj'
+    
+    target 'WhatsNewTests' do
+      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+    end
+  end
+  
   target "Dashboard" do
     project './Dashboard/Dashboard.xcodeproj'
     workspace './Dashboard/Dashboard.xcodeproj'
