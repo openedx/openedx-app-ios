@@ -24,10 +24,6 @@ public class StartupViewModel: ObservableObject {
         self.analytics = analytics
     }
     
-    func trackSigninClicked() {
-        
-    }
-    
     func tracksignUpClicked() {
         analytics.signUpClicked()
     }
