@@ -136,7 +136,7 @@ public struct WebView: UIViewRepresentable {
         webView.configuration.suppressesIncrementalRendering = true
         webView.isOpaque = false
         webView.backgroundColor = .clear
-        webView.scrollView.backgroundColor = .white
+        webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.layer.cornerRadius = 24
         webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]

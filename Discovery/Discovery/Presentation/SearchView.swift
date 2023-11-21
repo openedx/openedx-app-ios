@@ -58,7 +58,7 @@ public struct SearchView: View {
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
                         Button(action: { viewModel.searchText.removeAll() }, label: {
-                            CoreAssets.clearInput.swiftUIImage
+                            CoreAssets.Assets.clearInput.swiftUIImage
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 24)

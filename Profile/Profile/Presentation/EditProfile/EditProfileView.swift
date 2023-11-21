@@ -47,8 +47,8 @@ public struct EditProfileView: View {
                                 ZStack {
                                     Circle().frame(width: 36, height: 36)
                                         .foregroundColor(Theme.Colors.accentColor)
-                                    CoreAssets.addPhoto.swiftUIImage
-                                        .foregroundColor(.white)
+                                    CoreAssets.Assets.addPhoto.swiftUIImage
+                                        .foregroundColor(Theme.Colors.white)
                                 }.offset(x: 36, y: 50)
                             )
                     }).disabled(!viewModel.isEditable)
@@ -166,7 +166,7 @@ public struct EditProfileView: View {
                 VStack(alignment: .center) {
                     Spacer()
                     HStack(alignment: .top, spacing: 6) {
-                        CoreAssets.alarm.swiftUIImage.renderingMode(.template)
+                        CoreAssets.Assets.alarm.swiftUIImage.renderingMode(.template)
                         Text(viewModel.alertMessage ?? "")
                     }.shadowCardStyle(bgColor: Theme.Colors.warning,
                                       textColor: .black)
@@ -187,7 +187,7 @@ public struct EditProfileView: View {
                     }
                 },
                 removePhoto: {
-                    viewModel.inputImage = CoreAssets.noAvatar.image
+                    viewModel.inputImage = CoreAssets.Assets.noAvatar.image
                     viewModel.profileChanges.isAvatarDeleted = true
                     showingBottomSheet = false
                 })
@@ -206,7 +206,7 @@ public struct EditProfileView: View {
                 Button(action: {
                     viewModel.backButtonTapped()
                 }, label: {
-                    CoreAssets.arrowLeft.swiftUIImage
+                    CoreAssets.Assets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
                         .foregroundColor(Theme.Colors.accentColor)
                 })
@@ -221,7 +221,7 @@ public struct EditProfileView: View {
                     }
                 }, label: {
                     HStack(spacing: 2) {
-                        CoreAssets.done.swiftUIImage.renderingMode(.template)
+                        CoreAssets.Assets.done.swiftUIImage.renderingMode(.template)
                             .foregroundColor(Theme.Colors.accentColor)
                         Text(CoreLocalization.done)
                             .font(Theme.Fonts.labelLarge)

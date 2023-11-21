@@ -511,7 +511,7 @@ final class EditProfileViewModelTests: XCTestCase {
 //        Verify(interactor, 0, .uploadProfilePicture(pictureData: .any))
         Verify(interactor, 1, .deleteProfilePicture())
         Verify(interactor, 1, .updateUserProfile(parameters: .any))
-        XCTAssertEqual(viewModel.inputImage?.cgImage, CoreAssets.noAvatar.image.cgImage)
+        XCTAssertEqual(viewModel.inputImage?.cgImage, CoreAssets.Assets.noAvatar.image.cgImage)
     }
     
     func testSaveProfileUpdatesNoInternetError() async {

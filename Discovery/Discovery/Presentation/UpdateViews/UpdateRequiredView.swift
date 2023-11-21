@@ -24,7 +24,7 @@ public struct UpdateRequiredView: View {
     public var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                CoreAssets.warningFilled.swiftUIImage
+                CoreAssets.Assets.warningFilled.swiftUIImage
                     .resizable()
                     .frame(width: isHorizontal ? 50 : 110,
                            height: isHorizontal ? 50 : 110)

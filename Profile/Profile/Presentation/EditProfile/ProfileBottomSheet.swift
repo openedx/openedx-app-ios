@@ -119,9 +119,9 @@ struct ProfileBottomSheet: View {
             HStack(alignment: .center) {
                 switch type {
                 case .gallery:
-                    CoreAssets.gallery.swiftUIImage
+                    CoreAssets.Assets.gallery.swiftUIImage
                 case .remove:
-                    CoreAssets.removePhoto.swiftUIImage
+                    CoreAssets.Assets.removePhoto.swiftUIImage
                 case .cancel:
                     EmptyView()
                 }
@@ -188,7 +188,7 @@ extension ProfileBottomSheet {
         func textColor() -> Color {
             switch self {
             case .gallery:
-                return .white
+                return Theme.Colors.white
             case .remove:
                 return Theme.Colors.alert
             case .cancel:

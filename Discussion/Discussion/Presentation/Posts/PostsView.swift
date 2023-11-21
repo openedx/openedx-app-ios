@@ -65,7 +65,7 @@ public struct PostsView: View {
                                             viewModel.generateButtons(type: .filter)
                                             showingAlert = true
                                         }, label: {
-                                            CoreAssets.filter.swiftUIImage
+                                            CoreAssets.Assets.filter.swiftUIImage
                                             Text(viewModel.filterTitle.localizedValue)
                                         })
                                         Spacer()
@@ -73,7 +73,7 @@ public struct PostsView: View {
                                             viewModel.generateButtons(type: .sort)
                                             showingAlert = true
                                         }, label: {
-                                            CoreAssets.sort.swiftUIImage
+                                            CoreAssets.Assets.sort.swiftUIImage
                                             Text(viewModel.sortTitle.localizedValue)
                                         })
                                     }.foregroundColor(Theme.Colors.accentColor)
@@ -118,11 +118,11 @@ public struct PostsView: View {
                                                     })
                                             }, label: {
                                                 VStack {
-                                                    CoreAssets.addComment.swiftUIImage
+                                                    CoreAssets.Assets.addComment.swiftUIImage
                                                         .font(Theme.Fonts.labelLarge)
                                                         .padding(6)
                                                 }
-                                                .foregroundColor(.white)
+                                                .foregroundColor(Theme.Colors.white)
                                                 .background(
                                                     Circle()
                                                         .foregroundColor(Theme.Colors.accentColor)
@@ -150,7 +150,7 @@ public struct PostsView: View {
                                 } else {
                                     if !viewModel.fetchInProgress {
                                         VStack(spacing: 0) {
-                                            CoreAssets.discussionIcon.swiftUIImage
+                                            CoreAssets.Assets.discussionIcon.swiftUIImage
                                                 .renderingMode(.template)
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                             Text(DiscussionLocalization.Posts.NoDiscussion.title)
@@ -292,7 +292,7 @@ public struct PostCell: View {
                     Text(post.type.localizedValue.capitalized)
                     Spacer()
                     if post.unreadCommentCount - 1 > 0 {
-                        CoreAssets.unread.swiftUIImage
+                        CoreAssets.Assets.unread.swiftUIImage
                         Text("\(post.unreadCommentCount - 1)")
                         Text(DiscussionLocalization.missedPostsCount(post.unreadCommentCount - 1))
                     }
@@ -306,7 +306,7 @@ public struct PostCell: View {
                     .font(Theme.Fonts.labelSmall)
                     .foregroundColor(Theme.Colors.textSecondary)
                 HStack {
-                    CoreAssets.responses.swiftUIImage
+                    CoreAssets.Assets.responses.swiftUIImage
                     Text("\(post.replies - 1)")
                     Text(DiscussionLocalization.responsesCount(post.replies - 1))
                         .font(Theme.Fonts.labelLarge)

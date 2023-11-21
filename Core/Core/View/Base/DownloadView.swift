@@ -18,7 +18,7 @@ public struct DownloadAvailableView: View {
     }
     
     public var body: some View {
-        CoreAssets.startDownloading.swiftUIImage.renderingMode(.template)
+        CoreAssets.Assets.startDownloading.swiftUIImage.renderingMode(.template)
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)
@@ -33,7 +33,7 @@ public struct DownloadProgressView: View {
     public var body: some View {
         ZStack {
             ProgressBar(size: 36, lineWidth: 1.75)
-            CoreAssets.stopDownloading.swiftUIImage.renderingMode(.template)
+            CoreAssets.Assets.stopDownloading.swiftUIImage.renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
@@ -48,7 +48,7 @@ public struct DownloadFinishedView: View {
     }
     
     public var body: some View {
-        CoreAssets.deleteDownloading.swiftUIImage.renderingMode(.template)
+        CoreAssets.Assets.deleteDownloading.swiftUIImage.renderingMode(.template)
             .resizable()
             .scaledToFit()
             .frame(width: 24, height: 24)

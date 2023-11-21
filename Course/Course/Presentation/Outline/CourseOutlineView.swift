@@ -46,7 +46,7 @@ public struct CourseOutlineView: View {
                                 if let banner = viewModel.courseStructure?.media.image.raw
                                     .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                                     KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
-                                        .onFailureImage(CoreAssets.noCourseImage.image)
+                                        .onFailureImage(CoreAssets.Assets.noCourseImage.image)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
@@ -57,7 +57,7 @@ public struct CourseOutlineView: View {
                                     if let url = certificate.url, url.count > 0 {
                                         Theme.Colors.certificateForeground
                                         VStack(alignment: .center, spacing: 8) {
-                                            CoreAssets.certificate.swiftUIImage
+                                            CoreAssets.Assets.certificate.swiftUIImage
                                             Text(CourseLocalization.Outline.congratulations)
                                                 .multilineTextAlignment(.center)
                                                 .font(Theme.Fonts.headlineMedium)
@@ -82,7 +82,7 @@ public struct CourseOutlineView: View {
                                                 })
                                         }.padding(.horizontal, 24)
                                             .padding(.top, 8)
-                                            .foregroundColor(.white)
+                                            .foregroundColor(Theme.Colors.white)
                                     }
                                 }
                             }
@@ -225,7 +225,7 @@ struct CourseStructureView: View {
                         label: {
                             Group {
                                 if child.completion == 1 {
-                                    CoreAssets.finished.swiftUIImage
+                                    CoreAssets.Assets.finished.swiftUIImage
                                         .renderingMode(.template)
                                         .foregroundColor(.accentColor)
                                 } else {

@@ -80,7 +80,7 @@ public struct AlertView: View {
                     if type == .logOut {
                         HStack {
                             Spacer(minLength: 100)
-                            CoreAssets.logOut.swiftUIImage
+                            CoreAssets.Assets.logOut.swiftUIImage
                                 .padding(.top, isHorizontal ? 20 : 54)
                             Spacer(minLength: 100)
                         }
@@ -92,7 +92,7 @@ public struct AlertView: View {
                             .frame(maxWidth: 250)
                     } else if type == .leaveProfile {
                         VStack(spacing: 20) {
-                            CoreAssets.leaveProfile.swiftUIImage
+                            CoreAssets.Assets.leaveProfile.swiftUIImage
                                 .padding(.top, isHorizontal ? 20 : 54)
                             Text(alertTitle)
                                 .font(Theme.Fonts.titleLarge)
@@ -139,7 +139,7 @@ public struct AlertView: View {
                                                 .padding(.horizontal, 40)
                                                 .multilineTextAlignment(.center)
                                                 .font(Theme.Fonts.labelSmall)
-                                                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                                .foregroundColor(Theme.Colors.textSecondary)
                                         }
                                     }.padding(.top, 70)
                                         .padding(.trailing, 20)
@@ -312,7 +312,7 @@ struct AlertView_Previews: PreviewProvider {
             alertMessage: "You've passed the course",
             nextSectionName: "Continue",
             mainAction: "Back to outline",
-            image: CoreAssets.goodWork.swiftUIImage,
+            image: CoreAssets.Assets.goodWork.swiftUIImage,
             onCloseTapped: {},
             okTapped: {},
             nextSectionTapped: {}

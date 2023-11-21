@@ -203,7 +203,7 @@ public struct ThreadView: View {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(
                             bgColor: Theme.Colors.accentColor,
-                            textColor: .white
+                            textColor: Theme.Colors.white
                         )
                         .padding(.top, 80)
                     Spacer()

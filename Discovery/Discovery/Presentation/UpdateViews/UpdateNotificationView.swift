@@ -25,13 +25,13 @@ public struct UpdateNotificationView: View {
                         .resizable()
                         .frame(width: 36,
                                height: 36)
-                        .foregroundColor(.white)
+                        .foregroundColor(Theme.Colors.white)
                     VStack(alignment: .leading) {
                         Text(DiscoveryLocalization.updateNeededTitle)
                             .font(Theme.Fonts.titleMedium)
                         Text(DiscoveryLocalization.updateNewAvaliable)
                             .font(Theme.Fonts.bodySmall)
-                    }.foregroundColor(.white)
+                    }.foregroundColor(Theme.Colors.white)
                     Spacer()
                 }
                 .padding(16)

@@ -24,11 +24,11 @@ public struct DeleteAccountView: View {
                 VStack {
                     Group {
                         ZStack {
-                            CoreAssets.bgDelete.swiftUIImage
-                            CoreAssets.deleteChar.swiftUIImage
+                            CoreAssets.Assets.bgDelete.swiftUIImage
+                            CoreAssets.Assets.deleteChar.swiftUIImage
                                 .foregroundColor(.accentColor)
                                 .offset(y: -31)
-                            CoreAssets.deleteEyes.swiftUIImage
+                            CoreAssets.Assets.deleteEyes.swiftUIImage
                                 .offset(x: -7, y: -27)
                         }.padding(.top, 50)
                         Text(ProfileLocalization.DeleteAccount.areYouSure)
@@ -104,7 +104,7 @@ public struct DeleteAccountView: View {
                         viewModel.router.back()
                     }, label: {
                         HStack(spacing: 9) {
-                            CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.arrowRight16.swiftUIImage.renderingMode(.template)
                                 .rotationEffect(Angle(degrees: 180))
                             Text(ProfileLocalization.DeleteAccount.backToProfile)
                                 .font(Theme.Fonts.labelLarge)

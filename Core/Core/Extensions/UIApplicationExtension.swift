@@ -43,11 +43,11 @@ extension UINavigationController {
         navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationBar.shadowImage = UIImage()
         
-        let image = CoreAssets.arrowLeft.image
-        navigationBar.backIndicatorImage = image.withTintColor(CoreAssets.accentColor.color)
+        let image = CoreAssets.Assets.arrowLeft.image
+        navigationBar.backIndicatorImage = image.withTintColor(Theme.Colors.accentColor.uiColor())
         navigationBar.tintColor = .clear
-        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(CoreAssets.accentColor.color)
-        navigationBar.titleTextAttributes = [.foregroundColor: CoreAssets.textPrimary.color]
+        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.Colors.accentColor.uiColor())
+        navigationBar.titleTextAttributes = [.foregroundColor: Theme.Colors.textPrimary.uiColor()]
     }
 }
 

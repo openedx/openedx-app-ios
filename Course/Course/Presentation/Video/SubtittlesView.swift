@@ -49,7 +49,7 @@ public struct SubtittlesView: View {
                             viewModel.presentPicker()
                         }, label: {
                             Group {
-                                CoreAssets.sub.swiftUIImage.renderingMode(.template)
+                                CoreAssets.Assets.sub.swiftUIImage.renderingMode(.template)
                                 Text(viewModel.generateLanguageName(code: viewModel.selectedLanguage ?? ""))
                             }.foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)

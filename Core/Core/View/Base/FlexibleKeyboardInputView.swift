@@ -77,11 +77,11 @@ public struct FlexibleKeyboardInputView: View {
                             }, label: {
                                 VStack {
                                     commentText.trimmingCharacters(in: .whitespacesAndNewlines).count > 0
-                                    ? CoreAssets.send.swiftUIImage
-                                    : CoreAssets.sendDisabled.swiftUIImage
+                                    ? CoreAssets.Assets.send.swiftUIImage
+                                    : CoreAssets.Assets.sendDisabled.swiftUIImage
                                 }
                                 .frame(width: 36, height: 36)
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Colors.white)
                             }).padding(.top, 8)
                                 
                         }.padding(.horizontal, isHorizontal ? 50 : 16)

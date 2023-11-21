@@ -74,7 +74,7 @@ public struct DiscussionTopicsView: View {
                                             }, label: {
                                                 VStack {
                                                     Spacer(minLength: 0)
-                                                    CoreAssets.allPosts.swiftUIImage
+                                                    CoreAssets.Assets.allPosts.swiftUIImage
                                                     Text(allTopics.name)
                                                         .font(Theme.Fonts.titleSmall)
                                                     Spacer(minLength: 0)
@@ -90,7 +90,7 @@ public struct DiscussionTopicsView: View {
                                             }, label: {
                                                 VStack(alignment: .center) {
                                                     Spacer(minLength: 0)
-                                                    CoreAssets.followed.swiftUIImage
+                                                    CoreAssets.Assets.followed.swiftUIImage
                                                     Text(followed.name)
                                                         .font(Theme.Fonts.titleSmall)
                                                     Spacer(minLength: 0)

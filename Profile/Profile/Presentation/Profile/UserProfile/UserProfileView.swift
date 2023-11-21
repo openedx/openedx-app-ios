@@ -120,7 +120,7 @@ struct ProfileAvatar: View {
                 .foregroundColor(Theme.Colors.avatarStroke)
                 .frame(width: 104, height: 104)
             KFImage(url)
-                .onFailureImage(CoreAssets.noCourseImage.image)
+                .onFailureImage(CoreAssets.Assets.noCourseImage.image)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 100, height: 100)

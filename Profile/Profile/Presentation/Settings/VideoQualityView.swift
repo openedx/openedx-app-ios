@@ -39,7 +39,7 @@ public struct VideoQualityView: View {
                                         description: quality.description()
                                     )
                                     Spacer()
-                                    CoreAssets.checkmark.swiftUIImage
+                                    CoreAssets.Assets.checkmark.swiftUIImage
                                         .renderingMode(.template)
                                         .foregroundColor(.accentColor)
                                         .opacity(quality == viewModel.selectedQuality ? 1 : 0)

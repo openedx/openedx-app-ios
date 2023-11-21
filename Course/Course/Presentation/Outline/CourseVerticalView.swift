@@ -33,15 +33,15 @@ public struct CourseVerticalView: View {
     
     private func verticalImage(childs: [CourseBlock]) -> Image {
         if childs.contains(where: { $0.type == .problem }) {
-            return CoreAssets.pen.swiftUIImage.renderingMode(.template)
+            return CoreAssets.Assets.pen.swiftUIImage.renderingMode(.template)
         } else if childs.contains(where: { $0.type == .video }) {
-            return CoreAssets.video.swiftUIImage.renderingMode(.template)
+            return CoreAssets.Assets.video.swiftUIImage.renderingMode(.template)
         } else if childs.contains(where: { $0.type == .discussion }) {
-            return CoreAssets.discussion.swiftUIImage.renderingMode(.template)
+            return CoreAssets.Assets.discussion.swiftUIImage.renderingMode(.template)
         } else if childs.contains(where: { $0.type == .html }) {
-            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
+            return CoreAssets.Assets.extra.swiftUIImage.renderingMode(.template)
         } else {
-            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
+            return CoreAssets.Assets.extra.swiftUIImage.renderingMode(.template)
         }
     }
     
@@ -77,7 +77,7 @@ public struct CourseVerticalView: View {
                                     HStack {
                                         Group {
                                             if vertical.completion == 1 {
-                                                CoreAssets.finished.swiftUIImage
+                                                CoreAssets.Assets.finished.swiftUIImage
                                                     .renderingMode(.template)
                                                     .foregroundColor(.accentColor)
                                             } else {

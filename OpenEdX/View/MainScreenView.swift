@@ -47,7 +47,7 @@ struct MainScreenView: View {
                 }
             }
             .tabItem {
-                CoreAssets.discovery.swiftUIImage.renderingMode(.template)
+                CoreAssets.Assets.discovery.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
@@ -62,7 +62,7 @@ struct MainScreenView: View {
                 }
             }
             .tabItem {
-                CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
+                CoreAssets.Assets.dashboard.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
@@ -74,7 +74,7 @@ struct MainScreenView: View {
                 }
             }
             .tabItem {
-                CoreAssets.programs.swiftUIImage.renderingMode(.template)
+                CoreAssets.Assets.programs.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.programs)
             }
             .tag(MainTab.programs)
@@ -85,7 +85,7 @@ struct MainScreenView: View {
                 )
             }
             .tabItem {
-                CoreAssets.profile.swiftUIImage.renderingMode(.template)
+                CoreAssets.Assets.profile.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
@@ -99,7 +99,7 @@ struct MainScreenView: View {
                     Button(action: {
                         settingsTapped.toggle()
                     }, label: {
-                        CoreAssets.edit.swiftUIImage
+                        CoreAssets.Assets.edit.swiftUIImage
                             .foregroundColor(Theme.Colors.textPrimary)
                     })
                 } else {

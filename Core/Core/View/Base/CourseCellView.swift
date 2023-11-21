@@ -41,7 +41,7 @@ public struct CourseCellView: View {
         VStack {
             HStack {
                 KFImage(URL(string: courseImage))
-                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .onFailureImage(CoreAssets.Assets.noCourseImage.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: idiom == .pad ? 171 : 105, height: 105)
@@ -74,7 +74,7 @@ public struct CourseCellView: View {
                                     .foregroundColor(Theme.Colors.textSecondary)
                             }
                             Spacer()
-                            CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.arrowRight16.swiftUIImage.renderingMode(.template)
                                 .resizable()
                                 .frame(width: 16, height: 16)
                                 .offset(x: 15)

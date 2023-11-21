@@ -162,7 +162,7 @@ public struct ProfileView: View {
                                             VStack(alignment: .leading, spacing: 0) {
                                                 HStack {
                                                     if viewModel.versionState == .updateRequired {
-                                                        CoreAssets.warningFilled.swiftUIImage
+                                                        CoreAssets.Assets.warningFilled.swiftUIImage
                                                             .resizable()
                                                             .frame(width: 24, height: 24)
                                                     }
@@ -171,7 +171,7 @@ public struct ProfileView: View {
                                                 switch viewModel.versionState {
                                                 case .actual:
                                                     HStack {
-                                                        CoreAssets.checkmark.swiftUIImage
+                                                        CoreAssets.Assets.checkmark.swiftUIImage
                                                             .renderingMode(.template)
                                                             .foregroundColor(.green)
                                                         Text(ProfileLocalization.Settings.upToDate)
@@ -346,7 +346,7 @@ struct UserAvatar: View {
                     .cornerRadius(50)
             } else {
                 KFImage(url)
-                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .onFailureImage(CoreAssets.Assets.noCourseImage.image)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 100, height: 100)

@@ -142,9 +142,9 @@ struct HandoutsItemCell: View {
         var image: Image {
             switch self {
             case .handouts:
-                return CoreAssets.handouts.swiftUIImage
+                return CoreAssets.Assets.handouts.swiftUIImage
             case .announcements:
-                return CoreAssets.announcements.swiftUIImage
+                return CoreAssets.Assets.announcements.swiftUIImage
             }
         }
     }

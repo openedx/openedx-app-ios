@@ -37,7 +37,7 @@ public struct CreateNewThreadView: View {
             await viewModel.getTopics(courseID: courseID)
         }
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Theme.Colors.accentColor)
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: Theme.Colors.white.uiColor()], for: .selected)
     }
     
     public var body: some View {

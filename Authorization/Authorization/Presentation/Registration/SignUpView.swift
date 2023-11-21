@@ -28,7 +28,7 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                CoreAssets.Configurable.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
@@ -38,12 +38,12 @@ public struct SignUpView: View {
                 ZStack {
                     HStack {
                         Text(AuthLocalization.SignIn.registerBtn)
-                            .titleSettings(color: .white)
+                            .titleSettings(color: Theme.Colors.white)
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .backButtonStyle(color: .white)
+                            CoreAssets.Assets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                .backButtonStyle(color: Theme.Colors.white)
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)
                         .padding(.leading, isHorizontal ? 48 : 0)

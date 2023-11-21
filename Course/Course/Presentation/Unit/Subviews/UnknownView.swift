@@ -14,7 +14,7 @@ struct UnknownView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            CoreAssets.notAvaliable.swiftUIImage
+            CoreAssets.Assets.notAvaliable.swiftUIImage
             Text(CourseLocalization.NotAvaliable.title)
                 .font(Theme.Fonts.titleLarge)
                 .multilineTextAlignment(.center)

@@ -53,7 +53,7 @@ public struct NavigationBar: View {
                     Button(action: {
                         leftButtonAction?()
                     }, label: {
-                        CoreAssets.arrowLeft.swiftUIImage
+                        CoreAssets.Assets.arrowLeft.swiftUIImage
                             .backButtonStyle(color: leftButtonColor)
                     })
                     .foregroundColor(Theme.Colors.styledButtonText)
@@ -72,14 +72,14 @@ public struct NavigationBar: View {
                         switch rightButtonType {
                         case .done:
                             HStack(spacing: -10) {
-                                CoreAssets.done.swiftUIImage
+                                CoreAssets.Assets.done.swiftUIImage
                                     .backButtonStyle(topPadding: 0)
                                 Text(CoreLocalization.done)
                                     .font(Theme.Fonts.labelLarge)
                                     .foregroundColor(Theme.Colors.accentColor)
                             }.offset(y: -6)
                         case .edit:
-                            CoreAssets.edit.swiftUIImage
+                            CoreAssets.Assets.edit.swiftUIImage
                                 .resizable()
                                 .frame(width: 24, height: 24)
                                 .padding(.horizontal)

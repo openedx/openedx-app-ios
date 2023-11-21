@@ -25,9 +25,9 @@ public enum PostType: String, Codable {
     public func getImage() -> Image {
         switch self {
         case .question:
-            return CoreAssets.question.swiftUIImage
+            return CoreAssets.Assets.question.swiftUIImage
         case .discussion:
-            return CoreAssets.discussion.swiftUIImage
+            return CoreAssets.Assets.discussion.swiftUIImage
         }
     }
 }

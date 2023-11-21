@@ -44,7 +44,7 @@ public struct CourseUnitView: View {
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
-                        VStack {CoreAssets.background.swiftUIColor}.frame(width: reader.size.width, 
+                        VStack {Theme.Colors.background}.frame(width: reader.size.width,
                                                                           height: isHorizontal ? 75 : 50)
                         LazyVStack(alignment: .leading, spacing: 0) {
                             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
@@ -212,13 +212,13 @@ public struct CourseUnitView: View {
                     ZStack(alignment: .bottomLeading) {
                         Spacer()
                         HStack(spacing: 6) {
-                            CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.rotateDevice.swiftUIImage.renderingMode(.template)
                                 .onAppear {
                                     alertMessage = CourseLocalization.Alert.rotateDevice
                                 }
                             Text(alertMessage ?? "")
                         }.shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                          textColor: .white)
+                                          textColor: Theme.Colors.white)
                         .transition(.move(edge: .bottom))
                         .onAppear {
                             doAfter(Theme.Timeout.snackbarMessageLongTimeout) {

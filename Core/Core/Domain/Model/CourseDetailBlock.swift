@@ -43,15 +43,15 @@ public enum BlockType: String {
     
     public var image: Image {
         switch self {
-        case .problem: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
-        case .video: return CoreAssets.video.swiftUIImage.renderingMode(.template)
-        case .html: return CoreAssets.extra.swiftUIImage.renderingMode(.template)
-        case .discussion: return CoreAssets.discussion.swiftUIImage.renderingMode(.template)
-        case .course: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
-        case .chapter: return CoreAssets.pen.swiftUIImage.renderingMode(.template)
-        case .sequential: return CoreAssets.chapter.swiftUIImage.renderingMode(.template)
-        case .vertical: return CoreAssets.extra.swiftUIImage.renderingMode(.template)
-        default: return CoreAssets.extra.swiftUIImage.renderingMode(.template)
+        case .problem: return CoreAssets.Assets.pen.swiftUIImage.renderingMode(.template)
+        case .video: return CoreAssets.Assets.video.swiftUIImage.renderingMode(.template)
+        case .html: return CoreAssets.Assets.extra.swiftUIImage.renderingMode(.template)
+        case .discussion: return CoreAssets.Assets.discussion.swiftUIImage.renderingMode(.template)
+        case .course: return CoreAssets.Assets.pen.swiftUIImage.renderingMode(.template)
+        case .chapter: return CoreAssets.Assets.pen.swiftUIImage.renderingMode(.template)
+        case .sequential: return CoreAssets.Assets.chapter.swiftUIImage.renderingMode(.template)
+        case .vertical: return CoreAssets.Assets.extra.swiftUIImage.renderingMode(.template)
+        default: return CoreAssets.Assets.extra.swiftUIImage.renderingMode(.template)
         }
     }
 }

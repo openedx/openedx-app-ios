@@ -152,7 +152,7 @@ struct DashboardView_Previews: PreviewProvider {
 struct EmptyPageIcon: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            CoreAssets.dashboardEmptyPage.swiftUIImage
+            CoreAssets.Assets.dashboardEmptyPage.swiftUIImage
                 .padding(.bottom, 16)
             Text(DashboardLocalization.Empty.title)
                 .font(Theme.Fonts.titleMedium)

@@ -65,7 +65,7 @@ public struct UnitButtonView: View {
                             Text(type.stringValue())
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .font(Theme.Fonts.labelLarge)
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .rotationEffect(Angle.degrees(-90))
                         }.padding(.horizontal, 16)
@@ -78,7 +78,7 @@ public struct UnitButtonView: View {
                             if type != .nextBig {
                                 Spacer()
                             }
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .rotationEffect(Angle.degrees(-90))
                                 .padding(.trailing, 20)
@@ -89,7 +89,7 @@ public struct UnitButtonView: View {
                                 .foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .padding(.leading, 20)
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .rotationEffect(Angle.degrees(90))
                                 .padding(.trailing, 20)
                                 .foregroundColor(Theme.Colors.accentColor)
@@ -103,7 +103,7 @@ public struct UnitButtonView: View {
                                 .font(Theme.Fonts.labelLarge)
                                 .scaledToFit()
                             Spacer()
-                            CoreAssets.check.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.check.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .padding(.trailing, 8)
                         }
@@ -112,7 +112,7 @@ public struct UnitButtonView: View {
                             Text(type.stringValue())
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .font(Theme.Fonts.labelLarge)
-                            CoreAssets.check.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.check.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
                         }.padding(.horizontal, 16)
                     case .reload, .custom:
@@ -127,7 +127,7 @@ public struct UnitButtonView: View {
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                            CoreAssets.Assets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
                                 .rotationEffect(Angle.degrees(180))
                                 .padding(.trailing, 20)

@@ -26,15 +26,15 @@ public struct ResetPasswordView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                CoreAssets.Configurable.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
             
             VStack(alignment: .center) {
                 NavigationBar(title: AuthLocalization.Forgot.title,
-                             titleColor: .white,
-                             leftButtonColor: .white,
+                             titleColor: Theme.Colors.white,
+                             leftButtonColor: Theme.Colors.white,
                              leftButtonAction: {
                    viewModel.router.back()
                }).padding(.leading, isHorizontal ? 48 : 0)
@@ -44,7 +44,7 @@ public struct ResetPasswordView: View {
                         if isRecovered {
                             ZStack {
                                 VStack {
-                                    CoreAssets.checkEmail.swiftUIImage
+                                    CoreAssets.Assets.checkEmail.swiftUIImage
                                         .resizable()
                                         .frame(width: 100, height: 100)
                                         .padding(.bottom, 40)
@@ -125,7 +125,7 @@ public struct ResetPasswordView: View {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                         textColor: .white)
+                                         textColor: Theme.Colors.white)
                         .padding(.top, 80)
                     Spacer()
                     

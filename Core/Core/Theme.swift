@@ -8,55 +8,59 @@
 import Foundation
 import SwiftUI
 
+private var fontsParser = FontParser()
+
 public struct Theme {
     
     public struct Colors {
-        public private(set) static var accentColor = CoreAssets.accentColor.swiftUIColor
-        public private(set) static var alert = CoreAssets.alert.swiftUIColor
-        public private(set) static var avatarStroke = CoreAssets.avatarStroke.swiftUIColor
-        public private(set) static var background = CoreAssets.background.swiftUIColor
-        public private(set) static var backgroundStroke = CoreAssets.backgroundStroke.swiftUIColor
-        public private(set) static var cardViewBackground = CoreAssets.cardViewBackground.swiftUIColor
-        public private(set) static var cardViewStroke = CoreAssets.cardViewStroke.swiftUIColor
-        public private(set) static var certificateForeground = CoreAssets.certificateForeground.swiftUIColor
-        public private(set) static var commentCellBackground = CoreAssets.commentCellBackground.swiftUIColor
-        public private(set) static var shadowColor = CoreAssets.shadowColor.swiftUIColor
-        public private(set) static var snackbarErrorColor = CoreAssets.snackbarErrorColor.swiftUIColor
-        public private(set) static var snackbarErrorTextColor = CoreAssets.snackbarErrorTextColor.swiftUIColor
-        public private(set) static var snackbarInfoAlert = CoreAssets.snackbarInfoAlert.swiftUIColor
-        public private(set) static var styledButtonBackground = CoreAssets.styledButtonBackground.swiftUIColor
-        public private(set) static var styledButtonText = CoreAssets.styledButtonText.swiftUIColor
-        public private(set) static var textPrimary = CoreAssets.textPrimary.swiftUIColor
-        public private(set) static var textSecondary = CoreAssets.textSecondary.swiftUIColor
-        public private(set) static var textInputBackground = CoreAssets.textInputBackground.swiftUIColor
-        public private(set) static var textInputStroke = CoreAssets.textInputStroke.swiftUIColor
-        public private(set) static var textInputUnfocusedBackground = CoreAssets.textInputUnfocusedBackground.swiftUIColor
-        public private(set) static var textInputUnfocusedStroke = CoreAssets.textInputUnfocusedStroke.swiftUIColor
-        public private(set) static var warning = CoreAssets.warning.swiftUIColor
+        public private(set) static var accentColor = CoreAssets.Configurable.accentColor.swiftUIColor
+        public private(set) static var alert = CoreAssets.Configurable.alert.swiftUIColor
+        public private(set) static var avatarStroke = CoreAssets.Configurable.avatarStroke.swiftUIColor
+        public private(set) static var background = CoreAssets.Configurable.background.swiftUIColor
+        public private(set) static var backgroundStroke = CoreAssets.Configurable.backgroundStroke.swiftUIColor
+        public private(set) static var cardViewBackground = CoreAssets.Configurable.cardViewBackground.swiftUIColor
+        public private(set) static var cardViewStroke = CoreAssets.Configurable.cardViewStroke.swiftUIColor
+        public private(set) static var certificateForeground = CoreAssets.Configurable.certificateForeground.swiftUIColor
+        public private(set) static var commentCellBackground = CoreAssets.Configurable.commentCellBackground.swiftUIColor
+        public private(set) static var shadowColor = CoreAssets.Configurable.shadowColor.swiftUIColor
+        public private(set) static var snackbarErrorColor = CoreAssets.Configurable.snackbarErrorColor.swiftUIColor
+        public private(set) static var snackbarErrorTextColor = CoreAssets.Configurable.snackbarErrorTextColor.swiftUIColor
+        public private(set) static var snackbarInfoAlert = CoreAssets.Configurable.snackbarInfoAlert.swiftUIColor
+        public private(set) static var styledButtonBackground = CoreAssets.Configurable.styledButtonBackground.swiftUIColor
+        public private(set) static var styledButtonText = CoreAssets.Configurable.styledButtonText.swiftUIColor
+        public private(set) static var textPrimary = CoreAssets.Configurable.textPrimary.swiftUIColor
+        public private(set) static var textSecondary = CoreAssets.Configurable.textSecondary.swiftUIColor
+        public private(set) static var textInputBackground = CoreAssets.Configurable.textInputBackground.swiftUIColor
+        public private(set) static var textInputStroke = CoreAssets.Configurable.textInputStroke.swiftUIColor
+        public private(set) static var textInputUnfocusedBackground = CoreAssets.Configurable.textInputUnfocusedBackground.swiftUIColor
+        public private(set) static var textInputUnfocusedStroke = CoreAssets.Configurable.textInputUnfocusedStroke.swiftUIColor
+        public private(set) static var warning = CoreAssets.Configurable.warning.swiftUIColor
+        public private(set) static var white = CoreAssets.Configurable.white.swiftUIColor
 
         public static func update(
-            accentColor: Color = CoreAssets.accentColor.swiftUIColor,
-            alert: Color = CoreAssets.alert.swiftUIColor,
-            avatarStroke: Color = CoreAssets.avatarStroke.swiftUIColor,
-            background: Color = CoreAssets.background.swiftUIColor,
-            backgroundStroke: Color = CoreAssets.backgroundStroke.swiftUIColor,
-            cardViewBackground: Color = CoreAssets.cardViewBackground.swiftUIColor,
-            cardViewStroke: Color = CoreAssets.cardViewStroke.swiftUIColor,
-            certificateForeground: Color = CoreAssets.certificateForeground.swiftUIColor,
-            commentCellBackground: Color = CoreAssets.commentCellBackground.swiftUIColor,
-            shadowColor: Color = CoreAssets.shadowColor.swiftUIColor,
-            snackbarErrorColor: Color = CoreAssets.snackbarErrorColor.swiftUIColor,
-            snackbarErrorTextColor: Color = CoreAssets.snackbarErrorTextColor.swiftUIColor,
-            snackbarInfoAlert: Color = CoreAssets.snackbarInfoAlert.swiftUIColor,
-            styledButtonBackground: Color = CoreAssets.styledButtonBackground.swiftUIColor,
-            styledButtonText: Color = CoreAssets.styledButtonText.swiftUIColor,
-            textPrimary: Color = CoreAssets.textPrimary.swiftUIColor,
-            textSecondary: Color = CoreAssets.textSecondary.swiftUIColor,
-            textInputBackground: Color = CoreAssets.textInputBackground.swiftUIColor,
-            textInputStroke: Color = CoreAssets.textInputStroke.swiftUIColor,
-            textInputUnfocusedBackground: Color = CoreAssets.textInputUnfocusedBackground.swiftUIColor,
-            textInputUnfocusedStroke: Color = CoreAssets.textInputUnfocusedStroke.swiftUIColor,
-            warning: Color = CoreAssets.warning.swiftUIColor
+            accentColor: Color = CoreAssets.Configurable.accentColor.swiftUIColor,
+            alert: Color = CoreAssets.Configurable.alert.swiftUIColor,
+            avatarStroke: Color = CoreAssets.Configurable.avatarStroke.swiftUIColor,
+            background: Color = CoreAssets.Configurable.background.swiftUIColor,
+            backgroundStroke: Color = CoreAssets.Configurable.backgroundStroke.swiftUIColor,
+            cardViewBackground: Color = CoreAssets.Configurable.cardViewBackground.swiftUIColor,
+            cardViewStroke: Color = CoreAssets.Configurable.cardViewStroke.swiftUIColor,
+            certificateForeground: Color = CoreAssets.Configurable.certificateForeground.swiftUIColor,
+            commentCellBackground: Color = CoreAssets.Configurable.commentCellBackground.swiftUIColor,
+            shadowColor: Color = CoreAssets.Configurable.shadowColor.swiftUIColor,
+            snackbarErrorColor: Color = CoreAssets.Configurable.snackbarErrorColor.swiftUIColor,
+            snackbarErrorTextColor: Color = CoreAssets.Configurable.snackbarErrorTextColor.swiftUIColor,
+            snackbarInfoAlert: Color = CoreAssets.Configurable.snackbarInfoAlert.swiftUIColor,
+            styledButtonBackground: Color = CoreAssets.Configurable.styledButtonBackground.swiftUIColor,
+            styledButtonText: Color = CoreAssets.Configurable.styledButtonText.swiftUIColor,
+            textPrimary: Color = CoreAssets.Configurable.textPrimary.swiftUIColor,
+            textSecondary: Color = CoreAssets.Configurable.textSecondary.swiftUIColor,
+            textInputBackground: Color = CoreAssets.Configurable.textInputBackground.swiftUIColor,
+            textInputStroke: Color = CoreAssets.Configurable.textInputStroke.swiftUIColor,
+            textInputUnfocusedBackground: Color = CoreAssets.Configurable.textInputUnfocusedBackground.swiftUIColor,
+            textInputUnfocusedStroke: Color = CoreAssets.Configurable.textInputUnfocusedStroke.swiftUIColor,
+            warning: Color = CoreAssets.Configurable.warning.swiftUIColor,
+            white: Color = CoreAssets.Configurable.white.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.alert = alert
@@ -80,30 +84,31 @@ public struct Theme {
             self.textInputUnfocusedBackground = textInputUnfocusedBackground
             self.textInputUnfocusedStroke = textInputUnfocusedStroke
             self.warning = warning
+            self.white = white
         }
     }
     
     public struct Fonts {
         
-        public static let displayLarge: Font = .custom("SFPro-Regular", size: 57)
-        public static let displayMedium: Font = .custom("SFPro-Regular", size: 45)
-        public static let displaySmall: Font = .custom("SFPro-Bold", size: 36)
+        public static let displayLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 57)
+        public static let displayMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 45)
+        public static let displaySmall: Font = .custom(fontsParser.fontName(for: .bold), size: 36)
         
-        public static let headlineLarge: Font = .custom("SFPro-Regular", size: 32)
-        public static let headlineMedium: Font = .custom("SFPro-Regular", size: 28)
-        public static let headlineSmall: Font = .custom("SFPro-Regular", size: 24)
+        public static let headlineLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 32)
+        public static let headlineMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 28)
+        public static let headlineSmall: Font = .custom(fontsParser.fontName(for: .regular), size: 24)
         
-        public static let titleLarge: Font = .custom("SFPro-Bold", size: 22)
-        public static let titleMedium: Font = .custom("SFPro-Semibold", size: 18)
-        public static let titleSmall: Font = .custom("SFPro-Medium", size: 14)
+        public static let titleLarge: Font = .custom(fontsParser.fontName(for: .bold), size: 22)
+        public static let titleMedium: Font = .custom(fontsParser.fontName(for: .semiBold), size: 18)
+        public static let titleSmall: Font = .custom(fontsParser.fontName(for: .medium), size: 14)
         
-        public static let bodyLarge: Font = .custom("SFPro-Regular", size: 16)
-        public static let bodyMedium: Font = .custom("SFPro-Regular", size: 14)
-        public static let bodySmall: Font = .custom("SFPro-Regular", size: 12)
+        public static let bodyLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 16)
+        public static let bodyMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 14)
+        public static let bodySmall: Font = .custom(fontsParser.fontName(for: .regular), size: 12)
         
-        public static let labelLarge: Font = .custom("SFPro-Medium", size: 14)
-        public static let labelMedium: Font = .custom("SFPro-Regular", size: 12)
-        public static let labelSmall: Font = .custom("SFPro-Regular", size: 10)
+        public static let labelLarge: Font = .custom(fontsParser.fontName(for: .medium), size: 14)
+        public static let labelMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 12)
+        public static let labelSmall: Font = .custom(fontsParser.fontName(for: .regular), size: 10)
     }
     
     public struct Shapes {
@@ -136,7 +141,7 @@ public extension Theme.Fonts {
     // swiftlint:disable type_name
     class __ {}
     static func registerFonts() {
-        guard let url = Bundle(for: __.self).url(forResource: "SF-Pro", withExtension: "ttf") else { return }
+        guard let url = Bundle(for: __.self).url(forResource: "fonts_file", withExtension: "ttf") else { return }
         CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
     }
     // swiftlint:enable type_name

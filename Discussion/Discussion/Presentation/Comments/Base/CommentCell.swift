@@ -67,8 +67,8 @@ public struct CommentCell: View {
                     onReportTap()
                 }, label: {
                     comment.abuseFlagged
-                    ? CoreAssets.reported.swiftUIImage
-                    : CoreAssets.report.swiftUIImage
+                    ? CoreAssets.Assets.reported.swiftUIImage
+                    : CoreAssets.Assets.report.swiftUIImage
                     Text(comment.abuseFlagged
                          ? DiscussionLocalization.Comment.unreport
                          : DiscussionLocalization.Comment.report)
@@ -116,8 +116,8 @@ public struct CommentCell: View {
                     onLikeTap()
                 }, label: {
                     comment.voted
-                    ? CoreAssets.voted.swiftUIImage
-                    : CoreAssets.vote.swiftUIImage
+                    ? CoreAssets.Assets.voted.swiftUIImage
+                    : CoreAssets.Assets.vote.swiftUIImage
                     Text("\(comment.votesCount)")
                     Text(DiscussionLocalization.votesCount(comment.votesCount))
                         .font(Theme.Fonts.labelLarge)

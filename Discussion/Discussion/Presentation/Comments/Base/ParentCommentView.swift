@@ -102,8 +102,8 @@ public struct ParentCommentView: View {
                     onLikeTap()
                 }, label: {
                     comments.voted
-                    ? CoreAssets.voted.swiftUIImage
-                    : CoreAssets.vote.swiftUIImage
+                    ? CoreAssets.Assets.voted.swiftUIImage
+                    : CoreAssets.Assets.vote.swiftUIImage
                     Text("\(comments.votesCount)")
                     Text(DiscussionLocalization.votesCount(comments.votesCount))
                         .font(Theme.Fonts.labelLarge)
@@ -115,8 +115,8 @@ public struct ParentCommentView: View {
                     onReportTap()
                 }, label: {
                     comments.abuseFlagged
-                    ? CoreAssets.reported.swiftUIImage
-                    : CoreAssets.report.swiftUIImage
+                    ? CoreAssets.Assets.reported.swiftUIImage
+                    : CoreAssets.Assets.report.swiftUIImage
                     Text(comments.abuseFlagged
                          ? DiscussionLocalization.Comment.unreport
                          : DiscussionLocalization.Comment.report)
