@@ -33,7 +33,7 @@ public struct AppReviewView: View {
             } else {
                 VStack(spacing: 20) {
                     if viewModel.state == .thanksForFeedback || viewModel.state == .thanksForVote {
-                        CoreAssets.favorite.swiftUIImage
+                        CoreAssets.Assets.favorite.swiftUIImage
                             .resizable()
                             .frame(width: isHorizontal ? 50 : 100,
                                    height: isHorizontal ? 50 : 100)

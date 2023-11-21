@@ -15,11 +15,11 @@ struct StarRatingView: View {
             ForEach(1 ..< 6) { index in
                 Group {
                     if index <= rating {
-                        CoreAssets.star.swiftUIImage
+                        CoreAssets.Assets.star.swiftUIImage
                             .resizable()
                             .frame(width: 48, height: 48)
                     } else {
-                        CoreAssets.starOutline.swiftUIImage
+                        CoreAssets.Assets.starOutline.swiftUIImage
                             .resizable()
                             .frame(width: 48, height: 48)
                             .foregroundColor(Theme.Colors.textPrimary)
