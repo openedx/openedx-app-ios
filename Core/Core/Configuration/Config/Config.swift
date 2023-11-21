@@ -35,7 +35,7 @@ private enum ConfigKeys: String {
 }
 
 public class Config {
-    public static let shared = Config()
+    let configFileName = "config"
     
     internal var properties: [String: Any] = [:]
     
@@ -43,15 +43,19 @@ public class Config {
         self.properties = properties
     }
     
-    private convenience init() {
+    public convenience init() {
         self.init(properties: [:])
         loadAndParseConfig()
     }
     
     private func loadAndParseConfig() {
-        guard let path = Bundle.main.path(forResource: "config", ofType: "plist"),
+        guard let path = Bundle.main.path(forResource: configFileName, ofType: "plist"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
-              let dict = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else { return }
+              let dict = try? PropertyListSerialization.propertyList(
+                from: data,
+                options: [],
+                format: nil) as? [String: Any] 
+        else { return }
         
         properties = dict
     }

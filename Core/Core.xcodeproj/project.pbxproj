@@ -374,8 +374,8 @@
 		0727876E28D233EC002E9142 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				DBF6F2422B014AF30098414B /* Config */,
 				CFC84955299FAC4D0055E497 /* Combine */,
-				CFC84951299F8B890055E497 /* Debounce.swift */,
 				0770DE1828D0847D006D8A5D /* BaseRouter.swift */,
 				0231CDBD2922422D00032416 /* CSSInjector.swift */,
 				02280F5A294B4E6F0032823A /* Connectivity.swift */,
@@ -475,6 +475,7 @@
 				0770DE5D28D0B209006D8A5D /* Localizable.strings */,
 				0770DE5128D0ADFF006D8A5D /* Assets.xcassets */,
 				071009CF28D1E3A600344290 /* Constants.swift */,
+				DBFB74502B0CA508004370F9 /* Tests */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -567,7 +568,7 @@
 		CFC84955299FAC4D0055E497 /* Combine */ = {
 			isa = PBXGroup;
 			children = (
-				DBF6F2422B014AF30098414B /* Config */,
+				CFC84951299F8B890055E497 /* Debounce.swift */,
 			);
 			path = Combine;
 			sourceTree = "<group>";
@@ -579,9 +580,16 @@
 				DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */,
 				DBF6F2492B0380E00098414B /* FeaturesConfig.swift */,
 				DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */,
-				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		DBFB74502B0CA508004370F9 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		F1620A3A2C8B0699EAA61B57 /* Frameworks */ = {

@@ -118,7 +118,7 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(ConfigProtocol.self) { _ in
-            Config.shared
+            Config()
         }.inObjectScope(.container)
         
         container.register(CSSInjector.self) { r in

@@ -15,7 +15,7 @@ class ConfigTests: XCTestCase {
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
         "TOKEN_TYPE": "JWT",
-        "WHATS_NEW_ENABLED": false,
+        "WHATS_NEW_ENABLED": true,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos"
@@ -42,13 +42,13 @@ class ConfigTests: XCTestCase {
         XCTAssertEqual(config.oAuthClientId, "oauth_client_id")
         XCTAssertEqual(config.feedbackEmail, "example@mail.com")
         XCTAssertEqual(config.tokenType.rawValue, "JWT")
-        XCTAssertFalse(config.features.whatNewEnabled)
+        XCTAssertTrue(config.features.whatNewEnabled)
     }
     
     func testFeaturesConfigInitialization() {
         let config = Config(properties: properties)
         
-        XCTAssertFalse(config.features.whatNewEnabled)
+        XCTAssertTrue(config.features.whatNewEnabled)
     }
     
     func testAgreementConfigInitialization() {
