@@ -12,10 +12,10 @@ import Profile
 class MainScreenViewModel: ObservableObject {
     
     private let analytics: MainScreenAnalytics
-    let config: Config
+    let config: ConfigProtocol
     let profileInteractor: ProfileInteractorProtocol
     
-    init(analytics: MainScreenAnalytics, config: Config, profileInteractor: ProfileInteractorProtocol) {
+    init(analytics: MainScreenAnalytics, config: ConfigProtocol, profileInteractor: ProfileInteractorProtocol) {
         self.analytics = analytics
         self.config = config
         self.profileInteractor = profileInteractor

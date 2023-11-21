@@ -31,7 +31,7 @@ public class SignInViewModel: ObservableObject {
     }
     
     let router: AuthorizationRouter
-    private let config: Config
+    private let config: ConfigProtocol
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
@@ -39,7 +39,7 @@ public class SignInViewModel: ObservableObject {
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
-        config: Config,
+        config: ConfigProtocol,
         analytics: AuthorizationAnalytics,
         validator: Validator
     ) {

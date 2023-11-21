@@ -12,10 +12,10 @@ public struct UpdateRequiredView: View {
     
     @Environment (\.isHorizontal) private var isHorizontal
     private let router: DiscoveryRouter
-    private let config: Config
+    private let config: ConfigProtocol
     private let showAccountLink: Bool
     
-    public init(router: DiscoveryRouter, config: Config, showAccountLink: Bool = true) {
+    public init(router: DiscoveryRouter, config: ConfigProtocol, showAccountLink: Bool = true) {
         self.router = router
         self.config = config
         self.showAccountLink = showAccountLink
