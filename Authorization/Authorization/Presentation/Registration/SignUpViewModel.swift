@@ -51,7 +51,11 @@ public class SignUpViewModel: ObservableObject {
         self.cssInjector = cssInjector
         self.validator = validator
     }
-    
+
+    var socialLoginEnabled: Bool {
+        config.features.socialLoginEnabled
+    }
+
     private func showErrors(errors: [String: String]) -> Bool {
         var containsError = false
         errors.forEach { key, value in

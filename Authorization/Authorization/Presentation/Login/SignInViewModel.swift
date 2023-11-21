@@ -39,7 +39,7 @@ public class SignInViewModel: ObservableObject {
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
-    
+
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
@@ -53,7 +53,11 @@ public class SignInViewModel: ObservableObject {
         self.analytics = analytics
         self.validator = validator
     }
-    
+
+    var socialLoginEnabled: Bool {
+        config.features.socialLoginEnabled
+    }
+
     @MainActor
     func login(username: String, password: String) async {
         guard validator.isValidEmail(username) else {

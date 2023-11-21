@@ -82,7 +82,7 @@ enum AuthEndpoint: EndPointType {
                 "client_id": clientId,
                 "token_type": "jwt",
                 "access_token": externalToken,
-                "asymmetric_jwt": "true"
+                "asymmetric_jwt": true
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
         case .getUserInfo:
