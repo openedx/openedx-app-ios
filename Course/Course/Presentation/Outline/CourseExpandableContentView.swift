@@ -29,24 +29,24 @@ struct CourseExpandableContentView: View {
     }
 
     private var content: some View {
-        ForEach(course.childs, id: \.id) { chapter in
-            section(chapter: chapter)
+        ForEach(Array(course.childs.enumerated()), id: \.element.id) { index, chapter in
+            section(chapter: chapter, numberOfSection: index)
         }
     }
 
     @ViewBuilder
-    private func section(chapter: CourseChapter) -> some View {
-        header(chapter: chapter)
+    private func section(chapter: CourseChapter, numberOfSection: Int) -> some View {
+        header(chapter: chapter, numberOfSection: numberOfSection)
         sectionContent(chapter: chapter)
     }
 
-    private func header(chapter: CourseChapter) -> some View {
+    private func header(chapter: CourseChapter, numberOfSection: Int) -> some View {
         Text(chapter.displayName)
             .font(Theme.Fonts.titleMedium)
             .multilineTextAlignment(.leading)
             .foregroundColor(Theme.Colors.textSecondary)
             .padding(.horizontal, 24)
-            .padding(.top, 40)
+            .padding(.top, numberOfSection == 0 ? 5 : 40)
     }
 
     private func sectionContent(chapter: CourseChapter) -> some View {
