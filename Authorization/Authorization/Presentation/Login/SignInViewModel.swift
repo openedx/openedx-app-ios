@@ -55,7 +55,7 @@ public class SignInViewModel: ObservableObject {
     }
 
     var socialLoginEnabled: Bool {
-        config.features.socialLoginEnabled
+        config.socialLoginEnabled
     }
 
     @MainActor

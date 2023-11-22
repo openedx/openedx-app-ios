@@ -11,6 +11,7 @@ import AuthenticationServices
 import FacebookLogin
 import GoogleSignIn
 import MSAL
+import Swinject
 
 enum Socials {
     case apple(AppleCredentials)
@@ -37,6 +38,8 @@ final public class SocialSignViewModel: ObservableObject {
     private var topViewController: UIViewController? {
         UIApplication.topViewController()
     }
+
+    private(set) lazy var config = Container.shared.resolve(ConfigProtocol.self)!
 
     // MARK: - Public Intens -
 

@@ -13,8 +13,11 @@ public protocol ConfigProtocol {
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
     var appStoreLink: String { get }
+    var socialLoginEnabled: Bool { get }
     var agreement: AgreementConfig { get }
     var firebase: FirebaseConfig { get }
+    var facebook: FacebookConfig { get }
+    var microsoft: MicrosoftConfig { get }
     var features: FeaturesConfig { get }
 }
 
@@ -126,6 +129,14 @@ extension Config: ConfigProtocol {
     
     public var appStoreLink: String {
         "itms-apps://itunes.apple.com/app/id\(appStoreId)?mt=8"
+    }
+
+    public var socialLoginEnabled: Bool {
+        features.socialLoginEnabled &&
+        (features.isAppleSigninEnabled ||
+        facebook.enabled ||
+        microsoft.enabled ||
+        firebase.enabled)
     }
 }
 

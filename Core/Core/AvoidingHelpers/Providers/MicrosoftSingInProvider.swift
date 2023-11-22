@@ -7,6 +7,7 @@
 
 import Foundation
 import MSAL
+import Swinject
 
 public typealias MSLoginCompletionHandler = (MSALAccount?, String?, Error?) -> Void
 
@@ -56,9 +57,11 @@ public final class MicrosoftSingInProvider {
         }
     }
 
-
     private func createClientApplication() throws -> MSALPublicClientApplication {
-        let configuration = MSALPublicClientApplicationConfig(clientId: "")
+        guard let config = Container.shared.resolve(ConfigProtocol.self), let appID =  config.microsoft.appID else {
+            throw CustomError.error(text: "Configuration error")
+        }
+        let configuration = MSALPublicClientApplicationConfig(clientId: appID)
 
         do {
             return try MSALPublicClientApplication(configuration: configuration)

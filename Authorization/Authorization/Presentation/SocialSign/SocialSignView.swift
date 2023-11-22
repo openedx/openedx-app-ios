@@ -59,31 +59,39 @@ struct SocialSignView: View {
 
     private var buttonsView: some View {
         Group {
-            LabelButton(
-                image: CoreAssets.iconGoogleWhite.swiftUIImage,
-                title: "\(title) \(AuthLocalization.google)",
-                textColor: .black,
-                backgroundColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.00).sui,
-                action: viewModel.signInWithGoogle
-            )
-            LabelButton(
-                image: CoreAssets.iconFacebookWhite.swiftUIImage,
-                title: "\(title) \(AuthLocalization.facebook)",
-                backgroundColor: UIColor(red: 0.09, green: 0.46, blue: 0.95, alpha: 1.00).sui,
-                action: viewModel.signInWithFacebook
-            )
-            LabelButton(
-                image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
-                title: "\(title) \(AuthLocalization.microsoft)",
-                backgroundColor: UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1.00).sui,
-                action: viewModel.signInWithMicrosoft
-            )
-            LabelButton(
-                image: CoreAssets.iconApple.swiftUIImage,
-                title: "\(title) \(AuthLocalization.apple)",
-                backgroundColor: .black,
-                action: viewModel.signInWithApple
-            )
+            if viewModel.config.firebase.enabled {
+                LabelButton(
+                    image: CoreAssets.iconGoogleWhite.swiftUIImage,
+                    title: "\(title) \(AuthLocalization.google)",
+                    textColor: .black,
+                    backgroundColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.00).sui,
+                    action: viewModel.signInWithGoogle
+                )
+            }
+            if viewModel.config.facebook.enabled {
+                LabelButton(
+                    image: CoreAssets.iconFacebookWhite.swiftUIImage,
+                    title: "\(title) \(AuthLocalization.facebook)",
+                    backgroundColor: UIColor(red: 0.09, green: 0.46, blue: 0.95, alpha: 1.00).sui,
+                    action: viewModel.signInWithFacebook
+                )
+            }
+            if viewModel.config.microsoft.enabled {
+                LabelButton(
+                    image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
+                    title: "\(title) \(AuthLocalization.microsoft)",
+                    backgroundColor: UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1.00).sui,
+                    action: viewModel.signInWithMicrosoft
+                )
+                if viewModel.config.features.isAppleSigninEnabled {
+                    LabelButton(
+                        image: CoreAssets.iconApple.swiftUIImage,
+                        title: "\(title) \(AuthLocalization.apple)",
+                        backgroundColor: .black,
+                        action: viewModel.signInWithApple
+                    )
+                }
+            }
         }
     }
 }

@@ -29,7 +29,7 @@ enum AnalyticsSource: String {
     case none
 }
 
-public class FirebaseConfig: NSObject {
+public final class FirebaseConfig: NSObject {
     public var enabled: Bool = false
     public var cloudMessagingEnabled: Bool = false
     public let apiKey: String?
@@ -97,9 +97,9 @@ public class FirebaseConfig: NSObject {
     }
 }
 
-private let key = "FIREBASE"
+private let firebaseKey = "FIREBASE"
 extension Config {
     public var firebase: FirebaseConfig {
-        return FirebaseConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
+        FirebaseConfig(dictionary: self[firebaseKey] as? [String: AnyObject] ?? [:])
     }
 }
