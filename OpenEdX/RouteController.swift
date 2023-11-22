@@ -42,8 +42,7 @@ class RouteController: UIViewController {
     }
     
     private func showStartupScreen() {
-        let config = Container.shared.resolve(Config.self)!
-        if config.startupScreenEnabled {
+        if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
             let controller = UIHostingController(
                 rootView: StartupView(viewModel: diContainer.resolve(StartupViewModel.self)!))
             navigation.viewControllers = [controller]

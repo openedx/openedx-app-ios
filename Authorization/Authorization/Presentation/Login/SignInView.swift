@@ -30,9 +30,8 @@ public struct SignInView: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
-            
-            let config = Container.shared.resolve(Config.self)!
-            if config.startupScreenEnabled {
+            let config = Container.shared.resolve(ConfigProtocol.self)
+            if config?.features.startupScreenEnabled ?? false {
                 VStack {
                     Button(action: { viewModel.router.back() }, label: {
                         CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
@@ -100,7 +99,7 @@ public struct SignInView: View {
                                         .fill(Theme.Colors.textInputStroke)
                                 )
                             HStack {
-                                if !config.startupScreenEnabled {
+                                if !(config?.features.startupScreenEnabled ?? true) {
                                     Button(AuthLocalization.SignIn.registerBtn) {
                                         viewModel.trackSignUpClicked()
                                         viewModel.router.showRegisterScreen()

@@ -16,7 +16,6 @@ public struct DiscoveryView: View {
     @State private var isRefreshing: Bool = false
     
     private var fromStartupScreen: Bool = false
-    private var router: DiscoveryRouter
     
     @Environment (\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
