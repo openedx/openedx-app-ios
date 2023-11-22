@@ -10,10 +10,12 @@ import Core
 
 public struct SearchView: View {
     
+    @FocusState
+    private var focused: Bool
+    
     @ObservedObject
     private var viewModel: SearchViewModel<RunLoop>
     @State private var animated: Bool = false
-    @State private var becomeFirstResponderRunOnce = false
     
     public init(viewModel: SearchViewModel<RunLoop>, searchQuery: String? = nil) {
         self.viewModel = viewModel
@@ -40,6 +42,7 @@ public struct SearchView: View {
                             ? Theme.Colors.accentColor
                             : Theme.Colors.textPrimary
                         )
+                        .accessibilityHidden(true)
                     
                     TextField(
                         !viewModel.isSearchActive
@@ -49,13 +52,10 @@ public struct SearchView: View {
                         onEditingChanged: { editing in
                             viewModel.isSearchActive = editing
                         }
-                    )
-                    .introspect(.textField, on: .iOS(.v14, .v15, .v16, .v17), customize: { textField in
-                        if !becomeFirstResponderRunOnce {
-                            textField.becomeFirstResponder()
-                            self.becomeFirstResponderRunOnce = true
+                    ).focused($focused)
+                        .onAppear {
+                            self.focused = true
                         }
-                    })
                     .foregroundColor(Theme.Colors.textPrimary)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -175,6 +175,8 @@ public struct SearchView: View {
                 .font(Theme.Fonts.titleSmall)
                 .foregroundColor(Theme.Colors.textPrimary)
         }.listRowBackground(Color.clear)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(DiscoveryLocalization.Search.title + searchDescription(viewModel: viewModel))
     }
     
     private func searchDescription(viewModel: SearchViewModel<RunLoop>) -> String {

@@ -61,6 +61,8 @@ public struct StyledButton: View {
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                     .foregroundColor(isTransparent ? .white : borderColor)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
     }
 }
 
