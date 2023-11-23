@@ -69,9 +69,27 @@
 "WEBVIEW.ALERT.OK" = "Так";
 "WEBVIEW.ALERT.CANCEL" = "Скасувати";
 
+
+"REVIEW.VOTE_TITLE" = "Вам подобається Open edX?";
+"REVIEW.VOTE_DESCRIPTION" = "Ваш відгук важливий для нас. Можливо, ви візьмете хвилинку, щоб оцінити додаток, натиснувши на зірку нижче? Дякуємо за вашу підтримку!";
+"REVIEW.FEEDBACK_TITLE" = "Залиште відгук";
+"REVIEW.FEEDBACK_DESCRIPTION" = "Нам шкода чути, що ваше навчання мало деякі проблеми. Ми вдячні за будь-який відгук.";
+"REVIEW.THANKS_FOR_VOTE_TITLE" = "Дякуємо";
+"REVIEW.THANKS_FOR_VOTE_DESCRIPTION" = "Дякуємо, що поділилися своїми враженнями з нами. Бажаєте залишити свій відгук про цей додаток для інших користувачів в магазині додатків?";
+"REVIEW.THANKS_FOR_FEEDBACK_TITLE" = "Дякуємо";
+"REVIEW.THANKS_FOR_FEEDBACK_DESCRIPTION" = "Ми отримали ваш відгук і використовуватимемо його для покращення вашого навчального досвіду в майбутньому!";
+"REVIEW.BETTER" = "Що можна було б зробити краще?";
+"REVIEW.NOT_NOW" = "Не зараз";
+
+"REVIEW.BUTTON.SUBMIT" = "Надіслати";
+"REVIEW.BUTTON.SHARE_FEEDBACK" = "Поділитися відгуком";
+"REVIEW.BUTTON.RATE_US" = "Оцінити нас";
+"REVIEW.EMAIL.TITLE" = "Виберіть поштового клієнта:";
+
 "COURSE_DATES.TODAY" = "Today";
 "COURSE_DATES.COMPLETED" = "Completed";
 "COURSE_DATES.PAST_DUE" = "Past due";
 "COURSE_DATES.DUE_NEXT" = "Due next";
 "COURSE_DATES.UNRELEASED" = "Unreleased";
 "COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
+

@@ -35,7 +35,7 @@ public class ProfileViewModel: ObservableObject {
     @Published var latestVersion: String = ""
     
     let router: ProfileRouter
-    let config: Config
+    let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
     
     private let interactor: ProfileInteractorProtocol
@@ -45,7 +45,7 @@ public class ProfileViewModel: ObservableObject {
         interactor: ProfileInteractorProtocol,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
-        config: Config,
+        config: ConfigProtocol,
         connectivity: ConnectivityProtocol
     ) {
         self.interactor = interactor

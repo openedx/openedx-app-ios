@@ -31,12 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         
-        if BuildConfiguration.shared.firebaseOptions.apiKey != "" {
-            FirebaseApp.configure(options: BuildConfiguration.shared.firebaseOptions)
+        initDI()
+        
+        if let config = Container.shared.resolve(ConfigProtocol.self),
+           let configuration = config.firebase.firebaseOptions {
+            FirebaseApp.configure(options: configuration)
             Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
         }
-        
-        initDI()
         
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)

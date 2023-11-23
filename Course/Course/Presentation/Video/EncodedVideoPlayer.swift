@@ -53,7 +53,7 @@ public struct EncodedVideoPlayer: View {
     
     public var body: some View {
         ZStack {
-            GeometryReader {reader in
+            GeometryReader { reader in
                 VStack {
                     HStack {
                         VStack {
@@ -70,9 +70,13 @@ public struct EncodedVideoPlayer: View {
                                             isViewedOnce = true
                                         }
                                     }
+                                    if progress == 1 {
+                                        viewModel.router.presentAppReview()
+                                    }
                                 }, seconds: { seconds in
                                     currentTime = seconds
                                 })
+                            .statusBarHidden(false)
                             .aspectRatio(16 / 9, contentMode: .fit)
                             .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
                             .cornerRadius(12)

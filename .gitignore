@@ -111,3 +111,8 @@ xcode-frameworks
 
 vendor/
 .bundle/
+
+venv/
+Podfile.lock
+config_settings.yaml
+default_config/

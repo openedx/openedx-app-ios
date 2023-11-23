@@ -118,7 +118,7 @@ public struct ProfileView: View {
                                         .foregroundColor(Theme.Colors.textSecondary)
                                 }
                                 
-                                if let tos = viewModel.config.termsOfUse {
+                                if let tos = viewModel.config.agreement.tosURL {
                                     Button(action: {
                                         viewModel.trackCookiePolicyClicked()
                                         UIApplication.shared.open(tos)
@@ -136,7 +136,7 @@ public struct ProfileView: View {
                                         .foregroundColor(Theme.Colors.textSecondary)
                                 }
                                 
-                                if let privacy = viewModel.config.privacyPolicy {
+                                if let privacy = viewModel.config.agreement.privacyPolicyURL {
                                     Button(action: {
                                         viewModel.trackPrivacyPolicyClicked()
                                         UIApplication.shared.open(privacy)

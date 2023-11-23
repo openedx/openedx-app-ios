@@ -29,7 +29,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     let router: CourseRouter
-    let config: Config
+    let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
     
     let isActive: Bool?
@@ -47,7 +47,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         authInteractor: AuthInteractorProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
-        config: Config,
+        config: ConfigProtocol,
         connectivity: ConnectivityProtocol,
         manager: DownloadManagerProtocol,
         isActive: Bool?,

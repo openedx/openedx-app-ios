@@ -10,9 +10,9 @@ import Core
 
 public struct UpdateNotificationView: View {
     
-    private let config: Config
+    private let config: ConfigProtocol
     
-    public init(config: Config) {
+    public init(config: ConfigProtocol) {
         self.config = config
     }
     

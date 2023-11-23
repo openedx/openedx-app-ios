@@ -24,7 +24,7 @@ class ScreenAssembly: Assembly {
             AuthRepository(
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(Config.self)!
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
         container.register(AuthInteractorProtocol.self) { r in
@@ -37,7 +37,7 @@ class ScreenAssembly: Assembly {
         container.register(MainScreenViewModel.self) { r in
             MainScreenViewModel(
                 analytics: r.resolve(MainScreenAnalytics.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 profileInteractor: r.resolve(ProfileInteractorProtocol.self)!
             )
         }
@@ -47,7 +47,7 @@ class ScreenAssembly: Assembly {
             SignInViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!
             )
@@ -57,7 +57,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 validator: r.resolve(Validator.self)!
             )
@@ -80,7 +80,7 @@ class ScreenAssembly: Assembly {
             DiscoveryRepository(
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 persistence: r.resolve(DiscoveryPersistenceProtocol.self)!
             )
         }
@@ -92,7 +92,7 @@ class ScreenAssembly: Assembly {
         container.register(DiscoveryViewModel.self) { r in
             DiscoveryViewModel(
                 router: r.resolve(DiscoveryRouter.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DiscoveryAnalytics.self)!
@@ -118,7 +118,7 @@ class ScreenAssembly: Assembly {
             DashboardRepository(
                 api: r.resolve(API.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 persistence: r.resolve(DashboardPersistenceProtocol.self)!
             )
         }
@@ -143,7 +143,7 @@ class ScreenAssembly: Assembly {
                 storage: r.resolve(AppStorage.self)!,
                 coreDataHandler: r.resolve(CoreDataHandlerProtocol.self)!,
                 downloadManager: r.resolve(DownloadManagerProtocol.self)!,
-                config: r.resolve(Config.self)!
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
         container.register(ProfileInteractorProtocol.self) { r in
@@ -156,7 +156,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
@@ -194,7 +194,7 @@ class ScreenAssembly: Assembly {
             CourseRepository(
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 persistence: r.resolve(CoursePersistenceProtocol.self)!
             )
         }
@@ -208,7 +208,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 analytics: r.resolve(CourseAnalytics.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
@@ -223,7 +223,7 @@ class ScreenAssembly: Assembly {
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 analytics: r.resolve(CourseAnalytics.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 manager: r.resolve(DownloadManagerProtocol.self)!,
                 isActive: isActive,
@@ -267,7 +267,7 @@ class ScreenAssembly: Assembly {
         
         container.register(WebUnitViewModel.self) { r in
             WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!,
-                             config: r.resolve(Config.self)!)
+                             config: r.resolve(ConfigProtocol.self)!)
         }
         
         container.register(
@@ -326,7 +326,7 @@ class ScreenAssembly: Assembly {
             DiscussionRepository(
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!
             )
         }
@@ -343,7 +343,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 analytics: r.resolve(DiscussionAnalytics.self)!,
-                config: r.resolve(Config.self)!
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
         
@@ -360,7 +360,7 @@ class ScreenAssembly: Assembly {
             PostsViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(Config.self)!
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
         
@@ -368,7 +368,7 @@ class ScreenAssembly: Assembly {
             ThreadViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 postStateSubject: subject
             )
         }
@@ -377,7 +377,7 @@ class ScreenAssembly: Assembly {
             ResponsesViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(Config.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 threadStateSubject: subject
             )
         }
@@ -386,7 +386,7 @@ class ScreenAssembly: Assembly {
             CreateNewThreadViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(Config.self)!
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
     }

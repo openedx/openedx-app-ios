@@ -20,12 +20,12 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
     
     private let api: API
     private let appStorage: CoreStorage
-    private let config: Config
+    private let config: ConfigProtocol
     private let persistence: DiscoveryPersistenceProtocol
     
     public init(api: API,
                 appStorage: CoreStorage,
-                config: Config,
+                config: ConfigProtocol,
                 persistence: DiscoveryPersistenceProtocol) {
         self.api = api
         self.appStorage = appStorage

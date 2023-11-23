@@ -30,14 +30,14 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     private var storage: CoreStorage & ProfileStorage
     private let downloadManager: DownloadManagerProtocol
     private let coreDataHandler: CoreDataHandlerProtocol
-    private let config: Config
+    private let config: ConfigProtocol
     
     public init(
         api: API,
         storage: CoreStorage & ProfileStorage,
         coreDataHandler: CoreDataHandlerProtocol,
         downloadManager: DownloadManagerProtocol,
-        config: Config
+        config: ConfigProtocol
     ) {
         self.api = api
         self.storage = storage
