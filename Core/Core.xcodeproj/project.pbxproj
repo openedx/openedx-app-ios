@@ -132,7 +132,7 @@
 		BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */; };
 		BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */; };
 		BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */; };
-		BAFB99842B0E282E007D09F9 /* MicrosoftKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99832B0E282E007D09F9 /* MicrosoftKeys.swift */; };
+		BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */; };
 		C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
@@ -283,7 +283,7 @@
 		BA8FA66F2AD59EA300EA029A /* MicrosoftSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftSingInProvider.swift; sourceTree = "<group>"; };
 		BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConfig.swift; sourceTree = "<group>"; };
-		BAFB99832B0E282E007D09F9 /* MicrosoftKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftKeys.swift; sourceTree = "<group>"; };
+		BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftConfig.swift; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
@@ -679,7 +679,7 @@
 				DBF6F2492B0380E00098414B /* FeaturesConfig.swift */,
 				DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */,
 				BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */,
-				BAFB99832B0E282E007D09F9 /* MicrosoftKeys.swift */,
+				BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -960,7 +960,7 @@
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
 				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
 				0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */,
-				BAFB99842B0E282E007D09F9 /* MicrosoftKeys.swift in Sources */,
+				BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,

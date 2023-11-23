@@ -1,5 +1,5 @@
 //
-//  MicrosoftKeys.swift
+//  MicrosoftConfig.swift
 //  Core
 //
 //  Created by Eugene Yatsenko on 22.11.2023.
