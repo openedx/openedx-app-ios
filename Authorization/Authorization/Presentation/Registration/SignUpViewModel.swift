@@ -53,11 +53,7 @@ public class SignUpViewModel: ObservableObject {
     }
 
     var socialLoginEnabled: Bool {
-        config.features.socialLoginEnabled &&
-        config.features.isAppleSigninEnabled &&
-        config.facebook.enabled &&
-        config.microsoft.enabled &&
-        config.firebase.enabled
+        config.socialLoginEnabled
     }
 
     private func showErrors(errors: [String: String]) -> Bool {

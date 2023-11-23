@@ -134,9 +134,9 @@ extension Config: ConfigProtocol {
     public var socialLoginEnabled: Bool {
         features.socialLoginEnabled &&
         (features.isAppleSigninEnabled ||
-        facebook.enabled ||
-        microsoft.enabled ||
-        firebase.enabled)
+        facebook.facebooSignInEnable ||
+        microsoft.microsoftSignInEnable ||
+        firebase.googleSignInEnabled)
     }
 }
 

@@ -10,11 +10,13 @@ import Foundation
 private enum MicrosoftKeys: String {
     case enabled = "ENABLED"
     case appID = "APP_ID"
+    case microsoftSignInEnable = "MICROSOFT_SIGNIN_ENABLED"
 }
 
 public final class MicrosoftConfig: NSObject {
     public var enabled: Bool = false
     public var appID: String?
+    public var microsoftSignInEnable: Bool = false
 
     public var requiredKeysAvailable: Bool {
         return appID != nil
@@ -24,6 +26,7 @@ public final class MicrosoftConfig: NSObject {
         appID = dictionary[MicrosoftKeys.appID.rawValue] as? String
         super.init()
         enabled = requiredKeysAvailable && dictionary[MicrosoftKeys.enabled.rawValue] as? Bool == true
+        microsoftSignInEnable = enabled && dictionary[MicrosoftKeys.microsoftSignInEnable.rawValue] as? Bool == true
     }
 }
 

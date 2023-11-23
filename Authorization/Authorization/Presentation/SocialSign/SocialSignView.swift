@@ -59,7 +59,7 @@ struct SocialSignView: View {
 
     private var buttonsView: some View {
         Group {
-            if viewModel.config.firebase.enabled {
+            if viewModel.config.firebase.googleSignInEnabled {
                 LabelButton(
                     image: CoreAssets.iconGoogleWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.google)",
@@ -67,30 +67,38 @@ struct SocialSignView: View {
                     backgroundColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.00).sui,
                     action: viewModel.signInWithGoogle
                 )
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.config.facebook.enabled {
+            if viewModel.config.facebook.facebooSignInEnable {
                 LabelButton(
                     image: CoreAssets.iconFacebookWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.facebook)",
                     backgroundColor: UIColor(red: 0.09, green: 0.46, blue: 0.95, alpha: 1.00).sui,
                     action: viewModel.signInWithFacebook
                 )
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.config.microsoft.enabled {
+            if viewModel.config.microsoft.microsoftSignInEnable {
                 LabelButton(
                     image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.microsoft)",
                     backgroundColor: UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1.00).sui,
                     action: viewModel.signInWithMicrosoft
                 )
-                if viewModel.config.features.isAppleSigninEnabled {
-                    LabelButton(
-                        image: CoreAssets.iconApple.swiftUIImage,
-                        title: "\(title) \(AuthLocalization.apple)",
-                        backgroundColor: .black,
-                        action: viewModel.signInWithApple
-                    )
-                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(title) \(AuthLocalization.microsoft)")
+            }
+            if viewModel.config.features.isAppleSigninEnabled {
+                LabelButton(
+                    image: CoreAssets.iconApple.swiftUIImage,
+                    title: "\(title) \(AuthLocalization.apple)",
+                    backgroundColor: .black,
+                    action: viewModel.signInWithApple
+                )
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(title) \(AuthLocalization.apple)")
             }
         }
     }

@@ -21,6 +21,7 @@ private enum FirebaseKeys: String {
     case projectID = "PROJECT_ID"
     case reversedClientID = "REVERSED_CLIENT_ID"
     case storageBucket = "STORAGE_BUCKET"
+    case googleSignInEnabled = "GOOGLE_SIGNIN_ENABLED"
 }
 
 enum AnalyticsSource: String {
@@ -41,7 +42,8 @@ public final class FirebaseConfig: NSObject {
     public let projectID: String?
     public let reversedClientID: String?
     public let storageBucket: String?
-    
+    public var googleSignInEnabled: Bool = false
+
     private let analyticsSource: AnalyticsSource
     
     public var requiredKeysAvailable: Bool {
@@ -65,6 +67,7 @@ public final class FirebaseConfig: NSObject {
         super.init()
         
         enabled = requiredKeysAvailable && dictionary[FirebaseKeys.enabled.rawValue] as? Bool == true
+        googleSignInEnabled = enabled && dictionary[FirebaseKeys.googleSignInEnabled.rawValue] as? Bool == true
         let cloudMessagingEnabled = dictionary[FirebaseKeys.cloudMessagingEnabled.rawValue] as? Bool ?? false
         self.cloudMessagingEnabled = enabled && cloudMessagingEnabled
     }

@@ -28,3 +28,11 @@
 "FORGOT.REQUEST" = "Відновити пароль";
 "FORGOT.CHECK_TITLE" = "Перевірте свою електронну пошту";
 "FORGOT.CHECK_Description" = "Ми надіслали інструкції щодо відновлення пароля на вашу електронну пошту ";
+
+"SIGN_IN_WITH" = "Sign in with";
+"SIGN_IN_REGISTER" = "Register with";
+"APPLE" = "Apple";
+"GOOGLE" = "Google";
+"FACEBOOK" = "Facebook";
+"MICROSOFT" = "Microsoft";
+"OR" = "Or";
