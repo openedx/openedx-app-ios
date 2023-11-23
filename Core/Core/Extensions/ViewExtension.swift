@@ -263,7 +263,7 @@ public extension Image {
             .scaledToFit()
             .frame(height: 24)
             .padding(.horizontal, 8)
-            .padding(.top, topPadding)
+            .offset(y: topPadding)
             .foregroundColor(color)
     }
 }

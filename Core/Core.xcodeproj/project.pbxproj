@@ -497,6 +497,7 @@
 			children = (
 				0770DE5328D0B00C006D8A5D /* swiftgen.yml */,
 				0770DE0A28D07831006D8A5D /* Core */,
+				078525AC2B0CBFF4007B4521 /* CoreTests */,
 				0770DE0928D07831006D8A5D /* Products */,
 				C9DFE47E699CFFA85A77AF2C /* Pods */,
 				F1620A3A2C8B0699EAA61B57 /* Frameworks */,
@@ -528,7 +529,6 @@
 				0770DE5D28D0B209006D8A5D /* Localizable.strings */,
 				0770DE5128D0ADFF006D8A5D /* Assets.xcassets */,
 				071009CF28D1E3A600344290 /* Constants.swift */,
-				DBFB74502B0CA508004370F9 /* Tests */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -614,6 +614,22 @@
 			path = ScrollSlidingTabBar;
 			sourceTree = "<group>";
 		};
+		078525AC2B0CBFF4007B4521 /* CoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				078525AD2B0CC004007B4521 /* Configuration */,
+			);
+			path = CoreTests;
+			sourceTree = "<group>";
+		};
+		078525AD2B0CC004007B4521 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		C9DFE47E699CFFA85A77AF2C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -647,14 +663,6 @@
 				DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */,
 			);
 			path = Config;
-			sourceTree = "<group>";
-		};
-		DBFB74502B0CA508004370F9 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
-			);
-			path = Tests;
 			sourceTree = "<group>";
 		};
 		F1620A3A2C8B0699EAA61B57 /* Frameworks */ = {
