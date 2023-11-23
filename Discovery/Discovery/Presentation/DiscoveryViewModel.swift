@@ -29,14 +29,14 @@ public class DiscoveryViewModel: ObservableObject {
     }
     
     let router: DiscoveryRouter
-    let config: Config
+    let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     
     public init(
         router: DiscoveryRouter,
-        config: Config,
+        config: ConfigProtocol,
         interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
         analytics: DiscoveryAnalytics

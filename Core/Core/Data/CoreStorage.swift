@@ -11,18 +11,24 @@ public protocol CoreStorage {
     var accessToken: String? {get set}
     var refreshToken: String? {get set}
     var cookiesDate: String? {get set}
+    var reviewLastShownVersion: String? {get set}
+    var lastReviewDate: Date? {get set}
     var user: DataLayer.User? {get set}
     var userSettings: UserSettings? {get set}
     func clear()
 }
 
-public struct CoreStorageMock: CoreStorage {
-    public var accessToken: String? = nil
-    public var refreshToken: String? = nil
-    public var cookiesDate: String? = nil
-    public var user: DataLayer.User? = nil
-    public var userSettings: UserSettings?  = nil
+#if DEBUG
+public class CoreStorageMock: CoreStorage {
+    public var accessToken: String?
+    public var refreshToken: String?
+    public var cookiesDate: String?
+    public var reviewLastShownVersion: String?
+    public var lastReviewDate: Date?
+    public var user: DataLayer.User?
+    public var userSettings: UserSettings?
     public func clear() {}
     
     public init() {}
 }
+#endif

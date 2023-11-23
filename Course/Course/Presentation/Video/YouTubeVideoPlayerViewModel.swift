@@ -103,9 +103,13 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                     if !isViewedOnce {
                         Task {
                             await self.blockCompletionRequest()
+                           
                         }
                         isViewedOnce = true
                     }
+                }
+                if (time / duration) >= 0.999 {
+                    self.router.presentAppReview()
                 }
             }
         }).store(in: &subscription)

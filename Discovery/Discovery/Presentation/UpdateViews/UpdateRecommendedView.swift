@@ -12,9 +12,9 @@ public struct UpdateRecommendedView: View {
     
     @Environment (\.isHorizontal) private var isHorizontal
     private let router: DiscoveryRouter
-    private let config: Config
+    private let config: ConfigProtocol
     
-    public init(router: DiscoveryRouter, config: Config) {
+    public init(router: DiscoveryRouter, config: ConfigProtocol) {
         self.router = router
         self.config = config
     }
