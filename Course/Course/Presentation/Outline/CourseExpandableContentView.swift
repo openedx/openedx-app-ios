@@ -270,6 +270,8 @@ struct CourseExpandableContentView: View {
                 }
             }
         })
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(courseVertical.displayName)
         .padding(.leading, 40)
         .padding(.trailing, 28)
         .padding(.vertical, 14)
