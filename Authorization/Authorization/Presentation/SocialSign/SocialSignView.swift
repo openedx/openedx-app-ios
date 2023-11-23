@@ -70,7 +70,7 @@ struct SocialSignView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.config.facebook.facebooSignInEnable {
+            if viewModel.config.facebook.enabled {
                 LabelButton(
                     image: CoreAssets.iconFacebookWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.facebook)",
@@ -80,7 +80,7 @@ struct SocialSignView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.config.microsoft.microsoftSignInEnable {
+            if viewModel.config.microsoft.enabled {
                 LabelButton(
                     image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.microsoft)",
