@@ -24,7 +24,7 @@ public extension UINavigationController {
         duration: CFTimeInterval = 0.3
     ) {
         addTransition(transitionType: type, duration: duration)
-        pushViewController(vc, animated: false)
+        pushViewController(vc, animated: UIAccessibility.isVoiceOverRunning)
     }
     
     private func addTransition(

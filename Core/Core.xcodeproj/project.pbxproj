@@ -122,7 +122,6 @@
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
 		BA8B3A2F2AD546A700D25EF5 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */; };
 		BA8FA6612AD5974300EA029A /* AppleSingInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6602AD5974300EA029A /* AppleSingInProvider.swift */; };
-		BA8FA6642AD597DC00EA029A /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6632AD597DC00EA029A /* CustomError.swift */; };
 		BA8FA6682AD59A5700EA029A /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6672AD59A5700EA029A /* LabelButton.swift */; };
 		BA8FA66A2AD59B5500EA029A /* GoogleSingInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6692AD59B5500EA029A /* GoogleSingInProvider.swift */; };
 		BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */; };
@@ -133,6 +132,7 @@
 		BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */; };
 		BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */; };
 		BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */; };
+		BAFB998E2B0F70F1007D09F9 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB998D2B0F70F1007D09F9 /* CustomError.swift */; };
 		C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
@@ -276,7 +276,6 @@
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLog.swift; sourceTree = "<group>"; };
 		BA8FA6602AD5974300EA029A /* AppleSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSingInProvider.swift; sourceTree = "<group>"; };
-		BA8FA6632AD597DC00EA029A /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		BA8FA6672AD59A5700EA029A /* LabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
 		BA8FA6692AD59B5500EA029A /* GoogleSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSingInProvider.swift; sourceTree = "<group>"; };
 		BA8FA66D2AD59E7D00EA029A /* FacebookSingInProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookSingInProvider.swift; sourceTree = "<group>"; };
@@ -284,6 +283,7 @@
 		BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConfig.swift; sourceTree = "<group>"; };
 		BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftConfig.swift; sourceTree = "<group>"; };
+		BAFB998D2B0F70F1007D09F9 /* CustomError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 		027BD3A12909470F00392132 /* AvoidingHelpers */ = {
 			isa = PBXGroup;
 			children = (
-				BA8FA6622AD597D300EA029A /* Error */,
+				BAFB998C2B0F70F1007D09F9 /* Error */,
 				BA8FA65F2AD5973500EA029A /* Providers */,
 				027BD3A22909471900392132 /* Avoider */,
 				027BD3A32909471F00392132 /* Scroller */,
@@ -521,6 +521,7 @@
 			children = (
 				0770DE5328D0B00C006D8A5D /* swiftgen.yml */,
 				0770DE0A28D07831006D8A5D /* Core */,
+				078525AC2B0CBFF4007B4521 /* CoreTests */,
 				0770DE0928D07831006D8A5D /* Products */,
 				C9DFE47E699CFFA85A77AF2C /* Pods */,
 				F1620A3A2C8B0699EAA61B57 /* Frameworks */,
@@ -552,7 +553,6 @@
 				0770DE5D28D0B209006D8A5D /* Localizable.strings */,
 				0770DE5128D0ADFF006D8A5D /* Assets.xcassets */,
 				071009CF28D1E3A600344290 /* Constants.swift */,
-				DBFB74502B0CA508004370F9 /* Tests */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -628,6 +628,22 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		078525AC2B0CBFF4007B4521 /* CoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				078525AD2B0CC004007B4521 /* Configuration */,
+			);
+			path = CoreTests;
+			sourceTree = "<group>";
+		};
+		078525AD2B0CC004007B4521 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		BA8FA65F2AD5973500EA029A /* Providers */ = {
 			isa = PBXGroup;
 			children = (
@@ -639,10 +655,10 @@
 			path = Providers;
 			sourceTree = "<group>";
 		};
-		BA8FA6622AD597D300EA029A /* Error */ = {
+		BAFB998C2B0F70F1007D09F9 /* Error */ = {
 			isa = PBXGroup;
 			children = (
-				BA8FA6632AD597DC00EA029A /* CustomError.swift */,
+				BAFB998D2B0F70F1007D09F9 /* CustomError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -682,14 +698,6 @@
 				BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */,
 			);
 			path = Config;
-			sourceTree = "<group>";
-		};
-		DBFB74502B0CA508004370F9 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
-			);
-			path = Tests;
 			sourceTree = "<group>";
 		};
 		F1620A3A2C8B0699EAA61B57 /* Frameworks */ = {
@@ -910,6 +918,7 @@
 				CFC84952299F8B890055E497 /* Debounce.swift in Sources */,
 				0236F3B728F4351E0050F09B /* CourseButton.swift in Sources */,
 				0727878328D31287002E9142 /* DispatchQueue+App.swift in Sources */,
+				BAFB998E2B0F70F1007D09F9 /* CustomError.swift in Sources */,
 				028F9F37293A44C700DE65D0 /* Data_ResetPassword.swift in Sources */,
 				022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */,
 				0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */,
@@ -923,7 +932,6 @@
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
-				BA8FA6642AD597DC00EA029A /* CustomError.swift in Sources */,
 				02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
 				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
