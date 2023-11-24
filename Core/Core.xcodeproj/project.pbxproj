@@ -597,6 +597,22 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		078525AC2B0CBFF4007B4521 /* CoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				078525AD2B0CC004007B4521 /* Configuration */,
+			);
+			path = CoreTests;
+			sourceTree = "<group>";
+		};
+		078525AD2B0CC004007B4521 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		C9DFE47E699CFFA85A77AF2C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
