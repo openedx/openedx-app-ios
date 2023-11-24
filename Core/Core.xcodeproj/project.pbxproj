@@ -122,9 +122,9 @@
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
 		C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
+		DB4EBE9E2B1075E100CB4DC4 /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4EBE9D2B1075E100CB4DC4 /* ConfigTests.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
 		DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */; };
-		DBF6F2482B01E20A0098414B /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2472B01E20A0098414B /* ConfigTests.swift */; };
 		DBF6F24A2B0380E00098414B /* FeaturesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2492B0380E00098414B /* FeaturesConfig.swift */; };
 /* End PBXBuildFile section */
 
@@ -263,9 +263,9 @@
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
+		DB4EBE9D2B1075E100CB4DC4 /* ConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigTests.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
 		DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementConfig.swift; sourceTree = "<group>"; };
-		DBF6F2472B01E20A0098414B /* ConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTests.swift; sourceTree = "<group>"; };
 		DBF6F2492B0380E00098414B /* FeaturesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesConfig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -491,7 +491,7 @@
 			children = (
 				0770DE5328D0B00C006D8A5D /* swiftgen.yml */,
 				0770DE0A28D07831006D8A5D /* Core */,
-				078525AC2B0CBFF4007B4521 /* CoreTests */,
+				DB4EBE9B2B1075E100CB4DC4 /* CoreTests */,
 				0770DE0928D07831006D8A5D /* Products */,
 				C9DFE47E699CFFA85A77AF2C /* Pods */,
 				F1620A3A2C8B0699EAA61B57 /* Frameworks */,
@@ -635,6 +635,22 @@
 				CFC84951299F8B890055E497 /* Debounce.swift */,
 			);
 			path = Combine;
+			sourceTree = "<group>";
+		};
+		DB4EBE9B2B1075E100CB4DC4 /* CoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				DB4EBE9C2B1075E100CB4DC4 /* Configuration */,
+			);
+			path = CoreTests;
+			sourceTree = "<group>";
+		};
+		DB4EBE9C2B1075E100CB4DC4 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				DB4EBE9D2B1075E100CB4DC4 /* ConfigTests.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		DBF6F2422B014AF30098414B /* Config */ = {
@@ -823,7 +839,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBF6F2482B01E20A0098414B /* ConfigTests.swift in Sources */,
+				DB4EBE9E2B1075E100CB4DC4 /* ConfigTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
