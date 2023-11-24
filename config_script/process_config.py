@@ -94,7 +94,8 @@ class PlistManager:
         file_name = os.path.basename(file_path)
         with open(file_path, 'wb') as plist_file:
             plistlib.dump(plist, plist_file)
-            print(f"File {file_name} has been written to {file_path}")
+            print(f"File {file_name} has been written to:")
+            print(f"{file_path}")
 
     def print_info_plist_contents(self, plist_path):
         if not plist_path:
@@ -136,7 +137,13 @@ class ConfigurationManager:
         if not found:
             existing.append(body)
             plist['CFBundleURLTypes'] = existing
-        
+
+    def add_application_query_schemes(self, schemes, plist):
+        existing = plist.get('LSApplicationQueriesSchemes', [])
+        for scheme in schemes:
+            if scheme not in existing:
+                existing.append(scheme)
+        plist['LSApplicationQueriesSchemes'] = existing
         return plist
 
     def add_firebase_config(self, config, firebase_info_plist_path):
@@ -179,8 +186,10 @@ class ConfigurationManager:
     def add_google_config(self, config, plist):
         google = config.get('GOOGLE', {})
         key = google.get('GOOGLE_PLUS_KEY')
+        client_id = google.get('CLIENT_ID')
 
-        if key:
+        if key and client_id:
+            plist["GIDClientID"] = client_id
             scheme = ['.'.join(reversed(key.split('.')))]
             self.add_url_scheme(scheme, plist)
 
@@ -192,6 +201,7 @@ class ConfigurationManager:
             bundle_identifier = self.plist_manager.get_bundle_identifier()
             scheme = ["msauth." + bundle_identifier]
             self.add_url_scheme(scheme, plist)
+            self.add_application_query_schemes(["msauthv2", "msauthv3"], plist)
 
     def update_info_plist(self, plist_data, plist_path):
         if not plist_path:
