@@ -124,8 +124,9 @@
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
 		DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */; };
-		DBF6F2482B01E20A0098414B /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2472B01E20A0098414B /* ConfigTests.swift */; };
 		DBF6F24A2B0380E00098414B /* FeaturesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2492B0380E00098414B /* FeaturesConfig.swift */; };
+		E09179F92B0EF981002AB695 /* FontParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179F82B0EF981002AB695 /* FontParserTests.swift */; };
+		E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179FC2B0F204D002AB695 /* ConfigTests.swift */; };
 		E0C716A72B0B05BA00858BAB /* fonts.json in Resources */ = {isa = PBXBuildFile; fileRef = E0C716A62B0B05BA00858BAB /* fonts.json */; };
 		E0C716A92B0B065600858BAB /* FontParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C716A82B0B065600858BAB /* FontParser.swift */; };
 		E0C716AB2B0B0B8E00858BAB /* Configurable.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0C716AA2B0B0B8E00858BAB /* Configurable.xcassets */; };
@@ -268,8 +269,9 @@
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
 		DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementConfig.swift; sourceTree = "<group>"; };
-		DBF6F2472B01E20A0098414B /* ConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTests.swift; sourceTree = "<group>"; };
 		DBF6F2492B0380E00098414B /* FeaturesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesConfig.swift; sourceTree = "<group>"; };
+		E09179F82B0EF981002AB695 /* FontParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParserTests.swift; sourceTree = "<group>"; };
+		E09179FC2B0F204D002AB695 /* ConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigTests.swift; sourceTree = "<group>"; };
 		E0C716A62B0B05BA00858BAB /* fonts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = fonts.json; sourceTree = "<group>"; };
 		E0C716A82B0B065600858BAB /* FontParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParser.swift; sourceTree = "<group>"; };
 		E0C716AA2B0B0B8E00858BAB /* Configurable.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Configurable.xcassets; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 			children = (
 				0770DE5328D0B00C006D8A5D /* swiftgen.yml */,
 				0770DE0A28D07831006D8A5D /* Core */,
+				E09179FA2B0F204D002AB695 /* CoreTests */,
 				0770DE0928D07831006D8A5D /* Products */,
 				C9DFE47E699CFFA85A77AF2C /* Pods */,
 				F1620A3A2C8B0699EAA61B57 /* Frameworks */,
@@ -531,7 +534,6 @@
 				0770DE5128D0ADFF006D8A5D /* Assets.xcassets */,
 				E0C716AA2B0B0B8E00858BAB /* Configurable.xcassets */,
 				071009CF28D1E3A600344290 /* Constants.swift */,
-				DBFB74502B0CA508004370F9 /* Tests */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -641,12 +643,21 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
-		DBFB74502B0CA508004370F9 /* Tests */ = {
+		E09179FA2B0F204D002AB695 /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				DBF6F2472B01E20A0098414B /* ConfigTests.swift */,
+				E09179FB2B0F204D002AB695 /* Configuration */,
 			);
-			path = Tests;
+			path = CoreTests;
+			sourceTree = "<group>";
+		};
+		E09179FB2B0F204D002AB695 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				E09179F82B0EF981002AB695 /* FontParserTests.swift */,
+				E09179FC2B0F204D002AB695 /* ConfigTests.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		F1620A3A2C8B0699EAA61B57 /* Frameworks */ = {
@@ -826,7 +837,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBF6F2482B01E20A0098414B /* ConfigTests.swift in Sources */,
+				E09179F92B0EF981002AB695 /* FontParserTests.swift in Sources */,
+				E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

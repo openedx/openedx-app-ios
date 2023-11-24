@@ -11,12 +11,12 @@ public enum FontIdentifier: String {
     case regular, medium, semiBold, bold
 }
 
-public class FontParser: NSObject {
-    public override init() {
-        super.init()
+public class FontParser {
+    private var fonts: [String: String] = [:]
+    
+    public init() {
         fonts = loadANdParseFonts()
     }
-    private var fonts: [String: String] = [:]
     
     private func loadANdParseFonts() -> [String: String] {
         if let path = Bundle(for: CoreBundle.self).path(forResource: "fonts", ofType: "json") {
