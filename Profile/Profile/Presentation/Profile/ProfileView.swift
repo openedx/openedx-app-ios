@@ -13,7 +13,7 @@ public struct ProfileView: View {
     
     @StateObject private var viewModel: ProfileViewModel
     @Binding var settingsTapped: Bool
-    
+
     public init(viewModel: ProfileViewModel, settingsTapped: Binding<Bool>) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self._settingsTapped = settingsTapped
@@ -133,16 +133,18 @@ public struct ProfileView: View {
                                 }
                                 
                                 if let tos = viewModel.config.agreement.tosURL {
-                                    Button(action: {
-                                        viewModel.trackCookiePolicyClicked()
-                                        UIApplication.shared.open(tos)
-                                    }, label: {
+                                    NavigationLink {
+                                        WebBrowser(
+                                            url: tos.absoluteString,
+                                            pageTitle: ProfileLocalization.terms
+                                        )
+                                    } label: {
                                         HStack {
                                             Text(ProfileLocalization.terms)
                                             Spacer()
                                             Image(systemName: "chevron.right")
                                         }
-                                    })
+                                    }
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
                                     .accessibilityElement(children: .ignore)
@@ -153,22 +155,47 @@ public struct ProfileView: View {
                                 }
                                 
                                 if let privacy = viewModel.config.agreement.privacyPolicyURL {
-                                    Button(action: {
-                                        viewModel.trackPrivacyPolicyClicked()
-                                        UIApplication.shared.open(privacy)
-                                    }, label: {
+                                    NavigationLink {
+                                        WebBrowser(
+                                            url: privacy.absoluteString,
+                                            pageTitle: ProfileLocalization.privacy
+                                        )
+                                    } label: {
                                         HStack {
                                             Text(ProfileLocalization.privacy)
                                             Spacer()
                                             Image(systemName: "chevron.right")
                                         }
-                                    })
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.privacy)
+                                    
+                                }
+
+                                if let faq = viewModel.config.faq {
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                    NavigationLink {
+                                        WebBrowser(
+                                            url: faq.absoluteString,
+                                            pageTitle: "FAQ"
+                                        )
+                                    } label: {
+                                        HStack {
+                                            Text("FAQ")
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                        }
+                                    }
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
                                     .accessibilityElement(children: .ignore)
                                     .accessibilityLabel(ProfileLocalization.privacy)
                                 }
-                                
+
                                 // MARK: Version
                                 Rectangle()
                                     .frame(height: 1)

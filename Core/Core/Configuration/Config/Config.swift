@@ -13,6 +13,7 @@ public protocol ConfigProtocol {
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
     var appStoreLink: String { get }
+    var faq: URL? { get }
     var agreement: AgreementConfig { get }
     var firebase: FirebaseConfig { get }
     var features: FeaturesConfig { get }
@@ -32,6 +33,7 @@ private enum ConfigKeys: String {
     case platformName = "PLATFORM_NAME"
     case organizationCode = "ORGANIZATION_CODE"
     case appstoreID = "APP_STORE_ID"
+    case faq = "FAQ_URL"
 }
 
 public class Config {
@@ -126,6 +128,14 @@ extension Config: ConfigProtocol {
     
     public var appStoreLink: String {
         "itms-apps://itunes.apple.com/app/id\(appStoreId)?mt=8"
+    }
+
+    public var faq: URL? {
+        guard let urlString = string(for: ConfigKeys.faq.rawValue),
+              let url = URL(string: urlString) else {
+            return nil
+        }
+        return url
     }
 }
 
