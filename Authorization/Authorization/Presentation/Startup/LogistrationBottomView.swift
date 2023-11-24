@@ -28,11 +28,12 @@ public struct LogistrationBottomView: View {
                 }
                 .frame(maxWidth: .infinity)
                 
-                StyledButton(AuthLocalization.SignIn.logInTitle,
-                             action: { viewModel.router.showLoginScreen() },
-                             color: .white,
-                             textColor: Theme.Colors.accentColor,
-                             borderColor: Theme.Colors.textInputStroke
+                StyledButton(
+                    AuthLocalization.SignIn.logInTitle,
+                    action: { viewModel.router.showLoginScreen() },
+                    color: .white,
+                    textColor: Theme.Colors.accentColor,
+                    borderColor: Theme.Colors.textInputStroke
                 )
                 .frame(width: 100)
             }

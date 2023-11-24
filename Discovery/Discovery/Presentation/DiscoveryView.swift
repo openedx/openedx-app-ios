@@ -13,6 +13,7 @@ public struct DiscoveryView: View {
     @StateObject
     private var viewModel: DiscoveryViewModel
     private var router: DiscoveryRouter
+    @State private var searchQuery: String = ""
     @State private var isRefreshing: Bool = false
     
     private var fromStartupScreen: Bool = false
@@ -31,11 +32,16 @@ public struct DiscoveryView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(DiscoveryLocalization.Header.title1 + DiscoveryLocalization.Header.title2)
     
-    public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter, searchQuery: String? = nil, fromStartupScreen: Bool = false) {
+    public init(
+        viewModel: DiscoveryViewModel,
+        router: DiscoveryRouter,
+        searchQuery: String? = nil,
+        fromStartupScreen: Bool = false
+    ) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.router = router
         self.fromStartupScreen = fromStartupScreen
-        viewModel.searchQuery = searchQuery
+        self._searchQuery = State<String>(initialValue: searchQuery ?? "")
     }
     
     public var body: some View {
@@ -54,7 +60,7 @@ public struct DiscoveryView: View {
                     Spacer()
                 }
                 .onTapGesture {
-                    router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
+                    router.showDiscoverySearch(searchQuery: searchQuery)
                     viewModel.discoverySearchBarClicked()
                 }
                 .frame(minHeight: 48)
@@ -68,7 +74,7 @@ public struct DiscoveryView: View {
                         .stroke(lineWidth: 1)
                         .fill(Theme.Colors.textInputUnfocusedStroke)
                 ).onTapGesture {
-                    router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
+                    router.showDiscoverySearch(searchQuery: searchQuery)
                     viewModel.discoverySearchBarClicked()
                 }
                 .padding(.top, 11.5)
@@ -156,16 +162,14 @@ public struct DiscoveryView: View {
         }
         .navigationBarHidden(fromStartupScreen ? false : true)
         .onFirstAppear {
-            if !(viewModel.searchQuery?.isEmpty ?? true) {
-                router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
+            if !(searchQuery.isEmpty) {
+                router.showDiscoverySearch(searchQuery: searchQuery)
+                searchQuery = ""
             }
             Task {
                 await viewModel.discovery(page: 1)
             }
             viewModel.setupNotifications()
-        }
-        .onDisappear {
-            viewModel.searchQuery = ""
         }
         .background(Theme.Colors.background.ignoresSafeArea())
     }

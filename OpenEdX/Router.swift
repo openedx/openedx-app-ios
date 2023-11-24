@@ -89,7 +89,6 @@ public class Router: AuthorizationRouter,
     }
     
     public func showStartupScreen() {
-        
         if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
             let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
             let controller = UIHostingController(rootView: view)
