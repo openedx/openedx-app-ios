@@ -8,7 +8,6 @@
 
 "SIGN_IN.LOG_IN_TITLE" = "Sign in";
 "SIGN_IN.WELCOME_BACK" = "Welcome back! Please authorize to continue.";
-"SIGN_IN.EMAIL" = "Email";
 "SIGN_IN.EMAIL_OR_USERNAME" = "Email or username";
 "SIGN_IN.PASSWORD" = "Password";
 "SIGN_IN.REGISTER_BTN" = "Register";

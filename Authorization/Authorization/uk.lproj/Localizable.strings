@@ -8,7 +8,6 @@
 
 "SIGN_IN.LOG_IN_TITLE" = "Увійти";
 "SIGN_IN.WELCOME_BACK" = "З поверненням! Авторизуйтесь, щоб продовжити.";
-"SIGN_IN.EMAIL" = "Пошта";
 "SIGN_IN.PASSWORD" = "Пароль";
 "SIGN_IN.REGISTER_BTN" = "Реєстрація";
 "SIGN_IN.FORGOT_PASS_BTN" = "Забули пароль?";
