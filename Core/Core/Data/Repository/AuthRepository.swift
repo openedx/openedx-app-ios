@@ -20,9 +20,9 @@ public class AuthRepository: AuthRepositoryProtocol {
     
     private let api: API
     private var appStorage: CoreStorage
-    private let config: Config
+    private let config: ConfigProtocol
     
-    public init(api: API, appStorage: CoreStorage, config: Config) {
+    public init(api: API, appStorage: CoreStorage, config: ConfigProtocol) {
         self.api = api
         self.appStorage = appStorage
         self.config = config

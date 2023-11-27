@@ -10,6 +10,14 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum CourseLocalization {
+  public enum Accessibility {
+    /// Cancel download
+    public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
+    /// Delete download
+    public static let deleteDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DELETE_DOWNLOAD", fallback: "Delete download")
+    /// Download
+    public static let download = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DOWNLOAD", fallback: "Download")
+  }
   public enum Alert {
     /// Rotate your device to view this video in full screen.
     public static let rotateDevice = CourseLocalization.tr("Localizable", "ALERT.ROTATE_DEVICE", fallback: "Rotate your device to view this video in full screen.")
@@ -41,6 +49,8 @@ public enum CourseLocalization {
   public enum CourseContainer {
     /// Course
     public static let course = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.COURSE", fallback: "Course")
+    /// Dates
+    public static let dates = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DATES", fallback: "Dates")
     /// Discussion
     public static let discussion = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DISCUSSION", fallback: "Discussion")
     /// Handouts

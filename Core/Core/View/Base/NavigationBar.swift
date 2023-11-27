@@ -55,12 +55,14 @@ public struct NavigationBar: View {
                     }, label: {
                         CoreAssets.arrowLeft.swiftUIImage
                             .backButtonStyle(color: leftButtonColor)
+                            .padding(8)
                     })
                     .foregroundColor(Theme.Colors.styledButtonText)
                     
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .topLeading)
+                
             }
             if rightButtonType != nil {
                 VStack {

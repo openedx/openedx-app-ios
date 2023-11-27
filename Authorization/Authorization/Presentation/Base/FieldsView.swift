@@ -12,7 +12,7 @@ struct FieldsView: View {
     
     let fields: [FieldConfiguration]
     let router: BaseRouter
-    let configuration: Config
+    let config: ConfigProtocol
     let cssInjector: CSSInjector
     let proxy: GeometryProxy
     @Environment(\.colorScheme) var colorScheme
@@ -107,7 +107,7 @@ struct FieldsView_Previews: PreviewProvider {
                 FieldsView(
                     fields: fields,
                     router: AuthorizationRouterMock(),
-                    configuration: ConfigMock(),
+                    config: ConfigMock(),
                     cssInjector: CSSInjectorMock(),
                     proxy: proxy
                 )

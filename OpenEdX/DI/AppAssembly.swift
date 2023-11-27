@@ -117,12 +117,14 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
-        container.register(Config.self) { _ in
-            Config(baseURL: BuildConfiguration.shared.baseURL, oAuthClientId: BuildConfiguration.shared.clientId)
+        container.register(ConfigProtocol.self) { _ in
+            Config()
         }.inObjectScope(.container)
         
-        container.register(CSSInjector.self) { _ in
-            CSSInjector(baseURL: BuildConfiguration.shared.baseURL)
+        container.register(CSSInjector.self) { r in
+            CSSInjector(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(KeychainSwift.self) { _ in

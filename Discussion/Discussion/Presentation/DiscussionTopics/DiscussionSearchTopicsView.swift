@@ -10,9 +10,11 @@ import Core
 
 public struct DiscussionSearchTopicsView: View {
     
+    @FocusState
+    private var focused: Bool
+    
     @ObservedObject private var viewModel: DiscussionSearchTopicsViewModel<RunLoop>
     @State private var animated: Bool = false
-    @State private var becomeFirstResponderRunOnce = false
     
     public init(viewModel: DiscussionSearchTopicsViewModel<RunLoop>) {
         self.viewModel = viewModel
@@ -44,13 +46,10 @@ public struct DiscussionSearchTopicsView: View {
                         onEditingChanged: { editing in
                             viewModel.isSearchActive = editing
                         }
-                    )
-                    .introspect(.textField, on: .iOS(.v14, .v15, .v16, .v17), customize: { textField in
-                        if !becomeFirstResponderRunOnce {
-                            textField.becomeFirstResponder()
-                            self.becomeFirstResponderRunOnce = true
+                    ).focused($focused)
+                        .onAppear {
+                            self.focused = true
                         }
-                    })
                     .foregroundColor(Theme.Colors.textPrimary)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {

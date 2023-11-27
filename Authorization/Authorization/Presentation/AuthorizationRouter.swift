@@ -9,13 +9,14 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
-public protocol AuthorizationRouter: BaseRouter {}
+public protocol AuthorizationRouter: BaseRouter {
+    func showUpdateRequiredView(showAccountLink: Bool)
+}
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public class AuthorizationRouterMock: BaseRouterMock, AuthorizationRouter {
-
     public override init() {}
-
+    public func showUpdateRequiredView(showAccountLink: Bool) {}
 }
 #endif

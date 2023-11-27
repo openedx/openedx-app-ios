@@ -12,7 +12,6 @@ public struct DiscoveryView: View {
     
     @StateObject
     private var viewModel: DiscoveryViewModel
-    private let router: DiscoveryRouter
     @State private var isRefreshing: Bool = false
     
     private let discoveryNew: some View = VStack(alignment: .leading) {
@@ -23,10 +22,11 @@ public struct DiscoveryView: View {
             .font(Theme.Fonts.titleSmall)
             .foregroundColor(Theme.Colors.textPrimary)
     }.listRowBackground(Color.clear)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(DiscoveryLocalization.Header.title1 + DiscoveryLocalization.Header.title2)
     
-    public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
+    public init(viewModel: DiscoveryViewModel) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
-        self.router = router
     }
     
     public var body: some View {
@@ -45,7 +45,7 @@ public struct DiscoveryView: View {
                     Spacer()
                 }
                 .onTapGesture {
-                    router.showDiscoverySearch()
+                    viewModel.router.showDiscoverySearch()
                     viewModel.discoverySearchBarClicked()
                 }
                 .frame(minHeight: 48)
@@ -58,12 +58,15 @@ public struct DiscoveryView: View {
                     Theme.Shapes.textInputShape
                         .stroke(lineWidth: 1)
                         .fill(Theme.Colors.textInputUnfocusedStroke)
-                ).onTapGesture {
-                    router.showDiscoverySearch()
+                )
+                .onTapGesture {
+                    viewModel.router.showDiscoverySearch()
                     viewModel.discoverySearchBarClicked()
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(DiscoveryLocalization.search)
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {
@@ -72,7 +75,7 @@ public struct DiscoveryView: View {
                         Task {
                             await viewModel.discovery(page: 1, withProgress: false)
                         }
-                    })  {
+                    }) {
                         LazyVStack(spacing: 0) {
                             HStack {
                                 discoveryNew
@@ -97,7 +100,7 @@ public struct DiscoveryView: View {
                                             courseID: course.courseID,
                                             courseName: course.name
                                         )
-                                        router.showCourseDetais(
+                                        viewModel.router.showCourseDetais(
                                             courseID: course.courseID,
                                             title: course.name
                                         )
@@ -114,8 +117,9 @@ public struct DiscoveryView: View {
                             }
                             VStack {}.frame(height: 40)
                         }
-                    }.frameLimit()
-                }
+                    }
+                    .frameLimit()
+                }.accessibilityAction {}
             }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
@@ -145,6 +149,7 @@ public struct DiscoveryView: View {
             Task {
                 await viewModel.discovery(page: 1)
             }
+            viewModel.setupNotifications()
         }
         .background(Theme.Colors.background.ignoresSafeArea())
     }
@@ -153,15 +158,18 @@ public struct DiscoveryView: View {
 #if DEBUG
 struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = DiscoveryViewModel(interactor: DiscoveryInteractor.mock, connectivity: Connectivity(),
+        let vm = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                    config: ConfigMock(),
+                                    interactor: DiscoveryInteractor.mock,
+                                    connectivity: Connectivity(),
                                     analytics: DiscoveryAnalyticsMock())
         let router = DiscoveryRouterMock()
         
-        DiscoveryView(viewModel: vm, router: router)
+        DiscoveryView(viewModel: vm)
             .preferredColorScheme(.light)
             .previewDisplayName("DiscoveryView Light")
         
-        DiscoveryView(viewModel: vm, router: router)
+        DiscoveryView(viewModel: vm)
             .preferredColorScheme(.dark)
             .previewDisplayName("DiscoveryView Dark")
     }

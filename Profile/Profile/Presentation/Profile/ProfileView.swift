@@ -66,6 +66,15 @@ public struct ProfileView: View {
                                         }
                                     }
                                 }
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(
+                                    (viewModel.userModel?.yearOfBirth != 0 ?
+                                     ProfileLocalization.Edit.Fields.yearOfBirth + String(viewModel.userModel?.yearOfBirth ?? 0) :
+                                        "") +
+                                    (viewModel.userModel?.shortBiography != nil ?
+                                     ProfileLocalization.bio + (viewModel.userModel?.shortBiography ?? "") :
+                                        "")
+                                )
                                 .cardStyle(
                                     bgColor: Theme.Colors.textInputUnfocusedBackground,
                                     strokeColor: .clear
@@ -79,18 +88,21 @@ public struct ProfileView: View {
                                 .padding(.horizontal, 24)
                                 .font(Theme.Fonts.labelLarge)
                             VStack(alignment: .leading, spacing: 27) {
-                                    Button(action: {
-                                        viewModel.trackProfileVideoSettingsClicked()
-                                        viewModel.router.showSettings()
-                                    }, label: {
-                                        HStack {
+                                Button(action: {
+                                    viewModel.trackProfileVideoSettingsClicked()
+                                    viewModel.router.showSettings()
+                                }, label: {
+                                    HStack {
                                         Text(ProfileLocalization.settingsVideo)
                                         Spacer()
                                         Image(systemName: "chevron.right")
-                                        }
-                                    })
+                                    }
+                                })
                                 
-                            }.cardStyle(
+                            }
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(ProfileLocalization.settingsVideo)
+                            .cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
                                 strokeColor: .clear
                             )
@@ -113,12 +125,14 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.supportInfo)
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
                                 }
                                 
-                                if let tos = viewModel.config.termsOfUse {
+                                if let tos = viewModel.config.agreement.tosURL {
                                     Button(action: {
                                         viewModel.trackCookiePolicyClicked()
                                         UIApplication.shared.open(tos)
@@ -131,12 +145,14 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.terms)
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
                                 }
                                 
-                                if let privacy = viewModel.config.privacyPolicy {
+                                if let privacy = viewModel.config.agreement.privacyPolicyURL {
                                     Button(action: {
                                         viewModel.trackPrivacyPolicyClicked()
                                         UIApplication.shared.open(privacy)
@@ -149,7 +165,58 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.privacy)
                                 }
+                                
+                                // MARK: Version
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundColor(Theme.Colors.textSecondary)
+                                Button(action: {
+                                    viewModel.openAppStore()
+                                }, label: {
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 0) {
+                                            HStack {
+                                                if viewModel.versionState == .updateRequired {
+                                                    CoreAssets.warningFilled.swiftUIImage
+                                                        .resizable()
+                                                        .frame(width: 24, height: 24)
+                                                }
+                                                Text("\(ProfileLocalization.Settings.version) \(viewModel.currentVersion)")
+                                            }
+                                            switch viewModel.versionState {
+                                            case .actual:
+                                                HStack {
+                                                    CoreAssets.checkmark.swiftUIImage
+                                                        .renderingMode(.template)
+                                                        .foregroundColor(.green)
+                                                    Text(ProfileLocalization.Settings.upToDate)
+                                                        .font(Theme.Fonts.labelMedium)
+                                                        .foregroundStyle(Theme.Colors.textSecondary)
+                                                }
+                                            case .updateNeeded:
+                                                Text("\(ProfileLocalization.Settings.tapToUpdate) \(viewModel.latestVersion)")
+                                                    .font(Theme.Fonts.labelMedium)
+                                                    .foregroundStyle(Theme.Colors.accentColor)
+                                            case .updateRequired:
+                                                Text(ProfileLocalization.Settings.tapToInstall)
+                                                    .font(Theme.Fonts.labelMedium)
+                                                    .foregroundStyle(Theme.Colors.accentColor)
+                                            }
+                                        }
+                                        Spacer()
+                                        if viewModel.versionState != .actual {
+                                            Image(systemName: "arrow.up.circle")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                                .foregroundStyle(Theme.Colors.accentColor)
+                                        }
+                                        
+                                    }
+                                }).disabled(viewModel.versionState == .actual)
+                                
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
                                 strokeColor: .clear
@@ -157,59 +224,60 @@ public struct ProfileView: View {
                             
                             // MARK: - Log out
                             VStack {
-                                    Button(action: {
-                                        viewModel.router.presentView(transitionStyle: .crossDissolve) {
-                                            AlertView(
-                                                alertTitle: ProfileLocalization.LogoutAlert.title,
-                                                alertMessage: ProfileLocalization.LogoutAlert.text,
-                                                positiveAction: CoreLocalization.Alert.accept,
-                                                onCloseTapped: {
-                                                    viewModel.router.dismiss(animated: true)
-                                                },
-                                                okTapped: {
-                                                    viewModel.router.dismiss(animated: true)
-                                                    Task {
-                                                        await viewModel.logOut()
-                                                    }
-                                                }, type: .logOut
-                                            )
-                                        }
-                                    }, label: {
-                                        HStack {
+                                Button(action: {
+                                    viewModel.router.presentView(transitionStyle: .crossDissolve) {
+                                        AlertView(
+                                            alertTitle: ProfileLocalization.LogoutAlert.title,
+                                            alertMessage: ProfileLocalization.LogoutAlert.text,
+                                            positiveAction: CoreLocalization.Alert.accept,
+                                            onCloseTapped: {
+                                                viewModel.router.dismiss(animated: true)
+                                            },
+                                            okTapped: {
+                                                viewModel.router.dismiss(animated: true)
+                                                Task {
+                                                    await viewModel.logOut()
+                                                }
+                                            }, type: .logOut
+                                        )
+                                    }
+                                }, label: {
+                                    HStack {
                                         Text(ProfileLocalization.logout)
                                         Spacer()
                                         Image(systemName: "rectangle.portrait.and.arrow.right")
-                                        }
-                                    })
-                                
+                                    }
+                                })
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(ProfileLocalization.logout)
                             }
                             .foregroundColor(Theme.Colors.alert)
-                                .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
-                                           strokeColor: .clear)
-                                .padding(.top, 24)
-                                .padding(.bottom, 60)
+                            .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
+                                       strokeColor: .clear)
+                            .padding(.top, 24)
+                            .padding(.bottom, 60)
                         }
                         Spacer()
                     }
                 }
-            }.frameLimit(sizePortrait: 420)
+            }.accessibilityAction {}
+                .frameLimit(sizePortrait: 420)
                 .padding(.top, 8)
                 .onChange(of: settingsTapped, perform: { _ in
-                    if let userModel = viewModel.userModel {
-                        viewModel.trackProfileEditClicked()
-                        viewModel.router.showEditProfile(
-                            userModel: userModel,
-                            avatar: viewModel.updatedAvatar,
-                            profileDidEdit: { updatedProfile, updatedImage in
-                                if let updatedProfile {
-                                    self.viewModel.userModel = updatedProfile
-                                }
-                                if let updatedImage {
-                                    self.viewModel.updatedAvatar = updatedImage
-                                }
+                    let userModel = viewModel.userModel ?? UserProfile()
+                    viewModel.trackProfileEditClicked()
+                    viewModel.router.showEditProfile(
+                        userModel: userModel,
+                        avatar: viewModel.updatedAvatar,
+                        profileDidEdit: { updatedProfile, updatedImage in
+                            if let updatedProfile {
+                                self.viewModel.userModel = updatedProfile
                             }
-                        )
-                    }
+                            if let updatedImage {
+                                self.viewModel.updatedAvatar = updatedImage
+                            }
+                        }
+                    )
                 })
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)

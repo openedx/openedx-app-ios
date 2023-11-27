@@ -1,4 +1,4 @@
-// Generated using Sourcery 1.8.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -1770,18 +1770,15 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getMyProfileOffline() throws -> UserProfile {
+    open func getMyProfileOffline() -> UserProfile? {
         addInvocation(.m_getMyProfileOffline)
 		let perform = methodPerformValue(.m_getMyProfileOffline) as? () -> Void
 		perform?()
-		var __value: UserProfile
+		var __value: UserProfile? = nil
 		do {
 		    __value = try methodReturnValue(.m_getMyProfileOffline).casted()
-		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getMyProfileOffline(). Use given")
-			Failure("Stub return value not specified for getMyProfileOffline(). Use given")
 		} catch {
-		    throw error
+			// do nothing
 		}
 		return __value
     }
@@ -2016,7 +2013,7 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         public static func getMyProfile(willReturn: UserProfile...) -> MethodStub {
             return Given(method: .m_getMyProfile, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getMyProfileOffline(willReturn: UserProfile...) -> MethodStub {
+        public static func getMyProfileOffline(willReturn: UserProfile?...) -> MethodStub {
             return Given(method: .m_getMyProfileOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getSpokenLanguages(willReturn: [PickerFields.Option]...) -> MethodStub {
@@ -2036,6 +2033,13 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         }
         public static func getSettings(willReturn: UserSettings...) -> MethodStub {
             return Given(method: .m_getSettings, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getMyProfileOffline(willProduce: (Stubber<UserProfile?>) -> Void) -> MethodStub {
+            let willReturn: [UserProfile?] = []
+			let given: Given = { return Given(method: .m_getMyProfileOffline, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (UserProfile?).self)
+			willProduce(stubber)
+			return given
         }
         public static func getSpokenLanguages(willProduce: (Stubber<[PickerFields.Option]>) -> Void) -> MethodStub {
             let willReturn: [[PickerFields.Option]] = []
@@ -2074,16 +2078,6 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         public static func getMyProfile(willProduce: (StubberThrows<UserProfile>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getMyProfile, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (UserProfile).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func getMyProfileOffline(willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getMyProfileOffline, products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func getMyProfileOffline(willProduce: (StubberThrows<UserProfile>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getMyProfileOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (UserProfile).self)
 			willProduce(stubber)
 			return given

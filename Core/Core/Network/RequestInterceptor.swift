@@ -10,10 +10,10 @@ import Alamofire
 
 final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
-    private let config: Config
+    private let config: ConfigProtocol
     private var storage: CoreStorage
     
-    public init(config: Config, storage: CoreStorage) {
+    public init(config: ConfigProtocol, storage: CoreStorage) {
         self.config = config
         self.storage = storage
     }
@@ -37,6 +37,23 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
             if let token = storage.accessToken {
                 urlRequest.setValue("\(config.tokenType.rawValue) \(token)", forHTTPHeaderField: "Authorization")
             }
+            
+            let userAgent: String = {
+                if let info = Bundle.main.infoDictionary {
+                    let executable: AnyObject = info[kCFBundleExecutableKey as String] as AnyObject? ?? "Unknown" as AnyObject
+                    let bundle: AnyObject = info[kCFBundleIdentifierKey as String] as AnyObject? ?? "Unknown" as AnyObject
+                    let version: AnyObject = info["CFBundleShortVersionString"] as AnyObject? ?? "Unknown" as AnyObject
+                    let os: AnyObject = ProcessInfo.processInfo.operatingSystemVersionString as AnyObject
+                    var mutableUserAgent = NSMutableString(string: "\(executable)/\(bundle) (\(version); OS \(os))") as CFMutableString
+                    let transform = NSString(string: "Any-Latin; Latin-ASCII; [:^ASCII:] Remove") as CFString
+                    if CFStringTransform(mutableUserAgent, nil, transform, false) == true {
+                        return mutableUserAgent as String
+                    }
+                }
+                return "Alamofire"
+            }()
+            
+            urlRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
             
             completion(.success(urlRequest))
         }

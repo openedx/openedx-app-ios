@@ -104,10 +104,22 @@ public enum CoreAssets {
   public static let check = ImageAsset(name: "check")
   public static let clearInput = ImageAsset(name: "clearInput")
   public static let edit = ImageAsset(name: "edit")
+  public static let favorite = ImageAsset(name: "favorite")
   public static let goodWork = ImageAsset(name: "goodWork")
+  public static let airmail = ImageAsset(name: "airmail")
+  public static let defaultMail = ImageAsset(name: "defaultMail")
+  public static let fastmail = ImageAsset(name: "fastmail")
+  public static let googlegmail = ImageAsset(name: "googlegmail")
+  public static let msOutlook = ImageAsset(name: "ms-outlook")
+  public static let proton = ImageAsset(name: "proton")
+  public static let readdleSpark = ImageAsset(name: "readdle-spark")
+  public static let ymail = ImageAsset(name: "ymail")
   public static let noCourseImage = ImageAsset(name: "noCourseImage")
   public static let notAvaliable = ImageAsset(name: "notAvaliable")
   public static let playVideo = ImageAsset(name: "playVideo")
+  public static let star = ImageAsset(name: "star")
+  public static let starOutline = ImageAsset(name: "star_outline")
+  public static let warningFilled = ImageAsset(name: "warning_filled")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

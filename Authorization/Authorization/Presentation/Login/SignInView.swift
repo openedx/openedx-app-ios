@@ -165,7 +165,8 @@ struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = SignInViewModel(
             interactor: AuthInteractor.mock,
-            router: AuthorizationRouterMock(),
+            router: AuthorizationRouterMock(), 
+            config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator()
         )

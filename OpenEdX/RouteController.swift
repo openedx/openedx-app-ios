@@ -51,12 +51,12 @@ class RouteController: UIViewController {
     
     private func showMainOrWhatsNewScreen() {
         var storage = Container.shared.resolve(WhatsNewStorage.self)!
-        let config = Container.shared.resolve(Config.self)!
+        let config = Container.shared.resolve(ConfigProtocol.self)!
 
         let viewModel = WhatsNewViewModel(storage: storage)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
 
-        if shouldShowWhatsNew && config.whatsNewEnabled {
+        if shouldShowWhatsNew && config.features.whatNewEnabled {
             if let jsonVersion = viewModel.getVersion() {
                 storage.whatsNewVersion = jsonVersion
             }
@@ -67,7 +67,8 @@ class RouteController: UIViewController {
             let controller = UIHostingController(rootView: whatsNewView)
             navigation.viewControllers = [controller]
         } else {
-            let controller = UIHostingController(rootView: MainScreenView())
+            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigation.viewControllers = [controller]
         }
         present(navigation, animated: false)

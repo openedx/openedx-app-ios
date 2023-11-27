@@ -29,7 +29,8 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(
             interactor: interactor,
-            router: router,
+            router: router, 
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -51,6 +52,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -71,6 +73,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -96,6 +99,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -123,6 +127,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -146,6 +151,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -169,6 +175,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -194,6 +201,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )
@@ -211,6 +219,7 @@ final class SignInViewModelTests: XCTestCase {
         let viewModel = SignInViewModel(
             interactor: interactor,
             router: router,
+            config: ConfigMock(),
             analytics: analytics,
             validator: validator
         )

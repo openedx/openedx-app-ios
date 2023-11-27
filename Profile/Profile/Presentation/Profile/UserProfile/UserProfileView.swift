@@ -19,6 +19,8 @@ public struct UserProfileView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
+            Theme.Colors.background
+                .ignoresSafeArea()
             // MARK: - Page Body
             RefreshableScrollViewCompat(action: {
                 await viewModel.getUserProfile(withProgress: false)
@@ -97,10 +99,6 @@ public struct UserProfileView: View {
                 await viewModel.getUserProfile()
             }
         }
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 

@@ -25,7 +25,7 @@ public class SignUpViewModel: ObservableObject {
     @Published var fields: [FieldConfiguration] = []
     
     let router: AuthorizationRouter
-    let config: Config
+    let config: ConfigProtocol
     let cssInjector: CSSInjector
     
     private let interactor: AuthInteractorProtocol
@@ -36,7 +36,7 @@ public class SignUpViewModel: ObservableObject {
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
         analytics: AuthorizationAnalytics,
-        config: Config,
+        config: ConfigProtocol,
         cssInjector: CSSInjector,
         validator: Validator
     ) {
@@ -71,6 +71,8 @@ public class SignUpViewModel: ObservableObject {
             isShowProgress = false
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else if error.isUpdateRequeiredError {
+                router.showUpdateRequiredView(showAccountLink: false)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }

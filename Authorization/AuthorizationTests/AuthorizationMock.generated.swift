@@ -1,4 +1,4 @@
-// Generated using Sourcery 1.8.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -731,6 +731,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 
 
 
+    open func showUpdateRequiredView(showAccountLink: Bool) {
+        addInvocation(.m_showUpdateRequiredView__showAccountLink_showAccountLink(Parameter<Bool>.value(`showAccountLink`)))
+		let perform = methodPerformValue(.m_showUpdateRequiredView__showAccountLink_showAccountLink(Parameter<Bool>.value(`showAccountLink`))) as? (Bool) -> Void
+		perform?(`showAccountLink`)
+    }
+
     open func backToRoot(animated: Bool) {
         addInvocation(.m_backToRoot__animated_animated(Parameter<Bool>.value(`animated`)))
 		let perform = methodPerformValue(.m_backToRoot__animated_animated(Parameter<Bool>.value(`animated`))) as? (Bool) -> Void
@@ -811,6 +817,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 
 
     fileprivate enum MethodType {
+        case m_showUpdateRequiredView__showAccountLink_showAccountLink(Parameter<Bool>)
         case m_backToRoot__animated_animated(Parameter<Bool>)
         case m_back__animated_animated(Parameter<Bool>)
         case m_backWithFade
@@ -827,6 +834,11 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
+            case (.m_showUpdateRequiredView__showAccountLink_showAccountLink(let lhsShowaccountlink), .m_showUpdateRequiredView__showAccountLink_showAccountLink(let rhsShowaccountlink)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsShowaccountlink, rhs: rhsShowaccountlink, with: matcher), lhsShowaccountlink, rhsShowaccountlink, "showAccountLink"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_backToRoot__animated_animated(let lhsAnimated), .m_backToRoot__animated_animated(let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
@@ -896,6 +908,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 
         func intValue() -> Int {
             switch self {
+            case let .m_showUpdateRequiredView__showAccountLink_showAccountLink(p0): return p0.intValue
             case let .m_backToRoot__animated_animated(p0): return p0.intValue
             case let .m_back__animated_animated(p0): return p0.intValue
             case .m_backWithFade: return 0
@@ -913,6 +926,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         }
         func assertionName() -> String {
             switch self {
+            case .m_showUpdateRequiredView__showAccountLink_showAccountLink: return ".showUpdateRequiredView(showAccountLink:)"
             case .m_backToRoot__animated_animated: return ".backToRoot(animated:)"
             case .m_back__animated_animated: return ".back(animated:)"
             case .m_backWithFade: return ".backWithFade()"
@@ -944,6 +958,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
+        public static func showUpdateRequiredView(showAccountLink: Parameter<Bool>) -> Verify { return Verify(method: .m_showUpdateRequiredView__showAccountLink_showAccountLink(`showAccountLink`))}
         public static func backToRoot(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_backToRoot__animated_animated(`animated`))}
         public static func back(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_back__animated_animated(`animated`))}
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
@@ -963,6 +978,9 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
+        public static func showUpdateRequiredView(showAccountLink: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_showUpdateRequiredView__showAccountLink_showAccountLink(`showAccountLink`), performs: perform)
+        }
         public static func backToRoot(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
             return Perform(method: .m_backToRoot__animated_animated(`animated`), performs: perform)
         }
