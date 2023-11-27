@@ -59,7 +59,7 @@ struct SocialSignView: View {
 
     private var buttonsView: some View {
         Group {
-            if viewModel.config.firebase.googleSignInEnabled {
+            if viewModel.config.google.googleSignInEnabled {
                 LabelButton(
                     image: CoreAssets.iconGoogleWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.google)",
