@@ -66,6 +66,15 @@ public struct ProfileView: View {
                                         }
                                     }
                                 }
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(
+                                    (viewModel.userModel?.yearOfBirth != 0 ?
+                                     ProfileLocalization.Edit.Fields.yearOfBirth + String(viewModel.userModel?.yearOfBirth ?? 0) :
+                                        "") +
+                                    (viewModel.userModel?.shortBiography != nil ?
+                                     ProfileLocalization.bio + (viewModel.userModel?.shortBiography ?? "") :
+                                        "")
+                                )
                                 .cardStyle(
                                     bgColor: Theme.Colors.textInputUnfocusedBackground,
                                     strokeColor: .clear
@@ -90,7 +99,10 @@ public struct ProfileView: View {
                                     }
                                 })
                                 
-                            }.cardStyle(
+                            }
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(ProfileLocalization.settingsVideo)
+                            .cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
                                 strokeColor: .clear
                             )
@@ -113,6 +125,8 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.supportInfo)
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
@@ -131,6 +145,8 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.terms)
                                     Rectangle()
                                         .frame(height: 1)
                                         .foregroundColor(Theme.Colors.textSecondary)
@@ -149,55 +165,57 @@ public struct ProfileView: View {
                                     })
                                     .buttonStyle(PlainButtonStyle())
                                     .foregroundColor(.primary)
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(ProfileLocalization.privacy)
                                 }
                                 
                                 // MARK: Version
-                                    Rectangle()
-                                        .frame(height: 1)
-                                        .foregroundColor(Theme.Colors.textSecondary)
-                                    Button(action: {
-                                        viewModel.openAppStore()
-                                    }, label: {
-                                        HStack {
-                                            VStack(alignment: .leading, spacing: 0) {
-                                                HStack {
-                                                    if viewModel.versionState == .updateRequired {
-                                                        CoreAssets.Assets.warningFilled.swiftUIImage
-                                                            .resizable()
-                                                            .frame(width: 24, height: 24)
-                                                    }
-                                                    Text("\(ProfileLocalization.Settings.version) \(viewModel.currentVersion)")
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundColor(Theme.Colors.textSecondary)
+                                Button(action: {
+                                    viewModel.openAppStore()
+                                }, label: {
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 0) {
+                                            HStack {
+                                                if viewModel.versionState == .updateRequired {
+                                                    CoreAssets.warningFilled.swiftUIImage
+                                                        .resizable()
+                                                        .frame(width: 24, height: 24)
                                                 }
-                                                switch viewModel.versionState {
-                                                case .actual:
-                                                    HStack {
-                                                        CoreAssets.Assets.checkmark.swiftUIImage
-                                                            .renderingMode(.template)
-                                                            .foregroundColor(.green)
-                                                        Text(ProfileLocalization.Settings.upToDate)
-                                                            .font(Theme.Fonts.labelMedium)
-                                                            .foregroundStyle(Theme.Colors.textSecondary)
-                                                    }
-                                                case .updateNeeded:
-                                                    Text("\(ProfileLocalization.Settings.tapToUpdate) \(viewModel.latestVersion)")
-                                                        .font(Theme.Fonts.labelMedium)
-                                                        .foregroundStyle(Theme.Colors.accentColor)
-                                                case .updateRequired:
-                                                    Text(ProfileLocalization.Settings.tapToInstall)
-                                                        .font(Theme.Fonts.labelMedium)
-                                                        .foregroundStyle(Theme.Colors.accentColor)
-                                                }
+                                                Text("\(ProfileLocalization.Settings.version) \(viewModel.currentVersion)")
                                             }
-                                            Spacer()
-                                            if viewModel.versionState != .actual {
-                                                Image(systemName: "arrow.up.circle")
-                                                    .resizable()
-                                                    .frame(width: 24, height: 24)
+                                            switch viewModel.versionState {
+                                            case .actual:
+                                                HStack {
+                                                    CoreAssets.checkmark.swiftUIImage
+                                                        .renderingMode(.template)
+                                                        .foregroundColor(.green)
+                                                    Text(ProfileLocalization.Settings.upToDate)
+                                                        .font(Theme.Fonts.labelMedium)
+                                                        .foregroundStyle(Theme.Colors.textSecondary)
+                                                }
+                                            case .updateNeeded:
+                                                Text("\(ProfileLocalization.Settings.tapToUpdate) \(viewModel.latestVersion)")
+                                                    .font(Theme.Fonts.labelMedium)
+                                                    .foregroundStyle(Theme.Colors.accentColor)
+                                            case .updateRequired:
+                                                Text(ProfileLocalization.Settings.tapToInstall)
+                                                    .font(Theme.Fonts.labelMedium)
                                                     .foregroundStyle(Theme.Colors.accentColor)
                                             }
-                                            
                                         }
-                                    }).disabled(viewModel.versionState == .actual)
+                                        Spacer()
+                                        if viewModel.versionState != .actual {
+                                            Image(systemName: "arrow.up.circle")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                                .foregroundStyle(Theme.Colors.accentColor)
+                                        }
+                                        
+                                    }
+                                }).disabled(viewModel.versionState == .actual)
                                 
                             }.cardStyle(
                                 bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -230,7 +248,8 @@ public struct ProfileView: View {
                                         Image(systemName: "rectangle.portrait.and.arrow.right")
                                     }
                                 })
-                                
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(ProfileLocalization.logout)
                             }
                             .foregroundColor(Theme.Colors.alert)
                             .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -241,7 +260,8 @@ public struct ProfileView: View {
                         Spacer()
                     }
                 }
-            }.frameLimit(sizePortrait: 420)
+            }.accessibilityAction {}
+                .frameLimit(sizePortrait: 420)
                 .padding(.top, 8)
                 .onChange(of: settingsTapped, perform: { _ in
                     let userModel = viewModel.userModel ?? UserProfile()

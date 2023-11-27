@@ -18,6 +18,8 @@ public struct DashboardView: View {
             .foregroundColor(Theme.Colors.textPrimary)
     }.listRowBackground(Color.clear)
         .padding(.top, 24)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(DashboardLocalization.Header.courses + DashboardLocalization.Header.welcomeBack)
     
     @StateObject
     private var viewModel: DashboardViewModel
@@ -91,7 +93,8 @@ public struct DashboardView: View {
                             }
                         }
                     }
-                }.frameLimit()
+                }.accessibilityAction {}
+                .frameLimit()
             }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar

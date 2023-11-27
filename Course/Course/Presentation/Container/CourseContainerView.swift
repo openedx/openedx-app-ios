@@ -56,7 +56,7 @@ public struct CourseContainerView: View {
                             title: title,
                             courseID: courseID,
                             isVideo: false
-                        )
+                        ).accessibilityAction {}
                         .tabItem {
                             CoreAssets.Assets.bookCircle.swiftUIImage.renderingMode(.template)
                             Text(CourseLocalization.CourseContainer.course)
@@ -68,7 +68,7 @@ public struct CourseContainerView: View {
                             title: title,
                             courseID: courseID,
                             isVideo: true
-                        )
+                        ).accessibilityAction {}
                         .tabItem {
                             CoreAssets.Assets.videoCircle.swiftUIImage.renderingMode(.template)
                             Text(CourseLocalization.CourseContainer.videos)

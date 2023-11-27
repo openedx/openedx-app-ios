@@ -186,7 +186,8 @@ public struct PostsView: View {
                                     }
                                 }
                             }
-                        }.frameLimit()
+                        }.accessibilityAction {}
+                        .frameLimit()
                             .animation(nil)
                             .onRightSwipeGesture {
                                 router.back()
