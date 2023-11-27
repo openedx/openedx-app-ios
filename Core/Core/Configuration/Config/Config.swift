@@ -18,6 +18,7 @@ public protocol ConfigProtocol {
     var firebase: FirebaseConfig { get }
     var facebook: FacebookConfig { get }
     var microsoft: MicrosoftConfig { get }
+    var google: GoogleConfig { get }
     var features: FeaturesConfig { get }
 }
 
