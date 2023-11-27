@@ -107,6 +107,7 @@ public struct CourseContainerView: View {
                             await viewModel.tryToRefreshCookies()
                         }
                     }
+                    .accentColor(Theme.Colors.accentColor)
                 }
             }
         }

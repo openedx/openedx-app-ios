@@ -136,6 +136,7 @@ struct MainScreenView: View {
                 await viewModel.prefetchDataForOffline()
             }
         }
+        .accentColor(Theme.Colors.accentColor)
     }
     
     private func titleBar() -> String {
