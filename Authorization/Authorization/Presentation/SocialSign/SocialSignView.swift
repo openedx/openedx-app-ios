@@ -59,7 +59,7 @@ struct SocialSignView: View {
 
     private var buttonsView: some View {
         Group {
-            if viewModel.config.google.googleSignInEnabled {
+            if viewModel.config.google.enabled {
                 LabelButton(
                     image: CoreAssets.iconGoogleWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.google)",
@@ -90,7 +90,7 @@ struct SocialSignView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.microsoft)")
             }
-            if viewModel.config.features.isAppleSigninEnabled {
+            if viewModel.config.socialLogin.appleSigninEnabled {
                 LabelButton(
                     image: CoreAssets.iconApple.swiftUIImage,
                     title: "\(title) \(AuthLocalization.apple)",

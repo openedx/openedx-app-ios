@@ -19,6 +19,7 @@ public protocol ConfigProtocol {
     var facebook: FacebookConfig { get }
     var microsoft: MicrosoftConfig { get }
     var google: GoogleConfig { get }
+    var socialLogin: SocialLoginConfig { get }
     var features: FeaturesConfig { get }
 }
 
@@ -133,11 +134,11 @@ extension Config: ConfigProtocol {
     }
 
     public var socialLoginEnabled: Bool {
-        features.socialLoginEnabled &&
-        (features.isAppleSigninEnabled ||
+        socialLogin.enable &&
+        (socialLogin.appleSigninEnabled ||
         facebook.enabled ||
         microsoft.enabled ||
-        google.googleSignInEnabled)
+        google.enabled)
     }
 }
 

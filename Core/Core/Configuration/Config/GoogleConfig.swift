@@ -9,14 +9,12 @@ import Foundation
 
 private enum GoogleKeys: String {
     case enabled = "ENABLED"
-    case googleSignInEnabled = "GOOGLE_SIGNIN_ENABLED"
     case googlePlusKey = "GOOGLE_PLUS_KEY"
     case clientID = "CLIENT_ID"
 }
 
 public final class GoogleConfig: NSObject {
     public var enabled: Bool = false
-    public var googleSignInEnabled: Bool = false
     public var googlePlusKey: String?
     public var clientID: String?
 
@@ -29,7 +27,6 @@ public final class GoogleConfig: NSObject {
         clientID = dictionary[GoogleKeys.clientID.rawValue] as? String
         super.init()
         enabled = requiredKeysAvailable && dictionary[GoogleKeys.enabled.rawValue] as? Bool == true
-        googleSignInEnabled = enabled && dictionary[GoogleKeys.googleSignInEnabled.rawValue] as? Bool == true
     }
 }
 
