@@ -49,10 +49,10 @@ public struct SignInView: View {
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.bottom, 20)
                             
-                            Text(AuthLocalization.SignIn.email)
+                            Text(AuthLocalization.SignIn.emailOrUsername)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.textPrimary)
-                            TextField(AuthLocalization.SignIn.email, text: $email)
+                            TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
                                 .autocapitalization(.none)

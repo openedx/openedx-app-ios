@@ -9,14 +9,15 @@
 "SIGN_IN.LOG_IN_TITLE" = "Sign in";
 "SIGN_IN.WELCOME_BACK" = "Welcome back! Please authorize to continue.";
 "SIGN_IN.EMAIL" = "Email";
+"SIGN_IN.EMAIL_OR_USERNAME" = "Email or username";
 "SIGN_IN.PASSWORD" = "Password";
 "SIGN_IN.REGISTER_BTN" = "Register";
 "SIGN_IN.FORGOT_PASS_BTN" = "Forgot password?";
 "SIGN_IN.LOG_IN_BTN" = "Sign in";
 
-
 "ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email address";
-"ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
+"ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME" = "Invalid email or username";
+"ERROR.INVALID_PASSWORD_LENGTH" = "Invalid password length";
 
 "SIGN_UP.TITLE" = "Sign up";
 "SIGN_UP.SUBTITLE" = "Create new account.";
