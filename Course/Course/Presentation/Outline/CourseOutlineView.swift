@@ -210,91 +210,81 @@ struct CourseStructureView: View {
             ForEach(chapter.childs, id: \.id) { child in
                 let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == child.id })
                 VStack(alignment: .leading) {
-                    HStack {
-                        Button(
-                            action: {
-                                if let chapterIndex, let sequentialIndex {
-                                    viewModel.trackSequentialClicked(child)
-                                    viewModel.router.showCourseVerticalView(
-                                        courseID: viewModel.courseStructure?.id ?? "",
-                                        courseName: viewModel.courseStructure?.displayName ?? "",
-                                        title: child.displayName,
-                                        chapters: chapters,
-                                        chapterIndex: chapterIndex,
-                                        sequentialIndex: sequentialIndex
-                                    )
-                                }
-                            },
-                            label: {
-                                Group {
-                                    if child.completion == 1 {
-                                        CoreAssets.finished.swiftUIImage
-                                            .renderingMode(.template)
-                                            .foregroundColor(.accentColor)
-                                    } else {
-                                        child.type.image
-                                    }
-                                    Text(child.displayName)
-                                        .font(Theme.Fonts.titleMedium)
-                                        .multilineTextAlignment(.leading)
-                                        .lineLimit(1)
-                                        .frame(
-                                            maxWidth: idiom == .pad
-                                            ? proxy.size.width * 0.5
-                                            : proxy.size.width * 0.6,
-                                            alignment: .leading
-                                        )
-                                }.foregroundColor(Theme.Colors.textPrimary)
-                            }) .accessibilityElement(children: .ignore)
-                            .accessibilityLabel(child.displayName)
-                        Spacer()
-                        if let state = viewModel.downloadState[child.id] {
-                            switch state {
-                            case .available:
-                                DownloadAvailableView()
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel(CourseLocalization.Accessibility.download)
-                                    .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
-                                    }
-                                    .onForeground {
-                                        viewModel.onForeground()
-                                    }
-                            case .downloading:
-                                DownloadProgressView()
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
-                                    .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
-                                    }
-                                    .onBackground {
-                                        viewModel.onBackground()
-                                    }
-                            case .finished:
-                                DownloadFinishedView()
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
-                                    .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
-                                    }
+                    Button(
+                        action: {
+                            if let chapterIndex, let sequentialIndex {
+                                viewModel.trackSequentialClicked(child)
+                                viewModel.router.showCourseVerticalView(
+                                    courseID: viewModel.courseStructure?.id ?? "",
+                                    courseName: viewModel.courseStructure?.displayName ?? "",
+                                    title: child.displayName,
+                                    chapters: chapters,
+                                    chapterIndex: chapterIndex,
+                                    sequentialIndex: sequentialIndex
+                                )
                             }
-                        }
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(Theme.Colors.accentColor)
-                    }
-                        .padding(.horizontal, 36)
+                        },
+                        label: {
+                            Group {
+                                if child.completion == 1 {
+                                    CoreAssets.Assets.finished.swiftUIImage
+                                        .renderingMode(.template)
+                                        .foregroundColor(.accentColor)
+                                } else {
+                                    child.type.image
+                                }
+                                Text(child.displayName)
+                                    .font(Theme.Fonts.titleMedium)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(1)
+                                    .frame(
+                                        maxWidth: idiom == .pad
+                                        ? proxy.size.width * 0.5
+                                        : proxy.size.width * 0.6,
+                                        alignment: .leading
+                                    )
+                            }.foregroundColor(Theme.Colors.textPrimary)
+                            Spacer()
+                            if let state = viewModel.downloadState[child.id] {
+                                switch state {
+                                case .available:
+                                    DownloadAvailableView()
+                                        .onTapGesture {
+                                            viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
+                                        .onForeground {
+                                            viewModel.onForeground()
+                                        }
+                                case .downloading:
+                                    DownloadProgressView()
+                                        .onTapGesture {
+                                            viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
+                                        .onBackground {
+                                            viewModel.onBackground()
+                                        }
+                                case .finished:
+                                    DownloadFinishedView()
+                                        .onTapGesture {
+                                            viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
+                                }
+                            }
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(Theme.Colors.accentColor)
+                        }).padding(.horizontal, 36)
                         .padding(.vertical, 20)
                     if chapterIndex != chapters.count - 1 {
                         Divider()
