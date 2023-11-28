@@ -33,19 +33,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        ApplicationDelegate.shared.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
-        
         initDI()
         
-        if let config = Container.shared.resolve(ConfigProtocol.self),
-           let configuration = config.firebase.firebaseOptions {
-            FirebaseApp.configure(options: configuration)
-            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        if let config = Container.shared.resolve(ConfigProtocol.self) {
+
+            if let configuration = config.firebase.firebaseOptions {
+                FirebaseApp.configure(options: configuration)
+                Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+            }
+
+            if config.facebook.enabled {
+                ApplicationDelegate.shared.application(
+                    application,
+                    didFinishLaunchingWithOptions: launchOptions
+                )
+            }
         }
-        
+
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = RouteController()
@@ -65,22 +69,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ app: UIApplication,
         open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        ApplicationDelegate.shared.application(
-            app,
-            open: url,
-            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-        )
+        if let config = Container.shared.resolve(ConfigProtocol.self), config.socialLoginEnabled {
+            if config.facebook.enabled {
+                ApplicationDelegate.shared.application(
+                    app,
+                    open: url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                    annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+                )
+            }
 
-        if GIDSignIn.sharedInstance.handle(url) {
-            return true
-        }
+            if config.google.enabled, GIDSignIn.sharedInstance.handle(url) {
+                return true
+            }
 
-        if MSALPublicClientApplication.handleMSALResponse(
-            url,
-            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-        ) {
-            return true
+            if config.microsoft.enabled,
+               MSALPublicClientApplication.handleMSALResponse(
+                url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+            ) {
+                return true
+            }
         }
 
         return false

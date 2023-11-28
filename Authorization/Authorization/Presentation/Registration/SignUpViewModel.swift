@@ -91,9 +91,7 @@ public class SignUpViewModel: ObservableObject {
     func registerUser(externalToken: String? = nil, backend: String? = nil) async {
         do {
             var validateFields: [String: String] = [:]
-            fields.forEach({
-                validateFields[$0.field.name] = $0.text
-            })
+            fields.forEach { validateFields[$0.field.name] = $0.text }
             validateFields["honor_code"] = "true"
             validateFields["terms_of_service"] = "true"
             if let externalToken = externalToken, let backend = backend {
@@ -128,66 +126,59 @@ public class SignUpViewModel: ObservableObject {
         }
     }
 
-    @MainActor
-    func register(with result: Result<Socials, Error>) {
+    func register(with result: Result<SocialResult, Error>) {
         result.success(social)
         result.failure { error in
             errorMessage = error.localizedDescription
         }
     }
 
-    @MainActor
-    private func social(result: Socials) {
+    private func social(result: SocialResult) {
         switch result {
-        case .apple(let credential):
-            appleLogin(credential)
-        case .facebook(let loginManagerLoginResult):
-            facebookLogin(loginManagerLoginResult)
+        case .apple(let appleCredentials):
+            appleLogin(appleCredentials, backend: result.backend)
+        case .facebook:
+            facebookLogin(backend: result.backend)
         case .google(let gIDSignInResult):
-            googleLogin(gIDSignInResult)
-        case .microsoft(let account, let token):
-            microsoftLogin(account, token)
+            googleLogin(gIDSignInResult, backend: result.backend)
+        case .microsoft(_, let token):
+            microsoftLogin(token, backend: result.backend)
         }
     }
 
-    @MainActor 
-    private func appleLogin(_ credentials: AppleCredentials) {
+    private func appleLogin(_ credentials: AppleCredentials, backend: String) {
         registerSocial(
             externalToken: credentials.token,
-            backend: "apple-id"
+            backend: backend
         )
     }
 
-    @MainActor
-    private func facebookLogin(_ managerLoginResult: LoginManagerLoginResult) {
+    private func facebookLogin(backend: String) {
         guard let currentAccessToken = AccessToken.current?.tokenString else {
             return
         }
         registerSocial(
             externalToken: currentAccessToken,
-            backend: "facebook"
+            backend: backend
         )
     }
 
-    @MainActor
-    private func googleLogin(_ gIDSignInResult: GIDSignInResult) {
+    private func googleLogin(_ result: GIDSignInResult, backend: String) {
         registerSocial(
-            externalToken: gIDSignInResult.user.accessToken.tokenString,
-            backend: "google-oauth2"
+            externalToken: result.user.accessToken.tokenString,
+            backend: backend
         )
     }
 
-    @MainActor
-    private func microsoftLogin(_ account: MSALAccount, _ token: String) {
+    private func microsoftLogin(_ token: String, backend: String) {
         registerSocial(
             externalToken: token,
-            backend: "azuread-oauth2"
+            backend: backend
         )
     }
 
-    @MainActor
     private func registerSocial(externalToken: String, backend: String) {
-        Task {
+        Task { @MainActor in
             await registerUser(
                 externalToken: externalToken,
                 backend: backend

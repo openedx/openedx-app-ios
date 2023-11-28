@@ -16,7 +16,7 @@ struct SocialSignView: View {
 
     init(
         signType: SignType = .signIn,
-        onSigned: @escaping (Result<Socials, Error>) -> Void
+        onSigned: @escaping (Result<SocialResult, Error>) -> Void
     ) {
         let viewModel: SocialSignViewModel = .init(onSigned: onSigned)
         self._viewModel = .init(wrappedValue: viewModel)
@@ -64,7 +64,7 @@ struct SocialSignView: View {
                     image: CoreAssets.iconGoogleWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.google)",
                     textColor: .black,
-                    backgroundColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.00).sui,
+                    backgroundColor: CoreAssets.googleButtonColor.swiftUIColor,
                     action: viewModel.signInWithGoogle
                 )
                 .accessibilityElement(children: .ignore)
@@ -74,7 +74,7 @@ struct SocialSignView: View {
                 LabelButton(
                     image: CoreAssets.iconFacebookWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.facebook)",
-                    backgroundColor: UIColor(red: 0.09, green: 0.46, blue: 0.95, alpha: 1.00).sui,
+                    backgroundColor: CoreAssets.facebookButtonColor.swiftUIColor,
                     action: viewModel.signInWithFacebook
                 )
                 .accessibilityElement(children: .ignore)
@@ -84,7 +84,7 @@ struct SocialSignView: View {
                 LabelButton(
                     image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.microsoft)",
-                    backgroundColor: UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1.00).sui,
+                    backgroundColor: CoreAssets.microsoftButtonColor.swiftUIColor,
                     action: viewModel.signInWithMicrosoft
                 )
                 .accessibilityElement(children: .ignore)
@@ -94,7 +94,7 @@ struct SocialSignView: View {
                 LabelButton(
                     image: CoreAssets.iconApple.swiftUIImage,
                     title: "\(title) \(AuthLocalization.apple)",
-                    backgroundColor: .black,
+                    backgroundColor: CoreAssets.appleButtonColor.swiftUIColor,
                     action: viewModel.signInWithApple
                 )
                 .accessibilityElement(children: .ignore)

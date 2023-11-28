@@ -13,20 +13,33 @@ import GoogleSignIn
 import MSAL
 import Swinject
 
-enum Socials {
+enum SocialResult {
     case apple(AppleCredentials)
     case facebook(LoginManagerLoginResult)
     case google(GIDSignInResult)
     case microsoft(MSALAccount, String)
+
+    var backend: String {
+        switch self {
+        case .apple:
+            return "apple-id"
+        case .facebook:
+            return "facebook"
+        case .google:
+            return "google-oauth2"
+        case .microsoft:
+            return "azuread-oauth2"
+        }
+    }
 }
 
 final public class SocialSignViewModel: ObservableObject {
 
     // MARK: - Properties -
 
-    private var onSigned: ((Result<Socials, Error>) -> Void)
+    private var onSigned: ((Result<SocialResult, Error>) -> Void)
 
-    init(onSigned: @escaping (Result<Socials, Error>) -> Void) {
+    init(onSigned: @escaping (Result<SocialResult, Error>) -> Void) {
         self.onSigned = onSigned
     }
 
@@ -100,7 +113,7 @@ final public class SocialSignViewModel: ObservableObject {
         }
     }
 
-    private func success(with social: Socials) {
+    private func success(with social: SocialResult) {
         onSigned(.success(social))
     }
 

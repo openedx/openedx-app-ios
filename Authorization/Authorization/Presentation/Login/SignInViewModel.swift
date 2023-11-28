@@ -92,57 +92,57 @@ public class SignInViewModel: ObservableObject {
         }
     }
 
-    func sign(with result: Result<Socials, Error>) {
+    func sign(with result: Result<SocialResult, Error>) {
         result.success(social)
         result.failure { error in
             errorMessage = error.localizedDescription
         }
     }
 
-    private func social(result: Socials) {
+    private func social(result: SocialResult) {
         switch result {
-        case .apple(let credential):
-            appleLogin(credential)
-        case .facebook(let loginManagerLoginResult):
-            facebookLogin(loginManagerLoginResult)
+        case .apple(let appleCredentials):
+            appleLogin(appleCredentials, backend: result.backend)
+        case .facebook:
+            facebookLogin(backend: result.backend)
         case .google(let gIDSignInResult):
-            googleLogin(gIDSignInResult)
-        case .microsoft(let account, let token):
-            microsoftLogin(account, token)
+            googleLogin(gIDSignInResult, backend: result.backend)
+        case .microsoft(_, let token):
+            microsoftLogin(token, backend: result.backend)
         }
     }
 
-    private func appleLogin(_ credentials: AppleCredentials) {
+    private func appleLogin(_ credentials: AppleCredentials, backend: String) {
         socialLogin(
             externalToken: credentials.token,
-            backend: "apple-id",
+            backend: backend,
             loginMethod: .apple
         )
     }
 
-    private func facebookLogin(_ managerLoginResult: LoginManagerLoginResult) {
+    private func facebookLogin(backend: String) {
         guard let currentAccessToken = AccessToken.current?.tokenString else {
             return
         }
         socialLogin(
             externalToken: currentAccessToken,
-            backend: "facebook",
+            backend: backend,
             loginMethod: .facebook
         )
     }
 
-    private func googleLogin(_ gIDSignInResult: GIDSignInResult) {
+    private func googleLogin(_ result: GIDSignInResult, backend: String) {
         socialLogin(
-            externalToken: gIDSignInResult.user.accessToken.tokenString,
-            backend: "google-oauth2",
+            externalToken: result.user.accessToken.tokenString,
+            backend: backend,
             loginMethod: .google
         )
     }
 
-    private func microsoftLogin(_ account: MSALAccount, _ token: String) {
+    private func microsoftLogin(_ token: String, backend: String) {
         socialLogin(
             externalToken: token,
-            backend: "azuread-oauth2",
+            backend: backend,
             loginMethod: .microsoft
         )
     }
