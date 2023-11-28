@@ -57,3 +57,16 @@ public struct LabelButton: View {
 
     }
 }
+
+#if DEBUG
+struct LabelButton_Previews: PreviewProvider {
+    static var previews: some View {
+        LabelButton(
+            image: CoreAssets.iconApple.swiftUIImage,
+            title: "Apple",
+            backgroundColor: CoreAssets.appleButtonColor.swiftUIColor,
+            action: {  }
+        )
+    }
+}
+#endif

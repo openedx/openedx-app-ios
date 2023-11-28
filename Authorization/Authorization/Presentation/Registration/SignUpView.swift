@@ -108,7 +108,7 @@ public struct SignUpView: View {
                                 if viewModel.socialLoginEnabled {
                                     SocialSignView(
                                         signType: .register,
-                                        onSigned: viewModel.register
+                                        viewModel: .init(onSigned: viewModel.register)
                                     )
                                     .padding(.bottom, 30)
                                 }

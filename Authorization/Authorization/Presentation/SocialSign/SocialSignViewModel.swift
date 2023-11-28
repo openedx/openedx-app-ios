@@ -39,9 +39,15 @@ final public class SocialSignViewModel: ObservableObject {
 
     private var onSigned: ((Result<SocialResult, Error>) -> Void)
 
-    init(onSigned: @escaping (Result<SocialResult, Error>) -> Void) {
+    init(
+        config: ConfigProtocol = Container.shared.resolve(ConfigProtocol.self) ?? ConfigMock(),
+        onSigned: @escaping (Result<SocialResult, Error>) -> Void
+    ) {
+        self.config = config
         self.onSigned = onSigned
     }
+
+    let  config: ConfigProtocol
 
     private let appleSingInProvider: AppleSingInProvider  = .init()
     private let googleSingInProvider: GoogleSingInProvider = .init()
@@ -51,8 +57,6 @@ final public class SocialSignViewModel: ObservableObject {
     private var topViewController: UIViewController? {
         UIApplication.topViewController()
     }
-
-    private(set) lazy var config = Container.shared.resolve(ConfigProtocol.self)!
 
     // MARK: - Public Intens -
 

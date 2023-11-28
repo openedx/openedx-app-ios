@@ -154,6 +154,23 @@ public class ConfigMock: Config {
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos"
+        ],
+        "GOOGLE": [
+            "ENABLED": true,
+            "CLIENT_ID": "CLIENT_ID"
+        ],
+        "FACEBOOK": [
+            "ENABLED": true,
+            "FACEBOOK_APP_ID": "FACEBOOK_APP_ID",
+            "CLIENT_TOKEN": "CLIENT_TOKEN",
+        ],
+        "MICROSOFT": [
+            "ENABLED": true,
+            "APP_ID": "APP_ID"
+        ],
+        "SOCIAL_LOGINS": [
+            "ENABLED": true,
+            "APPLE_SIGNIN_ENABLED": true
         ]
     ]
     

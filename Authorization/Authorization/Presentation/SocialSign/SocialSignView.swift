@@ -16,9 +16,8 @@ struct SocialSignView: View {
 
     init(
         signType: SignType = .signIn,
-        onSigned: @escaping (Result<SocialResult, Error>) -> Void
+        viewModel: SocialSignViewModel
     ) {
-        let viewModel: SocialSignViewModel = .init(onSigned: onSigned)
         self._viewModel = .init(wrappedValue: viewModel)
         self.signType = signType
     }
@@ -103,3 +102,12 @@ struct SocialSignView: View {
         }
     }
 }
+
+#if DEBUG
+struct SocialSignView_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = SocialSignViewModel(onSigned: { _ in })
+        SocialSignView(viewModel: vm).padding()
+    }
+}
+#endif

@@ -18,7 +18,6 @@ public final class GoogleConfig: NSObject {
     public var googlePlusKey: String?
     public var clientID: String?
 
-
     public var requiredKeysAvailable: Bool {
         return clientID != nil
     }
