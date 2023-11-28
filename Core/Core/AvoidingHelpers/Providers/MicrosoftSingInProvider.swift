@@ -75,7 +75,7 @@ public final class MicrosoftSingInProvider {
         let clientApplication = try createClientApplication()
 
         guard let account = try clientApplication.allAccounts().first else {
-            throw CustomError.error(text: "Error")
+            throw CustomError.error(text: "Account not found")
         }
 
         return account

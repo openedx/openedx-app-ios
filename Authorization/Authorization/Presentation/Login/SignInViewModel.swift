@@ -15,7 +15,7 @@ import GoogleSignIn
 import MSAL
 
 public class SignInViewModel: ObservableObject {
-    
+
     @Published private(set) var isShowProgress = false
     @Published private(set) var showError: Bool = false
     @Published private(set) var showAlert: Bool = false
@@ -35,7 +35,7 @@ public class SignInViewModel: ObservableObject {
     }
     
     let router: AuthorizationRouter
-    private let config: ConfigProtocol
+    let config: ConfigProtocol
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
@@ -92,13 +92,15 @@ public class SignInViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     func sign(with result: Result<SocialResult, Error>) {
-        result.success(social)
+        result.success { social(result: $0) }
         result.failure { error in
             errorMessage = error.localizedDescription
         }
     }
 
+    @MainActor
     private func social(result: SocialResult) {
         switch result {
         case .apple(let appleCredentials):
@@ -112,6 +114,7 @@ public class SignInViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     private func appleLogin(_ credentials: AppleCredentials, backend: String) {
         socialLogin(
             externalToken: credentials.token,
@@ -120,6 +123,7 @@ public class SignInViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func facebookLogin(backend: String) {
         guard let currentAccessToken = AccessToken.current?.tokenString else {
             return
@@ -131,6 +135,7 @@ public class SignInViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func googleLogin(_ result: GIDSignInResult, backend: String) {
         socialLogin(
             externalToken: result.user.accessToken.tokenString,
@@ -139,6 +144,7 @@ public class SignInViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func microsoftLogin(_ token: String, backend: String) {
         socialLogin(
             externalToken: token,
@@ -147,8 +153,9 @@ public class SignInViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func socialLogin(externalToken: String, backend: String, loginMethod: LoginMethod) {
-        Task { @MainActor in
+        Task { 
             isShowProgress = true
             do {
                 let user = try await interactor.login(externalToken: externalToken, backend: backend)

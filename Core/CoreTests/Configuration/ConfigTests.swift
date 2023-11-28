@@ -32,7 +32,24 @@ class ConfigTests: XCTestCase {
             "REVERSED_CLIENT_ID": "testReversedClientID",
             "STORAGE_BUCKET": "testStorageBucket",
             "ANALYTICS_SOURCE": "firebase",
-            "CLOUD_MESSAGING_ENABLED": true]
+            "CLOUD_MESSAGING_ENABLED": true
+        ],
+        "GOOGLE": [
+            "ENABLED": true,
+            "CLIENT_ID": "clientId"
+        ],
+        "FACEBOOK": [
+            "ENABLED": true,
+            "FACEBOOK_APP_ID": "facebookAppId",
+            "CLIENT_TOKEN": "client_token"
+        ],
+        "MICROSOFT": [
+            "ENABLED": true,
+            "APP_ID": "appId"
+        ],
+        "APPLE_SIGNIN": [
+            "ENABLED": true
+        ]
     ]
     
     func testConfigInitialization() {

@@ -19,7 +19,7 @@ public protocol ConfigProtocol {
     var facebook: FacebookConfig { get }
     var microsoft: MicrosoftConfig { get }
     var google: GoogleConfig { get }
-    var socialLogin: SocialLoginConfig { get }
+    var appleSignIn: AppleSignInConfig { get }
     var features: FeaturesConfig { get }
 }
 
@@ -134,11 +134,10 @@ extension Config: ConfigProtocol {
     }
 
     public var socialLoginEnabled: Bool {
-        socialLogin.enable &&
-        (socialLogin.appleSigninEnabled ||
+        appleSignIn.enable ||
         facebook.enabled ||
         microsoft.enabled ||
-        google.enabled)
+        google.enabled
     }
 }
 
@@ -157,20 +156,19 @@ public class ConfigMock: Config {
         ],
         "GOOGLE": [
             "ENABLED": true,
-            "CLIENT_ID": "CLIENT_ID"
+            "CLIENT_ID": "clientId"
         ],
         "FACEBOOK": [
             "ENABLED": true,
-            "FACEBOOK_APP_ID": "FACEBOOK_APP_ID",
-            "CLIENT_TOKEN": "CLIENT_TOKEN",
+            "FACEBOOK_APP_ID": "facebookAppId",
+            "CLIENT_TOKEN": "client_token"
         ],
         "MICROSOFT": [
             "ENABLED": true,
-            "APP_ID": "APP_ID"
+            "APP_ID": "appId"
         ],
-        "SOCIAL_LOGINS": [
-            "ENABLED": true,
-            "APPLE_SIGNIN_ENABLED": true
+        "APPLE_SIGNIN": [
+            "ENABLED": true
         ]
     ]
     

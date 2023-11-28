@@ -126,6 +126,7 @@ public class SignUpViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     func register(with result: Result<SocialResult, Error>) {
         result.success(social)
         result.failure { error in
@@ -133,6 +134,7 @@ public class SignUpViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     private func social(result: SocialResult) {
         switch result {
         case .apple(let appleCredentials):
@@ -146,6 +148,7 @@ public class SignUpViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     private func appleLogin(_ credentials: AppleCredentials, backend: String) {
         registerSocial(
             externalToken: credentials.token,
@@ -153,6 +156,7 @@ public class SignUpViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func facebookLogin(backend: String) {
         guard let currentAccessToken = AccessToken.current?.tokenString else {
             return
@@ -163,6 +167,7 @@ public class SignUpViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func googleLogin(_ result: GIDSignInResult, backend: String) {
         registerSocial(
             externalToken: result.user.accessToken.tokenString,
@@ -170,6 +175,7 @@ public class SignUpViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func microsoftLogin(_ token: String, backend: String) {
         registerSocial(
             externalToken: token,
@@ -177,8 +183,9 @@ public class SignUpViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     private func registerSocial(externalToken: String, backend: String) {
-        Task { @MainActor in
+        Task {
             await registerUser(
                 externalToken: externalToken,
                 backend: backend

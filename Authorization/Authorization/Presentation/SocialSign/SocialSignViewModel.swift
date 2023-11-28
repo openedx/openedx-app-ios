@@ -35,19 +35,19 @@ enum SocialResult {
 
 final public class SocialSignViewModel: ObservableObject {
 
-    // MARK: - Properties -
+    // MARK: - Properties
 
-    private var onSigned: ((Result<SocialResult, Error>) -> Void)
+    private var completion: ((Result<SocialResult, Error>) -> Void)
 
     init(
-        config: ConfigProtocol = Container.shared.resolve(ConfigProtocol.self) ?? ConfigMock(),
-        onSigned: @escaping (Result<SocialResult, Error>) -> Void
+        config: ConfigProtocol,
+        completion: @escaping (Result<SocialResult, Error>) -> Void
     ) {
         self.config = config
-        self.onSigned = onSigned
+        self.completion = completion
     }
 
-    let  config: ConfigProtocol
+    let config: ConfigProtocol
 
     private let appleSingInProvider: AppleSingInProvider  = .init()
     private let googleSingInProvider: GoogleSingInProvider = .init()
@@ -58,7 +58,7 @@ final public class SocialSignViewModel: ObservableObject {
         UIApplication.topViewController()
     }
 
-    // MARK: - Public Intens -
+    // MARK: - Public Intens
 
     func signInWithApple() {
         appleSingInProvider.request { [weak self] result in
@@ -118,11 +118,11 @@ final public class SocialSignViewModel: ObservableObject {
     }
 
     private func success(with social: SocialResult) {
-        onSigned(.success(social))
+        completion(.success(social))
     }
 
     private func failure(_ error: Error) {
-        onSigned(.failure(error))
+        completion(.failure(error))
     }
 
 }

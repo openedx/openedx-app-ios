@@ -113,7 +113,12 @@ public struct SignInView: View {
                             }
                         }
                         if viewModel.socialLoginEnabled {
-                            SocialSignView(viewModel: .init(onSigned: viewModel.sign))
+                            SocialSignView(
+                                viewModel: .init(
+                                    config: viewModel.config,
+                                    completion: { viewModel.sign(with: $0) }
+                                )
+                            )
                         }
                         Spacer()
                     }

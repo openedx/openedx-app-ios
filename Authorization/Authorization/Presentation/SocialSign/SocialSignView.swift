@@ -10,7 +10,7 @@ import Core
 
 struct SocialSignView: View {
 
-    // MARK: - Properties -
+    // MARK: - Properties
 
     @StateObject var viewModel: SocialSignViewModel
 
@@ -37,7 +37,7 @@ struct SocialSignView: View {
         }
     }
 
-    // MARK: - Views -
+    // MARK: - Views
 
     var body: some View {
         VStack(spacing: 10) {
@@ -89,7 +89,7 @@ struct SocialSignView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.microsoft)")
             }
-            if viewModel.config.socialLogin.appleSigninEnabled {
+            if viewModel.config.appleSignIn.enable {
                 LabelButton(
                     image: CoreAssets.iconApple.swiftUIImage,
                     title: "\(title) \(AuthLocalization.apple)",
@@ -106,7 +106,7 @@ struct SocialSignView: View {
 #if DEBUG
 struct SocialSignView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = SocialSignViewModel(onSigned: { _ in })
+        let vm = SocialSignViewModel(config: ConfigMock(), completion: { _ in })
         SocialSignView(viewModel: vm).padding()
     }
 }
