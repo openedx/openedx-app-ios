@@ -79,16 +79,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 )
             }
 
-            if config.google.enabled, GIDSignIn.sharedInstance.handle(url) {
-                return true
+            if config.google.enabled {
+                return GIDSignIn.sharedInstance.handle(url)
             }
 
-            if config.microsoft.enabled,
-               MSALPublicClientApplication.handleMSALResponse(
-                url,
-                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-            ) {
-                return true
+            if config.microsoft.enabled {
+                return MSALPublicClientApplication.handleMSALResponse(
+                    url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+                )
             }
         }
 
