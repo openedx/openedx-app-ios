@@ -11,7 +11,11 @@ extension View {
     /// - Parameters:
     ///   - id: used to differentiate a view and its ancestor if they both call `readFrame`
     /// - Note: `onChange` maybe called with duplicated values
-    public func readFrame(in space: CoordinateSpace, id: String = "shared", onChange: @escaping (CGRect) -> Void) -> some View {
+    public func readFrame(
+        in space: CoordinateSpace,
+        id: String = "shared",
+        onChange: @escaping (CGRect) -> Void
+    ) -> some View {
         background(
             GeometryReader { proxy in
                 Color

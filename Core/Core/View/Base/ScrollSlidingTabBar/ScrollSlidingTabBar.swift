@@ -8,26 +8,24 @@
 import SwiftUI
 
 public struct ScrollSlidingTabBar: View {
-    @Binding
-    private var selection: Int
+
+    @Binding private var selection: Int
+    @State private var buttonFrames: [Int: CGRect] = [:]
     
     private let tabs: [String]
-    
     private let style: Style
-    
     private let onTap: ((Int) -> Void)?
-    
-    @State
-    private var buttonFrames: [Int: CGRect] = [:]
-    
+
     private var containerSpace: String {
         return "container"
     }
     
-    public init(selection: Binding<Int>,
-                tabs: [String],
-                style: Style = .default,
-                onTap: ((Int) -> Void)? = nil) {
+    public init(
+        selection: Binding<Int>,
+        tabs: [String],
+        style: Style = .default,
+        onTap: ((Int) -> Void)? = nil)
+    {
         self._selection = selection
         self.tabs = tabs
         self.style = style
@@ -139,7 +137,17 @@ extension ScrollSlidingTabBar {
         public let buttonHInset: CGFloat
         public let buttonVInset: CGFloat
         
-        public init(font: Font, selectedFont: Font, activeAccentColor: Color, inactiveAccentColor: Color, indicatorHeight: CGFloat, borderColor: Color, borderHeight: CGFloat, buttonHInset: CGFloat, buttonVInset: CGFloat) {
+        public init(
+            font: Font,
+            selectedFont: Font,
+            activeAccentColor: Color,
+            inactiveAccentColor: Color,
+            indicatorHeight: CGFloat,
+            borderColor: Color,
+            borderHeight: CGFloat,
+            buttonHInset: CGFloat,
+            buttonVInset: CGFloat
+        ) {
             self.font = font
             self.selectedFont = selectedFont
             self.activeAccentColor = activeAccentColor
