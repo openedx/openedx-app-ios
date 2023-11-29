@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Theme
 
 extension UIApplication {
     
@@ -43,7 +44,7 @@ extension UINavigationController {
         navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationBar.shadowImage = UIImage()
         
-        let image = CoreAssets.Assets.arrowLeft.image
+        let image = CoreAssets.arrowLeft.image
         navigationBar.backIndicatorImage = image.withTintColor(Theme.Colors.accentColor.uiColor())
         navigationBar.backItem?.backButtonTitle = " "
         navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.Colors.accentColor.uiColor())

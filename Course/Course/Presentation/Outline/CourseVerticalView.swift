@@ -9,6 +9,7 @@ import SwiftUI
 
 import Core
 import Kingfisher
+import Theme
 
 public struct CourseVerticalView: View {
     
@@ -33,15 +34,15 @@ public struct CourseVerticalView: View {
     
     private func verticalImage(childs: [CourseBlock]) -> Image {
         if childs.contains(where: { $0.type == .problem }) {
-            return CoreAssets.Assets.pen.swiftUIImage.renderingMode(.template)
+            return CoreAssets.pen.swiftUIImage.renderingMode(.template)
         } else if childs.contains(where: { $0.type == .video }) {
-            return CoreAssets.Assets.video.swiftUIImage.renderingMode(.template)
+            return CoreAssets.video.swiftUIImage.renderingMode(.template)
         } else if childs.contains(where: { $0.type == .discussion }) {
-            return CoreAssets.Assets.discussion.swiftUIImage.renderingMode(.template)
+            return CoreAssets.discussion.swiftUIImage.renderingMode(.template)
         } else if childs.contains(where: { $0.type == .html }) {
-            return CoreAssets.Assets.extra.swiftUIImage.renderingMode(.template)
+            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
         } else {
-            return CoreAssets.Assets.extra.swiftUIImage.renderingMode(.template)
+            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
         }
     }
     
@@ -77,7 +78,7 @@ public struct CourseVerticalView: View {
                                 }, label: {
                                         Group {
                                             if vertical.completion == 1 {
-                                                CoreAssets.Assets.finished.swiftUIImage
+                                                CoreAssets.finished.swiftUIImage
                                                     .renderingMode(.template)
                                                     .foregroundColor(.accentColor)
                                             } else {

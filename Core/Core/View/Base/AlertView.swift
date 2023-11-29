@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public enum AlertViewType: Equatable {
     case `default`(positiveAction: String)
@@ -80,7 +81,7 @@ public struct AlertView: View {
                     if type == .logOut {
                         HStack {
                             Spacer(minLength: 100)
-                            CoreAssets.Assets.logOut.swiftUIImage
+                            CoreAssets.logOut.swiftUIImage
                                 .padding(.top, isHorizontal ? 20 : 54)
                             Spacer(minLength: 100)
                         }
@@ -92,7 +93,7 @@ public struct AlertView: View {
                             .frame(maxWidth: 250)
                     } else if type == .leaveProfile {
                         VStack(spacing: 20) {
-                            CoreAssets.Assets.leaveProfile.swiftUIImage
+                            CoreAssets.leaveProfile.swiftUIImage
                                 .padding(.top, isHorizontal ? 20 : 54)
                             Text(alertTitle)
                                 .font(Theme.Fonts.titleLarge)
@@ -312,7 +313,7 @@ struct AlertView_Previews: PreviewProvider {
             alertMessage: "You've passed the course",
             nextSectionName: "Continue",
             mainAction: "Back to outline",
-            image: CoreAssets.Assets.goodWork.swiftUIImage,
+            image: CoreAssets.goodWork.swiftUIImage,
             onCloseTapped: {},
             okTapped: {},
             nextSectionTapped: {}

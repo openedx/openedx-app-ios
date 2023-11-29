@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct SearchView: View {
     
@@ -58,7 +59,7 @@ public struct SearchView: View {
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
                         Button(action: { viewModel.searchText.removeAll() }, label: {
-                            CoreAssets.Assets.clearInput.swiftUIImage
+                            CoreAssets.clearInput.swiftUIImage
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 24)

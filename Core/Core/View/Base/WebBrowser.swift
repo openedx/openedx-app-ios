@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WebKit
+import Theme
 
 public struct WebBrowser: View {
     

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import Theme
 
 public enum CellType {
     case dashboard
@@ -41,7 +42,7 @@ public struct CourseCellView: View {
         VStack {
             HStack {
                 KFImage(URL(string: courseImage))
-                    .onFailureImage(CoreAssets.Assets.noCourseImage.image)
+                    .onFailureImage(CoreAssets.noCourseImage.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: idiom == .pad ? 171 : 105, height: 105)
@@ -75,7 +76,7 @@ public struct CourseCellView: View {
                                     .foregroundColor(Theme.Colors.textSecondary)
                             }
                             Spacer()
-                            CoreAssets.Assets.arrowRight16.swiftUIImage.renderingMode(.template)
+                            CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
                                 .resizable()
                                 .frame(width: 16, height: 16)
                                 .offset(x: 15)

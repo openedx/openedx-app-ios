@@ -7,6 +7,7 @@
 
 import SwiftUI
 import StoreKit
+import Theme
 
 public struct AppReviewView: View {
         
@@ -33,7 +34,7 @@ public struct AppReviewView: View {
             } else {
                 VStack(spacing: 20) {
                     if viewModel.state == .thanksForFeedback || viewModel.state == .thanksForVote {
-                        CoreAssets.Assets.favorite.swiftUIImage
+                        CoreAssets.favorite.swiftUIImage
                             .resizable()
                             .frame(width: isHorizontal ? 50 : 100,
                                    height: isHorizontal ? 50 : 100)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct WhatsNewNavigationButton: View {
     let type: ButtonType
@@ -20,7 +21,7 @@ struct WhatsNewNavigationButton: View {
         Group {
             HStack(spacing: 4) {
                 if type == .previous {
-                    CoreAssets.Assets.arrowLeft.swiftUIImage
+                    CoreAssets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
                         .foregroundColor(Theme.Colors.accentColor)
                 }
@@ -31,14 +32,14 @@ struct WhatsNewNavigationButton: View {
                 .font(Theme.Fonts.labelLarge)
                 
                 if type == .next {
-                    CoreAssets.Assets.arrowLeft.swiftUIImage
+                    CoreAssets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
                         .rotationEffect(Angle(degrees: 180))
                         .foregroundColor(Theme.Colors.white)
                 }
                 
                 if type == .done {
-                    CoreAssets.Assets.checkmark.swiftUIImage
+                    CoreAssets.checkmark.swiftUIImage
                         .renderingMode(.template)
                         .foregroundColor(Theme.Colors.white)
                 }

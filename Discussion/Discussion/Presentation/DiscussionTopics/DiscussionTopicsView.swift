@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct DiscussionTopicsView: View {
     
@@ -76,7 +77,7 @@ public struct DiscussionTopicsView: View {
                                             }, label: {
                                                 VStack {
                                                     Spacer(minLength: 0)
-                                                    CoreAssets.Assets.allPosts.swiftUIImage
+                                                    CoreAssets.allPosts.swiftUIImage
                                                     Text(allTopics.name)
                                                         .font(Theme.Fonts.titleSmall)
                                                     Spacer(minLength: 0)
@@ -92,7 +93,7 @@ public struct DiscussionTopicsView: View {
                                             }, label: {
                                                 VStack(alignment: .center) {
                                                     Spacer(minLength: 0)
-                                                    CoreAssets.Assets.followed.swiftUIImage
+                                                    CoreAssets.followed.swiftUIImage
                                                     Text(followed.name)
                                                         .font(Theme.Fonts.titleSmall)
                                                     Spacer(minLength: 0)

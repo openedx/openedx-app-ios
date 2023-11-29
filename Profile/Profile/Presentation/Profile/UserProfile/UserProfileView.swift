@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Kingfisher
+import Theme
 
 public struct UserProfileView: View {
     
@@ -120,7 +121,7 @@ struct ProfileAvatar: View {
                 .foregroundColor(Theme.Colors.avatarStroke)
                 .frame(width: 104, height: 104)
             KFImage(url)
-                .onFailureImage(CoreAssets.Assets.noCourseImage.image)
+                .onFailureImage(CoreAssets.noCourseImage.image)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 100, height: 100)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct NavigationBar: View {
     
@@ -53,7 +54,7 @@ public struct NavigationBar: View {
                     Button(action: {
                         leftButtonAction?()
                     }, label: {
-                        CoreAssets.Assets.arrowLeft.swiftUIImage
+                        CoreAssets.arrowLeft.swiftUIImage
                             .backButtonStyle(color: leftButtonColor)
                             .padding(8)
                     })
@@ -74,14 +75,14 @@ public struct NavigationBar: View {
                         switch rightButtonType {
                         case .done:
                             HStack(spacing: -10) {
-                                CoreAssets.Assets.done.swiftUIImage
+                                CoreAssets.done.swiftUIImage
                                     .backButtonStyle(topPadding: 0)
                                 Text(CoreLocalization.done)
                                     .font(Theme.Fonts.labelLarge)
                                     .foregroundColor(Theme.Colors.accentColor)
                             }.offset(y: -6)
                         case .edit:
-                            CoreAssets.Assets.edit.swiftUIImage
+                            CoreAssets.edit.swiftUIImage
                                 .resizable()
                                 .frame(width: 24, height: 24)
                                 .padding(.horizontal)

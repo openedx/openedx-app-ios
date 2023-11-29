@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Kingfisher
+import Theme
 
 public struct ProfileView: View {
     
@@ -180,7 +181,7 @@ public struct ProfileView: View {
                                         VStack(alignment: .leading, spacing: 0) {
                                             HStack {
                                                 if viewModel.versionState == .updateRequired {
-                                                    CoreAssets.Assets.warningFilled.swiftUIImage
+                                                    CoreAssets.warningFilled.swiftUIImage
                                                         .resizable()
                                                         .frame(width: 24, height: 24)
                                                 }
@@ -189,7 +190,7 @@ public struct ProfileView: View {
                                             switch viewModel.versionState {
                                             case .actual:
                                                 HStack {
-                                                    CoreAssets.Assets.checkmark.swiftUIImage
+                                                    CoreAssets.checkmark.swiftUIImage
                                                         .renderingMode(.template)
                                                         .foregroundColor(.green)
                                                     Text(ProfileLocalization.Settings.upToDate)
@@ -366,7 +367,7 @@ struct UserAvatar: View {
                     .cornerRadius(50)
             } else {
                 KFImage(url)
-                    .onFailureImage(CoreAssets.Assets.noCourseImage.image)
+                    .onFailureImage(CoreAssets.noCourseImage.image)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 100, height: 100)

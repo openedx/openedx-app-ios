@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Kingfisher
+import Theme
 
 public struct ParentCommentView: View {
     
@@ -102,8 +103,8 @@ public struct ParentCommentView: View {
                     onLikeTap()
                 }, label: {
                     comments.voted
-                    ? CoreAssets.Assets.voted.swiftUIImage
-                    : CoreAssets.Assets.vote.swiftUIImage
+                    ? CoreAssets.voted.swiftUIImage
+                    : CoreAssets.vote.swiftUIImage
                     Text("\(comments.votesCount)")
                     Text(DiscussionLocalization.votesCount(comments.votesCount))
                         .font(Theme.Fonts.labelLarge)
@@ -115,8 +116,8 @@ public struct ParentCommentView: View {
                     onReportTap()
                 }, label: {
                     comments.abuseFlagged
-                    ? CoreAssets.Assets.reported.swiftUIImage
-                    : CoreAssets.Assets.report.swiftUIImage
+                    ? CoreAssets.reported.swiftUIImage
+                    : CoreAssets.report.swiftUIImage
                     Text(comments.abuseFlagged
                          ? DiscussionLocalization.Comment.unreport
                          : DiscussionLocalization.Comment.report)

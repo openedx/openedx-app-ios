@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct SignInView: View {
     
@@ -25,13 +26,13 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.Configurable.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
             
             VStack(alignment: .center) {
-                CoreAssets.Configurable.appLogo.swiftUIImage
+                ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .frame(maxWidth: 189, maxHeight: 54)
                     .padding(.top, isHorizontal ? 20 : 40)

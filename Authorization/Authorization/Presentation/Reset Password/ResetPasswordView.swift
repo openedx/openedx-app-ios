@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct ResetPasswordView: View {
     
@@ -26,7 +27,7 @@ public struct ResetPasswordView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.Configurable.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
@@ -44,7 +45,7 @@ public struct ResetPasswordView: View {
                         if isRecovered {
                             ZStack {
                                 VStack {
-                                    CoreAssets.Assets.checkEmail.swiftUIImage
+                                    CoreAssets.checkEmail.swiftUIImage
                                         .resizable()
                                         .frame(width: 100, height: 100)
                                         .padding(.bottom, 40)

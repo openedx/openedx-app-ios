@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct FlexibleKeyboardInputView: View {
     
@@ -77,8 +78,8 @@ public struct FlexibleKeyboardInputView: View {
                             }, label: {
                                 VStack {
                                     commentText.trimmingCharacters(in: .whitespacesAndNewlines).count > 0
-                                    ? CoreAssets.Assets.send.swiftUIImage
-                                    : CoreAssets.Assets.sendDisabled.swiftUIImage
+                                    ? CoreAssets.send.swiftUIImage
+                                    : CoreAssets.sendDisabled.swiftUIImage
                                 }
                                 .frame(width: 36, height: 36)
                                 .foregroundColor(Theme.Colors.white)

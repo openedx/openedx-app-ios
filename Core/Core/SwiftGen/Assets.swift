@@ -13,8 +13,6 @@
 #endif
 
 // Deprecated typealiases
-@available(*, deprecated, renamed: "ColorAsset.Color", message: "This typealias will be removed in SwiftGen 7.0")
-public typealias AssetColorTypeAlias = ColorAsset.Color
 @available(*, deprecated, renamed: "ImageAsset.Image", message: "This typealias will be removed in SwiftGen 7.0")
 public typealias AssetImageTypeAlias = ImageAsset.Image
 
@@ -24,175 +22,82 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum CoreAssets {
-  public enum Assets {
-    public static let bookCircle = ImageAsset(name: "book.circle")
-    public static let bubbleLeftCircle = ImageAsset(name: "bubble.left.circle")
-    public static let docCircle = ImageAsset(name: "doc.circle")
-    public static let videoCircle = ImageAsset(name: "video.circle")
-    public static let dashboardEmptyPage = ImageAsset(name: "DashboardEmptyPage")
-    public static let addComment = ImageAsset(name: "addComment")
-    public static let allPosts = ImageAsset(name: "allPosts")
-    public static let chapter = ImageAsset(name: "chapter")
-    public static let discussion = ImageAsset(name: "discussion")
-    public static let discussionIcon = ImageAsset(name: "discussionIcon")
-    public static let extra = ImageAsset(name: "extra")
-    public static let filter = ImageAsset(name: "filter")
-    public static let finished = ImageAsset(name: "finished")
-    public static let followed = ImageAsset(name: "followed")
-    public static let pen = ImageAsset(name: "pen")
-    public static let question = ImageAsset(name: "question")
-    public static let report = ImageAsset(name: "report")
-    public static let reported = ImageAsset(name: "reported")
-    public static let responses = ImageAsset(name: "responses")
-    public static let send = ImageAsset(name: "send")
-    public static let sendDisabled = ImageAsset(name: "sendDisabled")
-    public static let sort = ImageAsset(name: "sort")
-    public static let unread = ImageAsset(name: "unread")
-    public static let video = ImageAsset(name: "video")
-    public static let vote = ImageAsset(name: "vote")
-    public static let voted = ImageAsset(name: "voted")
-    public static let deleteDownloading = ImageAsset(name: "deleteDownloading")
-    public static let startDownloading = ImageAsset(name: "startDownloading")
-    public static let stopDownloading = ImageAsset(name: "stopDownloading")
-    public static let announcements = ImageAsset(name: "announcements")
-    public static let handouts = ImageAsset(name: "handouts")
-    public static let dashboard = ImageAsset(name: "dashboard")
-    public static let discovery = ImageAsset(name: "discovery")
-    public static let profile = ImageAsset(name: "profile")
-    public static let programs = ImageAsset(name: "programs")
-    public static let addPhoto = ImageAsset(name: "addPhoto")
-    public static let bgDelete = ImageAsset(name: "bg_delete")
-    public static let checkmark = ImageAsset(name: "checkmark")
-    public static let deleteChar = ImageAsset(name: "delete_char")
-    public static let deleteEyes = ImageAsset(name: "delete_eyes")
-    public static let done = ImageAsset(name: "done")
-    public static let gallery = ImageAsset(name: "gallery")
-    public static let leaveProfile = ImageAsset(name: "leaveProfile")
-    public static let logOut = ImageAsset(name: "logOut")
-    public static let noAvatar = ImageAsset(name: "noAvatar")
-    public static let removePhoto = ImageAsset(name: "removePhoto")
-    public static let rotateDevice = ImageAsset(name: "rotateDevice")
-    public static let sub = ImageAsset(name: "sub")
-    public static let alarm = ImageAsset(name: "alarm")
-    public static let arrowLeft = ImageAsset(name: "arrowLeft")
-    public static let arrowRight16 = ImageAsset(name: "arrowRight16")
-    public static let certificate = ImageAsset(name: "certificate")
-    public static let check = ImageAsset(name: "check")
-    public static let checkEmail = ImageAsset(name: "checkEmail")
-    public static let clearInput = ImageAsset(name: "clearInput")
-    public static let edit = ImageAsset(name: "edit")
-    public static let favorite = ImageAsset(name: "favorite")
-    public static let goodWork = ImageAsset(name: "goodWork")
-    public static let airmail = ImageAsset(name: "airmail")
-    public static let defaultMail = ImageAsset(name: "defaultMail")
-    public static let fastmail = ImageAsset(name: "fastmail")
-    public static let googlegmail = ImageAsset(name: "googlegmail")
-    public static let msOutlook = ImageAsset(name: "ms-outlook")
-    public static let proton = ImageAsset(name: "proton")
-    public static let readdleSpark = ImageAsset(name: "readdle-spark")
-    public static let ymail = ImageAsset(name: "ymail")
-    public static let noCourseImage = ImageAsset(name: "noCourseImage")
-    public static let notAvaliable = ImageAsset(name: "notAvaliable")
-    public static let playVideo = ImageAsset(name: "playVideo")
-    public static let star = ImageAsset(name: "star")
-    public static let starOutline = ImageAsset(name: "star_outline")
-    public static let warningFilled = ImageAsset(name: "warning_filled")
-  }
-  public enum Configurable {
-    public static let authBackground = ImageAsset(name: "authBackground")
-    public static let accentColor = ColorAsset(name: "AccentColor")
-    public static let alert = ColorAsset(name: "Alert")
-    public static let avatarStroke = ColorAsset(name: "AvatarStroke")
-    public static let background = ColorAsset(name: "Background")
-    public static let backgroundStroke = ColorAsset(name: "BackgroundStroke")
-    public static let cardViewBackground = ColorAsset(name: "CardViewBackground")
-    public static let cardViewStroke = ColorAsset(name: "CardViewStroke")
-    public static let certificateForeground = ColorAsset(name: "CertificateForeground")
-    public static let commentCellBackground = ColorAsset(name: "CommentCellBackground")
-    public static let shadowColor = ColorAsset(name: "ShadowColor")
-    public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
-    public static let snackbarErrorTextColor = ColorAsset(name: "SnackbarErrorTextColor")
-    public static let snackbarInfoAlert = ColorAsset(name: "SnackbarInfoAlert")
-    public static let styledButtonBackground = ColorAsset(name: "StyledButtonBackground")
-    public static let styledButtonText = ColorAsset(name: "StyledButtonText")
-    public static let textPrimary = ColorAsset(name: "TextPrimary")
-    public static let textSecondary = ColorAsset(name: "TextSecondary")
-    public static let textInputBackground = ColorAsset(name: "TextInputBackground")
-    public static let textInputStroke = ColorAsset(name: "TextInputStroke")
-    public static let textInputUnfocusedBackground = ColorAsset(name: "TextInputUnfocusedBackground")
-    public static let textInputUnfocusedStroke = ColorAsset(name: "TextInputUnfocusedStroke")
-    public static let warning = ColorAsset(name: "warning")
-    public static let white = ColorAsset(name: "white")
-    public static let appLogo = ImageAsset(name: "appLogo")
-  }
+  public static let bookCircle = ImageAsset(name: "book.circle")
+  public static let bubbleLeftCircle = ImageAsset(name: "bubble.left.circle")
+  public static let docCircle = ImageAsset(name: "doc.circle")
+  public static let videoCircle = ImageAsset(name: "video.circle")
+  public static let dashboardEmptyPage = ImageAsset(name: "DashboardEmptyPage")
+  public static let addComment = ImageAsset(name: "addComment")
+  public static let allPosts = ImageAsset(name: "allPosts")
+  public static let chapter = ImageAsset(name: "chapter")
+  public static let discussion = ImageAsset(name: "discussion")
+  public static let discussionIcon = ImageAsset(name: "discussionIcon")
+  public static let extra = ImageAsset(name: "extra")
+  public static let filter = ImageAsset(name: "filter")
+  public static let finished = ImageAsset(name: "finished")
+  public static let followed = ImageAsset(name: "followed")
+  public static let pen = ImageAsset(name: "pen")
+  public static let question = ImageAsset(name: "question")
+  public static let report = ImageAsset(name: "report")
+  public static let reported = ImageAsset(name: "reported")
+  public static let responses = ImageAsset(name: "responses")
+  public static let send = ImageAsset(name: "send")
+  public static let sendDisabled = ImageAsset(name: "sendDisabled")
+  public static let sort = ImageAsset(name: "sort")
+  public static let unread = ImageAsset(name: "unread")
+  public static let video = ImageAsset(name: "video")
+  public static let vote = ImageAsset(name: "vote")
+  public static let voted = ImageAsset(name: "voted")
+  public static let deleteDownloading = ImageAsset(name: "deleteDownloading")
+  public static let startDownloading = ImageAsset(name: "startDownloading")
+  public static let stopDownloading = ImageAsset(name: "stopDownloading")
+  public static let announcements = ImageAsset(name: "announcements")
+  public static let handouts = ImageAsset(name: "handouts")
+  public static let dashboard = ImageAsset(name: "dashboard")
+  public static let discovery = ImageAsset(name: "discovery")
+  public static let profile = ImageAsset(name: "profile")
+  public static let programs = ImageAsset(name: "programs")
+  public static let addPhoto = ImageAsset(name: "addPhoto")
+  public static let bgDelete = ImageAsset(name: "bg_delete")
+  public static let checkmark = ImageAsset(name: "checkmark")
+  public static let deleteChar = ImageAsset(name: "delete_char")
+  public static let deleteEyes = ImageAsset(name: "delete_eyes")
+  public static let done = ImageAsset(name: "done")
+  public static let gallery = ImageAsset(name: "gallery")
+  public static let leaveProfile = ImageAsset(name: "leaveProfile")
+  public static let logOut = ImageAsset(name: "logOut")
+  public static let noAvatar = ImageAsset(name: "noAvatar")
+  public static let removePhoto = ImageAsset(name: "removePhoto")
+  public static let rotateDevice = ImageAsset(name: "rotateDevice")
+  public static let sub = ImageAsset(name: "sub")
+  public static let alarm = ImageAsset(name: "alarm")
+  public static let arrowLeft = ImageAsset(name: "arrowLeft")
+  public static let arrowRight16 = ImageAsset(name: "arrowRight16")
+  public static let certificate = ImageAsset(name: "certificate")
+  public static let check = ImageAsset(name: "check")
+  public static let checkEmail = ImageAsset(name: "checkEmail")
+  public static let clearInput = ImageAsset(name: "clearInput")
+  public static let edit = ImageAsset(name: "edit")
+  public static let favorite = ImageAsset(name: "favorite")
+  public static let goodWork = ImageAsset(name: "goodWork")
+  public static let airmail = ImageAsset(name: "airmail")
+  public static let defaultMail = ImageAsset(name: "defaultMail")
+  public static let fastmail = ImageAsset(name: "fastmail")
+  public static let googlegmail = ImageAsset(name: "googlegmail")
+  public static let msOutlook = ImageAsset(name: "ms-outlook")
+  public static let proton = ImageAsset(name: "proton")
+  public static let readdleSpark = ImageAsset(name: "readdle-spark")
+  public static let ymail = ImageAsset(name: "ymail")
+  public static let noCourseImage = ImageAsset(name: "noCourseImage")
+  public static let notAvaliable = ImageAsset(name: "notAvaliable")
+  public static let playVideo = ImageAsset(name: "playVideo")
+  public static let star = ImageAsset(name: "star")
+  public static let starOutline = ImageAsset(name: "star_outline")
+  public static let warningFilled = ImageAsset(name: "warning_filled")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
 // MARK: - Implementation Details
-
-public final class ColorAsset {
-  public fileprivate(set) var name: String
-
-  #if os(macOS)
-  public typealias Color = NSColor
-  #elseif os(iOS) || os(tvOS) || os(watchOS)
-  public typealias Color = UIColor
-  #endif
-
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  public private(set) lazy var color: Color = {
-    guard let color = Color(asset: self) else {
-      fatalError("Unable to load color asset named \(name).")
-    }
-    return color
-  }()
-
-  #if os(iOS) || os(tvOS)
-  @available(iOS 11.0, tvOS 11.0, *)
-  public func color(compatibleWith traitCollection: UITraitCollection) -> Color {
-    let bundle = BundleToken.bundle
-    guard let color = Color(named: name, in: bundle, compatibleWith: traitCollection) else {
-      fatalError("Unable to load color asset named \(name).")
-    }
-    return color
-  }
-  #endif
-
-  #if canImport(SwiftUI)
-  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-  public private(set) lazy var swiftUIColor: SwiftUI.Color = {
-    SwiftUI.Color(asset: self)
-  }()
-  #endif
-
-  fileprivate init(name: String) {
-    self.name = name
-  }
-}
-
-public extension ColorAsset.Color {
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  convenience init?(asset: ColorAsset) {
-    let bundle = BundleToken.bundle
-    #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
-    #elseif os(macOS)
-    self.init(named: NSColor.Name(asset.name), bundle: bundle)
-    #elseif os(watchOS)
-    self.init(named: asset.name)
-    #endif
-  }
-}
-
-#if canImport(SwiftUI)
-@available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-public extension SwiftUI.Color {
-  init(asset: ColorAsset) {
-    let bundle = BundleToken.bundle
-    self.init(asset.name, bundle: bundle)
-  }
-}
-#endif
 
 public struct ImageAsset {
   public fileprivate(set) var name: String

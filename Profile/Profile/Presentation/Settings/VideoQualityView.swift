@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Kingfisher
+import Theme
 
 public struct VideoQualityView: View {
     
@@ -39,7 +40,7 @@ public struct VideoQualityView: View {
                                         description: quality.description()
                                     )
                                     Spacer()
-                                    CoreAssets.Assets.checkmark.swiftUIImage
+                                    CoreAssets.checkmark.swiftUIImage
                                         .renderingMode(.template)
                                         .foregroundColor(.accentColor)
                                         .opacity(quality == viewModel.selectedQuality ? 1 : 0)

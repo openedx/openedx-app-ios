@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct PostsView: View {
     
@@ -65,7 +66,7 @@ public struct PostsView: View {
                                             viewModel.generateButtons(type: .filter)
                                             showingAlert = true
                                         }, label: {
-                                            CoreAssets.Assets.filter.swiftUIImage
+                                            CoreAssets.filter.swiftUIImage
                                             Text(viewModel.filterTitle.localizedValue)
                                         })
                                         Spacer()
@@ -73,7 +74,7 @@ public struct PostsView: View {
                                             viewModel.generateButtons(type: .sort)
                                             showingAlert = true
                                         }, label: {
-                                            CoreAssets.Assets.sort.swiftUIImage
+                                            CoreAssets.sort.swiftUIImage
                                             Text(viewModel.sortTitle.localizedValue)
                                         })
                                     }.foregroundColor(Theme.Colors.accentColor)
@@ -118,7 +119,7 @@ public struct PostsView: View {
                                                     })
                                             }, label: {
                                                 VStack {
-                                                    CoreAssets.Assets.addComment.swiftUIImage
+                                                    CoreAssets.addComment.swiftUIImage
                                                         .font(Theme.Fonts.labelLarge)
                                                         .padding(6)
                                                 }
@@ -150,7 +151,7 @@ public struct PostsView: View {
                                 } else {
                                     if !viewModel.fetchInProgress {
                                         VStack(spacing: 0) {
-                                            CoreAssets.Assets.discussionIcon.swiftUIImage
+                                            CoreAssets.discussionIcon.swiftUIImage
                                                 .renderingMode(.template)
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                             Text(DiscussionLocalization.Posts.NoDiscussion.title)
@@ -293,7 +294,7 @@ public struct PostCell: View {
                     Text(post.type.localizedValue.capitalized)
                     Spacer()
                     if post.unreadCommentCount - 1 > 0 {
-                        CoreAssets.Assets.unread.swiftUIImage
+                        CoreAssets.unread.swiftUIImage
                         Text("\(post.unreadCommentCount - 1)")
                         Text(DiscussionLocalization.missedPostsCount(post.unreadCommentCount - 1))
                     }
@@ -307,7 +308,7 @@ public struct PostCell: View {
                     .font(Theme.Fonts.labelSmall)
                     .foregroundColor(Theme.Colors.textSecondary)
                 HStack {
-                    CoreAssets.Assets.responses.swiftUIImage
+                    CoreAssets.responses.swiftUIImage
                     Text("\(post.replies - 1)")
                     Text(DiscussionLocalization.responsesCount(post.replies - 1))
                         .font(Theme.Fonts.labelLarge)

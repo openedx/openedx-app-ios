@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct UpdateRequiredView: View {
     
@@ -24,7 +25,7 @@ public struct UpdateRequiredView: View {
     public var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                CoreAssets.Assets.warningFilled.swiftUIImage
+                CoreAssets.warningFilled.swiftUIImage
                     .resizable()
                     .frame(width: isHorizontal ? 50 : 110,
                            height: isHorizontal ? 50 : 110)

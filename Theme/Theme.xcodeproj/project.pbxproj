@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0295B1DC297FF114003B0C65 /* fonts_file.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0295B1DA297FF0E9003B0C65 /* fonts_file.ttf */; };
+		049A2F1F1CE68BB8A9373D0D /* Pods_App_Theme_ThemeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EBBA416BC61CD2B78879B7 /* Pods_App_Theme_ThemeTests.framework */; };
 		0770DE5428D0B00C006D8A5D /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE5328D0B00C006D8A5D /* swiftgen.yml */; };
 		0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7A28D0C78C006D8A5D /* Theme.swift */; };
 		4875747BC644481E79603124 /* Pods_App_Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EFD5ECB23A4898127124B9 /* Pods_App_Theme.framework */; };
@@ -60,6 +61,7 @@
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A8316465C7A08B99CB3108AA /* Pods-App-Theme-ThemeTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.releasedev.xcconfig"; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
+		E001ADD92B1767C000DE3A03 /* Theme.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Theme.xctestplan; path = ../Theme.xctestplan; sourceTree = "<group>"; };
 		E09179F82B0EF981002AB695 /* FontParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParserTests.swift; sourceTree = "<group>"; };
 		E0C716A62B0B05BA00858BAB /* fonts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = fonts.json; sourceTree = "<group>"; };
 		E0C716A82B0B065600858BAB /* FontParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParser.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0D6E6B22B16EA380089F9C9 /* Theme.framework in Frameworks */,
+				049A2F1F1CE68BB8A9373D0D /* Pods_App_Theme_ThemeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +106,7 @@
 		0770DDFE28D07831006D8A5D = {
 			isa = PBXGroup;
 			children = (
+				E001ADD92B1767C000DE3A03 /* Theme.xctestplan */,
 				0770DE5328D0B00C006D8A5D /* swiftgen.yml */,
 				0770DE0A28D07831006D8A5D /* Theme */,
 				E09179FA2B0F204D002AB695 /* ThemeTests */,
@@ -235,9 +239,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E0D6E6B52B16EA380089F9C9 /* Build configuration list for PBXNativeTarget "ThemeTests" */;
 			buildPhases = (
+				9014A6045E55D36F2E521E4D /* [CP] Check Pods Manifest.lock */,
 				E0D6E6AA2B16EA380089F9C9 /* Sources */,
 				E0D6E6AB2B16EA380089F9C9 /* Frameworks */,
 				E0D6E6AC2B16EA380089F9C9 /* Resources */,
+				D1CBF7594325D41C982947CB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -328,6 +334,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
+		};
+		9014A6045E55D36F2E521E4D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-App-Theme-ThemeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D1CBF7594325D41C982947CB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		ED83AD5255805030E042D62A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1151,6 +1196,7 @@
 		};
 		E0D6E6B62B16EA380089F9C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 487962E20A82E0E0A3240D2D /* Pods-App-Theme-ThemeTests.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1172,6 +1218,7 @@
 		};
 		E0D6E6B72B16EA380089F9C9 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E638A48662937AB3FD07407 /* Pods-App-Theme-ThemeTests.debugprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1193,6 +1240,7 @@
 		};
 		E0D6E6B82B16EA380089F9C9 /* DebugStage */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21B4805F3A71E72020CC2412 /* Pods-App-Theme-ThemeTests.debugstage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1214,6 +1262,7 @@
 		};
 		E0D6E6B92B16EA380089F9C9 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C05B03529F8351A9CE573A5 /* Pods-App-Theme-ThemeTests.debugdev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1235,6 +1284,7 @@
 		};
 		E0D6E6BA2B16EA380089F9C9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F6E09DC289758CE811EF93D8 /* Pods-App-Theme-ThemeTests.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1255,6 +1305,7 @@
 		};
 		E0D6E6BB2B16EA380089F9C9 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72B5AEE033EE8E4086910FAA /* Pods-App-Theme-ThemeTests.releaseprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1275,6 +1326,7 @@
 		};
 		E0D6E6BC2B16EA380089F9C9 /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 185C3037FC537A93E532FB5B /* Pods-App-Theme-ThemeTests.releasestage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1295,6 +1347,7 @@
 		};
 		E0D6E6BD2B16EA380089F9C9 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A8316465C7A08B99CB3108AA /* Pods-App-Theme-ThemeTests.releasedev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Theme
 
 public class CSSInjector {
     

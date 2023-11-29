@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct UnknownView: View {
     let url: String
@@ -14,7 +15,7 @@ struct UnknownView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            CoreAssets.Assets.notAvaliable.swiftUIImage
+            CoreAssets.notAvaliable.swiftUIImage
             Text(CourseLocalization.NotAvaliable.title)
                 .font(Theme.Fonts.titleLarge)
                 .multilineTextAlignment(.center)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 struct StarRatingView: View {
     @Binding var rating: Int
@@ -15,11 +16,11 @@ struct StarRatingView: View {
             ForEach(1 ..< 6) { index in
                 Group {
                     if index <= rating {
-                        CoreAssets.Assets.star.swiftUIImage
+                        CoreAssets.star.swiftUIImage
                             .resizable()
                             .frame(width: 48, height: 48)
                     } else {
-                        CoreAssets.Assets.starOutline.swiftUIImage
+                        CoreAssets.starOutline.swiftUIImage
                             .resizable()
                             .frame(width: 48, height: 48)
                             .foregroundColor(Theme.Colors.textPrimary)

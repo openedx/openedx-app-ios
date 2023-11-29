@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Discussion
 import Swinject
+import Theme
 
 public struct CourseContainerView: View {
     
@@ -58,7 +59,7 @@ public struct CourseContainerView: View {
                             isVideo: false
                         ).accessibilityAction {}
                         .tabItem {
-                            CoreAssets.Assets.bookCircle.swiftUIImage.renderingMode(.template)
+                            CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
                             Text(CourseLocalization.CourseContainer.course)
                         }
                         .tag(CourseTab.course)
@@ -70,7 +71,7 @@ public struct CourseContainerView: View {
                             isVideo: true
                         ).accessibilityAction {}
                         .tabItem {
-                            CoreAssets.Assets.videoCircle.swiftUIImage.renderingMode(.template)
+                            CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
                             Text(CourseLocalization.CourseContainer.videos)
                         }
                         .tag(CourseTab.videos)
@@ -89,7 +90,7 @@ public struct CourseContainerView: View {
                                                                                  argument: title)!,
                                              router: Container.shared.resolve(DiscussionRouter.self)!)
                         .tabItem {
-                            CoreAssets.Assets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
+                            CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
                             Text(CourseLocalization.CourseContainer.discussion)
                         }
                         .tag(CourseTab.discussion)
@@ -97,7 +98,7 @@ public struct CourseContainerView: View {
                         HandoutsView(courseID: courseID,
                                      viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!)
                         .tabItem {
-                            CoreAssets.Assets.docCircle.swiftUIImage.renderingMode(.template)
+                            CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
                             Text(CourseLocalization.CourseContainer.handouts)
                         }
                         .tag(CourseTab.handounds)

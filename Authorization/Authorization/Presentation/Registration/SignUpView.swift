@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct SignUpView: View {
     
@@ -28,7 +29,7 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.Configurable.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
@@ -42,7 +43,7 @@ public struct SignUpView: View {
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
-                            CoreAssets.Assets.arrowLeft.swiftUIImage.renderingMode(.template)
+                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .backButtonStyle(color: Theme.Colors.white)
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)

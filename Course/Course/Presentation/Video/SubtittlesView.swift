@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct Subtitle {
     var id: Int
@@ -49,7 +50,7 @@ public struct SubtittlesView: View {
                             viewModel.presentPicker()
                         }, label: {
                             Group {
-                                CoreAssets.Assets.sub.swiftUIImage.renderingMode(.template)
+                                CoreAssets.sub.swiftUIImage.renderingMode(.template)
                                 Text(viewModel.generateLanguageName(code: viewModel.selectedLanguage ?? ""))
                             }.foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)

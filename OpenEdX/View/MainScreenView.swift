@@ -13,6 +13,7 @@ import Dashboard
 import Profile
 import WhatsNew
 import SwiftUIIntrospect
+import Theme
 
 struct MainScreenView: View {
     
@@ -47,7 +48,7 @@ struct MainScreenView: View {
                 }
             }
             .tabItem {
-                CoreAssets.Assets.discovery.swiftUIImage.renderingMode(.template)
+                CoreAssets.discovery.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.discovery)
             }
             .tag(MainTab.discovery)
@@ -62,7 +63,7 @@ struct MainScreenView: View {
                 }
             }
             .tabItem {
-                CoreAssets.Assets.dashboard.swiftUIImage.renderingMode(.template)
+                CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
@@ -74,7 +75,7 @@ struct MainScreenView: View {
                 }
             }
             .tabItem {
-                CoreAssets.Assets.programs.swiftUIImage.renderingMode(.template)
+                CoreAssets.programs.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.programs)
             }
             .tag(MainTab.programs)
@@ -85,7 +86,7 @@ struct MainScreenView: View {
                 )
             }
             .tabItem {
-                CoreAssets.Assets.profile.swiftUIImage.renderingMode(.template)
+                CoreAssets.profile.swiftUIImage.renderingMode(.template)
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
@@ -99,7 +100,7 @@ struct MainScreenView: View {
                     Button(action: {
                         settingsTapped.toggle()
                     }, label: {
-                        CoreAssets.Assets.edit.swiftUIImage
+                        CoreAssets.edit.swiftUIImage
                             .foregroundColor(Theme.Colors.textPrimary)
                     })
                 } else {

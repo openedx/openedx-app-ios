@@ -67,7 +67,7 @@ struct CourseNavigationView: View {
                                 }
                             }(),
                             action: CourseLocalization.Courseware.backToOutline,
-                            image: CoreAssets.Assets.goodWork.swiftUIImage,
+                            image: CoreAssets.goodWork.swiftUIImage,
                             onCloseTapped: { viewModel.router.dismiss(animated: false) },
                             okTapped: {
                                 playerStateSubject.send(VideoPlayerState.pause)

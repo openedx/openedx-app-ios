@@ -122,7 +122,7 @@ public class EditProfileViewModel: ObservableObject {
         isShowProgress = true
         do {
             if try await interactor.deleteProfilePicture() {
-                inputImage = CoreAssets.Assets.noAvatar.image
+                inputImage = CoreAssets.noAvatar.image
                 isShowProgress = false
             }
         } catch {

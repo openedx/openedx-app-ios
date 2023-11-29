@@ -11,6 +11,7 @@ import Core
 import Discussion
 import Swinject
 import Combine
+import Theme
 
 public struct CourseUnitView: View {
     
@@ -212,7 +213,7 @@ public struct CourseUnitView: View {
                     ZStack(alignment: .bottomLeading) {
                         Spacer()
                         HStack(spacing: 6) {
-                            CoreAssets.Assets.rotateDevice.swiftUIImage.renderingMode(.template)
+                            CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
                                 .onAppear {
                                     alertMessage = CourseLocalization.Alert.rotateDevice
                                 }

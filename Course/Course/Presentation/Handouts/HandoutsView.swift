@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct HandoutsView: View {
     
@@ -142,9 +143,9 @@ struct HandoutsItemCell: View {
         var image: Image {
             switch self {
             case .handouts:
-                return CoreAssets.Assets.handouts.swiftUIImage
+                return CoreAssets.handouts.swiftUIImage
             case .announcements:
-                return CoreAssets.Assets.announcements.swiftUIImage
+                return CoreAssets.announcements.swiftUIImage
             }
         }
     }

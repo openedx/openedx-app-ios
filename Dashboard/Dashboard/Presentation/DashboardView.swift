@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct DashboardView: View {
     private let dashboardCourses: some View = VStack(alignment: .leading) {
@@ -155,7 +156,7 @@ struct DashboardView_Previews: PreviewProvider {
 struct EmptyPageIcon: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            CoreAssets.Assets.dashboardEmptyPage.swiftUIImage
+            CoreAssets.dashboardEmptyPage.swiftUIImage
                 .padding(.bottom, 16)
             Text(DashboardLocalization.Empty.title)
                 .font(Theme.Fonts.titleMedium)

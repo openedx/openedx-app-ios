@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct ProfileBottomSheet: View {
     
@@ -119,9 +120,9 @@ struct ProfileBottomSheet: View {
             HStack(alignment: .center) {
                 switch type {
                 case .gallery:
-                    CoreAssets.Assets.gallery.swiftUIImage
+                    CoreAssets.gallery.swiftUIImage
                 case .remove:
-                    CoreAssets.Assets.removePhoto.swiftUIImage
+                    CoreAssets.removePhoto.swiftUIImage
                 case .cancel:
                     EmptyView()
                 }

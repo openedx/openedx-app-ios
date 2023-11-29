@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Kingfisher
 import WebKit
+import Theme
 
 public struct CourseDetailsView: View {
     
@@ -234,7 +235,7 @@ private struct PlayButton: View {
     
     var body: some View {
         Button(action: action, label: {
-            CoreAssets.Assets.playVideo.swiftUIImage
+            CoreAssets.playVideo.swiftUIImage
                 .resizable()
                 .frame(width: 40, height: 40)
         })
@@ -286,7 +287,7 @@ private struct CourseBannerView: View {
         ZStack(alignment: .center) {
             if !isHorisontal {
                 KFImage(URL(string: courseDetails.courseBannerURL))
-                    .onFailureImage(CoreAssets.Assets.noCourseImage.image)
+                    .onFailureImage(CoreAssets.noCourseImage.image)
                     .resizable()
                     .aspectRatio(16/9, contentMode: .fill)
                     .frame(width: idiom == .pad ? nil : proxy.size.width - 12)
@@ -301,7 +302,7 @@ private struct CourseBannerView: View {
                 }
             } else {
                 KFImage(URL(string: courseDetails.courseBannerURL))
-                    .onFailureImage(CoreAssets.Assets.noCourseImage.image)
+                    .onFailureImage(CoreAssets.noCourseImage.image)
                     .resizable()
                     .aspectRatio(16/9, contentMode: .fill)
                     .frame(width: 312)

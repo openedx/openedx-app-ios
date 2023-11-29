@@ -10,7 +10,6 @@ strings:
 xcassets:
   inputs:
     - Core/Assets.xcassets
-    - Core/Configurable.xcassets
   outputs:
     templateName: swift5
     params:
