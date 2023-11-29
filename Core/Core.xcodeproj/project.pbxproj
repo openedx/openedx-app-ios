@@ -569,7 +569,6 @@
 		0770DE7728D0C49E006D8A5D /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				BA593F1A2AF8E487009ADB51 /* ScrollSlidingTabBar */,
 				0770DE7828D0C4A9006D8A5D /* RoundedCorners.swift */,
 				02A4833B29B8C57800D33F33 /* DownloadView.swift */,
 				02D800CB29348F460099CF16 /* ImagePicker.swift */,
@@ -597,6 +596,7 @@
 				027BD3C42909707700392132 /* Shake.swift */,
 				023A1135291432B200D0D354 /* RegistrationTextField.swift */,
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
+				BA593F1A2AF8E487009ADB51 /* ScrollSlidingTabBar */,
 				02E93F862AEBAED4006C4750 /* AppReview */,
 			);
 			path = Base;
