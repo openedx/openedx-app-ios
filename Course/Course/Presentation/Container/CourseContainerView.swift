@@ -123,7 +123,7 @@ public struct CourseContainerView: View {
                 switch tab {
                 case .course:
                     CourseOutlineView(
-                        viewModel: self.viewModel,
+                        viewModel: viewModel,
                         title: title,
                         courseID: courseID,
                         isVideo: false
@@ -131,7 +131,7 @@ public struct CourseContainerView: View {
                     .tag(tab)
                 case .videos:
                     CourseOutlineView(
-                        viewModel: self.viewModel,
+                        viewModel: viewModel,
                         title: title,
                         courseID: courseID,
                         isVideo: true
