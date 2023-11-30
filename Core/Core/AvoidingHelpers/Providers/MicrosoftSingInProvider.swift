@@ -31,7 +31,7 @@ public final class MicrosoftSingInProvider {
                 guard let self = self else { return }
 
                 guard let result = result, error == nil else {
-                    completion(nil, nil, error)
+                    completion(nil, nil, failure(error))
                     return
                 }
 
@@ -79,6 +79,14 @@ public final class MicrosoftSingInProvider {
         }
 
         return account
+    }
+
+    private func failure(_ error: Error?) -> Error {
+        if let error = error as? NSError,
+            let description = error.userInfo[MSALErrorDescriptionKey] as? String {
+            return CustomError.error(text: description)
+        }
+        return error ?? CustomError.error(text: CoreLocalization.Error.unknownError)
     }
 
     func getUser(completion: (MSALAccount) -> Void) {

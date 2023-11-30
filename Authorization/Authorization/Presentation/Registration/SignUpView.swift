@@ -66,7 +66,17 @@ public struct SignUpView: View {
                                     .font(Theme.Fonts.titleSmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
-                                
+
+                                if viewModel.isThirdPartyAuthSuccess {
+                                    Text(AuthLocalization.SignUp.successSignedinLabel)
+                                        .font(Theme.Fonts.titleMedium)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                    Text(AuthLocalization.SignUp.successSignedinSublabel)
+                                        .font(Theme.Fonts.titleSmall)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                        .padding(.bottom, 20)
+                                }
+
                                 let requiredFields = viewModel.fields.filter {$0.field.required}
                                 let nonRequiredFields = viewModel.fields.filter {!$0.field.required}
                                 
@@ -97,6 +107,7 @@ public struct SignUpView: View {
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
+                                        viewModel.isThirdPartyAuthSuccess = false
                                         Task {
                                             await viewModel.registerUser()
                                         }
@@ -105,7 +116,8 @@ public struct SignUpView: View {
                                     .padding(.top, 40)
                                     .frame(maxWidth: .infinity)
                                 }
-                                if viewModel.socialLoginEnabled {
+                                if viewModel.socialLoginEnabled,
+                                    !requiredFields.isEmpty {
                                     SocialSignView(
                                         signType: .register,
                                         viewModel: .init(

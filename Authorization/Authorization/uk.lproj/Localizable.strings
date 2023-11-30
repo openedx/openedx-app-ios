@@ -22,6 +22,8 @@
 "SIGN_UP.CREATE_ACCOUNT_BTN" = "Створити акаунт";
 "SIGN_UP.HIDE_FIELDS" = "Приховати необовʼязкові поля";
 "SIGN_UP.SHOW_FIELDS" = "Показати необовʼязкові поля";
+"SIGN_UP.SUCCESS_SIGNEDIN_LABEL" = "You've successfully signed in.";
+"SIGN_UP.SUCCESS_SIGNEDIN_SUBLABEL" = "We just need a little more information before you start learning.";
 
 "FORGOT.TITLE"= "Відновлення паролю";
 "FORGOT.DESCRIPTION" = "Будь ласка, введіть свою адресу електронної пошти для входу або відновлення нижче, і ми надішлемо вам електронний лист з інструкціями.";

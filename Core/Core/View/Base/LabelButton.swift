@@ -9,8 +9,10 @@ import SwiftUI
 
 public struct LabelButton: View {
 
-    // MARK: - Properties -
+    // MARK: - Properties
 
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
     private var image: Image
     private var title: String
     private var textColor: Color
@@ -34,7 +36,7 @@ public struct LabelButton: View {
         self.action = action
     }
 
-    // MARK: - Views -
+    // MARK: - Views
 
     public var body: some View {
         Button {
@@ -49,7 +51,7 @@ public struct LabelButton: View {
                 image.padding(.leading, 10)
             }
         }
-        .frame(height: 44)
+        .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: 42)
         .background(backgroundColor)
         .clipShape(
             RoundedRectangle(cornerRadius: cornerRadius)

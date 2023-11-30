@@ -58,7 +58,7 @@ struct SocialSignView: View {
 
     private var buttonsView: some View {
         Group {
-            if viewModel.config.google.enabled {
+            if viewModel.isGoogleEnabled {
                 LabelButton(
                     image: CoreAssets.iconGoogleWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.google)",
@@ -69,7 +69,7 @@ struct SocialSignView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.config.facebook.enabled {
+            if viewModel.isFaceboolEnabled {
                 LabelButton(
                     image: CoreAssets.iconFacebookWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.facebook)",
@@ -79,7 +79,7 @@ struct SocialSignView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.config.microsoft.enabled {
+            if viewModel.isMicrosoftEnabled {
                 LabelButton(
                     image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.microsoft)",
@@ -89,7 +89,7 @@ struct SocialSignView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.microsoft)")
             }
-            if viewModel.config.appleSignIn.enable {
+            if viewModel.isAppleSignInEnabled {
                 LabelButton(
                     image: CoreAssets.iconApple.swiftUIImage,
                     title: "\(title) \(AuthLocalization.apple)",

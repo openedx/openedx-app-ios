@@ -70,6 +70,10 @@ public enum AuthLocalization {
     public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
     /// Create new account.
     public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create new account.")
+    /// You've successfully signed in.
+    public static let successSignedinLabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNEDIN_LABEL", fallback: "You've successfully signed in.")
+    /// We just need a little more information before you start learning.
+    public static let successSignedinSublabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNEDIN_SUBLABEL", fallback: "We just need a little more information before you start learning.")
     /// Sign up
     public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
   }

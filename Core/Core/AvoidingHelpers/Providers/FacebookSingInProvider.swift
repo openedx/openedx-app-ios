@@ -19,13 +19,39 @@ public final class FacebookSingInProvider {
         completion: @escaping ((LoginManagerLoginResult?, Error?) -> Void)
     ) {
         loginManager.logIn(
-            permissions: [],
+            permissions: ["name", "email"],
             from: withPresenting,
-            handler: completion
+            handler: { [weak self] result, error in
+
+                if result?.isCancelled == true {
+                    completion(nil, CustomError.socialSignCanceled)
+                    return
+                }
+
+                if let error = error {
+                    completion(nil, self?.failure(error))
+                    return
+                }
+
+                if result?.authenticationToken == nil {
+                    completion(nil, CustomError.error(text: CoreLocalization.Error.unknownError))
+                    return
+                }
+                
+                completion(result, nil)
+            }
         )
     }
 
     public func signOut() {
         loginManager.logOut()
+    }
+
+    private func failure(_ error: Error?) -> Error {
+        if let error = error as? NSError,
+           let description = error.userInfo[ErrorLocalizedDescriptionKey] as? String {
+            return CustomError.error(text: description)
+        }
+        return error ?? CustomError.error(text: CoreLocalization.Error.unknownError)
     }
 }

@@ -38,6 +38,7 @@ final public class SocialSignViewModel: ObservableObject {
     // MARK: - Properties
 
     private var completion: ((Result<SocialResult, Error>) -> Void)
+    private let config: ConfigProtocol
 
     init(
         config: ConfigProtocol,
@@ -47,8 +48,6 @@ final public class SocialSignViewModel: ObservableObject {
         self.completion = completion
     }
 
-    let config: ConfigProtocol
-
     private let appleSingInProvider: AppleSingInProvider  = .init()
     private let googleSingInProvider: GoogleSingInProvider = .init()
     private let facebookSingInProvider: FacebookSingInProvider = .init()
@@ -56,6 +55,29 @@ final public class SocialSignViewModel: ObservableObject {
 
     private var topViewController: UIViewController? {
         UIApplication.topViewController()
+    }
+
+    // MARK: - Public Properties
+
+    var isFaceboolEnabled: Bool {
+        config.facebook.enabled
+    }
+
+    var isGoogleEnabled: Bool {
+        config.google.enabled
+    }
+
+    var isMicrosoftEnabled: Bool {
+        config.microsoft.enabled
+    }
+
+    var isAppleSignInEnabled: Bool {
+        if isFaceboolEnabled ||
+            isGoogleEnabled ||
+            isMicrosoftEnabled {
+            return true
+        }
+        return config.appleSignIn.enable
     }
 
     // MARK: - Public Intens

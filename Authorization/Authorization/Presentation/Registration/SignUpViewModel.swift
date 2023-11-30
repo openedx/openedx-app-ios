@@ -18,6 +18,7 @@ public class SignUpViewModel: ObservableObject {
     @Published var isShowProgress = false
     @Published var scrollTo: Int?
     @Published var showError: Bool = false
+    @Published var isThirdPartyAuthSuccess: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -53,10 +54,15 @@ public class SignUpViewModel: ObservableObject {
     }
 
     var socialLoginEnabled: Bool {
-        config.socialLoginEnabled
+        config.socialLoginEnabled && !isThirdPartyAuthSuccess && !isShowProgress
     }
 
     private func showErrors(errors: [String: String]) -> Bool {
+        if isThirdPartyAuthSuccess, !errors.map({ $0.value }).filter({ !$0.isEmpty }).isEmpty {
+            scrollTo = 1
+            return true
+        }
+
         var containsError = false
         errors.forEach { key, value in
             if let index = fields.firstIndex(where: { $0.field.name == key }) {
@@ -86,9 +92,12 @@ public class SignUpViewModel: ObservableObject {
             }
         }
     }
-    
+
+    private var externalToken: String?
+    private var backend: String?
+
     @MainActor
-    func registerUser(externalToken: String? = nil, backend: String? = nil) async {
+    func registerUser() async {
         do {
             var validateFields: [String: String] = [:]
             fields.forEach { validateFields[$0.field.name] = $0.text }
@@ -101,6 +110,7 @@ public class SignUpViewModel: ObservableObject {
                 if validateFields.contains(where: {$0.key == "password"}) {
                     validateFields.removeValue(forKey: "password")
                 }
+                fields.removeAll { $0.field.type == .password }
             }
             let errors = try await interactor.validateRegistrationFields(fields: validateFields)
             guard !showErrors(errors: errors) else { return }
@@ -139,12 +149,12 @@ public class SignUpViewModel: ObservableObject {
         switch result {
         case .apple(let appleCredentials):
             appleLogin(appleCredentials, backend: result.backend)
-        case .facebook:
-            facebookLogin(backend: result.backend)
+        case .facebook(let account):
+            facebookLogin(backend: result.backend, account: account)
         case .google(let gIDSignInResult):
             googleLogin(gIDSignInResult, backend: result.backend)
-        case .microsoft(_, let token):
-            microsoftLogin(token, backend: result.backend)
+        case .microsoft(let account, let token):
+            microsoftLogin(token, backend: result.backend, account: account)
         }
     }
 
@@ -157,18 +167,38 @@ public class SignUpViewModel: ObservableObject {
     }
 
     @MainActor
-    private func facebookLogin(backend: String) {
+    private func facebookLogin(backend: String, account: LoginManagerLoginResult) {
         guard let currentAccessToken = AccessToken.current?.tokenString else {
             return
         }
+
+        GraphRequest(
+            graphPath: "me",
+            parameters: ["fields": "name, email"]
+        ).start { [weak self] _, result, _ in
+            guard let self = self, let userInfo = result as? [String: Any] else {
+                return
+            }
+            self.update(
+                fullName: userInfo["name"] as? String,
+                email: userInfo["email"] as? String
+            )
+        }
+
         registerSocial(
             externalToken: currentAccessToken,
             backend: backend
         )
+
     }
 
     @MainActor
     private func googleLogin(_ result: GIDSignInResult, backend: String) {
+        update(
+            fullName: result.user.profile?.name,
+            email: result.user.profile?.email
+        )
+
         registerSocial(
             externalToken: result.user.accessToken.tokenString,
             backend: backend
@@ -176,7 +206,12 @@ public class SignUpViewModel: ObservableObject {
     }
 
     @MainActor
-    private func microsoftLogin(_ token: String, backend: String) {
+    private func microsoftLogin(_ token: String, backend: String, account: MSALAccount) {
+        update(
+            fullName: account.accountClaims?["name"] as? String,
+            email: account.accountClaims?["email"] as? String
+        )
+
         registerSocial(
             externalToken: token,
             backend: backend
@@ -185,12 +220,17 @@ public class SignUpViewModel: ObservableObject {
 
     @MainActor
     private func registerSocial(externalToken: String, backend: String) {
+        self.externalToken = externalToken
+        self.backend = backend
+        isThirdPartyAuthSuccess = true
         Task {
-            await registerUser(
-                externalToken: externalToken,
-                backend: backend
-            )
+            await registerUser()
         }
+    }
+
+    private func update(fullName: String?, email: String?) {
+        fields.first(where: { $0.field.type == .email })?.text = email ?? ""
+        fields.first(where: { $0.field.name == "name" })?.text = fullName ?? ""
     }
 
     func trackCreateAccountClicked() {

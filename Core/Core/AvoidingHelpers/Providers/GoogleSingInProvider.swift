@@ -17,7 +17,9 @@ public final class GoogleSingInProvider {
     ) {
         GIDSignIn.sharedInstance.signIn(
             withPresenting: withPresenting,
-            completion: completion
+            completion: { result, error in
+                completion(result, error)
+            }
         )
     }
 

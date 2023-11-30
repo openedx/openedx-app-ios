@@ -37,19 +37,19 @@ public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDeleg
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
     ) {
-        guard let credentials = authorization.credential as?  ASAuthorizationAppleIDCredential else {
-            completion?(.failure(CustomError.error(text: "ASAuthorizationAppleIDCredential is nil")))
+        guard let credentials = authorization.credential as? ASAuthorizationAppleIDCredential else {
+            completion?(.failure(CustomError.unknownError))
             return
         }
 
         let firstName = credentials.fullName?.givenName ?? ""
         let lastName = credentials.fullName?.familyName ?? ""
         let email = credentials.email ?? ""
-        var name = "\(firstName) \(lastName)"
+        let name = "\(firstName) \(lastName)"
 
         guard let data = credentials.identityToken,
             let code = String(data: data, encoding: .utf8) else {
-            completion?(.failure(CustomError.error(text: "Token is nil")))
+            completion?(.failure(CustomError.unknownError))
             return
         }
 
@@ -69,6 +69,17 @@ public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDeleg
         didCompleteWithError error: Error
     ) {
         debugLog(error)
-        completion?(.failure(error))
+        completion?(.failure(failure(ASAuthorizationError(_nsError: error as NSError))))
+    }
+
+    private func failure(_ error: ASAuthorizationError) -> Error {
+        switch error.code {
+        case .canceled:
+            return CustomError.socialSignCanceled
+        case .failed:
+            return CustomError.error(text: CoreLocalization.Error.authorizationFailed)
+        default:
+            return error
+        }
     }
 }

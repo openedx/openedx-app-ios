@@ -9,6 +9,8 @@ import Foundation
 
 public enum CustomError: Error {
     case error(text: String)
+    case socialSignCanceled
+    case unknownError
 }
 
 extension CustomError: LocalizedError {
@@ -16,6 +18,10 @@ extension CustomError: LocalizedError {
         switch self {
         case .error(let text):
             return text
+        case .socialSignCanceled:
+            return CoreLocalization.socialSignCanceled
+        case .unknownError:
+            return CoreLocalization.Error.unknownError
         }
     }
 }
