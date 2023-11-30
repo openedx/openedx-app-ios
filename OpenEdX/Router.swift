@@ -284,6 +284,34 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure) {
+            courseStructure.childs.enumerated().forEach { chapterIndex, chapter in
+                chapter.childs.enumerated().forEach { sequentialIndex, sequential in
+                    sequential.childs.enumerated().forEach { verticalIndex, vertical in
+                        vertical.childs.forEach { block in
+                            if block.id == componentID {
+                                DispatchQueue.main.async { [weak self] in
+                                    guard let self = self else { return }
+                                    self.showCourseUnit(courseName: courseStructure.displayName,
+                                                        blockId: block.blockId,
+                                                        courseID: courseStructure.id,
+                                                        sectionName: sequential.displayName,
+                                                        verticalIndex: verticalIndex,
+                                                        chapters: courseStructure.childs,
+                                                        chapterIndex: chapterIndex,
+                                                        sequentialIndex: sequentialIndex)
+                                    return
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
     public func replaceCourseUnit(
         courseName: String,
         blockId: String,

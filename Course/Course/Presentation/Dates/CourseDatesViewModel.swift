@@ -27,6 +27,7 @@ public class CourseDatesViewModel: ObservableObject {
     let cssInjector: CSSInjector
     let router: CourseRouter
     let connectivity: ConnectivityProtocol
+    let courseID: String
     
     public init(
         interactor: CourseInteractorProtocol,
@@ -39,6 +40,7 @@ public class CourseDatesViewModel: ObservableObject {
         self.router = router
         self.cssInjector = cssInjector
         self.connectivity = connectivity
+        self.courseID = courseID
     }
         
     var sortedDates: [Date] {
@@ -67,6 +69,18 @@ public class CourseDatesViewModel: ObservableObject {
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
+        }
+    }
+    
+    func showCourseDetails(componentID: String) async {
+        do {
+            let courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
+            router.showCourseComponent(
+                componentID: componentID,
+                courseStructure: courseStructure
+            )
+        } catch let error {
+            print(error)
         }
     }
 }
