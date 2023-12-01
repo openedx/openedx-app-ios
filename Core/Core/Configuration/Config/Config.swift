@@ -13,6 +13,7 @@ public protocol ConfigProtocol {
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
     var appStoreLink: String { get }
+    var platformName: String { get }
     var socialLoginEnabled: Bool { get }
     var agreement: AgreementConfig { get }
     var firebase: FirebaseConfig { get }
@@ -124,7 +125,11 @@ extension Config: ConfigProtocol {
     public var feedbackEmail: String {
         return string(for: ConfigKeys.feedbackEmailAddress.rawValue) ?? ""
     }
-    
+
+    public var platformName: String {
+        return string(for: ConfigKeys.platformName.rawValue) ?? ""
+    }
+
     private var appStoreId: String {
         return string(for: ConfigKeys.appstoreID.rawValue) ?? "0000000000"
     }

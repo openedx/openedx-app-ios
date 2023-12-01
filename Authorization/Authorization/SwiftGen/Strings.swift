@@ -25,6 +25,10 @@ public enum AuthLocalization {
   /// Sign in with
   public static let signInWith = AuthLocalization.tr("Localizable", "SIGN_IN_WITH", fallback: "Sign in with")
   public enum Error {
+    /// This %@ account is not linked with any %@ account. Please register.
+    public static func authProvider(_ p1: Any, _ p2: Any) -> String {
+      return AuthLocalization.tr("Localizable", "ERROR.AUTH_PROVIDER", String(describing: p1), String(describing: p2), fallback: "This %@ account is not linked with any %@ account. Please register.")
+    }
     /// Invalid email address
     public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
     /// Invalid password lenght

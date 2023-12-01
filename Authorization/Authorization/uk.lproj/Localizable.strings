@@ -16,6 +16,7 @@
 
 "ERROR.INVALID_EMAIL_ADDRESS" = "невірна адреса електронної пошти";
 "ERROR.INVALID_PASSWORD_LENGHT" = "Пароль занадто короткий або занадто довгий";
+"ERROR.AUTH_PROVIDER" = "This %@ account is not linked with any %@ account. Please register.";
 
 "SIGN_UP.TITLE" = "Зареєструватись";
 "SIGN_UP.SUBTITLE" = "Cтворити новий акаунт.";

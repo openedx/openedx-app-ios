@@ -17,6 +17,7 @@
 
 "ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email address";
 "ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
+"ERROR.AUTH_PROVIDER" = "This %@ account is not linked with any %@ account. Please register.";
 
 "SIGN_UP.TITLE" = "Sign up";
 "SIGN_UP.SUBTITLE" = "Create new account.";

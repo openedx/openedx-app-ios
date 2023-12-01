@@ -76,19 +76,7 @@ public class SignInViewModel: ObservableObject {
             analytics.userLogin(method: .password)
             router.showMainOrWhatsNewScreen()
         } catch let error {
-            isShowProgress = false
-            if error.isUpdateRequeiredError {
-                router.showUpdateRequiredView(showAccountLink: false)
-            } else if let validationError = error.validationError,
-                      let value = validationError.data?["error_description"] as? String {
-                errorMessage = value
-            } else if case APIError.invalidGrant = error {
-                errorMessage = CoreLocalization.Error.invalidCredentials
-            } else if error.isInternetError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
+            failure(error)
         }
     }
 
@@ -163,18 +151,30 @@ public class SignInViewModel: ObservableObject {
                 analytics.userLogin(method: loginMethod)
                 router.showMainOrWhatsNewScreen()
             } catch let error {
-                isShowProgress = false
-                if let validationError = error.validationError,
-                   let value = validationError.data?["error_description"] as? String {
-                    errorMessage = value
-                } else if case APIError.invalidGrant = error {
-                    errorMessage = CoreLocalization.Error.invalidCredentials
-                } else if error.isInternetError {
-                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                } else {
-                    errorMessage = CoreLocalization.Error.unknownError
-                }
+                failure(error, loginMethod: loginMethod)
             }
+        }
+    }
+
+    @MainActor
+    private func failure(_ error: Error, loginMethod: LoginMethod? = nil) {
+        isShowProgress = false
+        if let validationError = error.validationError,
+           let value = validationError.data?["error_description"] as? String {
+            if validationError.statusCode == 401, let loginMethod = loginMethod {
+                errorMessage = AuthLocalization.Error.authProvider(
+                    loginMethod.rawValue,
+                    config.platformName
+                )
+            } else {
+                errorMessage = value
+            }
+        } else if case APIError.invalidGrant = error {
+            errorMessage = CoreLocalization.Error.invalidCredentials
+        } else if error.isInternetError {
+            errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+        } else {
+            errorMessage = CoreLocalization.Error.unknownError
         }
     }
 
