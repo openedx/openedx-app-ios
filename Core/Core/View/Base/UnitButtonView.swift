@@ -142,22 +142,22 @@ public struct UnitButtonView: View {
                             Theme.Shapes.buttonShape
                                 .fill(type == .previous
                                       ? Theme.Colors.background
-                                      : Theme.Colors.accentColor)
+                                      : Theme.Colors.accentButtonColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
+                                    Theme.Shapes.buttonShape
                                         .stroke(style: .init(
                                             lineWidth: 1,
                                             lineCap: .round,
                                             lineJoin: .round,
                                             miterLimit: 1)
                                         )
-                                        .foregroundColor(Theme.Colors.accentColor)
+                                        .foregroundColor(Theme.Colors.accentButtonColor)
                                 )
                                 
                         case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
-                                .fill(bgColor ?? Theme.Colors.accentColor)
+                                .fill(bgColor ?? Theme.Colors.accentButtonColor)
                             
                                 .shadow(color: (type == .first
                                                 || type == .next
@@ -167,14 +167,14 @@ public struct UnitButtonView: View {
                                                 || type == .reload) ? Color.black.opacity(0.25) : .clear,
                                         radius: 21, y: 4)
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
+                                    Theme.Shapes.buttonShape
                                         .stroke(style: .init(
                                             lineWidth: 1,
                                             lineCap: .round,
                                             lineJoin: .round,
                                             miterLimit: 1
                                         ))
-                                        .foregroundColor(Theme.Colors.accentColor)
+                                        .foregroundColor(Theme.Colors.accentButtonColor)
                                 )
                         }
                     }

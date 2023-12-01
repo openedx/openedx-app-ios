@@ -45,17 +45,21 @@ struct WhatsNewNavigationButton: View {
             }.padding(.horizontal, 20)
                 .padding(.vertical, 9)
         }.fixedSize()
-            .background(type == .previous
+            .background(
+                Theme.Shapes.buttonShape
+                    .fill(
+                        type == .previous
                         ? Theme.Colors.background
-                        : Theme.Colors.accentColor)
+                        : Theme.Colors.accentButtonColor
+                    )
+            )
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(type == .previous ? WhatsNewLocalization.buttonPrevious
                                 : (type == .next ? WhatsNewLocalization.buttonNext : WhatsNewLocalization.buttonDone ))
-            .cornerRadius(8)
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                Theme.Shapes.buttonShape
                     .stroke(type == .previous
-                            ? Theme.Colors.accentColor
+                            ? Theme.Colors.accentButtonColor
                             : Theme.Colors.background, lineWidth: 1)
             )
             .onTapGesture { action() }

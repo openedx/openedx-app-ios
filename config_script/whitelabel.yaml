@@ -18,5 +18,8 @@ assets:
     AccentButtonColor:
       light: '#D23228'
       dark: '#D23228'
+    AccentColor:
+      light: '#454545'
+      dark: '#454545'
     
 
