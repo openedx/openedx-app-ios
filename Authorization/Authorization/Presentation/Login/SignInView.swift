@@ -116,7 +116,7 @@ public struct SignInView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 50)
-                }.roundedBackground(Theme.Colors.background)
+                }.roundedBackground(Theme.Colors.loginBackground)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
             }

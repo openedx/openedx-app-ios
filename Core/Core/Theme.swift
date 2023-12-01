@@ -15,6 +15,7 @@ public struct Theme {
         public private(set) static var alert = CoreAssets.alert.swiftUIColor
         public private(set) static var avatarStroke = CoreAssets.avatarStroke.swiftUIColor
         public private(set) static var background = CoreAssets.background.swiftUIColor
+        public private(set) static var loginBackground = CoreAssets.loginBackground.swiftUIColor
         public private(set) static var backgroundStroke = CoreAssets.backgroundStroke.swiftUIColor
         public private(set) static var cardViewBackground = CoreAssets.cardViewBackground.swiftUIColor
         public private(set) static var cardViewStroke = CoreAssets.cardViewStroke.swiftUIColor

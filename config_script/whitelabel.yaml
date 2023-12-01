@@ -1,0 +1,18 @@
+project_assets: './Core/Core/Assets.xcassets'
+assets_dir: './edx-mobile-config/openEdXAssets'
+
+assets:
+  images:
+    appLogo:
+      imageName: 'Frame 4 1.svg'
+      imageNameImport: 'logoEdX.pdf'
+    authBackground:
+      currentPath: 'Auth'
+      imageName: 'Rectangle.png'
+      darkImageName: 'Rectangle-2.png'
+  colors:
+    LoginBackground:
+      currrentPath: ''
+      light: '#FFFFFF'
+      dark: '#ED5C13'
+
