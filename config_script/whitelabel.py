@@ -30,9 +30,9 @@ class WhitelabelApp:
                     dark: '#ED5C13'
         """
             
-        self.project_assets = kwargs.get('project_assets')
-        if not self.project_assets:
-            self.project_assets = '.'
+        # self.project_assets = kwargs.get('project_assets')
+        # if not self.project_assets:
+        #     self.project_assets = '.'
 
         self.assets_dir = kwargs.get('assets_dir')
         if not self.assets_dir:
@@ -46,19 +46,26 @@ class WhitelabelApp:
         self.copy_assets()
 
     def copy_assets(self):
-        self.replace_images()
-        self.replace_colors()
-
-    def replace_images(self):
         if self.assets:
-            for name, image in self.assets["images"].items():
+            for asset in self.assets.items():
+                self.replace_images(asset[1])
+                self.replace_colors(asset[1])
+        else:
+            logging.debug("Assets not found")
+
+        
+
+    def replace_images(self, asset):
+        if "images" in asset :
+            assetPath = asset["imagesPath"] if "imagesPath" in asset else ""
+            for name, image in asset["images"].items():
                 currentPath = image["currentPath"] if "currentPath" in image else ""
                 hasDark = True if "darkImageName" in image else False
                 imageName = image["imageName"]
                 imageNameImport = image["imageNameImport"] if "imageNameImport" in image else imageName
                 darkImageName = image["darkImageName"] if "darkImageName" in image else ""
                 darkImageNameImport =  image["darkImageNameImport"] if "darkImageNameImport" in image else darkImageName
-                path_to_imageset = os.path.join(self.project_assets, currentPath, name+'.imageset')
+                path_to_imageset = os.path.join(assetPath, currentPath, name+'.imageset')
                 # Delete current file(s)
                 file_path = os.path.join(path_to_imageset, imageName)
                 if os.path.exists(file_path):
@@ -82,14 +89,13 @@ class WhitelabelApp:
                 if hasDark:
                     dark_file_to_copy_path = os.path.join(self.assets_dir, darkImageNameImport)
                     shutil.copy(dark_file_to_copy_path, path_to_imageset)
-        else:
-            logging.debug("No assets to copy to %s", self.project_assets)
 
-    def replace_colors(self):
-        if self.assets:
-            for name, color in self.assets["colors"].items():
+    def replace_colors(self, asset):
+        if "colors" in asset:
+            colorsPath = asset["colorsPath"] if "colorsPath" in asset else ""
+            for name, color in asset["colors"].items():
                 currentPath = color["currentPath"] if "currentPath" in color else ""
-                path_to_colorset = os.path.join(self.project_assets, 'Colors', currentPath, name+'.colorset')
+                path_to_colorset = os.path.join(colorsPath, currentPath, name+'.colorset')
                 light_color = color["light"]
                 dark_color = color["dark"]
                 # Change Contents.json
@@ -108,8 +114,6 @@ class WhitelabelApp:
                     new_json = json.dumps(json_object) 
                 with open(content_json_path, 'w') as openfile:
                     openfile.write(new_json)
-        else:
-            logging.debug("No assets to copy to %s", self.project_assets)
 
     def change_color_components(self, components, color, name):
         color = color.replace("#", "")

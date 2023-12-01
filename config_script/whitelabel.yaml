@@ -1,25 +1,42 @@
-project_assets: './Core/Core/Assets.xcassets'
+# project_assets: './Core/Core/Assets.xcassets'
 assets_dir: './edx-mobile-config/openEdXAssets'
 
 assets:
-  images:
-    appLogo:
-      imageName: 'Frame 4 1.svg'
-      imageNameImport: 'logoEdX.pdf'
-    authBackground:
-      currentPath: 'Auth'
-      imageName: 'Rectangle.png'
-      darkImageName: 'Rectangle-2.png'
-  colors:
-    LoginBackground:
-      currrentPath: ''
-      light: '#FFFFFF'
-      dark: '#ED5C13'
-    AccentButtonColor:
-      light: '#D23228'
-      dark: '#D23228'
-    AccentColor:
-      light: '#454545'
-      dark: '#454545'
+  Core:
+    imagesPath: 'Core/Core/Assets.xcassets'
+    colorsPath: 'Core/Core/Assets.xcassets/Colors'
+    images:
+      appLogo:
+        imageName: 'Frame 4 1.svg'
+        imageNameImport: 'logoEdX.pdf'
+      authBackground:
+        currentPath: 'Auth'
+        imageName: 'Rectangle.png'
+        darkImageName: 'Rectangle-2.png'
+    colors:
+      LoginBackground:
+        currrentPath: ''
+        light: '#FFFFFF'
+        dark: '#ED5C13'
+      AccentButtonColor:
+        light: '#D23228'
+        dark: '#D23228'
+      AccentColor:
+        light: '#454545'
+        dark: '#454545'
+  OpenEdX:
+    imagesPath: 'OpenEdX/Assets.xcassets'
+    colorsPath: 'OpenEdX/Assets.xcassets'
+    images:
+      appLogo:
+        imageName: 'Group 21.svg'
+        imageNameImport: 'appIcon.png'
+    colors:
+      AccentColor:
+        light: '#454545'
+        dark: '#454545'
+      SplachBackground:
+        light: '#0E3639'
+        dark: '#0E3639'
     
 
