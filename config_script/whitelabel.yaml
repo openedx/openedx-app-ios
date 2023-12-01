@@ -15,4 +15,8 @@ assets:
       currrentPath: ''
       light: '#FFFFFF'
       dark: '#ED5C13'
+    AccentButtonColor:
+      light: '#D23228'
+      dark: '#D23228'
+    
 

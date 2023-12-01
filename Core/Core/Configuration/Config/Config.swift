@@ -16,6 +16,7 @@ public protocol ConfigProtocol {
     var agreement: AgreementConfig { get }
     var firebase: FirebaseConfig { get }
     var features: FeaturesConfig { get }
+    var theme: ThemeConfig { get }
 }
 
 public enum TokenType: String {

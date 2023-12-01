@@ -7,11 +7,13 @@
 
 import Foundation
 import SwiftUI
+import Swinject
 
 public struct Theme {
     
     public struct Colors {
         public private(set) static var accentColor = CoreAssets.accentColor.swiftUIColor
+        public private(set) static var accentButtonColor = CoreAssets.accentButtonColor.swiftUIColor
         public private(set) static var alert = CoreAssets.alert.swiftUIColor
         public private(set) static var avatarStroke = CoreAssets.avatarStroke.swiftUIColor
         public private(set) static var background = CoreAssets.background.swiftUIColor
@@ -110,8 +112,17 @@ public struct Theme {
     public struct Shapes {
         public static let screenBackgroundRadius = 24.0
         public static let cardImageRadius = 10.0
-        public static let textInputShape = RoundedRectangle(cornerRadius: 8)
-        public static let buttonShape = RoundedCorners(tl: 8, tr: 8, bl: 8, br: 8)
+        public static let textInputShape =  {
+            let config = Container.shared.resolve(ConfigProtocol.self)!
+            let radius: CGFloat = config.theme.isRoundedCorners ? 8 : 0
+            return RoundedRectangle(cornerRadius: radius)
+        }()
+        public static let buttonShape = {
+            let config = Container.shared.resolve(ConfigProtocol.self)!
+            let radius: CGFloat = config.theme.isRoundedCorners ? 8 : 0
+            return RoundedCorners(tl: radius, tr: radius, bl: radius, br: radius)
+        }()
+        public static let squareButtonShape = Rectangle()
         public static let unitButtonShape = RoundedCorners(tl: 21, tr: 21, bl: 21, br: 21)
         public static let roundedScreenBackgroundShape = RoundedCorners(
             tl: Theme.Shapes.screenBackgroundRadius,

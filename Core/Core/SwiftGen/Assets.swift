@@ -26,6 +26,7 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 public enum CoreAssets {
   public static let authBackground = ImageAsset(name: "authBackground")
   public static let checkEmail = ImageAsset(name: "checkEmail")
+  public static let accentButtonColor = ColorAsset(name: "AccentButtonColor")
   public static let accentColor = ColorAsset(name: "AccentColor")
   public static let alert = ColorAsset(name: "Alert")
   public static let avatarStroke = ColorAsset(name: "AvatarStroke")
