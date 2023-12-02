@@ -63,6 +63,16 @@ public enum AuthLocalization {
     /// Sign up
     public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
   }
+  public enum Startup {
+    /// Explore all courses
+    public static let exploreAllCourses = AuthLocalization.tr("Localizable", "STARTUP.EXPLORE_ALL_COURSES", fallback: "Explore all courses")
+    /// Courses and programs from the world's best universities in your pocket.
+    public static let infoMessage = AuthLocalization.tr("Localizable", "STARTUP.INFO_MESSAGE", fallback: "Courses and programs from the world's best universities in your pocket.")
+    /// Search our 3000+ courses
+    public static let searchPlaceholder = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_PLACEHOLDER", fallback: "Search our 3000+ courses")
+    /// What do you want to learn?
+    public static let searchTitle = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_TITLE", fallback: "What do you want to learn?")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

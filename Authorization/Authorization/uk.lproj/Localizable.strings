@@ -28,3 +28,8 @@
 "FORGOT.REQUEST" = "Відновити пароль";
 "FORGOT.CHECK_TITLE" = "Перевірте свою електронну пошту";
 "FORGOT.CHECK_Description" = "Ми надіслали інструкції щодо відновлення пароля на вашу електронну пошту ";
+
+"STARTUP.INFO_MESSAGE" = "Courses and programs from the world's best universities in your pocket.";
+"STARTUP.SEARCH_TITLE" = "What do you want to learn?";
+"STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
+"STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";

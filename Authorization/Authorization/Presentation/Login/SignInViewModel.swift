@@ -31,7 +31,7 @@ public class SignInViewModel: ObservableObject {
     }
     
     let router: AuthorizationRouter
-    private let config: ConfigProtocol
+    let config: ConfigProtocol
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
