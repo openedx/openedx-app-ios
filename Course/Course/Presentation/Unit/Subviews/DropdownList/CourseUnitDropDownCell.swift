@@ -43,6 +43,8 @@ struct CourseUnitDropDownCell: View {
                     .foregroundColor(Theme.Colors.textPrimary)
                 }
             })
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(vertical.displayName)
             .padding(.horizontal, 20)
             .padding(.vertical, 5)
             if !isLast {
