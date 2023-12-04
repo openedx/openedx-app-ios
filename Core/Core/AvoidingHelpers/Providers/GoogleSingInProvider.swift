@@ -18,6 +18,10 @@ public final class GoogleSingInProvider {
         GIDSignIn.sharedInstance.signIn(
             withPresenting: withPresenting,
             completion: { result, error in
+                if let error = error as? NSError, error.code == GIDSignInError.canceled.rawValue {
+                    completion(result, CustomError.socialSignCanceled)
+                    return
+                }
                 completion(result, error)
             }
         )

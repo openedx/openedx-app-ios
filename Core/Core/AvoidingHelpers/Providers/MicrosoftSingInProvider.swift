@@ -84,6 +84,9 @@ public final class MicrosoftSingInProvider {
     private func failure(_ error: Error?) -> Error {
         if let error = error as? NSError,
             let description = error.userInfo[MSALErrorDescriptionKey] as? String {
+            if let errorCode = MSALError(rawValue: error.code), case .userCanceled = errorCode {
+                return CustomError.socialSignCanceled
+            }
             return CustomError.error(text: description)
         }
         return error ?? CustomError.error(text: CoreLocalization.Error.unknownError)
