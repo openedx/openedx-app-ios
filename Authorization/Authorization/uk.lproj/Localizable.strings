@@ -39,3 +39,8 @@
 "FACEBOOK" = "Facebook";
 "MICROSOFT" = "Microsoft";
 "OR" = "Or";
+
+"STARTUP.INFO_MESSAGE" = "Courses and programs from the world's best universities in your pocket.";
+"STARTUP.SEARCH_TITLE" = "What do you want to learn?";
+"STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
+"STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";

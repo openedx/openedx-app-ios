@@ -9,15 +9,16 @@
 "SIGN_IN.LOG_IN_TITLE" = "Sign in";
 "SIGN_IN.WELCOME_BACK" = "Welcome back! Please authorize to continue.";
 "SIGN_IN.EMAIL" = "Email";
+"SIGN_IN.EMAIL_OR_USERNAME" = "Email or username";
 "SIGN_IN.PASSWORD" = "Password";
 "SIGN_IN.REGISTER_BTN" = "Register";
 "SIGN_IN.FORGOT_PASS_BTN" = "Forgot password?";
 "SIGN_IN.LOG_IN_BTN" = "Sign in";
 
-
 "ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email address";
 "ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
 "ERROR.AUTH_PROVIDER" = "This %@ account is not linked with any %@ account. Please register.";
+"ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME" = "Invalid email or username";
 
 "SIGN_UP.TITLE" = "Sign up";
 "SIGN_UP.SUBTITLE" = "Create new account.";
@@ -33,6 +34,7 @@
 "FORGOT.CHECK_TITLE" = "Check your email";
 "FORGOT.CHECK_Description" = "We have sent a password recover instructions to your email ";
 
+
 "SIGN_IN_WITH" = "Sign in with";
 "SIGN_IN_REGISTER" = "Register with";
 "APPLE" = "Apple";
@@ -40,3 +42,9 @@
 "FACEBOOK" = "Facebook";
 "MICROSOFT" = "Microsoft";
 "OR" = "Or";
+
+"STARTUP.INFO_MESSAGE" = "Courses and programs from the world's best universities in your pocket.";
+"STARTUP.SEARCH_TITLE" = "What do you want to learn?";
+"STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
+"STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";
+

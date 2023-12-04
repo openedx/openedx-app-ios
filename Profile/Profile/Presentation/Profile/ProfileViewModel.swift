@@ -120,7 +120,7 @@ public class ProfileViewModel: ObservableObject {
     @MainActor
     func logOut() async {
         try? await interactor.logOut()
-        router.showLoginScreen()
+        router.showStartupScreen()
         analytics.userLogout(force: false)
     }
     

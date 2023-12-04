@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Swinject
 
 public struct SignInView: View {
     
@@ -29,6 +30,19 @@ public struct SignInView: View {
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
+            if viewModel.config.features.startupScreenEnabled {
+                VStack {
+                    Button(action: { viewModel.router.back() }, label: {
+                        CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                            .backButtonStyle(color: .white)
+                    })
+                    .foregroundColor(Theme.Colors.styledButtonText)
+                    .padding(.leading, isHorizontal ? 48 : 0)
+                    .padding(.top, 11)
+                    
+                }.frame(maxWidth: .infinity, alignment: .topLeading)
+                    .padding(.top, isHorizontal ? 20 : 0)
+            }
             
             VStack(alignment: .center) {
                 CoreAssets.appLogo.swiftUIImage
@@ -49,10 +63,10 @@ public struct SignInView: View {
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.bottom, 20)
                             
-                            Text(AuthLocalization.SignIn.email)
+                            Text(AuthLocalization.SignIn.emailOrUsername)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.textPrimary)
-                            TextField(AuthLocalization.SignIn.email, text: $email)
+                            TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
                                 .autocapitalization(.none)
@@ -83,21 +97,23 @@ public struct SignInView: View {
                                         .stroke(lineWidth: 1)
                                         .fill(Theme.Colors.textInputStroke)
                                 )
-                            
                             HStack {
-                                Button(AuthLocalization.SignIn.registerBtn) {
-                                    viewModel.trackSignUpClicked()
-                                    viewModel.router.showRegisterScreen()
-                                }.foregroundColor(Theme.Colors.accentColor)
-                                
-                                Spacer()
-                                
+                                if !viewModel.config.features.startupScreenEnabled {
+                                    Button(AuthLocalization.SignIn.registerBtn) {
+                                        viewModel.trackSignUpClicked()
+                                        viewModel.router.showRegisterScreen()
+                                    }.foregroundColor(Theme.Colors.accentColor)
+                                    
+                                    Spacer()
+                                }
+                                    
                                 Button(AuthLocalization.SignIn.forgotPassBtn) {
                                     viewModel.trackForgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
                                 }.foregroundColor(Theme.Colors.accentColor)
+                                    .padding(.top, 0)
                             }
-                            .padding(.top, 10)
+                            
                             if viewModel.isShowProgress {
                                 HStack(alignment: .center) {
                                     ProgressBar(size: 40, lineWidth: 8)
@@ -161,8 +177,6 @@ public struct SignInView: View {
             }
         }
         .hideNavigationBar()
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
     }

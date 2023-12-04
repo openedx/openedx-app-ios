@@ -17,16 +17,20 @@ public class Validator {
     public init() {
     }
     
-    public func isValidEmail(_ email: String) -> Bool {
-        return emailPredicate.evaluate(with: email)
+    public func isValidEmail(_ string: String) -> Bool {
+        return emailPredicate.evaluate(with: string)
     }
     
     public func isValidPassword(_ password: String) -> Bool {
         return password.count >= 2
     }
     
-    public func isValidUsername(_ username: String) -> Bool {
-        return username.count >= 2 && username.count <= 30
+    public func isValidUsername(_ string: String) -> Bool {
+        let trimmedString = string.trimmingCharacters(in: .whitespaces)
+        if trimmedString.contains("@") {
+            return emailPredicate.evaluate(with: trimmedString)
+        } else {
+            return !trimmedString.isEmpty
+        }
     }
-    
 }
