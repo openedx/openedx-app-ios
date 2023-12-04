@@ -151,17 +151,17 @@ public class SignInViewModel: ObservableObject {
                 analytics.userLogin(method: loginMethod)
                 router.showMainOrWhatsNewScreen()
             } catch let error {
-                failure(error, loginMethod: loginMethod)
+                failure(error, loginMethod: loginMethod, isExternalToken: true)
             }
         }
     }
 
     @MainActor
-    private func failure(_ error: Error, loginMethod: LoginMethod? = nil) {
+    private func failure(_ error: Error, loginMethod: LoginMethod? = nil, isExternalToken: Bool = false) {
         isShowProgress = false
         if let validationError = error.validationError,
            let value = validationError.data?["error_description"] as? String {
-            if validationError.statusCode == 401, let loginMethod = loginMethod {
+            if isExternalToken, validationError.statusCode == 400, let loginMethod = loginMethod {
                 errorMessage = AuthLocalization.Error.authProvider(
                     loginMethod.rawValue,
                     config.platformName
