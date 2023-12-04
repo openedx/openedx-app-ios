@@ -7,6 +7,7 @@
 
 import Core
 import SwiftUI
+import Theme
 
 struct CourseUnitDropDownCell: View {
     var vertical: CourseVertical

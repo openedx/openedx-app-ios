@@ -280,7 +280,7 @@ public struct CourseUnitView: View {
                                 isAvailable: isDropdownAvailable,
                                 showDropdown: $showDropdown)
                             .padding(.top, 0)
-                            .offset(y: -20)
+                            .offset(y: -25)
                             Spacer()
                         }
                         HStack(alignment: .center) {

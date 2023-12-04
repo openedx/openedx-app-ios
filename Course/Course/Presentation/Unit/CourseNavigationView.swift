@@ -119,7 +119,9 @@ struct CourseNavigationView: View {
                                     verticalIndex: verticalIndex,
                                     chapters: viewModel.chapters,
                                     chapterIndex: chapterIndex,
-                                    sequentialIndex: sequentialIndex)
+                                    sequentialIndex: sequentialIndex,
+                                    animated: true
+                                )
                             }
                         )
                         playerStateSubject.send(VideoPlayerState.pause)
