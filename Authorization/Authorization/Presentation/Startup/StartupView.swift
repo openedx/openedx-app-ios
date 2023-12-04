@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct StartupView: View {
     
@@ -25,7 +26,7 @@ public struct StartupView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading) {
-                CoreAssets.appLogo.swiftUIImage
+                ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .frame(maxWidth: 189, maxHeight: 54)
                     .padding(.top, isHorizontal ? 20 : 40)

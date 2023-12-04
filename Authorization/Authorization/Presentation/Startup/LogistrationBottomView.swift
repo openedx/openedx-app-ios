@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct LogistrationBottomView: View {
     @ObservedObject
