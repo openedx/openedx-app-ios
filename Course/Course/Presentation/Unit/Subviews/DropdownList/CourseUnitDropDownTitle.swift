@@ -13,27 +13,29 @@ struct CourseUnitDropDownTitle: View {
     @Binding var showDropdown: Bool
     
     var body: some View {
-        Button {
-            if isAvailable {
-                showDropdown.toggle()
-            }
-        } label: {
-            HStack {
-                Text(title)
-                    .opacity(showDropdown ? 0.7 : 1.0)
+        if isAvailable {
+            Button {
                 if isAvailable {
-                    if showDropdown {
-                        Image(systemName: "chevron.right")
-                            .rotationEffect(.degrees(90))
-                    } else {
-                        Image(systemName: "chevron.right")
+                    showDropdown.toggle()
+                }
+            } label: {
+                HStack {
+                    Text(title)
+                        .opacity(showDropdown ? 0.7 : 1.0)
+                    if isAvailable {
+                        if showDropdown {
+                            Image(systemName: "chevron.right")
+                                .rotationEffect(.degrees(90))
+                        } else {
+                            Image(systemName: "chevron.right")
+                        }
                     }
                 }
             }
+            .buttonStyle(.plain)
+        } else {
+            Text(title)
         }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(title)
     }
 }
 
