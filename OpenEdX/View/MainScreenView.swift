@@ -13,6 +13,7 @@ import Dashboard
 import Profile
 import WhatsNew
 import SwiftUIIntrospect
+import Theme
 
 struct MainScreenView: View {
     
@@ -137,6 +138,7 @@ struct MainScreenView: View {
                 await viewModel.prefetchDataForOffline()
             }
         }
+        .accentColor(Theme.Colors.accentColor)
     }
     
     private func titleBar() -> String {

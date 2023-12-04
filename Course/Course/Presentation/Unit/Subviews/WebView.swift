@@ -8,6 +8,7 @@
 import SwiftUI
 import Swinject
 import Core
+import Theme
 
 struct WebView: View {
     let url: String

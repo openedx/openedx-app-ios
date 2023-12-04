@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 struct StarRatingView: View {
     @Binding var rating: Int

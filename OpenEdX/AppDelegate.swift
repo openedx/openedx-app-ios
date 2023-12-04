@@ -12,6 +12,7 @@ import FirebaseCore
 import FirebaseAnalytics
 import FirebaseCrashlytics
 import Profile
+import Theme
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

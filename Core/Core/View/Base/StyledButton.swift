@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct StyledButton: View {
     private let title: String
@@ -59,7 +60,7 @@ public struct StyledButton: View {
         .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                    .foregroundColor(isTransparent ? .white : borderColor)
+                    .foregroundColor(isTransparent ? Theme.Colors.white : borderColor)
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)

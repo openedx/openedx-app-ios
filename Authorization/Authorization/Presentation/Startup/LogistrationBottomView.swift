@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct LogistrationBottomView: View {
     @ObservedObject
@@ -43,6 +44,7 @@ public struct LogistrationBottomView: View {
     }
 }
 
+#if DEBUG
 struct LogistrationBottomView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = StartupViewModel(
@@ -61,3 +63,4 @@ struct LogistrationBottomView_Previews: PreviewProvider {
             .loadFonts()
     }
 }
+#endif

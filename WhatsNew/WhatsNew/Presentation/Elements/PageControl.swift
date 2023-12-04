@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct PageControl: View {
     let numberOfPages: Int

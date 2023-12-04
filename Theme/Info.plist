@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SF-Pro.ttf</string>
+		<string>SF-Pro-Text-Bold.ttf</string>
+		<string>SF-Pro-Text-Medium.ttf</string>
+	</array>
+	<key>Configuration</key>
+	<string>$(CONFIGURATION)</string>
+</dict>
+</plist>

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct ResetPasswordView: View {
     
@@ -26,15 +27,15 @@ public struct ResetPasswordView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
             
             VStack(alignment: .center) {
                 NavigationBar(title: AuthLocalization.Forgot.title,
-                             titleColor: .white,
-                             leftButtonColor: .white,
+                             titleColor: Theme.Colors.white,
+                             leftButtonColor: Theme.Colors.white,
                              leftButtonAction: {
                    viewModel.router.back()
                }).padding(.leading, isHorizontal ? 48 : 0)
@@ -125,7 +126,7 @@ public struct ResetPasswordView: View {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                         textColor: .white)
+                                         textColor: Theme.Colors.white)
                         .padding(.top, 80)
                     Spacer()
                     
