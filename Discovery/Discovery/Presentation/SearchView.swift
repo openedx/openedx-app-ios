@@ -18,8 +18,10 @@ public struct SearchView: View {
     private var viewModel: SearchViewModel<RunLoop>
     @State private var animated: Bool = false
     
-    public init(viewModel: SearchViewModel<RunLoop>) {
+    public init(viewModel: SearchViewModel<RunLoop>, searchQuery: String? = nil) {
         self.viewModel = viewModel
+        self.viewModel.searchText = searchQuery ?? ""
+        self.viewModel.isSearchActive = !(searchQuery?.isEmpty ?? false)
     }
     
     public var body: some View {
@@ -35,7 +37,7 @@ public struct SearchView: View {
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
                         .padding(.leading, 16)
-                        .padding(.top, -1)
+                        .padding(.top, 1)
                         .foregroundColor(
                             viewModel.isSearchActive
                             ? Theme.Colors.accentColor
@@ -69,7 +71,7 @@ public struct SearchView: View {
                     }
                 }
                 .frame(minHeight: 48)
-                .frame(maxWidth: 532)
+                .frame(maxWidth: .infinity)
                 .background(
                     Theme.Shapes.textInputShape
                         .fill(viewModel.isSearchActive
@@ -156,6 +158,10 @@ public struct SearchView: View {
                         animated = true
                     }
                 }
+            }
+        
+            .onDisappear {
+                viewModel.searchText = ""
             }
             .background(Theme.Colors.background.ignoresSafeArea())
             .addTapToEndEditing(isForced: true)

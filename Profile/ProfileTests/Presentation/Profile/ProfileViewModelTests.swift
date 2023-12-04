@@ -241,7 +241,7 @@ final class ProfileViewModelTests: XCTestCase {
         
         await viewModel.logOut()
         
-        Verify(router, .showLoginScreen())
+        Verify(router, .showStartupScreen())
         XCTAssertFalse(viewModel.showError)
     }
     
