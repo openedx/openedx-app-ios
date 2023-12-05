@@ -26,21 +26,17 @@ public struct CourseUnitView: View {
     }
     @State var offsetView: CGFloat = 0
     @State var showDiscussion: Bool = false
-    @State var showDropdown: Bool = false
     @Environment(\.isPresented) private var isPresented
     @Environment(\.isHorizontal) private var isHorizontal
     private let sectionName: String
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
+    
+    //Dropdown parameters
+    @State var showDropdown: Bool = false
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
     
-    public init(viewModel: CourseUnitViewModel,
-                sectionName: String) {
-        self.viewModel = viewModel
-        self.sectionName = sectionName
-        viewModel.loadIndex()
-        viewModel.nextTitles()
-    }
+    let isDropdownActive: Bool = false
     
     var sequenceTitle: String {
         let chapter = viewModel.chapters[viewModel.chapterIndex]
@@ -58,7 +54,15 @@ public struct CourseUnitView: View {
     var isDropdownAvailable: Bool {
         viewModel.verticals.count > 1
     }
-        
+    
+    public init(viewModel: CourseUnitViewModel,
+                sectionName: String) {
+        self.viewModel = viewModel
+        self.sectionName = sectionName
+        viewModel.loadIndex()
+        viewModel.nextTitles()
+    }
+            
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body
@@ -71,18 +75,20 @@ public struct CourseUnitView: View {
                             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                             ForEach(data, id: \.offset) { index, block in
                                 VStack(spacing: 0) {
-                                    HStack {
-                                        let block = viewModel.verticals[viewModel.verticalIndex]
-                                            .childs[viewModel.index]
-                                        if block.type == .video {
-                                            let title = block.displayName
-                                            Text(title)
-                                                .lineLimit(1)
-                                                .font(Theme.Fonts.titleLarge)
-                                                .foregroundStyle(Theme.Colors.textPrimary)
-                                                .padding(.vertical, 10)
-                                                .padding(.horizontal, 20)
-                                            Spacer()
+                                    if isDropdownActive {
+                                        HStack {
+                                            let block = viewModel.verticals[viewModel.verticalIndex]
+                                                .childs[viewModel.index]
+                                            if block.type == .video {
+                                                let title = block.displayName
+                                                Text(title)
+                                                    .lineLimit(1)
+                                                    .font(Theme.Fonts.titleLarge)
+                                                    .foregroundStyle(Theme.Colors.textPrimary)
+                                                    .padding(.vertical, 10)
+                                                    .padding(.horizontal, 20)
+                                                Spacer()
+                                            }
                                         }
                                     }
                                         switch LessonType.from(block) {
@@ -267,20 +273,43 @@ public struct CourseUnitView: View {
                 // MARK: - Course Navigation
                 VStack {
                     ZStack {
+                        if !isDropdownActive {
+                            GeometryReader { reader in
+                                VStack {
+                                    HStack {
+                                        let currentBlock = viewModel.verticals[viewModel.verticalIndex]
+                                            .childs[viewModel.index]
+                                        if currentBlock.type == .video {
+                                            let title = currentBlock.displayName
+                                            Text(title)
+                                                .lineLimit(1)
+                                                .font(Theme.Fonts.titleLarge)
+                                                .foregroundStyle(Theme.Colors.textPrimary)
+                                                .padding(.leading, isHorizontal ? 30 : 42)
+                                                .padding(.top, isHorizontal ? 14 : 2)
+                                            Spacer()
+                                        }
+                                    }.frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
+                                    Spacer()
+                                }
+                            }
+                        }
                         VStack {
                             NavigationBar(
-                                title: sequenceTitle,
+                                title: isDropdownActive ? sequenceTitle : "",
                                 leftButtonAction: {
                                     viewModel.router.back()
                                     playerStateSubject.send(VideoPlayerState.kill)
                                 }).padding(.top, isHorizontal ? 10 : 0)
                                 .padding(.leading, isHorizontal ? -16 : 0)
-                            CourseUnitDropDownTitle(
-                                title: unitTitle,
-                                isAvailable: isDropdownAvailable,
-                                showDropdown: $showDropdown)
-                            .padding(.top, 0)
-                            .offset(y: -25)
+                            if isDropdownActive {
+                                CourseUnitDropDownTitle(
+                                    title: unitTitle,
+                                    isAvailable: isDropdownAvailable,
+                                    showDropdown: $showDropdown)
+                                .padding(.top, 0)
+                                .offset(y: -25)
+                            }
                             Spacer()
                         }
                         HStack(alignment: .center) {
@@ -312,7 +341,7 @@ public struct CourseUnitView: View {
                     playerStateSubject.send(VideoPlayerState.kill)
                 }
             }
-            if showDropdown {
+            if isDropdownActive && showDropdown {
                 CourseUnitVerticalsDropdownView(
                     verticals: viewModel.verticals,
                     currentIndex: viewModel.verticalIndex,
@@ -340,7 +369,26 @@ public struct CourseUnitView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
-        .animation(.easeOut(duration: 0.2), value: showDropdown)
+        .dropdownAnimation(isActive: isDropdownActive, value: showDropdown)
+    }
+}
+
+struct DropdownAnimationModifier<V>: ViewModifier where V: Equatable {
+    var isActive: Bool
+    var value: V
+    func body(content: Content) -> some View {
+        if isActive {
+            content
+                .animation(.easeOut(duration: 0.2), value: value)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func dropdownAnimation<V>(isActive: Bool, value: V) -> some View where V: Equatable {
+        modifier(DropdownAnimationModifier(isActive: isActive, value: value))
     }
 }
 

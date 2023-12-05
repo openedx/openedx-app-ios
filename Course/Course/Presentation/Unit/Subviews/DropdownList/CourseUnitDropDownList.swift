@@ -33,7 +33,11 @@ struct CourseUnitDropDownList<Content>: View where Content: View {
                 )
             }
         }
-        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Theme.Colors.background).shadow(radius: 4))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(Theme.Colors.background)
+                .shadow(radius: 4))
         .frame(height: scrollViewHeight)
     }
 }

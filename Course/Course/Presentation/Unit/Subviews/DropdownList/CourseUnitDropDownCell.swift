@@ -37,8 +37,7 @@ struct CourseUnitDropDownCell: View {
                             .frame(alignment: .leading)
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        verticalImage(childs: vertical.childs)
-                        
+                        CourseVerticalImageView(blocks: vertical.childs)
                     }
                     .foregroundColor(Theme.Colors.textPrimary)
                 }
@@ -58,20 +57,6 @@ struct CourseUnitDropDownCell: View {
             isSelected ? Color.secondary.opacity(0.2) : Color.clear
         )
 
-    }
-    
-    private func verticalImage(childs: [CourseBlock]) -> Image {
-        if childs.contains(where: { $0.type == .problem }) {
-            return CoreAssets.pen.swiftUIImage.renderingMode(.template)
-        } else if childs.contains(where: { $0.type == .video }) {
-            return CoreAssets.video.swiftUIImage.renderingMode(.template)
-        } else if childs.contains(where: { $0.type == .discussion }) {
-            return CoreAssets.discussion.swiftUIImage.renderingMode(.template)
-        } else if childs.contains(where: { $0.type == .html }) {
-            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
-        } else {
-            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
-        }
     }
 }
 
