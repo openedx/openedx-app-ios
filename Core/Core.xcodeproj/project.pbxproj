@@ -85,6 +85,7 @@
 		02F6EF3B28D9B8EC00835477 /* CourseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */; };
 		02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF4928D9F0A700835477 /* DateExtension.swift */; };
 		02F98A7F28F81EE900DE94C0 /* Container+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F98A7E28F81EE900DE94C0 /* Container+App.swift */; };
+		06FD7EE12B1F3DBC008D632B /* UIComponentsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FD7EE02B1F3DBC008D632B /* UIComponentsConfig.swift */; };
 		070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019A428F6F17900D5FC78 /* Data_Media.swift */; };
 		070019AC28F6FD0100D5FC78 /* CourseDetailBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019AB28F6FD0100D5FC78 /* CourseDetailBlock.swift */; };
 		070019AE28F701B200D5FC78 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019AD28F701B200D5FC78 /* Certificate.swift */; };
@@ -230,6 +231,7 @@
 		02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCellView.swift; sourceTree = "<group>"; };
 		02F6EF4928D9F0A700835477 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		02F98A7E28F81EE900DE94C0 /* Container+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+App.swift"; sourceTree = "<group>"; };
+		06FD7EE02B1F3DBC008D632B /* UIComponentsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsConfig.swift; sourceTree = "<group>"; };
 		070019A428F6F17900D5FC78 /* Data_Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Media.swift; sourceTree = "<group>"; };
 		070019AB28F6FD0100D5FC78 /* CourseDetailBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailBlock.swift; sourceTree = "<group>"; };
 		070019AD28F701B200D5FC78 /* Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificate.swift; sourceTree = "<group>"; };
@@ -629,6 +631,7 @@
 				DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */,
 				DBF6F2492B0380E00098414B /* FeaturesConfig.swift */,
 				DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */,
+				06FD7EE02B1F3DBC008D632B /* UIComponentsConfig.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -864,6 +867,7 @@
 				022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */,
 				0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */,
 				02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */,
+				06FD7EE12B1F3DBC008D632B /* UIComponentsConfig.swift in Sources */,
 				0233D5732AF13EEE00BAC8BD /* AppReviewButton.swift in Sources */,
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,
 				0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */,

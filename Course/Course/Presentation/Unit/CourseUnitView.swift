@@ -36,7 +36,9 @@ public struct CourseUnitView: View {
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
     
-    let isDropdownActive: Bool = true
+    let isDropdownActive: Bool = {
+        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.isVerticalsMenuEnabled ?? false
+    }()
     
     var sequenceTitle: String {
         let chapter = viewModel.chapters[viewModel.chapterIndex]
@@ -368,25 +370,6 @@ public struct CourseUnitView: View {
                 .ignoresSafeArea()
         )
         .dropdownAnimation(isActive: isDropdownActive, value: showDropdown)
-    }
-}
-
-struct DropdownAnimationModifier<V>: ViewModifier where V: Equatable {
-    var isActive: Bool
-    var value: V
-    func body(content: Content) -> some View {
-        if isActive {
-            content
-                .animation(.easeOut(duration: 0.2), value: value)
-        } else {
-            content
-        }
-    }
-}
-
-extension View {
-    func dropdownAnimation<V>(isActive: Bool, value: V) -> some View where V: Equatable {
-        modifier(DropdownAnimationModifier(isActive: isActive, value: value))
     }
 }
 
