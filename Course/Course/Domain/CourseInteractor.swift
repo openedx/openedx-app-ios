@@ -63,11 +63,11 @@ public class CourseInteractor: CourseInteractorProtocol {
     }
     
     public func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
-        return try await repository.getCourseDetailsOffline(courseID: courseID)
+        return try await repository.getLoadedCourseDetails(courseID: courseID)
     }
     
     public func getCourseBlocksOffline(courseID: String) async throws -> CourseStructure {
-        return try repository.getCourseBlocksOffline(courseID: courseID)
+        return try repository.getLoadedCourseBlocks(courseID: courseID)
     }
     
     public func enrollToCourse(courseID: String) async throws -> Bool {
