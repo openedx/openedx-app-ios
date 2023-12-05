@@ -92,9 +92,6 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainSwift (20.0.0)
   - Kingfisher (7.9.1)
-  - MSAL (1.2.18):
-    - MSAL/app-lib (= 1.2.18)
-  - MSAL/app-lib (1.2.18)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
@@ -119,7 +116,6 @@ DEPENDENCIES:
   - FirebaseCrashlytics (~> 10.11)
   - KeychainSwift (~> 20.0)
   - Kingfisher (~> 7.8)
-  - MSAL
   - SwiftGen (~> 6.6)
   - SwiftLint (~> 0.5)
   - SwiftUIIntrospect (~> 0.8)
@@ -141,7 +137,6 @@ SPEC REPOS:
     - GoogleUtilities
     - KeychainSwift
     - Kingfisher
-    - MSAL
     - nanopb
     - PromisesObjC
     - PromisesSwift
@@ -175,7 +170,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   KeychainSwift: 0ce6a4d13f7228054d1a71bb1b500448fb2ab837
   Kingfisher: 1d14e9f59cbe19389f591c929000332bf70efd32
-  MSAL: 75402959845e55146583efbf37ff4ad90b408630
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   PromisesSwift: 28dca69a9c40779916ac2d6985a0192a5cb4a265
@@ -186,6 +180,6 @@ SPEC CHECKSUMS:
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
   Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: bf3be33bc84295eef4c6b35a1df641d28437eec6
+PODFILE CHECKSUM: 544edab2f9ecc4ac18973fb8865f1d0613ec8a28
 
 COCOAPODS: 1.13.0
