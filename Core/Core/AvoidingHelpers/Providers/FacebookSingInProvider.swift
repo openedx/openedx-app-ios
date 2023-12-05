@@ -19,7 +19,7 @@ public final class FacebookSingInProvider {
         completion: @escaping ((LoginManagerLoginResult?, Error?) -> Void)
     ) {
         loginManager.logIn(
-            permissions: ["name", "email"],
+            permissions: [],
             from: withPresenting,
             handler: { [weak self] result, error in
 
