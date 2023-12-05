@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct CheckBoxView: View {
     @Binding var checked: Bool

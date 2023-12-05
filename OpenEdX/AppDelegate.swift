@@ -15,6 +15,7 @@ import Profile
 import GoogleSignIn
 import FacebookCore
 import MSAL
+import Theme
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

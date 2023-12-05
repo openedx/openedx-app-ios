@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Kingfisher
 import WebKit
+import Theme
 
 public struct CourseDetailsView: View {
     

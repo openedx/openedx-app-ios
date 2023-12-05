@@ -94,4 +94,13 @@ abstract_target "App" do
     end
   end
   
+  target "Theme" do
+    project './Theme/Theme.xcodeproj'
+    workspace './Theme/Theme.xcodeproj'
+    
+    target 'ThemeTests' do
+      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+    end
+  end
+  
 end

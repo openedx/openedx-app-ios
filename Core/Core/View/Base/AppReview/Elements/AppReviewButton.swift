@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 struct AppReviewButton: View {
     let type: ButtonType

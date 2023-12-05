@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import Theme
 
 public enum CellType {
     case dashboard

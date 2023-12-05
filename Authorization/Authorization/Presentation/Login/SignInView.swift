@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 import Swinject
 
 public struct SignInView: View {
@@ -26,7 +27,7 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
@@ -45,7 +46,7 @@ public struct SignInView: View {
             }
             
             VStack(alignment: .center) {
-                CoreAssets.appLogo.swiftUIImage
+                ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .frame(maxWidth: 189, maxHeight: 54)
                     .padding(.top, isHorizontal ? 20 : 40)
@@ -150,7 +151,7 @@ public struct SignInView: View {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                         textColor: .white)
+                                         textColor: Theme.Colors.white)
                         .padding(.top, 80)
                     Spacer()
                     

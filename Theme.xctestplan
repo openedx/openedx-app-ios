@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "21564A5A-00BD-4BA9-BA30-6B8D4818E22A",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Theme.xcodeproj",
+        "identifier" : "E0D6E6AD2B16EA380089F9C9",
+        "name" : "ThemeTests"
+      }
+    }
+  ],
+  "version" : 1
+}
