@@ -36,7 +36,7 @@ public struct CourseUnitView: View {
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
     
-    let isDropdownActive: Bool = false
+    let isDropdownActive: Bool = true
     
     var sequenceTitle: String {
         let chapter = viewModel.chapters[viewModel.chapterIndex]
@@ -77,8 +77,6 @@ public struct CourseUnitView: View {
                                 VStack(spacing: 0) {
                                     if isDropdownActive {
                                         HStack {
-                                            let block = viewModel.verticals[viewModel.verticalIndex]
-                                                .childs[viewModel.index]
                                             if block.type == .video {
                                                 let title = block.displayName
                                                 Text(title)
