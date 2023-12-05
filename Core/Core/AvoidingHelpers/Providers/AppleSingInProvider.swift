@@ -7,6 +7,7 @@
 
 import Foundation
 import AuthenticationServices
+import Swinject
 
 public struct AppleCredentials: Codable {
     public var name: String
@@ -42,10 +43,25 @@ public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDeleg
             return
         }
 
-        let firstName = credentials.fullName?.givenName ?? ""
-        let lastName = credentials.fullName?.familyName ?? ""
-        let email = credentials.email ?? ""
-        let name = "\(firstName) \(lastName)"
+        var storage = Container.shared.resolve(CoreStorage.self)
+
+        let givenName = credentials.fullName?.givenName ?? storage?.appleSignGivenName ?? ""
+        let familyName = credentials.fullName?.familyName ?? storage?.appleSignFamilyName ?? ""
+
+        let email = credentials.email ?? storage?.appleSignEmail ?? ""
+        var name: String =  "\(givenName) \(familyName)"
+
+        if storage?.appleSignFamilyName == nil, !familyName.isEmpty {
+            storage?.appleSignFamilyName = familyName
+        }
+
+        if storage?.appleSignGivenName == nil, !givenName.isEmpty {
+            storage?.appleSignGivenName = givenName
+        }
+
+        if storage?.appleSignEmail == nil {
+            storage?.appleSignEmail = email
+        }
 
         guard let data = credentials.identityToken,
             let code = String(data: data, encoding: .utf8) else {

@@ -76,6 +76,46 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
         }
     }
 
+    public var appleSignGivenName: String? {
+        get {
+            return keychain.get(KEY_APPLE_SIGN_GIVENNAME)
+        }
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: KEY_APPLE_SIGN_GIVENNAME)
+            } else {
+                keychain.delete(KEY_APPLE_SIGN_GIVENNAME)
+            }
+        }
+    }
+
+    public var appleSignFamilyName: String? {
+        get {
+            return keychain.get(KEY_APPLE_SIGN_FAMILYNAME)
+        }
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: KEY_APPLE_SIGN_FAMILYNAME)
+            } else {
+                keychain.delete(KEY_APPLE_SIGN_FAMILYNAME)
+            }
+        }
+    }
+
+
+    public var appleSignEmail: String? {
+        get {
+            return keychain.get(KEY_APPLE_SIGN_EMAIL)
+        }
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: KEY_APPLE_SIGN_EMAIL)
+            } else {
+                keychain.delete(KEY_APPLE_SIGN_EMAIL)
+            }
+        }
+    }
+
     public var cookiesDate: String? {
         get {
             return userDefaults.string(forKey: KEY_COOKIES_DATE)
@@ -180,4 +220,7 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
     private let KEY_REVIEW_LAST_SHOWN_VERSION = "reviewLastShownVersion"
     private let KEY_REVIEW_LAST_REVIEW_DATE = "lastReviewDate"
     private let KEY_WHATSNEW_VERSION = "whatsNewVersion"
+    private let KEY_APPLE_SIGN_GIVENNAME = "appleSignGivenName"
+    private let KEY_APPLE_SIGN_FAMILYNAME = "appleSignFamilyName"
+    private let KEY_APPLE_SIGN_EMAIL = "appleSignEmail"
 }
