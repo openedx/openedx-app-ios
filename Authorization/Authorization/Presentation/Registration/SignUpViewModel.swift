@@ -99,19 +99,7 @@ public class SignUpViewModel: ObservableObject {
     @MainActor
     func registerUser() async {
         do {
-            var validateFields: [String: String] = [:]
-            fields.forEach { validateFields[$0.field.name] = $0.text }
-            validateFields["honor_code"] = "true"
-            validateFields["terms_of_service"] = "true"
-            if let externalToken = externalToken, let backend = backend {
-                validateFields["access_token"] = externalToken
-                validateFields["provider"] = backend
-                validateFields["client_id"] = config.oAuthClientId
-                if validateFields.contains(where: {$0.key == "password"}) {
-                    validateFields.removeValue(forKey: "password")
-                }
-                fields.removeAll { $0.field.type == .password }
-            }
+            let validateFields = configureFields()
             let errors = try await interactor.validateRegistrationFields(fields: validateFields)
             guard !showErrors(errors: errors) else { return }
             isShowProgress = true
@@ -136,6 +124,23 @@ public class SignUpViewModel: ObservableObject {
         }
     }
 
+    private func configureFields() -> [String: String] {
+        var validateFields: [String: String] = [:]
+        fields.forEach { validateFields[$0.field.name] = $0.text }
+        validateFields["honor_code"] = "true"
+        validateFields["terms_of_service"] = "true"
+        if let externalToken = externalToken, let backend = backend {
+            validateFields["access_token"] = externalToken
+            validateFields["provider"] = backend
+            validateFields["client_id"] = config.oAuthClientId
+            if validateFields.contains(where: {$0.key == "password"}) {
+                validateFields.removeValue(forKey: "password")
+            }
+            fields.removeAll { $0.field.type == .password }
+        }
+        return validateFields
+    }
+
     @MainActor
     func register(with result: Result<SocialResult, Error>) {
         result.success(social)
@@ -148,26 +153,39 @@ public class SignUpViewModel: ObservableObject {
     private func social(result: SocialResult) {
         switch result {
         case .apple(let appleCredentials):
-            appleLogin(appleCredentials, backend: result.backend)
+            appleLogin(appleCredentials, backend: result.backend, loginMethod: .apple)
         case .facebook(let account):
-            facebookLogin(backend: result.backend, account: account)
+            facebookLogin(backend: result.backend, account: account, loginMethod: .facebook)
         case .google(let gIDSignInResult):
-            googleLogin(gIDSignInResult, backend: result.backend)
+            googleLogin(gIDSignInResult, backend: result.backend, loginMethod: .google)
         case .microsoft(let account, let token):
-            microsoftLogin(token, backend: result.backend, account: account)
+            microsoftLogin(token, backend: result.backend, account: account, loginMethod: .microsoft)
         }
     }
 
     @MainActor
-    private func appleLogin(_ credentials: AppleCredentials, backend: String) {
+    private func appleLogin(
+        _ credentials: AppleCredentials,
+        backend: String, 
+        loginMethod: LoginMethod
+    ) {
+        update(
+            fullName: credentials.name,
+            email: credentials.email
+        )
         registerSocial(
             externalToken: credentials.token,
-            backend: backend
+            backend: backend,
+            loginMethod: loginMethod
         )
     }
 
     @MainActor
-    private func facebookLogin(backend: String, account: LoginManagerLoginResult) {
+    private func facebookLogin(
+        backend: String,
+        account: LoginManagerLoginResult,
+        loginMethod: LoginMethod
+    ) {
         guard let currentAccessToken = AccessToken.current?.tokenString else {
             return
         }
@@ -187,13 +205,18 @@ public class SignUpViewModel: ObservableObject {
 
         registerSocial(
             externalToken: currentAccessToken,
-            backend: backend
+            backend: backend,
+            loginMethod: loginMethod
         )
 
     }
 
     @MainActor
-    private func googleLogin(_ result: GIDSignInResult, backend: String) {
+    private func googleLogin(
+        _ result: GIDSignInResult,
+        backend: String,
+        loginMethod: LoginMethod
+    ) {
         update(
             fullName: result.user.profile?.name,
             email: result.user.profile?.email
@@ -201,12 +224,18 @@ public class SignUpViewModel: ObservableObject {
 
         registerSocial(
             externalToken: result.user.accessToken.tokenString,
-            backend: backend
+            backend: backend,
+            loginMethod: loginMethod
         )
     }
 
     @MainActor
-    private func microsoftLogin(_ token: String, backend: String, account: MSALAccount) {
+    private func microsoftLogin(
+        _ token: String,
+        backend: String,
+        account: MSALAccount,
+        loginMethod: LoginMethod
+    ) {
         update(
             fullName: account.accountClaims?["name"] as? String,
             email: account.accountClaims?["email"] as? String
@@ -214,16 +243,45 @@ public class SignUpViewModel: ObservableObject {
 
         registerSocial(
             externalToken: token,
-            backend: backend
+            backend: backend, 
+            loginMethod: loginMethod
         )
     }
 
     @MainActor
-    private func registerSocial(externalToken: String, backend: String) {
-        self.externalToken = externalToken
-        self.backend = backend
-        isThirdPartyAuthSuccess = true
+    private func registerSocial(
+        externalToken: String,
+        backend: String,
+        loginMethod: LoginMethod
+    ) {
         Task {
+            await loginOrRegister(
+                externalToken: externalToken,
+                backend: backend,
+                loginMethod: loginMethod
+            )
+        }
+    }
+
+    @MainActor
+    private func loginOrRegister(
+        externalToken: String,
+        backend: String,
+        loginMethod: LoginMethod
+    ) async {
+        do {
+            isShowProgress = true
+            let validateFields = configureFields().filter { !$0.value.isEmpty }
+            let user = try await interactor.login(externalToken: externalToken, backend: backend)
+            analytics.setUserID("\(user.id)")
+            analytics.userLogin(method: loginMethod)
+            isShowProgress = false
+            router.showMainOrWhatsNewScreen()
+        } catch {
+            self.externalToken = externalToken
+            self.backend = backend
+            isThirdPartyAuthSuccess = true
+            isShowProgress = false
             await registerUser()
         }
     }
