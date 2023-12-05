@@ -13,8 +13,8 @@ public protocol CourseInteractorProtocol {
     func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseVideoBlocks(fullStructure: CourseStructure) -> CourseStructure
-    func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getCourseBlocksOffline(courseID: String) async throws -> CourseStructure
+    func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails
+    func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func enrollToCourse(courseID: String) async throws -> Bool
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
@@ -62,11 +62,11 @@ public class CourseInteractor: CourseInteractorProtocol {
         )
     }
     
-    public func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
+    public func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
         return try await repository.getLoadedCourseDetails(courseID: courseID)
     }
     
-    public func getCourseBlocksOffline(courseID: String) async throws -> CourseStructure {
+    public func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure {
         return try repository.getLoadedCourseBlocks(courseID: courseID)
     }
     
