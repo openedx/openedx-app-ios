@@ -180,4 +180,58 @@ public class CourseUnitViewModel: ObservableObject {
     func trackFinishVerticalBackToOutlineClicked() {
         analytics.finishVerticalBackToOutlineClicked(courseId: courseID, courseName: courseName)
     }
+
+    //MARK: Navigation to next vertical
+    typealias VerticalData = (chapterIndex: Int, sequentialIndex: Int, verticalIndex: Int)
+    var nextData: VerticalData? {
+        nextData(from: (chapterIndex, sequentialIndex, verticalIndex))
+    }
+    
+    private func chapter(for data: VerticalData) -> CourseChapter? {
+        guard data.chapterIndex >= 0 && data.chapterIndex < chapters.count else { return nil }
+        return chapters[data.chapterIndex]
+    }
+    
+    private func sequential(for data: VerticalData) -> CourseSequential? {
+        guard let chapter = chapter(for: data),
+              data.sequentialIndex >= 0 && data.sequentialIndex < chapter.childs.count
+        else { return nil }
+        return chapter.childs[data.sequentialIndex]
+    }
+    
+    private func vertical(for data: VerticalData) -> CourseVertical? {
+        guard let sequential = sequential(for: data),
+            data.verticalIndex >= 0 && data.verticalIndex < sequential.childs.count
+        else { return nil }
+        return sequential.childs[data.verticalIndex]
+    }
+        
+    private func sequentials(for data: VerticalData) -> [CourseSequential]? {
+        guard let chapter = chapter(for: data) else { return nil }
+        return chapter.childs
+    }
+    
+    private func verticals(for data: VerticalData) -> [CourseVertical]? {
+        guard let sequential = sequential(for: data) else { return nil }
+        return sequential.childs
+    }
+    
+    private func nextData(from data: VerticalData) -> VerticalData? {
+        var resultData: VerticalData = data
+        if let verticals = verticals(for: data), verticals.count > data.verticalIndex + 1 {
+            resultData = (data.chapterIndex, data.sequentialIndex, data.verticalIndex + 1)
+        } else if let sequentials = sequentials(for: data), sequentials.count > data.sequentialIndex + 1 {
+            resultData = (data.chapterIndex, data.sequentialIndex + 1, 0)
+        } else if chapters.count > data.chapterIndex + 1 {
+            resultData = (data.chapterIndex + 1, 0, 0)
+        } else {
+            return nil
+        }
+
+        if let vertical = vertical(for: resultData), vertical.childs.count > 0 {
+            return resultData
+        } else {
+            return nextData(from: resultData)
+        }
+    }
 }
