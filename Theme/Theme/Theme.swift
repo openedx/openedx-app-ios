@@ -14,9 +14,11 @@ public struct Theme {
     
     public struct Colors {
         public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
+        public private(set) static var accentButtonColor = ThemeAssets.accentButtonColor.swiftUIColor
         public private(set) static var alert = ThemeAssets.alert.swiftUIColor
         public private(set) static var avatarStroke = ThemeAssets.avatarStroke.swiftUIColor
         public private(set) static var background = ThemeAssets.background.swiftUIColor
+        public private(set) static var loginBackground = ThemeAssets.loginBackground.swiftUIColor
         public private(set) static var backgroundStroke = ThemeAssets.backgroundStroke.swiftUIColor
         public private(set) static var cardViewBackground = ThemeAssets.cardViewBackground.swiftUIColor
         public private(set) static var cardViewStroke = ThemeAssets.cardViewStroke.swiftUIColor
