@@ -7,12 +7,25 @@
 
 import Foundation
 
-public enum LoginMethod: String {
-    case apple = "Apple"
-    case password = "Password"
+public enum LoginMethod: Equatable {
+    case password
+    case socailAuth(SocialAuthMethod)
+
+    public var analyticsValue: String {
+        switch self {
+        case .password:
+            "Password"
+        case .socailAuth(let socialAuthMethod):
+            socialAuthMethod.rawValue
+        }
+    }
+}
+
+public enum SocialAuthMethod: String {
     case facebook = "Facebook"
     case google = "Google"
     case microsoft = "Microsoft"
+    case apple = "Apple"
 }
 
 //sourcery: AutoMockable

@@ -19,14 +19,15 @@
 "ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
 "ERROR.AUTH_PROVIDER" = "This %@ account is not linked with any %@ account. Please register.";
 "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME" = "Invalid email or username";
+"ERROR.ACCOUNT_DISABLED" = "Your account is disabled. Please contact customer support for assistance.";
 
 "SIGN_UP.TITLE" = "Sign up";
 "SIGN_UP.SUBTITLE" = "Create new account.";
 "SIGN_UP.CREATE_ACCOUNT_BTN" = "Create account";
 "SIGN_UP.HIDE_FIELDS" = "Hide optional Fields";
 "SIGN_UP.SHOW_FIELDS" = "Show optional Fields";
-"SIGN_UP.SUCCESS_SIGNEDIN_LABEL" = "You've successfully signed in.";
-"SIGN_UP.SUCCESS_SIGNEDIN_SUBLABEL" = "We just need a little more information before you start learning.";
+"SIGN_UP.SUCCESS_SIGNIN_LABEL" = "You've successfully signed in.";
+"SIGN_UP.SUCCESS_SIGNIN_SUBLABEL" = "We just need a little more information before you start learning.";
 
 "FORGOT.TITLE"= "Forgot password";
 "FORGOT.DESCRIPTION" = "Please enter your log-in or recovery email address below and we will send you an email with instructions.";

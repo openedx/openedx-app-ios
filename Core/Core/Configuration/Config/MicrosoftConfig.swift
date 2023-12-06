@@ -14,9 +14,9 @@ private enum MicrosoftKeys: String {
 
 public final class MicrosoftConfig: NSObject {
     public var enabled: Bool = false
-    public var appID: String?
+    private(set) var appID: String?
 
-    public var requiredKeysAvailable: Bool {
+    private var requiredKeysAvailable: Bool {
         return appID != nil
     }
 

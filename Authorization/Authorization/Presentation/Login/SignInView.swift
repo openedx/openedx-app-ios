@@ -130,7 +130,7 @@ public struct SignInView: View {
                             }
                         }
                         if viewModel.socialLoginEnabled {
-                            SocialSignView(
+                            SocialAuthView(
                                 viewModel: .init(
                                     config: viewModel.config,
                                     completion: { viewModel.sign(with: $0) }

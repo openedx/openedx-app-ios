@@ -31,9 +31,3 @@ public extension Color {
         return UIColor(self)
     }
 }
-
-public extension UIColor {
-    var sui: Color {
-        Color(self)
-    }
-}

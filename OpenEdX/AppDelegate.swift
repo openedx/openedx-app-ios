@@ -37,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initDI()
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
-
             if let configuration = config.firebase.firebaseOptions {
                 FirebaseApp.configure(options: configuration)
                 Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)

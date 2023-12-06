@@ -56,7 +56,7 @@ public class AuthRepository: AuthRepositoryProtocol {
     }
 
     public func login(externalToken: String, backend: String) async throws -> User {
-        let endPoint = AuthEndpoint.socialLogin(
+        let endPoint = AuthEndpoint.getEchangeAccessToken(
             externalToken: externalToken,
             backend: backend,
             clientId: config.oAuthClientId,

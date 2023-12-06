@@ -15,10 +15,10 @@ private enum GoogleKeys: String {
 
 public final class GoogleConfig: NSObject {
     public var enabled: Bool = false
-    public var googlePlusKey: String?
-    public var clientID: String?
+    private(set) var googlePlusKey: String?
+    private(set) var clientID: String?
 
-    public var requiredKeysAvailable: Bool {
+    private var requiredKeysAvailable: Bool {
         return clientID != nil
     }
 

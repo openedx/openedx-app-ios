@@ -7,18 +7,18 @@
 
 import Foundation
 
-public enum CustomError: Error {
+public enum SocialAuthError: Error {
     case error(text: String)
-    case socialSignCanceled
+    case socialAuthCanceled
     case unknownError
 }
 
-extension CustomError: LocalizedError {
+extension SocialAuthError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .error(let text):
             return text
-        case .socialSignCanceled:
+        case .socialAuthCanceled:
             return CoreLocalization.socialSignCanceled
         case .unknownError:
             return CoreLocalization.Error.unknownError

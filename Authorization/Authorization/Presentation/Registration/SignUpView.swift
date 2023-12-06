@@ -69,10 +69,10 @@ public struct SignUpView: View {
                                     .padding(.bottom, 20)
 
                                 if viewModel.isThirdPartyAuthSuccess {
-                                    Text(AuthLocalization.SignUp.successSignedinLabel)
+                                    Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)
                                         .foregroundColor(Theme.Colors.textPrimary)
-                                    Text(AuthLocalization.SignUp.successSignedinSublabel)
+                                    Text(AuthLocalization.SignUp.successSigninSublabel)
                                         .font(Theme.Fonts.titleSmall)
                                         .foregroundColor(Theme.Colors.textSecondary)
                                         .padding(.bottom, 20)
@@ -119,12 +119,11 @@ public struct SignUpView: View {
                                 }
                                 if viewModel.socialLoginEnabled,
                                     !requiredFields.isEmpty {
-                                    SocialSignView(
+                                    SocialAuthView(
                                         signType: .register,
                                         viewModel: .init(
-                                            config: viewModel.config,
-                                            completion: { viewModel.register(with: $0) }
-                                        )
+                                            config: viewModel.config
+                                        ) { viewModel.register(with: $0) }
                                     )
                                     .padding(.bottom, 30)
                                 }

@@ -12,13 +12,17 @@ import Swinject
 public struct AppleCredentials: Codable {
     public var name: String
     public var email: String
-    public var birthYear: String? = nil
     public var token: String
 }
 
-public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDelegate {
+public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegate {
 
-    public override init() {}
+    private let config: ConfigProtocol
+
+    public init(config: ConfigProtocol) {
+        self.config = config
+        super.init()
+    }
 
     private var completion: ((Result<AppleCredentials, Error>) -> Void)?
     private let appleIDProvider = ASAuthorizationAppleIDProvider()
@@ -39,24 +43,22 @@ public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDeleg
         didCompleteWithAuthorization authorization: ASAuthorization
     ) {
         guard let credentials = authorization.credential as? ASAuthorizationAppleIDCredential else {
-            completion?(.failure(CustomError.unknownError))
+            completion?(.failure(SocialAuthError.unknownError))
             return
         }
 
         var storage = Container.shared.resolve(CoreStorage.self)
+        let pncf = PersonNameComponentsFormatter()
 
-        let givenName = credentials.fullName?.givenName ?? storage?.appleSignGivenName ?? ""
-        let familyName = credentials.fullName?.familyName ?? storage?.appleSignFamilyName ?? ""
-
-        let email = credentials.email ?? storage?.appleSignEmail ?? ""
-        var name: String =  "\(givenName) \(familyName)"
-
-        if storage?.appleSignFamilyName == nil, !familyName.isEmpty {
-            storage?.appleSignFamilyName = familyName
+        var name = storage?.appleSignFullName ?? ""
+        if let fullName = credentials.fullName {
+            name = pncf.string(from: fullName)
         }
 
-        if storage?.appleSignGivenName == nil, !givenName.isEmpty {
-            storage?.appleSignGivenName = givenName
+        let email = credentials.email ?? storage?.appleSignEmail ?? ""
+
+        if !name.isEmpty {
+            storage?.appleSignFullName = name
         }
 
         if storage?.appleSignEmail == nil {
@@ -65,7 +67,7 @@ public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDeleg
 
         guard let data = credentials.identityToken,
             let code = String(data: data, encoding: .utf8) else {
-            completion?(.failure(CustomError.unknownError))
+            completion?(.failure(SocialAuthError.unknownError))
             return
         }
 
@@ -91,9 +93,9 @@ public final class AppleSingInProvider: NSObject, ASAuthorizationControllerDeleg
     private func failure(_ error: ASAuthorizationError) -> Error {
         switch error.code {
         case .canceled:
-            return CustomError.socialSignCanceled
+            return SocialAuthError.socialAuthCanceled
         case .failed:
-            return CustomError.error(text: CoreLocalization.Error.authorizationFailed)
+            return SocialAuthError.error(text: CoreLocalization.Error.authorizationFailed)
         default:
             return error
         }

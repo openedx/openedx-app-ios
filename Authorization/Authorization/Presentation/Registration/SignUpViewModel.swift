@@ -142,31 +142,31 @@ public class SignUpViewModel: ObservableObject {
     }
 
     @MainActor
-    func register(with result: Result<SocialResult, Error>) {
-        result.success(social)
+    func register(with result: Result<SocialAuthDetails, Error>) {
+        result.success(socialAuth)
         result.failure { error in
             errorMessage = error.localizedDescription
         }
     }
 
     @MainActor
-    private func social(result: SocialResult) {
+    private func socialAuth(result: SocialAuthDetails) {
         switch result {
         case .apple(let appleCredentials):
-            appleLogin(appleCredentials, backend: result.backend, loginMethod: .apple)
+            appleRegister(appleCredentials, backend: result.backend, loginMethod: .socailAuth(.apple))
         case .facebook(let account):
-            facebookLogin(backend: result.backend, account: account, loginMethod: .facebook)
+            facebookRegister(backend: result.backend, account: account, loginMethod: .socailAuth(.facebook))
         case .google(let gIDSignInResult):
-            googleLogin(gIDSignInResult, backend: result.backend, loginMethod: .google)
+            googleRegister(gIDSignInResult, backend: result.backend, loginMethod: .socailAuth(.google))
         case .microsoft(let account, let token):
-            microsoftLogin(token, backend: result.backend, account: account, loginMethod: .microsoft)
+            microsoftRegister(token, backend: result.backend, account: account, loginMethod: .socailAuth(.microsoft))
         }
     }
 
     @MainActor
-    private func appleLogin(
+    private func appleRegister(
         _ credentials: AppleCredentials,
-        backend: String, 
+        backend: String,
         loginMethod: LoginMethod
     ) {
         update(
@@ -181,7 +181,7 @@ public class SignUpViewModel: ObservableObject {
     }
 
     @MainActor
-    private func facebookLogin(
+    private func facebookRegister(
         backend: String,
         account: LoginManagerLoginResult,
         loginMethod: LoginMethod
@@ -212,7 +212,7 @@ public class SignUpViewModel: ObservableObject {
     }
 
     @MainActor
-    private func googleLogin(
+    private func googleRegister(
         _ result: GIDSignInResult,
         backend: String,
         loginMethod: LoginMethod
@@ -230,7 +230,7 @@ public class SignUpViewModel: ObservableObject {
     }
 
     @MainActor
-    private func microsoftLogin(
+    private func microsoftRegister(
         _ token: String,
         backend: String,
         account: MSALAccount,

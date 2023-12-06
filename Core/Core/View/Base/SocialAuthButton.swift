@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct LabelButton: View {
+public struct SocialAuthButton: View {
 
     // MARK: - Properties
 
@@ -63,7 +63,7 @@ public struct LabelButton: View {
 #if DEBUG
 struct LabelButton_Previews: PreviewProvider {
     static var previews: some View {
-        LabelButton(
+        SocialAuthButton(
             image: CoreAssets.iconApple.swiftUIImage,
             title: "Apple",
             backgroundColor: CoreAssets.appleButtonColor.swiftUIColor,

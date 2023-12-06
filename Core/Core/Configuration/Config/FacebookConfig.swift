@@ -15,10 +15,10 @@ private enum FacebookKeys: String {
 
 public final class FacebookConfig: NSObject {
     public var enabled: Bool = false
-    public var appID: String?
-    public var clientToken: String?
+    private(set) var appID: String?
+    private(set) var clientToken: String?
 
-    public var requiredKeysAvailable: Bool {
+    private var requiredKeysAvailable: Bool {
         return appID != nil && clientToken != nil
     }
 

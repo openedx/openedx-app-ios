@@ -8,32 +8,32 @@
 import SwiftUI
 import Core
 
-struct SocialSignView: View {
+struct SocialAuthView: View {
 
     // MARK: - Properties
 
-    @StateObject var viewModel: SocialSignViewModel
+    @StateObject var viewModel: SocialAuthViewModel
 
     init(
-        signType: SignType = .signIn,
-        viewModel: SocialSignViewModel
+        signType: SocialAuthType = .signIn,
+        viewModel: SocialAuthViewModel
     ) {
         self._viewModel = .init(wrappedValue: viewModel)
         self.signType = signType
     }
 
-    enum SignType {
+    enum SocialAuthType {
         case signIn
         case register
     }
-    var signType: SignType = .signIn
+    var signType: SocialAuthType = .signIn
 
     private var title: String {
         switch signType {
         case .signIn:
-            return AuthLocalization.signInWith
+            AuthLocalization.signInWith
         case .register:
-            return AuthLocalization.signInRegister
+            AuthLocalization.signInRegister
         }
     }
 
@@ -58,39 +58,39 @@ struct SocialSignView: View {
 
     private var buttonsView: some View {
         Group {
-            if viewModel.isGoogleEnabled {
-                LabelButton(
+            if viewModel.googleEnabled {
+                SocialAuthButton(
                     image: CoreAssets.iconGoogleWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.google)",
                     textColor: .black,
                     backgroundColor: CoreAssets.googleButtonColor.swiftUIColor,
-                    action: viewModel.signInWithGoogle
+                    action: { Task { await viewModel.signInWithGoogle() } }
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.isFaceboolEnabled {
-                LabelButton(
+            if viewModel.faceboolEnabled {
+                SocialAuthButton(
                     image: CoreAssets.iconFacebookWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.facebook)",
                     backgroundColor: CoreAssets.facebookButtonColor.swiftUIColor,
-                    action: viewModel.signInWithFacebook
+                    action: { Task { await viewModel.signInWithFacebook() } }
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
             }
-            if viewModel.isMicrosoftEnabled {
-                LabelButton(
+            if viewModel.microsoftEnabled {
+                SocialAuthButton(
                     image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
                     title: "\(title) \(AuthLocalization.microsoft)",
                     backgroundColor: CoreAssets.microsoftButtonColor.swiftUIColor,
-                    action: viewModel.signInWithMicrosoft
+                    action: { Task { await viewModel.signInWithMicrosoft() } }
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.microsoft)")
             }
-            if viewModel.isAppleSignInEnabled {
-                LabelButton(
+            if viewModel.appleSignInEnabled {
+                SocialAuthButton(
                     image: CoreAssets.iconApple.swiftUIImage,
                     title: "\(title) \(AuthLocalization.apple)",
                     backgroundColor: CoreAssets.appleButtonColor.swiftUIColor,
@@ -106,8 +106,8 @@ struct SocialSignView: View {
 #if DEBUG
 struct SocialSignView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = SocialSignViewModel(config: ConfigMock(), completion: { _ in })
-        SocialSignView(viewModel: vm).padding()
+        let vm = SocialAuthViewModel(config: ConfigMock(), completion: { _ in })
+        SocialAuthView(viewModel: vm).padding()
     }
 }
 #endif

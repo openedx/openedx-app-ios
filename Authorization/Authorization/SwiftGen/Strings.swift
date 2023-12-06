@@ -25,6 +25,8 @@ public enum AuthLocalization {
   /// Sign in with
   public static let signInWith = AuthLocalization.tr("Localizable", "SIGN_IN_WITH", fallback: "Sign in with")
   public enum Error {
+    /// Your account is disabled. Please contact customer support for assistance.
+    public static let accountDisabled = AuthLocalization.tr("Localizable", "ERROR.ACCOUNT_DISABLED", fallback: "Your account is disabled. Please contact customer support for assistance.")
     /// This %@ account is not linked with any %@ account. Please register.
     public static func authProvider(_ p1: Any, _ p2: Any) -> String {
       return AuthLocalization.tr("Localizable", "ERROR.AUTH_PROVIDER", String(describing: p1), String(describing: p2), fallback: "This %@ account is not linked with any %@ account. Please register.")
@@ -79,9 +81,9 @@ public enum AuthLocalization {
     /// Create new account.
     public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create new account.")
     /// You've successfully signed in.
-    public static let successSignedinLabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNEDIN_LABEL", fallback: "You've successfully signed in.")
+    public static let successSigninLabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_LABEL", fallback: "You've successfully signed in.")
     /// We just need a little more information before you start learning.
-    public static let successSignedinSublabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNEDIN_SUBLABEL", fallback: "We just need a little more information before you start learning.")
+    public static let successSigninSublabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_SUBLABEL", fallback: "We just need a little more information before you start learning.")
     /// Sign up
     public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
   }

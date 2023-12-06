@@ -28,7 +28,7 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     public func userLogin(method: LoginMethod) {
-        logEvent(.userLogin, parameters: [Key.method: method.rawValue])
+        logEvent(.userLogin, parameters: [Key.method: method.analyticsValue])
     }
     
     public func signUpClicked() {

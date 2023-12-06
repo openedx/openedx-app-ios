@@ -81,7 +81,7 @@ public class SignInViewModel: ObservableObject {
     }
 
     @MainActor
-    func sign(with result: Result<SocialResult, Error>) {
+    func sign(with result: Result<SocialAuthDetails, Error>) {
         result.success { social(result: $0) }
         result.failure { error in
             errorMessage = error.localizedDescription
@@ -89,7 +89,7 @@ public class SignInViewModel: ObservableObject {
     }
 
     @MainActor
-    private func social(result: SocialResult) {
+    private func social(result: SocialAuthDetails) {
         switch result {
         case .apple(let appleCredentials):
             appleLogin(appleCredentials, backend: result.backend)
@@ -107,7 +107,7 @@ public class SignInViewModel: ObservableObject {
         socialLogin(
             externalToken: credentials.token,
             backend: backend,
-            loginMethod: .apple
+            loginMethod: .socailAuth(.apple)
         )
     }
 
@@ -119,7 +119,7 @@ public class SignInViewModel: ObservableObject {
         socialLogin(
             externalToken: currentAccessToken,
             backend: backend,
-            loginMethod: .facebook
+            loginMethod: .socailAuth(.facebook)
         )
     }
 
@@ -128,7 +128,7 @@ public class SignInViewModel: ObservableObject {
         socialLogin(
             externalToken: result.user.accessToken.tokenString,
             backend: backend,
-            loginMethod: .google
+            loginMethod: .socailAuth(.google)
         )
     }
 
@@ -137,7 +137,7 @@ public class SignInViewModel: ObservableObject {
         socialLogin(
             externalToken: token,
             backend: backend,
-            loginMethod: .microsoft
+            loginMethod: .socailAuth(.microsoft)
         )
     }
 
@@ -151,21 +151,23 @@ public class SignInViewModel: ObservableObject {
                 analytics.userLogin(method: loginMethod)
                 router.showMainOrWhatsNewScreen()
             } catch let error {
-                failure(error, loginMethod: loginMethod, isExternalToken: true)
+                failure(error, loginMethod: loginMethod)
             }
         }
     }
 
     @MainActor
-    private func failure(_ error: Error, loginMethod: LoginMethod? = nil, isExternalToken: Bool = false) {
+    private func failure(_ error: Error, loginMethod: LoginMethod? = nil) {
         isShowProgress = false
         if let validationError = error.validationError,
            let value = validationError.data?["error_description"] as? String {
-            if isExternalToken, validationError.statusCode == 400, let loginMethod = loginMethod {
+            if loginMethod != .password, validationError.statusCode == 400, let loginMethod = loginMethod {
                 errorMessage = AuthLocalization.Error.authProvider(
-                    loginMethod.rawValue,
+                    loginMethod.analyticsValue,
                     config.platformName
                 )
+            } else if validationError.statusCode == 403 {
+                errorMessage = AuthLocalization.Error.accountDisabled
             } else {
                 errorMessage = value
             }

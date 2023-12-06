@@ -17,14 +17,15 @@
 "ERROR.INVALID_EMAIL_ADDRESS" = "невірна адреса електронної пошти";
 "ERROR.INVALID_PASSWORD_LENGHT" = "Пароль занадто короткий або занадто довгий";
 "ERROR.AUTH_PROVIDER" = "This %@ account is not linked with any %@ account. Please register.";
+"ERROR.ACCOUNT_DISABLED" = "Your account is disabled. Please contact customer support for assistance.";
 
 "SIGN_UP.TITLE" = "Зареєструватись";
 "SIGN_UP.SUBTITLE" = "Cтворити новий акаунт.";
 "SIGN_UP.CREATE_ACCOUNT_BTN" = "Створити акаунт";
 "SIGN_UP.HIDE_FIELDS" = "Приховати необовʼязкові поля";
 "SIGN_UP.SHOW_FIELDS" = "Показати необовʼязкові поля";
-"SIGN_UP.SUCCESS_SIGNEDIN_LABEL" = "You've successfully signed in.";
-"SIGN_UP.SUCCESS_SIGNEDIN_SUBLABEL" = "We just need a little more information before you start learning.";
+"SIGN_UP.SUCCESS_SIGNIN_LABEL" = "You've successfully signed in.";
+"SIGN_UP.SUCCESS_SIGNIN_SUBLABEL" = "We just need a little more information before you start learning.";
 
 "FORGOT.TITLE"= "Відновлення паролю";
 "FORGOT.DESCRIPTION" = "Будь ласка, введіть свою адресу електронної пошти для входу або відновлення нижче, і ми надішлемо вам електронний лист з інструкціями.";
