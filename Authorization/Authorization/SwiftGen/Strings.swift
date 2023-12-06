@@ -13,8 +13,10 @@ public enum AuthLocalization {
   public enum Error {
     /// Invalid email address
     public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
-    /// Invalid password lenght
-    public static let invalidPasswordLenght = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGHT", fallback: "Invalid password lenght")
+    /// Invalid email or username
+    public static let invalidEmailAddressOrUsername = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME", fallback: "Invalid email or username")
+    /// Invalid password length
+    public static let invalidPasswordLength = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGTH", fallback: "Invalid password length")
   }
   public enum Forgot {
     /// We have sent a password recover instructions to your email 
@@ -31,6 +33,8 @@ public enum AuthLocalization {
   public enum SignIn {
     /// Email
     public static let email = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL", fallback: "Email")
+    /// Email or username
+    public static let emailOrUsername = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL_OR_USERNAME", fallback: "Email or username")
     /// Forgot password?
     public static let forgotPassBtn = AuthLocalization.tr("Localizable", "SIGN_IN.FORGOT_PASS_BTN", fallback: "Forgot password?")
     /// Sign in
@@ -58,6 +62,16 @@ public enum AuthLocalization {
     public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create new account.")
     /// Sign up
     public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
+  }
+  public enum Startup {
+    /// Explore all courses
+    public static let exploreAllCourses = AuthLocalization.tr("Localizable", "STARTUP.EXPLORE_ALL_COURSES", fallback: "Explore all courses")
+    /// Courses and programs from the world's best universities in your pocket.
+    public static let infoMessage = AuthLocalization.tr("Localizable", "STARTUP.INFO_MESSAGE", fallback: "Courses and programs from the world's best universities in your pocket.")
+    /// Search our 3000+ courses
+    public static let searchPlaceholder = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_PLACEHOLDER", fallback: "Search our 3000+ courses")
+    /// What do you want to learn?
+    public static let searchTitle = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_TITLE", fallback: "What do you want to learn?")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

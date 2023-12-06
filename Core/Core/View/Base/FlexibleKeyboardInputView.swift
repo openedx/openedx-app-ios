@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct FlexibleKeyboardInputView: View {
     
@@ -81,7 +82,7 @@ public struct FlexibleKeyboardInputView: View {
                                     : CoreAssets.sendDisabled.swiftUIImage
                                 }
                                 .frame(width: 36, height: 36)
-                                .foregroundColor(.white)
+                                .foregroundColor(Theme.Colors.white)
                             }).padding(.top, 8)
                                 
                         }.padding(.horizontal, isHorizontal ? 50 : 16)

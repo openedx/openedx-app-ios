@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public enum AlertViewType: Equatable {
     case `default`(positiveAction: String)
@@ -139,7 +140,7 @@ public struct AlertView: View {
                                                 .padding(.horizontal, 40)
                                                 .multilineTextAlignment(.center)
                                                 .font(Theme.Fonts.labelSmall)
-                                                .foregroundColor(CoreAssets.textSecondary.swiftUIColor)
+                                                .foregroundColor(Theme.Colors.textSecondary)
                                         }
                                     }.padding(.top, 70)
                                         .padding(.trailing, 20)
