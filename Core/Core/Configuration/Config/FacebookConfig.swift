@@ -30,9 +30,9 @@ public final class FacebookConfig: NSObject {
     }
 }
 
-private let facebookKey = "FACEBOOK"
+private let key = "FACEBOOK"
 extension Config {
     public var facebook: FacebookConfig {
-        FacebookConfig(dictionary: self[facebookKey] as? [String: AnyObject] ?? [:])
+        FacebookConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
     }
 }

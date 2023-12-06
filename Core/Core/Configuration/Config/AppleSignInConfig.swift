@@ -8,21 +8,21 @@
 import Foundation
 
 private enum AppleSignInKeys: String {
-    case enable = "ENABLED"
+    case enabled = "ENABLED"
 }
 
 public class AppleSignInConfig: NSObject {
-    public var enable: Bool
+    public var enabled: Bool
 
     init(dictionary: [String: Any]) {
-        enable = dictionary[AppleSignInKeys.enable.rawValue] as? Bool ?? false
+        enabled = dictionary[AppleSignInKeys.enabled.rawValue] as? Bool ?? false
         super.init()
     }
 }
 
-private let appleSignInKey = "APPLE_SIGNIN"
+private let key = "APPLE_SIGNIN"
 extension Config {
     public var appleSignIn: AppleSignInConfig {
-        AppleSignInConfig(dictionary: self[appleSignInKey] as? [String: AnyObject] ?? [:])
+        AppleSignInConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
     }
 }

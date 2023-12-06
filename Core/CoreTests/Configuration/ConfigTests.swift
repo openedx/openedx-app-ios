@@ -91,4 +91,32 @@ class ConfigTests: XCTestCase {
         XCTAssertEqual(config.firebase.isAnalyticsSourceFirebase, true)
         XCTAssertEqual(config.firebase.cloudMessagingEnabled, true)
     }
+
+    func testGoogleConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.google.enabled)
+        XCTAssertEqual(config.google.clientID, "clientId")
+    }
+
+    func testFacebookConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.facebook.enabled)
+        XCTAssertEqual(config.facebook.appID, "facebookAppId")
+        XCTAssertEqual(config.facebook.clientToken, "client_token")
+    }
+
+    func testMicrosoftConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.microsoft.enabled)
+        XCTAssertEqual(config.microsoft.appID, "appId")
+    }
+
+    func testAppleConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.appleSignIn.enabled)
+    }
 }

@@ -29,9 +29,9 @@ public final class GoogleConfig: NSObject {
     }
 }
 
-private let googleKey = "GOOGLE"
+private let key = "GOOGLE"
 extension Config {
     public var google: GoogleConfig {
-        GoogleConfig(dictionary: self[googleKey] as? [String: AnyObject] ?? [:])
+        GoogleConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
     }
 }

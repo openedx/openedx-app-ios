@@ -27,9 +27,9 @@ public final class MicrosoftConfig: NSObject {
     }
 }
 
-private let microsoftKey = "MICROSOFT"
+private let key = "MICROSOFT"
 extension Config {
     public var microsoft: MicrosoftConfig {
-        MicrosoftConfig(dictionary: self[microsoftKey] as? [String: AnyObject] ?? [:])
+        MicrosoftConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
     }
 }

@@ -80,7 +80,7 @@ final public class SocialAuthViewModel: ObservableObject {
             /// must also offer Sign in with Apple as an equivalent option
             return true
         }
-        return config.appleSignIn.enable
+        return config.appleSignIn.enabled
     }
 
     // MARK: - Public Intens

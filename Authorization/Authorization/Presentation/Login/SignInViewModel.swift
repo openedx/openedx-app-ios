@@ -55,7 +55,10 @@ public class SignInViewModel: ObservableObject {
     }
 
     var socialLoginEnabled: Bool {
-        config.socialLoginEnabled
+        config.appleSignIn.enabled ||
+        config.facebook.enabled ||
+        config.microsoft.enabled ||
+        config.google.enabled
     }
 
     @MainActor

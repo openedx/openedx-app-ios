@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ app: UIApplication,
         open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        if let config = Container.shared.resolve(ConfigProtocol.self), config.socialLoginEnabled {
+        if let config = Container.shared.resolve(ConfigProtocol.self) {
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
                     app,

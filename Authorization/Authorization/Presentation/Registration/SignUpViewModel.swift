@@ -54,7 +54,11 @@ public class SignUpViewModel: ObservableObject {
     }
 
     var socialLoginEnabled: Bool {
-        config.socialLoginEnabled && !isThirdPartyAuthSuccess && !isShowProgress
+        let socialLoginEnabled = config.appleSignIn.enabled ||
+        config.facebook.enabled ||
+        config.microsoft.enabled ||
+        config.google.enabled
+        return socialLoginEnabled && !isThirdPartyAuthSuccess && !isShowProgress
     }
 
     private func showErrors(errors: [String: String]) -> Bool {
