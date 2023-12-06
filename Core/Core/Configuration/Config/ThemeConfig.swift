@@ -16,7 +16,7 @@ public final class ThemeConfig: NSObject {
 
     init(dictionary: [String: AnyObject]) {
         super.init()
-        isRoundedCorners = dictionary[ThemeKeys.isRoundedCorners.rawValue] as? Bool == true
+        isRoundedCorners = dictionary[ThemeKeys.isRoundedCorners.rawValue] as? Bool != false
     }
 }
 

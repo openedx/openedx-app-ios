@@ -34,10 +34,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         initDI()
         
-        if let config = Container.shared.resolve(ConfigProtocol.self),
-           let configuration = config.firebase.firebaseOptions {
-            FirebaseApp.configure(options: configuration)
-            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        if let config = Container.shared.resolve(ConfigProtocol.self) {
+            Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
+            if let configuration = config.firebase.firebaseOptions {
+                FirebaseApp.configure(options: configuration)
+                Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+            }
         }
         
         Theme.Fonts.registerFonts()
