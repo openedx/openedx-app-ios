@@ -50,7 +50,8 @@ struct CourseNavigationView: View {
                             alertMessage: (CourseLocalization.Courseware.section
                                            + currentVertical.displayName + CourseLocalization.Courseware.isFinished),
                             nextSectionName: {
-                                if let data = viewModel.nextData, let vertical = viewModel.vertical(for: data) {                                    
+                                if let data = viewModel.nextData, 
+                                    let vertical = viewModel.vertical(for: data) {                                    
                                     return vertical.displayName
                                 }
                                 return nil
