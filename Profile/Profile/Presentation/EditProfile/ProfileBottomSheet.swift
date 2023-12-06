@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct ProfileBottomSheet: View {
     
@@ -188,7 +189,7 @@ extension ProfileBottomSheet {
         func textColor() -> Color {
             switch self {
             case .gallery:
-                return .white
+                return Theme.Colors.white
             case .remove:
                 return Theme.Colors.alert
             case .cancel:

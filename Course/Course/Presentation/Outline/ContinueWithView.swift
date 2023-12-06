@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct ContinueWith {
     let chapterIndex: Int

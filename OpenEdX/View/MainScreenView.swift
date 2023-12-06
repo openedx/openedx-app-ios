@@ -13,6 +13,7 @@ import Dashboard
 import Profile
 import WhatsNew
 import SwiftUIIntrospect
+import Theme
 
 struct MainScreenView: View {
     
@@ -41,7 +42,8 @@ struct MainScreenView: View {
     var body: some View {
         TabView(selection: $selection) {
             ZStack {
-                DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!)
+                DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
+                              router: Container.shared.resolve(DiscoveryRouter.self)!)
                 if updateAvaliable {
                     UpdateNotificationView(config: viewModel.config)
                 }
@@ -136,6 +138,7 @@ struct MainScreenView: View {
                 await viewModel.prefetchDataForOffline()
             }
         }
+        .accentColor(Theme.Colors.accentColor)
     }
     
     private func titleBar() -> String {

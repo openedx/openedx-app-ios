@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Discussion
 import Swinject
+import Theme
 
 public struct CourseContainerView: View {
     
@@ -107,6 +108,7 @@ public struct CourseContainerView: View {
                             await viewModel.tryToRefreshCookies()
                         }
                     }
+                    .accentColor(Theme.Colors.accentColor)
                 }
             }
         }

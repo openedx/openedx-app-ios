@@ -13,8 +13,6 @@
 #endif
 
 // Deprecated typealiases
-@available(*, deprecated, renamed: "ColorAsset.Color", message: "This typealias will be removed in SwiftGen 7.0")
-public typealias AssetColorTypeAlias = ColorAsset.Color
 @available(*, deprecated, renamed: "ImageAsset.Image", message: "This typealias will be removed in SwiftGen 7.0")
 public typealias AssetImageTypeAlias = ImageAsset.Image
 
@@ -24,32 +22,6 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum CoreAssets {
-  public static let authBackground = ImageAsset(name: "authBackground")
-  public static let checkEmail = ImageAsset(name: "checkEmail")
-  public static let accentButtonColor = ColorAsset(name: "AccentButtonColor")
-  public static let accentColor = ColorAsset(name: "AccentColor")
-  public static let alert = ColorAsset(name: "Alert")
-  public static let avatarStroke = ColorAsset(name: "AvatarStroke")
-  public static let background = ColorAsset(name: "Background")
-  public static let backgroundStroke = ColorAsset(name: "BackgroundStroke")
-  public static let cardViewBackground = ColorAsset(name: "CardViewBackground")
-  public static let cardViewStroke = ColorAsset(name: "CardViewStroke")
-  public static let certificateForeground = ColorAsset(name: "CertificateForeground")
-  public static let commentCellBackground = ColorAsset(name: "CommentCellBackground")
-  public static let loginBackground = ColorAsset(name: "LoginBackground")
-  public static let shadowColor = ColorAsset(name: "ShadowColor")
-  public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
-  public static let snackbarErrorTextColor = ColorAsset(name: "SnackbarErrorTextColor")
-  public static let snackbarInfoAlert = ColorAsset(name: "SnackbarInfoAlert")
-  public static let styledButtonBackground = ColorAsset(name: "StyledButtonBackground")
-  public static let styledButtonText = ColorAsset(name: "StyledButtonText")
-  public static let textPrimary = ColorAsset(name: "TextPrimary")
-  public static let textSecondary = ColorAsset(name: "TextSecondary")
-  public static let textInputBackground = ColorAsset(name: "TextInputBackground")
-  public static let textInputStroke = ColorAsset(name: "TextInputStroke")
-  public static let textInputUnfocusedBackground = ColorAsset(name: "TextInputUnfocusedBackground")
-  public static let textInputUnfocusedStroke = ColorAsset(name: "TextInputUnfocusedStroke")
-  public static let warning = ColorAsset(name: "warning")
   public static let bookCircle = ImageAsset(name: "book.circle")
   public static let bubbleLeftCircle = ImageAsset(name: "bubble.left.circle")
   public static let docCircle = ImageAsset(name: "doc.circle")
@@ -99,11 +71,11 @@ public enum CoreAssets {
   public static let rotateDevice = ImageAsset(name: "rotateDevice")
   public static let sub = ImageAsset(name: "sub")
   public static let alarm = ImageAsset(name: "alarm")
-  public static let appLogo = ImageAsset(name: "appLogo")
   public static let arrowLeft = ImageAsset(name: "arrowLeft")
   public static let arrowRight16 = ImageAsset(name: "arrowRight16")
   public static let certificate = ImageAsset(name: "certificate")
   public static let check = ImageAsset(name: "check")
+  public static let checkEmail = ImageAsset(name: "checkEmail")
   public static let clearInput = ImageAsset(name: "clearInput")
   public static let edit = ImageAsset(name: "edit")
   public static let favorite = ImageAsset(name: "favorite")
@@ -126,70 +98,6 @@ public enum CoreAssets {
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
 // MARK: - Implementation Details
-
-public final class ColorAsset {
-  public fileprivate(set) var name: String
-
-  #if os(macOS)
-  public typealias Color = NSColor
-  #elseif os(iOS) || os(tvOS) || os(watchOS)
-  public typealias Color = UIColor
-  #endif
-
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  public private(set) lazy var color: Color = {
-    guard let color = Color(asset: self) else {
-      fatalError("Unable to load color asset named \(name).")
-    }
-    return color
-  }()
-
-  #if os(iOS) || os(tvOS)
-  @available(iOS 11.0, tvOS 11.0, *)
-  public func color(compatibleWith traitCollection: UITraitCollection) -> Color {
-    let bundle = BundleToken.bundle
-    guard let color = Color(named: name, in: bundle, compatibleWith: traitCollection) else {
-      fatalError("Unable to load color asset named \(name).")
-    }
-    return color
-  }
-  #endif
-
-  #if canImport(SwiftUI)
-  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-  public private(set) lazy var swiftUIColor: SwiftUI.Color = {
-    SwiftUI.Color(asset: self)
-  }()
-  #endif
-
-  fileprivate init(name: String) {
-    self.name = name
-  }
-}
-
-public extension ColorAsset.Color {
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  convenience init?(asset: ColorAsset) {
-    let bundle = BundleToken.bundle
-    #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
-    #elseif os(macOS)
-    self.init(named: NSColor.Name(asset.name), bundle: bundle)
-    #elseif os(watchOS)
-    self.init(named: asset.name)
-    #endif
-  }
-}
-
-#if canImport(SwiftUI)
-@available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-public extension SwiftUI.Color {
-  init(asset: ColorAsset) {
-    let bundle = BundleToken.bundle
-    self.init(asset.name, bundle: bundle)
-  }
-}
-#endif
 
 public struct ImageAsset {
   public fileprivate(set) var name: String

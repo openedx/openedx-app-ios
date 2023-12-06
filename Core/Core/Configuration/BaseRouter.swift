@@ -22,12 +22,16 @@ public protocol BaseRouter {
     func removeLastView(controllers: Int)
 
     func showMainOrWhatsNewScreen()
-
+    
+    func showStartupScreen()
+    
     func showLoginScreen()
-
+    
     func showRegisterScreen()
     
     func showForgotPasswordScreen()
+    
+    func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool)
         
     func presentAlert(
         alertTitle: String,
@@ -74,12 +78,16 @@ open class BaseRouterMock: BaseRouter {
     public func dismiss(animated: Bool) {}
 
     public func showMainOrWhatsNewScreen() {}
+    
+    public func showStartupScreen() {}
 
     public func showLoginScreen() {}
-
+    
     public func showRegisterScreen() {}
     
     public func showForgotPasswordScreen() {}
+    
+    public func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool) {}
     
     public func backToRoot(animated: Bool) {}
         
