@@ -87,39 +87,13 @@ public class SignInViewModel: ObservableObject {
     func login(with result: Result<SocialAuthDetails, Error>) async {
         switch result {
         case .success(let result):
-            await socialAuth(result: result)
+            await socialLogin(
+                externalToken: result.response.token,
+                backend: result.backend,
+                loginMethod: result.loginMethod
+            )
         case .failure(let error):
             errorMessage = error.localizedDescription
-        }
-    }
-
-    @MainActor
-    private func socialAuth(result: SocialAuthDetails) async {
-        switch result {
-        case .apple(let response):
-            await socialLogin(
-                externalToken: response.token,
-                backend: result.backend,
-                loginMethod: .socailAuth(.apple)
-            )
-        case .facebook(let response):
-            await socialLogin(
-                externalToken: response.token,
-                backend: result.backend,
-                loginMethod: .socailAuth(.facebook)
-            )
-        case .google(let response):
-            await socialLogin(
-                externalToken: response.token,
-                backend: result.backend, 
-                loginMethod: .socailAuth(.google)
-            )
-        case .microsoft(let response):
-            await socialLogin(
-                externalToken: response.token,
-                backend: result.backend,
-                loginMethod: .socailAuth(.microsoft)
-            )
         }
     }
 
@@ -138,7 +112,6 @@ public class SignInViewModel: ObservableObject {
         } catch let error {
             failure(error, loginMethod: loginMethod)
         }
-
     }
 
     @MainActor

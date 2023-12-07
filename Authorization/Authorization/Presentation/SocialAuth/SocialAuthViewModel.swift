@@ -22,13 +22,36 @@ enum SocialAuthDetails {
     var backend: String {
         switch self {
         case .apple:
-            return "apple-id"
+           "apple-id"
         case .facebook:
-            return "facebook"
+            "facebook"
         case .google:
-            return "google-oauth2"
+            "google-oauth2"
         case .microsoft:
-            return "azuread-oauth2"
+            "azuread-oauth2"
+        }
+    }
+
+    var loginMethod: LoginMethod {
+        switch self {
+        case .apple:
+            LoginMethod.socailAuth(.apple)
+        case .facebook:
+            LoginMethod.socailAuth(.facebook)
+        case .google:
+            LoginMethod.socailAuth(.google)
+        case .microsoft:
+            LoginMethod.socailAuth(.microsoft)
+        }
+    }
+
+    var response: SocialAuthResponse {
+        switch self {
+        case .apple(let response),
+             .facebook(let response),
+             .google(let response),
+             .microsoft(let response):
+            return response
         }
     }
 }
