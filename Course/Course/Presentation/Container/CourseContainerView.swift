@@ -97,7 +97,9 @@ public struct CourseContainerView: View {
                 )
             } else {
                 VStack {
-                    topTabBar
+                    if viewModel.config.features.courseTopTabBarEnabled {
+                        topTabBar
+                    }
                     tabs
                 }
             }
@@ -128,6 +130,10 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         isVideo: false
                     )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
                     .tag(tab)
                 case .videos:
                     CourseOutlineView(
@@ -136,6 +142,10 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         isVideo: true
                     )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
                     .tag(tab)
                 case .dates:
                     CourseDatesView(
@@ -143,6 +153,10 @@ public struct CourseContainerView: View {
                         viewModel: Container.shared.resolve(CourseDatesViewModel.self,
                                                             argument: courseID)!
                     )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
                     .tag(tab)
                 case .discussion:
                     DiscussionTopicsView(
@@ -151,18 +165,29 @@ public struct CourseContainerView: View {
                                                             argument: title)!,
                         router: Container.shared.resolve(DiscussionRouter.self)!
                     )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
                     .tag(tab)
                 case .handounds:
                     HandoutsView(
                         courseID: courseID,
                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!
                     )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
                     .tag(tab)
                 }
             }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .animation(.default, value: selection)
+        .if(viewModel.config.features.courseTopTabBarEnabled) { view in
+            view
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .animation(.default, value: selection)
+        }
         .onFirstAppear {
             Task {
                 await viewModel.tryToRefreshCookies()
