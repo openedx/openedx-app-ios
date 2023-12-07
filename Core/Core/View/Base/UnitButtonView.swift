@@ -34,7 +34,7 @@ public enum UnitButtonType: Equatable {
         case .reload:
             return CoreLocalization.Error.reload
         case .continueLesson:
-            return CoreLocalization.Courseware.continue
+            return CoreLocalization.Courseware.resume
         case .nextSection:
             return CoreLocalization.Courseware.nextSection
         case let .custom(text):

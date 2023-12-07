@@ -41,57 +41,10 @@ public struct CourseOutlineView: View {
                         await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
                     }) {
                         VStack(alignment: .leading) {
-//                            ZStack {
-//                                // MARK: - Course Banner
-//                                if let banner = viewModel.courseStructure?.media.image.raw
-//                                    .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-//                                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
-//                                        .onFailureImage(CoreAssets.noCourseImage.image)
-//                                        .resizable()
-//                                        .aspectRatio(contentMode: .fill)
-//                                        .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
-//                                }
-//                                
-//                                // MARK: - Course Certificate
-//                                if let certificate = viewModel.courseStructure?.certificate {
-//                                    if let url = certificate.url, url.count > 0 {
-//                                        Theme.Colors.certificateForeground
-//                                        VStack(alignment: .center, spacing: 8) {
-//                                            CoreAssets.certificate.swiftUIImage
-//                                            Text(CourseLocalization.Outline.congratulations)
-//                                                .multilineTextAlignment(.center)
-//                                                .font(Theme.Fonts.headlineMedium)
-//                                            Text(CourseLocalization.Outline.passedTheCourse)
-//                                                .font(Theme.Fonts.bodyMedium)
-//                                                .multilineTextAlignment(.center)
-//                                            StyledButton(
-//                                                CourseLocalization.Outline.viewCertificate,
-//                                                action: { openCertificateView = true },
-//                                                isTransparent: true
-//                                            )
-//                                            .frame(width: 141)
-//                                            .padding(.top, 8)
-//                                            
-//                                            .fullScreenCover(
-//                                                isPresented: $openCertificateView,
-//                                                content: {
-//                                                    WebBrowser(
-//                                                        url: url,
-//                                                        pageTitle: CourseLocalization.Outline.certificate
-//                                                    )
-//                                                })
-//                                        }.padding(.horizontal, 24)
-//                                            .padding(.top, 8)
-//                                            .foregroundColor(.white)
-//                                    }
-//                                }
-//                            }
-//                            .frame(maxHeight: 250)
-//                            .cornerRadius(12)
-//                            .padding(.horizontal, 6)
-//                            .padding(.top, 7)
-//                            .fixedSize(horizontal: false, vertical: true)
-                            
+                            if viewModel.config.features.courseBannerEnabled {
+                                courseBanner(proxy: proxy)
+                            }
+
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
                                !isVideo {
@@ -123,11 +76,20 @@ public struct CourseOutlineView: View {
                                 : viewModel.courseStructure {
                                 
                                 // MARK: - Sections
-                                CourseExpandableContentView(
-                                    proxy: proxy,
-                                    course: course,
-                                    viewModel: viewModel
-                                )
+                                if viewModel.config.features.courseExpandableSectionsEnabled {
+                                    CourseExpandableContentView(
+                                        proxy: proxy,
+                                        course: course,
+                                        viewModel: viewModel
+                                    )
+                                } else {
+                                    CourseStructureView(
+                                        proxy: proxy,
+                                        course: course,
+                                        viewModel: viewModel
+                                    )
+                                }
+
                             } else {
                                 if let courseStart = viewModel.courseStart {
                                     Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
@@ -181,6 +143,59 @@ public struct CourseOutlineView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+    }
+
+    private func courseBanner(proxy: GeometryProxy) -> some View {
+        ZStack {
+            // MARK: - Course Banner
+            if let banner = viewModel.courseStructure?.media.image.raw
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+            }
+
+            // MARK: - Course Certificate
+            if let certificate = viewModel.courseStructure?.certificate {
+                if let url = certificate.url, url.count > 0 {
+                    Theme.Colors.certificateForeground
+                    VStack(alignment: .center, spacing: 8) {
+                        CoreAssets.certificate.swiftUIImage
+                        Text(CourseLocalization.Outline.congratulations)
+                            .multilineTextAlignment(.center)
+                            .font(Theme.Fonts.headlineMedium)
+                        Text(CourseLocalization.Outline.passedTheCourse)
+                            .font(Theme.Fonts.bodyMedium)
+                            .multilineTextAlignment(.center)
+                        StyledButton(
+                            CourseLocalization.Outline.viewCertificate,
+                            action: { openCertificateView = true },
+                            isTransparent: true
+                        )
+                        .frame(width: 141)
+                        .padding(.top, 8)
+
+                        .fullScreenCover(
+                            isPresented: $openCertificateView,
+                            content: {
+                                WebBrowser(
+                                    url: url,
+                                    pageTitle: CourseLocalization.Outline.certificate
+                                )
+                            })
+                    }.padding(.horizontal, 24)
+                        .padding(.top, 8)
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .frame(maxHeight: 250)
+        .cornerRadius(12)
+        .padding(.horizontal, 6)
+        .padding(.top, 7)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 

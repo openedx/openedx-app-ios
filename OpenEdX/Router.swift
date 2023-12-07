@@ -323,8 +323,14 @@ public class Router: AuthorizationRouter,
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
         let controllerUnit = UIHostingController(rootView: view)
         var controllers = navigationController.viewControllers
-        controllers.removeLast(2)
-        controllers.append(contentsOf: [controllerVertical, controllerUnit])
+        if let config = container.resolve(ConfigProtocol.self),
+            config.features.courseExpandableSectionsEnabled {
+            controllers.removeLast(1)
+            controllers.append(contentsOf: [controllerUnit])
+        } else {
+            controllers.removeLast(2)
+            controllers.append(contentsOf: [controllerVertical, controllerUnit])
+        }
         navigationController.setViewControllers(controllers, animated: true)
     }
     
