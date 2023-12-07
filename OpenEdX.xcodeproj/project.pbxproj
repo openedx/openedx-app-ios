@@ -45,6 +45,8 @@
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		07D5DA4128D075AB00752FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3F28D075AB00752FD9 /* LaunchScreen.storyboard */; };
 		95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */; };
+		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
+		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */,
 				072787B228D34D83002E9142 /* Discovery.framework in Embed Frameworks */,
 				0218196528F734FA00202564 /* Discussion.framework in Embed Frameworks */,
 				07A7D79028F5C9060000BE81 /* Core.framework in Embed Frameworks */,
@@ -113,6 +116,7 @@
 		A24D6A8E1BC4DF46AD68904C /* Pods-App-OpenEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
+		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_OpenEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -121,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */,
 				07A7D78F28F5C9060000BE81 /* Core.framework in Frameworks */,
 				028A37362ADFF404008CA604 /* WhatsNew.framework in Frameworks */,
 				025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */,
@@ -211,6 +216,7 @@
 		4E6FB43543890E90BB88D64D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E0D6E6A22B1626B10089F9C9 /* Theme.framework */,
 				028A37352ADFF404008CA604 /* WhatsNew.framework */,
 				0218196328F734FA00202564 /* Discussion.framework */,
 				07A7D78E28F5C9060000BE81 /* Core.framework */,

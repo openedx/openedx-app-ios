@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Kingfisher
+import Theme
 
 struct CourseExpandableContentView: View {
 

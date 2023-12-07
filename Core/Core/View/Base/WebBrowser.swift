@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WebKit
+import Theme
 
 public struct WebBrowser: View {
     
@@ -22,7 +23,7 @@ public struct WebBrowser: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            CoreAssets.background.swiftUIColor.ignoresSafeArea()
+            Theme.Colors.background.ignoresSafeArea()
             // MARK: - Page name
             VStack(alignment: .center) {
                 NavigationBar(title: pageTitle,

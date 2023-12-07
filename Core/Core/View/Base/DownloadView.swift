@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public enum DownloadViewState {
     case available

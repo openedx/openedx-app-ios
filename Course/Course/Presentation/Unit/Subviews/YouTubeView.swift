@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Combine
 import Swinject
+import Theme
 
 struct YouTubeView: View {
     
