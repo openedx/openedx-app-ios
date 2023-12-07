@@ -152,7 +152,7 @@ public class SignUpViewModel: ObservableObject {
             await loginOrRegister(
                 result.response,
                 backend: result.backend,
-                loginMethod: result.loginMethod
+                authMethod: result.authMethod
             )
         case .failure(let error):
             errorMessage = error.localizedDescription
@@ -163,13 +163,13 @@ public class SignUpViewModel: ObservableObject {
     private func loginOrRegister(
         _ response: SocialAuthResponse,
         backend: String,
-        loginMethod: AuthMethod
+        authMethod: AuthMethod
     ) async {
         do {
             isShowProgress = true
             let user = try await interactor.login(externalToken: response.token, backend: backend)
             analytics.setUserID("\(user.id)")
-            analytics.userLogin(method: loginMethod)
+            analytics.userLogin(method: authMethod)
             isShowProgress = false
             router.showMainOrWhatsNewScreen()
         } catch {

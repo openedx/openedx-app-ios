@@ -90,7 +90,7 @@ public class SignInViewModel: ObservableObject {
             await socialLogin(
                 externalToken: result.response.token,
                 backend: result.backend,
-                loginMethod: result.loginMethod
+                authMethod: result.authMethod
             )
         case .failure(let error):
             errorMessage = error.localizedDescription
@@ -101,27 +101,27 @@ public class SignInViewModel: ObservableObject {
     private func socialLogin(
         externalToken: String,
         backend: String,
-        loginMethod: AuthMethod
+        authMethod: AuthMethod
     ) async {
         isShowProgress = true
         do {
             let user = try await interactor.login(externalToken: externalToken, backend: backend)
             analytics.setUserID("\(user.id)")
-            analytics.userLogin(method: loginMethod)
+            analytics.userLogin(method: authMethod)
             router.showMainOrWhatsNewScreen()
         } catch let error {
-            failure(error, loginMethod: loginMethod)
+            failure(error, authMethod: authMethod)
         }
     }
 
     @MainActor
-    private func failure(_ error: Error, loginMethod: AuthMethod? = nil) {
+    private func failure(_ error: Error, authMethod: AuthMethod? = nil) {
         isShowProgress = false
         if let validationError = error.validationError,
            let value = validationError.data?["error_description"] as? String {
-            if loginMethod != .password, validationError.statusCode == 400, let loginMethod = loginMethod {
+            if authMethod != .password, validationError.statusCode == 400, let authMethod = authMethod {
                 errorMessage = AuthLocalization.Error.accountNotRegistered(
-                    loginMethod.analyticsValue,
+                    authMethod.analyticsValue,
                     config.platformName
                 )
             } else if validationError.statusCode == 403 {

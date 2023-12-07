@@ -31,8 +31,8 @@ enum SocialAuthDetails {
             "azuread-oauth2"
         }
     }
-
-    var loginMethod: AuthMethod {
+    
+    var authMethod: AuthMethod {
         switch self {
         case .apple:
             .socailAuth(.apple)
