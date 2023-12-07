@@ -9,33 +9,33 @@ import json
 import coloredlogs
 
 class WhitelabelApp:
-    def __init__(self, **kwargs):
-        EXAMPLE_CONFIG_FILE = """
+    EXAMPLE_CONFIG_FILE = """
         ---
         # Notes:
         # Config file can contain next optins:
-
+        import_dir: 'path/to/asset/Images' # folder where importing images are placed
         assets:
-            images:
-                image1: # Asset name
-                    imageName: 'some_image.svg' # image file name in Assets.xcassets/image1.imageset
-                    imageNameImport: 'new_image.pdf' # optional: image to replace imageName, placed in Config. Don't need if file name is the same
-                image2: # Asset name
-                    currentPath: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
-                    imageName: 'Rectangle.png' # image file name in Assets.xcassets/SomeFolder/image2.imageset
-                    darkImageName: 'RectangleDark.png' # image file name for dark appearance in Assets.xcassets/SomeFolder/image2.imageset
-                    darkImageNameImport: 'NewDarkRectangle.png' # optional: image to replace darkImageName, placed in Config. Don't need if file name is the same
-            colors:
-                LoginBackground: # color asset name in Assets
-                    light: '#FFFFFF'
-                    dark: '#ED5C13'
+            AssetName:
+                imagesPath: 'Theme/Theme/Assets.xcassets' # path where images in this Asset are placed
+                colorsPath: 'Theme/Theme/Assets.xcassets/Colors' # path where colors in this Asset are placed
+                images:
+                    image1: # Asset name
+                        imageName: 'some_image.svg' # image file name in Assets.xcassets/image1.imageset
+                        imageNameImport: 'new_image.pdf' # optional: image to replace imageName, placed in Config. Don't need if file name is the same
+                    image2: # Asset name
+                        currentPath: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
+                        imageName: 'Rectangle.png' # image file name in Assets.xcassets/SomeFolder/image2.imageset
+                        darkImageName: 'RectangleDark.png' # image file name for dark appearance in Assets.xcassets/SomeFolder/image2.imageset
+                        darkImageNameImport: 'NewDarkRectangle.png' # optional: image to replace darkImageName, placed in Config. Don't need if file name is the same
+                colors:
+                    LoginBackground: # color asset name in Assets
+                        currrentPath: '' # optional: path to color inside colorsPath
+                        light: '#FFFFFF'
+                        dark: '#ED5C13'
         """
-            
-        # self.project_assets = kwargs.get('project_assets')
-        # if not self.project_assets:
-        #     self.project_assets = '.'
 
-        self.assets_dir = kwargs.get('assets_dir')
+    def __init__(self, **kwargs):            
+        self.assets_dir = kwargs.get('import_dir')
         if not self.assets_dir:
             self.assets_dir = '.'
 
@@ -43,7 +43,6 @@ class WhitelabelApp:
     
     def whitelabel(self):
         # Update the properties, resources, and configuration of the current app.
-        # self.update_plist()
         self.copy_assets()
 
     def copy_assets(self):
@@ -184,6 +183,8 @@ def main():
         parser.print_help()
         sys.exit(1)
 
+    if args.verbose is None:
+        args.verbose = 0
     log_level = logging.WARN
     if args.verbose > 0:
         log_level = logging.INFO
@@ -192,7 +193,6 @@ def main():
     logging.basicConfig(level=log_level)
     logger = logging.getLogger(name='whitelabel_config')
     coloredlogs.install(level=log_level, logger=logger)
-    # logger.propagate = False
 
     with open(args.config_file) as f:
         config = yaml.safe_load(f) or {}
