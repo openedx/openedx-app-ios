@@ -10,7 +10,7 @@ import Alamofire
 
 enum AuthEndpoint: EndPointType {
     case getAccessToken(username: String, password: String, clientId: String, tokenType: String)
-    case echangeAccessToken(externalToken: String, backend: String, clientId: String, tokenType: String)
+    case exchangeAccessToken(externalToken: String, backend: String, clientId: String, tokenType: String)
     case getUserInfo
     case getAuthCookies
     case getRegisterFields
@@ -22,7 +22,7 @@ enum AuthEndpoint: EndPointType {
         switch self {
         case .getAccessToken:
             return "/oauth2/access_token"
-        case let .echangeAccessToken(_, backend, _, _):
+        case let .exchangeAccessToken(_, backend, _, _):
             return "/oauth2/exchange_access_token/\(backend)/"
         case .getUserInfo:
             return "/api/mobile/v0.5/my_user_info"
@@ -41,7 +41,7 @@ enum AuthEndpoint: EndPointType {
 
     var httpMethod: HTTPMethod {
         switch self {
-        case .getAccessToken, .echangeAccessToken:
+        case .getAccessToken, .exchangeAccessToken:
             return .post
         case .getUserInfo:
             return .get
@@ -74,7 +74,7 @@ enum AuthEndpoint: EndPointType {
                 "asymmetric_jwt": true
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
-        case let .echangeAccessToken(externalToken, _, clientId, tokenType):
+        case let .exchangeAccessToken(externalToken, _, clientId, tokenType):
             let params: [String: Encodable] = [
                 "client_id": clientId,
                 "token_type": tokenType,

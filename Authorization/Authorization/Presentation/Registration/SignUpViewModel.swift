@@ -18,7 +18,7 @@ public class SignUpViewModel: ObservableObject {
     @Published var isShowProgress = false
     @Published var scrollTo: Int?
     @Published var showError: Bool = false
-    @Published var isThirdPartyAuthSuccess: Bool = false
+    @Published var thirdPartyAuthSuccess: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -53,16 +53,16 @@ public class SignUpViewModel: ObservableObject {
         self.validator = validator
     }
 
-    var socialLoginEnabled: Bool {
+    var socialAuthEnabled: Bool {
         let socialLoginEnabled = config.appleSignIn.enabled ||
         config.facebook.enabled ||
         config.microsoft.enabled ||
         config.google.enabled
-        return socialLoginEnabled && !isThirdPartyAuthSuccess && !isShowProgress
+        return socialLoginEnabled && !thirdPartyAuthSuccess && !isShowProgress
     }
 
     private func showErrors(errors: [String: String]) -> Bool {
-        if isThirdPartyAuthSuccess, !errors.map({ $0.value }).filter({ !$0.isEmpty }).isEmpty {
+        if thirdPartyAuthSuccess, !errors.map({ $0.value }).filter({ !$0.isEmpty }).isEmpty {
             scrollTo = 1
             return true
         }
@@ -146,129 +146,64 @@ public class SignUpViewModel: ObservableObject {
     }
 
     @MainActor
-    func register(with result: Result<SocialAuthDetails, Error>) {
-        result.success(socialAuth)
-        result.failure { error in
+    func register(with result: Result<SocialAuthDetails, Error>) async {
+        switch result {
+        case .success(let result):
+            await socialAuth(result: result)
+        case .failure(let error):
             errorMessage = error.localizedDescription
         }
     }
 
     @MainActor
-    private func socialAuth(result: SocialAuthDetails) {
+    private func socialAuth(result: SocialAuthDetails) async {
         switch result {
         case .apple(let response):
-            appleRegister(response, backend: result.backend, loginMethod: .socailAuth(.apple))
-        case .facebook(let response):
-            facebookRegister(response, backend: result.backend, loginMethod: .socailAuth(.facebook))
-        case .google(let response):
-            googleRegister(response, backend: result.backend, loginMethod: .socailAuth(.google))
-        case .microsoft(let response):
-            microsoftRegister(response, backend: result.backend, loginMethod: .socailAuth(.microsoft))
-        }
-    }
-
-    @MainActor
-    private func appleRegister(
-        _ response: SocialAuthResponse,
-        backend: String,
-        loginMethod: LoginMethod
-    ) {
-        update(
-            fullName: response.name,
-            email: response.email
-        )
-        registerSocial(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: loginMethod
-        )
-    }
-
-    @MainActor
-    private func facebookRegister(
-        _ response: SocialAuthResponse,
-        backend: String,
-        loginMethod: LoginMethod
-    ) {
-        update(
-            fullName: response.name,
-            email: response.email
-        )
-        registerSocial(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: loginMethod
-        )
-
-    }
-
-    @MainActor
-    private func googleRegister(
-        _ response: SocialAuthResponse,
-        backend: String,
-        loginMethod: LoginMethod
-    ) {
-        update(
-            fullName: response.name,
-            email: response.email
-        )
-        registerSocial(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: loginMethod
-        )
-    }
-
-    @MainActor
-    private func microsoftRegister(
-        _ response: SocialAuthResponse,
-        backend: String,
-        loginMethod: LoginMethod
-    ) {
-        update(
-            fullName: response.name,
-            email: response.email
-        )
-        registerSocial(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: loginMethod
-        )
-    }
-
-    @MainActor
-    private func registerSocial(
-        externalToken: String,
-        backend: String,
-        loginMethod: LoginMethod
-    ) {
-        Task {
             await loginOrRegister(
-                externalToken: externalToken,
-                backend: backend,
-                loginMethod: loginMethod
+                response,
+                backend: result.backend,
+                loginMethod: .socailAuth(.apple)
+            )
+        case .facebook(let response):
+            await loginOrRegister(
+                response,
+                backend: result.backend,
+                loginMethod: .socailAuth(.facebook)
+            )
+        case .google(let response):
+            await loginOrRegister(
+                response,
+                backend: result.backend,
+                loginMethod: .socailAuth(.google)
+            )
+        case .microsoft(let response):
+            await loginOrRegister(
+                response,
+                backend: result.backend,
+                loginMethod: .socailAuth(.microsoft)
             )
         }
     }
 
     @MainActor
     private func loginOrRegister(
-        externalToken: String,
+        _ response: SocialAuthResponse,
         backend: String,
         loginMethod: LoginMethod
     ) async {
         do {
             isShowProgress = true
             let validateFields = configureFields().filter { !$0.value.isEmpty }
-            let user = try await interactor.login(externalToken: externalToken, backend: backend)
+            let user = try await interactor.login(externalToken: response.token, backend: backend)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: loginMethod)
             isShowProgress = false
             router.showMainOrWhatsNewScreen()
         } catch {
-            self.externalToken = externalToken
+            update(fullName: response.name, email: response.email)
+            self.externalToken = response.token
             self.backend = backend
-            isThirdPartyAuthSuccess = true
+            thirdPartyAuthSuccess = true
             isShowProgress = false
             await registerUser()
         }

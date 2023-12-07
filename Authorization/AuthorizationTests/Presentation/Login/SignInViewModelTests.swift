@@ -90,7 +90,71 @@ final class SignInViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
     }
-    
+
+    func testSocialLoginSuccess() async throws {
+        let interactor = AuthInteractorProtocolMock()
+        let router = AuthorizationRouterMock()
+        let validator = Validator()
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            config: ConfigMock(),
+            analytics: analytics,
+            validator: validator
+        )
+
+        let result: Result<SocialAuthDetails, Error> = .success(.apple(
+            .init(name: "name", email: "email", token: "239i2oi3jrf2jflkj23lf2f"))
+        )
+        let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
+
+        Given(interactor, .login(externalToken: .any, backend: .any, willReturn: user))
+
+        await viewModel.login(with: result)
+
+        Verify(interactor, 1, .login(externalToken: .any, backend: .any))
+        Verify(analytics, .userLogin(method: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen())
+
+        XCTAssertEqual(viewModel.errorMessage, nil)
+        XCTAssertEqual(viewModel.isShowProgress, true)
+    }
+
+    func testSocialLoginErrorValidation() async throws {
+        let interactor = AuthInteractorProtocolMock()
+        let router = AuthorizationRouterMock()
+        let validator = Validator()
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            config: ConfigMock(),
+            analytics: analytics,
+            validator: validator
+        )
+
+        let result: Result<SocialAuthDetails, Error> = .success(
+            .apple(.init(name: "name", email: "email", token: "239i2oi3jrf2jflkj23lf2f"))
+        )
+        let validationErrorMessage = AuthLocalization.Error.accountNotRegistered(
+            LoginMethod.socailAuth(.apple).analyticsValue,
+            viewModel.config.platformName
+        )
+        let validationError = CustomValidationError(statusCode: 400, data: ["error_description": validationErrorMessage])
+        let error = AFError.responseValidationFailed(reason: AFError.ResponseValidationFailureReason.customValidationFailed(error: validationError))
+
+        Given(interactor, .login(externalToken: .any, backend: .any, willThrow: error))
+
+        await viewModel.login(with: result)
+
+        Verify(interactor, 1, .login(externalToken: .any, backend: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen())
+
+        XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
+        XCTAssertEqual(viewModel.isShowProgress, false)
+    }
+
     func testLoginErrorValidation() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -118,7 +182,7 @@ final class SignInViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
-    
+
     func testLoginErrorInvalidGrant() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()

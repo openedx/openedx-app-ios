@@ -145,6 +145,7 @@ public class ConfigMock: Config {
         "API_HOST_URL": "https://www.example.com",
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
+        "PLATFORM_NAME": "OpenEdx",
         "TOKEN_TYPE": "JWT",
         "WHATS_NEW_ENABLED": false,
         "AGREEMENT_URLS": [

@@ -68,7 +68,7 @@ public struct SignUpView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
 
-                                if viewModel.isThirdPartyAuthSuccess {
+                                if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)
                                         .foregroundColor(Theme.Colors.textPrimary)
@@ -108,7 +108,7 @@ public struct SignUpView: View {
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
-                                        viewModel.isThirdPartyAuthSuccess = false
+                                        viewModel.thirdPartyAuthSuccess = false
                                         Task {
                                             await viewModel.registerUser()
                                         }
@@ -117,13 +117,15 @@ public struct SignUpView: View {
                                     .padding(.top, 40)
                                     .frame(maxWidth: .infinity)
                                 }
-                                if viewModel.socialLoginEnabled,
+                                if viewModel.socialAuthEnabled,
                                     !requiredFields.isEmpty {
                                     SocialAuthView(
                                         authType: .register,
                                         viewModel: .init(
                                             config: viewModel.config
-                                        ) { viewModel.register(with: $0) }
+                                        ) { result in
+                                            Task { await viewModel.register(with: result) }
+                                        }
                                     )
                                     .padding(.bottom, 30)
                                 }

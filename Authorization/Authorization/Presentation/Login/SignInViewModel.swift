@@ -54,7 +54,7 @@ public class SignInViewModel: ObservableObject {
         self.validator = validator
     }
 
-    var socialLoginEnabled: Bool {
+    var socialAuthEnabled: Bool {
         config.appleSignIn.enabled ||
         config.facebook.enabled ||
         config.microsoft.enabled ||
@@ -84,79 +84,61 @@ public class SignInViewModel: ObservableObject {
     }
 
     @MainActor
-    func login(with result: Result<SocialAuthDetails, Error>) {
-        result.success { socialAuth(result: $0) }
-        result.failure { error in
+    func login(with result: Result<SocialAuthDetails, Error>) async {
+        switch result {
+        case .success(let result):
+            await socialAuth(result: result)
+        case .failure(let error):
             errorMessage = error.localizedDescription
         }
     }
 
     @MainActor
-    private func socialAuth(result: SocialAuthDetails) {
+    private func socialAuth(result: SocialAuthDetails) async {
         switch result {
         case .apple(let response):
-            appleLogin(response, backend: result.backend)
+            await socialLogin(
+                externalToken: response.token,
+                backend: result.backend,
+                loginMethod: .socailAuth(.apple)
+            )
         case .facebook(let response):
-            facebookLogin(response, backend: result.backend)
+            await socialLogin(
+                externalToken: response.token,
+                backend: result.backend,
+                loginMethod: .socailAuth(.facebook)
+            )
         case .google(let response):
-            googleLogin(response, backend: result.backend)
+            await socialLogin(
+                externalToken: response.token,
+                backend: result.backend, 
+                loginMethod: .socailAuth(.google)
+            )
         case .microsoft(let response):
-            microsoftLogin(response, backend: result.backend)
+            await socialLogin(
+                externalToken: response.token,
+                backend: result.backend,
+                loginMethod: .socailAuth(.microsoft)
+            )
         }
     }
 
     @MainActor
-    private func appleLogin(_ response: SocialAuthResponse, backend: String) {
-        socialLogin(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: .socailAuth(.apple)
-        )
-    }
-
-    @MainActor
-    private func facebookLogin(_ response: SocialAuthResponse, backend: String) {
-        guard let currentAccessToken = AccessToken.current?.tokenString else {
-            return
+    private func socialLogin(
+        externalToken: String,
+        backend: String,
+        loginMethod: LoginMethod
+    ) async {
+        isShowProgress = true
+        do {
+            let user = try await interactor.login(externalToken: externalToken, backend: backend)
+            analytics.setUserID("\(user.id)")
+            analytics.userLogin(method: loginMethod)
+            router.showMainOrWhatsNewScreen()
+        } catch let error {
+            failure(error, loginMethod: loginMethod)
         }
-        socialLogin(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: .socailAuth(.facebook)
-        )
-    }
 
-    @MainActor
-    private func googleLogin(_ response: SocialAuthResponse, backend: String) {
-        socialLogin(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: .socailAuth(.google)
-        )
-    }
-
-    @MainActor
-    private func microsoftLogin(_ response: SocialAuthResponse, backend: String) {
-        socialLogin(
-            externalToken: response.token,
-            backend: backend,
-            loginMethod: .socailAuth(.microsoft)
-        )
-    }
-
-    @MainActor
-    private func socialLogin(externalToken: String, backend: String, loginMethod: LoginMethod) {
-        Task { 
-            isShowProgress = true
-            do {
-                let user = try await interactor.login(externalToken: externalToken, backend: backend)
-                analytics.setUserID("\(user.id)")
-                analytics.userLogin(method: loginMethod)
-                router.showMainOrWhatsNewScreen()
-            } catch let error {
-                failure(error, loginMethod: loginMethod)
-            }
-        }
     }
 
     @MainActor
