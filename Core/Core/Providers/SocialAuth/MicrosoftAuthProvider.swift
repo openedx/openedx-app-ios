@@ -29,7 +29,7 @@ public final class MicrosoftAuthProvider {
                 let webParameters = MSALWebviewParameters(authPresentationViewController: withPresenting)
                 let parameters = MSALInteractiveTokenParameters(scopes: scopes, webviewParameters: webParameters)
                 clientApplication.acquireToken(with: parameters) {  result, error in
-                    if let error = error  {
+                    if let error = error {
                         continuation.resume(returning: .failure(error))
                         return
                     }

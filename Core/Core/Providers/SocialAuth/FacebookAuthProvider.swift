@@ -29,7 +29,6 @@ public final class FacebookAuthProvider {
                 }
 
                 guard let result = result,
-                      let _ = result.authenticationToken,
                       let tokenString = AccessToken.current?.tokenString else {
                     continuation.resume(
                         returning: .failure(SocialAuthError.unknownError)
