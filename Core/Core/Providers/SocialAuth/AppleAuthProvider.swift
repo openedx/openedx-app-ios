@@ -45,18 +45,15 @@ public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegat
         let pncf = PersonNameComponentsFormatter()
 
         var name = storage?.appleSignFullName ?? ""
-        if let fullName = credentials.fullName {
-            name = pncf.string(from: fullName)
-        }
-
-        let email = credentials.email ?? storage?.appleSignEmail ?? ""
-
-        if !name.isEmpty {
+        if let components = credentials.fullName, !pncf.string(from: components).isEmpty {
+            name = pncf.string(from: components)
             storage?.appleSignFullName = name
         }
 
-        if storage?.appleSignEmail == nil, !email.isEmpty {
-            storage?.appleSignEmail = email
+        var email = storage?.appleSignEmail ?? ""
+        if let appleEmail = credentials.email, !appleEmail.isEmpty {
+            email = appleEmail
+            storage?.appleSignEmail = appleEmail
         }
 
         guard let data = credentials.identityToken,
