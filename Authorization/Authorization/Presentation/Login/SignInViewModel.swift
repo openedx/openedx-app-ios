@@ -101,7 +101,7 @@ public class SignInViewModel: ObservableObject {
     private func socialLogin(
         externalToken: String,
         backend: String,
-        loginMethod: LoginMethod
+        loginMethod: AuthMethod
     ) async {
         isShowProgress = true
         do {
@@ -115,7 +115,7 @@ public class SignInViewModel: ObservableObject {
     }
 
     @MainActor
-    private func failure(_ error: Error, loginMethod: LoginMethod? = nil) {
+    private func failure(_ error: Error, loginMethod: AuthMethod? = nil) {
         isShowProgress = false
         if let validationError = error.validationError,
            let value = validationError.data?["error_description"] as? String {

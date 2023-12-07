@@ -32,16 +32,16 @@ enum SocialAuthDetails {
         }
     }
 
-    var loginMethod: LoginMethod {
+    var loginMethod: AuthMethod {
         switch self {
         case .apple:
-            LoginMethod.socailAuth(.apple)
+            .socailAuth(.apple)
         case .facebook:
-            LoginMethod.socailAuth(.facebook)
+            .socailAuth(.facebook)
         case .google:
-            LoginMethod.socailAuth(.google)
+            .socailAuth(.google)
         case .microsoft:
-            LoginMethod.socailAuth(.microsoft)
+            .socailAuth(.microsoft)
         }
     }
 

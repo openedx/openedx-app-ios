@@ -163,11 +163,10 @@ public class SignUpViewModel: ObservableObject {
     private func loginOrRegister(
         _ response: SocialAuthResponse,
         backend: String,
-        loginMethod: LoginMethod
+        loginMethod: AuthMethod
     ) async {
         do {
             isShowProgress = true
-            let validateFields = configureFields().filter { !$0.value.isEmpty }
             let user = try await interactor.login(externalToken: response.token, backend: backend)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: loginMethod)

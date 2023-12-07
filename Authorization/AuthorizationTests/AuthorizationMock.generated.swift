@@ -515,9 +515,9 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 		perform?(`id`)
     }
 
-    open func userLogin(method: LoginMethod) {
-        addInvocation(.m_userLogin__method_method(Parameter<LoginMethod>.value(`method`)))
-		let perform = methodPerformValue(.m_userLogin__method_method(Parameter<LoginMethod>.value(`method`))) as? (LoginMethod) -> Void
+    open func userLogin(method: AuthMethod) {
+        addInvocation(.m_userLogin__method_method(Parameter<AuthMethod>.value(`method`)))
+		let perform = methodPerformValue(.m_userLogin__method_method(Parameter<AuthMethod>.value(`method`))) as? (AuthMethod) -> Void
 		perform?(`method`)
     }
 
@@ -554,7 +554,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 
     fileprivate enum MethodType {
         case m_setUserID__id(Parameter<String>)
-        case m_userLogin__method_method(Parameter<LoginMethod>)
+        case m_userLogin__method_method(Parameter<AuthMethod>)
         case m_signUpClicked
         case m_createAccountClicked
         case m_registrationSuccess
@@ -628,7 +628,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
         fileprivate var method: MethodType
 
         public static func setUserID(_ id: Parameter<String>) -> Verify { return Verify(method: .m_setUserID__id(`id`))}
-        public static func userLogin(method: Parameter<LoginMethod>) -> Verify { return Verify(method: .m_userLogin__method_method(`method`))}
+        public static func userLogin(method: Parameter<AuthMethod>) -> Verify { return Verify(method: .m_userLogin__method_method(`method`))}
         public static func signUpClicked() -> Verify { return Verify(method: .m_signUpClicked)}
         public static func createAccountClicked() -> Verify { return Verify(method: .m_createAccountClicked)}
         public static func registrationSuccess() -> Verify { return Verify(method: .m_registrationSuccess)}
@@ -643,7 +643,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
         public static func setUserID(_ id: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_setUserID__id(`id`), performs: perform)
         }
-        public static func userLogin(method: Parameter<LoginMethod>, perform: @escaping (LoginMethod) -> Void) -> Perform {
+        public static func userLogin(method: Parameter<AuthMethod>, perform: @escaping (AuthMethod) -> Void) -> Perform {
             return Perform(method: .m_userLogin__method_method(`method`), performs: perform)
         }
         public static func signUpClicked(perform: @escaping () -> Void) -> Perform {

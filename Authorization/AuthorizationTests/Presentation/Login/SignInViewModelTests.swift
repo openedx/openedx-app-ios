@@ -138,7 +138,7 @@ final class SignInViewModelTests: XCTestCase {
             .apple(.init(name: "name", email: "email", token: "239i2oi3jrf2jflkj23lf2f"))
         )
         let validationErrorMessage = AuthLocalization.Error.accountNotRegistered(
-            LoginMethod.socailAuth(.apple).analyticsValue,
+            AuthMethod.socailAuth(.apple).analyticsValue,
             viewModel.config.platformName
         )
         let validationError = CustomValidationError(statusCode: 400, data: ["error_description": validationErrorMessage])
