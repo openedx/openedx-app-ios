@@ -84,61 +84,61 @@ public class SignInViewModel: ObservableObject {
     }
 
     @MainActor
-    func sign(with result: Result<SocialAuthDetails, Error>) {
-        result.success { social(result: $0) }
+    func login(with result: Result<SocialAuthDetails, Error>) {
+        result.success { socialAuth(result: $0) }
         result.failure { error in
             errorMessage = error.localizedDescription
         }
     }
 
     @MainActor
-    private func social(result: SocialAuthDetails) {
+    private func socialAuth(result: SocialAuthDetails) {
         switch result {
-        case .apple(let appleCredentials):
-            appleLogin(appleCredentials, backend: result.backend)
-        case .facebook:
-            facebookLogin(backend: result.backend)
-        case .google(let gIDSignInResult):
-            googleLogin(gIDSignInResult, backend: result.backend)
-        case .microsoft(_, let token):
-            microsoftLogin(token, backend: result.backend)
+        case .apple(let response):
+            appleLogin(response, backend: result.backend)
+        case .facebook(let response):
+            facebookLogin(response, backend: result.backend)
+        case .google(let response):
+            googleLogin(response, backend: result.backend)
+        case .microsoft(let response):
+            microsoftLogin(response, backend: result.backend)
         }
     }
 
     @MainActor
-    private func appleLogin(_ credentials: AppleCredentials, backend: String) {
+    private func appleLogin(_ response: SocialAuthResponse, backend: String) {
         socialLogin(
-            externalToken: credentials.token,
+            externalToken: response.token,
             backend: backend,
             loginMethod: .socailAuth(.apple)
         )
     }
 
     @MainActor
-    private func facebookLogin(backend: String) {
+    private func facebookLogin(_ response: SocialAuthResponse, backend: String) {
         guard let currentAccessToken = AccessToken.current?.tokenString else {
             return
         }
         socialLogin(
-            externalToken: currentAccessToken,
+            externalToken: response.token,
             backend: backend,
             loginMethod: .socailAuth(.facebook)
         )
     }
 
     @MainActor
-    private func googleLogin(_ result: GIDSignInResult, backend: String) {
+    private func googleLogin(_ response: SocialAuthResponse, backend: String) {
         socialLogin(
-            externalToken: result.user.accessToken.tokenString,
+            externalToken: response.token,
             backend: backend,
             loginMethod: .socailAuth(.google)
         )
     }
 
     @MainActor
-    private func microsoftLogin(_ token: String, backend: String) {
+    private func microsoftLogin(_ response: SocialAuthResponse, backend: String) {
         socialLogin(
-            externalToken: token,
+            externalToken: response.token,
             backend: backend,
             loginMethod: .socailAuth(.microsoft)
         )
@@ -165,12 +165,12 @@ public class SignInViewModel: ObservableObject {
         if let validationError = error.validationError,
            let value = validationError.data?["error_description"] as? String {
             if loginMethod != .password, validationError.statusCode == 400, let loginMethod = loginMethod {
-                errorMessage = AuthLocalization.Error.authProvider(
+                errorMessage = AuthLocalization.Error.accountNotRegistered(
                     loginMethod.analyticsValue,
                     config.platformName
                 )
             } else if validationError.statusCode == 403 {
-                errorMessage = AuthLocalization.Error.accountDisabled
+                errorMessage = AuthLocalization.Error.disabledAccount
             } else {
                 errorMessage = value
             }

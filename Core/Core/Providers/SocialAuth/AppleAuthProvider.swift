@@ -1,5 +1,5 @@
 //
-//  AppleSingInProvider.swift
+//  AppleAuthProvider.swift
 //  Core
 //
 //  Created by Eugene Yatsenko on 10.10.2023.
@@ -8,12 +8,6 @@
 import Foundation
 import AuthenticationServices
 import Swinject
-
-public struct AppleCredentials: Codable {
-    public var name: String
-    public var email: String
-    public var token: String
-}
 
 public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegate {
 
@@ -24,10 +18,10 @@ public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegat
         super.init()
     }
 
-    private var completion: ((Result<AppleCredentials, Error>) -> Void)?
+    private var completion: ((Result<SocialAuthResponse, Error>) -> Void)?
     private let appleIDProvider = ASAuthorizationAppleIDProvider()
 
-    public func request(completion: ((Result<AppleCredentials, Error>) -> Void)?) {
+    public func request(completion: ((Result<SocialAuthResponse, Error>) -> Void)?) {
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.fullName, .email]
 
@@ -61,7 +55,7 @@ public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegat
             storage?.appleSignFullName = name
         }
 
-        if storage?.appleSignEmail == nil {
+        if storage?.appleSignEmail == nil, !email.isEmpty {
             storage?.appleSignEmail = email
         }
 
@@ -73,7 +67,7 @@ public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegat
 
         debugLog("User id is \(data) \n Full Name is \(name) \n Email id is \(email)")
 
-        let appleCredentials = AppleCredentials(
+        let appleCredentials = SocialAuthResponse(
             name: name,
             email: email,
             token: code

@@ -1,5 +1,5 @@
 //
-//  GoogleSingInProvider.swift
+//  GoogleAuthProvider.swift
 //  Core
 //
 //  Created by Eugene Yatsenko on 10.10.2023.
@@ -15,7 +15,7 @@ public final class GoogleAuthProvider {
     @MainActor
     public func signIn(
         withPresenting: UIViewController
-    ) async -> Result<GIDSignInResult, Error> {
+    ) async -> Result<SocialAuthResponse, Error> {
         await withCheckedContinuation { continuation in
             GIDSignIn.sharedInstance.signIn(
                 withPresenting: withPresenting,
@@ -32,7 +32,15 @@ public final class GoogleAuthProvider {
                         )
                         return
                     }
-                    continuation.resume(returning: .success(result))
+                    continuation.resume(
+                        returning: .success(
+                            SocialAuthResponse(
+                                name: result.user.profile?.name ?? "",
+                                email: result.user.profile?.email ?? "",
+                                token: result.user.accessToken.tokenString
+                            )
+                        )
+                    )
                 }
             )
         }

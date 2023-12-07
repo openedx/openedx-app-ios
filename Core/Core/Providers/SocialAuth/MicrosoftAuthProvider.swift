@@ -1,5 +1,5 @@
 //
-//  MicrosoftSingInProvider.swift
+//  MicrosoftAuthProvider.swift
 //  Core
 //
 //  Created by Eugene Yatsenko on 10.10.2023.
@@ -21,7 +21,7 @@ public final class MicrosoftAuthProvider {
     @MainActor
     public func signIn(
         withPresenting: UIViewController
-    ) async -> Result<MSLoginCompletionHandler, Error> {
+    ) async -> Result<SocialAuthResponse, Error> {
         await withCheckedContinuation { continuation in
             do {
                 let clientApplication = try createClientApplication()
@@ -45,7 +45,16 @@ public final class MicrosoftAuthProvider {
 
                     self.result = result
                     let account = result.account
-                    continuation.resume(returning: .success((account, result.accessToken)))
+
+                    continuation.resume(
+                        returning: .success(
+                            SocialAuthResponse(
+                                name: account.accountClaims?["name"] as? String ?? "" ,
+                                email: account.accountClaims?["email"] as? String ?? "",
+                                token: result.accessToken
+                            )
+                        )
+                    )
                 }
             } catch let error {
                 continuation.resume(returning: .failure(error))

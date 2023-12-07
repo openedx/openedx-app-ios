@@ -1,5 +1,5 @@
 //
-//  LabelButton.swift
+//  SocialAuthButton.swift
 //  Core
 //
 //  Created by Eugene Yatsenko on 10.10.2023.

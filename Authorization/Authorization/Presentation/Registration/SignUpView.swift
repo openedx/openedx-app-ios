@@ -120,7 +120,7 @@ public struct SignUpView: View {
                                 if viewModel.socialLoginEnabled,
                                     !requiredFields.isEmpty {
                                     SocialAuthView(
-                                        signType: .register,
+                                        authType: .register,
                                         viewModel: .init(
                                             config: viewModel.config
                                         ) { viewModel.register(with: $0) }

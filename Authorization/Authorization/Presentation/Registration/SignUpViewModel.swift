@@ -156,29 +156,29 @@ public class SignUpViewModel: ObservableObject {
     @MainActor
     private func socialAuth(result: SocialAuthDetails) {
         switch result {
-        case .apple(let appleCredentials):
-            appleRegister(appleCredentials, backend: result.backend, loginMethod: .socailAuth(.apple))
-        case .facebook(let account):
-            facebookRegister(backend: result.backend, account: account, loginMethod: .socailAuth(.facebook))
-        case .google(let gIDSignInResult):
-            googleRegister(gIDSignInResult, backend: result.backend, loginMethod: .socailAuth(.google))
-        case .microsoft(let account, let token):
-            microsoftRegister(token, backend: result.backend, account: account, loginMethod: .socailAuth(.microsoft))
+        case .apple(let response):
+            appleRegister(response, backend: result.backend, loginMethod: .socailAuth(.apple))
+        case .facebook(let response):
+            facebookRegister(response, backend: result.backend, loginMethod: .socailAuth(.facebook))
+        case .google(let response):
+            googleRegister(response, backend: result.backend, loginMethod: .socailAuth(.google))
+        case .microsoft(let response):
+            microsoftRegister(response, backend: result.backend, loginMethod: .socailAuth(.microsoft))
         }
     }
 
     @MainActor
     private func appleRegister(
-        _ credentials: AppleCredentials,
+        _ response: SocialAuthResponse,
         backend: String,
         loginMethod: LoginMethod
     ) {
         update(
-            fullName: credentials.name,
-            email: credentials.email
+            fullName: response.name,
+            email: response.email
         )
         registerSocial(
-            externalToken: credentials.token,
+            externalToken: response.token,
             backend: backend,
             loginMethod: loginMethod
         )
@@ -186,29 +186,16 @@ public class SignUpViewModel: ObservableObject {
 
     @MainActor
     private func facebookRegister(
+        _ response: SocialAuthResponse,
         backend: String,
-        account: LoginManagerLoginResult,
         loginMethod: LoginMethod
     ) {
-        guard let currentAccessToken = AccessToken.current?.tokenString else {
-            return
-        }
-
-        GraphRequest(
-            graphPath: "me",
-            parameters: ["fields": "name, email"]
-        ).start { [weak self] _, result, _ in
-            guard let self = self, let userInfo = result as? [String: Any] else {
-                return
-            }
-            self.update(
-                fullName: userInfo["name"] as? String,
-                email: userInfo["email"] as? String
-            )
-        }
-
+        update(
+            fullName: response.name,
+            email: response.email
+        )
         registerSocial(
-            externalToken: currentAccessToken,
+            externalToken: response.token,
             backend: backend,
             loginMethod: loginMethod
         )
@@ -217,17 +204,16 @@ public class SignUpViewModel: ObservableObject {
 
     @MainActor
     private func googleRegister(
-        _ result: GIDSignInResult,
+        _ response: SocialAuthResponse,
         backend: String,
         loginMethod: LoginMethod
     ) {
         update(
-            fullName: result.user.profile?.name,
-            email: result.user.profile?.email
+            fullName: response.name,
+            email: response.email
         )
-
         registerSocial(
-            externalToken: result.user.accessToken.tokenString,
+            externalToken: response.token,
             backend: backend,
             loginMethod: loginMethod
         )
@@ -235,19 +221,17 @@ public class SignUpViewModel: ObservableObject {
 
     @MainActor
     private func microsoftRegister(
-        _ token: String,
+        _ response: SocialAuthResponse,
         backend: String,
-        account: MSALAccount,
         loginMethod: LoginMethod
     ) {
         update(
-            fullName: account.accountClaims?["name"] as? String,
-            email: account.accountClaims?["email"] as? String
+            fullName: response.name,
+            email: response.email
         )
-
         registerSocial(
-            externalToken: token,
-            backend: backend, 
+            externalToken: response.token,
+            backend: backend,
             loginMethod: loginMethod
         )
     }

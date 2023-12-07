@@ -133,7 +133,7 @@ public struct SignInView: View {
                             SocialAuthView(
                                 viewModel: .init(
                                     config: viewModel.config,
-                                    completion: { viewModel.sign(with: $0) }
+                                    completion: { viewModel.login(with: $0) }
                                 )
                             )
                         }

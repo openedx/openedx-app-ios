@@ -1,5 +1,5 @@
 //
-//  SocialSignView.swift
+//  SocialAuthView.swift
 //  Authorization
 //
 //  Created by Eugene Yatsenko on 10.10.2023.
@@ -15,25 +15,25 @@ struct SocialAuthView: View {
     @StateObject var viewModel: SocialAuthViewModel
 
     init(
-        signType: SocialAuthType = .signIn,
+        authType: SocialAuthType = .signIn,
         viewModel: SocialAuthViewModel
     ) {
         self._viewModel = .init(wrappedValue: viewModel)
-        self.signType = signType
+        self.authType = authType
     }
 
     enum SocialAuthType {
         case signIn
         case register
     }
-    var signType: SocialAuthType = .signIn
+    var authType: SocialAuthType = .signIn
 
     private var title: String {
-        switch signType {
+        switch authType {
         case .signIn:
             AuthLocalization.signInWith
         case .register:
-            AuthLocalization.signInRegister
+            AuthLocalization.registerWith
         }
     }
 

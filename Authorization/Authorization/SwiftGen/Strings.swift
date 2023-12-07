@@ -21,16 +21,16 @@ public enum AuthLocalization {
   /// Or
   public static let or = AuthLocalization.tr("Localizable", "OR", fallback: "Or")
   /// Register with
-  public static let signInRegister = AuthLocalization.tr("Localizable", "SIGN_IN_REGISTER", fallback: "Register with")
+  public static let registerWith = AuthLocalization.tr("Localizable", "REGISTER_WITH", fallback: "Register with")
   /// Sign in with
   public static let signInWith = AuthLocalization.tr("Localizable", "SIGN_IN_WITH", fallback: "Sign in with")
   public enum Error {
-    /// Your account is disabled. Please contact customer support for assistance.
-    public static let accountDisabled = AuthLocalization.tr("Localizable", "ERROR.ACCOUNT_DISABLED", fallback: "Your account is disabled. Please contact customer support for assistance.")
     /// This %@ account is not linked with any %@ account. Please register.
-    public static func authProvider(_ p1: Any, _ p2: Any) -> String {
-      return AuthLocalization.tr("Localizable", "ERROR.AUTH_PROVIDER", String(describing: p1), String(describing: p2), fallback: "This %@ account is not linked with any %@ account. Please register.")
+    public static func accountNotRegistered(_ p1: Any, _ p2: Any) -> String {
+      return AuthLocalization.tr("Localizable", "ERROR.ACCOUNT_NOT_REGISTERED", String(describing: p1), String(describing: p2), fallback: "This %@ account is not linked with any %@ account. Please register.")
     }
+    /// Your account is disabled. Please contact customer support for assistance.
+    public static let disabledAccount = AuthLocalization.tr("Localizable", "ERROR.DISABLED_ACCOUNT", fallback: "Your account is disabled. Please contact customer support for assistance.")
     /// Invalid email address
     public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
     /// Invalid email or username

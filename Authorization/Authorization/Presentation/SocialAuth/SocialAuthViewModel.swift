@@ -1,5 +1,5 @@
 //
-//  SocialSignViewModel.swift
+//  SocialAuthViewModel.swift
 //  Authorization
 //
 //  Created by Eugene Yatsenko on 11.10.2023.
@@ -14,10 +14,10 @@ import MSAL
 import Swinject
 
 enum SocialAuthDetails {
-    case apple(AppleCredentials)
-    case facebook(LoginManagerLoginResult)
-    case google(GIDSignInResult)
-    case microsoft(MSALAccount, String)
+    case apple(SocialAuthResponse)
+    case facebook(SocialAuthResponse)
+    case google(SocialAuthResponse)
+    case microsoft(SocialAuthResponse)
 
     var backend: String {
         switch self {
@@ -119,7 +119,7 @@ final public class SocialAuthViewModel: ObservableObject {
             return
         }
         let result = await microsoftAuthProvider.signIn(withPresenting: vc)
-        result.success { success(with: .microsoft($0.account, $0.token) ) }
+        result.success { success(with: .microsoft($0)) }
         result.failure(failure)
     }
 
