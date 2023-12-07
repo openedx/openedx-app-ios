@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Core
 import Discussion
-import Swinject
 import Combine
 import Theme
 
@@ -36,9 +35,7 @@ public struct CourseUnitView: View {
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
     
-    let isDropdownActive: Bool = {
-        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.isVerticalsMenuEnabled ?? false
-    }()
+    let isDropdownActive: Bool
     
     var sequenceTitle: String {
         let chapter = viewModel.chapters[viewModel.chapterIndex]
@@ -57,10 +54,14 @@ public struct CourseUnitView: View {
         viewModel.verticals.count > 1
     }
     
-    public init(viewModel: CourseUnitViewModel,
-                sectionName: String) {
+    public init(
+        viewModel: CourseUnitViewModel,
+        sectionName: String,
+        isDropdownActive: Bool = false
+    ) {
         self.viewModel = viewModel
         self.sectionName = sectionName
+        self.isDropdownActive = isDropdownActive
         viewModel.loadIndex()
         viewModel.nextTitles()
     }

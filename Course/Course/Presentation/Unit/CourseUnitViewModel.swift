@@ -182,7 +182,7 @@ public class CourseUnitViewModel: ObservableObject {
     }
     
     func route(to vertical: CourseVertical) {
-        if let index = verticals.firstIndex(where: {$0.id == vertical.id}),
+        if let index = verticals.firstIndex(where: { $0.id == vertical.id }),
             let block = vertical.childs.first {
             router.replaceCourseUnit(
                 courseName: courseName,
