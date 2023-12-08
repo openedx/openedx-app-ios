@@ -85,7 +85,6 @@
 		02F6EF3B28D9B8EC00835477 /* CourseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */; };
 		02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF4928D9F0A700835477 /* DateExtension.swift */; };
 		02F98A7F28F81EE900DE94C0 /* Container+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F98A7E28F81EE900DE94C0 /* Container+App.swift */; };
-		06FD7EE12B1F3DBC008D632B /* UIComponentsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FD7EE02B1F3DBC008D632B /* UIComponentsConfig.swift */; };
 		070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019A428F6F17900D5FC78 /* Data_Media.swift */; };
 		070019AC28F6FD0100D5FC78 /* CourseDetailBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019AB28F6FD0100D5FC78 /* CourseDetailBlock.swift */; };
 		070019AE28F701B200D5FC78 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019AD28F701B200D5FC78 /* Certificate.swift */; };
@@ -118,6 +117,21 @@
 		0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE5E28D0B22C006D8A5D /* Strings.swift */; };
 		0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE6028D0B2CB006D8A5D /* Assets.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
+		BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA30427D2B20B299009B64B7 /* SocialAuthError.swift */; };
+		BA76135C2B21BC7300B599B7 /* SocialAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */; };
+		BA8B3A2F2AD546A700D25EF5 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */; };
+		BA8FA6612AD5974300EA029A /* AppleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6602AD5974300EA029A /* AppleAuthProvider.swift */; };
+		BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */; };
+		BA8FA66A2AD59B5500EA029A /* GoogleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6692AD59B5500EA029A /* GoogleAuthProvider.swift */; };
+		BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */; };
+		BA8FA66E2AD59E7D00EA029A /* FacebookAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */; };
+		BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */; };
+		BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */; };
+		BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */; };
+		BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */; };
+		BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */; };
+		BAFB99902B14B377007D09F9 /* GoogleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB998F2B14B377007D09F9 /* GoogleConfig.swift */; };
+		BAFB99922B14E23D007D09F9 /* AppleSignInConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99912B14E23D007D09F9 /* AppleSignInConfig.swift */; };
 		C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
@@ -231,7 +245,6 @@
 		02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCellView.swift; sourceTree = "<group>"; };
 		02F6EF4928D9F0A700835477 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		02F98A7E28F81EE900DE94C0 /* Container+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+App.swift"; sourceTree = "<group>"; };
-		06FD7EE02B1F3DBC008D632B /* UIComponentsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsConfig.swift; sourceTree = "<group>"; };
 		070019A428F6F17900D5FC78 /* Data_Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Media.swift; sourceTree = "<group>"; };
 		070019AB28F6FD0100D5FC78 /* CourseDetailBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailBlock.swift; sourceTree = "<group>"; };
 		070019AD28F701B200D5FC78 /* Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificate.swift; sourceTree = "<group>"; };
@@ -273,6 +286,19 @@
 		3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
+		BA30427D2B20B299009B64B7 /* SocialAuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialAuthError.swift; sourceTree = "<group>"; };
+		BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthResponse.swift; sourceTree = "<group>"; };
+		BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLog.swift; sourceTree = "<group>"; };
+		BA8FA6602AD5974300EA029A /* AppleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthProvider.swift; sourceTree = "<group>"; };
+		BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthButton.swift; sourceTree = "<group>"; };
+		BA8FA6692AD59B5500EA029A /* GoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthProvider.swift; sourceTree = "<group>"; };
+		BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthProvider.swift; sourceTree = "<group>"; };
+		BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAuthProvider.swift; sourceTree = "<group>"; };
+		BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
+		BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConfig.swift; sourceTree = "<group>"; };
+		BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftConfig.swift; sourceTree = "<group>"; };
+		BAFB998F2B14B377007D09F9 /* GoogleConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleConfig.swift; sourceTree = "<group>"; };
+		BAFB99912B14E23D007D09F9 /* AppleSignInConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInConfig.swift; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
@@ -295,8 +321,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */,
 				025EF2F62971740000B838AB /* YouTubePlayerKit in Frameworks */,
 				C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */,
+				BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */,
 				E055A5392B18DC95008D9E5E /* Theme.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +417,8 @@
 				0727878228D31287002E9142 /* DispatchQueue+App.swift */,
 				07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */,
 				02284C172A3B1AE00007117F /* UIApplicationExtension.swift */,
+				BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */,
+				BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */,
 				02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */,
 			);
 			path = Extensions;
@@ -516,6 +546,7 @@
 		0770DE0A28D07831006D8A5D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				BA8FA65F2AD5973500EA029A /* Providers */,
 				027BD3A12909470F00392132 /* AvoidingHelpers */,
 				0770DE5528D0B142006D8A5D /* SwiftGen */,
 				0283347E28D4DCC100C828FC /* Extensions */,
@@ -595,9 +626,39 @@
 				027BD3C42909707700392132 /* Shake.swift */,
 				023A1135291432B200D0D354 /* RegistrationTextField.swift */,
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
+				BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */,
 				02E93F862AEBAED4006C4750 /* AppReview */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		BA30427C2B20B235009B64B7 /* SocialAuth */ = {
+			isa = PBXGroup;
+			children = (
+				BA30427E2B20B299009B64B7 /* Error */,
+				BA8FA6602AD5974300EA029A /* AppleAuthProvider.swift */,
+				BA8FA6692AD59B5500EA029A /* GoogleAuthProvider.swift */,
+				BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */,
+				BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */,
+				BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */,
+			);
+			path = SocialAuth;
+			sourceTree = "<group>";
+		};
+		BA30427E2B20B299009B64B7 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				BA30427D2B20B299009B64B7 /* SocialAuthError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		BA8FA65F2AD5973500EA029A /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				BA30427C2B20B235009B64B7 /* SocialAuth */,
+			);
+			path = Providers;
 			sourceTree = "<group>";
 		};
 		C9DFE47E699CFFA85A77AF2C /* Pods */ = {
@@ -631,7 +692,10 @@
 				DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */,
 				DBF6F2492B0380E00098414B /* FeaturesConfig.swift */,
 				DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */,
-				06FD7EE02B1F3DBC008D632B /* UIComponentsConfig.swift */,
+				BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */,
+				BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */,
+				BAFB998F2B14B377007D09F9 /* GoogleConfig.swift */,
+				BAFB99912B14E23D007D09F9 /* AppleSignInConfig.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -711,6 +775,8 @@
 			name = Core;
 			packageProductDependencies = (
 				025EF2F52971740000B838AB /* YouTubePlayerKit */,
+				BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */,
+				BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */,
 			);
 			productName = Core;
 			productReference = 0770DE0828D07831006D8A5D /* Core.framework */;
@@ -748,6 +814,8 @@
 			mainGroup = 0770DDFE28D07831006D8A5D;
 			packageReferences = (
 				025EF2F42971740000B838AB /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
+				BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = 0770DE0928D07831006D8A5D /* Products */;
 			projectDirPath = "";
@@ -840,6 +908,7 @@
 				02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */,
 				DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */,
 				027BD3AF2909475000392132 /* DismissKeyboardTapHandler.swift in Sources */,
+				BAFB99902B14B377007D09F9 /* GoogleConfig.swift in Sources */,
 				02E225B0291D29EB0067769A /* UrlExtension.swift in Sources */,
 				02CF46C829546AA200A698EE /* NoCachedDataError.swift in Sources */,
 				0727877728D23847002E9142 /* DataLayer.swift in Sources */,
@@ -850,6 +919,7 @@
 				0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */,
 				02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */,
 				0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */,
+				BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */,
 				027BD3B32909475900392132 /* Publishers+KeyboardState.swift in Sources */,
 				0727877D28D25212002E9142 /* ProgressBar.swift in Sources */,
 				0236961F28F9A2F600EEF206 /* AuthEndpoint.swift in Sources */,
@@ -866,13 +936,14 @@
 				028F9F37293A44C700DE65D0 /* Data_ResetPassword.swift in Sources */,
 				022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */,
 				0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */,
+				BA8FA66A2AD59B5500EA029A /* GoogleAuthProvider.swift in Sources */,
 				02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */,
-				06FD7EE12B1F3DBC008D632B /* UIComponentsConfig.swift in Sources */,
 				0233D5732AF13EEE00BAC8BD /* AppReviewButton.swift in Sources */,
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,
 				0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */,
 				02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */,
 				027BD3AE2909475000392132 /* KeyboardScrollerOptions.swift in Sources */,
+				BAFB99922B14E23D007D09F9 /* AppleSignInConfig.swift in Sources */,
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
@@ -888,6 +959,9 @@
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */,
 				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
+				BA8FA6612AD5974300EA029A /* AppleAuthProvider.swift in Sources */,
+				BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */,
+				BA76135C2B21BC7300B599B7 /* SocialAuthResponse.swift in Sources */,
 				020306CC2932C0C4000949EA /* PickerView.swift in Sources */,
 				027BD3C52909707700392132 /* Shake.swift in Sources */,
 				027BD39C2908810C00392132 /* RegisterUser.swift in Sources */,
@@ -902,6 +976,7 @@
 				021D925028DC89D100ACC565 /* UserProfile.swift in Sources */,
 				071009D028D1E3A600344290 /* Constants.swift in Sources */,
 				0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */,
+				BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */,
 				0284DBFE28D48C5300830893 /* CourseItem.swift in Sources */,
 				0248C92329C075EF00DC8402 /* CourseBlockModel.swift in Sources */,
 				DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */,
@@ -909,15 +984,19 @@
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
 				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
 				0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */,
+				BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
+				BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */,
 				02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */,
 				02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */,
 				027BD3AD2909475000392132 /* KeyboardScroller.swift in Sources */,
 				070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */,
 				024D723529C8BB1A006D36ED /* NavigationBar.swift in Sources */,
+				BA8B3A2F2AD546A700D25EF5 /* DebugLog.swift in Sources */,
 				0727877928D23BE0002E9142 /* RequestInterceptor.swift in Sources */,
+				BA8FA66E2AD59E7D00EA029A /* FacebookAuthProvider.swift in Sources */,
 				0770DE2E28D09743006D8A5D /* API.swift in Sources */,
 				028CE96929858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift in Sources */,
 				027BD3A92909474200392132 /* KeyboardAvoidingViewControllerRepr.swift in Sources */,
@@ -933,6 +1012,7 @@
 				DBF6F24A2B0380E00098414B /* FeaturesConfig.swift in Sources */,
 				02F164372902A9EB0090DDEF /* StringExtension.swift in Sources */,
 				0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */,
+				BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */,
 				0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */,
 				023A1136291432B200D0D354 /* RegistrationTextField.swift in Sources */,
 				02C2DC0829B63D6200F4445D /* WebViewHTML.swift in Sources */,
@@ -1968,6 +2048,22 @@
 				minimumVersion = 1.5.0;
 			};
 		};
+		BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1975,6 +2071,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 025EF2F42971740000B838AB /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
 			productName = YouTubePlayerKit;
+		};
+		BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
 

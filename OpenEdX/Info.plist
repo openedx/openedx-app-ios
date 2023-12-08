@@ -10,10 +10,6 @@
 	<false/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array/>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlegmail</string>
@@ -24,5 +20,9 @@
 		<string>fastmail</string>
 		<string>protonmail</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 </dict>
 </plist>
