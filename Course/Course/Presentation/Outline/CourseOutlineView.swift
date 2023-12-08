@@ -77,7 +77,7 @@ public struct CourseOutlineView: View {
                                 : viewModel.courseStructure {
                                 
                                 // MARK: - Sections
-                                if viewModel.config.uiComponents.courseExpandableSectionsEnabled {
+                                if viewModel.config.uiComponents.courseNestedListEnable {
                                     CourseExpandableContentView(
                                         proxy: proxy,
                                         course: course,
