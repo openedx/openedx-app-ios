@@ -365,7 +365,7 @@ public class Router: AuthorizationRouter,
             controllers.append(contentsOf: [controllerVertical, controllerUnit])
         }
 
-        navigationController.setViewControllers(controllers, animated: true)
+        navigationController.setViewControllers(controllers, animated: animated)
     }
     
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
