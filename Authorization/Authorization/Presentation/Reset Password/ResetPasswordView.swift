@@ -34,8 +34,8 @@ public struct ResetPasswordView: View {
             
             VStack(alignment: .center) {
                 NavigationBar(title: AuthLocalization.Forgot.title,
-                             titleColor: Theme.Colors.white,
-                             leftButtonColor: Theme.Colors.white,
+                             titleColor: Theme.Colors.loginNavigationText,
+                             leftButtonColor: Theme.Colors.loginNavigationText,
                              leftButtonAction: {
                    viewModel.router.back()
                }).padding(.leading, isHorizontal ? 48 : 0)

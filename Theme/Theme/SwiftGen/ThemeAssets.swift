@@ -36,6 +36,7 @@ public enum ThemeAssets {
   public static let certificateForeground = ColorAsset(name: "CertificateForeground")
   public static let commentCellBackground = ColorAsset(name: "CommentCellBackground")
   public static let loginBackground = ColorAsset(name: "LoginBackground")
+  public static let loginNavigationText = ColorAsset(name: "LoginNavigationText")
   public static let shadowColor = ColorAsset(name: "ShadowColor")
   public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
   public static let snackbarErrorTextColor = ColorAsset(name: "SnackbarErrorTextColor")

@@ -39,12 +39,12 @@ public struct SignUpView: View {
                 ZStack {
                     HStack {
                         Text(AuthLocalization.SignIn.registerBtn)
-                            .titleSettings(color: Theme.Colors.white)
+                            .titleSettings(color: Theme.Colors.loginNavigationText)
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .backButtonStyle(color: Theme.Colors.white)
+                                .backButtonStyle(color: Theme.Colors.loginNavigationText)
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)
                         .padding(.leading, isHorizontal ? 48 : 0)
