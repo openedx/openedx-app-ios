@@ -165,27 +165,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
 
-    func onDownloadViewTap(courseVertical: CourseVertical, state: DownloadViewState) {
-        let blocks = courseVertical.childs.filter { $0.isDownloadable }
-        do {
-            switch state {
-            case .available:
-                try manager.addToDownloadQueue(blocks: blocks)
-                verticalsDownloadState[courseVertical.id] = .downloading
-            case .downloading:
-                try manager.cancelDownloading(courseId: courseVertical.courseId, blocks: blocks)
-                verticalsDownloadState[courseVertical.id] = .available
-            case .finished:
-                manager.deleteFile(blocks: blocks)
-                verticalsDownloadState[courseVertical.id] = .available
-            }
-        } catch let error {
-            if error is NoWiFiError {
-                errorMessage = CoreLocalization.Error.wifi
-            }
-        }
-    }
-
     func trackSelectedTab(
         selection: CourseContainerView.CourseTab,
         courseId: String,

@@ -94,3 +94,5 @@
 "COURSE_DATES.UNRELEASED" = "Unreleased";
 "COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
 
+"SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
+"AUTHORIZATION_FAILED" = "Authorization failed.";

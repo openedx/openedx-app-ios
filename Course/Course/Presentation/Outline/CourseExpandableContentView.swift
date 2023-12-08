@@ -26,270 +26,200 @@ struct CourseExpandableContentView: View {
     }
 
     var body: some View {
-        content
+        ForEach(course.childs, content: disclosureGroup)
     }
 
-    private var content: some View {
-        ForEach(Array(course.childs.enumerated()), id: \.element.id) { index, chapter in
-            section(chapter: chapter, numberOfSection: index)
-        }
-    }
-
-    @ViewBuilder
-    private func section(chapter: CourseChapter, numberOfSection: Int) -> some View {
-        header(chapter: chapter, numberOfSection: numberOfSection)
-        sectionContent(chapter: chapter)
-    }
-
-    private func header(chapter: CourseChapter, numberOfSection: Int) -> some View {
-        Text(chapter.displayName)
-            .font(Theme.Fonts.titleMedium)
-            .multilineTextAlignment(.leading)
-            .foregroundColor(Theme.Colors.textSecondary)
-            .padding(.horizontal, 24)
-            .padding(.top, numberOfSection == 0 ? 5 : 40)
-    }
-
-    private func sectionContent(chapter: CourseChapter) -> some View {
-        ForEach(Array(chapter.childs.enumerated()), id: \.element.id) { index, courseSequential in
-            VStack(alignment: .leading) {
-                disclosureGroup(
-                    chapter: chapter,
-                    courseSequentialIndex: index,
-                    courseSequential: courseSequential
-                )
-                if index != course.childs.count - 1 {
-                    Divider()
-                        .frame(height: 1)
-                        .overlay(Theme.Colors.cardViewStroke)
-                        .padding(.horizontal, 24)
-                }
-            }
-        }
-    }
-
-    private func disclosureGroup(
-        chapter: CourseChapter,
-        courseSequentialIndex: Int,
-        courseSequential: CourseSequential
-    ) -> some View {
+    private func disclosureGroup(chapter: CourseChapter) -> some View {
         CustomDisclosureGroup(
             animation: .easeInOut(duration: 0.2),
-            isExpanded: .constant(isExpandedIds.contains(where: {$0 == courseSequential.id})),
-            onClick: {
-                if let index = isExpandedIds.firstIndex(where: {$0 == courseSequential.id}) {
-                    isExpandedIds.remove(at: index)
-                } else {
-                    isExpandedIds.append(courseSequential.id)
-                }
-            },
-            header: { isExpanded in
-                courseSequentialLabel(
-                    courseSequential: courseSequential,
-                    chapter: chapter,
-                    isExpanded: isExpanded
-                )
-                .padding(.horizontal, 28)
-                .padding(.vertical, 20)
+            isExpanded: .constant(isExpandedIds.contains(where: { $0 == chapter.id })),
+            onClick: { onHeaderClick(chapter: chapter) },
+            header: { isExpanded in header(chapter: chapter, isExpanded: isExpanded) },
+            content: { section(chapter: chapter) }
+        )
+        .background(
+            Color(UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.00))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                .foregroundColor(Color(UIColor(red: 0.80, green: 0.83, blue: 0.88, alpha: 1.00)))
+        )
+        .padding(.vertical, 2.5)
+        .padding(.horizontal, 15)
+    }
+
+    private func header(
+        chapter: CourseChapter,
+        isExpanded: Bool
+    ) -> some View {
+        HStack {
+            Text(chapter.displayName)
+                .font(Theme.Fonts.titleMedium)
+                .multilineTextAlignment(.leading)
+                .lineLimit(1)
+                .foregroundColor(Theme.Colors.textPrimary)
+            Spacer()
+            if isExpanded {
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.black)
+                    .rotationEffect(.degrees(90))
+            } else {
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.black)
             }
-        ) {
-            ForEach(
-                Array(courseSequential.childs.enumerated()),
-                id: \.element.id
-            ) { index, courseVertical in
-                VStack(spacing: 0) {
-                    courseVerticalCell(
-                        chapter: chapter,
-                        courseSequential: courseSequential,
-                        courseVertical: courseVertical,
-                        courseVerticalIndex: index
-                    )
-                }
+        }
+        .padding(.horizontal, 15)
+        .padding(.vertical, 15)
+    }
+
+    private func section(chapter: CourseChapter) -> some View {
+        ForEach(chapter.childs) { sequential in
+            VStack(spacing: 0) {
+                sequentialLabel(
+                    sequential: sequential,
+                    chapter: chapter,
+                    isExpanded: false
+                )
             }
         }
     }
 
     @ViewBuilder
-    private func courseSequentialLabel(
-        courseSequential: CourseSequential,
+    private func sequentialLabel(
+        sequential: CourseSequential,
         chapter: CourseChapter,
-        isExpanded: Bool,
-        disabledIcon: Bool = false
+        isExpanded: Bool
     ) -> some View {
-        HStack {
-            Group {
-                if courseSequential.completion == 1 {
-                    CoreAssets.finished.swiftUIImage
-                        .renderingMode(.template)
-                        .foregroundColor(.accentColor)
-                } else {
-                    courseSequential.type.image
-                }
-                Text(courseSequential.displayName)
-                    .font(Theme.Fonts.titleMedium)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(1)
-                    .frame(
-                        maxWidth: idiom == .pad
-                        ? proxy.size.width * 0.5
-                        : proxy.size.width * 0.6,
-                        alignment: .leading
-                    )
-            }.foregroundColor(Theme.Colors.textPrimary)
-            Spacer()
-            if let state = viewModel.sequentialsDownloadState[courseSequential.id] {
-                switch state {
-                case .available:
-                    DownloadAvailableView()
-                        .onTapGesture {
-                            viewModel.onDownloadViewTap(
-                                chapter: chapter,
-                                blockId: courseSequential.id,
-                                state: state
-                            )
-                        }
-                        .onForeground {
-                            viewModel.onForeground()
-                        }
-                case .downloading:
-                    DownloadProgressView()
-                        .onTapGesture {
-                            viewModel.onDownloadViewTap(
-                                chapter: chapter,
-                                blockId: courseSequential.id,
-                                state: state
-                            )
-                        }
-                        .onBackground {
-                            viewModel.onBackground()
-                        }
-                case .finished:
-                    DownloadFinishedView()
-                        .onTapGesture {
-                            viewModel.onDownloadViewTap(
-                                chapter: chapter,
-                                blockId: courseSequential.id,
-                                state: state
-                            )
-                        }
-                }
-            }
-           
-            let downloadable = viewModel.verticalsBlocksDownloadable(by: courseSequential)
-            if !downloadable.isEmpty {
-                Text(String(downloadable.count))
-                    .foregroundColor(Color(UIColor.label))
-            }
-        }
-    }
-
-    private func courseVerticalCell(
-        chapter: CourseChapter,
-        courseSequential: CourseSequential,
-        courseVertical: CourseVertical,
-        courseVerticalIndex: Int
-    ) -> some View {
-        Button(action: {
-            guard let chapterIndex = course.childs.firstIndex(where: { $0.id == chapter.id }) else {
-                return
-            }
-            guard let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == courseSequential.id }) else {
-                return
-            }
-            guard let block = courseVertical.childs.first else {
-                return
-            }
-            viewModel.trackVerticalClicked(
-                courseId: viewModel.courseStructure?.id ?? "",
-                courseName: viewModel.courseStructure?.displayName ?? "",
-                vertical: courseVertical
-            )
-            viewModel.router.showCourseUnit(
-                courseName: viewModel.courseStructure?.displayName ?? "",
-                blockId: block.id,
-                courseID: viewModel.courseStructure?.id ?? "",
-                sectionName: block.displayName,
-                verticalIndex: courseVerticalIndex,
-                chapters: course.childs,
-                chapterIndex: chapterIndex,
-                sequentialIndex: sequentialIndex
-            )
-        }, label: {
+        Button {
+            onLabelClick(sequential: sequential, chapter: chapter)
+        } label: {
             HStack {
                 Group {
-                    if courseVertical.completion == 1 {
+                    if sequential.completion == 1 {
                         CoreAssets.finished.swiftUIImage
                             .renderingMode(.template)
                             .foregroundColor(.accentColor)
                     } else {
-                        verticalImage(childs: courseVertical.childs)
+                        sequential.type.image
                     }
-                    Text(courseVertical.displayName)
-                        .font(Theme.Fonts.titleMedium)
-                        .lineLimit(1)
-                        .frame(maxWidth: idiom == .pad
-                               ? proxy.size.width * 0.5
-                               : proxy.size.width * 0.6,
-                               alignment: .leading)
+                    Text(sequential.displayName)
+                        .font(Theme.Fonts.titleSmall)
                         .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }.foregroundColor(Theme.Colors.textPrimary)
+                        .lineLimit(1)
+                }
+                .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
-                if let state = viewModel.verticalsDownloadState[courseVertical.id] {
-                    switch state {
-                    case .available:
-                        DownloadAvailableView()
-                            .onTapGesture {
-                                viewModel.onDownloadViewTap(
-                                    courseVertical: courseVertical,
-                                    state: state
-                                )
-                            }
-                            .onForeground {
-                                viewModel.onForeground()
-                            }
-                    case .downloading:
-                        DownloadProgressView()
-                            .onTapGesture {
-                                viewModel.onDownloadViewTap(
-                                    courseVertical: courseVertical,
-                                    state: state
-                                )
-                            }
-                            .onBackground {
-                                viewModel.onBackground()
-                            }
-                    case .finished:
-                        DownloadFinishedView()
-                            .onTapGesture {
-                                viewModel.onDownloadViewTap(
-                                    courseVertical: courseVertical,
-                                    state: state
-                                )
-                            }
-                    }
+                downloadButton(
+                    sequential: sequential,
+                    chapter: chapter
+                )
+                let downloadable = viewModel.verticalsBlocksDownloadable(by: sequential)
+                if !downloadable.isEmpty {
+                    Text(String(downloadable.count))
+                        .foregroundColor(Color(UIColor.label))
                 }
             }
-        })
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(courseVertical.displayName)
-        .padding(.leading, 40)
-        .padding(.trailing, 28)
-        .padding(.vertical, 14)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(sequential.displayName)
+            .padding(.leading, 20)
+            .padding(.trailing, 28)
+            .padding(.vertical, 14)
+        }
     }
 
-    private func verticalImage(childs: [CourseBlock]) -> Image {
-        if childs.contains(where: { $0.type == .problem }) {
-            return CoreAssets.pen.swiftUIImage.renderingMode(.template)
-        } else if childs.contains(where: { $0.type == .video }) {
-            return CoreAssets.video.swiftUIImage.renderingMode(.template)
-        } else if childs.contains(where: { $0.type == .discussion }) {
-            return CoreAssets.discussion.swiftUIImage.renderingMode(.template)
-        } else if childs.contains(where: { $0.type == .html }) {
-            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
-        } else {
-            return CoreAssets.extra.swiftUIImage.renderingMode(.template)
+    @ViewBuilder
+    private func downloadButton(
+        sequential: CourseSequential,
+        chapter: CourseChapter
+    ) -> some View {
+        if let state = viewModel.sequentialsDownloadState[sequential.id] {
+            switch state {
+            case .available:
+                DownloadAvailableView()
+                    .onTapGesture {
+                        viewModel.onDownloadViewTap(
+                            chapter: chapter,
+                            blockId: chapter.id,
+                            state: state
+                        )
+                    }
+                    .onForeground {
+                        viewModel.onForeground()
+                    }
+            case .downloading:
+                DownloadProgressView()
+                    .onTapGesture {
+                        viewModel.onDownloadViewTap(
+                            chapter: chapter,
+                            blockId: chapter.id,
+                            state: state
+                        )
+                    }
+                    .onBackground {
+                        viewModel.onBackground()
+                    }
+            case .finished:
+                DownloadFinishedView()
+                    .onTapGesture {
+                        viewModel.onDownloadViewTap(
+                            chapter: chapter,
+                            blockId: chapter.id,
+                            state: state
+                        )
+                    }
+            }
         }
+    }
+
+    private func onHeaderClick(chapter: CourseChapter) {
+        if let index = isExpandedIds.firstIndex(where: {$0 == chapter.id}) {
+            isExpandedIds.remove(at: index)
+        } else {
+            isExpandedIds.append(chapter.id)
+        }
+    }
+
+    private func onLabelClick(
+        sequential: CourseSequential,
+        chapter: CourseChapter
+    ) {
+        guard let chapterIndex = course.childs.firstIndex(
+            where: { $0.id == chapter.id }
+        ) else {
+            return
+        }
+
+        guard let sequentialIndex = chapter.childs.firstIndex(
+            where: { $0.id == sequential.id }
+        ) else {
+            return
+        }
+
+        guard let courseVertical = sequential.childs.first else {
+            return
+        }
+
+        guard let block = courseVertical.childs.first else {
+            return
+        }
+
+        viewModel.trackVerticalClicked(
+            courseId: viewModel.courseStructure?.id ?? "",
+            courseName: viewModel.courseStructure?.displayName ?? "",
+            vertical: courseVertical
+        )
+        viewModel.router.showCourseUnit(
+            courseName: viewModel.courseStructure?.displayName ?? "",
+            blockId: block.id,
+            courseID: viewModel.courseStructure?.id ?? "",
+            sectionName: block.displayName,
+            verticalIndex: 0,
+            chapters: course.childs,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+
     }
 
 }

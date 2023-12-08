@@ -20,6 +20,7 @@
 "ERROR.USER_NOT_ACTIVE" = "User account is not activated. Please activate your account first.";
 "ERROR.UNKNOWN_ERROR" = "Something went wrong";
 "ERROR.WIFI" = "You can only download files over Wi-Fi. You can change this in the settings.";
+"ERROR.AUTHORIZATION_FAILED" = "Authorization failed.";
 
 "COURSEWARE.COURSE_CONTENT" = "Course content";
 "COURSEWARE.COURSE_UNITS" = "Course units";
@@ -92,4 +93,6 @@
 "COURSE_DATES.DUE_NEXT" = "Due next";
 "COURSE_DATES.UNRELEASED" = "Unreleased";
 "COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
+
+"SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 
