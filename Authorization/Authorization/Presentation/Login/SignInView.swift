@@ -129,6 +129,15 @@ public struct SignInView: View {
                                     .padding(.top, 40)
                             }
                         }
+                        if viewModel.socialAuthEnabled {
+                            SocialAuthView(
+                                viewModel: .init(
+                                    config: viewModel.config
+                                ) { result in
+                                    Task { await viewModel.login(with: result) }
+                                }
+                            )
+                        }
                         Spacer()
                     }
                     .padding(.horizontal, 24)
@@ -180,7 +189,7 @@ struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = SignInViewModel(
             interactor: AuthInteractor.mock,
-            router: AuthorizationRouterMock(), 
+            router: AuthorizationRouterMock(),
             config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator()

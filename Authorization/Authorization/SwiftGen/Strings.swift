@@ -10,13 +10,33 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum AuthLocalization {
+  /// Apple
+  public static let apple = AuthLocalization.tr("Localizable", "APPLE", fallback: "Apple")
+  /// Facebook
+  public static let facebook = AuthLocalization.tr("Localizable", "FACEBOOK", fallback: "Facebook")
+  /// Google
+  public static let google = AuthLocalization.tr("Localizable", "GOOGLE", fallback: "Google")
+  /// Microsoft
+  public static let microsoft = AuthLocalization.tr("Localizable", "MICROSOFT", fallback: "Microsoft")
+  /// Or
+  public static let or = AuthLocalization.tr("Localizable", "OR", fallback: "Or")
+  /// Register with
+  public static let registerWith = AuthLocalization.tr("Localizable", "REGISTER_WITH", fallback: "Register with")
+  /// Sign in with
+  public static let signInWith = AuthLocalization.tr("Localizable", "SIGN_IN_WITH", fallback: "Sign in with")
   public enum Error {
+    /// This %@ account is not linked with any %@ account. Please register.
+    public static func accountNotRegistered(_ p1: Any, _ p2: Any) -> String {
+      return AuthLocalization.tr("Localizable", "ERROR.ACCOUNT_NOT_REGISTERED", String(describing: p1), String(describing: p2), fallback: "This %@ account is not linked with any %@ account. Please register.")
+    }
+    /// Your account is disabled. Please contact customer support for assistance.
+    public static let disabledAccount = AuthLocalization.tr("Localizable", "ERROR.DISABLED_ACCOUNT", fallback: "Your account is disabled. Please contact customer support for assistance.")
     /// Invalid email address
     public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
     /// Invalid email or username
     public static let invalidEmailAddressOrUsername = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME", fallback: "Invalid email or username")
-    /// Invalid password length
-    public static let invalidPasswordLength = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGTH", fallback: "Invalid password length")
+    /// Invalid password lenght
+    public static let invalidPasswordLenght = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGHT", fallback: "Invalid password lenght")
   }
   public enum Forgot {
     /// We have sent a password recover instructions to your email 
@@ -60,6 +80,10 @@ public enum AuthLocalization {
     public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
     /// Create new account.
     public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create new account.")
+    /// You've successfully signed in.
+    public static let successSigninLabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_LABEL", fallback: "You've successfully signed in.")
+    /// We just need a little more information before you start learning.
+    public static let successSigninSublabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_SUBLABEL", fallback: "We just need a little more information before you start learning.")
     /// Sign up
     public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
   }

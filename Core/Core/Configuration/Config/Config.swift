@@ -13,10 +13,16 @@ public protocol ConfigProtocol {
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
     var appStoreLink: String { get }
+    var platformName: String { get }
     var agreement: AgreementConfig { get }
     var firebase: FirebaseConfig { get }
+    var facebook: FacebookConfig { get }
+    var microsoft: MicrosoftConfig { get }
+    var google: GoogleConfig { get }
+    var appleSignIn: AppleSignInConfig { get }
     var features: FeaturesConfig { get }
     var theme: ThemeConfig { get }
+    var uiComponents: UIComponentsConfig { get }
 }
 
 public enum TokenType: String {
@@ -120,7 +126,11 @@ extension Config: ConfigProtocol {
     public var feedbackEmail: String {
         return string(for: ConfigKeys.feedbackEmailAddress.rawValue) ?? ""
     }
-    
+
+    public var platformName: String {
+        return string(for: ConfigKeys.platformName.rawValue) ?? ""
+    }
+
     private var appStoreId: String {
         return string(for: ConfigKeys.appstoreID.rawValue) ?? "0000000000"
     }
@@ -137,11 +147,28 @@ public class ConfigMock: Config {
         "API_HOST_URL": "https://www.example.com",
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
+        "PLATFORM_NAME": "OpenEdx",
         "TOKEN_TYPE": "JWT",
         "WHATS_NEW_ENABLED": false,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos"
+        ],
+        "GOOGLE": [
+            "ENABLED": true,
+            "CLIENT_ID": "clientId"
+        ],
+        "FACEBOOK": [
+            "ENABLED": true,
+            "FACEBOOK_APP_ID": "facebookAppId",
+            "CLIENT_TOKEN": "client_token"
+        ],
+        "MICROSOFT": [
+            "ENABLED": true,
+            "APP_ID": "appId"
+        ],
+        "APPLE_SIGNIN": [
+            "ENABLED": true
         ]
     ]
     
