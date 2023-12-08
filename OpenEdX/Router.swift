@@ -302,7 +302,11 @@ public class Router: AuthorizationRouter,
             sequentialIndex,
             verticalIndex
         )!
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
+        
+        let config = Container.shared.resolve(ConfigProtocol.self)
+        let isDropdownActive = config?.uiComponents.isVerticalsMenuEnabled ?? false
+        
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -315,7 +319,8 @@ public class Router: AuthorizationRouter,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     ) {
         
         let vmVertical = Container.shared.resolve(
@@ -343,12 +348,16 @@ public class Router: AuthorizationRouter,
             sequentialIndex,
             verticalIndex
         )!
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
+
+        let config = Container.shared.resolve(ConfigProtocol.self)
+        let isDropdownActive = config?.uiComponents.isVerticalsMenuEnabled ?? false
+        
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
         let controllerUnit = UIHostingController(rootView: view)
         var controllers = navigationController.viewControllers
         controllers.removeLast(2)
         controllers.append(contentsOf: [controllerVertical, controllerUnit])
-        navigationController.setViewControllers(controllers, animated: true)
+        navigationController.setViewControllers(controllers, animated: animated)
     }
     
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {

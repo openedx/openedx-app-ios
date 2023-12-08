@@ -180,4 +180,21 @@ public class CourseUnitViewModel: ObservableObject {
     func trackFinishVerticalBackToOutlineClicked() {
         analytics.finishVerticalBackToOutlineClicked(courseId: courseID, courseName: courseName)
     }
+    
+    func route(to vertical: CourseVertical) {
+        if let index = verticals.firstIndex(where: { $0.id == vertical.id }),
+            let block = vertical.childs.first {
+            router.replaceCourseUnit(
+                courseName: courseName,
+                blockId: block.id,
+                courseID: courseID,
+                sectionName: block.displayName,
+                verticalIndex: index,
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex,
+                animated: false
+            )
+        }
+    }
 }
