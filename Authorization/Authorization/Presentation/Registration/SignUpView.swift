@@ -67,7 +67,17 @@ public struct SignUpView: View {
                                     .font(Theme.Fonts.titleSmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
-                                
+
+                                if viewModel.thirdPartyAuthSuccess {
+                                    Text(AuthLocalization.SignUp.successSigninLabel)
+                                        .font(Theme.Fonts.titleMedium)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                    Text(AuthLocalization.SignUp.successSigninSublabel)
+                                        .font(Theme.Fonts.titleSmall)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                        .padding(.bottom, 20)
+                                }
+
                                 let requiredFields = viewModel.fields.filter {$0.field.required}
                                 let nonRequiredFields = viewModel.fields.filter {!$0.field.required}
                                 
@@ -98,14 +108,26 @@ public struct SignUpView: View {
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
+                                        viewModel.thirdPartyAuthSuccess = false
                                         Task {
                                             await viewModel.registerUser()
                                         }
                                         viewModel.trackCreateAccountClicked()
                                     }
                                     .padding(.top, 40)
-                                    .padding(.bottom, 80)
                                     .frame(maxWidth: .infinity)
+                                }
+                                if viewModel.socialAuthEnabled,
+                                    !requiredFields.isEmpty {
+                                    SocialAuthView(
+                                        authType: .register,
+                                        viewModel: .init(
+                                            config: viewModel.config
+                                        ) { result in
+                                            Task { await viewModel.register(with: result) }
+                                        }
+                                    )
+                                    .padding(.bottom, 30)
                                 }
                                 Spacer()
                             }

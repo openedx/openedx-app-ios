@@ -227,11 +227,28 @@ public class CourseUnitViewModel: ObservableObject {
         } else {
             return nil
         }
-
+        
         if let vertical = vertical(for: resultData), vertical.childs.count > 0 {
             return resultData
         } else {
             return nextData(from: resultData)
+        }
+    }
+
+    func route(to vertical: CourseVertical) {
+        if let index = verticals.firstIndex(where: { $0.id == vertical.id }),
+            let block = vertical.childs.first {
+            router.replaceCourseUnit(
+                courseName: courseName,
+                blockId: block.id,
+                courseID: courseID,
+                sectionName: block.displayName,
+                verticalIndex: index,
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex,
+                animated: false
+            )
         }
     }
 }
