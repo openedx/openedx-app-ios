@@ -9,13 +9,19 @@ import Foundation
 
 private enum Keys: String {
     case isVerticalsMenuEnabled = "VERTICALS_MENU_ENABLED"
+    case courseExpandableSectionsEnabled = "COURSE_EXPANDABLE_SECTIONS_ENABLED"
+    case courseBannerEnabled = "COURSE_BANNER_ENABLED"
 }
 
 public class UIComponentsConfig: NSObject {
     public var isVerticalsMenuEnabled: Bool = false
-    
+    public var courseExpandableSectionsEnabled: Bool
+    public var courseBannerEnabled: Bool
+
     init(dictionary: [String: Any]) {
         isVerticalsMenuEnabled = dictionary[Keys.isVerticalsMenuEnabled.rawValue] as? Bool ?? false
+        courseExpandableSectionsEnabled = dictionary[Keys.courseExpandableSectionsEnabled.rawValue] as? Bool ?? false
+        courseBannerEnabled = dictionary[Keys.courseBannerEnabled.rawValue] as? Bool ?? false
         super.init()
     }
 }

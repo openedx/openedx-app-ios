@@ -357,7 +357,7 @@ public class Router: AuthorizationRouter,
         var controllers = navigationController.viewControllers
 
         if let config = container.resolve(ConfigProtocol.self),
-            config.features.courseExpandableSectionsEnabled {
+            config.uiComponents.courseExpandableSectionsEnabled {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {

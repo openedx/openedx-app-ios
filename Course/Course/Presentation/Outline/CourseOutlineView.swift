@@ -42,7 +42,7 @@ public struct CourseOutlineView: View {
                         await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
                     }) {
                         VStack(alignment: .leading) {
-                            if viewModel.config.features.courseBannerEnabled {
+                            if viewModel.config.uiComponents.courseBannerEnabled {
                                 courseBanner(proxy: proxy)
                             }
 
@@ -77,7 +77,7 @@ public struct CourseOutlineView: View {
                                 : viewModel.courseStructure {
                                 
                                 // MARK: - Sections
-                                if viewModel.config.features.courseExpandableSectionsEnabled {
+                                if viewModel.config.uiComponents.courseExpandableSectionsEnabled {
                                     CourseExpandableContentView(
                                         proxy: proxy,
                                         course: course,
