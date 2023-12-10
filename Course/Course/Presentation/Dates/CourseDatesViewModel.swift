@@ -73,14 +73,14 @@ public class CourseDatesViewModel: ObservableObject {
     }
     
     func showCourseDetails(componentID: String) async {
-            do {
-                let courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
-                router.showCourseComponent(
-                    componentID: componentID,
-                    courseStructure: courseStructure
-                )
-            } catch let error {
-                print(error)
-            }
+        do {
+            let courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
+            router.showCourseComponent(
+                componentID: componentID,
+                courseStructure: courseStructure
+            )
+        } catch _ {
+            errorMessage = CourseLocalization.Error.componentNotFount
         }
+    }
 }
