@@ -37,16 +37,6 @@ struct CourseExpandableContentView: View {
             header: { isExpanded in header(chapter: chapter, isExpanded: isExpanded) },
             content: { section(chapter: chapter) }
         )
-        .background(
-            Color(UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.00))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                .foregroundColor(Color(UIColor(red: 0.80, green: 0.83, blue: 0.88, alpha: 1.00)))
-        )
-        .padding(.vertical, 2.5)
-        .padding(.horizontal, 15)
     }
 
     private func header(
@@ -60,16 +50,8 @@ struct CourseExpandableContentView: View {
                 .lineLimit(1)
                 .foregroundColor(Theme.Colors.textPrimary)
             Spacer()
-            if isExpanded {
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.black)
-                    .rotationEffect(.degrees(90))
-            } else {
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.black)
-            }
         }
-        .padding(.horizontal, 15)
+        .padding(.horizontal, 30)
         .padding(.vertical, 15)
     }
 
@@ -104,7 +86,7 @@ struct CourseExpandableContentView: View {
                         sequential.type.image
                     }
                     Text(sequential.displayName)
-                        .font(Theme.Fonts.titleSmall)
+                        .font(Theme.Fonts.titleMedium)
                         .multilineTextAlignment(.leading)
                         .lineLimit(1)
                 }
@@ -122,7 +104,7 @@ struct CourseExpandableContentView: View {
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(sequential.displayName)
-            .padding(.leading, 20)
+            .padding(.leading, 40)
             .padding(.trailing, 28)
             .padding(.vertical, 14)
         }
