@@ -98,7 +98,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                             }
                         }
                     } else {
-                        courseStructure = try await interactor.getCourseBlocksOffline(courseID: courseID)
+                        courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
                     }
                     courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
                     setDownloadsStates()

@@ -32,6 +32,7 @@
 
 "ERROR.NO_INTERNET" = "You are not connected to the Internet. Please check your Internet connection.";
 "ERROR.RELOAD" = "Reload";
+"ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 
 "ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
 

@@ -60,6 +60,11 @@ public protocol CourseRouter: BaseRouter {
         router: Course.CourseRouter,
         cssInjector: CSSInjector
     )
+    
+    func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
+    )
 }
 
 // Mark - For testing and SwiftUI preview
@@ -117,6 +122,11 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
         cssInjector: CSSInjector
+    ) {}
+    
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
     ) {}
     
 }
