@@ -144,7 +144,7 @@ public struct SubtitleUrl: Equatable {
     }
 }
 
-public struct CourseBlock: Equatable {
+public struct CourseBlock: Equatable, Identifiable {
     public let blockId: String
     public let id: String
     public let courseId: String

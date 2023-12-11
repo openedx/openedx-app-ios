@@ -295,7 +295,7 @@ public struct CourseUnitView: View {
                                 }
                             }
                         }
-                        VStack {
+                        VStack(spacing: 0) {
                             NavigationBar(
                                 title: isDropdownActive ? sequenceTitle : "",
                                 leftButtonAction: {
@@ -311,6 +311,8 @@ public struct CourseUnitView: View {
                                 .padding(.top, 0)
                                 .offset(y: -25)
                             }
+                            LessonLineProgressView(viewModel: viewModel)
+                                .padding(.bottom, 5)
                             Spacer()
                         }
                         HStack(alignment: .center) {
