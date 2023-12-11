@@ -12,6 +12,10 @@ import FirebaseCore
 import FirebaseAnalytics
 import FirebaseCrashlytics
 import Profile
+import GoogleSignIn
+import FacebookCore
+import MSAL
+import Theme
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,15 +34,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
         initDI()
         
-        if let config = Container.shared.resolve(ConfigProtocol.self),
-           let configuration = config.firebase.firebaseOptions {
-            FirebaseApp.configure(options: configuration)
-            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        if let config = Container.shared.resolve(ConfigProtocol.self) {
+            if let configuration = config.firebase.firebaseOptions {
+                FirebaseApp.configure(options: configuration)
+                Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+            }
+
+            if config.facebook.enabled {
+                ApplicationDelegate.shared.application(
+                    application,
+                    didFinishLaunchingWithOptions: launchOptions
+                )
+            }
         }
-        
+
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = RouteController()
@@ -52,6 +63,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         return true
+    }
+
+    func application(
+        _ app: UIApplication,
+        open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        if let config = Container.shared.resolve(ConfigProtocol.self) {
+            if config.facebook.enabled {
+                ApplicationDelegate.shared.application(
+                    app,
+                    open: url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                    annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+                )
+            }
+
+            if config.google.enabled {
+                return GIDSignIn.sharedInstance.handle(url)
+            }
+
+            if config.microsoft.enabled {
+                return MSALPublicClientApplication.handleMSALResponse(
+                    url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+                )
+            }
+        }
+
+        return false
     }
 
     private func initDI() {

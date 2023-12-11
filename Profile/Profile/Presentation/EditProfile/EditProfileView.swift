@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct EditProfileView: View {
     
@@ -48,7 +49,7 @@ public struct EditProfileView: View {
                                     Circle().frame(width: 36, height: 36)
                                         .foregroundColor(Theme.Colors.accentColor)
                                     CoreAssets.addPhoto.swiftUIImage
-                                        .foregroundColor(.white)
+                                        .foregroundColor(Theme.Colors.white)
                                 }.offset(x: 36, y: 50)
                             )
                     }).disabled(!viewModel.isEditable)

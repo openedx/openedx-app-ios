@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Kingfisher
+import Theme
 
 public struct ProfileView: View {
     
@@ -18,7 +19,7 @@ public struct ProfileView: View {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self._settingsTapped = settingsTapped
     }
-    
+
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body

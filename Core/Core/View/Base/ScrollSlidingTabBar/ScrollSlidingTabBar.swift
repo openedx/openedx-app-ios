@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct ScrollSlidingTabBar: View {
 
@@ -162,7 +163,7 @@ extension ScrollSlidingTabBar {
         public static let `default` = Style(
             font: .body,
             selectedFont: .body.bold(),
-            activeAccentColor: .blue,
+            activeAccentColor: Theme.Colors.accentColor ,
             inactiveAccentColor: .black.opacity(0.4),
             indicatorHeight: 2,
             borderColor: .gray.opacity(0.2),

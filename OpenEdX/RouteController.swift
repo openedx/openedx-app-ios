@@ -36,17 +36,24 @@ class RouteController: UIViewController {
             }
         } else {
             DispatchQueue.main.async {
-                self.showAuthorization()
+                self.showStartupScreen()
             }
         }
     }
     
-    private func showAuthorization() {
-        let controller = UIHostingController(
-            rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
-        )
-        navigation.viewControllers = [controller]
-        present(navigation, animated: false)
+    private func showStartupScreen() {
+        if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
+            let controller = UIHostingController(
+                rootView: StartupView(viewModel: diContainer.resolve(StartupViewModel.self)!))
+            navigation.viewControllers = [controller]
+            present(navigation, animated: false)
+        } else {
+            let controller = UIHostingController(
+                rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
+            )
+            navigation.viewControllers = [controller]
+            present(navigation, animated: false)
+        }
     }
     
     private func showMainOrWhatsNewScreen() {

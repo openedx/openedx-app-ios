@@ -85,7 +85,19 @@ public class Router: AuthorizationRouter,
     public func showLoginScreen() {
         let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
         let controller = UIHostingController(rootView: view)
-        navigationController.setViewControllers([controller], animated: false)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showStartupScreen() {
+        if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
+            let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
+            let controller = UIHostingController(rootView: view)
+            navigationController.setViewControllers([controller], animated: true)
+        } else {
+            let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+            let controller = UIHostingController(rootView: view)
+            navigationController.setViewControllers([controller], animated: false)
+        }
     }
     
     public func presentAppReview() {
@@ -175,12 +187,23 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showDiscoverySearch() {
+    public func showDiscoverySearch(searchQuery: String? = nil) {
         let viewModel = Container.shared.resolve(SearchViewModel<RunLoop>.self)!
-        let view = SearchView(viewModel: viewModel)
+        let view = SearchView(viewModel: viewModel, searchQuery: searchQuery)
         
         let controller = UIHostingController(rootView: view)
         navigationController.pushFade(viewController: controller)
+    }
+    
+    public func showDiscoveryScreen(searchQuery: String? = nil, fromStartupScreen: Bool = false) {
+        let view = DiscoveryView(
+            viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
+            router: Container.shared.resolve(DiscoveryRouter.self)!,
+            searchQuery: searchQuery,
+            fromStartupScreen: fromStartupScreen
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showDiscussionsSearch(courseID: String) {
@@ -279,10 +302,42 @@ public class Router: AuthorizationRouter,
             sequentialIndex,
             verticalIndex
         )!
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
+        
+        let config = Container.shared.resolve(ConfigProtocol.self)
+        let isDropdownActive = config?.uiComponents.isVerticalsMenuEnabled ?? false
+        
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
+    
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure) {
+            courseStructure.childs.enumerated().forEach { chapterIndex, chapter in
+                chapter.childs.enumerated().forEach { sequentialIndex, sequential in
+                    sequential.childs.enumerated().forEach { verticalIndex, vertical in
+                        vertical.childs.forEach { block in
+                            if block.id == componentID {
+                                DispatchQueue.main.async { [weak self] in
+                                    guard let self else { return }
+                                    self.showCourseUnit(
+                                        courseName: courseStructure.displayName,
+                                        blockId: block.blockId,
+                                        courseID: courseStructure.id,
+                                        sectionName: sequential.displayName,
+                                        verticalIndex: verticalIndex,
+                                        chapters: courseStructure.childs,
+                                        chapterIndex: chapterIndex,
+                                        sequentialIndex: sequentialIndex)
+                                }
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+        }
     
     public func replaceCourseUnit(
         courseName: String,
@@ -292,7 +347,8 @@ public class Router: AuthorizationRouter,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     ) {
         
         let vmVertical = Container.shared.resolve(
@@ -320,12 +376,16 @@ public class Router: AuthorizationRouter,
             sequentialIndex,
             verticalIndex
         )!
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName)
+
+        let config = Container.shared.resolve(ConfigProtocol.self)
+        let isDropdownActive = config?.uiComponents.isVerticalsMenuEnabled ?? false
+        
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
         let controllerUnit = UIHostingController(rootView: view)
         var controllers = navigationController.viewControllers
         controllers.removeLast(2)
         controllers.append(contentsOf: [controllerVertical, controllerUnit])
-        navigationController.setViewControllers(controllers, animated: true)
+        navigationController.setViewControllers(controllers, animated: animated)
     }
     
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {

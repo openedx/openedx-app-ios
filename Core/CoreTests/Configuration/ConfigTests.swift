@@ -32,7 +32,24 @@ class ConfigTests: XCTestCase {
             "REVERSED_CLIENT_ID": "testReversedClientID",
             "STORAGE_BUCKET": "testStorageBucket",
             "ANALYTICS_SOURCE": "firebase",
-            "CLOUD_MESSAGING_ENABLED": true]
+            "CLOUD_MESSAGING_ENABLED": true
+        ],
+        "GOOGLE": [
+            "ENABLED": true,
+            "CLIENT_ID": "clientId"
+        ],
+        "FACEBOOK": [
+            "ENABLED": true,
+            "FACEBOOK_APP_ID": "facebookAppId",
+            "CLIENT_TOKEN": "client_token"
+        ],
+        "MICROSOFT": [
+            "ENABLED": true,
+            "APP_ID": "appId"
+        ],
+        "APPLE_SIGNIN": [
+            "ENABLED": true
+        ]
     ]
     
     func testConfigInitialization() {
@@ -73,5 +90,33 @@ class ConfigTests: XCTestCase {
         XCTAssertEqual(config.firebase.storageBucket, "testStorageBucket")
         XCTAssertEqual(config.firebase.isAnalyticsSourceFirebase, true)
         XCTAssertEqual(config.firebase.cloudMessagingEnabled, true)
+    }
+
+    func testGoogleConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.google.enabled)
+        XCTAssertEqual(config.google.clientID, "clientId")
+    }
+
+    func testFacebookConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.facebook.enabled)
+        XCTAssertEqual(config.facebook.appID, "facebookAppId")
+        XCTAssertEqual(config.facebook.clientToken, "client_token")
+    }
+
+    func testMicrosoftConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.microsoft.enabled)
+        XCTAssertEqual(config.microsoft.appID, "appId")
+    }
+
+    func testAppleConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.appleSignIn.enabled)
     }
 }

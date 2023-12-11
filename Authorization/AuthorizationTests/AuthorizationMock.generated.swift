@@ -76,6 +76,23 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		return __value
     }
 
+    @discardableResult
+	open func login(externalToken: String, backend: String) throws -> User {
+        addInvocation(.m_login__externalToken_externalTokenbackend_backend(Parameter<String>.value(`externalToken`), Parameter<String>.value(`backend`)))
+		let perform = methodPerformValue(.m_login__externalToken_externalTokenbackend_backend(Parameter<String>.value(`externalToken`), Parameter<String>.value(`backend`))) as? (String, String) -> Void
+		perform?(`externalToken`, `backend`)
+		var __value: User
+		do {
+		    __value = try methodReturnValue(.m_login__externalToken_externalTokenbackend_backend(Parameter<String>.value(`externalToken`), Parameter<String>.value(`backend`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for login(externalToken: String, backend: String). Use given")
+			Failure("Stub return value not specified for login(externalToken: String, backend: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
     open func resetPassword(email: String) throws -> ResetPassword {
         addInvocation(.m_resetPassword__email_email(Parameter<String>.value(`email`)))
 		let perform = methodPerformValue(.m_resetPassword__email_email(Parameter<String>.value(`email`))) as? (String) -> Void
@@ -121,16 +138,16 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		return __value
     }
 
-    open func registerUser(fields: [String: String]) throws -> User {
-        addInvocation(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`)))
-		let perform = methodPerformValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))) as? ([String: String]) -> Void
-		perform?(`fields`)
+    open func registerUser(fields: [String: String], isSocial: Bool) throws -> User {
+        addInvocation(.m_registerUser__fields_fieldsisSocial_isSocial(Parameter<[String: String]>.value(`fields`), Parameter<Bool>.value(`isSocial`)))
+		let perform = methodPerformValue(.m_registerUser__fields_fieldsisSocial_isSocial(Parameter<[String: String]>.value(`fields`), Parameter<Bool>.value(`isSocial`))) as? ([String: String], Bool) -> Void
+		perform?(`fields`, `isSocial`)
 		var __value: User
 		do {
-		    __value = try methodReturnValue(.m_registerUser__fields_fields(Parameter<[String: String]>.value(`fields`))).casted()
+		    __value = try methodReturnValue(.m_registerUser__fields_fieldsisSocial_isSocial(Parameter<[String: String]>.value(`fields`), Parameter<Bool>.value(`isSocial`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for registerUser(fields: [String: String]). Use given")
-			Failure("Stub return value not specified for registerUser(fields: [String: String]). Use given")
+			onFatalFailure("Stub return value not specified for registerUser(fields: [String: String], isSocial: Bool). Use given")
+			Failure("Stub return value not specified for registerUser(fields: [String: String], isSocial: Bool). Use given")
 		} catch {
 		    throw error
 		}
@@ -156,10 +173,11 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 
     fileprivate enum MethodType {
         case m_login__username_usernamepassword_password(Parameter<String>, Parameter<String>)
+        case m_login__externalToken_externalTokenbackend_backend(Parameter<String>, Parameter<String>)
         case m_resetPassword__email_email(Parameter<String>)
         case m_getCookies__force_force(Parameter<Bool>)
         case m_getRegistrationFields
-        case m_registerUser__fields_fields(Parameter<[String: String]>)
+        case m_registerUser__fields_fieldsisSocial_isSocial(Parameter<[String: String]>, Parameter<Bool>)
         case m_validateRegistrationFields__fields_fields(Parameter<[String: String]>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -168,6 +186,12 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUsername, rhs: rhsUsername, with: matcher), lhsUsername, rhsUsername, "username"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPassword, rhs: rhsPassword, with: matcher), lhsPassword, rhsPassword, "password"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_login__externalToken_externalTokenbackend_backend(let lhsExternaltoken, let lhsBackend), .m_login__externalToken_externalTokenbackend_backend(let rhsExternaltoken, let rhsBackend)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsExternaltoken, rhs: rhsExternaltoken, with: matcher), lhsExternaltoken, rhsExternaltoken, "externalToken"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBackend, rhs: rhsBackend, with: matcher), lhsBackend, rhsBackend, "backend"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_resetPassword__email_email(let lhsEmail), .m_resetPassword__email_email(let rhsEmail)):
@@ -182,9 +206,10 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 
             case (.m_getRegistrationFields, .m_getRegistrationFields): return .match
 
-            case (.m_registerUser__fields_fields(let lhsFields), .m_registerUser__fields_fields(let rhsFields)):
+            case (.m_registerUser__fields_fieldsisSocial_isSocial(let lhsFields, let lhsIssocial), .m_registerUser__fields_fieldsisSocial_isSocial(let rhsFields, let rhsIssocial)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFields, rhs: rhsFields, with: matcher), lhsFields, rhsFields, "fields"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIssocial, rhs: rhsIssocial, with: matcher), lhsIssocial, rhsIssocial, "isSocial"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_validateRegistrationFields__fields_fields(let lhsFields), .m_validateRegistrationFields__fields_fields(let rhsFields)):
@@ -198,20 +223,22 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_login__username_usernamepassword_password(p0, p1): return p0.intValue + p1.intValue
+            case let .m_login__externalToken_externalTokenbackend_backend(p0, p1): return p0.intValue + p1.intValue
             case let .m_resetPassword__email_email(p0): return p0.intValue
             case let .m_getCookies__force_force(p0): return p0.intValue
             case .m_getRegistrationFields: return 0
-            case let .m_registerUser__fields_fields(p0): return p0.intValue
+            case let .m_registerUser__fields_fieldsisSocial_isSocial(p0, p1): return p0.intValue + p1.intValue
             case let .m_validateRegistrationFields__fields_fields(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_login__username_usernamepassword_password: return ".login(username:password:)"
+            case .m_login__externalToken_externalTokenbackend_backend: return ".login(externalToken:backend:)"
             case .m_resetPassword__email_email: return ".resetPassword(email:)"
             case .m_getCookies__force_force: return ".getCookies(force:)"
             case .m_getRegistrationFields: return ".getRegistrationFields()"
-            case .m_registerUser__fields_fields: return ".registerUser(fields:)"
+            case .m_registerUser__fields_fieldsisSocial_isSocial: return ".registerUser(fields:isSocial:)"
             case .m_validateRegistrationFields__fields_fields: return ".validateRegistrationFields(fields:)"
             }
         }
@@ -230,14 +257,18 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		public static func login(username: Parameter<String>, password: Parameter<String>, willReturn: User...) -> MethodStub {
             return Given(method: .m_login__username_usernamepassword_password(`username`, `password`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
+        @discardableResult
+		public static func login(externalToken: Parameter<String>, backend: Parameter<String>, willReturn: User...) -> MethodStub {
+            return Given(method: .m_login__externalToken_externalTokenbackend_backend(`externalToken`, `backend`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         public static func resetPassword(email: Parameter<String>, willReturn: ResetPassword...) -> MethodStub {
             return Given(method: .m_resetPassword__email_email(`email`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getRegistrationFields(willReturn: [PickerFields]...) -> MethodStub {
             return Given(method: .m_getRegistrationFields, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func registerUser(fields: Parameter<[String: String]>, willReturn: User...) -> MethodStub {
-            return Given(method: .m_registerUser__fields_fields(`fields`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func registerUser(fields: Parameter<[String: String]>, isSocial: Parameter<Bool>, willReturn: User...) -> MethodStub {
+            return Given(method: .m_registerUser__fields_fieldsisSocial_isSocial(`fields`, `isSocial`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func validateRegistrationFields(fields: Parameter<[String: String]>, willReturn: [String: String]...) -> MethodStub {
             return Given(method: .m_validateRegistrationFields__fields_fields(`fields`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -250,6 +281,18 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		public static func login(username: Parameter<String>, password: Parameter<String>, willProduce: (StubberThrows<User>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_login__username_usernamepassword_password(`username`, `password`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (User).self)
+			willProduce(stubber)
+			return given
+        }
+        @discardableResult
+		public static func login(externalToken: Parameter<String>, backend: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_login__externalToken_externalTokenbackend_backend(`externalToken`, `backend`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        @discardableResult
+		public static func login(externalToken: Parameter<String>, backend: Parameter<String>, willProduce: (StubberThrows<User>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_login__externalToken_externalTokenbackend_backend(`externalToken`, `backend`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (User).self)
 			willProduce(stubber)
 			return given
@@ -284,12 +327,12 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func registerUser(fields: Parameter<[String: String]>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_registerUser__fields_fields(`fields`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func registerUser(fields: Parameter<[String: String]>, isSocial: Parameter<Bool>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_registerUser__fields_fieldsisSocial_isSocial(`fields`, `isSocial`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func registerUser(fields: Parameter<[String: String]>, willProduce: (StubberThrows<User>) -> Void) -> MethodStub {
+        public static func registerUser(fields: Parameter<[String: String]>, isSocial: Parameter<Bool>, willProduce: (StubberThrows<User>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_registerUser__fields_fields(`fields`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_registerUser__fields_fieldsisSocial_isSocial(`fields`, `isSocial`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (User).self)
 			willProduce(stubber)
 			return given
@@ -311,10 +354,12 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 
         @discardableResult
 		public static func login(username: Parameter<String>, password: Parameter<String>) -> Verify { return Verify(method: .m_login__username_usernamepassword_password(`username`, `password`))}
+        @discardableResult
+		public static func login(externalToken: Parameter<String>, backend: Parameter<String>) -> Verify { return Verify(method: .m_login__externalToken_externalTokenbackend_backend(`externalToken`, `backend`))}
         public static func resetPassword(email: Parameter<String>) -> Verify { return Verify(method: .m_resetPassword__email_email(`email`))}
         public static func getCookies(force: Parameter<Bool>) -> Verify { return Verify(method: .m_getCookies__force_force(`force`))}
         public static func getRegistrationFields() -> Verify { return Verify(method: .m_getRegistrationFields)}
-        public static func registerUser(fields: Parameter<[String: String]>) -> Verify { return Verify(method: .m_registerUser__fields_fields(`fields`))}
+        public static func registerUser(fields: Parameter<[String: String]>, isSocial: Parameter<Bool>) -> Verify { return Verify(method: .m_registerUser__fields_fieldsisSocial_isSocial(`fields`, `isSocial`))}
         public static func validateRegistrationFields(fields: Parameter<[String: String]>) -> Verify { return Verify(method: .m_validateRegistrationFields__fields_fields(`fields`))}
     }
 
@@ -326,6 +371,10 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		public static func login(username: Parameter<String>, password: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .m_login__username_usernamepassword_password(`username`, `password`), performs: perform)
         }
+        @discardableResult
+		public static func login(externalToken: Parameter<String>, backend: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_login__externalToken_externalTokenbackend_backend(`externalToken`, `backend`), performs: perform)
+        }
         public static func resetPassword(email: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_resetPassword__email_email(`email`), performs: perform)
         }
@@ -335,8 +384,8 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         public static func getRegistrationFields(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_getRegistrationFields, performs: perform)
         }
-        public static func registerUser(fields: Parameter<[String: String]>, perform: @escaping ([String: String]) -> Void) -> Perform {
-            return Perform(method: .m_registerUser__fields_fields(`fields`), performs: perform)
+        public static func registerUser(fields: Parameter<[String: String]>, isSocial: Parameter<Bool>, perform: @escaping ([String: String], Bool) -> Void) -> Perform {
+            return Perform(method: .m_registerUser__fields_fieldsisSocial_isSocial(`fields`, `isSocial`), performs: perform)
         }
         public static func validateRegistrationFields(fields: Parameter<[String: String]>, perform: @escaping ([String: String]) -> Void) -> Perform {
             return Perform(method: .m_validateRegistrationFields__fields_fields(`fields`), performs: perform)
@@ -466,9 +515,9 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 		perform?(`id`)
     }
 
-    open func userLogin(method: LoginMethod) {
-        addInvocation(.m_userLogin__method_method(Parameter<LoginMethod>.value(`method`)))
-		let perform = methodPerformValue(.m_userLogin__method_method(Parameter<LoginMethod>.value(`method`))) as? (LoginMethod) -> Void
+    open func userLogin(method: AuthMethod) {
+        addInvocation(.m_userLogin__method_method(Parameter<AuthMethod>.value(`method`)))
+		let perform = methodPerformValue(.m_userLogin__method_method(Parameter<AuthMethod>.value(`method`))) as? (AuthMethod) -> Void
 		perform?(`method`)
     }
 
@@ -505,7 +554,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 
     fileprivate enum MethodType {
         case m_setUserID__id(Parameter<String>)
-        case m_userLogin__method_method(Parameter<LoginMethod>)
+        case m_userLogin__method_method(Parameter<AuthMethod>)
         case m_signUpClicked
         case m_createAccountClicked
         case m_registrationSuccess
@@ -579,7 +628,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
         fileprivate var method: MethodType
 
         public static func setUserID(_ id: Parameter<String>) -> Verify { return Verify(method: .m_setUserID__id(`id`))}
-        public static func userLogin(method: Parameter<LoginMethod>) -> Verify { return Verify(method: .m_userLogin__method_method(`method`))}
+        public static func userLogin(method: Parameter<AuthMethod>) -> Verify { return Verify(method: .m_userLogin__method_method(`method`))}
         public static func signUpClicked() -> Verify { return Verify(method: .m_signUpClicked)}
         public static func createAccountClicked() -> Verify { return Verify(method: .m_createAccountClicked)}
         public static func registrationSuccess() -> Verify { return Verify(method: .m_registrationSuccess)}
@@ -594,7 +643,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
         public static func setUserID(_ id: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_setUserID__id(`id`), performs: perform)
         }
-        public static func userLogin(method: Parameter<LoginMethod>, perform: @escaping (LoginMethod) -> Void) -> Perform {
+        public static func userLogin(method: Parameter<AuthMethod>, perform: @escaping (AuthMethod) -> Void) -> Perform {
             return Perform(method: .m_userLogin__method_method(`method`), performs: perform)
         }
         public static func signUpClicked(perform: @escaping () -> Void) -> Perform {
@@ -773,6 +822,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 		perform?()
     }
 
+    open func showStartupScreen() {
+        addInvocation(.m_showStartupScreen)
+		let perform = methodPerformValue(.m_showStartupScreen) as? () -> Void
+		perform?()
+    }
+
     open func showLoginScreen() {
         addInvocation(.m_showLoginScreen)
 		let perform = methodPerformValue(.m_showLoginScreen) as? () -> Void
@@ -789,6 +844,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         addInvocation(.m_showForgotPasswordScreen)
 		let perform = methodPerformValue(.m_showForgotPasswordScreen) as? () -> Void
 		perform?()
+    }
+
+    open func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool) {
+        addInvocation(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`)))
+		let perform = methodPerformValue(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`))) as? (String?, Bool) -> Void
+		perform?(`searchQuery`, `fromStartupScreen`)
     }
 
     open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, type: AlertViewType) {
@@ -824,9 +885,11 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
         case m_showMainOrWhatsNewScreen
+        case m_showStartupScreen
         case m_showLoginScreen
         case m_showRegisterScreen
         case m_showForgotPasswordScreen
+        case m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>, Parameter<Bool>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
@@ -863,11 +926,19 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 
             case (.m_showMainOrWhatsNewScreen, .m_showMainOrWhatsNewScreen): return .match
 
+            case (.m_showStartupScreen, .m_showStartupScreen): return .match
+
             case (.m_showLoginScreen, .m_showLoginScreen): return .match
 
             case (.m_showRegisterScreen, .m_showRegisterScreen): return .match
 
             case (.m_showForgotPasswordScreen, .m_showForgotPasswordScreen): return .match
+
+            case (.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let lhsSearchquery, let lhsFromstartupscreen), .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let rhsSearchquery, let rhsFromstartupscreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSearchquery, rhs: rhsSearchquery, with: matcher), lhsSearchquery, rhsSearchquery, "searchQuery"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFromstartupscreen, rhs: rhsFromstartupscreen, with: matcher), lhsFromstartupscreen, rhsFromstartupscreen, "fromStartupScreen"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let lhsAlerttitle, let lhsAlertmessage, let lhsPositiveaction, let lhsOnclosetapped, let lhsOktapped, let lhsType), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let rhsAlerttitle, let rhsAlertmessage, let rhsPositiveaction, let rhsOnclosetapped, let rhsOktapped, let rhsType)):
 				var results: [Matcher.ParameterComparisonResult] = []
@@ -915,9 +986,11 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
             case .m_showMainOrWhatsNewScreen: return 0
+            case .m_showStartupScreen: return 0
             case .m_showLoginScreen: return 0
             case .m_showRegisterScreen: return 0
             case .m_showForgotPasswordScreen: return 0
+            case let .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(p0, p1): return p0.intValue + p1.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
@@ -933,9 +1006,11 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
             case .m_showMainOrWhatsNewScreen: return ".showMainOrWhatsNewScreen()"
+            case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen: return ".showLoginScreen()"
             case .m_showRegisterScreen: return ".showRegisterScreen()"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
+            case .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen: return ".showDiscoveryScreen(searchQuery:fromStartupScreen:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
@@ -965,9 +1040,11 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
         public static func showMainOrWhatsNewScreen() -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen)}
+        public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen() -> Verify { return Verify(method: .m_showLoginScreen)}
         public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>) -> Verify { return Verify(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
@@ -999,6 +1076,9 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func showMainOrWhatsNewScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showMainOrWhatsNewScreen, performs: perform)
         }
+        public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showStartupScreen, performs: perform)
+        }
         public static func showLoginScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showLoginScreen, performs: perform)
         }
@@ -1007,6 +1087,9 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         }
         public static func showForgotPasswordScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showForgotPasswordScreen, performs: perform)
+        }
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>, perform: @escaping (String?, Bool) -> Void) -> Perform {
+            return Perform(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`), performs: perform)
         }
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)
@@ -1175,6 +1258,12 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?()
     }
 
+    open func showStartupScreen() {
+        addInvocation(.m_showStartupScreen)
+		let perform = methodPerformValue(.m_showStartupScreen) as? () -> Void
+		perform?()
+    }
+
     open func showLoginScreen() {
         addInvocation(.m_showLoginScreen)
 		let perform = methodPerformValue(.m_showLoginScreen) as? () -> Void
@@ -1191,6 +1280,12 @@ open class BaseRouterMock: BaseRouter, Mock {
         addInvocation(.m_showForgotPasswordScreen)
 		let perform = methodPerformValue(.m_showForgotPasswordScreen) as? () -> Void
 		perform?()
+    }
+
+    open func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool) {
+        addInvocation(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`)))
+		let perform = methodPerformValue(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`))) as? (String?, Bool) -> Void
+		perform?(`searchQuery`, `fromStartupScreen`)
     }
 
     open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, type: AlertViewType) {
@@ -1225,9 +1320,11 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
         case m_showMainOrWhatsNewScreen
+        case m_showStartupScreen
         case m_showLoginScreen
         case m_showRegisterScreen
         case m_showForgotPasswordScreen
+        case m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>, Parameter<Bool>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
@@ -1259,11 +1356,19 @@ open class BaseRouterMock: BaseRouter, Mock {
 
             case (.m_showMainOrWhatsNewScreen, .m_showMainOrWhatsNewScreen): return .match
 
+            case (.m_showStartupScreen, .m_showStartupScreen): return .match
+
             case (.m_showLoginScreen, .m_showLoginScreen): return .match
 
             case (.m_showRegisterScreen, .m_showRegisterScreen): return .match
 
             case (.m_showForgotPasswordScreen, .m_showForgotPasswordScreen): return .match
+
+            case (.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let lhsSearchquery, let lhsFromstartupscreen), .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let rhsSearchquery, let rhsFromstartupscreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSearchquery, rhs: rhsSearchquery, with: matcher), lhsSearchquery, rhsSearchquery, "searchQuery"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFromstartupscreen, rhs: rhsFromstartupscreen, with: matcher), lhsFromstartupscreen, rhsFromstartupscreen, "fromStartupScreen"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let lhsAlerttitle, let lhsAlertmessage, let lhsPositiveaction, let lhsOnclosetapped, let lhsOktapped, let lhsType), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let rhsAlerttitle, let rhsAlertmessage, let rhsPositiveaction, let rhsOnclosetapped, let rhsOktapped, let rhsType)):
 				var results: [Matcher.ParameterComparisonResult] = []
@@ -1310,9 +1415,11 @@ open class BaseRouterMock: BaseRouter, Mock {
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
             case .m_showMainOrWhatsNewScreen: return 0
+            case .m_showStartupScreen: return 0
             case .m_showLoginScreen: return 0
             case .m_showRegisterScreen: return 0
             case .m_showForgotPasswordScreen: return 0
+            case let .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(p0, p1): return p0.intValue + p1.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
@@ -1327,9 +1434,11 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
             case .m_showMainOrWhatsNewScreen: return ".showMainOrWhatsNewScreen()"
+            case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen: return ".showLoginScreen()"
             case .m_showRegisterScreen: return ".showRegisterScreen()"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
+            case .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen: return ".showDiscoveryScreen(searchQuery:fromStartupScreen:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
@@ -1358,9 +1467,11 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
         public static func showMainOrWhatsNewScreen() -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen)}
+        public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen() -> Verify { return Verify(method: .m_showLoginScreen)}
         public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>) -> Verify { return Verify(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
@@ -1389,6 +1500,9 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func showMainOrWhatsNewScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showMainOrWhatsNewScreen, performs: perform)
         }
+        public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showStartupScreen, performs: perform)
+        }
         public static func showLoginScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showLoginScreen, performs: perform)
         }
@@ -1397,6 +1511,9 @@ open class BaseRouterMock: BaseRouter, Mock {
         }
         public static func showForgotPasswordScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showForgotPasswordScreen, performs: perform)
+        }
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>, perform: @escaping (String?, Bool) -> Void) -> Perform {
+            return Perform(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`), performs: perform)
         }
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)

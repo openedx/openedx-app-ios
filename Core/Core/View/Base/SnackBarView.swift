@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct SnackBarView: View {
     
@@ -37,7 +38,7 @@ public struct SnackBarView: View {
             }
             
         }.shadowCardStyle(bgColor: Theme.Colors.snackbarErrorColor,
-                          textColor: .white)
+                          textColor: Theme.Colors.white)
         .padding(.bottom, 10)
     }
 }

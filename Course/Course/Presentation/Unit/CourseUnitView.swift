@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 import Core
 import Discussion
-import Swinject
 import Combine
+import Theme
 
 public struct CourseUnitView: View {
     
@@ -25,31 +25,73 @@ public struct CourseUnitView: View {
     }
     @State var offsetView: CGFloat = 0
     @State var showDiscussion: Bool = false
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.isPresented) private var isPresented
     @Environment(\.isHorizontal) private var isHorizontal
     private let sectionName: String
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
     
-    public init(viewModel: CourseUnitViewModel,
-                sectionName: String) {
+    //Dropdown parameters
+    @State var showDropdown: Bool = false
+    private let portraitTopSpacing: CGFloat = 60
+    private let landscapeTopSpacing: CGFloat = 75
+    
+    let isDropdownActive: Bool
+    
+    var sequenceTitle: String {
+        let chapter = viewModel.chapters[viewModel.chapterIndex]
+        let sequence = chapter.childs[viewModel.sequentialIndex]
+        return sequence.displayName
+    }
+    
+    var unitTitle: String {
+        let chapter = viewModel.chapters[viewModel.chapterIndex]
+        let sequence = chapter.childs[viewModel.sequentialIndex]
+        let unit = sequence.childs[viewModel.verticalIndex]
+        return unit.displayName
+    }
+    
+    var isDropdownAvailable: Bool {
+        viewModel.verticals.count > 1
+    }
+    
+    public init(
+        viewModel: CourseUnitViewModel,
+        sectionName: String,
+        isDropdownActive: Bool = false
+    ) {
         self.viewModel = viewModel
         self.sectionName = sectionName
+        self.isDropdownActive = isDropdownActive
         viewModel.loadIndex()
         viewModel.nextTitles()
     }
-    
+            
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
-                        VStack {CoreAssets.background.swiftUIColor}.frame(width: reader.size.width, 
+                        VStack {Theme.Colors.background}.frame(width: reader.size.width,
                                                                           height: isHorizontal ? 75 : 50)
                         LazyVStack(alignment: .leading, spacing: 0) {
                             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
                             ForEach(data, id: \.offset) { index, block in
                                 VStack(spacing: 0) {
+                                    if isDropdownActive {
+                                        HStack {
+                                            if block.type == .video {
+                                                let title = block.displayName
+                                                Text(title)
+                                                    .lineLimit(1)
+                                                    .font(Theme.Fonts.titleLarge)
+                                                    .foregroundStyle(Theme.Colors.textPrimary)
+                                                    .padding(.vertical, 10)
+                                                    .padding(.horizontal, 20)
+                                                Spacer()
+                                            }
+                                        }
+                                    }
                                         switch LessonType.from(block) {
                                             // MARK: YouTube
                                         case let .youtube(url, blockID):
@@ -218,7 +260,7 @@ public struct CourseUnitView: View {
                                 }
                             Text(alertMessage ?? "")
                         }.shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                          textColor: .white)
+                                          textColor: Theme.Colors.white)
                         .transition(.move(edge: .bottom))
                         .onAppear {
                             doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
@@ -232,34 +274,44 @@ public struct CourseUnitView: View {
                 // MARK: - Course Navigation
                 VStack {
                     ZStack {
-                        GeometryReader { reader in
-                            VStack {
-                                HStack {
-                                    let currentBlock = viewModel.verticals[viewModel.verticalIndex]
-                                        .childs[viewModel.index]
-                                    if currentBlock.type == .video {
-                                        let title = currentBlock.displayName
-                                        Text(title)
-                                            .lineLimit(1)
-                                            .font(Theme.Fonts.titleLarge)
-                                            .foregroundStyle(Theme.Colors.textPrimary)
-                                            .padding(.leading, isHorizontal ? 30 : 42)
-                                            .padding(.top, isHorizontal ? 14 : 2)
-                                        Spacer()
-                                    }
-                                }.frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
-                                Spacer()
+                        if !isDropdownActive {
+                            GeometryReader { reader in
+                                VStack {
+                                    HStack {
+                                        let currentBlock = viewModel.verticals[viewModel.verticalIndex]
+                                            .childs[viewModel.index]
+                                        if currentBlock.type == .video {
+                                            let title = currentBlock.displayName
+                                            Text(title)
+                                                .lineLimit(1)
+                                                .font(Theme.Fonts.titleLarge)
+                                                .foregroundStyle(Theme.Colors.textPrimary)
+                                                .padding(.leading, isHorizontal ? 30 : 42)
+                                                .padding(.top, isHorizontal ? 14 : 2)
+                                            Spacer()
+                                        }
+                                    }.frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
+                                    Spacer()
+                                }
                             }
                         }
                         VStack {
                             NavigationBar(
-                                title: "",
+                                title: isDropdownActive ? sequenceTitle : "",
                                 leftButtonAction: {
                                     viewModel.router.back()
                                     playerStateSubject.send(VideoPlayerState.kill)
                                 }).padding(.top, isHorizontal ? 10 : 0)
                                 .padding(.leading, isHorizontal ? -16 : 0)
-                                                    Spacer()
+                            if isDropdownActive {
+                                CourseUnitDropDownTitle(
+                                    title: unitTitle,
+                                    isAvailable: isDropdownAvailable,
+                                    showDropdown: $showDropdown)
+                                .padding(.top, 0)
+                                .offset(y: -25)
+                            }
+                            Spacer()
                         }
                         HStack(alignment: .center) {
                             if isHorizontal {
@@ -286,8 +338,18 @@ public struct CourseUnitView: View {
                 }.frame(maxWidth: .infinity)
             }
             .onDisappear {
-                if !presentationMode.wrappedValue.isPresented {
+                if !isPresented {
                     playerStateSubject.send(VideoPlayerState.kill)
+                }
+            }
+            if isDropdownActive && showDropdown {
+                CourseUnitVerticalsDropdownView(
+                    verticals: viewModel.verticals,
+                    currentIndex: viewModel.verticalIndex,
+                    offsetY: isHorizontal ? landscapeTopSpacing : portraitTopSpacing,
+                    showDropdown: $showDropdown
+                ) { [weak viewModel] vertical in
+                    viewModel?.route(to: vertical)
                 }
             }
         }
@@ -308,6 +370,7 @@ public struct CourseUnitView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .dropdownAnimation(isActive: isDropdownActive, value: showDropdown)
     }
 }
 

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct PostsView: View {
     
@@ -122,7 +123,7 @@ public struct PostsView: View {
                                                         .font(Theme.Fonts.labelLarge)
                                                         .padding(6)
                                                 }
-                                                .foregroundColor(.white)
+                                                .foregroundColor(Theme.Colors.white)
                                                 .background(
                                                     Circle()
                                                         .foregroundColor(Theme.Colors.accentColor)

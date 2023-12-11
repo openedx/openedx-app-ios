@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Discussion
 import Swinject
+import Theme
 
 public struct CourseContainerView: View {
     
@@ -97,7 +98,7 @@ public struct CourseContainerView: View {
                 )
             } else {
                 VStack {
-                    if viewModel.config.features.courseTopTabBarEnabled {
+                    if viewModel.config.uiComponents.courseTopTabBarEnabled {
                         topTabBar
                     }
                     tabs
@@ -135,6 +136,7 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
                 case .videos:
                     CourseOutlineView(
                         viewModel: viewModel,
@@ -147,6 +149,7 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
                 case .dates:
                     CourseDatesView(
                         courseID: courseID,
@@ -158,6 +161,7 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
                 case .discussion:
                     DiscussionTopicsView(
                         courseID: courseID,
@@ -170,6 +174,7 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
                 case .handounds:
                     HandoutsView(
                         courseID: courseID,
@@ -180,10 +185,11 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
                 }
             }
         }
-        .if(viewModel.config.features.courseTopTabBarEnabled) { view in
+        .if(viewModel.config.uiComponents.courseTopTabBarEnabled) { view in
             view
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(.default, value: selection)

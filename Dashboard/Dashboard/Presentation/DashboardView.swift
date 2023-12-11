@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct DashboardView: View {
     private let dashboardCourses: some View = VStack(alignment: .leading) {

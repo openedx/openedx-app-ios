@@ -1,0 +1,9 @@
+xcassets:
+  inputs:
+    - Theme/Assets.xcassets
+  outputs:
+    templateName: swift5
+    params:
+        publicAccess: true
+        enumName: ThemeAssets
+    output: Theme/SwiftGen/ThemeAssets.swift
