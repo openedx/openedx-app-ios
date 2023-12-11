@@ -13,12 +13,20 @@ import Theme
 struct WebView: View {
     let url: String
     let viewModel: CourseUnitViewModel
-    
+    var roundedBackgroundEnable: Bool = true
+
     var body: some View {
         VStack(spacing: 0) {
             WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
-            Spacer(minLength: 5)
+            if roundedBackgroundEnable {
+                Spacer(minLength: 5)
+            }
         }
-        .roundedBackgroundWeb(strokeColor: Theme.Colors.textInputUnfocusedStroke, maxIpadWidth: .infinity)
+        .if(roundedBackgroundEnable) { view in
+            view.roundedBackgroundWeb(
+                strokeColor: Theme.Colors.textInputUnfocusedStroke,
+                maxIpadWidth: .infinity
+            )
+        }
     }
 }

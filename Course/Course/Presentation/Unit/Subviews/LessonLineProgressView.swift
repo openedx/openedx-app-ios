@@ -18,20 +18,22 @@ struct LessonLineProgressView: View {
     }
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             Theme.Colors.background
             HStack(spacing: 3) {
                 let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
-                ForEach(data, id: \.offset) { index, _ in
+                ForEach(data, id: \.offset) { index, item in
                     let selected = viewModel.verticals[viewModel.verticalIndex].childs[index]
                     if selected == viewModel.selectedLesson() {
-                        Color(.yellow)
+                        Theme.Colors.onProgress
+                    } else if item.completion == 1.0 {
+                        Theme.Colors.progressDone
                     } else {
-                        Color(.lightGray)
+                        Theme.Colors.progressSkip
                     }
                 }
-            }
+            }.frame(height: 5)
         }
-        .frame(height: 5)
+        .frame(height: 10)
     }
 }

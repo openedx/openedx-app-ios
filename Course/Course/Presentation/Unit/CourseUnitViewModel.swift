@@ -66,6 +66,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     private let interactor: CourseInteractorProtocol
     let router: CourseRouter
+    let config: ConfigProtocol
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     private let manager: DownloadManagerProtocol
@@ -77,7 +78,11 @@ public class CourseUnitViewModel: ObservableObject {
     func loadIndex() {
         index = selectLesson()
     }
-    
+
+    var courseUnitProgressEnabled: Bool {
+        config.uiComponents.courseUnitProgressEnabled
+    }
+
     public init(
         lessonID: String,
         courseID: String,
@@ -87,6 +92,7 @@ public class CourseUnitViewModel: ObservableObject {
         sequentialIndex: Int,
         verticalIndex: Int,
         interactor: CourseInteractorProtocol,
+        config: ConfigProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
         connectivity: ConnectivityProtocol,
@@ -101,6 +107,7 @@ public class CourseUnitViewModel: ObservableObject {
         self.verticalIndex = verticalIndex
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         self.interactor = interactor
+        self.config = config
         self.router = router
         self.analytics = analytics
         self.connectivity = connectivity

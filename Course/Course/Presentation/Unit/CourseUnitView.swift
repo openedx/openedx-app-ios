@@ -145,7 +145,11 @@ public struct CourseUnitView: View {
                                         case .web(let url):
                                             if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
-                                                WebView(url: url, viewModel: viewModel)
+                                                WebView(
+                                                    url: url,
+                                                    viewModel: viewModel,
+                                                    roundedBackgroundEnable: !viewModel.courseUnitProgressEnabled
+                                                )
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
@@ -301,8 +305,10 @@ public struct CourseUnitView: View {
                                 leftButtonAction: {
                                     viewModel.router.back()
                                     playerStateSubject.send(VideoPlayerState.kill)
-                                }).padding(.top, isHorizontal ? 10 : 0)
-                                .padding(.leading, isHorizontal ? -16 : 0)
+                                }
+                            )
+                            .padding(.top, isHorizontal ? 10 : 0)
+                            .padding(.leading, isHorizontal ? -16 : 0)
                             if isDropdownActive {
                                 CourseUnitDropDownTitle(
                                     title: unitTitle,
@@ -311,8 +317,14 @@ public struct CourseUnitView: View {
                                 .padding(.top, 0)
                                 .offset(y: -25)
                             }
-                            LessonLineProgressView(viewModel: viewModel)
-                                .padding(.bottom, 5)
+                            if viewModel.courseUnitProgressEnabled {
+                                LessonLineProgressView(viewModel: viewModel)
+                                    .if(isDropdownActive) { view in
+                                        view
+                                            .offset(y: -25)
+                                }
+
+                            }
                             Spacer()
                         }
                         HStack(alignment: .center) {
@@ -499,6 +511,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             sequentialIndex: 0,
             verticalIndex: 0,
             interactor: CourseInteractor.mock,
+            config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             connectivity: Connectivity(),

@@ -36,6 +36,9 @@ public struct Theme {
         public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
+        public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
+        public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor
+        public private(set) static var progressSkip = ThemeAssets.progressSkip.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -60,7 +63,10 @@ public struct Theme {
             textInputUnfocusedBackground: Color = ThemeAssets.textInputUnfocusedBackground.swiftUIColor,
             textInputUnfocusedStroke: Color = ThemeAssets.textInputUnfocusedStroke.swiftUIColor,
             warning: Color = ThemeAssets.warning.swiftUIColor,
-            white: Color = ThemeAssets.white.swiftUIColor
+            white: Color = ThemeAssets.white.swiftUIColor,
+            onProgress: Color = ThemeAssets.onProgress.swiftUIColor,
+            progressDone: Color = ThemeAssets.progressDone.swiftUIColor,
+            progressSkip: Color = ThemeAssets.progressSkip.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.alert = alert
@@ -85,6 +91,9 @@ public struct Theme {
             self.textInputUnfocusedStroke = textInputUnfocusedStroke
             self.warning = warning
             self.white = white
+            self.onProgress = onProgress
+            self.progressDone = progressDone
+            self.progressSkip = progressSkip
         }
     }
     
