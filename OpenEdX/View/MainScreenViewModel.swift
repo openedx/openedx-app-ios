@@ -14,6 +14,7 @@ class MainScreenViewModel: ObservableObject {
     private let analytics: MainScreenAnalytics
     let config: ConfigProtocol
     let profileInteractor: ProfileInteractorProtocol
+    var sourceScreen: LogistrationSourceScreen = .default
     
     init(analytics: MainScreenAnalytics, config: ConfigProtocol, profileInteractor: ProfileInteractorProtocol) {
         self.analytics = analytics

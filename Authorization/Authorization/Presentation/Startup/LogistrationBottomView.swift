@@ -13,25 +13,27 @@ import Theme
 public struct LogistrationBottomView: View {
     @ObservedObject
     private var viewModel: StartupViewModel
+    private var sourceScreen: LogistrationSourceScreen
     
     @Environment(\.isHorizontal) private var isHorizontal
     
-    public init(viewModel: StartupViewModel) {
+    public init(viewModel: StartupViewModel, sourceScreen: LogistrationSourceScreen) {
         self.viewModel = viewModel
+        self.sourceScreen = sourceScreen
     }
     
     public var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 24) {
                 StyledButton(AuthLocalization.SignIn.registerBtn) {
-                    viewModel.router.showRegisterScreen()
+                    viewModel.router.showRegisterScreen(sourceScreen: sourceScreen)
                     viewModel.tracksignUpClicked()
                 }
                 .frame(maxWidth: .infinity)
                 
                 StyledButton(
                     AuthLocalization.SignIn.logInTitle,
-                    action: { viewModel.router.showLoginScreen() },
+                    action: { viewModel.router.showLoginScreen(sourceScreen: sourceScreen) },
                     color: .white,
                     textColor: Theme.Colors.accentColor,
                     borderColor: Theme.Colors.textInputStroke
@@ -52,12 +54,12 @@ struct LogistrationBottomView_Previews: PreviewProvider {
             router: AuthorizationRouterMock(),
             analytics: AuthorizationAnalyticsMock()
         )
-        LogistrationBottomView(viewModel: vm)
+        LogistrationBottomView(viewModel: vm, sourceScreen: .startup)
             .preferredColorScheme(.light)
             .previewDisplayName("StartupView Light")
             .loadFonts()
         
-        LogistrationBottomView(viewModel: vm)
+        LogistrationBottomView(viewModel: vm, sourceScreen: .startup)
             .preferredColorScheme(.dark)
             .previewDisplayName("StartupView Dark")
             .loadFonts()

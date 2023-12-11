@@ -8,6 +8,8 @@
 import Combine
 import Core
 import SwiftUI
+import Swinject
+import Authorization
 
 public class DiscoveryViewModel: ObservableObject {
     
@@ -19,6 +21,11 @@ public class DiscoveryViewModel: ObservableObject {
     
     @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
+    
+    var loggenInUser: Bool {
+        guard let container = Container.shared.resolve(CoreStorage.self) else { return false }
+        return !(container.user?.username?.isEmpty ?? true)
+    }
     
     var errorMessage: String? {
         didSet {

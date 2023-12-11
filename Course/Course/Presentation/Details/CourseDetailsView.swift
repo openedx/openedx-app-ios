@@ -10,6 +10,8 @@ import Core
 import Kingfisher
 import WebKit
 import Theme
+import Authorization
+import Swinject
 
 public struct CourseDetailsView: View {
     
@@ -142,6 +144,12 @@ public struct CourseDetailsView: View {
                         Spacer(minLength: 84)
                     }
                 }
+                if let model = Container.shared.resolve(StartupViewModel.self), !viewModel.loggenInUser {
+                    LogistrationBottomView(
+                        viewModel: model,
+                        sourceScreen: .courseDetail(courseID, viewModel.courseDetails?.courseTitle ?? "")
+                    )
+                }
             }.padding(.top, 8)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(false)
@@ -200,8 +208,12 @@ private struct CourseStateView: View {
         switch viewModel.courseState() {
         case .enrollOpen:
             StyledButton(CourseLocalization.Details.enrollNow, action: {
-                Task {
-                    await viewModel.enrollToCourse(id: courseDetails.courseID)
+                if !viewModel.loggenInUser {
+                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                } else {
+                    Task {
+                        await viewModel.enrollToCourse(id: courseDetails.courseID)
+                    }
                 }
             })
             .padding(16)

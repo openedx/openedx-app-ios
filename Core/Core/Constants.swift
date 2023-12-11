@@ -12,3 +12,10 @@ public struct Constants {
     public static let GrantTypePassword = "password"
     public static let GrantTypeRefreshToken = "refresh_token"
 }
+
+public enum LogistrationSourceScreen: Equatable {
+    case `default`
+    case startup
+    case discovery
+    case courseDetail(String, String)
+}

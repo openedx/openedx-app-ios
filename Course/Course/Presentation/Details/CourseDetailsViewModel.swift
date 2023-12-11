@@ -8,6 +8,7 @@
 import Foundation
 import Core
 import SwiftUI
+import Swinject
 
 public enum CourseState {
     case enrollOpen
@@ -35,6 +36,11 @@ public class CourseDetailsViewModel: ObservableObject {
     let config: ConfigProtocol
     let cssInjector: CSSInjector
     let connectivity: ConnectivityProtocol
+    
+    var loggenInUser: Bool {
+        guard let container = Container.shared.resolve(CoreStorage.self) else { return false }
+        return !(container.user?.username?.isEmpty ?? true)
+    }
     
     public init(
         interactor: CourseInteractorProtocol,

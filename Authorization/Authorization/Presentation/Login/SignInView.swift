@@ -102,7 +102,7 @@ public struct SignInView: View {
                                 if !viewModel.config.features.startupScreenEnabled {
                                     Button(AuthLocalization.SignIn.registerBtn) {
                                         viewModel.trackSignUpClicked()
-                                        viewModel.router.showRegisterScreen()
+                                        viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
                                     }.foregroundColor(Theme.Colors.accentColor)
                                     
                                     Spacer()

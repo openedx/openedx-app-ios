@@ -19,6 +19,8 @@ public class SignInViewModel: ObservableObject {
     @Published private(set) var isShowProgress = false
     @Published private(set) var showError: Bool = false
     @Published private(set) var showAlert: Bool = false
+    public var sourceScreen: LogistrationSourceScreen = .default
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -77,7 +79,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(username: username, password: password)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: .password)
-            router.showMainOrWhatsNewScreen()
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
         } catch let error {
             failure(error)
         }
@@ -108,7 +110,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(externalToken: externalToken, backend: backend)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: authMethod)
-            router.showMainOrWhatsNewScreen()
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
         } catch let error {
             failure(error, authMethod: authMethod)
         }

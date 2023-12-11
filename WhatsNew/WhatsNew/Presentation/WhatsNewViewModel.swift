@@ -13,6 +13,7 @@ public class WhatsNewViewModel: ObservableObject {
     @Published var index: Int = 0
     @Published var newItems: [WhatsNewPage] = []
     private let storage: WhatsNewStorage
+    public var sourceScreen: LogistrationSourceScreen = .default
     
     public init(storage: WhatsNewStorage) {
         self.storage = storage
