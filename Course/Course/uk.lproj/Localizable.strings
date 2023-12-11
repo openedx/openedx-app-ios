@@ -31,6 +31,7 @@
 
 "ERROR.NO_INTERNET" = "Ви не підключені до Інтернету. Перевірте підключення до Інтернету і спробуйте ще.";
 "ERROR.RELOAD" = "Перезавантажити";
+"ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 
 "ALERT.ROTATE_DEVICE" = "Поверніть пристрій, щоб переглянути це відео на весь екран.";
 

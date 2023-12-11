@@ -1649,13 +1649,13 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getCourseDetailsOffline(courseID: String) throws -> CourseDetails {
-        addInvocation(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
+    open func getLoadedCourseDetails(courseID: String) throws -> CourseDetails {
+        addInvocation(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(courseID)))
+		let perform = methodPerformValue(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(courseID))) as? (String) -> Void
+		perform?(courseID)
 		var __value: CourseDetails
 		do {
-		    __value = try methodReturnValue(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		    __value = try methodReturnValue(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(courseID))).casted()
 		} catch MockError.notStubed {
 			onFatalFailure("Stub return value not specified for getCourseDetailsOffline(courseID: String). Use given")
 			Failure("Stub return value not specified for getCourseDetailsOffline(courseID: String). Use given")
@@ -1665,13 +1665,13 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
-        addInvocation(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
+    open func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
+        addInvocation(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(courseID)))
+		let perform = methodPerformValue(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(courseID))) as? (String) -> Void
+		perform?(courseID)
 		var __value: CourseStructure
 		do {
-		    __value = try methodReturnValue(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		    __value = try methodReturnValue(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(courseID))).casted()
 		} catch MockError.notStubed {
 			onFatalFailure("Stub return value not specified for getCourseBlocksOffline(courseID: String). Use given")
 			Failure("Stub return value not specified for getCourseBlocksOffline(courseID: String). Use given")

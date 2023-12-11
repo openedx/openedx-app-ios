@@ -143,7 +143,8 @@ struct CourseDateListView: View {
                                          lastDate: viewModel.sortedDates.last,
                                          allHaveSameStatus: allHaveSameStatus)
                             
-                            BlockStatusView(block: block,
+                            BlockStatusView(viewModel: viewModel,
+                                            block: block,
                                             allHaveSameStatus: allHaveSameStatus,
                                             blocks: blocks)
                                             
@@ -159,6 +160,7 @@ struct CourseDateListView: View {
 }
 
 struct BlockStatusView: View {
+    let viewModel: CourseDatesViewModel
     let block: CourseDateBlock
     let allHaveSameStatus: Bool
     let blocks: [CourseDateBlock]
@@ -227,7 +229,9 @@ struct BlockStatusView: View {
                 }
             }())
             .onTapGesture {
-                
+                Task {
+                    await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                }
             }
     }
     
