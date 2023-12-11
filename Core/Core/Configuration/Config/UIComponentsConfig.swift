@@ -13,7 +13,7 @@ private enum Keys: String {
 }
 
 public class UIComponentsConfig: NSObject {
-    public var isVerticalsMenuEnabled: Bool = false
+    public var isVerticalsMenuEnabled: Bool
     public var courseTopTabBarEnabled: Bool
 
     init(dictionary: [String: Any]) {
