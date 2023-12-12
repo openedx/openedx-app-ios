@@ -6,7 +6,8 @@ import subprocess
 import sys
 import yaml
 import json
-import coloredlogs
+import coloredlogs #TODO: ADD TO DOCUMENTATION pip install coloredlogs 
+from PIL import Image #TODO: ADD TO DOCUMENTATION pip install pillow
 
 class WhitelabelApp:
     EXAMPLE_CONFIG_FILE = """
@@ -16,8 +17,9 @@ class WhitelabelApp:
         import_dir: 'path/to/asset/Images' # folder where importing images are placed
         assets:
             AssetName:
-                imagesPath: 'Theme/Theme/Assets.xcassets' # path where images in this Asset are placed
-                colorsPath: 'Theme/Theme/Assets.xcassets/Colors' # path where colors in this Asset are placed
+                imagesPath: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
+                colorsPath: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
+                iconPath: 'Theme/Assets.xcassets' # path where app icon is placed in this Asset 
                 images:
                     image1: # Asset name
                         imageName: 'some_image.svg' # image file name in Assets.xcassets/image1.imageset
@@ -32,6 +34,10 @@ class WhitelabelApp:
                         currrentPath: '' # optional: path to color inside colorsPath
                         light: '#FFFFFF'
                         dark: '#ED5C13'
+                icon:
+                    AppIcon:
+                        currrentPath: '' # optional: path to icon inside iconPath
+                        imageName: 'appIcon.jpg' # image to replace current AppIcon
         """
 
     def __init__(self, **kwargs):            
@@ -50,6 +56,7 @@ class WhitelabelApp:
             for asset in self.assets.items():
                 self.replace_images(asset)
                 self.replace_colors(asset)
+                self.replace_app_icon(asset)
         else:
             logging.debug("Assets not found")
 
@@ -160,6 +167,50 @@ class WhitelabelApp:
             components["green"] = "0x"+color[2]+color[3]
             components["blue"] = "0x"+color[4]+color[5]
         return components
+    
+    def replace_app_icon(self, assetData):
+        asset = assetData[1]
+        assetName = assetData[0]
+        if "icon" in asset:
+            iconPath = asset["iconPath"] if "iconPath" in asset else ""
+            for name, icon in asset["icon"].items():
+                currentPath = icon["currentPath"] if "currentPath" in icon else ""
+                path_to_iconset = os.path.join(iconPath, currentPath, name+'.appiconset')
+                content_json_path = os.path.join(path_to_iconset, 'Contents.json')
+                with open(content_json_path, 'r') as openfile:
+                    json_object = json.load(openfile)
+                    json_icon = json_object["images"][0]
+                    file_to_change = json_icon["filename"]
+                    size_to_change = json_icon["size"]
+                file_to_copy = icon["imageName"]
+                file_to_copy_path = os.path.join(self.assets_dir, file_to_copy)
+                file_to_change_path = os.path.join(path_to_iconset, file_to_change)
+                if os.path.exists(file_to_change_path):
+                    if os.path.exists(file_to_copy_path):
+                        # get new file width and height
+                        img = Image.open(file_to_copy_path)
+                        # get width and height 
+                        width = img.width 
+                        height = img.height
+                        # Delete current file
+                        os.remove(file_to_change_path)
+                        # Change Contents.json
+                        with open(content_json_path, 'r') as openfile:
+                            contents_string = openfile.read()
+                        contents_string = contents_string.replace(file_to_change, file_to_copy)
+                        contents_string = contents_string.replace(size_to_change, str(width)+'x'+str(height))
+                        with open(content_json_path, 'w') as openfile:
+                            openfile.write(contents_string)
+                        # Copy new file
+                        shutil.copy(file_to_copy_path, path_to_iconset)
+                        logging.debug(assetName+"->icon->"+name+": 'app icon was updated with "+file_to_copy)
+                    else:
+                        logging.error(assetName+"->icon->"+name+": " + file_to_copy_path + " doesn't exist")    
+                else:
+                    logging.error(assetName+"->icon->"+name+": " + file_to_change_path + " doesn't exist")
+                
+
+
         
 def main():
     """
