@@ -37,7 +37,7 @@ class WhitelabelApp:
                 icon:
                     AppIcon:
                         currrentPath: '' # optional: path to icon inside iconPath
-                        imageName: 'appIcon.jpg' # image to replace current AppIcon
+                        imageName: 'appIcon.jpg' # image to replace current AppIcon - png or jpg are supported
         """
 
     def __init__(self, **kwargs):            
