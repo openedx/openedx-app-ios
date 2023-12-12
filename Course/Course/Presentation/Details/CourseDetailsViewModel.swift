@@ -64,7 +64,7 @@ public class CourseDetailsViewModel: ObservableObject {
                 
                 isShowProgress = false
             } else {
-                courseDetails = try await interactor.getCourseDetailsOffline(courseID: courseID)
+                courseDetails = try await interactor.getLoadedCourseDetails(courseID: courseID)
                 if let isEnrolled = courseDetails?.isEnrolled {
                     self.courseDetails?.isEnrolled = isEnrolled
                 }

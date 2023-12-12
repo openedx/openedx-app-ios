@@ -11,8 +11,8 @@ import Core
 public protocol CourseRepositoryProtocol {
     func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
-    func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getCourseBlocksOffline(courseID: String) throws -> CourseStructure
+    func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails
+    func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure
     func enrollToCourse(courseID: String) async throws -> Bool
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
@@ -48,7 +48,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         return response
     }
     
-    public func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
+    public func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
         return try persistence.loadCourseDetails(courseID: courseID)
     }
         
@@ -61,7 +61,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         return parsedStructure
     }
     
-    public func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
+    public func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         let localData = try persistence.loadCourseStructure(courseID: courseID)
         return parseCourseStructure(course: localData)
     }
@@ -259,7 +259,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         }
     }
     
-    func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
+    func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
         return CourseDetails(
             courseID: "courseID",
             org: "Organization",
@@ -276,7 +276,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         )
     }
     
-    func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
+    func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         let decoder = JSONDecoder()
         let jsonData = Data(courseStructureJson.utf8)
         let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)

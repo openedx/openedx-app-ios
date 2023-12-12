@@ -367,7 +367,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             state: .available
         )
         
-        XCTAssertEqual(viewModel.downloadState[blockId], .downloading)
+        XCTAssertEqual(viewModel.sequentialsDownloadState[blockId], .downloading)
     }
     
     func testOnDownloadViewDownloadingTap() {
@@ -414,7 +414,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             state: .downloading
         )
         
-        XCTAssertEqual(viewModel.downloadState[blockId], .available)
+        XCTAssertEqual(viewModel.sequentialsDownloadState[blockId], .available)
     }
     
     func testOnDownloadViewFinishedTap() {
@@ -461,7 +461,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             state: .finished
         )
         
-        XCTAssertEqual(viewModel.downloadState[blockId], .available)
+        XCTAssertEqual(viewModel.sequentialsDownloadState[blockId], .available)
     }
     
     func testSetDownloadsStatesAvailable() {
@@ -558,7 +558,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 
         wait(for: [exp], timeout: 1)
         
-        XCTAssertEqual(viewModel.downloadState[sequential.id], .available)
+        XCTAssertEqual(viewModel.sequentialsDownloadState[sequential.id], .available)
     }
     
     func testSetDownloadsStatesDownloading() {
@@ -666,7 +666,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         wait(for: [exp], timeout: 1)
 
-        XCTAssertEqual(viewModel.downloadState[sequential.id], .downloading)
+        XCTAssertEqual(viewModel.sequentialsDownloadState[sequential.id], .downloading)
     }
     
     func testSetDownloadsStatesFinished() {
@@ -774,7 +774,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         wait(for: [exp], timeout: 1)
 
-        XCTAssertEqual(viewModel.downloadState[sequential.id], .finished)
+        XCTAssertEqual(viewModel.sequentialsDownloadState[sequential.id], .finished)
     }
     
     func testSetDownloadsStatesPartiallyFinished() {
@@ -895,6 +895,6 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         wait(for: [exp], timeout: 1)
 
-        XCTAssertEqual(viewModel.downloadState[sequential.id], .available)
+        XCTAssertEqual(viewModel.sequentialsDownloadState[sequential.id], .available)
     }
 }
