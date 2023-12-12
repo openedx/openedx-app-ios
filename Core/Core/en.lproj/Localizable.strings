@@ -32,6 +32,7 @@
 "COURSEWARE.SECTION" = "Section “";
 "COURSEWARE.IS_FINISHED" = "“ is finished.";
 "COURSEWARE.CONTINUE" = "Continue";
+"COURSEWARE.RESUME" = "Resume";
 "COURSEWARE.CONTINUE_WITH" = "Continue with:";
 "COURSEWARE.NEXT_SECTION" = "Next section";
 

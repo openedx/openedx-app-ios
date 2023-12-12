@@ -80,7 +80,7 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             }
         }
     }
-    
+
     func trackVerticalClicked(
         courseId: String,
         courseName: String,
