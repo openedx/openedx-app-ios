@@ -19,7 +19,7 @@ public struct ProfileView: View {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self._settingsTapped = settingsTapped
     }
-    
+
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body

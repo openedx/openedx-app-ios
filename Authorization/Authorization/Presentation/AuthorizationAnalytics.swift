@@ -7,17 +7,31 @@
 
 import Foundation
 
-public enum LoginMethod: String {
-    case password = "Password"
+public enum AuthMethod: Equatable {
+    case password
+    case socailAuth(SocialAuthMethod)
+
+    public var analyticsValue: String {
+        switch self {
+        case .password:
+            "Password"
+        case .socailAuth(let socialAuthMethod):
+            socialAuthMethod.rawValue
+        }
+    }
+}
+
+public enum SocialAuthMethod: String {
     case facebook = "Facebook"
     case google = "Google"
     case microsoft = "Microsoft"
+    case apple = "Apple"
 }
 
 //sourcery: AutoMockable
 public protocol AuthorizationAnalytics {
     func setUserID(_ id: String)
-    func userLogin(method: LoginMethod)
+    func userLogin(method: AuthMethod)
     func signUpClicked()
     func createAccountClicked()
     func registrationSuccess()
@@ -28,7 +42,7 @@ public protocol AuthorizationAnalytics {
 #if DEBUG
 class AuthorizationAnalyticsMock: AuthorizationAnalytics {
     public func setUserID(_ id: String) {}
-    public func userLogin(method: LoginMethod) {}
+    public func userLogin(method: AuthMethod) {}
     public func signUpClicked() {}
     public func createAccountClicked() {}
     public func registrationSuccess() {}

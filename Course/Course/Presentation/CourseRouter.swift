@@ -41,7 +41,8 @@ public protocol CourseRouter: BaseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     )
     
     func showCourseVerticalView(
@@ -58,6 +59,11 @@ public protocol CourseRouter: BaseRouter {
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
         cssInjector: CSSInjector
+    )
+    
+    func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
     )
 }
 
@@ -98,7 +104,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     ) {}
     
     public func showCourseVerticalView(
@@ -115,6 +122,11 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
         cssInjector: CSSInjector
+    ) {}
+    
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
     ) {}
     
 }
