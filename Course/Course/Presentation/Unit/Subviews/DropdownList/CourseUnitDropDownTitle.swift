@@ -22,6 +22,7 @@ struct CourseUnitDropDownTitle: View {
                 HStack {
                     Text(title)
                         .opacity(showDropdown ? 0.7 : 1.0)
+                        .lineLimit(1)
                     if isAvailable {
                         if showDropdown {
                             Image(systemName: "chevron.right")
@@ -35,6 +36,7 @@ struct CourseUnitDropDownTitle: View {
             .buttonStyle(.plain)
         } else {
             Text(title)
+                .lineLimit(1)
         }
     }
 }

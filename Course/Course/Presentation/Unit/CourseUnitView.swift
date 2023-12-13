@@ -85,9 +85,11 @@ public struct CourseUnitView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .clipped()
-                    
+
                     // MARK: Progress Dots
+                    if !viewModel.courseUnitProgressEnabled {
                         LessonProgressView(viewModel: viewModel)
+                    }
                 }
                 
                 // MARK: - Alert
