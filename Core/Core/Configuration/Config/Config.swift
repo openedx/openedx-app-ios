@@ -161,7 +161,10 @@ public class ConfigMock: Config {
         "WHATS_NEW_ENABLED": false,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
-            "TOS_URL": "https://www.example.com/tos"
+            "TOS_URL": "https://www.example.com/tos",
+            "DATA_SELL_CONSENT_URL": "https://www.example.com/sell",
+            "COOKIE_POLICY_URL": "https://www.example.com/cookie",
+            "SUPPORTED_LANGUAGES": ["es"]
         ],
         "GOOGLE": [
             "ENABLED": true,

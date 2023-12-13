@@ -40,7 +40,8 @@ public class AgreementConfig: NSObject {
 
     private func completePath(url: String) -> String {
            let langCode = Locale.current.languageCode ?? ""
-           if supportedLanguages?.contains(langCode) == false {
+           if let supportedLanguages = supportedLanguages,
+                !supportedLanguages.contains(langCode) {
                return url
            }
 

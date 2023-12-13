@@ -18,7 +18,10 @@ class ConfigTests: XCTestCase {
         "WHATS_NEW_ENABLED": true,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
-            "TOS_URL": "https://www.example.com/tos"
+            "TOS_URL": "https://www.example.com/tos",
+            "DATA_SELL_CONSENT_URL": "https://www.example.com/sell",
+            "COOKIE_POLICY_URL": "https://www.example.com/cookie",
+            "SUPPORTED_LANGUAGES": ["es"]
         ],
         "FIREBASE": [
             "ENABLED": true,
@@ -73,6 +76,9 @@ class ConfigTests: XCTestCase {
         
         XCTAssertEqual(config.agreement.privacyPolicyURL, URL(string: "https://www.example.com/privacy"))
         XCTAssertEqual(config.agreement.tosURL, URL(string: "https://www.example.com/tos"))
+        XCTAssertEqual(config.agreement.cookiePolicyURL, URL(string: "https://www.example.com/cookie"))
+        XCTAssertEqual(config.agreement.dataSellContentURL, URL(string: "https://www.example.com/sell"))
+        XCTAssertEqual(config.agreement.supportedLanguages, ["es"])
     }
     
     func testFirebaseConfigInitialization() {
