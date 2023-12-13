@@ -8,16 +8,19 @@
 import Foundation
 
 private enum Keys: String {
-    case isVerticalsMenuEnabled = "VERTICALS_MENU_ENABLED"
+    case courseNestedListEnabled = "COURSE_NESTED_LIST_ENABLED"
+    case courseBannerEnabled = "COURSE_BANNER_ENABLED"
     case courseUnitProgressEnabled = "COURSE_UNIT_PROGRESS_ENABLED"
 }
 
 public class UIComponentsConfig: NSObject {
-    public var isVerticalsMenuEnabled: Bool = false
-    public var courseUnitProgressEnabled: Bool = false
+    public var courseNestedListEnabled: Bool
+    public var courseBannerEnabled: Bool
+    public var courseUnitProgressEnabled: Bool
 
     init(dictionary: [String: Any]) {
-        isVerticalsMenuEnabled = dictionary[Keys.isVerticalsMenuEnabled.rawValue] as? Bool ?? false
+        courseNestedListEnabled = dictionary[Keys.courseNestedListEnabled.rawValue] as? Bool ?? false
+        courseBannerEnabled = dictionary[Keys.courseBannerEnabled.rawValue] as? Bool ?? false
         courseUnitProgressEnabled = dictionary[Keys.courseUnitProgressEnabled.rawValue] as? Bool ?? false
         super.init()
     }

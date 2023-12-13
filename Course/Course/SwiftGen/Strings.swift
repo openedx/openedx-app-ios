@@ -74,6 +74,8 @@ public enum CourseLocalization {
     public static let viewCourse = CourseLocalization.tr("Localizable", "DETAILS.VIEW_COURSE", fallback: "View course")
   }
   public enum Error {
+    /// Course component not found, please reload
+    public static let componentNotFount = CourseLocalization.tr("Localizable", "ERROR.COMPONENT_NOT_FOUNT", fallback: "Course component not found, please reload")
     /// You are not connected to the Internet. Please check your Internet connection.
     public static let noInternet = CourseLocalization.tr("Localizable", "ERROR.NO_INTERNET", fallback: "You are not connected to the Internet. Please check your Internet connection.")
     /// Reload

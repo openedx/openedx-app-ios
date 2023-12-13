@@ -42,57 +42,10 @@ public struct CourseOutlineView: View {
                         await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
                     }) {
                         VStack(alignment: .leading) {
-                            ZStack {
-                                // MARK: - Course Banner
-                                if let banner = viewModel.courseStructure?.media.image.raw
-                                    .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
-                                        .onFailureImage(CoreAssets.noCourseImage.image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
-                                }
-                                
-                                // MARK: - Course Certificate
-                                if let certificate = viewModel.courseStructure?.certificate {
-                                    if let url = certificate.url, url.count > 0 {
-                                        Theme.Colors.certificateForeground
-                                        VStack(alignment: .center, spacing: 8) {
-                                            CoreAssets.certificate.swiftUIImage
-                                            Text(CourseLocalization.Outline.congratulations)
-                                                .multilineTextAlignment(.center)
-                                                .font(Theme.Fonts.headlineMedium)
-                                            Text(CourseLocalization.Outline.passedTheCourse)
-                                                .font(Theme.Fonts.bodyMedium)
-                                                .multilineTextAlignment(.center)
-                                            StyledButton(
-                                                CourseLocalization.Outline.viewCertificate,
-                                                action: { openCertificateView = true },
-                                                isTransparent: true
-                                            )
-                                            .frame(width: 141)
-                                            .padding(.top, 8)
-                                            
-                                            .fullScreenCover(
-                                                isPresented: $openCertificateView,
-                                                content: {
-                                                    WebBrowser(
-                                                        url: url,
-                                                        pageTitle: CourseLocalization.Outline.certificate
-                                                    )
-                                                })
-                                        }.padding(.horizontal, 24)
-                                            .padding(.top, 8)
-                                            .foregroundColor(Theme.Colors.white)
-                                    }
-                                }
+                            if viewModel.config.uiComponents.courseBannerEnabled {
+                                courseBanner(proxy: proxy)
                             }
-                            .frame(maxHeight: 250)
-                            .cornerRadius(12)
-                            .padding(.horizontal, 6)
-                            .padding(.top, 7)
-                            .fixedSize(horizontal: false, vertical: true)
-                            
+
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
                                !isVideo {
@@ -124,11 +77,20 @@ public struct CourseOutlineView: View {
                                 : viewModel.courseStructure {
                                 
                                 // MARK: - Sections
-                                CourseStructureView(
-                                    proxy: proxy,
-                                    course: course,
-                                    viewModel: viewModel
-                                )
+                                if viewModel.config.uiComponents.courseNestedListEnabled {
+                                    CourseExpandableContentView(
+                                        proxy: proxy,
+                                        course: course,
+                                        viewModel: viewModel
+                                    )
+                                } else {
+                                    CourseStructureView(
+                                        proxy: proxy,
+                                        course: course,
+                                        viewModel: viewModel
+                                    )
+                                }
+
                             } else {
                                 if let courseStart = viewModel.courseStart {
                                     Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
@@ -183,6 +145,59 @@ public struct CourseOutlineView: View {
                 .ignoresSafeArea()
         )
     }
+
+    private func courseBanner(proxy: GeometryProxy) -> some View {
+        ZStack {
+            // MARK: - Course Banner
+            if let banner = viewModel.courseStructure?.media.image.raw
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+            }
+
+            // MARK: - Course Certificate
+            if let certificate = viewModel.courseStructure?.certificate {
+                if let url = certificate.url, url.count > 0 {
+                    Theme.Colors.certificateForeground
+                    VStack(alignment: .center, spacing: 8) {
+                        CoreAssets.certificate.swiftUIImage
+                        Text(CourseLocalization.Outline.congratulations)
+                            .multilineTextAlignment(.center)
+                            .font(Theme.Fonts.headlineMedium)
+                        Text(CourseLocalization.Outline.passedTheCourse)
+                            .font(Theme.Fonts.bodyMedium)
+                            .multilineTextAlignment(.center)
+                        StyledButton(
+                            CourseLocalization.Outline.viewCertificate,
+                            action: { openCertificateView = true },
+                            isTransparent: true
+                        )
+                        .frame(width: 141)
+                        .padding(.top, 8)
+
+                        .fullScreenCover(
+                            isPresented: $openCertificateView,
+                            content: {
+                                WebBrowser(
+                                    url: url,
+                                    pageTitle: CourseLocalization.Outline.certificate
+                                )
+                            })
+                    }.padding(.horizontal, 24)
+                        .padding(.top, 8)
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .frame(maxHeight: 250)
+        .cornerRadius(12)
+        .padding(.horizontal, 6)
+        .padding(.top, 7)
+        .fixedSize(horizontal: false, vertical: true)
+    }
 }
 
 struct CourseStructureView: View {
@@ -211,8 +226,8 @@ struct CourseStructureView: View {
             ForEach(chapter.childs, id: \.id) { child in
                 let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == child.id })
                 VStack(alignment: .leading) {
-                    Button(
-                        action: {
+                    HStack {
+                        Button {
                             if let chapterIndex, let sequentialIndex {
                                 viewModel.trackSequentialClicked(child)
                                 viewModel.router.showCourseVerticalView(
@@ -224,8 +239,7 @@ struct CourseStructureView: View {
                                     sequentialIndex: sequentialIndex
                                 )
                             }
-                        },
-                        label: {
+                        } label: {
                             Group {
                                 if child.completion == 1 {
                                     CoreAssets.finished.swiftUIImage
@@ -244,49 +258,60 @@ struct CourseStructureView: View {
                                         : proxy.size.width * 0.6,
                                         alignment: .leading
                                     )
-                            }.foregroundColor(Theme.Colors.textPrimary)
-                            Spacer()
-                            if let state = viewModel.downloadState[child.id] {
-                                switch state {
-                                case .available:
-                                    DownloadAvailableView()
-                                        .onTapGesture {
-                                            viewModel.onDownloadViewTap(
-                                                chapter: chapter,
-                                                blockId: child.id,
-                                                state: state
-                                            )
-                                        }
-                                        .onForeground {
-                                            viewModel.onForeground()
-                                        }
-                                case .downloading:
-                                    DownloadProgressView()
-                                        .onTapGesture {
-                                            viewModel.onDownloadViewTap(
-                                                chapter: chapter,
-                                                blockId: child.id,
-                                                state: state
-                                            )
-                                        }
-                                        .onBackground {
-                                            viewModel.onBackground()
-                                        }
-                                case .finished:
-                                    DownloadFinishedView()
-                                        .onTapGesture {
-                                            viewModel.onDownloadViewTap(
-                                                chapter: chapter,
-                                                blockId: child.id,
-                                                state: state
-                                            )
-                                        }
-                                }
                             }
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(Theme.Colors.accentColor)
-                        }).padding(.horizontal, 36)
-                        .padding(.vertical, 20)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                        }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(child.displayName)
+                        Spacer()
+                        if let state = viewModel.sequentialsDownloadState[child.id] {
+                            switch state {
+                            case .available:
+                                DownloadAvailableView()
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(CourseLocalization.Accessibility.download)
+                                    .onTapGesture {
+                                        viewModel.onDownloadViewTap(
+                                            chapter: chapter,
+                                            blockId: child.id,
+                                            state: state
+                                        )
+                                    }
+                                    .onForeground {
+                                        viewModel.onForeground()
+                                    }
+                            case .downloading:
+                                DownloadProgressView()
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
+                                    .onTapGesture {
+                                        viewModel.onDownloadViewTap(
+                                            chapter: chapter,
+                                            blockId: child.id,
+                                            state: state
+                                        )
+                                    }
+                                    .onBackground {
+                                        viewModel.onBackground()
+                                    }
+                            case .finished:
+                                DownloadFinishedView()
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
+                                    .onTapGesture {
+                                        viewModel.onDownloadViewTap(
+                                            chapter: chapter,
+                                            blockId: child.id,
+                                            state: state
+                                        )
+                                    }
+                            }
+                        }
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(Theme.Colors.accentColor)
+                    }
+                    .padding(.horizontal, 36)
+                    .padding(.vertical, 20)
                     if chapterIndex != chapters.count - 1 {
                         Divider()
                             .frame(height: 1)
