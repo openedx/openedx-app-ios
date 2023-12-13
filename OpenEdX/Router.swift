@@ -304,8 +304,8 @@ public class Router: AuthorizationRouter,
         )!
         
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isDropdownActive = config?.uiComponents.isVerticalsMenuEnabled ?? false
-        
+        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
+
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
@@ -378,13 +378,21 @@ public class Router: AuthorizationRouter,
         )!
 
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isDropdownActive = config?.uiComponents.isVerticalsMenuEnabled ?? false
-        
+        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
+
         let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
         let controllerUnit = UIHostingController(rootView: view)
         var controllers = navigationController.viewControllers
-        controllers.removeLast(2)
-        controllers.append(contentsOf: [controllerVertical, controllerUnit])
+
+        if let config = container.resolve(ConfigProtocol.self),
+            config.uiComponents.courseNestedListEnabled {
+            controllers.removeLast(1)
+            controllers.append(contentsOf: [controllerUnit])
+        } else {
+            controllers.removeLast(2)
+            controllers.append(contentsOf: [controllerVertical, controllerUnit])
+        }
+
         navigationController.setViewControllers(controllers, animated: animated)
     }
     
