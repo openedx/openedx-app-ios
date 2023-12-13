@@ -137,10 +137,10 @@
 		0203DC3D29AE79F80017BD05 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				BAD9CA402B29D6CD00DE790A /* Subviews */,
 				02D0FD072AD695E10020D752 /* UserProfile */,
 				021D924528DC634300ACC565 /* ProfileView.swift */,
 				021D925128DC918D00ACC565 /* ProfileViewModel.swift */,
-				BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfo.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -343,6 +343,14 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		BAD9CA402B29D6CD00DE790A /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfo.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		C456081FB065DCEDAB8119E4 /* Frameworks */ = {
