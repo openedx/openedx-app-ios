@@ -144,6 +144,15 @@ public struct CourseOutlineView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .onReceive(
+            NotificationCenter.default.publisher(
+                for: NSNotification.blockChanged
+            )
+        ) { _ in
+            Task {
+                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+            }
+        }
     }
 
     private func courseBanner(proxy: GeometryProxy) -> some View {

@@ -83,6 +83,8 @@ public class CourseUnitViewModel: ObservableObject {
         config.uiComponents.courseUnitProgressEnabled
     }
 
+    private(set) var blockChanged: Bool = false
+
     public init(
         lessonID: String,
         courseID: String,
@@ -243,8 +245,9 @@ public class CourseUnitViewModel: ObservableObject {
         }
     }
 
-     private func setBlockCompletionForSelectedLesson() {
+    private func setBlockCompletionForSelectedLesson() {
         verticals[verticalIndex].childs[index].completion = 1.0
+        blockChanged = true
         debugLog("block completion")
     }
 

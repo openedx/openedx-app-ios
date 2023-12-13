@@ -21,12 +21,13 @@ struct LessonLineProgressView: View {
         ZStack(alignment: .bottom) {
             Theme.Colors.background
             HStack(spacing: 3) {
-                let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
+                let vertical = viewModel.verticals[viewModel.verticalIndex]
+                let data = Array(vertical.childs.enumerated())
                 ForEach(data, id: \.offset) { index, item in
                     let selected = viewModel.verticals[viewModel.verticalIndex].childs[index]
                     if selected == viewModel.selectedLesson() {
                         Theme.Colors.onProgress
-                    } else if item.completion == 1.0 {
+                    } else if item.completion == 1.0 || vertical.completion == 1.0 {
                         Theme.Colors.progressDone
                     } else {
                         Theme.Colors.progressSkip

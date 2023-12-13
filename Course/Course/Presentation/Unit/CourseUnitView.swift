@@ -12,6 +12,10 @@ import Discussion
 import Combine
 import Theme
 
+public extension NSNotification {
+    static let blockChanged = Notification.Name.init("block_changed")
+}
+
 public struct CourseUnitView: View {
     
     @ObservedObject private var viewModel: CourseUnitViewModel
@@ -369,6 +373,12 @@ public struct CourseUnitView: View {
                     NavigationBar(
                         title: isDropdownActive ? sequenceTitle : "",
                         leftButtonAction: {
+                            if viewModel.blockChanged {
+                                NotificationCenter.default.post(
+                                    name: NSNotification.blockChanged,
+                                    object: nil
+                                )
+                            }
                             viewModel.router.back()
                             playerStateSubject.send(VideoPlayerState.kill)
                         }
