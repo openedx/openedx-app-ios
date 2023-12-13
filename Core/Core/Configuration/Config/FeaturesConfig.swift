@@ -17,8 +17,8 @@ public class FeaturesConfig: NSObject {
     public var startupScreenEnabled: Bool
     
     init(dictionary: [String: Any]) {
-        whatNewEnabled = true//dictionary[FeaturesKeys.whatNewEnabled.rawValue] as? Bool ?? false
-        startupScreenEnabled = true//dictionary[FeaturesKeys.startupScreenEnabled.rawValue] as? Bool ?? false
+        whatNewEnabled = dictionary[FeaturesKeys.whatNewEnabled.rawValue] as? Bool ?? false
+        startupScreenEnabled = dictionary[FeaturesKeys.startupScreenEnabled.rawValue] as? Bool ?? false
         super.init()
     }
 }

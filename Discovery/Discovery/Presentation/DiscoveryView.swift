@@ -139,7 +139,7 @@ public struct DiscoveryView: View {
                     .frameLimit()
                 }.accessibilityAction {}
                 
-                if let model = Container.shared.resolve(StartupViewModel.self), !viewModel.loggenInUser {
+                if let model = Container.shared.resolve(StartupViewModel.self), !viewModel.userloggedIn {
                     LogistrationBottomView(
                         viewModel: model,
                         sourceScreen: .discovery

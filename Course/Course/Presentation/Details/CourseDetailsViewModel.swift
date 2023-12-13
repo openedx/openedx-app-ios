@@ -37,7 +37,7 @@ public class CourseDetailsViewModel: ObservableObject {
     let cssInjector: CSSInjector
     let connectivity: ConnectivityProtocol
     
-    var loggenInUser: Bool {
+    var userloggedIn: Bool {
         guard let container = Container.shared.resolve(CoreStorage.self) else { return false }
         return !(container.user?.username?.isEmpty ?? true)
     }

@@ -144,7 +144,7 @@ public struct CourseDetailsView: View {
                         Spacer(minLength: 84)
                     }
                 }
-                if let model = Container.shared.resolve(StartupViewModel.self), !viewModel.loggenInUser {
+                if let model = Container.shared.resolve(StartupViewModel.self), !viewModel.userloggedIn {
                     LogistrationBottomView(
                         viewModel: model,
                         sourceScreen: .courseDetail(courseID, viewModel.courseDetails?.courseTitle ?? "")
@@ -208,7 +208,7 @@ private struct CourseStateView: View {
         switch viewModel.courseState() {
         case .enrollOpen:
             StyledButton(CourseLocalization.Details.enrollNow, action: {
-                if !viewModel.loggenInUser {
+                if !viewModel.userloggedIn {
                     viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
                 } else {
                     Task {

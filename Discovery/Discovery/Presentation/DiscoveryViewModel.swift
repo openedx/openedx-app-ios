@@ -22,7 +22,7 @@ public class DiscoveryViewModel: ObservableObject {
     @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
     
-    var loggenInUser: Bool {
+    var userloggedIn: Bool {
         guard let container = Container.shared.resolve(CoreStorage.self) else { return false }
         return !(container.user?.username?.isEmpty ?? true)
     }
