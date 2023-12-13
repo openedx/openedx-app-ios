@@ -12,7 +12,7 @@ import Core
 struct ProfileSupportInfo: View {
 
     struct LinkViewModel {
-        let URL: URL
+        let url: URL
         let title: String
     }
 
@@ -38,29 +38,21 @@ struct ProfileSupportInfo: View {
     }
 
     @ViewBuilder
-    private func supportInfo(support: URL) -> some View {
-        Button {
-            viewModel.trackEmailSupportClicked()
-            UIApplication.shared.open(support)
-        } label: {
-            HStack {
-                Text(ProfileLocalization.contact)
-                Spacer()
-                Image(systemName: "chevron.right")
-            }
-        }
-        .foregroundColor(.primary)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ProfileLocalization.supportInfo)
-        Rectangle()
-            .frame(height: 1)
-            .foregroundColor(Theme.Colors.textSecondary)
+    private func supportInfo(url: URL) -> some View {
+        button(
+            linkViewModel: .init(
+                url: url,
+                title: ProfileLocalization.contact
+            ),
+            isEmailSupport: true
+        )
+
     }
 
     private func terms(url: URL) -> some View {
         navigationLink(
             viewModel: .init(
-                URL: url,
+                url: url,
                 title: ProfileLocalization.terms
             )
         )
@@ -69,7 +61,7 @@ struct ProfileSupportInfo: View {
     private func privacy(url: URL) -> some View {
         navigationLink(
             viewModel: .init(
-                URL: url,
+                url: url,
                 title: ProfileLocalization.privacy
             )
         )
@@ -78,7 +70,7 @@ struct ProfileSupportInfo: View {
     private func cookiePolicy(url: URL) -> some View {
         navigationLink(
             viewModel: .init(
-                URL: url,
+                url: url,
                 title: ProfileLocalization.cookiePolicy
             )
         )
@@ -87,16 +79,16 @@ struct ProfileSupportInfo: View {
     private func dataSellContent(url: URL) -> some View {
         navigationLink(
             viewModel: .init(
-                URL: url,
+                url: url,
                 title: ProfileLocalization.doNotSellInformation
             )
         )
     }
 
     private func faq(url: URL) -> some View {
-        navigationLink(
-            viewModel: .init(
-                URL: url,
+        button(
+            linkViewModel: .init(
+                url: url,
                 title: ProfileLocalization.faq
             )
         )
@@ -106,7 +98,7 @@ struct ProfileSupportInfo: View {
     private func navigationLink(viewModel: LinkViewModel) -> some View {
         NavigationLink {
             WebBrowser(
-                url: viewModel.URL.absoluteString,
+                url: viewModel.url.absoluteString,
                 pageTitle: viewModel.title
             )
         } label: {
@@ -120,6 +112,26 @@ struct ProfileSupportInfo: View {
         .foregroundColor(.primary)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(viewModel.title)
+        Rectangle()
+            .frame(height: 1)
+            .foregroundColor(Theme.Colors.textSecondary)
+    }
+
+    @ViewBuilder
+    private func button(linkViewModel: LinkViewModel, isEmailSupport: Bool = false) -> some View {
+        Button {
+            if isEmailSupport { viewModel.trackEmailSupportClicked() }
+            UIApplication.shared.open(linkViewModel.url)
+        } label: {
+            HStack {
+                Text(linkViewModel.title)
+                Spacer()
+                Image(systemName: "chevron.right")
+            }
+        }
+        .foregroundColor(.primary)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(linkViewModel.title)
         Rectangle()
             .frame(height: 1)
             .foregroundColor(Theme.Colors.textSecondary)
