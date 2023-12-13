@@ -154,6 +154,7 @@ public class CourseUnitViewModel: ObservableObject {
     func blockCompletionRequest(blockID: String) async {
         do {
             try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
+            setBlockCompletionForSelectedLesson()
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -162,7 +163,7 @@ public class CourseUnitViewModel: ObservableObject {
             }
         }
     }
-    
+
     func nextTitles() {
         if index != 0 {
             previousLesson = verticals[verticalIndex].childs[index - 1].displayName
@@ -240,6 +241,11 @@ public class CourseUnitViewModel: ObservableObject {
         } else {
             return nextData(from: resultData)
         }
+    }
+
+     private func setBlockCompletionForSelectedLesson() {
+        verticals[verticalIndex].childs[index].completion = 1.0
+        debugLog("block completion")
     }
 
     func route(to vertical: CourseVertical) {

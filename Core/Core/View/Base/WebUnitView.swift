@@ -11,11 +11,15 @@ import Theme
 
 public struct WebUnitView: View {
     
-    private var url: String
     @ObservedObject private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
-    
-    public init(url: String, viewModel: WebUnitViewModel) {
+
+    private var url: String
+
+    public init(
+        url: String,
+        viewModel: WebUnitViewModel
+    ) {
         self.viewModel = viewModel
         self.url = url
     }
@@ -56,9 +60,10 @@ public struct WebUnitView: View {
                         if viewModel.cookiesReady {
                             WebView(
                                 viewModel: .init(url: url, baseURL: viewModel.config.baseURL.absoluteString),
-                                isLoading: $isWebViewLoading, refreshCookies: {
-                                    await viewModel.updateCookies(force: true)
-                                })
+                                isLoading: $isWebViewLoading, 
+                                refreshCookies: { await viewModel.updateCookies(force: true) },
+                                isAddAjaxCallbackScript: true
+                            )
                             .frame(width: reader.size.width, height: reader.size.height)
                         }
                     }

@@ -109,7 +109,7 @@ public struct CourseVertical {
     public let displayName: String
     public let type: BlockType
     public let completion: Double
-    public let childs: [CourseBlock]
+    public var childs: [CourseBlock]
     
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
@@ -150,7 +150,7 @@ public struct CourseBlock: Equatable, Identifiable {
     public let courseId: String
     public let topicId: String?
     public let graded: Bool
-    public let completion: Double
+    public var completion: Double
     public let type: BlockType
     public let displayName: String
     public let studentUrl: String

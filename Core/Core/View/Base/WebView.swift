@@ -16,7 +16,8 @@ public struct WebView: UIViewRepresentable {
         
         @Published var url: String
         let baseURL: String
-        
+        let ajaxProvider = AjaxProvider()
+
         public init(url: String, baseURL: String) {
             self.url = url
             self.baseURL = baseURL
@@ -26,99 +27,20 @@ public struct WebView: UIViewRepresentable {
     @ObservedObject var viewModel: ViewModel
     @Binding public var isLoading: Bool
     var refreshCookies: () async -> Void
-    
-    public init(viewModel: ViewModel, isLoading: Binding<Bool>, refreshCookies: @escaping () async -> Void) {
+    var isAddAjaxCallbackScript: Bool
+
+    public init(
+        viewModel: ViewModel,
+        isLoading: Binding<Bool>,
+        refreshCookies: @escaping () async -> Void,
+        isAddAjaxCallbackScript: Bool = false
+    ) {
         self.viewModel = viewModel
         self._isLoading = isLoading
         self.refreshCookies = refreshCookies
+        self.isAddAjaxCallbackScript = isAddAjaxCallbackScript
     }
-    
-    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
-        var parent: WebView
-        
-        init(_ parent: WebView) {
-            self.parent = parent
-        }
-        
-        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            DispatchQueue.main.async {
-                self.parent.isLoading = false
-            }
-        }
-        
-        public func webView(
-            _ webView: WKWebView,
-            runJavaScriptConfirmPanelWithMessage message: String,
-            initiatedByFrame frame: WKFrameInfo,
-            completionHandler: @escaping (Bool) -> Void
-        ) {
-            
-            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-            
-            alertController.addAction(UIAlertAction(
-                title: CoreLocalization.Webview.Alert.ok,
-                style: .default,
-                handler: { _ in
-                    completionHandler(true)
-                }))
-            
-            alertController.addAction(UIAlertAction(
-                title: CoreLocalization.Webview.Alert.cancel,
-                style: .cancel,
-                handler: { _ in
-                    completionHandler(false)
-                }))
-            
-            UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
-        }
-        
-        public func webView(
-            _ webView: WKWebView,
-            decidePolicyFor navigationAction: WKNavigationAction
-        ) async -> WKNavigationActionPolicy {
-            
-            guard let url = navigationAction.request.url else { return .cancel }
-            
-            let baseURL = await parent.viewModel.baseURL
-            if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
-                if navigationAction.navigationType == .other {
-                    return .allow
-                } else if navigationAction.navigationType == .linkActivated {
-                    await MainActor.run {
-                        UIApplication.shared.open(url, options: [:])
-                    }
-                } else if navigationAction.navigationType == .formSubmitted {
-                    return .allow
-                }
-                return .cancel
-            }
-            
-            return .allow
-        }
-        
-        public func webView(
-            _ webView: WKWebView,
-            decidePolicyFor navigationResponse: WKNavigationResponse
-        ) async -> WKNavigationResponsePolicy {
-            guard let response = (navigationResponse.response as? HTTPURLResponse),
-                  let url = response.url else {
-                return .cancel
-            }
-            let baseURL = await parent.viewModel.baseURL
-            
-            if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
-                await parent.refreshCookies()
-                DispatchQueue.main.async {
-                    if let url = webView.url {
-                        let request = URLRequest(url: url)
-                        webView.load(request)
-                    }
-                }
-            }
-            return .allow
-        }
-    }
-    
+
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
@@ -142,7 +64,14 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.layer.cornerRadius = 24
         webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        
+
+        if isAddAjaxCallbackScript {
+            viewModel.ajaxProvider.addAjaxCallbackScript(
+                in: webView.configuration.userContentController,
+                scriptMessageHandler: context.coordinator
+            )
+        }
+
         return webView
     }
     
@@ -154,6 +83,107 @@ public struct WebView: UIViewRepresentable {
                 }
                 let request = URLRequest(url: url)
                 webview.load(request)
+            }
+        }
+    }
+
+    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+
+        var parent: WebView
+
+        private var ajaxProvider: AjaxProvider {
+            parent.viewModel.ajaxProvider
+        }
+
+        init(_ parent: WebView) {
+            self.parent = parent
+        }
+
+        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+            }
+        }
+
+        public func webView(
+            _ webView: WKWebView,
+            runJavaScriptConfirmPanelWithMessage message: String,
+            initiatedByFrame frame: WKFrameInfo,
+            completionHandler: @escaping (Bool) -> Void
+        ) {
+
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+
+            alertController.addAction(UIAlertAction(
+                title: CoreLocalization.Webview.Alert.ok,
+                style: .default,
+                handler: { _ in
+                    completionHandler(true)
+                }))
+
+            alertController.addAction(UIAlertAction(
+                title: CoreLocalization.Webview.Alert.cancel,
+                style: .cancel,
+                handler: { _ in
+                    completionHandler(false)
+                }))
+
+            UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
+        }
+
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction
+        ) async -> WKNavigationActionPolicy {
+
+            guard let url = navigationAction.request.url else { return .cancel }
+
+            let baseURL = await parent.viewModel.baseURL
+            if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
+                if navigationAction.navigationType == .other {
+                    return .allow
+                } else if navigationAction.navigationType == .linkActivated {
+                    await MainActor.run {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                } else if navigationAction.navigationType == .formSubmitted {
+                    return .allow
+                }
+                return .cancel
+            }
+
+            return .allow
+        }
+
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationResponse: WKNavigationResponse
+        ) async -> WKNavigationResponsePolicy {
+            guard let response = (navigationResponse.response as? HTTPURLResponse),
+                  let url = response.url else {
+                return .cancel
+            }
+            let baseURL = await parent.viewModel.baseURL
+
+            if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
+                await parent.refreshCookies()
+                DispatchQueue.main.async {
+                    if let url = webView.url {
+                        let request = URLRequest(url: url)
+                        webView.load(request)
+                    }
+                }
+            }
+            return .allow
+        }
+
+        public func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
+            if message.name == parent.viewModel.ajaxProvider.AJAXCallBackHandler {
+                guard let data = message.body as? [AnyHashable: Any] else { return }
+                parent.viewModel.ajaxProvider.isCompletionCallback(with: data)
             }
         }
     }

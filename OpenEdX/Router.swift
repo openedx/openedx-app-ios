@@ -101,7 +101,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func presentAppReview() {
-        let config = Container.shared.resolve(Config.self)!
+        let config = Container.shared.resolve(ConfigProtocol.self)!
         let storage = Container.shared.resolve(CoreStorage.self)!
         let vm = AppReviewViewModel(config: config, storage: storage)
         if vm.shouldShowRatingView() {
