@@ -14,8 +14,14 @@ public enum ProfileLocalization {
   public static let bio = ProfileLocalization.tr("Localizable", "BIO", fallback: "Bio:")
   /// Contact support
   public static let contact = ProfileLocalization.tr("Localizable", "CONTACT", fallback: "Contact support")
+  /// Cookie Policy
+  public static let cookiePolicy = ProfileLocalization.tr("Localizable", "COOKIE_POLICY", fallback: "Cookie Policy")
+  /// Do Not Sell my Personal Information
+  public static let doNotSellInformation = ProfileLocalization.tr("Localizable", "DO_NOT_SELL_INFORMATION", fallback: "Do Not Sell my Personal Information")
   /// Edit profile
   public static let editProfile = ProfileLocalization.tr("Localizable", "EDIT_PROFILE", fallback: "Edit profile")
+  /// FAQ
+  public static let faq = ProfileLocalization.tr("Localizable", "FAQ", fallback: "FAQ")
   /// full profile
   public static let fullProfile = ProfileLocalization.tr("Localizable", "FULL_PROFILE", fallback: "full profile")
   /// Profile info
@@ -24,8 +30,8 @@ public enum ProfileLocalization {
   public static let limitedProfile = ProfileLocalization.tr("Localizable", "LIMITED_PROFILE", fallback: "limited profile")
   /// Log out
   public static let logout = ProfileLocalization.tr("Localizable", "LOGOUT", fallback: "Log out")
-  /// Privacy and policy
-  public static let privacy = ProfileLocalization.tr("Localizable", "PRIVACY", fallback: "Privacy and policy")
+  /// Privacy policy
+  public static let privacy = ProfileLocalization.tr("Localizable", "PRIVACY", fallback: "Privacy policy")
   /// Settings
   public static let settings = ProfileLocalization.tr("Localizable", "SETTINGS", fallback: "Settings")
   /// Video settings
