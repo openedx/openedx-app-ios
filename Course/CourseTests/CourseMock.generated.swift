@@ -1659,15 +1659,15 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
     }
 
     open func getLoadedCourseDetails(courseID: String) throws -> CourseDetails {
-        addInvocation(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(courseID)))
-		let perform = methodPerformValue(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(courseID))) as? (String) -> Void
-		perform?(courseID)
+        addInvocation(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
 		var __value: CourseDetails
 		do {
-		    __value = try methodReturnValue(.m_getCourseDetailsOffline__courseID_courseID(Parameter<String>.value(courseID))).casted()
+		    __value = try methodReturnValue(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getCourseDetailsOffline(courseID: String). Use given")
-			Failure("Stub return value not specified for getCourseDetailsOffline(courseID: String). Use given")
+			onFatalFailure("Stub return value not specified for getLoadedCourseDetails(courseID: String). Use given")
+			Failure("Stub return value not specified for getLoadedCourseDetails(courseID: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -1675,15 +1675,15 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
     }
 
     open func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
-        addInvocation(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(courseID)))
-		let perform = methodPerformValue(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(courseID))) as? (String) -> Void
-		perform?(courseID)
+        addInvocation(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
 		var __value: CourseStructure
 		do {
-		    __value = try methodReturnValue(.m_getCourseBlocksOffline__courseID_courseID(Parameter<String>.value(courseID))).casted()
+		    __value = try methodReturnValue(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getCourseBlocksOffline(courseID: String). Use given")
-			Failure("Stub return value not specified for getCourseBlocksOffline(courseID: String). Use given")
+			onFatalFailure("Stub return value not specified for getLoadedCourseBlocks(courseID: String). Use given")
+			Failure("Stub return value not specified for getLoadedCourseBlocks(courseID: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -1803,8 +1803,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         case m_getCourseDetails__courseID_courseID(Parameter<String>)
         case m_getCourseBlocks__courseID_courseID(Parameter<String>)
         case m_getCourseVideoBlocks__fullStructure_fullStructure(Parameter<CourseStructure>)
-        case m_getCourseDetailsOffline__courseID_courseID(Parameter<String>)
-        case m_getCourseBlocksOffline__courseID_courseID(Parameter<String>)
+        case m_getLoadedCourseDetails__courseID_courseID(Parameter<String>)
+        case m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>)
         case m_enrollToCourse__courseID_courseID(Parameter<String>)
         case m_blockCompletionRequest__courseID_courseIDblockID_blockID(Parameter<String>, Parameter<String>)
         case m_getHandouts__courseID_courseID(Parameter<String>)
@@ -1830,12 +1830,12 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFullstructure, rhs: rhsFullstructure, with: matcher), lhsFullstructure, rhsFullstructure, "fullStructure"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_getCourseDetailsOffline__courseID_courseID(let lhsCourseid), .m_getCourseDetailsOffline__courseID_courseID(let rhsCourseid)):
+            case (.m_getLoadedCourseDetails__courseID_courseID(let lhsCourseid), .m_getLoadedCourseDetails__courseID_courseID(let rhsCourseid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_getCourseBlocksOffline__courseID_courseID(let lhsCourseid), .m_getCourseBlocksOffline__courseID_courseID(let rhsCourseid)):
+            case (.m_getLoadedCourseBlocks__courseID_courseID(let lhsCourseid), .m_getLoadedCourseBlocks__courseID_courseID(let rhsCourseid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
@@ -1885,8 +1885,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case let .m_getCourseDetails__courseID_courseID(p0): return p0.intValue
             case let .m_getCourseBlocks__courseID_courseID(p0): return p0.intValue
             case let .m_getCourseVideoBlocks__fullStructure_fullStructure(p0): return p0.intValue
-            case let .m_getCourseDetailsOffline__courseID_courseID(p0): return p0.intValue
-            case let .m_getCourseBlocksOffline__courseID_courseID(p0): return p0.intValue
+            case let .m_getLoadedCourseDetails__courseID_courseID(p0): return p0.intValue
+            case let .m_getLoadedCourseBlocks__courseID_courseID(p0): return p0.intValue
             case let .m_enrollToCourse__courseID_courseID(p0): return p0.intValue
             case let .m_blockCompletionRequest__courseID_courseIDblockID_blockID(p0, p1): return p0.intValue + p1.intValue
             case let .m_getHandouts__courseID_courseID(p0): return p0.intValue
@@ -1901,8 +1901,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case .m_getCourseDetails__courseID_courseID: return ".getCourseDetails(courseID:)"
             case .m_getCourseBlocks__courseID_courseID: return ".getCourseBlocks(courseID:)"
             case .m_getCourseVideoBlocks__fullStructure_fullStructure: return ".getCourseVideoBlocks(fullStructure:)"
-            case .m_getCourseDetailsOffline__courseID_courseID: return ".getCourseDetailsOffline(courseID:)"
-            case .m_getCourseBlocksOffline__courseID_courseID: return ".getCourseBlocksOffline(courseID:)"
+            case .m_getLoadedCourseDetails__courseID_courseID: return ".getLoadedCourseDetails(courseID:)"
+            case .m_getLoadedCourseBlocks__courseID_courseID: return ".getLoadedCourseBlocks(courseID:)"
             case .m_enrollToCourse__courseID_courseID: return ".enrollToCourse(courseID:)"
             case .m_blockCompletionRequest__courseID_courseIDblockID_blockID: return ".blockCompletionRequest(courseID:blockID:)"
             case .m_getHandouts__courseID_courseID: return ".getHandouts(courseID:)"
@@ -1932,11 +1932,11 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willReturn: CourseStructure...) -> MethodStub {
             return Given(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getCourseDetailsOffline(courseID: Parameter<String>, willReturn: CourseDetails...) -> MethodStub {
-            return Given(method: .m_getCourseDetailsOffline__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, willReturn: CourseDetails...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getCourseBlocksOffline(courseID: Parameter<String>, willReturn: CourseStructure...) -> MethodStub {
-            return Given(method: .m_getCourseBlocksOffline__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, willReturn: CourseStructure...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func enrollToCourse(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_enrollToCourse__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1983,22 +1983,22 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func getCourseDetailsOffline(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getCourseDetailsOffline__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getCourseDetailsOffline(courseID: Parameter<String>, willProduce: (StubberThrows<CourseDetails>) -> Void) -> MethodStub {
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, willProduce: (StubberThrows<CourseDetails>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getCourseDetailsOffline__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (CourseDetails).self)
 			willProduce(stubber)
 			return given
         }
-        public static func getCourseBlocksOffline(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getCourseBlocksOffline__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getCourseBlocksOffline(courseID: Parameter<String>, willProduce: (StubberThrows<CourseStructure>) -> Void) -> MethodStub {
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, willProduce: (StubberThrows<CourseStructure>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getCourseBlocksOffline__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (CourseStructure).self)
 			willProduce(stubber)
 			return given
@@ -2081,8 +2081,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func getCourseDetails(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseDetails__courseID_courseID(`courseID`))}
         public static func getCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseBlocks__courseID_courseID(`courseID`))}
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>) -> Verify { return Verify(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`))}
-        public static func getCourseDetailsOffline(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseDetailsOffline__courseID_courseID(`courseID`))}
-        public static func getCourseBlocksOffline(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseBlocksOffline__courseID_courseID(`courseID`))}
+        public static func getLoadedCourseDetails(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`))}
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`))}
         public static func enrollToCourse(courseID: Parameter<String>) -> Verify { return Verify(method: .m_enrollToCourse__courseID_courseID(`courseID`))}
         public static func blockCompletionRequest(courseID: Parameter<String>, blockID: Parameter<String>) -> Verify { return Verify(method: .m_blockCompletionRequest__courseID_courseIDblockID_blockID(`courseID`, `blockID`))}
         public static func getHandouts(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getHandouts__courseID_courseID(`courseID`))}
@@ -2105,11 +2105,11 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, perform: @escaping (CourseStructure) -> Void) -> Perform {
             return Perform(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`), performs: perform)
         }
-        public static func getCourseDetailsOffline(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_getCourseDetailsOffline__courseID_courseID(`courseID`), performs: perform)
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), performs: perform)
         }
-        public static func getCourseBlocksOffline(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_getCourseBlocksOffline__courseID_courseID(`courseID`), performs: perform)
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), performs: perform)
         }
         public static func enrollToCourse(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_enrollToCourse__courseID_courseID(`courseID`), performs: perform)
