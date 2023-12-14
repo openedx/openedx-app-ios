@@ -71,16 +71,6 @@ class ConfigTests: XCTestCase {
         XCTAssertTrue(config.features.whatNewEnabled)
     }
     
-    func testAgreementConfigInitialization() {
-        let config = Config(properties: properties)
-        
-        XCTAssertEqual(config.agreement.privacyPolicyURL, URL(string: "https://www.example.com/privacy"))
-        XCTAssertEqual(config.agreement.tosURL, URL(string: "https://www.example.com/tos"))
-        XCTAssertEqual(config.agreement.cookiePolicyURL, URL(string: "https://www.example.com/cookie"))
-        XCTAssertEqual(config.agreement.dataSellContentURL, URL(string: "https://www.example.com/sell"))
-        XCTAssertEqual(config.agreement.supportedLanguages, ["es"])
-    }
-    
     func testFirebaseConfigInitialization() {
         let config = Config(properties: properties)
         

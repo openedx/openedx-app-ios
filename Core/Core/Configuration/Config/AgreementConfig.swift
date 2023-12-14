@@ -39,26 +39,32 @@ public class AgreementConfig: NSObject {
     }
 
     private func completePath(url: String) -> String {
-           let langCode = String(Locale.preferredLanguages.first?.prefix(2) ?? "")
-           if let supportedLanguages = supportedLanguages,
-                !supportedLanguages.contains(langCode) {
-               return url
-           }
+        let langCode: String
+        if #available(iOS 16, *) {
+            langCode = Locale.current.language.languageCode?.identifier ?? ""
+        } else {
+            langCode = Locale.current.languageCode ?? ""
+        }
 
-           let URL = URL(string: url)
-           let host = URL?.host ?? ""
-           let components = url.components(separatedBy: host)
+        if let supportedLanguages = supportedLanguages,
+           !supportedLanguages.contains(langCode) {
+            return url
+        }
 
-           if components.count != 2 {
-               return url
-           }
+        let URL = URL(string: url)
+        let host = URL?.host ?? ""
+        let components = url.components(separatedBy: host)
 
-           if let firstComponent = components.first, let lastComponent = components.last {
-               return "\(firstComponent)\(host)/\(langCode)\(lastComponent)"
-           }
+        if components.count != 2 {
+            return url
+        }
 
-           return url
-       }
+        if let firstComponent = components.first, let lastComponent = components.last {
+            return "\(firstComponent)\(host)/\(langCode)\(lastComponent)"
+        }
+
+        return url
+    }
 }
 
 private let key = "AGREEMENT_URLS"

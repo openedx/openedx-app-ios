@@ -37,7 +37,6 @@ struct ProfileSupportInfo: View {
         )
     }
 
-    @ViewBuilder
     private func supportInfo(url: URL) -> some View {
         button(
             linkViewModel: .init(

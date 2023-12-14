@@ -118,7 +118,6 @@
 		0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE5E28D0B22C006D8A5D /* Strings.swift */; };
 		0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE6028D0B2CB006D8A5D /* Assets.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
-		BAAD62C62AFCF00B000E6103 /* CustomDisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */; };
 		BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA30427D2B20B299009B64B7 /* SocialAuthError.swift */; };
 		BA76135C2B21BC7300B599B7 /* SocialAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */; };
 		BA8B3A2F2AD546A700D25EF5 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */; };
@@ -128,6 +127,8 @@
 		BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */; };
 		BA8FA66E2AD59E7D00EA029A /* FacebookAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */; };
 		BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */; };
+		BAAD62C62AFCF00B000E6103 /* CustomDisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */; };
+		BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */; };
 		BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */; };
 		BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */; };
 		BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */; };
@@ -289,7 +290,6 @@
 		3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
-		BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureGroup.swift; sourceTree = "<group>"; };
 		BA30427D2B20B299009B64B7 /* SocialAuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialAuthError.swift; sourceTree = "<group>"; };
 		BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthResponse.swift; sourceTree = "<group>"; };
 		BA8B3A2E2AD546A700D25EF5 /* DebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLog.swift; sourceTree = "<group>"; };
@@ -298,6 +298,8 @@
 		BA8FA6692AD59B5500EA029A /* GoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthProvider.swift; sourceTree = "<group>"; };
 		BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthProvider.swift; sourceTree = "<group>"; };
 		BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAuthProvider.swift; sourceTree = "<group>"; };
+		BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureGroup.swift; sourceTree = "<group>"; };
+		BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementConfigTests.swift; sourceTree = "<group>"; };
 		BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookConfig.swift; sourceTree = "<group>"; };
 		BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftConfig.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 			isa = PBXGroup;
 			children = (
 				E09179FC2B0F204D002AB695 /* ConfigTests.swift */,
+				BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -902,6 +905,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */,
 				E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
