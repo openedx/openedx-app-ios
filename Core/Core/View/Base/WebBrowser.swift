@@ -11,15 +11,17 @@ import Theme
 
 public struct WebBrowser: View {
 
-    var url: String
-    var pageTitle: String
-
-    @State private var isShowProgress: Bool = true
+    @State private var isLoading: Bool = true
     @Environment(\.presentationMode) var presentationMode
+
+    private var url: String
+    private var pageTitle: String
+    private var showProgress: Bool
     
-    public init(url: String, pageTitle: String) {
+    public init(url: String, pageTitle: String, showProgress: Bool = false) {
         self.url = url
         self.pageTitle = pageTitle
+        self.showProgress = showProgress
     }
     
     public var body: some View {
@@ -27,7 +29,7 @@ public struct WebBrowser: View {
             ZStack(alignment: .center) {
                 Theme.Colors.background.ignoresSafeArea()
                 webView(proxy: proxy)
-                if isShowProgress {
+                if isLoading, showProgress {
                     HStack(alignment: .center) {
                         ProgressBar(
                             size: 40,
@@ -52,7 +54,7 @@ public struct WebBrowser: View {
             )
             WebView(
                 viewModel: .init(url: url, baseURL: ""),
-                isLoading: $isShowProgress,
+                isLoading: $isLoading,
                 refreshCookies: {}
             )
         }
