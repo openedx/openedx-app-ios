@@ -14,10 +14,10 @@ public enum ProfileLocalization {
   public static let bio = ProfileLocalization.tr("Localizable", "BIO", fallback: "Bio:")
   /// Contact support
   public static let contact = ProfileLocalization.tr("Localizable", "CONTACT", fallback: "Contact support")
-  /// Cookie Policy
-  public static let cookiePolicy = ProfileLocalization.tr("Localizable", "COOKIE_POLICY", fallback: "Cookie Policy")
-  /// Do Not Sell my Personal Information
-  public static let doNotSellInformation = ProfileLocalization.tr("Localizable", "DO_NOT_SELL_INFORMATION", fallback: "Do Not Sell my Personal Information")
+  /// Cookie policy
+  public static let cookiePolicy = ProfileLocalization.tr("Localizable", "COOKIE_POLICY", fallback: "Cookie policy")
+  /// Do not sell my personal information
+  public static let doNotSellInformation = ProfileLocalization.tr("Localizable", "DO_NOT_SELL_INFORMATION", fallback: "Do not sell my personal information")
   /// Edit profile
   public static let editProfile = ProfileLocalization.tr("Localizable", "EDIT_PROFILE", fallback: "Edit profile")
   /// FAQ
