@@ -98,8 +98,7 @@ struct ProfileSupportInfoView: View {
         NavigationLink {
             WebBrowser(
                 url: viewModel.url.absoluteString,
-                pageTitle: viewModel.title,
-                progressDisabled: false
+                pageTitle: viewModel.title
             )
         } label: {
             HStack {

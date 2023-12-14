@@ -10,26 +10,24 @@ import WebKit
 import Theme
 
 public struct WebBrowser: View {
-    
+
     var url: String
     var pageTitle: String
-    var progressDisabled: Bool
+
     @State private var isShowProgress: Bool = true
     @Environment(\.presentationMode) var presentationMode
     
-    public init(url: String, pageTitle: String, progressDisabled: Bool = true) {
+    public init(url: String, pageTitle: String) {
         self.url = url
         self.pageTitle = pageTitle
-        self.progressDisabled = progressDisabled
     }
     
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
                 Theme.Colors.background.ignoresSafeArea()
-                // MARK: - Page name
                 webView(proxy: proxy)
-                if isShowProgress, !progressDisabled {
+                if isShowProgress {
                     HStack(alignment: .center) {
                         ProgressBar(
                             size: 40,
@@ -52,7 +50,6 @@ public struct WebBrowser: View {
                 title: pageTitle,
                 leftButtonAction: { presentationMode.wrappedValue.dismiss() }
             )
-            // MARK: - Page Body
             WebView(
                 viewModel: .init(url: url, baseURL: ""),
                 isLoading: $isShowProgress,
