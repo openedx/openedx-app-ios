@@ -31,6 +31,10 @@ struct CourseUnitVerticalsDropdownView: View {
                         isLast: isLast,
                         isSelected: isSelected
                     ) {
+                        if isSelected {
+                            showDropdown.toggle()
+                            return
+                        }
                         action(vertical)
                     }
                 }
