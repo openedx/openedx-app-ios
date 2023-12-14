@@ -33,7 +33,7 @@
 "COURSEWARE.IS_FINISHED" = "“ is finished.";
 "COURSEWARE.CONTINUE" = "Continue";
 "COURSEWARE.RESUME" = "Resume";
-"COURSEWARE.CONTINUE_WITH" = "Continue with:";
+"COURSEWARE.RESUME_WITH" = "Resume with:";
 "COURSEWARE.NEXT_SECTION" = "Next section";
 
 "COURSEWARE.NEXT_SECTION_DESCRIPTION_FIRST" = "To proceed with “";
