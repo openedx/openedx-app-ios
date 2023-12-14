@@ -31,6 +31,7 @@
 "COURSEWARE.SECTION" = "Секція “";
 "COURSEWARE.IS_FINISHED" = "“ завершена.";
 "COURSEWARE.CONTINUE" = "Продовжити";
+"COURSEWARE.RESUME" = "Resume";
 "COURSEWARE.CONTINUE_WITH" = "Продовжити далі:";
 "COURSEWARE.NEXT_SECTION" = "Наступний розділ";
 
