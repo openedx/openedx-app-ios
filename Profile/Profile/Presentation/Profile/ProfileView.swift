@@ -115,7 +115,7 @@ public struct ProfileView: View {
                 profileInfo
                 VStack(alignment: .leading, spacing: 14) {
                    settings
-                   ProfileSupportInfo(viewModel: viewModel)
+                   ProfileSupportInfoView(viewModel: viewModel)
                    logOutButton
                 }
                 Spacer()

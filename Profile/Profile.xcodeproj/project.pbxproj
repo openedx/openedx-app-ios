@@ -36,7 +36,7 @@
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
 		25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */; };
-		BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfo.swift */; };
+		BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfoView.swift */; };
 		E8264C634DD8AD314ECE8905 /* Pods_App_Profile_ProfileTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -95,7 +95,7 @@
 		9D125F82E0EAC4B6C0CE280F /* Pods-App-Profile-ProfileTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A9F98CD65D1F657EB8F9EA59 /* Pods-App-Profile.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.releasedev.xcconfig"; sourceTree = "<group>"; };
 		B3F05DC21379BD4FE1AFCCF1 /* Pods-App-Profile.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugprod.xcconfig"; sourceTree = "<group>"; };
-		BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSupportInfo.swift; sourceTree = "<group>"; };
+		BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSupportInfoView.swift; sourceTree = "<group>"; };
 		BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Profile_ProfileTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F52EFE7DC07BE68B9A302DAF /* Pods-App-Profile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debug.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debug.xcconfig"; sourceTree = "<group>"; };
@@ -348,7 +348,7 @@
 		BAD9CA402B29D6CD00DE790A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfo.swift */,
+				BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfoView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -574,7 +574,7 @@
 				021D924E28DC88BB00ACC565 /* ProfileRepository.swift in Sources */,
 				0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */,
 				021D924C28DC884A00ACC565 /* ProfileEndpoint.swift in Sources */,
-				BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfo.swift in Sources */,
+				BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */,
 				020306C82932B13F000949EA /* EditProfileView.swift in Sources */,
 				0262149229AE57A1008BD75A /* DeleteAccountView.swift in Sources */,
 				02D0FD092AD698380020D752 /* UserProfileView.swift in Sources */,

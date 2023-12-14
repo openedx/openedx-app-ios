@@ -9,7 +9,7 @@ import SwiftUI
 import Theme
 import Core
 
-struct ProfileSupportInfo: View {
+struct ProfileSupportInfoView: View {
 
     struct LinkViewModel {
         let url: URL
@@ -119,7 +119,15 @@ struct ProfileSupportInfo: View {
     @ViewBuilder
     private func button(linkViewModel: LinkViewModel, isEmailSupport: Bool = false) -> some View {
         Button {
-            if isEmailSupport { viewModel.trackEmailSupportClicked() }
+            guard UIApplication.shared.canOpenURL(linkViewModel.url) else {
+                viewModel.errorMessage = isEmailSupport ?
+                ProfileLocalization.Error.cannotSendEmail :
+                CoreLocalization.Error.unknownError
+                return
+            }
+            if isEmailSupport {
+                viewModel.trackEmailSupportClicked()
+            }
             UIApplication.shared.open(linkViewModel.url)
         } label: {
             HStack {
