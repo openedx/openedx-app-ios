@@ -81,10 +81,10 @@ struct CourseExpandableContentView: View {
         chapter: CourseChapter,
         isExpanded: Bool
     ) -> some View {
-        Button {
-            onLabelClick(sequential: sequential, chapter: chapter)
-        } label: {
-            HStack {
+        HStack {
+            Button {
+                onLabelClick(sequential: sequential, chapter: chapter)
+            } label: {
                 Group {
                     if sequential.completion == 1 {
                         CoreAssets.finished.swiftUIImage
@@ -99,23 +99,23 @@ struct CourseExpandableContentView: View {
                         .lineLimit(1)
                 }
                 .foregroundColor(Theme.Colors.textPrimary)
-                Spacer()
-                downloadButton(
-                    sequential: sequential,
-                    chapter: chapter
-                )
-                let downloadable = viewModel.verticalsBlocksDownloadable(by: sequential)
-                if !downloadable.isEmpty {
-                    Text(String(downloadable.count))
-                        .foregroundColor(Color(UIColor.label))
-                }
             }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(sequential.displayName)
-            .padding(.leading, 40)
-            .padding(.trailing, 28)
-            .padding(.vertical, 14)
+            Spacer()
+            downloadButton(
+                sequential: sequential,
+                chapter: chapter
+            )
+            let downloadable = viewModel.verticalsBlocksDownloadable(by: sequential)
+            if !downloadable.isEmpty {
+                Text(String(downloadable.count))
+                    .foregroundColor(Color(UIColor.label))
+            }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(sequential.displayName)
+        .padding(.leading, 40)
+        .padding(.trailing, 28)
+        .padding(.vertical, 14)
     }
 
     @ViewBuilder
@@ -126,38 +126,44 @@ struct CourseExpandableContentView: View {
         if let state = viewModel.sequentialsDownloadState[sequential.id] {
             switch state {
             case .available:
-                DownloadAvailableView()
-                    .onTapGesture {
-                        viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: chapter.id,
-                            state: state
-                        )
-                    }
-                    .onForeground {
-                        viewModel.onForeground()
-                    }
+                Button {
+                    viewModel.onDownloadViewTap(
+                        chapter: chapter,
+                        blockId: chapter.id,
+                        state: state
+                    )
+                } label: {
+                    DownloadAvailableView()
+                }
+                .onForeground {
+                    viewModel.onForeground()
+                }
             case .downloading:
-                DownloadProgressView()
-                    .onTapGesture {
-                        viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: chapter.id,
-                            state: state
-                        )
-                    }
-                    .onBackground {
-                        viewModel.onBackground()
-                    }
+                Button {
+                    viewModel.onDownloadViewTap(
+                        chapter: chapter,
+                        blockId: chapter.id,
+                        state: state
+                    )
+                } label: {
+                    DownloadProgressView()
+                }
+                .onBackground {
+                    viewModel.onBackground()
+                }
             case .finished:
-                DownloadFinishedView()
-                    .onTapGesture {
-                        viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: chapter.id,
-                            state: state
-                        )
-                    }
+                Button {
+                    viewModel.onDownloadViewTap(
+                        chapter: chapter,
+                        blockId: chapter.id,
+                        state: state
+                    )
+                } label: {
+                    DownloadFinishedView()
+                }
+                .onBackground {
+                    viewModel.onBackground()
+                }
             }
         }
     }

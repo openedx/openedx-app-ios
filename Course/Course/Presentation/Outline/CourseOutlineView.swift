@@ -10,6 +10,78 @@ import Core
 import Kingfisher
 import Theme
 
+struct VideosDownloadingBarView: View {
+
+    var onTap: (() -> Void)?
+
+    @ObservedObject var viewModel: CourseContainerViewModel
+    var courseStructure: CourseStructure
+
+    @State private var isOn: Bool = false {
+        didSet {
+            print("isOn \(isOn)")
+        }
+    }
+
+    private var remainingCount: Int {
+        viewModel.verticalsDownloadState.filter { $0.value != .finished }.count
+    }
+
+    var body: some View {
+        VStack(spacing: 10) {
+            HStack {
+                if isOn { ProgressView() .padding(.leading, 15) }
+                titles
+                toggle
+            }
+            if isOn { ProgressView(value: 20, total: 100) }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onTap?()
+        }
+    }
+
+    private var titles: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(isOn ? "Downloading videos..." : "Download to device")
+                    .font(Theme.Fonts.titleSmall)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                Text("Remaining \(remainingCount)")
+                    .font(Theme.Fonts.labelMedium)
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 15)
+        .layoutPriority(1)
+    }
+
+    private var toggle: some View {
+        Toggle("", isOn: $isOn)
+            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+            .padding(.trailing, 15)
+            .onChange(of: isOn) { isOn in
+                let childs = courseStructure.childs.filter { $0.childs.contains(where:  {$0.isDownloadable }) }
+                childs.forEach { courseChapter in
+                    courseChapter.childs
+                        .filter { $0.isDownloadable }
+                        .forEach { sequential in
+                            if let state = viewModel.sequentialsDownloadState[sequential.id] {
+                                viewModel.onDownloadViewTap(
+                                    chapter: courseChapter,
+                                    blockId: sequential.id,
+                                    state: state
+                                )
+                            }
+                    }
+                }
+            }
+    }
+
+}
+
 public struct CourseOutlineView: View {
     
     @StateObject private var viewModel: CourseContainerViewModel
@@ -44,6 +116,13 @@ public struct CourseOutlineView: View {
                         VStack(alignment: .leading) {
                             if viewModel.config.uiComponents.courseBannerEnabled {
                                 courseBanner(proxy: proxy)
+                            }
+
+                            if let courseVideosStructure = viewModel.courseVideosStructure, isVideo {
+                                VideosDownloadingBarView(
+                                    viewModel: viewModel,
+                                    courseStructure: courseVideosStructure
+                                )
                             }
 
                             if let continueWith = viewModel.continueWith,
