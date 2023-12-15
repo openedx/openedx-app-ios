@@ -8,6 +8,7 @@ import yaml
 import json
 import coloredlogs #TODO: ADD TO DOCUMENTATION pip install coloredlogs 
 from PIL import Image #TODO: ADD TO DOCUMENTATION pip install pillow
+import re
 
 class WhitelabelApp:
     EXAMPLE_CONFIG_FILE = """
@@ -40,6 +41,7 @@ class WhitelabelApp:
                         imageName: 'appIcon.jpg' # image to replace current AppIcon - png or jpg are supported
         projectConfig:
             projectPath: 'path/to/project/project.pbxproj' # path to project.pbxproj file
+            devTeam: '1234567890' # apple development team id
             appBundleID:
                 configurations:
                     config1: # configuration name - can be any
@@ -225,6 +227,7 @@ class WhitelabelApp:
 
     def set_app_project_config(self):
         self.set_app_bundle_ids()
+        self.set_dev_team()
 
 
     def set_app_bundle_ids(self):
@@ -263,6 +266,27 @@ class WhitelabelApp:
                     logging.error(error)
         else:
             logging.error("Bundle ids config is not defined")       
+    
+    def set_dev_team(self):
+        if "devTeam" in self.project_config:
+            devTeam = self.project_config["devTeam"]
+            if devTeam != '':
+                # read project file
+                with open(self.config_project_path, 'r') as openfile:
+                    config_file_string = openfile.read()
+                config_file_string_out = re.sub('DEVELOPMENT_TEAM = .{10};','DEVELOPMENT_TEAM = '+devTeam+';', config_file_string)
+                # if any entries were found and replaced
+                if config_file_string_out != config_file_string:
+                    # write to project file
+                    with open(self.config_project_path, 'w') as openfile:
+                        openfile.write(config_file_string_out)
+                    logging.debug("Dev Team was set successfuly")
+                else:
+                    logging.error("No dev Team is found in project file")
+            else:
+                logging.error("Dev Team is empty in config")
+        else:
+            logging.error("Dev Team is not defined")       
 
 
         
