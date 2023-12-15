@@ -76,22 +76,16 @@ public struct CourseUnitView: View {
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
-                        VStack {Theme.Colors.background}
-                            .frame(
-                                width: reader.size.width,
-                                height: isHorizontal ? 75 : 50
-                            )
+                        topInset(reader: reader)
                         content(reader: reader)
                     }
                     .frame(maxWidth: .infinity)
                     .clipped()
-
                     // MARK: Progress Dots
                     if !viewModel.courseUnitProgressEnabled {
                         LessonProgressView(viewModel: viewModel)
                     }
                 }
-                
                 // MARK: - Alert
                 if showAlert {
                     ZStack(alignment: .bottomLeading) {
@@ -113,9 +107,7 @@ public struct CourseUnitView: View {
                         }
                     }
                 }
-                
                 courseNavigation
-
             }
             .onDisappear {
                 if !isPresented {
@@ -155,6 +147,16 @@ public struct CourseUnitView: View {
 
     // MARK: - Content
 
+    private func topInset(reader: GeometryProxy) -> some View {
+        VStack { Theme.Colors.background }
+            .frame(
+                width: reader.size.width,
+                height: isHorizontal ?
+                (viewModel.courseUnitProgressEnabled ? 85 : 75) :
+                (viewModel.courseUnitProgressEnabled ? 60 : 50)
+            )
+    }
+
     // swiftlint:disable function_body_length
     private func content(reader: GeometryProxy) -> some View {
         LazyVStack(alignment: .leading, spacing: 0) {
@@ -177,8 +179,8 @@ public struct CourseUnitView: View {
                                     playerStateSubject: playerStateSubject,
                                     languages: block.subtitles ?? [],
                                     isOnScreen: index == viewModel.index
-                                ).frameLimit()
-
+                                )
+                                .frameLimit()
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
@@ -204,8 +206,9 @@ public struct CourseUnitView: View {
                                     playerStateSubject: playerStateSubject,
                                     languages: block.subtitles ?? [],
                                     isOnScreen: index == viewModel.index
-                                ).frameLimit()
-
+                                )
+                                .padding(.top, 5)
+                                .frameLimit()
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
@@ -348,7 +351,7 @@ public struct CourseUnitView: View {
     // MARK: - Course Navigation
 
     private var courseNavigation: some View {
-        VStack {
+        VStack(spacing: 0) {
             ZStack {
                 if !isDropdownActive {
                     GeometryReader { reader in
@@ -366,69 +369,79 @@ public struct CourseUnitView: View {
                                         .padding(.top, isHorizontal ? 14 : 2)
                                     Spacer()
                                 }
-                            }.frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
-                            Spacer()
-                        }
-                    }
-                }
-                VStack(spacing: 0) {
-                    NavigationBar(
-                        title: isDropdownActive ? sequenceTitle : "",
-                        leftButtonAction: {
-                            if viewModel.blockChanged {
-                                NotificationCenter.default.post(
-                                    name: NSNotification.blockChanged,
-                                    object: nil
-                                )
                             }
-                            viewModel.router.back()
-                            playerStateSubject.send(VideoPlayerState.kill)
+                            .frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
+                            Spacer()
                         }
-                    )
-                    .padding(.top, isHorizontal ? 10 : 0)
-                    .padding(.leading, isHorizontal ? -16 : 0)
-                    if isDropdownActive {
-                        CourseUnitDropDownTitle(
-                            title: unitTitle,
-                            isAvailable: isDropdownAvailable,
-                            showDropdown: $showDropdown)
-                        .padding(.top, 0)
-                        .offset(y: -25)
                     }
-                    if viewModel.courseUnitProgressEnabled {
-                        LessonLineProgressView(viewModel: viewModel)
-                            .if(isDropdownActive) { view in
-                                view
-                                    .offset(y: -25)
-                        }
-
-                    }
-                    Spacer()
                 }
-                HStack(alignment: .center) {
-                    if isHorizontal {
-                        Spacer()
-                    }
-                    VStack {
-                        if !isHorizontal {
-                            Spacer()
-                        }
-                        CourseNavigationView(
-                            sectionName: sectionName,
-                            viewModel: viewModel,
-                            playerStateSubject: playerStateSubject
-                        )
-                        if isHorizontal {
-                            Spacer()
-                        }
-                    }//.frame(height: isHorizontal ? nil : 44)
-
-                    .padding(.bottom, isHorizontal ? 0 : 50)
-                    .padding(.top, isHorizontal ? 12 : 0)
-                }.frameLimit(sizePortrait: 420)
+                navigationBar
+                courseNavigationView
             }
         }
         .frame(maxWidth: .infinity)
+    }
+
+    private var navigationBar: some View {
+        VStack(spacing: 0) {
+            ZStack(alignment: .bottom) {
+                NavigationBar(
+                    title: isDropdownActive ? sequenceTitle : "",
+                    leftButtonAction: {
+                        if viewModel.blockChanged {
+                            NotificationCenter.default.post(
+                                name: NSNotification.blockChanged,
+                                object: nil
+                            )
+                        }
+                        viewModel.router.back()
+                        playerStateSubject.send(VideoPlayerState.kill)
+                    }
+                )
+                .padding(.top, isHorizontal ? 10 : 0)
+                .padding(.leading, isHorizontal ? -16 : 0)
+
+                if isDropdownActive {
+                    CourseUnitDropDownTitle(
+                        title: unitTitle,
+                        isAvailable: isDropdownAvailable,
+                        showDropdown: $showDropdown
+                    )
+                    .padding(.bottom, 0)
+                }
+            }
+            .background(Theme.Colors.background)
+
+            if viewModel.courseUnitProgressEnabled {
+                LessonLineProgressView(viewModel: viewModel)
+            }
+            Spacer()
+        }
+    }
+
+    private var courseNavigationView: some View {
+        HStack(alignment: .center) {
+            if isHorizontal {
+                Spacer()
+            }
+            VStack {
+                if !isHorizontal {
+                    Spacer()
+                }
+                CourseNavigationView(
+                    sectionName: sectionName,
+                    viewModel: viewModel,
+                    playerStateSubject: playerStateSubject
+                )
+                if isHorizontal {
+                    Spacer()
+                }
+            }//.frame(height: isHorizontal ? nil : 44)
+
+            .padding(.bottom, isHorizontal ? 0 : 50)
+            .padding(.top, isHorizontal ? 12 : 0)
+        }
+        .frameLimit(sizePortrait: 420)
     }
 }
 
