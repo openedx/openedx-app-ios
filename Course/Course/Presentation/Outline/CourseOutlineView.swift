@@ -10,78 +10,6 @@ import Core
 import Kingfisher
 import Theme
 
-struct VideosDownloadingBarView: View {
-
-    var onTap: (() -> Void)?
-
-    @ObservedObject var viewModel: CourseContainerViewModel
-    var courseStructure: CourseStructure
-
-    @State private var isOn: Bool = false {
-        didSet {
-            print("isOn \(isOn)")
-        }
-    }
-
-    private var remainingCount: Int {
-        viewModel.verticalsDownloadState.filter { $0.value != .finished }.count
-    }
-
-    var body: some View {
-        VStack(spacing: 10) {
-            HStack {
-                if isOn { ProgressView() .padding(.leading, 15) }
-                titles
-                toggle
-            }
-            if isOn { ProgressView(value: 20, total: 100) }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onTap?()
-        }
-    }
-
-    private var titles: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(isOn ? "Downloading videos..." : "Download to device")
-                    .font(Theme.Fonts.titleSmall)
-                    .foregroundColor(Theme.Colors.textPrimary)
-                Text("Remaining \(remainingCount)")
-                    .font(Theme.Fonts.labelMedium)
-                    .foregroundColor(Theme.Colors.textSecondary)
-            }
-            Spacer()
-        }
-        .padding(.horizontal, 15)
-        .layoutPriority(1)
-    }
-
-    private var toggle: some View {
-        Toggle("", isOn: $isOn)
-            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-            .padding(.trailing, 15)
-            .onChange(of: isOn) { isOn in
-                let childs = courseStructure.childs.filter { $0.childs.contains(where:  {$0.isDownloadable }) }
-                childs.forEach { courseChapter in
-                    courseChapter.childs
-                        .filter { $0.isDownloadable }
-                        .forEach { sequential in
-                            if let state = viewModel.sequentialsDownloadState[sequential.id] {
-                                viewModel.onDownloadViewTap(
-                                    chapter: courseChapter,
-                                    blockId: sequential.id,
-                                    state: state
-                                )
-                            }
-                    }
-                }
-            }
-    }
-
-}
-
 public struct CourseOutlineView: View {
     
     @StateObject private var viewModel: CourseContainerViewModel
@@ -119,9 +47,9 @@ public struct CourseOutlineView: View {
                             }
 
                             if let courseVideosStructure = viewModel.courseVideosStructure, isVideo {
-                                VideosDownloadingBarView(
-                                    viewModel: viewModel,
-                                    courseStructure: courseVideosStructure
+                                DownloadToDeviceBarView(
+                                    courseStructure: courseVideosStructure,
+                                    viewModel: viewModel
                                 )
                             }
 
@@ -157,7 +85,7 @@ public struct CourseOutlineView: View {
                                 
                                 // MARK: - Sections
                                 if viewModel.config.uiComponents.courseNestedListEnabled {
-                                    CourseExpandableContentView(
+                                    CourseStructureNestedListView(
                                         proxy: proxy,
                                         course: course,
                                         viewModel: viewModel
@@ -276,130 +204,6 @@ public struct CourseOutlineView: View {
         .padding(.horizontal, 6)
         .padding(.top, 7)
         .fixedSize(horizontal: false, vertical: true)
-    }
-}
-
-struct CourseStructureView: View {
-    
-    private let proxy: GeometryProxy
-    private let course: CourseStructure
-    private let viewModel: CourseContainerViewModel
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-    
-    init(proxy: GeometryProxy, course: CourseStructure, viewModel: CourseContainerViewModel) {
-        self.proxy = proxy
-        self.course = course
-        self.viewModel = viewModel
-    }
-    
-    var body: some View {
-        let chapters = course.childs
-        ForEach(chapters, id: \.id) { chapter in
-            let chapterIndex = chapters.firstIndex(where: { $0.id == chapter.id })
-            Text(chapter.displayName)
-                .font(Theme.Fonts.titleMedium)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(Theme.Colors.textSecondary)
-                .padding(.horizontal, 24)
-                .padding(.top, 40)
-            ForEach(chapter.childs, id: \.id) { child in
-                let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == child.id })
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button {
-                            if let chapterIndex, let sequentialIndex {
-                                viewModel.trackSequentialClicked(child)
-                                viewModel.router.showCourseVerticalView(
-                                    courseID: viewModel.courseStructure?.id ?? "",
-                                    courseName: viewModel.courseStructure?.displayName ?? "",
-                                    title: child.displayName,
-                                    chapters: chapters,
-                                    chapterIndex: chapterIndex,
-                                    sequentialIndex: sequentialIndex
-                                )
-                            }
-                        } label: {
-                            Group {
-                                if child.completion == 1 {
-                                    CoreAssets.finished.swiftUIImage
-                                        .renderingMode(.template)
-                                        .foregroundColor(.accentColor)
-                                } else {
-                                    child.type.image
-                                }
-                                Text(child.displayName)
-                                    .font(Theme.Fonts.titleMedium)
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(1)
-                                    .frame(
-                                        maxWidth: idiom == .pad
-                                        ? proxy.size.width * 0.5
-                                        : proxy.size.width * 0.6,
-                                        alignment: .leading
-                                    )
-                            }
-                            .foregroundColor(Theme.Colors.textPrimary)
-                        }
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel(child.displayName)
-                        Spacer()
-                        if let state = viewModel.sequentialsDownloadState[child.id] {
-                            switch state {
-                            case .available:
-                                DownloadAvailableView()
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel(CourseLocalization.Accessibility.download)
-                                    .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
-                                    }
-                                    .onForeground {
-                                        viewModel.onForeground()
-                                    }
-                            case .downloading:
-                                DownloadProgressView()
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
-                                    .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
-                                    }
-                                    .onBackground {
-                                        viewModel.onBackground()
-                                    }
-                            case .finished:
-                                DownloadFinishedView()
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
-                                    .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
-                                    }
-                            }
-                        }
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(Theme.Colors.accentColor)
-                    }
-                    .padding(.horizontal, 36)
-                    .padding(.vertical, 20)
-                    if chapterIndex != chapters.count - 1 {
-                        Divider()
-                            .frame(height: 1)
-                            .overlay(Theme.Colors.cardViewStroke)
-                            .padding(.horizontal, 24)
-                    }
-                }
-            }
-        }
     }
 }
 

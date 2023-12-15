@@ -148,10 +148,17 @@ public extension DataLayer {
     
     struct CourseDetailYouTubeData: Decodable {
         public let url: String?
-        
-        public init(url: String?) {
+        public let fileSize: Int?
+
+        public init(url: String?, fileSize: Int?) {
             self.url = url
+            self.fileSize = fileSize
         }
-        
+
+        enum CodingKeys: String, CodingKey {
+            case url
+            case fileSize = "file_size"
+        }
+
     }
 }

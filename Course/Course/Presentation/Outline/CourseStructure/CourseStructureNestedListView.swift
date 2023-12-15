@@ -1,5 +1,5 @@
 //
-//  CourseStructureView.swift
+//  CourseStructureNestedListView.swift
 //  Course
 //
 //  Created by Eugene Yatsenko on 09.11.2023.
@@ -10,7 +10,7 @@ import Core
 import Kingfisher
 import Theme
 
-struct CourseExpandableContentView: View {
+struct CourseStructureNestedListView: View {
 
     private let proxy: GeometryProxy
     private let course: CourseStructure
@@ -129,7 +129,7 @@ struct CourseExpandableContentView: View {
                 Button {
                     viewModel.onDownloadViewTap(
                         chapter: chapter,
-                        blockId: chapter.id,
+                        blockId: sequential.id,
                         state: state
                     )
                 } label: {
@@ -142,7 +142,7 @@ struct CourseExpandableContentView: View {
                 Button {
                     viewModel.onDownloadViewTap(
                         chapter: chapter,
-                        blockId: chapter.id,
+                        blockId: sequential.id,
                         state: state
                     )
                 } label: {
@@ -155,7 +155,7 @@ struct CourseExpandableContentView: View {
                 Button {
                     viewModel.onDownloadViewTap(
                         chapter: chapter,
-                        blockId: chapter.id,
+                        blockId: sequential.id,
                         state: state
                     )
                 } label: {

@@ -165,6 +165,32 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
 
+    func downloadAll(courseStructure: CourseStructure, isOn: Bool) {
+        courseStructure.childs.forEach { courseChapter in
+            courseChapter.childs
+                .filter { $0.isDownloadable }
+                .forEach { sequential in
+                    if let state = sequentialsDownloadState[sequential.id] {
+                        switch state {
+                        case .available:
+                            onDownloadViewTap(
+                                chapter: courseChapter,
+                                blockId: sequential.id,
+                                state: state
+                            )
+                        case .downloading, .finished:
+                            if isOn { return }
+                            onDownloadViewTap(
+                                chapter: courseChapter,
+                                blockId: sequential.id,
+                                state: state
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
     func trackSelectedTab(
         selection: CourseContainerView.CourseTab,
         courseId: String,

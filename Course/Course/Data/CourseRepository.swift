@@ -224,7 +224,8 @@ public class CourseRepository: CourseRepositoryProtocol {
             studentUrl: block.studentUrl,
             subtitles: subtitles,
             videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url
+            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url,
+            fileSize: block.userViewData?.encodedVideo?.youTube?.fileSize
         )
     }
     

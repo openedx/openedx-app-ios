@@ -46,7 +46,20 @@ public struct CourseStructure: Equatable {
     public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
+    public var blocksTotalSizeInBytes: Int {
+        childs.flatMap {
+            $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
+        }
+        .filter { $0.isDownloadable }
+        .compactMap { $0.fileSize }
+        .reduce(.zero) { $0 + $1 }
+    }
+
+    public var blocksTotalSizeInMb: Double {
+        Double(blocksTotalSizeInBytes / 1024 / 1024)
+    }
+
 }
 
 public struct CourseChapter: Identifiable {
@@ -157,7 +170,8 @@ public struct CourseBlock: Equatable {
     public let subtitles: [SubtitleUrl]?
     public let videoUrl: String?
     public let youTubeUrl: String?
-    
+    public let fileSize: Int?
+
     public var isDownloadable: Bool {
         return videoUrl != nil
     }
@@ -174,7 +188,8 @@ public struct CourseBlock: Equatable {
         studentUrl: String,
         subtitles: [SubtitleUrl]? = nil,
         videoUrl: String? = nil,
-        youTubeUrl: String? = nil
+        youTubeUrl: String? = nil,
+        fileSize: Int? = nil
     ) {
         self.blockId = blockId
         self.id = id
@@ -188,5 +203,6 @@ public struct CourseBlock: Equatable {
         self.subtitles = subtitles
         self.videoUrl = videoUrl
         self.youTubeUrl = youTubeUrl
+        self.fileSize = fileSize
     }
 }
