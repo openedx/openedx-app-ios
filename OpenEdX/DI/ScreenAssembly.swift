@@ -34,11 +34,12 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: MainScreenView
-        container.register(MainScreenViewModel.self) { r in
+        container.register(MainScreenViewModel.self) { r, sourceScreen in
             MainScreenViewModel(
                 analytics: r.resolve(MainScreenAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                profileInteractor: r.resolve(ProfileInteractorProtocol.self)!
+                profileInteractor: r.resolve(ProfileInteractorProtocol.self)!,
+                sourceScreen: sourceScreen
             )
         }
         // MARK: Startup screen
@@ -51,23 +52,25 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: SignIn
-        container.register(SignInViewModel.self) { r in
+        container.register(SignInViewModel.self) { r, sourceScreen in
             SignInViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
-                validator: r.resolve(Validator.self)!
+                validator: r.resolve(Validator.self)!,
+                sourceScreen: sourceScreen
             )
         }
-        container.register(SignUpViewModel.self) { r in
+        container.register(SignUpViewModel.self) { r, sourceScreen in
             SignUpViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
                 router: r.resolve(AuthorizationRouter.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
-                validator: r.resolve(Validator.self)!
+                validator: r.resolve(Validator.self)!,
+                sourceScreen: sourceScreen
             )
         }
         container.register(ResetPasswordViewModel.self) { r in
@@ -103,7 +106,8 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DiscoveryAnalytics.self)!
+                analytics: r.resolve(DiscoveryAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         

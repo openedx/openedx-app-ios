@@ -19,7 +19,7 @@ public class SignInViewModel: ObservableObject {
     @Published private(set) var isShowProgress = false
     @Published private(set) var showError: Bool = false
     @Published private(set) var showAlert: Bool = false
-    public var sourceScreen: LogistrationSourceScreen = .default
+    public var sourceScreen: LogistrationSourceScreen
     
     var errorMessage: String? {
         didSet {
@@ -47,13 +47,15 @@ public class SignInViewModel: ObservableObject {
         router: AuthorizationRouter,
         config: ConfigProtocol,
         analytics: AuthorizationAnalytics,
-        validator: Validator
+        validator: Validator,
+        sourceScreen: LogistrationSourceScreen
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
         self.analytics = analytics
         self.validator = validator
+        self.sourceScreen = sourceScreen
     }
 
     var socialAuthEnabled: Bool {

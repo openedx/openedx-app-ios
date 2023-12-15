@@ -225,17 +225,21 @@ private struct CourseStateView: View {
                 .padding(.vertical, 24)
         case .alreadyEnrolled:
             StyledButton(CourseLocalization.Details.viewCourse, action: {
-                viewModel.viewCourseClicked(courseId: courseDetails.courseID,
-                                            courseName: courseDetails.courseTitle)
-                viewModel.router.showCourseScreens(
-                    courseID: courseDetails.courseID,
-                    isActive: nil,
-                    courseStart: courseDetails.courseStart,
-                    courseEnd: courseDetails.courseEnd,
-                    enrollmentStart: courseDetails.enrollmentStart,
-                    enrollmentEnd: courseDetails.enrollmentEnd,
-                    title: title
-                )
+                if !viewModel.userloggedIn {
+                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                } else {
+                    viewModel.viewCourseClicked(courseId: courseDetails.courseID,
+                                                courseName: courseDetails.courseTitle)
+                    viewModel.router.showCourseScreens(
+                        courseID: courseDetails.courseID,
+                        isActive: nil,
+                        courseStart: courseDetails.courseStart,
+                        courseEnd: courseDetails.courseEnd,
+                        enrollmentStart: courseDetails.enrollmentStart,
+                        enrollmentEnd: courseDetails.enrollmentEnd,
+                        title: title
+                    )
+                }
             })
             .padding(16)
         }

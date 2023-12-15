@@ -74,7 +74,10 @@ class RouteController: UIViewController {
             let controller = UIHostingController(rootView: whatsNewView)
             navigation.viewControllers = [controller]
         } else {
-            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let viewModel = Container.shared.resolve(
+                MainScreenViewModel.self,
+                argument: LogistrationSourceScreen.default
+            )!
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigation.viewControllers = [controller]
         }

@@ -192,7 +192,8 @@ struct SignInView_Previews: PreviewProvider {
             router: AuthorizationRouterMock(),
             config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
-            validator: Validator()
+            validator: Validator(),
+            sourceScreen: .default
         )
         
         SignInView(viewModel: vm)

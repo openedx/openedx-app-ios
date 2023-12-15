@@ -55,7 +55,7 @@ public struct StartupView: View {
                                 if searchQuery.isEmpty { return }
                                 viewModel.router.showDiscoveryScreen(
                                     searchQuery: searchQuery,
-                                    sourceScreen: LogistrationSourceScreen.startup
+                                    sourceScreen: .startup
                                 )
                             })
                             .autocapitalization(.none)
@@ -76,7 +76,7 @@ public struct StartupView: View {
                         Button {
                             viewModel.router.showDiscoveryScreen (
                                 searchQuery: searchQuery,
-                                sourceScreen: LogistrationSourceScreen.startup
+                                sourceScreen: .startup
                             )
                         } label: {
                             Text(AuthLocalization.Startup.exploreAllCourses)

@@ -63,8 +63,7 @@ public class Router: AuthorizationRouter,
         var storage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
 
-        let viewModel = WhatsNewViewModel(storage: storage)
-        viewModel.sourceScreen = sourceScreen
+        let viewModel = WhatsNewViewModel(storage: storage, sourceScreen: sourceScreen)
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
@@ -76,8 +75,12 @@ public class Router: AuthorizationRouter,
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
-            viewModel.sourceScreen = sourceScreen
+            let viewModel = Container.shared.resolve(
+                MainScreenViewModel.self,
+                argument: sourceScreen
+            )!
+            
+        
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
@@ -85,9 +88,11 @@ public class Router: AuthorizationRouter,
     }
     
     public func showLoginScreen(sourceScreen: LogistrationSourceScreen) {
-        guard let viewModel = Container.shared.resolve(SignInViewModel.self) else { return }
-     
-        viewModel.sourceScreen = sourceScreen
+        guard let viewModel = Container.shared.resolve(
+            SignInViewModel.self,
+            argument: sourceScreen
+        ) else { return }
+        
         let view = SignInView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
@@ -171,9 +176,11 @@ public class Router: AuthorizationRouter,
     }
     
     public func showRegisterScreen(sourceScreen: LogistrationSourceScreen) {
-        guard let viewModel = Container.shared.resolve(SignUpViewModel.self) else { return }
+        guard let viewModel = Container.shared.resolve(
+            SignUpViewModel.self,
+            argument: sourceScreen
+        ) else { return }
         
-        viewModel.sourceScreen = sourceScreen
         let view = SignUpView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)

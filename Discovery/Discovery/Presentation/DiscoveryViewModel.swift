@@ -23,8 +23,7 @@ public class DiscoveryViewModel: ObservableObject {
     @Published var showError: Bool = false
     
     var userloggedIn: Bool {
-        guard let container = Container.shared.resolve(CoreStorage.self) else { return false }
-        return !(container.user?.username?.isEmpty ?? true)
+        return !(storage.user?.username?.isEmpty ?? true)
     }
     
     var errorMessage: String? {
@@ -40,19 +39,22 @@ public class DiscoveryViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
+    private let storage: CoreStorage
     
     public init(
         router: DiscoveryRouter,
         config: ConfigProtocol,
         interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
-        analytics: DiscoveryAnalytics
+        analytics: DiscoveryAnalytics,
+        storage: CoreStorage
     ) {
         self.router = router
         self.config = config
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
+        self.storage = storage
     }
     
     @MainActor

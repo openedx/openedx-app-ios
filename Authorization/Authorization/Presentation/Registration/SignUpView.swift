@@ -177,7 +177,8 @@ struct SignUpView_Previews: PreviewProvider {
             analytics: AuthorizationAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: Validator()
+            validator: Validator(),
+            sourceScreen: .default
         )
         
         SignUpView(viewModel: vm)
