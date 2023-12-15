@@ -36,10 +36,10 @@ public class CourseDetailsViewModel: ObservableObject {
     let config: ConfigProtocol
     let cssInjector: CSSInjector
     let connectivity: ConnectivityProtocol
+    let storage: CoreStorage
     
     var userloggedIn: Bool {
-        guard let container = Container.shared.resolve(CoreStorage.self) else { return false }
-        return !(container.user?.username?.isEmpty ?? true)
+        return !(storage.user?.username?.isEmpty ?? true)
     }
     
     public init(
@@ -48,7 +48,8 @@ public class CourseDetailsViewModel: ObservableObject {
         analytics: CourseAnalytics,
         config: ConfigProtocol,
         cssInjector: CSSInjector,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        storage: CoreStorage
     ) {
         self.interactor = interactor
         self.router = router
@@ -56,6 +57,7 @@ public class CourseDetailsViewModel: ObservableObject {
         self.config = config
         self.cssInjector = cssInjector
         self.connectivity = connectivity
+        self.storage = storage
     }
     
     @MainActor

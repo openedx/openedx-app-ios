@@ -222,7 +222,8 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(CourseAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         

@@ -346,7 +346,8 @@ struct CourseDetailsView_Previews: PreviewProvider {
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(),
+            storage: CoreStorageMock()
         )
         
         CourseDetailsView(
