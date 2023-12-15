@@ -38,6 +38,13 @@ class WhitelabelApp:
                     AppIcon:
                         currrentPath: '' # optional: path to icon inside iconPath
                         imageName: 'appIcon.jpg' # image to replace current AppIcon - png or jpg are supported
+        projectConfig:
+            projectPath: 'path/to/project/project.pbxproj' # path to project.pbxproj file
+            appBundleID:
+                configurations:
+                    config1: # configuration name - can be any
+                        from_id: "bundle.id.app.old" # bundle ID to be changed
+                        to_id: "bundle.id.app.new" # bundle ID which should be set
         """
 
     def __init__(self, **kwargs):            
@@ -46,10 +53,17 @@ class WhitelabelApp:
             self.assets_dir = '.'
 
         self.assets = kwargs.get('assets', {})
+        self.project_config = kwargs.get('projectConfig', {})
+
+        if "projectPath" in self.project_config:
+            self.config_project_path = self.project_config["projectPath"]
+        else:
+            logging.error("Path to project file is not defined")
     
     def whitelabel(self):
         # Update the properties, resources, and configuration of the current app.
         self.copy_assets()
+        self.set_app_project_config()
 
     def copy_assets(self):
         if self.assets:
@@ -208,7 +222,47 @@ class WhitelabelApp:
                         logging.error(assetName+"->icon->"+name+": " + file_to_copy_path + " doesn't exist")    
                 else:
                     logging.error(assetName+"->icon->"+name+": " + file_to_change_path + " doesn't exist")
-                
+
+    def set_app_project_config(self):
+        self.set_app_bundle_ids()
+
+
+    def set_app_bundle_ids(self):
+        if "appBundleID" in self.project_config:
+            app_bundle_id = self.project_config["appBundleID"]
+            # read project file
+            with open(self.config_project_path, 'r') as openfile:
+                config_file_string = openfile.read()
+            errors_texts = []
+            for name, config in app_bundle_id["configurations"].items():
+                # if from_id and to_id are configured
+                if "from_id" in config and "to_id" in config:
+                    from_id = config["from_id"]
+                    from_id_string = "PRODUCT_BUNDLE_IDENTIFIER = "+from_id+";"
+                    to_id = config["to_id"]
+                    to_id_string = "PRODUCT_BUNDLE_IDENTIFIER = "+to_id+";"
+                    if to_id != '':
+                        # if from_id is in project file
+                        if from_id_string in config_file_string:
+                            config_file_string = config_file_string.replace(from_id_string, to_id_string)
+                        # else if to_id is not set already
+                        elif to_id_string not in config_file_string:
+                            errors_texts.append("appBundleID->configurations->"+name+": bundle id '"+from_id+"' was not found in project")
+                    else:
+                        errors_texts.append("appBundleID->configurations->"+name+": 'to_id' parameter is empty in config")
+                else:
+                    errors_texts.append("appBundleID->configurations->"+name+": bundle ids were not found in config")
+            # write to project file
+            with open(self.config_project_path, 'w') as openfile:
+                openfile.write(config_file_string)
+            # print success message or errors if are presented
+            if len(errors_texts) == 0:
+                logging.debug("Bundle ids were successfully changed")
+            else:
+                for error in errors_texts:
+                    logging.error(error)
+        else:
+            logging.error("Bundle ids config is not defined")       
 
 
         
