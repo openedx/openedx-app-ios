@@ -32,7 +32,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router, 
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         await viewModel.login(username: "", password: "")
@@ -54,7 +55,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         await viewModel.login(username: "edxUser@edx.com", password: "")
         
@@ -75,7 +77,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
         
@@ -101,7 +104,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
 
         let result: Result<SocialAuthDetails, Error> = .success(.apple(
@@ -131,7 +135,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
 
         let result: Result<SocialAuthDetails, Error> = .success(
@@ -165,7 +170,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let validationErrorMessage = "Some error"
@@ -193,7 +199,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .login(username: .any, password: .any, willThrow: APIError.invalidGrant))
@@ -217,7 +224,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .login(username: .any, password: .any, willThrow: NSError()))
@@ -241,7 +249,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -267,7 +276,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         viewModel.trackSignUpClicked()
@@ -285,7 +295,8 @@ final class SignInViewModelTests: XCTestCase {
             router: router,
             config: ConfigMock(),
             analytics: analytics,
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         viewModel.trackForgotPasswordClicked()

@@ -33,7 +33,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let fields = [
@@ -64,7 +65,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -90,7 +92,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .getRegistrationFields(willThrow: NSError()))
@@ -114,7 +117,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .registerUser(fields: .any, isSocial: .any, willReturn: .init(id: 1,
@@ -145,7 +149,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         viewModel.fields = [
@@ -182,7 +187,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
@@ -210,7 +216,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
@@ -238,7 +245,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -268,7 +276,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         viewModel.trackCreateAccountClicked()

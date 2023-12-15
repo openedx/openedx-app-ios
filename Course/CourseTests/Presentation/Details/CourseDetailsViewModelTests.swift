@@ -29,7 +29,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         let courseDetails = CourseDetails(
             courseID: "123",
@@ -74,7 +75,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         let courseDetails = CourseDetails(
             courseID: "123",
@@ -118,7 +120,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
@@ -149,7 +152,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         Given(interactor, .getCourseDetails(courseID: "123",
                                             willThrow: NoCachedDataError()))
@@ -178,7 +182,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         Given(interactor, .getCourseDetails(courseID: "123",
                                             willThrow: NSError()))
@@ -207,7 +212,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         Given(interactor, .enrollToCourse(courseID: "123", willReturn: true))
         
@@ -237,7 +243,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         Given(interactor, .enrollToCourse(courseID: "123",
                                           willThrow: AFError.explicitlyCancelled))
@@ -267,7 +274,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
@@ -298,7 +306,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                config: config,
                                                cssInjector: cssInjector,
-                                               connectivity: connectivity)
+                                               connectivity: connectivity,
+                                               storage: CoreStorageMock())
         
         Given(interactor, .enrollToCourse(courseID: "123",
                                           willThrow: NoCachedDataError()))
