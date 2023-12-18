@@ -12,11 +12,11 @@ private enum ThemeKeys: String {
 }
 
 public final class ThemeConfig: NSObject {
-    public var isRoundedCorners: Bool = true
+    public var isRoundedCorners: Bool
 
     init(dictionary: [String: AnyObject]) {
-        super.init()
         isRoundedCorners = dictionary[ThemeKeys.isRoundedCorners.rawValue] as? Bool != false
+        super.init()
     }
 }
 
