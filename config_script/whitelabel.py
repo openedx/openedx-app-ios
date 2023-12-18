@@ -5,8 +5,8 @@ import shutil
 import sys
 import yaml
 import json
-import coloredlogs #TODO: ADD TO DOCUMENTATION pip install coloredlogs 
-from PIL import Image #TODO: ADD TO DOCUMENTATION pip install pillow
+import coloredlogs
+from PIL import Image
 import re
 
 class WhitelabelApp:
@@ -19,23 +19,23 @@ class WhitelabelApp:
             AssetName:
                 imagesPath: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
                 colorsPath: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
-                iconPath: 'Theme/Assets.xcassets' # path where app icon is placed in this Asset 
+                iconPath: 'Theme/Assets.xcassets' # path where the app icon is placed in this Asset 
                 images:
                     image1: # Asset name
-                        imageName: 'some_image.svg' # image to replace existing for image1 Asset (light/universal)
+                        imageName: 'some_image.svg' # image to replace the existing one for image1 Asset (light/universal)
                     image2: # Asset name
                         currentPath: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
-                        imageName: 'Rectangle.png' # image to replace existing for image2 Asset (light/universal)
-                        darkImageName: 'RectangleDark.png' # image to replace existing dark appearance for image2 Asset (dark)
+                        imageName: 'Rectangle.png' # image to replace the existing one for image2 Asset (light/universal)
+                        darkImageName: 'RectangleDark.png' # image to replace the existing dark appearance for image2 Asset (dark)
                 colors:
                     LoginBackground: # color asset name in Assets
-                        currrentPath: '' # optional: path to color inside colorsPath
+                        currentPath: '' # optional: path to color inside colorsPath
                         light: '#FFFFFF'
                         dark: '#ED5C13'
                 icon:
                     AppIcon:
-                        currrentPath: '' # optional: path to icon inside iconPath
-                        imageName: 'appIcon.jpg' # image to replace current AppIcon - png or jpg are supported
+                        currentPath: ''  # optional: path to icon inside iconPath
+                        imageName: 'appIcon.jpg'  # image to replace the current AppIcon - png or jpg are supported
         projectConfig:
             projectPath: 'path/to/project/project.pbxproj' # path to project.pbxproj file
             devTeam: '1234567890' # apple development team id
@@ -300,12 +300,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--help-config-file', action='store_true', help="Print out a sample config-file, and exit")
     parser.add_argument('--config-file', '-c', help="Path to the configuration file")
-    parser.add_argument('--verbose', '-v', action='count', help="Enable verbose logging. Repeat -v for more output.")
+    parser.add_argument('--verbose', '-v', action='count', help="Enable verbose logging.")
     args = parser.parse_args()
-
-    # DEBUG VARS
-    # args.config_file = "../edx-mobile-config/openEdXAssets/whitelabel.yaml"
-    # args.verbose = 2
 
     if args.help_config_file:
         print(WhitelabelApp.EXAMPLE_CONFIG_FILE)
@@ -319,8 +315,6 @@ def main():
         args.verbose = 0
     log_level = logging.WARN
     if args.verbose > 0:
-        log_level = logging.INFO
-    if args.verbose > 1:
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level)
     logger = logging.getLogger(name='whitelabel_config')
