@@ -193,6 +193,8 @@ public enum CoreLocalization {
     public enum Alert {
       /// Cancel
       public static let cancel = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.CANCEL", fallback: "Cancel")
+      /// Continue
+      public static let `continue` = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.CONTINUE", fallback: "Continue")
       /// Ok
       public static let ok = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.OK", fallback: "Ok")
     }

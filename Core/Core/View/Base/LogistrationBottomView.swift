@@ -14,6 +14,7 @@ public enum LogistrationSourceScreen: Equatable {
     case startup
     case discovery
     case courseDetail(String, String)
+    case programDetails(String)
 }
 
 public enum LogistrationAction {

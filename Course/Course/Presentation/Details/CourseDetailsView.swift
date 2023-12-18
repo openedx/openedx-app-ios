@@ -221,7 +221,11 @@ private struct CourseStateView: View {
         case .enrollOpen:
             StyledButton(CourseLocalization.Details.enrollNow, action: {
                 if !viewModel.userloggedIn {
-                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                    viewModel.router.showRegisterScreen(
+                        sourceScreen: .courseDetail(
+                            courseDetails.courseID,
+                            courseDetails.courseTitle)
+                    )
                 } else {
                     Task {
                         await viewModel.enrollToCourse(id: courseDetails.courseID)
@@ -238,7 +242,11 @@ private struct CourseStateView: View {
         case .alreadyEnrolled:
             StyledButton(CourseLocalization.Details.viewCourse, action: {
                 if !viewModel.userloggedIn {
-                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                    viewModel.router.showRegisterScreen(
+                        sourceScreen: .courseDetail(
+                            courseDetails.courseID,
+                            courseDetails.courseTitle)
+                    )
                 } else {
                     viewModel.viewCourseClicked(
                         courseId: courseDetails.courseID,

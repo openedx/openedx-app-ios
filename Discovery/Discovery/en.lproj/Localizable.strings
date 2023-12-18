@@ -26,3 +26,6 @@
 "UPDATE_NEEDED_NOT_NOW" = "Not Now";
 
 "UPDATE_NEW_AVALIABLE" = "New update available! Upgrade now to receive the latest features and fixes";
+
+"ALERT.LEAVING_APP_TITLE" = "Leaving the app";
+"ALERT.LEAVING_APP_MESSAGE" = "You are now leaving the app and opening a browser";

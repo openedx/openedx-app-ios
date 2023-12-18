@@ -32,6 +32,11 @@
 		CFC849452996A52A0055E497 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC849442996A52A0055E497 /* SearchViewModel.swift */; };
 		CFC8494C299A66080055E497 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CFC8494E299A66080055E497 /* Localizable.stringsdict */; };
 		CFC84950299BE52C0055E497 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC8494F299BE52C0055E497 /* SearchViewModelTests.swift */; };
+		E08D12E32B482D720096311A /* Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E08D12E22B482D720096311A /* Course.framework */; };
+		E0D586202B300095009B4BA7 /* DiscoverWebviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */; };
+		E0D586212B300095009B4BA7 /* DiscoveryWebview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */; };
+		E0D586232B3000AD009B4BA7 /* DiscoveryURIDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586222B3000AD009B4BA7 /* DiscoveryURIDetails.swift */; };
+		E0D586252B300134009B4BA7 /* URL+PathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586242B300134009B4BA7 /* URL+PathExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +91,13 @@
 		CFC849442996A52A0055E497 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		CFC8494D299A66080055E497 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CFC8494F299BE52C0055E497 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
+		E08D12E22B482D720096311A /* Course.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Course.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D586132B29F25A009B4BA7 /* Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverWebviewModel.swift; sourceTree = "<group>"; };
+		E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryWebview.swift; sourceTree = "<group>"; };
+		E0D586222B3000AD009B4BA7 /* DiscoveryURIDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryURIDetails.swift; sourceTree = "<group>"; };
+		E0D586242B300134009B4BA7 /* URL+PathExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+PathExtension.swift"; sourceTree = "<group>"; };
+		E0D586282B302C3A009B4BA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E192F9B4A7EECED9665AB8A7 /* Pods-App-Discovery.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discovery/Pods-App-Discovery.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F340BD73D38B0DF9E4EA6482 /* Pods-App-Discovery-DiscoveryUnitTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		FF565519B9BBC73E92249648 /* Pods-App-Discovery-DiscoveryUnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.release.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E08D12E32B482D720096311A /* Course.framework in Frameworks */,
 				072787AD28D34D15002E9142 /* Core.framework in Frameworks */,
 				9F47BCC672941A9854404EC7 /* Pods_App_Discovery.framework in Frameworks */,
 			);
@@ -179,6 +191,7 @@
 		070019A228F6EF2700D5FC78 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E0D5861D2B300095009B4BA7 /* WebDiscovery */,
 				029242E52AE6976E00A940EC /* UpdateViews */,
 				072787B328D34D91002E9142 /* DiscoveryView.swift */,
 				0283347828D49A8700C828FC /* DiscoveryViewModel.swift */,
@@ -214,6 +227,7 @@
 		0727879B28D34C03002E9142 /* Discovery */ = {
 			isa = PBXGroup;
 			children = (
+				E0D586282B302C3A009B4BA7 /* Info.plist */,
 				02EF39CB28D866C50058F6BD /* SwiftGen */,
 				0284DBF828D4831000830893 /* Data */,
 				0284DC0428D4996F00830893 /* Domain */,
@@ -227,6 +241,7 @@
 		072787AB28D34D15002E9142 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E08D12E22B482D720096311A /* Course.framework */,
 				E0D586132B29F25A009B4BA7 /* Authorization.framework */,
 				072787AC28D34D15002E9142 /* Core.framework */,
 				919E55130969D91EF03C4C0B /* Pods_App_Discovery.framework */,
@@ -266,6 +281,17 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		E0D5861D2B300095009B4BA7 /* WebDiscovery */ = {
+			isa = PBXGroup;
+			children = (
+				E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */,
+				E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */,
+				E0D586222B3000AD009B4BA7 /* DiscoveryURIDetails.swift */,
+				E0D586242B300134009B4BA7 /* URL+PathExtension.swift */,
+			);
+			path = WebDiscovery;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -483,15 +509,19 @@
 				0284DBFC28D4856A00830893 /* DiscoveryEndpoint.swift in Sources */,
 				029737402949FB070051696B /* DiscoveryCoreModel.xcdatamodeld in Sources */,
 				029242E72AE6978400A940EC /* UpdateRequiredView.swift in Sources */,
+				E0D586232B3000AD009B4BA7 /* DiscoveryURIDetails.swift in Sources */,
 				0283347728D499BC00C828FC /* DiscoveryInteractor.swift in Sources */,
 				02F3BFDF29252F2F0051930C /* DiscoveryRouter.swift in Sources */,
 				0283347928D49A8700C828FC /* DiscoveryViewModel.swift in Sources */,
 				072787B428D34D91002E9142 /* DiscoveryView.swift in Sources */,
+				E0D586252B300134009B4BA7 /* URL+PathExtension.swift in Sources */,
 				029737422949FB3B0051696B /* DiscoveryPersistenceProtocol.swift in Sources */,
 				0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */,
 				029242EB2AE6AB7B00A940EC /* UpdateNotificationView.swift in Sources */,
 				02EF39DC28D86BEF0058F6BD /* Strings.swift in Sources */,
+				E0D586202B300095009B4BA7 /* DiscoverWebviewModel.swift in Sources */,
 				02F1752F2A4DA3B60019CD70 /* DiscoveryAnalytics.swift in Sources */,
+				E0D586212B300095009B4BA7 /* DiscoveryWebview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -731,6 +761,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -845,6 +876,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1022,6 +1054,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1057,6 +1090,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1155,6 +1189,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1254,6 +1289,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1347,6 +1383,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1439,6 +1476,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Discovery/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
