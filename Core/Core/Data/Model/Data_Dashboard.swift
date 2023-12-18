@@ -41,7 +41,15 @@ public extension DataLayer {
             case results = "results"
         }
 
-        public init(next: String?, previous: String?, count: Int?, numPages: Int?, currentPage: Int?, start: Int?, results: [Result]) {
+        public init(
+            next: String?,
+            previous: String?,
+            count: Int?,
+            numPages: Int?,
+            currentPage: Int?,
+            start: Int?,
+            results: [Result]
+        ) {
             self.next = next
             self.previous = previous
             self.count = count
@@ -58,7 +66,7 @@ public extension DataLayer {
         public let created: String
         public let mode: Mode
         public let isActive: Bool
-        public let course: DashCourse
+        public let course: DashboardCourse
         public let courseModes: [CourseMode]
 
         enum CodingKeys: String, CodingKey {
@@ -67,11 +75,17 @@ public extension DataLayer {
             case mode = "mode"
             case isActive = "is_active"
             case course = "course"
-//            case certificate = "certificate"
             case courseModes = "course_modes"
         }
 
-        public init(auditAccessExpires: String?, created: String, mode: Mode, isActive: Bool, course: DashCourse, courseModes: [CourseMode]) {
+        public init(
+            auditAccessExpires: String?,
+            created: String,
+            mode: Mode,
+            isActive: Bool,
+            course: DashboardCourse,
+            courseModes: [CourseMode]
+        ) {
             self.auditAccessExpires = auditAccessExpires
             self.created = created
             self.mode = mode
@@ -82,7 +96,7 @@ public extension DataLayer {
     }
 
     // MARK: - Course
-    struct DashCourse: Codable {
+    struct DashboardCourse: Codable {
         public let id: String
         public let name: String
         public let number: String
@@ -127,7 +141,28 @@ public extension DataLayer {
             case isSelfPaced = "is_self_paced"
         }
 
-        public init(id: String, name: String, number: String, org: String, start: String?, startDisplay: String, startType: StartType, end: String?, dynamicUpgradeDeadline: String?, subscriptionID: String, coursewareAccess: CoursewareAccess, media: Media, courseImage: String, courseAbout: String, courseSharingUtmParameters: CourseSharingUtmParameters, courseUpdates: String, courseHandouts: String, discussionURL: String, videoOutline: String?, isSelfPaced: Bool) {
+        public init(
+            id: String,
+            name: String,
+            number: String,
+            org: String,
+            start: String?,
+            startDisplay: String,
+            startType: StartType,
+            end: String?,
+            dynamicUpgradeDeadline: String?,
+            subscriptionID: String,
+            coursewareAccess: CoursewareAccess,
+            media: Media,
+            courseImage: String,
+            courseAbout: String,
+            courseSharingUtmParameters: CourseSharingUtmParameters,
+            courseUpdates: String,
+            courseHandouts: String,
+            discussionURL: String,
+            videoOutline: String?,
+            isSelfPaced: Bool
+        ) {
             self.id = id
             self.name = name
             self.number = number
@@ -187,23 +222,47 @@ public extension DataLayer {
         case audit
         case honor
     }
+    
+    // MARK: - CourseSharingUtmParameters
+    struct CourseSharingUtmParameters: Codable {
+        public let facebook: String
+        public let twitter: String
+    }
+    
+    // MARK: - CoursewareAccess
+    struct CoursewareAccess: Codable {
+        public let hasAccess: Bool
+        public let errorCode: String?
+        public let developerMessage: String?
+        public let userMessage: String?
+        public let additionalContextUserMessage: String?
+        public let userFragment: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case hasAccess = "has_access"
+            case errorCode = "error_code"
+            case developerMessage = "developer_message"
+            case userMessage = "user_message"
+            case additionalContextUserMessage = "additional_context_user_message"
+            case userFragment = "user_fragment"
+        }
+    }
 }
 
 public extension DataLayer.CourseEnrollments {
     func domain(baseURL: String) -> [CourseItem] {
-//        return []
         return enrollments.results.map { result in
-           let course = result.course
-        
-//        guard let results else { return [] }
-//        return results.map { course in
-            let imageURL = baseURL + (course.media.courseImage?.url?.addingPercentEncoding(
-                withAllowedCharacters: .urlQueryAllowed) ?? "")
+            let course = result.course
+            
+            let imageUrl = course.media.courseImage?.url ?? ""
+            let encodedUrl = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            let fullImageURL = baseURL + encodedUrl
+            
             return CourseItem(
                 name: course.name,
                 org: course.org,
                 shortDescription: "",
-                imageURL: imageURL,
+                imageURL: fullImageURL,
                 isActive: true,
                 courseStart: course.start != nil ? Date(iso8601: course.start!) : nil,
                 courseEnd: course.end != nil ? Date(iso8601: course.end!) : nil,
