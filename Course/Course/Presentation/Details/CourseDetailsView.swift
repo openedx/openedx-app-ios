@@ -9,11 +9,13 @@ import SwiftUI
 import Core
 import Kingfisher
 import WebKit
+import Theme
 
 public struct CourseDetailsView: View {
     
     @ObservedObject private var viewModel: CourseDetailsViewModel
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.isHorizontal) var isHorizontal
     @State private var isOverviewRendering = true
     private var title: String
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -54,7 +56,7 @@ public struct CourseDetailsView: View {
                                 if let courseDetails = viewModel.courseDetails {
                                     
                                     // MARK: - iPad
-                                    if idiom == .pad && viewModel.isHorisontal {
+                                    if viewModel.isHorisontal {
                                         HStack(alignment: .top) {
                                             VStack(alignment: .leading) {
                                                 
@@ -245,7 +247,7 @@ private struct CourseTitleView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(courseDetails.courseDescription)
+            Text(courseDetails.courseDescription ?? "")
                 .font(Theme.Fonts.labelSmall)
                 .padding(.horizontal, 26)
             
@@ -303,7 +305,7 @@ private struct CourseBannerView: View {
                     .onFailureImage(CoreAssets.noCourseImage.image)
                     .resizable()
                     .aspectRatio(16/9, contentMode: .fill)
-                    .frame(width: idiom == .pad ? 312 : proxy.size.width - 12)
+                    .frame(width: 312)
                     .opacity(animate ? 1 : 0)
                     .onAppear {
                         withAnimation(.linear(duration: 0.5)) {

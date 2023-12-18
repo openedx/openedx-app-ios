@@ -16,7 +16,11 @@
 "SUPPORT_INFO" = "Support info";
 "CONTACT" = "Contact support";
 "TERMS" = "Terms of use";
-"PRIVACY" = "Privacy and policy";
+"PRIVACY" = "Privacy policy";
+"COOKIE_POLICY" = "Cookie policy";
+"DO_NOT_SELL_INFORMATION" = "Do not sell my personal information";
+"FAQ" = "FAQ";
+
 "LOGOUT" = "Log out";
 "SWITCH_TO" = "Switch to";
 "FULL_PROFILE" = "full profile";
@@ -48,7 +52,7 @@
 "DELETE_ACCOUNT.TITLE" = "Delete account";
 "DELETE_ACCOUNT.ARE_YOU_SURE" = "Are you sure you want to ";
 "DELETE_ACCOUNT.WANT_TO_DELETE" = "delete your account?";
-"DELETE_ACCOUNT.DESCRIPTION" = "To confirm this action you need to enter you account password.";
+"DELETE_ACCOUNT.DESCRIPTION" = "To confirm this action you need to enter your account password.";
 "DELETE_ACCOUNT.PASSWORD" = "Password";
 "DELETE_ACCOUNT.PASSWORD_DESCRIPTION" = "Enter password";
 "DELETE_ACCOUNT.COMFIRM" = "Yes, delete account";
@@ -58,13 +62,20 @@
 "SETTINGS.VIDEO_SETTINGS_TITLE" = "Video settings";
 "SETTINGS.WIFI_TITLE" = "Wi-fi only download";
 "SETTINGS.WIFI_DESCRIPTION" = "Only download content when wi-fi is turned on";
-"SETTINGS.VIDEO_QUALITY_TITLE" = "Video download quality";
+"SETTINGS.VIDEO_QUALITY_TITLE" = "Video streaming quality";
 "SETTINGS.VIDEO_QUALITY_DESCRIPTION" = "Auto (Recommended)";
 
 "SETTINGS.QUALITY_AUTO_TITLE" = "Auto";
 "SETTINGS.QUALITY_AUTO_DESCRIPTION" = "Recommended";
 "SETTINGS.QUALITY_360_TITLE" = "360p";
-"SETTINGS.QUALITY_360_DESCRIPTION" = "Smallest video quality";
+"SETTINGS.QUALITY_360_DESCRIPTION" = "Lower data usage";
 "SETTINGS.QUALITY_540_TITLE" = "540p";
 "SETTINGS.QUALITY_720_TITLE" = "720p";
 "SETTINGS.QUALITY_720_DESCRIPTION" = "Best quality";
+
+"SETTINGS.VERSION" = "Version:";
+"SETTINGS.UP_TO_DATE" = "Up-to-date";
+"SETTINGS.TAP_TO_UPDATE" = "Tap to update to version";
+"SETTINGS.TAP_TO_INSTALL" = "Tap to install required app update";
+
+"ERROR.CANNOT_SEND_EMAIL" = "Cannot send email. It seems your email client is not set up.";

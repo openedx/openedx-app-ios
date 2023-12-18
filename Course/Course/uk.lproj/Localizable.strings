@@ -31,11 +31,13 @@
 
 "ERROR.NO_INTERNET" = "Ви не підключені до Інтернету. Перевірте підключення до Інтернету і спробуйте ще.";
 "ERROR.RELOAD" = "Перезавантажити";
+"ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 
 "ALERT.ROTATE_DEVICE" = "Поверніть пристрій, щоб переглянути це відео на весь екран.";
 
 "COURSE_CONTAINER.COURSE" =  "Курс";
 "COURSE_CONTAINER.VIDEOS" =  "Всі відео";
+//"COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSION" =  "Дискусії";
 "COURSE_CONTAINER.HANDOUTS" =  "Матеріали";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Матеріали в процесі розробки";
@@ -50,3 +52,7 @@
 "NOT_AVALIABLE.BUTTON" = "Відкрити в браузері";
 
 "SUBTITLES.TITLE" = "Субтитри";
+
+"ACCESSIBILITY.DOWNLOAD" = "Скачати";
+"ACCESSIBILITY.CANCEL_DOWNLOAD" = "Скасувати завантаження";
+"ACCESSIBILITY.DELETE_DOWNLOAD" = "Видалити файл";

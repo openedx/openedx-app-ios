@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public enum UnitButtonType: Equatable {
     case first
@@ -34,7 +35,7 @@ public enum UnitButtonType: Equatable {
         case .reload:
             return CoreLocalization.Error.reload
         case .continueLesson:
-            return CoreLocalization.Courseware.continue
+            return CoreLocalization.Courseware.resume
         case .nextSection:
             return CoreLocalization.Courseware.nextSection
         case let .custom(text):
@@ -99,12 +100,13 @@ public struct UnitButtonView: View {
                         HStack {
                             Text(type.stringValue())
                                 .foregroundColor(Theme.Colors.styledButtonText)
-                                .padding(.leading, 16)
+                                .padding(.leading, 8)
                                 .font(Theme.Fonts.labelLarge)
+                                .scaledToFit()
                             Spacer()
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
-                                .padding(.trailing, 16)
+                                .padding(.trailing, 8)
                         }
                     case .finish:
                         HStack {

@@ -10,6 +10,8 @@ import Core
 
 public protocol CourseRouter: BaseRouter {
     
+    func presentAppReview()
+    
     func showCourseScreens(
         courseID: String,
         isActive: Bool?,
@@ -39,7 +41,8 @@ public protocol CourseRouter: BaseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     )
     
     func showCourseVerticalView(
@@ -57,6 +60,11 @@ public protocol CourseRouter: BaseRouter {
         router: Course.CourseRouter,
         cssInjector: CSSInjector
     )
+    
+    func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
+    )
 }
 
 // Mark - For testing and SwiftUI preview
@@ -64,6 +72,8 @@ public protocol CourseRouter: BaseRouter {
 public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public override init() {}
+    
+    public func presentAppReview() {}
     
     public func showCourseScreens(
         courseID: String,
@@ -94,7 +104,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     ) {}
     
     public func showCourseVerticalView(
@@ -111,6 +122,11 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
         cssInjector: CSSInjector
+    ) {}
+    
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
     ) {}
     
 }

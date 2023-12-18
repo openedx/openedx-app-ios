@@ -27,8 +27,8 @@ class AnalyticsManager: AuthorizationAnalytics,
         Analytics.setUserID(id)
     }
     
-    public func userLogin(method: LoginMethod) {
-        logEvent(.userLogin, parameters: [Key.method: method.rawValue])
+    public func userLogin(method: AuthMethod) {
+        logEvent(.userLogin, parameters: [Key.method: method.analyticsValue])
     }
     
     public func signUpClicked() {
@@ -257,6 +257,14 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.courseOutlineVideosTabClicked, parameters: parameters)
     }
     
+    public func courseOutlineDatesTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            Key.courseID: courseId,
+            Key.courseName: courseName
+        ]
+        logEvent(.courseOutlineDatesTabClicked, parameters: parameters)
+    }
+    
     public func courseOutlineDiscussionTabClicked(courseId: String, courseName: String) {
         let parameters = [
             Key.courseID: courseId,
@@ -360,6 +368,7 @@ enum Event: String {
     case finishVerticalBackToOutlineClicked = "Finish_Vertical_Back_to_outline_Clicked"
     case courseOutlineCourseTabClicked = "Course_Outline_Course_tab_Clicked"
     case courseOutlineVideosTabClicked = "Course_Outline_Videos_tab_Clicked"
+    case courseOutlineDatesTabClicked = "Course_Outline_Dates_tab_Clicked"
     case courseOutlineDiscussionTabClicked = "Course_Outline_Discussion_tab_Clicked"
     case courseOutlineHandoutsTabClicked = "Course_Outline_Handouts_tab_Clicked"
     

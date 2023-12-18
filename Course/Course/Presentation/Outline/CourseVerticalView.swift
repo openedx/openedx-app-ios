@@ -9,6 +9,7 @@ import SwiftUI
 
 import Core
 import Kingfisher
+import Theme
 
 public struct CourseVerticalView: View {
     
@@ -40,6 +41,7 @@ public struct CourseVerticalView: View {
                         // MARK: - Lessons list
                         ForEach(viewModel.verticals, id: \.id) { vertical in
                             if let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id}) {
+                                HStack {
                                 Button(action: {
                                     let vertical = viewModel.verticals[index]
                                     if let block = vertical.childs.first {
@@ -60,14 +62,13 @@ public struct CourseVerticalView: View {
                                         )
                                     }
                                 }, label: {
-                                    HStack {
                                         Group {
                                             if vertical.completion == 1 {
                                                 CoreAssets.finished.swiftUIImage
                                                     .renderingMode(.template)
                                                     .foregroundColor(.accentColor)
                                             } else {
-                                                vertical.type.image
+                                                CourseVerticalImageView(blocks: vertical.childs)
                                             }
                                             Text(vertical.displayName)
                                                 .font(Theme.Fonts.titleMedium)
@@ -79,11 +80,15 @@ public struct CourseVerticalView: View {
                                                 .multilineTextAlignment(.leading)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                         }.foregroundColor(Theme.Colors.textPrimary)
+                                    }).accessibilityElement(children: .ignore)
+                                        .accessibilityLabel(vertical.displayName)
                                         Spacer()
                                         if let state = viewModel.downloadState[vertical.id] {
                                             switch state {
                                             case .available:
                                                 DownloadAvailableView()
+                                                    .accessibilityElement(children: .ignore)
+                                                    .accessibilityLabel(CourseLocalization.Accessibility.download)
                                                     .onTapGesture {
                                                         viewModel.onDownloadViewTap(
                                                             blockId: vertical.id,
@@ -95,6 +100,8 @@ public struct CourseVerticalView: View {
                                                     }
                                             case .downloading:
                                                 DownloadProgressView()
+                                                    .accessibilityElement(children: .ignore)
+                                                    .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                                                     .onTapGesture {
                                                         viewModel.onDownloadViewTap(
                                                             blockId: vertical.id,
@@ -106,6 +113,8 @@ public struct CourseVerticalView: View {
                                                     }
                                             case .finished:
                                                 DownloadFinishedView()
+                                                    .accessibilityElement(children: .ignore)
+                                                    .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
                                                     .onTapGesture {
                                                         viewModel.onDownloadViewTap(
                                                             blockId: vertical.id,
@@ -117,7 +126,7 @@ public struct CourseVerticalView: View {
                                         Image(systemName: "chevron.right")
                                             .padding(.vertical, 8)
                                     }
-                                }).padding(.horizontal, 36)
+                                .padding(.horizontal, 36)
                                     .padding(.vertical, 14)
                                 if index != viewModel.verticals.count - 1 {
                                     Divider()
@@ -129,7 +138,8 @@ public struct CourseVerticalView: View {
                         }
                     }
                     Spacer(minLength: 84)
-                }.frameLimit()
+                }.accessibilityAction {}
+                .frameLimit()
                     .onRightSwipeGesture {
                         viewModel.router.back()
                     }

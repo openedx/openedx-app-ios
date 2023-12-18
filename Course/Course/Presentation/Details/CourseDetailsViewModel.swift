@@ -32,7 +32,7 @@ public class CourseDetailsViewModel: ObservableObject {
     private let interactor: CourseInteractorProtocol
     private let analytics: CourseAnalytics
     let router: CourseRouter
-    let config: Config
+    let config: ConfigProtocol
     let cssInjector: CSSInjector
     let connectivity: ConnectivityProtocol
     
@@ -40,7 +40,7 @@ public class CourseDetailsViewModel: ObservableObject {
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
-        config: Config,
+        config: ConfigProtocol,
         cssInjector: CSSInjector,
         connectivity: ConnectivityProtocol
     ) {
@@ -64,7 +64,7 @@ public class CourseDetailsViewModel: ObservableObject {
                 
                 isShowProgress = false
             } else {
-                courseDetails = try await interactor.getCourseDetailsOffline(courseID: courseID)
+                courseDetails = try await interactor.getLoadedCourseDetails(courseID: courseID)
                 if let isEnrolled = courseDetails?.isEnrolled {
                     self.courseDetails?.isEnrolled = isEnrolled
                 }

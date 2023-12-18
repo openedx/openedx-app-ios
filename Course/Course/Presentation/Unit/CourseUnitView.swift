@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 import Core
 import Discussion
-import Swinject
 import Combine
+import Theme
 
 public struct CourseUnitView: View {
     
@@ -25,86 +25,149 @@ public struct CourseUnitView: View {
     }
     @State var offsetView: CGFloat = 0
     @State var showDiscussion: Bool = false
-    @Environment(\.presentationMode) private var presentationMode
-    
+    @Environment(\.isPresented) private var isPresented
+    @Environment(\.isHorizontal) private var isHorizontal
     private let sectionName: String
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
     
-    public init(viewModel: CourseUnitViewModel,
-                sectionName: String) {
+    //Dropdown parameters
+    @State var showDropdown: Bool = false
+    private let portraitTopSpacing: CGFloat = 60
+    private let landscapeTopSpacing: CGFloat = 75
+    
+    let isDropdownActive: Bool
+    
+    var sequenceTitle: String {
+        let chapter = viewModel.chapters[viewModel.chapterIndex]
+        let sequence = chapter.childs[viewModel.sequentialIndex]
+        return sequence.displayName
+    }
+    
+    var unitTitle: String {
+        let chapter = viewModel.chapters[viewModel.chapterIndex]
+        let sequence = chapter.childs[viewModel.sequentialIndex]
+        let unit = sequence.childs[viewModel.verticalIndex]
+        return unit.displayName
+    }
+    
+    var isDropdownAvailable: Bool {
+        viewModel.verticals.count > 1
+    }
+    
+    public init(
+        viewModel: CourseUnitViewModel,
+        sectionName: String,
+        isDropdownActive: Bool = false
+    ) {
         self.viewModel = viewModel
         self.sectionName = sectionName
+        self.isDropdownActive = isDropdownActive
         viewModel.loadIndex()
         viewModel.nextTitles()
     }
-    
+            
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body
             ZStack(alignment: .bottom) {
                 GeometryReader { reader in
                     VStack(spacing: 0) {
-                        VStack {}.frame(height: 100)
-                            LazyVStack(spacing: 0) {
-                                let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
-                                ForEach(data, id: \.offset) { index, block in
-                                    VStack(spacing: 0) {
-                                        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                                            switch LessonType.from(block) {
-                                                // MARK: YouTube
-                                            case let .youtube(url, blockID):
-                                                if viewModel.connectivity.isInternetAvaliable {
-                                                    YouTubeView(
-                                                        name: block.displayName,
-                                                        url: url,
-                                                        courseID: viewModel.courseID,
-                                                        blockID: blockID,
-                                                        playerStateSubject: playerStateSubject,
-                                                        languages: block.subtitles ?? [],
-                                                        isOnScreen: index == viewModel.index
-                                                    ).frameLimit()
-                                                    Spacer(minLength: 100)
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
+                        VStack {Theme.Colors.background}.frame(width: reader.size.width,
+                                                                          height: isHorizontal ? 75 : 50)
+                        LazyVStack(alignment: .leading, spacing: 0) {
+                            let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
+                            ForEach(data, id: \.offset) { index, block in
+                                VStack(spacing: 0) {
+                                    if isDropdownActive {
+                                        HStack {
+                                            if block.type == .video {
+                                                let title = block.displayName
+                                                Text(title)
+                                                    .lineLimit(1)
+                                                    .font(Theme.Fonts.titleLarge)
+                                                    .foregroundStyle(Theme.Colors.textPrimary)
+                                                    .padding(.vertical, 10)
+                                                    .padding(.horizontal, 20)
+                                                Spacer()
+                                            }
+                                        }
+                                    }
+                                        switch LessonType.from(block) {
+                                            // MARK: YouTube
+                                        case let .youtube(url, blockID):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+                                            if viewModel.connectivity.isInternetAvaliable {
+                                                YouTubeView(
+                                                    name: block.displayName,
+                                                    url: url,
+                                                    courseID: viewModel.courseID,
+                                                    blockID: blockID,
+                                                    playerStateSubject: playerStateSubject,
+                                                    languages: block.subtitles ?? [],
+                                                    isOnScreen: index == viewModel.index
+                                                ).frameLimit()
+                                               
+                                                if !isHorizontal {
+                                                    Spacer(minLength: 150)
                                                 }
-                                                // MARK: Encoded Video
-                                            case let .video(encodedUrl, blockID):
-                                                let url = viewModel.urlForVideoFileOrFallback(
-                                                    blockId: blockID,
-                                                    url: encodedUrl
-                                                )
-                                                if viewModel.connectivity.isInternetAvaliable || url?.isFileURL == true {
-                                                    EncodedVideoView(
-                                                        name: block.displayName,
-                                                        url: url,
-                                                        courseID: viewModel.courseID,
-                                                        blockID: blockID,
-                                                        playerStateSubject: playerStateSubject,
-                                                        languages: block.subtitles ?? [],
-                                                        isOnScreen: index == viewModel.index
-                                                    ).frameLimit()
-                                                    Spacer(minLength: 100)
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
+                                            } else {
+                                                NoInternetView(playerStateSubject: playerStateSubject)
+                                            }
+                                        } else {
+                                            EmptyView()
+                                        }
+                                            // MARK: Encoded Video
+                                        case let .video(encodedUrl, blockID):
+                                            if index == viewModel.index {
+                                            let url = viewModel.urlForVideoFileOrFallback(
+                                                blockId: blockID,
+                                                url: encodedUrl
+                                            )
+                                            if viewModel.connectivity.isInternetAvaliable || url?.isFileURL == true {
+                                                EncodedVideoView(
+                                                    name: block.displayName,
+                                                    url: url,
+                                                    courseID: viewModel.courseID,
+                                                    blockID: blockID,
+                                                    playerStateSubject: playerStateSubject,
+                                                    languages: block.subtitles ?? [],
+                                                    isOnScreen: index == viewModel.index
+                                                ).frameLimit()
+                                                
+                                                if !isHorizontal {
+                                                    Spacer(minLength: 150)
                                                 }
-                                                // MARK: Web
-                                            case .web(let url):
-                                                if viewModel.connectivity.isInternetAvaliable {
-                                                    WebView(url: url, viewModel: viewModel)
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
-                                                // MARK: Unknown
-                                            case .unknown(let url):
-                                                if viewModel.connectivity.isInternetAvaliable {
+                                            } else {
+                                                NoInternetView(playerStateSubject: playerStateSubject)
+                                            }
+                                        }
+                                            // MARK: Web
+                                        case .web(let url):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+                                            if viewModel.connectivity.isInternetAvaliable {
+                                                WebView(url: url, viewModel: viewModel)
+                                            } else {
+                                                NoInternetView(playerStateSubject: playerStateSubject)
+                                            }
+                                        } else {
+                                            EmptyView()
+                                        }
+                                            // MARK: Unknown
+                                        case .unknown(let url):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+                                            if viewModel.connectivity.isInternetAvaliable {
                                                 UnknownView(url: url, viewModel: viewModel)
                                                 Spacer()
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
-                                                // MARK: Discussion
-                                            case let .discussion(blockID, blockKey, title):
-                                                if viewModel.connectivity.isInternetAvaliable {
+                                            } else {
+                                                NoInternetView(playerStateSubject: playerStateSubject)
+                                            }
+                                        } else {
+                                            EmptyView()
+                                        }
+                                            // MARK: Discussion
+                                        case let .discussion(blockID, blockKey, title):
+                                            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+                                            if viewModel.connectivity.isInternetAvaliable {
                                                 VStack {
                                                     if showDiscussion {
                                                         DiscussionView(
@@ -121,40 +184,71 @@ public struct CourseUnitView: View {
                                                         }
                                                     }
                                                 }.frameLimit()
-                                                } else {
-                                                    NoInternetView(playerStateSubject: playerStateSubject)
-                                                }
+                                            } else {
+                                                NoInternetView(playerStateSubject: playerStateSubject)
                                             }
                                         } else {
                                             EmptyView()
                                         }
-                                    }
-                                    .frame(height: reader.size.height)
-                                    .id(index)
+                                        }
+                                    
+                                }
+                                .frame(
+                                    width: isHorizontal ? reader.size.width - 16 : reader.size.width,
+                                    height: reader.size.height
+                                )
+                                .id(index)
+                            }
+                        }
+                        .offset(y: offsetView)
+                        .clipped()
+                        .onAppear {
+                            offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                        }
+                        .onAppear {
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification,
+                                                                   object: nil, queue: .main) { _ in
+                                offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                            }
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification,
+                                                                   object: nil, queue: .main) { _ in
+                                offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                            }
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification,
+                                                                   object: nil, queue: .main) { _ in
+                                offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                            }
+                        }
+                        .onChange(of: UIDevice.current.orientation, perform: { _ in
+                            offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                        })
+                        .onChange(of: viewModel.verticalIndex, perform: { index in
+                            DispatchQueue.main.async {
+                                withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                    offsetView = -(reader.size.height * CGFloat(index))
                                 }
                             }
-                            .offset(y: offsetView)
-                            .clipped()
-                            .onChange(of: viewModel.index, perform: { index in
-                                DispatchQueue.main.async {
-                                    withAnimation(Animation.easeInOut(duration: 0.2)) {
-                                        offsetView = -(reader.size.height * CGFloat(index))
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                            showDiscussion = viewModel.selectedLesson().type == .discussion
-                                        }
+                            
+                        })
+                        .onChange(of: viewModel.index, perform: { index in
+                            DispatchQueue.main.async {
+                                withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                    offsetView = -(reader.size.height * CGFloat(index))
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                        showDiscussion = viewModel.selectedLesson().type == .discussion
                                     }
                                 }
-                                
-                            })
+                            }
+                            
+                        })
                         
                     }.frame(maxWidth: .infinity)
                         .clipped()
                     
                     // MARK: Progress Dots
-                    if viewModel.verticals[viewModel.verticalIndex].childs.count > 1 {
                         LessonProgressView(viewModel: viewModel)
-                    }
                 }
+                
                 // MARK: - Alert
                 if showAlert {
                     ZStack(alignment: .bottomLeading) {
@@ -166,7 +260,7 @@ public struct CourseUnitView: View {
                                 }
                             Text(alertMessage ?? "")
                         }.shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                          textColor: .white)
+                                          textColor: Theme.Colors.white)
                         .transition(.move(edge: .bottom))
                         .onAppear {
                             doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
@@ -179,32 +273,109 @@ public struct CourseUnitView: View {
                 
                 // MARK: - Course Navigation
                 VStack {
-                    CourseNavigationView(
-                        sectionName: sectionName,
-                        viewModel: viewModel,
-                        playerStateSubject: playerStateSubject
-                    ).padding(.bottom, 30)
-                        .frameLimit(sizePortrait: 420)
-                }.frame(maxWidth: .infinity)
-                    .onRightSwipeGesture {
-                        playerStateSubject.send(VideoPlayerState.kill)
-                        viewModel.router.back()
+                    ZStack {
+                        if !isDropdownActive {
+                            GeometryReader { reader in
+                                VStack {
+                                    HStack {
+                                        let currentBlock = viewModel.verticals[viewModel.verticalIndex]
+                                            .childs[viewModel.index]
+                                        if currentBlock.type == .video {
+                                            let title = currentBlock.displayName
+                                            Text(title)
+                                                .lineLimit(1)
+                                                .font(Theme.Fonts.titleLarge)
+                                                .foregroundStyle(Theme.Colors.textPrimary)
+                                                .padding(.leading, isHorizontal ? 30 : 42)
+                                                .padding(.top, isHorizontal ? 14 : 2)
+                                            Spacer()
+                                        }
+                                    }.frame(maxWidth: isHorizontal ? reader.size.width * 0.5 : nil)
+                                    Spacer()
+                                }
+                            }
+                        }
+                        VStack {
+                            Group {
+                                NavigationBar(
+                                    title: isDropdownActive ? sequenceTitle : "",
+                                    leftButtonAction: {
+                                        viewModel.router.back()
+                                        playerStateSubject.send(VideoPlayerState.kill)
+                                    })
+                                .padding(.top, isHorizontal ? 10 : 0)
+                                .padding(.leading, isHorizontal ? -16 : 0)
+                                if isDropdownActive {
+                                    CourseUnitDropDownTitle(
+                                        title: unitTitle,
+                                        isAvailable: isDropdownAvailable,
+                                        showDropdown: $showDropdown)
+                                    .padding(.top, 0)
+                                    .padding(.horizontal, 48)
+                                    .offset(y: -25)
+                                }
+                            }
+                            .padding(.trailing, isHorizontal ? 215 : 0)
+                            Spacer()
+                        }
+                        HStack(alignment: .center) {
+                            if isHorizontal {
+                                Spacer()
+                            }
+                            VStack {
+                                if !isHorizontal {
+                                    Spacer()
+                                }
+                                CourseNavigationView(
+                                    sectionName: sectionName,
+                                    viewModel: viewModel,
+                                    playerStateSubject: playerStateSubject
+                                )
+                                if isHorizontal {
+                                    Spacer()
+                                }
+                            }//.frame(height: isHorizontal ? nil : 44)
+                            
+                            .padding(.bottom, isHorizontal ? 0 : 50)
+                            .padding(.top, isHorizontal ? 12 : 0)
+                        }.frameLimit(sizePortrait: 420)
                     }
+                }.frame(maxWidth: .infinity)
             }
             .onDisappear {
-                if !presentationMode.wrappedValue.isPresented {
+                if !isPresented {
                     playerStateSubject.send(VideoPlayerState.kill)
                 }
             }
+            if isDropdownActive && showDropdown {
+                CourseUnitVerticalsDropdownView(
+                    verticals: viewModel.verticals,
+                    currentIndex: viewModel.verticalIndex,
+                    offsetY: isHorizontal ? landscapeTopSpacing : portraitTopSpacing,
+                    showDropdown: $showDropdown
+                ) { [weak viewModel] vertical in
+                    viewModel?.route(to: vertical)
+                }
+            }
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
+        .ignoresSafeArea(.all, edges: .bottom)
+        .onRightSwipeGesture {
+            playerStateSubject.send(VideoPlayerState.kill)
+            viewModel.router.back()
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                showDiscussion = viewModel.selectedLesson().type == .discussion
+            }
+        }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .navigationTitle("")
-        .ignoresSafeArea()
-            .background(
-                Theme.Colors.background
-                    .ignoresSafeArea()
-            )
+        .background(
+            Theme.Colors.background
+                .ignoresSafeArea()
+        )
+        .dropdownAnimation(isActive: isDropdownActive, value: showDropdown)
     }
 }
 

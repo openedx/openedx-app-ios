@@ -7,12 +7,15 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct ResetPasswordView: View {
     
     @State private var email: String = ""
     
     @State private var isRecovered: Bool = false
+    
+    @Environment (\.isHorizontal) private var isHorizontal
     
     @ObservedObject
     private var viewModel: ResetPasswordViewModel
@@ -24,18 +27,18 @@ public struct ResetPasswordView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
             
             VStack(alignment: .center) {
                 NavigationBar(title: AuthLocalization.Forgot.title,
-                             titleColor: .white,
-                             leftButtonColor: .white,
+                             titleColor: Theme.Colors.white,
+                             leftButtonColor: Theme.Colors.white,
                              leftButtonAction: {
                    viewModel.router.back()
-               })
+               }).padding(.leading, isHorizontal ? 48 : 0)
                 
                 ScrollView {
                     VStack {
@@ -123,7 +126,7 @@ public struct ResetPasswordView: View {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                         textColor: .white)
+                                         textColor: Theme.Colors.white)
                         .padding(.top, 80)
                     Spacer()
                     
@@ -149,7 +152,10 @@ public struct ResetPasswordView: View {
                     }
             }
         }
+        .ignoresSafeArea(.all, edges: .horizontal)
+
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+        
         .hideNavigationBar()
     }
 }

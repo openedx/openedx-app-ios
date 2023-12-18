@@ -12,7 +12,7 @@ import Foundation
 // MARK: - UserProfile
 public extension DataLayer {
     struct UserProfile: Codable {
-        public let id: Int
+        public let id: Int?
         public let accountPrivacy: AccountPrivacy?
         public let profileImage: ProfileImage?
         public let username: String?
@@ -70,12 +70,13 @@ public extension DataLayer {
 public enum AccountPrivacy: String, Codable {
     case privateAccess = "private"
     case allUsers = "all_users"
+    case allUsersBig = "ALL_USERS"
     
     public var boolValue: Bool {
         switch self {
         case .privateAccess:
             return false
-        case .allUsers:
+        case .allUsers, .allUsersBig:
             return true
         }
     }

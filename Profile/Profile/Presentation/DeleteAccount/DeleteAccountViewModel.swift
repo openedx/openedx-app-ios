@@ -47,7 +47,7 @@ public class DeleteAccountViewModel: ObservableObject {
             }
         } catch {
             isShowProgress = false
-            if error.asAFError?.responseCode == 403 {
+            if error.validationError?.statusCode == 403 {
                 incorrectPassword = true
             } else if let validationError = error.validationError,
                let value = validationError.data?["error_code"] as? String,

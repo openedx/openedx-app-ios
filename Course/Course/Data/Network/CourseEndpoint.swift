@@ -19,6 +19,7 @@ enum CourseEndpoint: EndPointType {
     case getUpdates(courseID: String)
     case resumeBlock(userName: String, courseID: String)
     case getSubtitles(url: String, selectedLanguage: String)
+    case getCourseDates(courseID: String)
 
     var path: String {
         switch self {
@@ -40,6 +41,8 @@ enum CourseEndpoint: EndPointType {
             return "/api/mobile/v1/users/\(userName)/course_status_info/\(courseID)"
         case let .getSubtitles(url, _):
             return url
+        case .getCourseDates(courseID: let courseID):
+            return "/api/course_home/v1/dates/\(courseID)"
         }
     }
 
@@ -62,6 +65,8 @@ enum CourseEndpoint: EndPointType {
         case .resumeBlock:
             return .get
         case .getSubtitles:
+            return .get
+        case .getCourseDates:
             return .get
         }
     }
@@ -112,11 +117,13 @@ enum CourseEndpoint: EndPointType {
         case .resumeBlock:
             return .requestParameters(encoding: JSONEncoding.default)
         case let .getSubtitles(_, subtitleLanguage):
-//           let languageCode = Locale.current.languageCode ?? "en"
+            //           let languageCode = Locale.current.languageCode ?? "en"
             let params: [String: Any] = [
                 "lang": subtitleLanguage
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+        case .getCourseDates:
+            return .requestParameters(encoding: JSONEncoding.default)
         }
     }
 }

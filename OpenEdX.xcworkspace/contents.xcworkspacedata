@@ -11,6 +11,9 @@
       location = "group:Authorization/Authorization.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:WhatsNew/WhatsNew.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Discovery/Discovery.xcodeproj">
    </FileRef>
    <FileRef
@@ -24,6 +27,9 @@
    </FileRef>
    <FileRef
       location = "group:Discussion/Discussion.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Theme/Theme.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

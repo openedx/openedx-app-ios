@@ -49,8 +49,8 @@ public struct CourseStructure: Equatable {
     
 }
 
-public struct CourseChapter {
-    
+public struct CourseChapter: Identifiable {
+
     public let blockId: String
     public let id: String
     public let displayName: String
@@ -72,8 +72,8 @@ public struct CourseChapter {
     }
 }
 
-public struct CourseSequential {
-    
+public struct CourseSequential: Identifiable {
+
     public let blockId: String
     public let id: String
     public let displayName: String

@@ -32,11 +32,13 @@
 
 "ERROR.NO_INTERNET" = "You are not connected to the Internet. Please check your Internet connection.";
 "ERROR.RELOAD" = "Reload";
+"ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 
 "ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
 
 "COURSE_CONTAINER.COURSE" =  "Course";
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
+"COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSION" =  "Discussion";
 "COURSE_CONTAINER.HANDOUTS" =  "Handouts";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
@@ -51,3 +53,7 @@
 "NOT_AVALIABLE.BUTTON" = "Open in browser";
 
 "SUBTITLES.TITLE" = "Subtitles";
+
+"ACCESSIBILITY.DOWNLOAD" = "Download";
+"ACCESSIBILITY.CANCEL_DOWNLOAD" = "Cancel download";
+"ACCESSIBILITY.DELETE_DOWNLOAD" = "Delete download";

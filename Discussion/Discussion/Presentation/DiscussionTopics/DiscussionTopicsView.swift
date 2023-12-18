@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct DiscussionTopicsView: View {
     
@@ -49,6 +50,8 @@ public struct DiscussionTopicsView: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(DiscussionLocalization.Topics.search)
                 
                 // MARK: - Page Body
                 VStack {

@@ -7,13 +7,20 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct DiscoveryView: View {
     
     @StateObject
     private var viewModel: DiscoveryViewModel
-    private let router: DiscoveryRouter
+    private var router: DiscoveryRouter
+    @State private var searchQuery: String = ""
     @State private var isRefreshing: Bool = false
+    
+    private var fromStartupScreen: Bool = false
+    
+    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.presentationMode) private var presentationMode
     
     private let discoveryNew: some View = VStack(alignment: .leading) {
         Text(DiscoveryLocalization.Header.title1)
@@ -23,10 +30,19 @@ public struct DiscoveryView: View {
             .font(Theme.Fonts.titleSmall)
             .foregroundColor(Theme.Colors.textPrimary)
     }.listRowBackground(Color.clear)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(DiscoveryLocalization.Header.title1 + DiscoveryLocalization.Header.title2)
     
-    public init(viewModel: DiscoveryViewModel, router: DiscoveryRouter) {
+    public init(
+        viewModel: DiscoveryViewModel,
+        router: DiscoveryRouter,
+        searchQuery: String? = nil,
+        fromStartupScreen: Bool = false
+    ) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.router = router
+        self.fromStartupScreen = fromStartupScreen
+        self._searchQuery = State<String>(initialValue: searchQuery ?? "")
     }
     
     public var body: some View {
@@ -45,11 +61,11 @@ public struct DiscoveryView: View {
                     Spacer()
                 }
                 .onTapGesture {
-                    router.showDiscoverySearch()
+                    router.showDiscoverySearch(searchQuery: searchQuery)
                     viewModel.discoverySearchBarClicked()
                 }
                 .frame(minHeight: 48)
-                .frame(maxWidth: 532)
+                .frame(maxWidth: .infinity)
                 .background(
                     Theme.Shapes.textInputShape
                         .fill(Theme.Colors.textInputUnfocusedBackground)
@@ -59,11 +75,14 @@ public struct DiscoveryView: View {
                         .stroke(lineWidth: 1)
                         .fill(Theme.Colors.textInputUnfocusedStroke)
                 ).onTapGesture {
-                    router.showDiscoverySearch()
+                    router.showDiscoverySearch(searchQuery: searchQuery)
                     viewModel.discoverySearchBarClicked()
                 }
+                .padding(.top, 11.5)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(DiscoveryLocalization.search)
                 
                 ZStack {
                     RefreshableScrollViewCompat(action: {
@@ -72,7 +91,7 @@ public struct DiscoveryView: View {
                         Task {
                             await viewModel.discovery(page: 1, withProgress: false)
                         }
-                    })  {
+                    }) {
                         LazyVStack(spacing: 0) {
                             HStack {
                                 discoveryNew
@@ -97,7 +116,7 @@ public struct DiscoveryView: View {
                                             courseID: course.courseID,
                                             courseName: course.name
                                         )
-                                        router.showCourseDetais(
+                                        viewModel.router.showCourseDetais(
                                             courseID: course.courseID,
                                             title: course.name
                                         )
@@ -114,8 +133,9 @@ public struct DiscoveryView: View {
                             }
                             VStack {}.frame(height: 40)
                         }
-                    }.frameLimit()
-                }
+                    }
+                    .frameLimit()
+                }.accessibilityAction {}
             }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
@@ -141,10 +161,16 @@ public struct DiscoveryView: View {
                 }
             }
         }
+        .navigationBarHidden(fromStartupScreen ? false : true)
         .onFirstAppear {
+            if !(searchQuery.isEmpty) {
+                router.showDiscoverySearch(searchQuery: searchQuery)
+                searchQuery = ""
+            }
             Task {
                 await viewModel.discovery(page: 1)
             }
+            viewModel.setupNotifications()
         }
         .background(Theme.Colors.background.ignoresSafeArea())
     }
@@ -153,7 +179,10 @@ public struct DiscoveryView: View {
 #if DEBUG
 struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = DiscoveryViewModel(interactor: DiscoveryInteractor.mock, connectivity: Connectivity(),
+        let vm = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                    config: ConfigMock(),
+                                    interactor: DiscoveryInteractor.mock,
+                                    connectivity: Connectivity(),
                                     analytics: DiscoveryAnalyticsMock())
         let router = DiscoveryRouterMock()
         

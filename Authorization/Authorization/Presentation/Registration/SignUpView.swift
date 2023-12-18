@@ -7,11 +7,14 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct SignUpView: View {
     
     @State
     private var disclosureGroupOpen: Bool = false
+    
+    @Environment (\.isHorizontal) private var isHorizontal
     
     @ObservedObject
     private var viewModel: SignUpViewModel
@@ -26,7 +29,7 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }.frame(maxWidth: .infinity, maxHeight: 200)
@@ -36,14 +39,15 @@ public struct SignUpView: View {
                 ZStack {
                     HStack {
                         Text(AuthLocalization.SignIn.registerBtn)
-                            .titleSettings(color: .white)
+                            .titleSettings(color: Theme.Colors.white)
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .backButtonStyle(color: .white)
+                                .backButtonStyle(color: Theme.Colors.white)
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)
+                        .padding(.leading, isHorizontal ? 48 : 0)
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
@@ -63,13 +67,23 @@ public struct SignUpView: View {
                                     .font(Theme.Fonts.titleSmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
-                                
+
+                                if viewModel.thirdPartyAuthSuccess {
+                                    Text(AuthLocalization.SignUp.successSigninLabel)
+                                        .font(Theme.Fonts.titleMedium)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                    Text(AuthLocalization.SignUp.successSigninSublabel)
+                                        .font(Theme.Fonts.titleSmall)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                        .padding(.bottom, 20)
+                                }
+
                                 let requiredFields = viewModel.fields.filter {$0.field.required}
                                 let nonRequiredFields = viewModel.fields.filter {!$0.field.required}
                                 
                                 FieldsView(fields: requiredFields,
                                            router: viewModel.router,
-                                           configuration: viewModel.config,
+                                           config: viewModel.config,
                                            cssInjector: viewModel.cssInjector,
                                            proxy: proxy)
                                 
@@ -77,7 +91,7 @@ public struct SignUpView: View {
                                     DisclosureGroup(isExpanded: $disclosureGroupOpen, content: {
                                         FieldsView(fields: nonRequiredFields,
                                                    router: viewModel.router,
-                                                   configuration: viewModel.config,
+                                                   config: viewModel.config,
                                                    cssInjector: viewModel.cssInjector,
                                                    proxy: proxy).padding(.horizontal, 1)
                                     }, label: {
@@ -94,14 +108,26 @@ public struct SignUpView: View {
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
+                                        viewModel.thirdPartyAuthSuccess = false
                                         Task {
                                             await viewModel.registerUser()
                                         }
                                         viewModel.trackCreateAccountClicked()
                                     }
                                     .padding(.top, 40)
-                                    .padding(.bottom, 80)
                                     .frame(maxWidth: .infinity)
+                                }
+                                if viewModel.socialAuthEnabled,
+                                    !requiredFields.isEmpty {
+                                    SocialAuthView(
+                                        authType: .register,
+                                        viewModel: .init(
+                                            config: viewModel.config
+                                        ) { result in
+                                            Task { await viewModel.register(with: result) }
+                                        }
+                                    )
+                                    .padding(.bottom, 30)
                                 }
                                 Spacer()
                             }
@@ -135,6 +161,7 @@ public struct SignUpView: View {
                     }
             }
         }
+        .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .hideNavigationBar()
     }

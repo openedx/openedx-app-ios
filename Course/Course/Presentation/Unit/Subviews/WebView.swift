@@ -8,6 +8,7 @@
 import SwiftUI
 import Swinject
 import Core
+import Theme
 
 struct WebView: View {
     let url: String
@@ -18,6 +19,6 @@ struct WebView: View {
             WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
             Spacer(minLength: 5)
         }
-        .roundedBackground(strokeColor: .clear, maxIpadWidth: .infinity)
+        .roundedBackgroundWeb(strokeColor: Theme.Colors.textInputUnfocusedStroke, maxIpadWidth: .infinity)
     }
 }

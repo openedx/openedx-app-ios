@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E252" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="22G91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CDCourseBlock" representedClassName="CDCourseBlock" syncable="YES" codeGenerationType="class">
         <attribute name="allSources" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="blockId" optional="YES" attributeType="String"/>
@@ -18,6 +18,31 @@
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="CDCourseDate" representedClassName="CDCourseDate" syncable="YES" codeGenerationType="class">
+        <attribute name="hasEnded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="learnerIsFullAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="userTimezone" optional="YES" attributeType="String"/>
+        <relationship name="courseDateBlocks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDCourseDateBlock"/>
+        <relationship name="datesBannerInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseDatesBannerInfo"/>
+    </entity>
+    <entity name="CDCourseDateBlock" representedClassName="CDCourseDateBlock" syncable="YES" codeGenerationType="class">
+        <attribute name="assignmentType" optional="YES" attributeType="String"/>
+        <attribute name="complete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateType" optional="YES" attributeType="String"/>
+        <attribute name="extraInfo" optional="YES" attributeType="String"/>
+        <attribute name="firstComponentBlockID" optional="YES" attributeType="String"/>
+        <attribute name="learnerHasAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="link" optional="YES" attributeType="String"/>
+        <attribute name="linkText" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="CDCourseDatesBannerInfo" representedClassName="CDCourseDatesBannerInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="contentTypeGatingEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="missedDeadlines" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="missedGatedContent" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="verifiedUpgradeLink" optional="YES" attributeType="String"/>
     </entity>
     <entity name="CDCourseDetails" representedClassName=".CDCourseDetails" syncable="YES" codeGenerationType="class">
         <attribute name="courseBannerURL" attributeType="String"/>
