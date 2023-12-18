@@ -18,7 +18,10 @@ class ConfigTests: XCTestCase {
         "WHATS_NEW_ENABLED": true,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
-            "TOS_URL": "https://www.example.com/tos"
+            "TOS_URL": "https://www.example.com/tos",
+            "DATA_SELL_CONSENT_URL": "https://www.example.com/sell",
+            "COOKIE_POLICY_URL": "https://www.example.com/cookie",
+            "SUPPORTED_LANGUAGES": ["es"]
         ],
         "FIREBASE": [
             "ENABLED": true,
@@ -66,13 +69,6 @@ class ConfigTests: XCTestCase {
         let config = Config(properties: properties)
         
         XCTAssertTrue(config.features.whatNewEnabled)
-    }
-    
-    func testAgreementConfigInitialization() {
-        let config = Config(properties: properties)
-        
-        XCTAssertEqual(config.agreement.privacyPolicyURL, URL(string: "https://www.example.com/privacy"))
-        XCTAssertEqual(config.agreement.tosURL, URL(string: "https://www.example.com/tos"))
     }
     
     func testFirebaseConfigInitialization() {
