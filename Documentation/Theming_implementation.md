@@ -37,7 +37,7 @@ projectConfig:
                 to_id: "bundle.id.app.new" # Bundle ID to be set
 ```
 ### Assets
-The config whitelabel.yaml can contain a few Asset items (every added Xcode project can have its own Assets). 
+The config `whitelabel.yaml` can contain a few Asset items (every added Xcode project can have its own Assets). 
 Every Asset item can be configured with images, colors, and app Icon Assets:
 ```yaml
 assets:
