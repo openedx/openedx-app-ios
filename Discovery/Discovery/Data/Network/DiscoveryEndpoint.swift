@@ -48,6 +48,7 @@ enum DiscoveryEndpoint: EndPointType {
             let params: Parameters = [
                 "username": username,
                 "mobile": true,
+                "mobile_search": true,
                 "page": page,
                 "search_term": searchTerm
             ]
