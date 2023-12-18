@@ -241,7 +241,20 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             blockId: blockId
         )
     }
-    
+
+    func hasVideoForDowbloads() -> Bool {
+        guard let courseVideosStructure = courseVideosStructure else {
+            return false
+        }
+        return courseVideosStructure.childs
+            .flatMap { $0.childs }
+            .contains(where: { $0.isDownloadable })
+    }
+
+    func getDownloadsForCourse(courseId: String) -> [DownloadData] {
+        manager.getDownloadsForCourse(courseId)
+    }
+
     @MainActor
     private func setDownloadsStates() {
         guard let course = courseStructure else { return }

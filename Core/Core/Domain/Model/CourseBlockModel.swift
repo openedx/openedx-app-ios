@@ -8,6 +8,10 @@
 import Foundation
 
 public struct CourseStructure: Equatable {
+    public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
+        return lhs.id == rhs.id
+    }
+
     public let id: String
     public let graded: Bool
     public let completion: Double
@@ -41,10 +45,6 @@ public struct CourseStructure: Equatable {
         self.childs = childs
         self.media = media
         self.certificate = certificate
-    }
-    
-    public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
-        return lhs.id == rhs.id
     }
 
     public var blocksTotalSizeInBytes: Int {
@@ -115,7 +115,7 @@ public struct CourseSequential: Identifiable {
     }
 }
 
-public struct CourseVertical {
+public struct CourseVertical: Identifiable {
     public let blockId: String
     public let id: String
     public let courseId: String

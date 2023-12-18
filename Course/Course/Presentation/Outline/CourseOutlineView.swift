@@ -46,7 +46,9 @@ public struct CourseOutlineView: View {
                                 courseBanner(proxy: proxy)
                             }
 
-                            if let courseVideosStructure = viewModel.courseVideosStructure, isVideo {
+                            if isVideo,
+                                let courseVideosStructure = viewModel.courseVideosStructure,
+                                viewModel.hasVideoForDowbloads() {
                                 DownloadToDeviceBarView(
                                     courseStructure: courseVideosStructure,
                                     viewModel: viewModel

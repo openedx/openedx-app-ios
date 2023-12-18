@@ -11,36 +11,36 @@ import CoreData
 import Combine
 
 public class CorePersistence: CorePersistenceProtocol {
-    
+
     private var context: NSManagedObjectContext
-    
+
     public init(context: NSManagedObjectContext) {
         self.context = context
     }
-    
+
     public func publisher() -> AnyPublisher<Int, Never> {
         let notification = NSManagedObjectContext.didChangeObjectsNotification
         return NotificationCenter.default.publisher(for: notification, object: context)
             .compactMap({ notification in
                 guard let userInfo = notification.userInfo else { return nil }
-                
+
                 if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>, inserts.count > 0 {
                     return inserts.count
                 }
-                
+
                 if let updates = userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>, updates.count > 0 {
                     return updates.count
                 }
-                
+
                 if let deletes = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>, deletes.count > 0 {
                     return deletes.count
                 }
-                
+
                 return nil
             })
             .eraseToAnyPublisher()
     }
-    
+
     public func getAllDownloadData() -> [DownloadData] {
         let request = CDDownloadData.fetchRequest()
         guard let downloadData = try? context.fetch(request) else { return [] }
@@ -50,6 +50,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 courseId: $0.courseId ?? "",
                 url: $0.url ?? "",
                 fileName: $0.fileName ?? "",
+                displayName: $0.displayName ?? "",
                 progress: $0.progress,
                 resumeData: $0.resumeData,
                 state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
@@ -57,7 +58,7 @@ public class CorePersistence: CorePersistenceProtocol {
             )
         }
     }
-    
+
     public func addToDownloadQueue(blocks: [CourseBlock]) {
         for block in blocks {
             let request = CDDownloadData.fetchRequest()
@@ -74,6 +75,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 newDownloadData.courseId = block.courseId
                 newDownloadData.url = url
                 newDownloadData.fileName = fileName
+                newDownloadData.displayName = block.displayName
                 newDownloadData.progress = .zero
                 newDownloadData.resumeData = nil
                 newDownloadData.state = DownloadState.waiting.rawValue
@@ -81,7 +83,7 @@ public class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
-    
+
     public func getNextBlockForDownloading() -> DownloadData? {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "state != %@", DownloadState.finished.rawValue)
@@ -92,13 +94,14 @@ public class CorePersistence: CorePersistenceProtocol {
             courseId: data.courseId ?? "",
             url: data.url ?? "",
             fileName: data.fileName ?? "",
+            displayName: data.displayName ?? "",
             progress: data.progress,
             resumeData: data.resumeData,
             state: DownloadState(rawValue: data.state ?? "") ?? .waiting,
             type: DownloadType(rawValue: data.type ?? "" ) ?? .video
         )
     }
-    
+
     public func getDownloadsForCourse(_ courseId: String) -> [DownloadData] {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "courseId = %@", courseId)
@@ -109,6 +112,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 courseId: $0.courseId ?? "",
                 url: $0.url ?? "",
                 fileName: $0.fileName ?? "",
+                displayName: $0.displayName ?? "",
                 progress: $0.progress,
                 resumeData: $0.resumeData,
                 state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
@@ -116,7 +120,7 @@ public class CorePersistence: CorePersistenceProtocol {
             )
         }
     }
-    
+
     public func downloadData(by blockId: String) -> DownloadData? {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", blockId)
@@ -126,13 +130,14 @@ public class CorePersistence: CorePersistenceProtocol {
             courseId: downloadData.courseId ?? "",
             url: downloadData.url ?? "",
             fileName: downloadData.fileName ?? "",
+            displayName: downloadData.displayName ?? "",
             progress: downloadData.progress,
             resumeData: downloadData.resumeData,
             state: DownloadState(rawValue: downloadData.state ?? "") ?? .paused,
             type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video
         )
     }
-    
+
     public func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) {
         context.performAndWait {
             let request = CDDownloadData.fetchRequest()
@@ -147,7 +152,21 @@ public class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
-    
+
+    public func updateDownloadProgress(id: String, progress: Progress) {
+        context.performAndWait {
+            let request = CDDownloadData.fetchRequest()
+            request.predicate = NSPredicate(format: "id = %@", id)
+            guard let downloadData = try? context.fetch(request).first else { return }
+            downloadData.progress = progress.fractionCompleted
+            do {
+                try context.save()
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
+            }
+        }
+    }
+
     public func deleteDownloadData(id: String) throws {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", id)

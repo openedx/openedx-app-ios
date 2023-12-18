@@ -15,18 +15,23 @@ struct DownloadToDeviceBarView: View {
 
     var courseStructure: CourseStructure
     @ObservedObject var viewModel: CourseContainerViewModel
-    var onTap: (() -> Void)?
+    var onTap: (([DownloadData]) -> Void)?
 
     @State private var isOn: Bool = false
+
+    private var allDownloadData: [DownloadData] = []
+    private var currentDownloadData: DownloadData?
 
     init(
         courseStructure: CourseStructure,
         viewModel: CourseContainerViewModel,
-        onTap: (() -> Void)? = nil
+        onTap: (([DownloadData]) -> Void)? = nil
     ) {
         self.onTap = onTap
         self.courseStructure = courseStructure
         self.viewModel = viewModel
+        self.allDownloadData = viewModel.getDownloadsForCourse(courseId: courseStructure.id)
+        self.currentDownloadData = allDownloadData.first(where: { $0.state == .inProgress })
     }
 
     // MARK: - Body
@@ -35,35 +40,43 @@ struct DownloadToDeviceBarView: View {
         let isAllDownloaded = isAllDownloaded
         VStack(spacing: 0) {
             Divider()
-            HStack {
-                if toggleStateIsOn, !isAllDownloaded {
-                    ProgressView()
-                        .padding(.leading, 15)
-                } else {
-                    CoreAssets.video.swiftUIImage.renderingMode(.template)
-                        .padding(.leading, 15)
-                }
+            HStack(spacing: 0) {
+                image
                 titles
                 toggle
             }
             .padding(.vertical, 10)
-            if toggleStateIsOn, !isAllDownloaded { ProgressView(value: 20, total: 100) }
+            if toggleStateIsOn, !isAllDownloaded { ProgressView(value: totalProgress, total: 1.0) }
             Divider()
         }
         .contentShape(Rectangle())
-        .onTapGesture { onTap?() }
+        .onTapGesture { onTap?(allDownloadData) }
     }
 
     // MARK: - Views
+
+    private var image: some View {
+        VStack {
+            if toggleStateIsOn, !isAllDownloaded {
+                ProgressView()
+            } else {
+                CoreAssets.video.swiftUIImage
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+            }
+        }
+        .frame(width: 40, height: 40)
+        .padding(.leading, 15)
+    }
 
     @ViewBuilder
     private var titles: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(toggleStateIsOn ?
-                     (remainingCount == 0 ? "All videos downloaded" : "Downloading videos...")
-                     : "Download to device"
-                )
+                Text(title)
+                .lineLimit(1)
                 .font(Theme.Fonts.titleMedium)
                 .foregroundColor(Theme.Colors.textPrimary)
                 HStack(spacing: 0) {
@@ -73,9 +86,7 @@ struct DownloadToDeviceBarView: View {
                         } else {
                             Text("Remaining \(remainingCount)")
                         }
-                        totalSize.map {
-                            Text(", \($0)MB Total")
-                        }
+                        totalSize.map { Text(", \($0)MB Total") }
                     }
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textSecondary)
@@ -83,7 +94,7 @@ struct DownloadToDeviceBarView: View {
             }
             Spacer()
         }
-        .padding(.horizontal, 15)
+        .padding(.horizontal, 10)
         .layoutPriority(1)
     }
 
@@ -101,12 +112,30 @@ struct DownloadToDeviceBarView: View {
 
     // MARK: - Private properties
 
+    private var title: String {
+        if toggleStateIsOn {
+            if remainingCount == 0 {
+                return "All videos downloaded"
+            } else {
+                return currentDownloadData?.displayName ?? "Downloading videos..."
+            }
+        } else {
+            return "Download to device"
+        }
+    }
+
     private var totalSize: String? {
         let mb = courseStructure.blocksTotalSizeInMb
         if mb == 0.0 {
             return nil
         }
         return String(format: "%.2f", mb)
+    }
+
+    private var totalProgress: Double {
+        if allDownloadData.count == 0 { return 0.0 }
+        let progress = allDownloadData.map { $0.progress }
+        return progress.reduce(.zero) { $0 + $1 } / Double(allDownloadData.count)
     }
 
     private var isAllDownloaded: Bool {
@@ -128,7 +157,8 @@ struct DownloadToDeviceBarView: View {
         viewModel.verticalsDownloadState.filter { $0.value == .finished }.count
     }
 
-    var toggleStateIsOn: Bool {
+    private var toggleStateIsOn: Bool {
+        // Sequentials
         let totalCount = viewModel.sequentialsDownloadState.count
         let availableCount = viewModel.sequentialsDownloadState.filter { $0.value == .available }.count
         let finishedCount = viewModel.sequentialsDownloadState.filter { $0.value == .finished }.count

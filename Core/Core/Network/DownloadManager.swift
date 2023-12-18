@@ -25,6 +25,7 @@ public struct DownloadData {
     public let courseId: String
     public let url: String
     public let fileName: String
+    public let displayName: String
     public let progress: Double
     public let resumeData: Data?
     public let state: DownloadState
@@ -35,6 +36,7 @@ public struct DownloadData {
         courseId: String,
         url: String,
         fileName: String,
+        displayName: String,
         progress: Double,
         resumeData: Data?,
         state: DownloadState,
@@ -44,6 +46,7 @@ public struct DownloadData {
         self.courseId = courseId
         self.url = url
         self.fileName = fileName
+        self.displayName = displayName
         self.progress = progress
         self.resumeData = resumeData
         self.state = state
@@ -69,7 +72,6 @@ public protocol DownloadManagerProtocol {
 }
 
 public class DownloadManager: DownloadManagerProtocol {
-    
     private let persistence: CorePersistenceProtocol
     private let appStorage: CoreStorage
     private let connectivity: ConnectivityProtocol
@@ -153,12 +155,17 @@ public class DownloadManager: DownloadManagerProtocol {
             } else {
                 downloadRequest = AF.download(url)
             }
-            #if DEBUG
-            downloadRequest?.downloadProgress { prog in
+
+            downloadRequest?.downloadProgress { [weak self]  prog in
+                guard let self else { return }
                 let completed = Double(prog.fractionCompleted * 100)
+                self.persistence.updateDownloadProgress(
+                    id: download.id,
+                    progress: prog
+                )
                 print(">>>>> Downloading", download.url, completed, "%")
             }
-            #endif
+
             downloadRequest?.responseData(completionHandler: { [weak self] data in
                 guard let self else { return }
                 if let data = data.value, let url = self.videosFolderUrl() {

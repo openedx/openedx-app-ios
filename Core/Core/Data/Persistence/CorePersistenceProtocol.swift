@@ -16,6 +16,7 @@ public protocol CorePersistenceProtocol {
     func getDownloadsForCourse(_ courseId: String) -> [DownloadData]
     func downloadData(by blockId: String) -> DownloadData?
     func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
+    func updateDownloadProgress(id: String, progress: Progress)
     func deleteDownloadData(id: String) throws
     func saveDownloadData(data: DownloadData)
 }
