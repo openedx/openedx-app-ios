@@ -19,7 +19,7 @@ public class SignUpViewModel: ObservableObject {
     @Published var scrollTo: Int?
     @Published var showError: Bool = false
     @Published var thirdPartyAuthSuccess: Bool = false
-    public var sourceScreen: LogistrationSourceScreen
+    let sourceScreen: LogistrationSourceScreen
     
     var errorMessage: String? {
         didSet {

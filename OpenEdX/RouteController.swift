@@ -51,8 +51,10 @@ class RouteController: UIViewController {
             let controller = UIHostingController(
                 rootView: SignInView(
                     viewModel:
-                        diContainer.resolve(SignInViewModel.self,
-                                            argument: LogistrationSourceScreen.default)!
+                        diContainer.resolve(
+                            SignInViewModel.self,
+                            argument: LogistrationSourceScreen.default
+                        )!
                 )
             )
             navigation.viewControllers = [controller]

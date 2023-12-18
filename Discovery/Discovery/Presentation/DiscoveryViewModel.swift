@@ -8,8 +8,6 @@
 import Combine
 import Core
 import SwiftUI
-import Swinject
-import Authorization
 
 public class DiscoveryViewModel: ObservableObject {
     

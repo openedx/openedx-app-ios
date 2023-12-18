@@ -8,7 +8,6 @@
 import Foundation
 import Core
 import SwiftUI
-import Swinject
 
 public enum CourseState {
     case enrollOpen
