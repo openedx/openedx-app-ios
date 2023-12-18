@@ -2,7 +2,6 @@ import argparse
 import logging
 import os
 import shutil
-import subprocess
 import sys
 import yaml
 import json
@@ -23,13 +22,11 @@ class WhitelabelApp:
                 iconPath: 'Theme/Assets.xcassets' # path where app icon is placed in this Asset 
                 images:
                     image1: # Asset name
-                        imageName: 'some_image.svg' # image file name in Assets.xcassets/image1.imageset
-                        imageNameImport: 'new_image.pdf' # optional: image to replace imageName, placed in Config. Don't need if file name is the same
+                        imageName: 'some_image.svg' # image to replace existing for image1 Asset (light/universal)
                     image2: # Asset name
                         currentPath: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
-                        imageName: 'Rectangle.png' # image file name in Assets.xcassets/SomeFolder/image2.imageset
-                        darkImageName: 'RectangleDark.png' # image file name for dark appearance in Assets.xcassets/SomeFolder/image2.imageset
-                        darkImageNameImport: 'NewDarkRectangle.png' # optional: image to replace darkImageName, placed in Config. Don't need if file name is the same
+                        imageName: 'Rectangle.png' # image to replace existing for image2 Asset (light/universal)
+                        darkImageName: 'RectangleDark.png' # image to replace existing dark appearance for image2 Asset (dark)
                 colors:
                     LoginBackground: # color asset name in Assets
                         currrentPath: '' # optional: path to color inside colorsPath
@@ -85,26 +82,32 @@ class WhitelabelApp:
             assetPath = asset["imagesPath"] if "imagesPath" in asset else ""
             for name, image in asset["images"].items():
                 currentPath = image["currentPath"] if "currentPath" in image else ""
-                hasDark = True if "darkImageName" in image else False
-                imageName = image["imageName"]
-                imageNameImport = image["imageNameImport"] if "imageNameImport" in image else imageName
-                darkImageName = image["darkImageName"] if "darkImageName" in image else ""
-                darkImageNameImport =  image["darkImageNameImport"] if "darkImageNameImport" in image else darkImageName
                 path_to_imageset = os.path.join(assetPath, currentPath, name+'.imageset')
-                # conditions to start updating
-                file_path = os.path.join(path_to_imageset, imageName)
-                dark_file_path = os.path.join(path_to_imageset, darkImageName)
-                files_to_changes_exist = os.path.exists(file_path) # 1
-                if hasDark:
-                    files_to_changes_exist = files_to_changes_exist and os.path.exists(dark_file_path)
                 content_json_path = os.path.join(path_to_imageset, 'Contents.json')
-                contents_json_is_good = os.path.exists(content_json_path) # 2
-                if contents_json_is_good:
-                    with open(content_json_path, 'r') as openfile:
-                        contents_string = openfile.read()
-                    contents_json_is_good = contents_json_is_good and imageName in contents_string
-                    if hasDark:
-                        contents_json_is_good = contents_json_is_good and darkImageName in contents_string
+                imageNameOriginal = ''
+                darkImageNameOriginal = ''
+                with open(content_json_path, 'r') as openfile:
+                    json_object = json.load(openfile)
+                    for json_image in json_object["images"]:
+                        if "appearances" in json_image:
+                            # dark
+                            darkImageNameOriginal = json_image["filename"]
+                        else:
+                            # light
+                            imageNameOriginal = json_image["filename"]
+                hasDark = True if "darkImageName" in image else False
+                imageNameImport = image["imageName"] if "imageName" in image else ''
+                darkImageNameImport =  image["darkImageName"] if "darkImageName" in image else ''
+                
+                # conditions to start updating
+                file_path = os.path.join(path_to_imageset, imageNameOriginal)
+                dark_file_path = os.path.join(path_to_imageset, darkImageNameOriginal)
+                files_to_changes_exist = os.path.exists(file_path) and imageNameOriginal != '' # 1
+                if hasDark:
+                    files_to_changes_exist = files_to_changes_exist and os.path.exists(dark_file_path) and darkImageNameOriginal != ''
+                contents_json_is_good = os.path.exists(content_json_path) and imageNameOriginal != '' # 2
+                if hasDark:
+                    contents_json_is_good = contents_json_is_good and darkImageNameOriginal != ''
                 
                 path_to_imageset_exists = os.path.exists(path_to_imageset) # 3
                 file_to_copy_path = os.path.join(self.assets_dir, imageNameImport)
@@ -121,9 +124,9 @@ class WhitelabelApp:
                     # Change Contents.json
                     with open(content_json_path, 'r') as openfile:
                         contents_string = openfile.read()
-                    contents_string = contents_string.replace(imageName, imageNameImport)
+                    contents_string = contents_string.replace(imageNameOriginal, imageNameImport)
                     if hasDark:
-                        contents_string = contents_string.replace(darkImageName, darkImageNameImport)
+                        contents_string = contents_string.replace(darkImageNameOriginal, darkImageNameImport)
                     with open(content_json_path, 'w') as openfile:
                         openfile.write(contents_string)
                     # Copy new file(s)
