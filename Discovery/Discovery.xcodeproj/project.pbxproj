@@ -32,7 +32,6 @@
 		CFC849452996A52A0055E497 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC849442996A52A0055E497 /* SearchViewModel.swift */; };
 		CFC8494C299A66080055E497 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CFC8494E299A66080055E497 /* Localizable.stringsdict */; };
 		CFC84950299BE52C0055E497 /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC8494F299BE52C0055E497 /* SearchViewModelTests.swift */; };
-		E0D586142B29F25A009B4BA7 /* Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D586132B29F25A009B4BA7 /* Authorization.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,7 +106,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0D586142B29F25A009B4BA7 /* Authorization.framework in Frameworks */,
 				072787AD28D34D15002E9142 /* Core.framework in Frameworks */,
 				9F47BCC672941A9854404EC7 /* Pods_App_Discovery.framework in Frameworks */,
 			);

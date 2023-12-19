@@ -8,8 +8,6 @@
 import SwiftUI
 import Core
 import Theme
-import Authorization
-import Swinject
 
 public struct DiscoveryView: View {
     
