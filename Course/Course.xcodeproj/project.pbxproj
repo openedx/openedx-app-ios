@@ -72,7 +72,7 @@
 		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 		BAAD62C82AFD00EE000E6103 /* CourseStructureNestedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C72AFD00EE000E6103 /* CourseStructureNestedListView.swift */; };
 		BAD9CA442B2C87A200DE790A /* CourseStructureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA432B2C87A200DE790A /* CourseStructureView.swift */; };
-		BAD9CA4A2B2C88E000DE790A /* DownloadToDeviceBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA492B2C88E000DE790A /* DownloadToDeviceBarView.swift */; };
+		BAD9CA4A2B2C88E000DE790A /* CourseVideoDownloadBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */; };
 		DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */; };
 		DB7D6EAC2ADFCAC50036BB13 /* CourseDatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */; };
 		DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */; };
@@ -172,7 +172,7 @@
 		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BAAD62C72AFD00EE000E6103 /* CourseStructureNestedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureNestedListView.swift; sourceTree = "<group>"; };
 		BAD9CA432B2C87A200DE790A /* CourseStructureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureView.swift; sourceTree = "<group>"; };
-		BAD9CA492B2C88E000DE790A /* DownloadToDeviceBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadToDeviceBarView.swift; sourceTree = "<group>"; };
+		BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoDownloadBarView.swift; sourceTree = "<group>"; };
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
 		DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDatesView.swift; sourceTree = "<group>"; };
 		DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesViewModel.swift; sourceTree = "<group>"; };
@@ -500,7 +500,7 @@
 		BAD9CA482B2C88D500DE790A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				BAD9CA492B2C88E000DE790A /* DownloadToDeviceBarView.swift */,
+				BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -762,7 +762,7 @@
 				022C64DA29ACEC50000F532B /* HandoutsViewModel.swift in Sources */,
 				02635AC72A24F181008062F2 /* ContinueWithView.swift in Sources */,
 				068DDA622B1E198700FF8CCB /* CourseUnitDropDownTitle.swift in Sources */,
-				BAD9CA4A2B2C88E000DE790A /* DownloadToDeviceBarView.swift in Sources */,
+				BAD9CA4A2B2C88E000DE790A /* CourseVideoDownloadBarView.swift in Sources */,
 				022C64DE29AD167A000F532B /* HandoutsUpdatesDetailView.swift in Sources */,
 				0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */,
 				068DDA602B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift in Sources */,

@@ -19,7 +19,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
     @Published var verticalsDownloadState: [String: DownloadViewState] = [:]
     @Published var continueWith: ContinueWith?
-    
+
     var errorMessage: String? {
         didSet {
             withAnimation {

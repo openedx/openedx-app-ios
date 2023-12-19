@@ -19,7 +19,14 @@ public struct CourseOutlineView: View {
     
     @State private var openCertificateView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-    
+
+    @State private var showingDownloads: Bool = false
+    @State private var downloads: [DownloadData] = [] {
+        didSet {
+            showingDownloads = true
+        }
+    }
+
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
@@ -49,10 +56,14 @@ public struct CourseOutlineView: View {
                             if isVideo,
                                 let courseVideosStructure = viewModel.courseVideosStructure,
                                 viewModel.hasVideoForDowbloads() {
-                                DownloadToDeviceBarView(
+                                CourseVideoDownloadBarView(
                                     courseStructure: courseVideosStructure,
-                                    viewModel: viewModel
-                                )
+                                    courseViewModel: viewModel
+                                ).onTapGesture {
+                                    self.downloads = viewModel.getDownloadsForCourse(
+                                        courseId: courseVideosStructure.id
+                                    )
+                                }
                             }
 
                             if let continueWith = viewModel.continueWith,
@@ -153,6 +164,14 @@ public struct CourseOutlineView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .sheet(isPresented: $showingDownloads) {
+            DownloadsView(
+                viewModel: .init(
+                    downloads: downloads,
+                    manager: viewModel.manager
+                )
+            )
+        }
     }
 
     private func courseBanner(proxy: GeometryProxy) -> some View {
