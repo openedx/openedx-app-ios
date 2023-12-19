@@ -31,7 +31,6 @@
 		DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */; };
 		E03261642AE64676002CA7EB /* StartupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261632AE64676002CA7EB /* StartupViewModel.swift */; };
 		E03261662AE64AF4002CA7EB /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261652AE64AF4002CA7EB /* StartupView.swift */; };
-		E03261682AE9F156002CA7EB /* LogistrationBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261672AE9F156002CA7EB /* LogistrationBottomView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,7 +83,6 @@
 		BADB3F542AD6DFC3004D5CFA /* SocialAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthViewModel.swift; sourceTree = "<group>"; };
 		E03261632AE64676002CA7EB /* StartupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupViewModel.swift; sourceTree = "<group>"; };
 		E03261652AE64AF4002CA7EB /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
-		E03261672AE9F156002CA7EB /* LogistrationBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogistrationBottomView.swift; sourceTree = "<group>"; };
 		E78971D8E6ED2116BBF9FD66 /* Pods-App-Authorization.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.release.xcconfig"; sourceTree = "<group>"; };
 		F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasestage.xcconfig"; sourceTree = "<group>"; };
 		F5802BBA113276950ABCD9B3 /* Pods-App-Authorization.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releaseprod.xcconfig"; sourceTree = "<group>"; };
@@ -284,7 +282,6 @@
 			children = (
 				E03261632AE64676002CA7EB /* StartupViewModel.swift */,
 				E03261652AE64AF4002CA7EB /* StartupView.swift */,
-				E03261672AE9F156002CA7EB /* LogistrationBottomView.swift */,
 			);
 			path = Startup;
 			sourceTree = "<group>";
@@ -505,7 +502,6 @@
 				02066B462906D72F00F4307E /* SignUpViewModel.swift in Sources */,
 				E03261642AE64676002CA7EB /* StartupViewModel.swift in Sources */,
 				02A2ACDB2A4B016100FBBBBB /* AuthorizationAnalytics.swift in Sources */,
-				E03261682AE9F156002CA7EB /* LogistrationBottomView.swift in Sources */,
 				025F40E029D1E2FC0064C183 /* ResetPasswordView.swift in Sources */,
 				020C31CB290BF49900D6DEA2 /* FieldsView.swift in Sources */,
 				0770DE4E28D0A677006D8A5D /* SignInView.swift in Sources */,

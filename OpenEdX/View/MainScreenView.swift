@@ -42,8 +42,11 @@ struct MainScreenView: View {
     var body: some View {
         TabView(selection: $selection) {
             ZStack {
-                DiscoveryView(viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
-                              router: Container.shared.resolve(DiscoveryRouter.self)!)
+                DiscoveryView(
+                    viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
+                    router: Container.shared.resolve(DiscoveryRouter.self)!,
+                    sourceScreen: viewModel.sourceScreen
+                )
                 if updateAvaliable {
                     UpdateNotificationView(config: viewModel.config)
                 }

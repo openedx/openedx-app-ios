@@ -144,6 +144,7 @@
 		E055A5392B18DC95008D9E5E /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E055A5382B18DC95008D9E5E /* Theme.framework */; };
 		E055A53A2B18DC95008D9E5E /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E055A5382B18DC95008D9E5E /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179FC2B0F204D002AB695 /* ConfigTests.swift */; };
+		E0D586362B314CD3009B4BA7 /* LogistrationBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586352B314CD3009B4BA7 /* LogistrationBottomView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,6 +315,7 @@
 		DBF6F2492B0380E00098414B /* FeaturesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesConfig.swift; sourceTree = "<group>"; };
 		E055A5382B18DC95008D9E5E /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E09179FC2B0F204D002AB695 /* ConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigTests.swift; sourceTree = "<group>"; };
+		E0D586352B314CD3009B4BA7 /* LogistrationBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogistrationBottomView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -608,6 +610,7 @@
 		0770DE7728D0C49E006D8A5D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				E0D586352B314CD3009B4BA7 /* LogistrationBottomView.swift */,
 				02A4833B29B8C57800D33F33 /* DownloadView.swift */,
 				02D800CB29348F460099CF16 /* ImagePicker.swift */,
 				024D723429C8BB1A006D36ED /* NavigationBar.swift */,
@@ -939,6 +942,7 @@
 				02B3E3B32930198600A50475 /* AVPlayerViewControllerExtension.swift in Sources */,
 				0295C885299B99DD00ABE571 /* RefreshableScrollView.swift in Sources */,
 				0282DA7328F98CC9003C3F07 /* WebUnitView.swift in Sources */,
+				E0D586362B314CD3009B4BA7 /* LogistrationBottomView.swift in Sources */,
 				0727878128D25EFD002E9142 /* SnackBarView.swift in Sources */,
 				021D924828DC860C00ACC565 /* Data_UserProfile.swift in Sources */,
 				070019AC28F6FD0100D5FC78 /* CourseDetailBlock.swift in Sources */,

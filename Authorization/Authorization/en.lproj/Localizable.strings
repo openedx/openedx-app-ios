@@ -11,9 +11,7 @@
 "SIGN_IN.EMAIL" = "Email";
 "SIGN_IN.EMAIL_OR_USERNAME" = "Email or username";
 "SIGN_IN.PASSWORD" = "Password";
-"SIGN_IN.REGISTER_BTN" = "Register";
 "SIGN_IN.FORGOT_PASS_BTN" = "Forgot password?";
-"SIGN_IN.LOG_IN_BTN" = "Sign in";
 
 "ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email address";
 "ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
