@@ -35,7 +35,7 @@ public struct SignInView: View {
                 VStack {
                     Button(action: { viewModel.router.back() }, label: {
                         CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                            .backButtonStyle(color: .white)
+                            .backButtonStyle(color: Theme.Colors.loginNavigationText)
                     })
                     .foregroundColor(Theme.Colors.styledButtonText)
                     .padding(.leading, isHorizontal ? 48 : 0)
