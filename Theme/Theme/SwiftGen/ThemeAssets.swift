@@ -41,7 +41,7 @@ public enum ThemeAssets {
   public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
   public static let snackbarErrorTextColor = ColorAsset(name: "SnackbarErrorTextColor")
   public static let snackbarInfoAlert = ColorAsset(name: "SnackbarInfoAlert")
-  public static let splachBackground = ColorAsset(name: "SplachBackground")
+  public static let splashBackground = ColorAsset(name: "SplashBackground")
   public static let styledButtonBackground = ColorAsset(name: "StyledButtonBackground")
   public static let styledButtonText = ColorAsset(name: "StyledButtonText")
   public static let textPrimary = ColorAsset(name: "TextPrimary")
