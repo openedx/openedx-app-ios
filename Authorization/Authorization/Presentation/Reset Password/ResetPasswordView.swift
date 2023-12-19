@@ -61,7 +61,7 @@ public struct ResetPasswordView: View {
                                         .multilineTextAlignment(.center)
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
-                                    StyledButton(AuthLocalization.SignIn.logInBtn) {
+                                    StyledButton(CoreLocalization.SignIn.logInBtn) {
                                         viewModel.router.backToRoot(animated: true)
                                     }
                                     .padding(.top, 30)

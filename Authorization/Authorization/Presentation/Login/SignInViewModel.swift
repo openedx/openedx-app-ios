@@ -19,6 +19,8 @@ public class SignInViewModel: ObservableObject {
     @Published private(set) var isShowProgress = false
     @Published private(set) var showError: Bool = false
     @Published private(set) var showAlert: Bool = false
+    let sourceScreen: LogistrationSourceScreen
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -45,13 +47,15 @@ public class SignInViewModel: ObservableObject {
         router: AuthorizationRouter,
         config: ConfigProtocol,
         analytics: AuthorizationAnalytics,
-        validator: Validator
+        validator: Validator,
+        sourceScreen: LogistrationSourceScreen
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
         self.analytics = analytics
         self.validator = validator
+        self.sourceScreen = sourceScreen
     }
 
     var socialAuthEnabled: Bool {
@@ -77,7 +81,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(username: username, password: password)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: .password)
-            router.showMainOrWhatsNewScreen()
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
         } catch let error {
             failure(error)
         }
@@ -108,7 +112,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(externalToken: externalToken, backend: backend)
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: authMethod)
-            router.showMainOrWhatsNewScreen()
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
         } catch let error {
             failure(error, authMethod: authMethod)
         }
@@ -136,10 +140,6 @@ public class SignInViewModel: ObservableObject {
         } else {
             errorMessage = CoreLocalization.Error.unknownError
         }
-    }
-
-    func trackSignUpClicked() {
-        analytics.signUpClicked()
     }
 
     func trackForgotPasswordClicked() {

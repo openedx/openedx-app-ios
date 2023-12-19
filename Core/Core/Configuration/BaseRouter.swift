@@ -21,17 +21,17 @@ public protocol BaseRouter {
     
     func removeLastView(controllers: Int)
 
-    func showMainOrWhatsNewScreen()
+    func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen)
     
     func showStartupScreen()
     
-    func showLoginScreen()
+    func showLoginScreen(sourceScreen: LogistrationSourceScreen)
     
-    func showRegisterScreen()
+    func showRegisterScreen(sourceScreen: LogistrationSourceScreen)
     
     func showForgotPasswordScreen()
     
-    func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool)
+    func showDiscoveryScreen(searchQuery: String?, sourceScreen: LogistrationSourceScreen)
         
     func presentAlert(
         alertTitle: String,
@@ -77,17 +77,17 @@ open class BaseRouterMock: BaseRouter {
 
     public func dismiss(animated: Bool) {}
 
-    public func showMainOrWhatsNewScreen() {}
+    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {}
     
     public func showStartupScreen() {}
 
-    public func showLoginScreen() {}
+    public func showLoginScreen(sourceScreen: LogistrationSourceScreen) {}
     
-    public func showRegisterScreen() {}
+    public func showRegisterScreen(sourceScreen: LogistrationSourceScreen) {}
     
     public func showForgotPasswordScreen() {}
     
-    public func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool) {}
+    public func showDiscoveryScreen(searchQuery: String?, sourceScreen: LogistrationSourceScreen) {}
     
     public func backToRoot(animated: Bool) {}
         

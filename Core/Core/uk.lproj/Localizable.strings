@@ -96,3 +96,6 @@
 
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 "AUTHORIZATION_FAILED" = "Authorization failed.";
+
+"SIGN_IN.LOG_IN_BTN" = "Увійти";
+"SIGN_IN.REGISTER_BTN" = "Реєстрація";
