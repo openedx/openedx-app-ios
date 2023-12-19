@@ -100,8 +100,7 @@ public struct SignInView: View {
                                 )
                             HStack {
                                 if !viewModel.config.features.startupScreenEnabled {
-                                    Button(AuthLocalization.SignIn.registerBtn) {
-                                        viewModel.trackSignUpClicked()
+                                    Button(CoreLocalization.SignIn.registerBtn) {
                                         viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
                                     }.foregroundColor(Theme.Colors.accentColor)
                                     
@@ -121,7 +120,7 @@ public struct SignInView: View {
                                         .padding(20)
                                 }.frame(maxWidth: .infinity)
                             } else {
-                                StyledButton(AuthLocalization.SignIn.logInBtn) {
+                                StyledButton(CoreLocalization.SignIn.logInBtn) {
                                     Task {
                                         await viewModel.login(username: email, password: password)
                                     }

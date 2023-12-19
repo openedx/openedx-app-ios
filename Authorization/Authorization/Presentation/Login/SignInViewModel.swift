@@ -142,10 +142,6 @@ public class SignInViewModel: ObservableObject {
         }
     }
 
-    func trackSignUpClicked() {
-        analytics.signUpClicked()
-    }
-
     func trackForgotPasswordClicked() {
         analytics.forgotPasswordClicked()
     }

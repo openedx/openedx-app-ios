@@ -57,8 +57,6 @@ public enum AuthLocalization {
     public static let emailOrUsername = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL_OR_USERNAME", fallback: "Email or username")
     /// Forgot password?
     public static let forgotPassBtn = AuthLocalization.tr("Localizable", "SIGN_IN.FORGOT_PASS_BTN", fallback: "Forgot password?")
-    /// Sign in
-    public static let logInBtn = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
     /// Localizable.strings
     ///   Authorization
     /// 
@@ -66,8 +64,6 @@ public enum AuthLocalization {
     public static let logInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_TITLE", fallback: "Sign in")
     /// Password
     public static let password = AuthLocalization.tr("Localizable", "SIGN_IN.PASSWORD", fallback: "Password")
-    /// Register
-    public static let registerBtn = AuthLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
     /// Welcome back! Please authorize to continue.
     public static let welcomeBack = AuthLocalization.tr("Localizable", "SIGN_IN.WELCOME_BACK", fallback: "Welcome back! Please authorize to continue.")
   }

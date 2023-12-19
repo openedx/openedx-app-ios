@@ -144,11 +144,25 @@ public struct CourseDetailsView: View {
                         Spacer(minLength: 84)
                     }
                 }
-                if let model = Container.shared.resolve(StartupViewModel.self), !viewModel.userloggedIn {
-                    LogistrationBottomView(
-                        viewModel: model,
-                        sourceScreen: .courseDetail(courseID, viewModel.courseDetails?.courseTitle ?? "")
-                    )
+                if !viewModel.userloggedIn {
+                    LogistrationBottomView { buttonAction in
+                        switch buttonAction {
+                        case .signIn:
+                            viewModel.router.showLoginScreen(
+                                sourceScreen: .courseDetail(
+                                    courseID,
+                                    viewModel.courseDetails?.courseTitle ?? ""
+                                )
+                            )
+                        case .register:
+                            viewModel.router.showRegisterScreen(
+                                sourceScreen: .courseDetail(
+                                    courseID,
+                                    viewModel.courseDetails?.courseTitle ?? ""
+                                )
+                            )
+                        }
+                    }
                 }
             }.padding(.top, 8)
             .navigationBarHidden(false)

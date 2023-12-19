@@ -177,6 +177,12 @@ public enum CoreLocalization {
       public static let title = CoreLocalization.tr("Localizable", "REVIEW.EMAIL.TITLE", fallback: "Select email client:")
     }
   }
+  public enum SignIn {
+    /// Sign in
+    public static let logInBtn = CoreLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
+    /// Register
+    public static let registerBtn = CoreLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
+  }
   public enum View {
     public enum Snackbar {
       /// Try Again

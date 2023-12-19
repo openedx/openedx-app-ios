@@ -7,33 +7,42 @@
 
 import Foundation
 import SwiftUI
-import Core
 import Theme
 
+public enum LogistrationSourceScreen: Equatable {
+    case `default`
+    case startup
+    case discovery
+    case courseDetail(String, String)
+}
+
+public enum LogistrationAction {
+    case signIn
+    case register
+}
+
 public struct LogistrationBottomView: View {
-    @ObservedObject
-    private var viewModel: StartupViewModel
-    private var sourceScreen: LogistrationSourceScreen
+    private let action: (LogistrationAction) -> Void
     
     @Environment(\.isHorizontal) private var isHorizontal
     
-    public init(viewModel: StartupViewModel, sourceScreen: LogistrationSourceScreen) {
-        self.viewModel = viewModel
-        self.sourceScreen = sourceScreen
+    public init(_ action: @escaping (LogistrationAction) -> Void) {
+        self.action = action
     }
     
     public var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 24) {
-                StyledButton(AuthLocalization.SignIn.registerBtn) {
-                    viewModel.router.showRegisterScreen(sourceScreen: sourceScreen)
-                    viewModel.tracksignUpClicked()
+                StyledButton(CoreLocalization.SignIn.registerBtn) {
+                    action(.register)
                 }
                 .frame(maxWidth: .infinity)
                 
                 StyledButton(
-                    AuthLocalization.SignIn.logInTitle,
-                    action: { viewModel.router.showLoginScreen(sourceScreen: sourceScreen) },
+                    CoreLocalization.SignIn.logInBtn,
+                    action: {
+                        action(.signIn)
+                    },
                     color: .white,
                     textColor: Theme.Colors.accentColor,
                     borderColor: Theme.Colors.textInputStroke
@@ -49,17 +58,12 @@ public struct LogistrationBottomView: View {
 #if DEBUG
 struct LogistrationBottomView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = StartupViewModel(
-            interactor: AuthInteractor.mock,
-            router: AuthorizationRouterMock(),
-            analytics: AuthorizationAnalyticsMock()
-        )
-        LogistrationBottomView(viewModel: vm, sourceScreen: .startup)
+        LogistrationBottomView {_ in }
             .preferredColorScheme(.light)
             .previewDisplayName("StartupView Light")
             .loadFonts()
         
-        LogistrationBottomView(viewModel: vm, sourceScreen: .startup)
+        LogistrationBottomView {_ in }
             .preferredColorScheme(.dark)
             .previewDisplayName("StartupView Dark")
             .loadFonts()

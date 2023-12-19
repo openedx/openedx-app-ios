@@ -179,11 +179,17 @@ public class Router: AuthorizationRouter,
         guard let viewModel = Container.shared.resolve(
             SignUpViewModel.self,
             argument: sourceScreen
-        ) else { return }
+        ),
+              let authAnalytics = Container.shared.resolve(
+                AuthorizationAnalytics.self
+              )
+        else { return }
         
         let view = SignUpView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
+        
+        authAnalytics.signUpClicked()
     }
     
     public func showForgotPasswordScreen() {

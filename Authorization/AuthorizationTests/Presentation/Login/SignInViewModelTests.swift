@@ -266,25 +266,6 @@ final class SignInViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
     
-    func testTrackSignUpClicked() {
-        let interactor = AuthInteractorProtocolMock()
-        let router = AuthorizationRouterMock()
-        let validator = Validator()
-        let analytics = AuthorizationAnalyticsMock()
-        let viewModel = SignInViewModel(
-            interactor: interactor,
-            router: router,
-            config: ConfigMock(),
-            analytics: analytics,
-            validator: validator,
-            sourceScreen: .default
-        )
-        
-        viewModel.trackSignUpClicked()
-        
-        Verify(analytics, 1, .signUpClicked())
-    }
-    
     func testTrackForgotPasswordClicked() {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()

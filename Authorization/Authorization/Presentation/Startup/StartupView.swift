@@ -89,7 +89,14 @@ public struct StartupView: View {
                     }
                     .padding(.horizontal, isHorizontal ? 10 : 24)
                     
-                    LogistrationBottomView(viewModel: viewModel, sourceScreen: .startup)
+                    LogistrationBottomView { buttonAction in
+                        switch buttonAction {
+                        case .signIn:
+                            viewModel.router.showLoginScreen(sourceScreen: .startup)
+                        case .register:
+                            viewModel.router.showRegisterScreen(sourceScreen: .startup)
+                        }
+                    }
                 }
                 .padding(.top, 10)
                 .padding(.bottom, 2)
@@ -112,9 +119,7 @@ public struct StartupView: View {
 struct StartupView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = StartupViewModel(
-            interactor: AuthInteractor.mock,
-            router: AuthorizationRouterMock(),
-            analytics: AuthorizationAnalyticsMock()
+            router: AuthorizationRouterMock()
         )
         
         StartupView(viewModel: vm)
