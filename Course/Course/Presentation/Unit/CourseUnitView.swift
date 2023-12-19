@@ -296,21 +296,26 @@ public struct CourseUnitView: View {
                             }
                         }
                         VStack {
-                            NavigationBar(
-                                title: isDropdownActive ? sequenceTitle : "",
-                                leftButtonAction: {
-                                    viewModel.router.back()
-                                    playerStateSubject.send(VideoPlayerState.kill)
-                                }).padding(.top, isHorizontal ? 10 : 0)
+                            Group {
+                                NavigationBar(
+                                    title: isDropdownActive ? sequenceTitle : "",
+                                    leftButtonAction: {
+                                        viewModel.router.back()
+                                        playerStateSubject.send(VideoPlayerState.kill)
+                                    })
+                                .padding(.top, isHorizontal ? 10 : 0)
                                 .padding(.leading, isHorizontal ? -16 : 0)
-                            if isDropdownActive {
-                                CourseUnitDropDownTitle(
-                                    title: unitTitle,
-                                    isAvailable: isDropdownAvailable,
-                                    showDropdown: $showDropdown)
-                                .padding(.top, 0)
-                                .offset(y: -25)
+                                if isDropdownActive {
+                                    CourseUnitDropDownTitle(
+                                        title: unitTitle,
+                                        isAvailable: isDropdownAvailable,
+                                        showDropdown: $showDropdown)
+                                    .padding(.top, 0)
+                                    .padding(.horizontal, 48)
+                                    .offset(y: -25)
+                                }
                             }
+                            .padding(.trailing, isHorizontal ? 215 : 0)
                             Spacer()
                         }
                         HStack(alignment: .center) {
