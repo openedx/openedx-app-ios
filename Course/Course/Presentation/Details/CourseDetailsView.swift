@@ -242,8 +242,10 @@ private struct CourseStateView: View {
                 if !viewModel.userloggedIn {
                     viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
                 } else {
-                    viewModel.viewCourseClicked(courseId: courseDetails.courseID,
-                                                courseName: courseDetails.courseTitle)
+                    viewModel.viewCourseClicked(
+                        courseId: courseDetails.courseID,
+                        courseName: courseDetails.courseTitle
+                    )
                     viewModel.router.showCourseScreens(
                         courseID: courseDetails.courseID,
                         isActive: nil,
