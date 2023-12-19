@@ -75,80 +75,80 @@ class WhitelabelApp:
 
         
 
-    def replace_images(self, assetData):
-        asset = assetData[1]
-        assetName = assetData[0]
+    def replace_images(self, asset_data):
+        asset = asset_data[1]
+        asset_name = asset_data[0]
         if "images" in asset :
-            assetPath = asset["images_path"] if "images_path" in asset else ""
+            asset_path = asset["images_path"] if "images_path" in asset else ""
             for name, image in asset["images"].items():
                 current_path = image["current_path"] if "current_path" in image else ""
-                path_to_imageset = os.path.join(assetPath, current_path, name+'.imageset')
+                path_to_imageset = os.path.join(asset_path, current_path, name+'.imageset')
                 content_json_path = os.path.join(path_to_imageset, 'Contents.json')
-                imageNameOriginal = ''
-                darkImageNameOriginal = ''
+                image_name_original = ''
+                dark_image_name_original = ''
                 with open(content_json_path, 'r') as openfile:
                     json_object = json.load(openfile)
                     for json_image in json_object["images"]:
                         if "appearances" in json_image:
                             # dark
-                            darkImageNameOriginal = json_image["filename"]
+                            dark_image_name_original = json_image["filename"]
                         else:
                             # light
-                            imageNameOriginal = json_image["filename"]
-                hasDark = True if "dark_image_name" in image else False
-                imageNameImport = image["image_name"] if "image_name" in image else ''
-                darkImageNameImport =  image["dark_image_name"] if "dark_image_name" in image else ''
+                            image_name_original = json_image["filename"]
+                has_dark = True if "dark_image_name" in image else False
+                image_name_import = image["image_name"] if "image_name" in image else ''
+                dark_image_name_import =  image["dark_image_name"] if "dark_image_name" in image else ''
                 
                 # conditions to start updating
-                file_path = os.path.join(path_to_imageset, imageNameOriginal)
-                dark_file_path = os.path.join(path_to_imageset, darkImageNameOriginal)
-                files_to_changes_exist = os.path.exists(file_path) and imageNameOriginal != '' # 1
-                if hasDark:
-                    files_to_changes_exist = files_to_changes_exist and os.path.exists(dark_file_path) and darkImageNameOriginal != ''
-                contents_json_is_good = os.path.exists(content_json_path) and imageNameOriginal != '' # 2
-                if hasDark:
-                    contents_json_is_good = contents_json_is_good and darkImageNameOriginal != ''
+                file_path = os.path.join(path_to_imageset, image_name_original)
+                dark_file_path = os.path.join(path_to_imageset, dark_image_name_original)
+                files_to_changes_exist = os.path.exists(file_path) and image_name_original != '' # 1
+                if has_dark:
+                    files_to_changes_exist = files_to_changes_exist and os.path.exists(dark_file_path) and dark_image_name_original != ''
+                contents_json_is_good = os.path.exists(content_json_path) and image_name_original != '' # 2
+                if has_dark:
+                    contents_json_is_good = contents_json_is_good and dark_image_name_original != ''
                 
                 path_to_imageset_exists = os.path.exists(path_to_imageset) # 3
-                file_to_copy_path = os.path.join(self.assets_dir, imageNameImport)
-                dark_file_to_copy_path = os.path.join(self.assets_dir, darkImageNameImport)
+                file_to_copy_path = os.path.join(self.assets_dir, image_name_import)
+                dark_file_to_copy_path = os.path.join(self.assets_dir, dark_image_name_import)
                 files_to_copy_exist = os.path.exists(file_to_copy_path) # 4
-                if hasDark:
+                if has_dark:
                     files_to_copy_exist = files_to_copy_exist and os.path.exists(dark_file_to_copy_path)
 
                 if files_to_changes_exist and contents_json_is_good and path_to_imageset_exists and files_to_copy_exist:
                     # Delete current file(s)
                     os.remove(file_path)
-                    if hasDark:
+                    if has_dark:
                         os.remove(dark_file_path)
                     # Change Contents.json
                     with open(content_json_path, 'r') as openfile:
                         contents_string = openfile.read()
-                    contents_string = contents_string.replace(imageNameOriginal, imageNameImport)
-                    if hasDark:
-                        contents_string = contents_string.replace(darkImageNameOriginal, darkImageNameImport)
+                    contents_string = contents_string.replace(image_name_original, image_name_import)
+                    if has_dark:
+                        contents_string = contents_string.replace(dark_image_name_original, dark_image_name_import)
                     with open(content_json_path, 'w') as openfile:
                         openfile.write(contents_string)
                     # Copy new file(s)
                     shutil.copy(file_to_copy_path, path_to_imageset)
-                    logging.debug(assetName+"->images->"+name+": 'light mode'/universal image was updated with "+imageNameImport)
-                    if hasDark:
+                    logging.debug(asset_name+"->images->"+name+": 'light mode'/universal image was updated with "+image_name_import)
+                    if has_dark:
                         shutil.copy(dark_file_to_copy_path, path_to_imageset)
-                        logging.debug(assetName+"->images->"+name+": 'dark mode' image was updated with "+darkImageNameImport)
+                        logging.debug(asset_name+"->images->"+name+": 'dark mode' image was updated with "+dark_image_name_import)
                 else:
                     # Handle errors
                     if not files_to_changes_exist:
-                        logging.error(assetName+"->images->"+name+": original file(s) doesn't exist")
+                        logging.error(asset_name+"->images->"+name+": original file(s) doesn't exist")
                     elif not contents_json_is_good:
-                        logging.error(assetName+"->images->"+name+": Contents.json doesn't exist or wrong original file(s) in config")
+                        logging.error(asset_name+"->images->"+name+": Contents.json doesn't exist or wrong original file(s) in config")
                     elif not path_to_imageset_exists:
-                        logging.error(assetName+"->images->"+name+": "+ path_to_imageset + " doesn't exist")
+                        logging.error(asset_name+"->images->"+name+": "+ path_to_imageset + " doesn't exist")
                     elif not files_to_copy_exist:
-                        logging.error(assetName+"->images->"+name+": file(s) to copy doesn't exist")
+                        logging.error(asset_name+"->images->"+name+": file(s) to copy doesn't exist")
 
-    def replace_colors(self, assetData):
-        asset = assetData[1]
-        assetName = assetData[0]
+    def replace_colors(self, asset_data):
+        asset = asset_data[1]
+        asset_name = asset_data[0]
         if "colors" in asset:
             colors_path = asset["colors_path"] if "colors_path" in asset else ""
             for name, color in asset["colors"].items():
@@ -173,9 +173,9 @@ class WhitelabelApp:
                         new_json = json.dumps(json_object) 
                     with open(content_json_path, 'w') as openfile:
                         openfile.write(new_json)
-                    logging.debug(assetName+"->colors->"+name+": color was updated with light:'"+light_color+"' dark:'"+dark_color+"'")
+                    logging.debug(asset_name+"->colors->"+name+": color was updated with light:'"+light_color+"' dark:'"+dark_color+"'")
                 else:
-                    logging.error(assetName+"->colors->"+name+": " + content_json_path + " doesn't exist")
+                    logging.error(asset_name+"->colors->"+name+": " + content_json_path + " doesn't exist")
 
     def change_color_components(self, components, color, name):
         color = color.replace("#", "")
@@ -187,9 +187,9 @@ class WhitelabelApp:
             components["blue"] = "0x"+color[4]+color[5]
         return components
     
-    def replace_app_icon(self, assetData):
-        asset = assetData[1]
-        assetName = assetData[0]
+    def replace_app_icon(self, asset_data):
+        asset = asset_data[1]
+        asset_name = asset_data[0]
         if "icon" in asset:
             icon_path = asset["icon_path"] if "icon_path" in asset else ""
             for name, icon in asset["icon"].items():
@@ -222,11 +222,11 @@ class WhitelabelApp:
                             openfile.write(contents_string)
                         # Copy new file
                         shutil.copy(file_to_copy_path, path_to_iconset)
-                        logging.debug(assetName+"->icon->"+name+": 'app icon was updated with "+file_to_copy)
+                        logging.debug(asset_name+"->icon->"+name+": 'app icon was updated with "+file_to_copy)
                     else:
-                        logging.error(assetName+"->icon->"+name+": " + file_to_copy_path + " doesn't exist")    
+                        logging.error(asset_name+"->icon->"+name+": " + file_to_copy_path + " doesn't exist")    
                 else:
-                    logging.error(assetName+"->icon->"+name+": " + file_to_change_path + " doesn't exist")
+                    logging.error(asset_name+"->icon->"+name+": " + file_to_change_path + " doesn't exist")
 
     def set_app_project_config(self):
         self.set_app_bundle_ids()
