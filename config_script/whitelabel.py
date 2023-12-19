@@ -17,29 +17,29 @@ class WhitelabelApp:
         import_dir: 'path/to/asset/Images' # folder where importing images are placed
         assets:
             AssetName:
-                imagesPath: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
-                colorsPath: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
-                iconPath: 'Theme/Assets.xcassets' # path where the app icon is placed in this Asset 
+                images_path: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
+                colors_path: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
+                icon_path: 'Theme/Assets.xcassets' # path where the app icon is placed in this Asset 
                 images:
                     image1: # Asset name
-                        imageName: 'some_image.svg' # image to replace the existing one for image1 Asset (light/universal)
+                        image_name: 'some_image.svg' # image to replace the existing one for image1 Asset (light/universal)
                     image2: # Asset name
-                        currentPath: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
-                        imageName: 'Rectangle.png' # image to replace the existing one for image2 Asset (light/universal)
-                        darkImageName: 'RectangleDark.png' # image to replace the existing dark appearance for image2 Asset (dark)
+                        current_path: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
+                        image_name: 'Rectangle.png' # image to replace the existing one for image2 Asset (light/universal)
+                        dark_image_name: 'RectangleDark.png' # image to replace the existing dark appearance for image2 Asset (dark)
                 colors:
                     LoginBackground: # color asset name in Assets
-                        currentPath: '' # optional: path to color inside colorsPath
+                        current_path: '' # optional: path to color inside colors_path
                         light: '#FFFFFF'
                         dark: '#ED5C13'
                 icon:
                     AppIcon:
-                        currentPath: ''  # optional: path to icon inside iconPath
-                        imageName: 'appIcon.jpg'  # image to replace the current AppIcon - png or jpg are supported
-        projectConfig:
-            projectPath: 'path/to/project/project.pbxproj' # path to project.pbxproj file
-            devTeam: '1234567890' # apple development team id
-            appBundleID:
+                        current_path: ''  # optional: path to icon inside icon_path
+                        image_name: 'appIcon.jpg'  # image to replace the current AppIcon - png or jpg are supported
+        project_config:
+            project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
+            dev_team: '1234567890' # apple development team id
+            app_bundle_id:
                 configurations:
                     config1: # configuration name - can be any
                         from_id: "bundle.id.app.old" # bundle ID to be changed
@@ -52,10 +52,10 @@ class WhitelabelApp:
             self.assets_dir = '.'
 
         self.assets = kwargs.get('assets', {})
-        self.project_config = kwargs.get('projectConfig', {})
+        self.project_config = kwargs.get('project_config', {})
 
-        if "projectPath" in self.project_config:
-            self.config_project_path = self.project_config["projectPath"]
+        if "project_path" in self.project_config:
+            self.config_project_path = self.project_config["project_path"]
         else:
             logging.error("Path to project file is not defined")
     
@@ -79,10 +79,10 @@ class WhitelabelApp:
         asset = assetData[1]
         assetName = assetData[0]
         if "images" in asset :
-            assetPath = asset["imagesPath"] if "imagesPath" in asset else ""
+            assetPath = asset["images_path"] if "images_path" in asset else ""
             for name, image in asset["images"].items():
-                currentPath = image["currentPath"] if "currentPath" in image else ""
-                path_to_imageset = os.path.join(assetPath, currentPath, name+'.imageset')
+                current_path = image["current_path"] if "current_path" in image else ""
+                path_to_imageset = os.path.join(assetPath, current_path, name+'.imageset')
                 content_json_path = os.path.join(path_to_imageset, 'Contents.json')
                 imageNameOriginal = ''
                 darkImageNameOriginal = ''
@@ -95,9 +95,9 @@ class WhitelabelApp:
                         else:
                             # light
                             imageNameOriginal = json_image["filename"]
-                hasDark = True if "darkImageName" in image else False
-                imageNameImport = image["imageName"] if "imageName" in image else ''
-                darkImageNameImport =  image["darkImageName"] if "darkImageName" in image else ''
+                hasDark = True if "dark_image_name" in image else False
+                imageNameImport = image["image_name"] if "image_name" in image else ''
+                darkImageNameImport =  image["dark_image_name"] if "dark_image_name" in image else ''
                 
                 # conditions to start updating
                 file_path = os.path.join(path_to_imageset, imageNameOriginal)
@@ -150,10 +150,10 @@ class WhitelabelApp:
         asset = assetData[1]
         assetName = assetData[0]
         if "colors" in asset:
-            colorsPath = asset["colorsPath"] if "colorsPath" in asset else ""
+            colors_path = asset["colors_path"] if "colors_path" in asset else ""
             for name, color in asset["colors"].items():
-                currentPath = color["currentPath"] if "currentPath" in color else ""
-                path_to_colorset = os.path.join(colorsPath, currentPath, name+'.colorset')
+                current_path = color["current_path"] if "current_path" in color else ""
+                path_to_colorset = os.path.join(colors_path, current_path, name+'.colorset')
                 light_color = color["light"]
                 dark_color = color["dark"]
                 # Change Contents.json
@@ -191,17 +191,17 @@ class WhitelabelApp:
         asset = assetData[1]
         assetName = assetData[0]
         if "icon" in asset:
-            iconPath = asset["iconPath"] if "iconPath" in asset else ""
+            icon_path = asset["icon_path"] if "icon_path" in asset else ""
             for name, icon in asset["icon"].items():
-                currentPath = icon["currentPath"] if "currentPath" in icon else ""
-                path_to_iconset = os.path.join(iconPath, currentPath, name+'.appiconset')
+                current_path = icon["current_path"] if "current_path" in icon else ""
+                path_to_iconset = os.path.join(icon_path, current_path, name+'.appiconset')
                 content_json_path = os.path.join(path_to_iconset, 'Contents.json')
                 with open(content_json_path, 'r') as openfile:
                     json_object = json.load(openfile)
                     json_icon = json_object["images"][0]
                     file_to_change = json_icon["filename"]
                     size_to_change = json_icon["size"]
-                file_to_copy = icon["imageName"]
+                file_to_copy = icon["image_name"]
                 file_to_copy_path = os.path.join(self.assets_dir, file_to_copy)
                 file_to_change_path = os.path.join(path_to_iconset, file_to_change)
                 if os.path.exists(file_to_change_path):
@@ -234,8 +234,8 @@ class WhitelabelApp:
 
 
     def set_app_bundle_ids(self):
-        if "appBundleID" in self.project_config:
-            app_bundle_id = self.project_config["appBundleID"]
+        if "app_bundle_id" in self.project_config:
+            app_bundle_id = self.project_config["app_bundle_id"]
             # read project file
             with open(self.config_project_path, 'r') as openfile:
                 config_file_string = openfile.read()
@@ -253,11 +253,11 @@ class WhitelabelApp:
                             config_file_string = config_file_string.replace(from_id_string, to_id_string)
                         # else if to_id is not set already
                         elif to_id_string not in config_file_string:
-                            errors_texts.append("appBundleID->configurations->"+name+": bundle id '"+from_id+"' was not found in project")
+                            errors_texts.append("app_bundle_id->configurations->"+name+": bundle id '"+from_id+"' was not found in project")
                     else:
-                        errors_texts.append("appBundleID->configurations->"+name+": 'to_id' parameter is empty in config")
+                        errors_texts.append("app_bundle_id->configurations->"+name+": 'to_id' parameter is empty in config")
                 else:
-                    errors_texts.append("appBundleID->configurations->"+name+": bundle ids were not found in config")
+                    errors_texts.append("app_bundle_id->configurations->"+name+": bundle ids were not found in config")
             # write to project file
             with open(self.config_project_path, 'w') as openfile:
                 openfile.write(config_file_string)
@@ -271,13 +271,13 @@ class WhitelabelApp:
             logging.error("Bundle ids config is not defined")       
     
     def set_dev_team(self):
-        if "devTeam" in self.project_config:
-            devTeam = self.project_config["devTeam"]
-            if devTeam != '':
+        if "dev_team" in self.project_config:
+            dev_team = self.project_config["dev_team"]
+            if dev_team != '':
                 # read project file
                 with open(self.config_project_path, 'r') as openfile:
                     config_file_string = openfile.read()
-                config_file_string_out = re.sub('DEVELOPMENT_TEAM = .{10};','DEVELOPMENT_TEAM = '+devTeam+';', config_file_string)
+                config_file_string_out = re.sub('DEVELOPMENT_TEAM = .{10};','DEVELOPMENT_TEAM = '+dev_team+';', config_file_string)
                 # if any entries were found and replaced
                 if config_file_string_out != config_file_string:
                     # write to project file

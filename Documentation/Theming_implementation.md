@@ -27,10 +27,10 @@ import_dir: 'path/to/images/source'
 ### Xcode Project Settings
 The theming script can change the development team and app bundle ID:
 ```yaml
-projectConfig:
-    projectPath: 'path/to/project/project.pbxproj' # path to project.pbxproj file
-    devTeam: '1234567890' # Apple development team ID
-    appBundleID:
+project_config:
+    project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
+    dev_team: '1234567890' # Apple development team ID
+    app_bundle_id:
         configurations:
             config1: # Configuration name - can be any
                 from_id: "bundle.id.app.old" # Bundle ID to be changed
@@ -42,25 +42,25 @@ Every Asset item can be configured with images, colors, and app Icon Assets:
 ```yaml
 assets:
     AssetName:
-        imagesPath: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
-        colorsPath: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
-        iconPath: 'Theme/Assets.xcassets' # path where app icon is placed in this Asset 
+        images_path: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
+        colors_path: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
+        icon_path: 'Theme/Assets.xcassets' # path where app icon is placed in this Asset 
         images:
             image1: # Asset name
-                imageName: 'some_image.svg' # image to replace the existing one for image1 Asset (light/universal)
+                image_name: 'some_image.svg' # image to replace the existing one for image1 Asset (light/universal)
             image2: # Asset name
-                currentPath: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
-                imageName: 'Rectangle.png' # image to replace the existing one for image2 Asset (light/universal)
-                darkImageName: 'RectangleDark.png' # image to replace the existing dark appearance for image2 Asset (dark)
+                current_path: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
+                image_name: 'Rectangle.png' # image to replace the existing one for image2 Asset (light/universal)
+                dark_image_name: 'RectangleDark.png' # image to replace the existing dark appearance for image2 Asset (dark)
         colors:
             LoginBackground: # color asset name in Assets
-                currrentPath: '' # optional: path to color inside colorsPath
+                current_path: '' # optional: path to color inside colors_path
                 light: '#FFFFFF'
                 dark: '#ED5C13'
         icon:
             AppIcon:
-                currrentPath: '' # optional: path to icon inside iconPath
-                imageName: 'appIcon.jpg' # image to replace the current AppIcon - png or jpg are supported
+                current_path: '' # optional: path to icon inside icon_path
+                image_name: 'appIcon.jpg' # image to replace the current AppIcon - png or jpg are supported
 ```
 ### Log level
 You can set the log level to 'DEBUG' by adding the `-v` parameter to the script running.
