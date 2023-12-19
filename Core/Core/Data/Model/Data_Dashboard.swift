@@ -32,13 +32,13 @@ public extension DataLayer {
         public let results: [Result]
 
         enum CodingKeys: String, CodingKey {
-            case next = "next"
-            case previous = "previous"
-            case count = "count"
+            case next
+            case previous
+            case count
             case numPages = "num_pages"
             case currentPage = "current_page"
-            case start = "start"
-            case results = "results"
+            case start
+            case results
         }
 
         public init(
@@ -71,10 +71,10 @@ public extension DataLayer {
 
         enum CodingKeys: String, CodingKey {
             case auditAccessExpires = "audit_access_expires"
-            case created = "created"
-            case mode = "mode"
+            case created
+            case mode
             case isActive = "is_active"
-            case course = "course"
+            case course
             case courseModes = "course_modes"
         }
 
@@ -119,18 +119,18 @@ public extension DataLayer {
         public let isSelfPaced: Bool
 
         enum CodingKeys: String, CodingKey {
-            case id = "id"
-            case name = "name"
-            case number = "number"
-            case org = "org"
-            case start = "start"
+            case id
+            case name
+            case number
+            case org
+            case start
             case startDisplay = "start_display"
             case startType = "start_type"
-            case end = "end"
+            case end
             case dynamicUpgradeDeadline = "dynamic_upgrade_deadline"
             case subscriptionID = "subscription_id"
             case coursewareAccess = "courseware_access"
-            case media = "media"
+            case media
             case courseImage = "course_image"
             case courseAbout = "course_about"
             case courseSharingUtmParameters = "course_sharing_utm_parameters"
@@ -204,8 +204,8 @@ public extension DataLayer {
         public let iosSku: Mode?
 
         enum CodingKeys: String, CodingKey {
-            case slug = "slug"
-            case sku = "sku"
+            case slug
+            case sku
             case androidSku = "android_sku"
             case iosSku = "ios_sku"
         }
