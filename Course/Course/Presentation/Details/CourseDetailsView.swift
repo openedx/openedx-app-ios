@@ -10,8 +10,6 @@ import Core
 import Kingfisher
 import WebKit
 import Theme
-import Authorization
-import Swinject
 
 public struct CourseDetailsView: View {
     
