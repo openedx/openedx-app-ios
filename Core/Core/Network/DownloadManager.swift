@@ -74,6 +74,7 @@ public class NoWiFiError: LocalizedError {
 //sourcery: AutoMockable
 public protocol DownloadManagerProtocol {
     var currentDownload: DownloadData? { get }
+
     func publisher() -> AnyPublisher<Int, Never>
     func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never>
     func addToDownloadQueue(blocks: [CourseBlock]) throws
@@ -215,9 +216,11 @@ public class DownloadManager: DownloadManagerProtocol {
 
             downloadRequest?.downloadProgress { [weak self]  prog in
                 guard let self else { return }
-                let completed = Double(prog.fractionCompleted * 100)
-                self.currentDownload?.progress = completed
-                self.currentDownloadEventPublisher.send(.progress(completed, download))
+                let fractionCompleted = prog.fractionCompleted
+                self.currentDownload?.progress = fractionCompleted
+                self.currentDownload?.state = .inProgress
+                self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
+                let completed = Double(fractionCompleted * 100)
                 print(">>>>> Downloading", download.url, completed, "%")
             }
 
@@ -230,6 +233,7 @@ public class DownloadManager: DownloadManagerProtocol {
                         state: .finished,
                         resumeData: nil
                     )
+                    self.currentDownload?.state = .finished
                     self.currentDownloadEventPublisher.send(.finished(download))
                     try? self.newDownload()
                 }
@@ -250,6 +254,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 state: .paused,
                 resumeData: resumeData
             )
+            self.currentDownload?.state = .paused
             self.currentDownloadEventPublisher.send(.paused(currentDownload))
         })
     }
@@ -290,7 +295,7 @@ public class DownloadManager: DownloadManagerProtocol {
         let fileName = data.fileName
         return path?.appendingPathComponent(fileName)
     }
-    
+
     private func videosFolderUrl() -> URL? {
         let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let directoryURL = documentDirectoryURL.appendingPathComponent("Files", isDirectory: true)

@@ -37,7 +37,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
-    
+
+    var downloads: [DownloadData] = []
+
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
     private let analytics: CourseAnalytics
@@ -258,7 +260,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     private func setDownloadsStates() {
         guard let course = courseStructure else { return }
-        let downloads = manager.getDownloadsForCourse(course.id)
+        downloads = manager.getDownloadsForCourse(course.id)
         var sequentialsStates: [String: DownloadViewState] = [:]
         var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {

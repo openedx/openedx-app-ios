@@ -26,11 +26,27 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             if remainingCount == 0 {
                 return CourseLocalization.Download.allVideosDownloaded
             } else {
-                return currentDownload?.displayName ?? CourseLocalization.Download.downloadingVideos
+                return CourseLocalization.Download.downloadingVideos
             }
         } else {
             return CourseLocalization.Download.downloadToDevice
         }
+    }
+
+    var progress: Double {
+        guard let currentDownload = currentDownload else {
+            return 0.0
+        }
+        guard let index = courseViewModel.downloads.firstIndex(
+            where: { $0.id == currentDownload.id }
+        ) else {
+            return 0.0
+        }
+        courseViewModel.downloads[index].progress = currentDownload.progress
+        return courseViewModel
+            .downloads
+            .map { $0.progress }
+            .reduce(.zero, +) / Double(courseViewModel.downloads.count)
     }
 
     var isAllDownloaded: Bool {

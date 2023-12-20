@@ -41,7 +41,7 @@ struct CourseVideoDownloadBarView: View {
             }
             .padding(.vertical, 10)
             if viewModel.isOn, !isAllDownloaded {
-                ProgressView(value: viewModel.currentDownload?.progress ?? 0, total: 100)
+                ProgressView(value: viewModel.progress, total: 1)
             }
             Divider()
         }

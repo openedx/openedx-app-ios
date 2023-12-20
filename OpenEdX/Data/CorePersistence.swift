@@ -144,21 +144,8 @@ public class CorePersistence: CorePersistenceProtocol {
             request.predicate = NSPredicate(format: "id = %@", id)
             guard let downloadData = try? context.fetch(request).first else { return }
             downloadData.state = state.rawValue
+            if state == .finished { downloadData.progress = 1 }
             downloadData.resumeData = resumeData
-            do {
-                try context.save()
-            } catch {
-                print("⛔️⛔️⛔️⛔️⛔️", error)
-            }
-        }
-    }
-
-    public func updateDownloadProgress(id: String, progress: Progress) {
-        context.performAndWait {
-            let request = CDDownloadData.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %@", id)
-            guard let downloadData = try? context.fetch(request).first else { return }
-            downloadData.progress = progress.fractionCompleted
             do {
                 try context.save()
             } catch {
