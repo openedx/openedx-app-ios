@@ -156,7 +156,7 @@ public struct CourseUnitView: View {
                                         case .unknown(let url):
                                             if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
-                                                ScrollView {
+                                                ScrollView(showsIndicators: false) {
                                                     UnknownView(url: url, viewModel: viewModel)
                                                     Spacer()
                                                         .frame(minHeight: 100)
