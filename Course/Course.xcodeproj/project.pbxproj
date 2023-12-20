@@ -71,6 +71,9 @@
 		197FB8EA8F92F00A8F383D82 /* Pods_App_Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */; };
 		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 		BAAD62C82AFD00EE000E6103 /* CourseStructureNestedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C72AFD00EE000E6103 /* CourseStructureNestedListView.swift */; };
+		BAC0E0D82B32EF03006B68A9 /* DownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC0E0D72B32EF03006B68A9 /* DownloadsView.swift */; };
+		BAC0E0DB2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC0E0DA2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift */; };
+		BAC0E0DE2B32F0F3006B68A9 /* DownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC0E0DD2B32F0F3006B68A9 /* DownloadsViewModel.swift */; };
 		BAD9CA442B2C87A200DE790A /* CourseStructureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA432B2C87A200DE790A /* CourseStructureView.swift */; };
 		BAD9CA4A2B2C88E000DE790A /* CourseVideoDownloadBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */; };
 		DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */; };
@@ -171,6 +174,9 @@
 		ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debug.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debug.xcconfig"; sourceTree = "<group>"; };
 		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BAAD62C72AFD00EE000E6103 /* CourseStructureNestedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureNestedListView.swift; sourceTree = "<group>"; };
+		BAC0E0D72B32EF03006B68A9 /* DownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsView.swift; sourceTree = "<group>"; };
+		BAC0E0DA2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoDownloadBarViewModel.swift; sourceTree = "<group>"; };
+		BAC0E0DD2B32F0F3006B68A9 /* DownloadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewModel.swift; sourceTree = "<group>"; };
 		BAD9CA432B2C87A200DE790A /* CourseStructureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureView.swift; sourceTree = "<group>"; };
 		BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoDownloadBarView.swift; sourceTree = "<group>"; };
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
@@ -356,6 +362,8 @@
 				02DFC65029ACC20A00EA4BB9 /* Handouts */,
 				070019A928F6F59D00D5FC78 /* Unit */,
 				070019AA28F6F79E00D5FC78 /* Video */,
+				BAC0E0DC2B32F0EA006B68A9 /* Downloads */,
+				BAD9CA482B2C88D500DE790A /* Subviews */,
 				02F3BFDC29252E900051930C /* CourseRouter.swift */,
 				02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */,
 			);
@@ -397,7 +405,6 @@
 		070019A728F6F2D600D5FC78 /* Outline */ = {
 			isa = PBXGroup;
 			children = (
-				BAD9CA482B2C88D500DE790A /* Subviews */,
 				BAD9CA462B2C888600DE790A /* CourseVertical */,
 				BAD9CA472B2C88AA00DE790A /* CourseStructure */,
 				02635AC62A24F181008062F2 /* ContinueWithView.swift */,
@@ -478,6 +485,24 @@
 			path = Unit;
 			sourceTree = "<group>";
 		};
+		BAC0E0D92B32F0A2006B68A9 /* CourseVideoDownloadBarView */ = {
+			isa = PBXGroup;
+			children = (
+				BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */,
+				BAC0E0DA2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift */,
+			);
+			path = CourseVideoDownloadBarView;
+			sourceTree = "<group>";
+		};
+		BAC0E0DC2B32F0EA006B68A9 /* Downloads */ = {
+			isa = PBXGroup;
+			children = (
+				BAC0E0D72B32EF03006B68A9 /* DownloadsView.swift */,
+				BAC0E0DD2B32F0F3006B68A9 /* DownloadsViewModel.swift */,
+			);
+			path = Downloads;
+			sourceTree = "<group>";
+		};
 		BAD9CA462B2C888600DE790A /* CourseVertical */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,7 +525,7 @@
 		BAD9CA482B2C88D500DE790A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */,
+				BAC0E0D92B32F0A2006B68A9 /* CourseVideoDownloadBarView */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -770,6 +795,7 @@
 				02454CA02A2618E70043052A /* YouTubeView.swift in Sources */,
 				02454CA22A26190A0043052A /* EncodedVideoView.swift in Sources */,
 				068DDA612B1E198700FF8CCB /* CourseUnitDropDownCell.swift in Sources */,
+				BAC0E0DE2B32F0F3006B68A9 /* DownloadsViewModel.swift in Sources */,
 				02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */,
 				02280F60294B50030032823A /* CoursePersistenceProtocol.swift in Sources */,
 				02454CAA2A2619B40043052A /* LessonProgressView.swift in Sources */,
@@ -796,6 +822,7 @@
 				02E685C028E4B629000AE015 /* CourseDetailsViewModel.swift in Sources */,
 				0295C889299BBE8200ABE571 /* CourseNavigationView.swift in Sources */,
 				06FD7EDF2B1F29F3008D632B /* CourseVerticalImageView.swift in Sources */,
+				BAC0E0DB2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift in Sources */,
 				DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */,
 				02F066E829DC71750073E13B /* SubtittlesView.swift in Sources */,
 				022C64E229ADEB83000F532B /* CourseUpdate.swift in Sources */,
@@ -806,6 +833,7 @@
 				02454CA82A2619890043052A /* DiscussionView.swift in Sources */,
 				0265B4B728E2141D00E6EAFD /* Strings.swift in Sources */,
 				02B6B3C128E1DBA100232911 /* Data_CourseDetailsResponse.swift in Sources */,
+				BAC0E0D82B32EF03006B68A9 /* DownloadsView.swift in Sources */,
 				DB7D6EAC2ADFCAC50036BB13 /* CourseDatesView.swift in Sources */,
 				0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */,
 				022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */,

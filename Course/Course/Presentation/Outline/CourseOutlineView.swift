@@ -23,6 +23,7 @@ public struct CourseOutlineView: View {
     @State private var showingDownloads: Bool = false
     @State private var downloads: [DownloadData] = [] {
         didSet {
+            if downloads.isEmpty { return }
             showingDownloads = true
         }
     }

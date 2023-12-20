@@ -134,6 +134,8 @@ struct CourseStructureNestedListView: View {
                     )
                 } label: {
                     DownloadAvailableView()
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(CourseLocalization.Accessibility.download)
                 }
                 .onForeground {
                     viewModel.onForeground()
@@ -147,6 +149,8 @@ struct CourseStructureNestedListView: View {
                     )
                 } label: {
                     DownloadProgressView()
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                 }
                 .onBackground {
                     viewModel.onBackground()
@@ -160,6 +164,8 @@ struct CourseStructureNestedListView: View {
                     )
                 } label: {
                     DownloadFinishedView()
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
                 }
                 .onBackground {
                     viewModel.onBackground()

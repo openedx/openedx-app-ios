@@ -94,7 +94,8 @@ public enum DownloadManagerEvent {
     case paused(DownloadData)
     case canceled(DownloadData)
     case finished(DownloadData)
-    case deleteFile(URL)
+    case deleteFile(String)
+    case cleared
 }
 
 public class DownloadManager: DownloadManagerProtocol {
@@ -257,9 +258,9 @@ public class DownloadManager: DownloadManagerProtocol {
         for block in blocks {
             do {
                 try persistence.deleteDownloadData(id: block.id)
+                currentDownloadEventPublisher.send(.deleteFile(block.id))
                 if let fileURL = fileUrl(for: block.id) {
                     try FileManager.default.removeItem(at: fileURL)
-                    currentDownloadEventPublisher.send(.deleteFile(fileURL))
                 }
             } catch {
                 NSLog("Error deleting file: \(error.localizedDescription)")
@@ -269,11 +270,11 @@ public class DownloadManager: DownloadManagerProtocol {
     
     public func deleteAllFiles() {
         let downloadData = persistence.getAllDownloadData()
+        currentDownloadEventPublisher.send(.cleared)
         downloadData.forEach {
             if let fileURL = fileUrl(for: $0.id) {
                 do {
                     try FileManager.default.removeItem(at: fileURL)
-                    currentDownloadEventPublisher.send(.deleteFile(fileURL))
                 } catch {
                     NSLog("Error deleting All files: \(error.localizedDescription)")
                 }
