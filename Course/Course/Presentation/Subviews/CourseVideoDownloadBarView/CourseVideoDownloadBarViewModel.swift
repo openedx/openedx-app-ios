@@ -96,10 +96,10 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     private func toggleStateIsOn() {
         // Sequentials
-        let totalCount = courseViewModel.sequentialsDownloadState.count
-        let availableCount = courseViewModel.sequentialsDownloadState.filter { $0.value == .available }.count
-        let finishedCount = courseViewModel.sequentialsDownloadState.filter { $0.value == .finished }.count
-        let downloadingCount = courseViewModel.sequentialsDownloadState.filter { $0.value == .downloading }.count
+        let totalCount = courseViewModel.verticalsDownloadState.count
+        let availableCount = courseViewModel.verticalsDownloadState.filter { $0.value == .available }.count
+        let finishedCount = courseViewModel.verticalsDownloadState.filter { $0.value == .finished }.count
+        let downloadingCount = courseViewModel.verticalsDownloadState.filter { $0.value == .downloading }.count
         if downloadingCount == totalCount {
             self.isOn = true
             return

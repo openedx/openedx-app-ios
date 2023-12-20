@@ -72,9 +72,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         
         super.init(manager: manager)
         
-        manager.publisher()
-            .sink(receiveValue: { [weak self] _ in
+        manager.eventPublisher()
+            .sink(receiveValue: { [weak self] state in
                 guard let self else { return }
+                if case .progress = state { return }
                 DispatchQueue.main.async {
                     self.setDownloadsStates()
                 }
@@ -143,22 +144,33 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
-        let blocks = chapter.childs
+        let verticals = chapter.childs
             .first(where: { $0.id == blockId })?.childs
-            .flatMap { $0.childs }
             .filter { $0.isDownloadable } ?? []
-        
+
+        let blocks = verticals.flatMap { $0.childs }
+            .filter { $0.isDownloadable }
+
         do {
             switch state {
             case .available:
                 try manager.addToDownloadQueue(blocks: blocks)
                 sequentialsDownloadState[blockId] = .downloading
+                verticals.forEach {
+                    verticalsDownloadState[$0.id] = .downloading
+                }
             case .downloading:
                 try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
                 sequentialsDownloadState[blockId] = .available
+                verticals.forEach {
+                    verticalsDownloadState[$0.id] = .available
+                }
             case .finished:
                 manager.deleteFile(blocks: blocks)
                 sequentialsDownloadState[blockId] = .available
+                verticals.forEach {
+                    verticalsDownloadState[$0.id] = .available
+                }
             }
         } catch let error {
             if error is NoWiFiError {

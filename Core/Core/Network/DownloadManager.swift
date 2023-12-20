@@ -90,13 +90,14 @@ public protocol DownloadManagerProtocol {
 }
 
 public enum DownloadManagerEvent {
-    case start(DownloadData)
+    case added
+    case started(DownloadData)
     case progress(Double, DownloadData)
     case paused(DownloadData)
     case canceled(DownloadData)
     case finished(DownloadData)
-    case deleteFile(String)
-    case cleared
+    case deletedFile(String)
+    case clearedAll
 }
 
 public class DownloadManager: DownloadManagerProtocol {
@@ -132,6 +133,7 @@ public class DownloadManager: DownloadManagerProtocol {
     public func addToDownloadQueue(blocks: [CourseBlock]) throws {
         if userCanDownload() {
             persistence.addToDownloadQueue(blocks: blocks)
+            currentDownloadEventPublisher.send(.added)
             guard !isDownloadingInProgress else { return }
             try newDownload()
         } else {
@@ -147,7 +149,7 @@ public class DownloadManager: DownloadManagerProtocol {
             }
             currentDownload = download
             try downloadFileWithProgress(download)
-            currentDownloadEventPublisher.send(.start(download))
+            currentDownloadEventPublisher.send(.started(download))
         } else {
             throw NoWiFiError()
         }
@@ -263,7 +265,7 @@ public class DownloadManager: DownloadManagerProtocol {
         for block in blocks {
             do {
                 try persistence.deleteDownloadData(id: block.id)
-                currentDownloadEventPublisher.send(.deleteFile(block.id))
+                currentDownloadEventPublisher.send(.deletedFile(block.id))
                 if let fileURL = fileUrl(for: block.id) {
                     try FileManager.default.removeItem(at: fileURL)
                 }
@@ -275,7 +277,7 @@ public class DownloadManager: DownloadManagerProtocol {
     
     public func deleteAllFiles() {
         let downloadData = persistence.getAllDownloadData()
-        currentDownloadEventPublisher.send(.cleared)
+        currentDownloadEventPublisher.send(.clearedAll)
         downloadData.forEach {
             if let fileURL = fileUrl(for: $0.id) {
                 do {
