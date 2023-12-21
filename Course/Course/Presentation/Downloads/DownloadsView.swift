@@ -15,8 +15,13 @@ struct DownloadsView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: DownloadsViewModel
 
-    init(viewModel: DownloadsViewModel) {
-        self._viewModel = .init(wrappedValue: viewModel)
+    init(
+        courseId: String? = nil,
+        manager: DownloadManagerProtocol
+    ) {
+        self._viewModel = .init(
+            wrappedValue: .init(courseId: courseId, manager: manager)
+        )
     }
 
     var body: some View {
@@ -41,10 +46,6 @@ struct DownloadsView: View {
                     }
                 }
             }
-        }.onReceive(viewModel.$downloads) { downloads in
-            if downloads.isEmpty {
-                dismiss()
-            }
         }
     }
 
@@ -59,7 +60,7 @@ struct DownloadsView: View {
                             .multilineTextAlignment(.leading)
                             .lineLimit(1)
                         if downloadData.state != .finished {
-                            ProgressView(value: downloadData.progress, total: 100.0)
+                            ProgressView(value: downloadData.progress, total: 1.0)
                         }
                     }
                     Spacer()

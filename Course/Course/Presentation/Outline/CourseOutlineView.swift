@@ -21,12 +21,6 @@ public struct CourseOutlineView: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
 
     @State private var showingDownloads: Bool = false
-    @State private var downloads: [DownloadData] = [] {
-        didSet {
-            if downloads.isEmpty { return }
-            showingDownloads = true
-        }
-    }
 
     public init(
         viewModel: CourseContainerViewModel,
@@ -60,10 +54,8 @@ public struct CourseOutlineView: View {
                                 CourseVideoDownloadBarView(
                                     courseStructure: courseVideosStructure,
                                     courseViewModel: viewModel
-                                ).onTapGesture {
-                                    self.downloads = viewModel.getDownloadsForCourse(
-                                        courseId: courseVideosStructure.id
-                                    )
+                                ) {
+                                    showingDownloads = true
                                 }
                             }
 
@@ -167,10 +159,8 @@ public struct CourseOutlineView: View {
         )
         .sheet(isPresented: $showingDownloads) {
             DownloadsView(
-                viewModel: .init(
-                    downloads: downloads,
-                    manager: viewModel.manager
-                )
+                courseId: viewModel.courseVideosStructure?.id,
+                manager: viewModel.manager
             )
         }
     }

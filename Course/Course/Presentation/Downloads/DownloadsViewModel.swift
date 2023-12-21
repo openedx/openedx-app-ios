@@ -11,16 +11,17 @@ import Combine
 
 final class DownloadsViewModel: ObservableObject {
 
-    @Published private(set) var downloads: [DownloadData]
+    @Published private(set) var downloads: [DownloadData] = []
+    private let courseId: String?
 
     private let manager: DownloadManagerProtocol
     private var cancellables = Set<AnyCancellable>()
 
     init(
-        downloads: [DownloadData] = [],
+        courseId: String? = nil,
         manager: DownloadManagerProtocol
     ) {
-        self.downloads = downloads
+        self.courseId = courseId
         self.manager = manager
         configure()
         observers()
@@ -36,12 +37,15 @@ final class DownloadsViewModel: ObservableObject {
     }
 
     private func configure() {
-        guard downloads.isEmpty else {
+        defer {
             sort()
+        }
+
+        if let courseId = courseId {
+            downloads = manager.getDownloadsForCourse(courseId)
             return
         }
-        downloads = manager.getDownloads()
-        sort()
+        downloads =  manager.getDownloads()
     }
 
     private func observers() {

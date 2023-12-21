@@ -95,11 +95,11 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     // MARK: - Private intents
 
     private func toggleStateIsOn() {
-        // Sequentials
+        // Verticals
         let totalCount = courseViewModel.verticalsDownloadState.count
         let availableCount = courseViewModel.verticalsDownloadState.filter { $0.value == .available }.count
-        let finishedCount = courseViewModel.verticalsDownloadState.filter { $0.value == .finished }.count
-        let downloadingCount = courseViewModel.verticalsDownloadState.filter { $0.value == .downloading }.count
+        let finishedCount = totalFinishedCount
+        let downloadingCount = downloadingCount
         if downloadingCount == totalCount {
             self.isOn = true
             return
@@ -124,12 +124,12 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private func observers() {
         currentDownload = courseViewModel.manager.currentDownload
         toggleStateIsOn()
-        courseViewModel.manager.eventPublisher()
-            .sink(receiveValue: { [weak self] _ in
+        courseViewModel.$verticalsDownloadState
+            .sink { [weak self] _ in
                 guard let self else { return }
                 self.currentDownload = self.courseViewModel.manager.currentDownload
                 self.toggleStateIsOn()
-            })
-            .store(in: &cancellables)
+        }
+        .store(in: &cancellables)
     }
 }

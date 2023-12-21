@@ -15,10 +15,12 @@ struct CourseVideoDownloadBarView: View {
     // MARK: - Properties
 
     @StateObject var viewModel: CourseVideoDownloadBarViewModel
+    private var onTap: (() -> Void)?
 
     init(
         courseStructure: CourseStructure,
-        courseViewModel: CourseContainerViewModel
+        courseViewModel: CourseContainerViewModel,
+        onTap: (() -> Void)? = nil
     ) {
         self._viewModel = .init(
             wrappedValue: .init(
@@ -26,6 +28,7 @@ struct CourseVideoDownloadBarView: View {
                 courseViewModel: courseViewModel
             )
         )
+        self.onTap = onTap
     }
 
     // MARK: - Body
@@ -46,6 +49,9 @@ struct CourseVideoDownloadBarView: View {
             Divider()
         }
         .contentShape(Rectangle())
+        .onTapGesture {
+            onTap?()
+        }
     }
 
     // MARK: - Views

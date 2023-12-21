@@ -138,7 +138,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         verticalsDownloadState.filter { dict in
             courseSequential.childs.contains(where: { item in
                 let state = verticalsDownloadState[dict.key]
-                return (state == .available || state == .downloading) && dict.key == item.id
+                return dict.key == item.id
             })
         }
     }
