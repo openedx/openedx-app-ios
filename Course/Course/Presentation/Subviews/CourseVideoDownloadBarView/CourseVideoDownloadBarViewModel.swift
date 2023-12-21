@@ -131,5 +131,14 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 self.toggleStateIsOn()
         }
         .store(in: &cancellables)
+        courseViewModel.manager.eventPublisher()
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case .progress = state {
+                    self.currentDownload = self.courseViewModel.manager.currentDownload
+                }
+                self.toggleStateIsOn()
+            }
+            .store(in: &cancellables)
     }
 }
