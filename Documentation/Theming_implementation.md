@@ -5,6 +5,7 @@ This documentation provides instructions on how to implement Theme assets for th
 The `whitelabel.py` theming script requires the following Python dependencies to be installed:
 - `pip install coloredlogs`
 - `pip install pillow`
+- `pip install pyyaml`
 
 ## How to Run the Script
 The theming script `whitelabel.py` can be ran from the OpenEdX iOS root project folder with the following command:
