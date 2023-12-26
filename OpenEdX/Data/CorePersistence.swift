@@ -54,7 +54,8 @@ public class CorePersistence: CorePersistenceProtocol {
                 progress: $0.progress,
                 resumeData: $0.resumeData,
                 state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
-                type: DownloadType(rawValue: $0.type ?? "") ?? .video
+                type: DownloadType(rawValue: $0.type ?? "") ?? .video,
+                fileSize: Int($0.fileSize)
             )
         }
     }
@@ -80,6 +81,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 newDownloadData.resumeData = nil
                 newDownloadData.state = DownloadState.waiting.rawValue
                 newDownloadData.type = DownloadType.video.rawValue
+                newDownloadData.fileSize = Int32(block.fileSize ?? 0)
             }
         }
     }
@@ -98,7 +100,8 @@ public class CorePersistence: CorePersistenceProtocol {
             progress: data.progress,
             resumeData: data.resumeData,
             state: DownloadState(rawValue: data.state ?? "") ?? .waiting,
-            type: DownloadType(rawValue: data.type ?? "" ) ?? .video
+            type: DownloadType(rawValue: data.type ?? "" ) ?? .video,
+            fileSize: Int(data.fileSize)
         )
     }
 
@@ -116,7 +119,8 @@ public class CorePersistence: CorePersistenceProtocol {
                 progress: $0.progress,
                 resumeData: $0.resumeData,
                 state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
-                type: DownloadType(rawValue: $0.type ?? "") ?? .video
+                type: DownloadType(rawValue: $0.type ?? "") ?? .video,
+                fileSize: Int($0.fileSize)
             )
         }
     }
@@ -134,7 +138,8 @@ public class CorePersistence: CorePersistenceProtocol {
             progress: downloadData.progress,
             resumeData: downloadData.resumeData,
             state: DownloadState(rawValue: downloadData.state ?? "") ?? .paused,
-            type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video
+            type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video,
+            fileSize: Int(downloadData.fileSize)
         )
     }
 

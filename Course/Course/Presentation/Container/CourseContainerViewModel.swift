@@ -16,6 +16,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var courseVideosStructure: CourseStructure?
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
+    @Published var showAllowLargeDownload: Bool = false
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
     @Published var verticalsDownloadState: [String: DownloadViewState] = [:]
     @Published var continueWith: ContinueWith?
@@ -38,7 +39,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
 
-    var downloads: [DownloadData] = []
+    var courseDownloads: [DownloadData] = []
+    private(set) var waitingForDownload: CourseStructure?
+    var allowedLargeDownload: Bool = false
 
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
@@ -137,7 +140,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
         verticalsDownloadState.filter { dict in
             courseSequential.childs.contains(where: { item in
-                let state = verticalsDownloadState[dict.key]
                 return dict.key == item.id
             })
         }
@@ -179,7 +181,18 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
 
+    func isLarge(courseStructure: CourseStructure) -> Bool {
+        return true
+        //courseStructure.blocksTotalSizeInGb > 1
+    }
+
     func downloadAll(courseStructure: CourseStructure, isOn: Bool) {
+        waitingForDownload = nil
+        if isOn, !allowedLargeDownload, isLarge(courseStructure: courseStructure) {
+            waitingForDownload = courseStructure
+            showAllowLargeDownload = true
+            return
+        }
         courseStructure.childs.forEach { courseChapter in
             courseChapter.childs
                 .filter { $0.isDownloadable }
@@ -272,7 +285,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     private func setDownloadsStates() {
         guard let course = courseStructure else { return }
-        downloads = manager.getDownloadsForCourse(course.id)
+        courseDownloads = manager.getDownloadsForCourse(course.id)
         var sequentialsStates: [String: DownloadViewState] = [:]
         var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
@@ -281,7 +294,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 for vertical in sequential.childs where vertical.isDownloadable {
                     var verticalsChilds: [DownloadViewState] = []
                     for block in vertical.childs where block.isDownloadable {
-                        if let download = downloads.first(where: { $0.id == block.id }) {
+                        if let download = courseDownloads.first(where: { $0.id == block.id }) {
                             switch download.state {
                             case .waiting, .inProgress:
                                 sequentialsChilds.append(.downloading)

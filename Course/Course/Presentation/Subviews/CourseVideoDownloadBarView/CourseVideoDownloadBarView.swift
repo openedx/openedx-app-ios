@@ -50,7 +50,9 @@ struct CourseVideoDownloadBarView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            onTap?()
+            if !viewModel.allActiveDownloads.isEmpty {
+                onTap?()
+            }
         }
     }
 

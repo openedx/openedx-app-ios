@@ -60,6 +60,10 @@ public struct CourseStructure: Equatable {
         Double(blocksTotalSizeInBytes / 1024 / 1024)
     }
 
+    public var blocksTotalSizeInGb: Double {
+        Double(blocksTotalSizeInBytes / 1024 / 1024 / 1024)
+    }
+
 }
 
 public struct CourseChapter: Identifiable {

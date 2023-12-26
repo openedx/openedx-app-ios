@@ -37,16 +37,16 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         guard let currentDownload = currentDownload else {
             return 0.0
         }
-        guard let index = courseViewModel.downloads.firstIndex(
+        guard let index = courseViewModel.courseDownloads.firstIndex(
             where: { $0.id == currentDownload.id }
         ) else {
             return 0.0
         }
-        courseViewModel.downloads[index].progress = currentDownload.progress
+        courseViewModel.courseDownloads[index].progress = currentDownload.progress
         return courseViewModel
-            .downloads
+            .courseDownloads
             .map { $0.progress }
-            .reduce(.zero, +) / Double(courseViewModel.downloads.count)
+            .reduce(.zero, +) / Double(courseViewModel.courseDownloads.count)
     }
 
     var isAllDownloaded: Bool {
@@ -74,6 +74,11 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             return nil
         }
         return String(format: "%.2f", mb)
+    }
+
+    var allActiveDownloads: [DownloadData] {
+        courseViewModel.manager.getDownloads()
+            .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
     init(

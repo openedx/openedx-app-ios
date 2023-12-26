@@ -43,7 +43,8 @@ public struct DownloadData: Identifiable, Hashable {
     public let resumeData: Data?
     public var state: DownloadState
     public let type: DownloadType
-    
+    public let fileSize: Int
+
     public init(
         id: String,
         courseId: String,
@@ -53,7 +54,8 @@ public struct DownloadData: Identifiable, Hashable {
         progress: Double,
         resumeData: Data?,
         state: DownloadState,
-        type: DownloadType
+        type: DownloadType,
+        fileSize: Int
     ) {
         self.id = id
         self.courseId = courseId
@@ -64,6 +66,7 @@ public struct DownloadData: Identifiable, Hashable {
         self.resumeData = resumeData
         self.state = state
         self.type = type
+        self.fileSize = fileSize
     }
 }
 
@@ -74,7 +77,6 @@ public class NoWiFiError: LocalizedError {
 //sourcery: AutoMockable
 public protocol DownloadManagerProtocol {
     var currentDownload: DownloadData? { get }
-
     func publisher() -> AnyPublisher<Int, Never>
     func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never>
     func addToDownloadQueue(blocks: [CourseBlock]) throws
@@ -180,7 +182,7 @@ public class DownloadManager: DownloadManagerProtocol {
         
         let downloaded = getDownloadsForCourse(courseId).filter { $0.state == .finished }
         let blocksForDelete = blocks.filter { block in downloaded.first(where: { $0.id == block.id }) == nil }
-        
+
         deleteFile(blocks: blocksForDelete)
         downloaded.forEach {
             currentDownloadEventPublisher.send(.canceled($0))
@@ -346,7 +348,7 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     }
 
     public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
-        return Just(.canceled(.init(id: "", courseId: "", url: "", fileName: "", displayName: "", progress: 1, resumeData: nil, state: .inProgress, type: .video))).eraseToAnyPublisher()
+        return Just(.canceled(.init(id: "", courseId: "", url: "", fileName: "", displayName: "", progress: 1, resumeData: nil, state: .inProgress, type: .video, fileSize: 0))).eraseToAnyPublisher()
     }
 
     public func addToDownloadQueue(blocks: [CourseBlock]) {

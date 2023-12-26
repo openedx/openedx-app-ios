@@ -158,9 +158,23 @@ public struct CourseOutlineView: View {
                 .ignoresSafeArea()
         )
         .sheet(isPresented: $showingDownloads) {
-            DownloadsView(
-                courseId: viewModel.courseVideosStructure?.id,
-                manager: viewModel.manager
+            DownloadsView(manager: viewModel.manager)
+        }
+        .alert(isPresented: $viewModel.showAllowLargeDownload) {
+            Alert(
+                title: Text("Download"),
+                message: Text("The videos you've selected are larger than 1 GB. Do you want to download these videos?"),
+                primaryButton: .default(Text("Accept")) {
+                    viewModel.allowedLargeDownload = true
+                    viewModel.waitingForDownload.map {
+                        viewModel.downloadAll(
+                            courseStructure: $0,
+                            isOn: true
+                        )
+                    }
+
+                },
+                secondaryButton: .cancel()
             )
         }
     }

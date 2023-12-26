@@ -38,14 +38,14 @@ final class DownloadsViewModel: ObservableObject {
 
     private func configure() {
         defer {
-            sort()
+            filter()
         }
-
         if let courseId = courseId {
             downloads = manager.getDownloadsForCourse(courseId)
             return
         }
         downloads =  manager.getDownloads()
+
     }
 
     private func observers() {
@@ -56,18 +56,19 @@ final class DownloadsViewModel: ObservableObject {
                 case .progress(let progress, let downloadData):
                     if let firstIndex = downloads.firstIndex(where: { $0.id == downloadData.id }) {
                         self.downloads[firstIndex].progress = progress
-                        self.downloads[firstIndex].state = .inProgress
                     }
                 case .finished(let downloadData):
-                    if let firstIndex = downloads.firstIndex(where: { $0.id == downloadData.id }) {
-                        self.downloads[firstIndex].state = .finished
-                    }
+                    downloads.removeAll(where: { $0.id == downloadData.id })
                 default:
                     break
                 }
-                self.sort()
             }
             .store(in: &cancellables)
+    }
+
+    private func filter() {
+        downloads = downloads
+            .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
     private func sort() {

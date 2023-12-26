@@ -105,11 +105,6 @@ struct CourseStructureNestedListView: View {
                 sequential: sequential,
                 chapter: chapter
             )
-            let downloadable = viewModel.verticalsBlocksDownloadable(by: sequential)
-            if !downloadable.isEmpty {
-                Text(String(downloadable.count))
-                    .foregroundColor(Color(UIColor.label))
-            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(sequential.displayName)
@@ -140,6 +135,7 @@ struct CourseStructureNestedListView: View {
                 .onForeground {
                     viewModel.onForeground()
                 }
+                downloadCount(sequential: sequential)
             case .downloading:
                 Button {
                     viewModel.onDownloadViewTap(
@@ -170,7 +166,17 @@ struct CourseStructureNestedListView: View {
                 .onBackground {
                     viewModel.onBackground()
                 }
+                downloadCount(sequential: sequential)
             }
+        }
+    }
+
+    @ViewBuilder
+    private func downloadCount(sequential: CourseSequential) -> some View {
+        let downloadable = viewModel.verticalsBlocksDownloadable(by: sequential)
+        if !downloadable.isEmpty {
+            Text(String(downloadable.count))
+                .foregroundColor(Color(UIColor.label))
         }
     }
 
