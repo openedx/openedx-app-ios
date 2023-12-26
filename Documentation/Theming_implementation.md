@@ -25,16 +25,17 @@ This is the folder where all image assets, which should be copied into the proje
 import_dir: 'path/to/images/source'
 ```
 ### Xcode Project Settings
-The theming script can change the development team and app bundle ID:
+The theming script can change the app name, version, development team and app bundle ID:
 ```yaml
 project_config:
     project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
     dev_team: '1234567890' # Apple development team ID
-    app_bundle_id:
-        configurations:
-            config1: # Configuration name - can be any
-                from_id: "bundle.id.app.old" # Bundle ID to be changed
-                to_id: "bundle.id.app.new" # Bundle ID to be set
+    marketing_version: '1.0.1' # App marketing version
+    current_project_version: '2' # App build number
+    configurations:
+        config1: # Configuration name - can be any
+            app_bundle_id: "bundle.id.app.new" # Bundle ID to be set
+            product_name: "Mobile App Name" # App Name to be set
 ```
 ### Assets
 The config `whitelabel.yaml` can contain a few Asset items (every added Xcode project can have its own Assets). 

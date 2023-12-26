@@ -39,11 +39,12 @@ class WhitelabelApp:
         project_config:
             project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
             dev_team: '1234567890' # apple development team id
-            app_bundle_id:
-                configurations:
-                    config1: # configuration name - can be any
-                        from_id: "bundle.id.app.old" # bundle ID to be changed
-                        to_id: "bundle.id.app.new" # bundle ID which should be set
+            marketing_version: '1.0.1' # app marketing version
+            current_project_version: '2' # app build number
+            configurations:
+                config1: # configuration name - can be any
+                    app_bundle_id: "bundle.id.app.new" # bundle ID which should be set
+                    product_name: "Mobile App Name" # app name which should be set
         """
 
     def __init__(self, **kwargs):            
@@ -72,8 +73,6 @@ class WhitelabelApp:
                 self.replace_app_icon(asset)
         else:
             logging.debug("Assets not found")
-
-        
 
     def replace_images(self, asset_data):
         asset = asset_data[1]
@@ -222,76 +221,154 @@ class WhitelabelApp:
                             openfile.write(contents_string)
                         # Copy new file
                         shutil.copy(file_to_copy_path, path_to_iconset)
-                        logging.debug(asset_name+"->icon->"+name+": 'app icon was updated with "+file_to_copy)
+                        logging.debug(asset_name+"->icon->"+name+": app icon was updated with "+file_to_copy)
                     else:
                         logging.error(asset_name+"->icon->"+name+": " + file_to_copy_path + " doesn't exist")    
                 else:
                     logging.error(asset_name+"->icon->"+name+": " + file_to_change_path + " doesn't exist")
 
     def set_app_project_config(self):
-        self.set_app_bundle_ids()
-        self.set_dev_team()
+        self.set_build_related_params()
+        self.set_project_global_params()
 
-
-    def set_app_bundle_ids(self):
-        if "app_bundle_id" in self.project_config:
-            app_bundle_id = self.project_config["app_bundle_id"]
+    def set_build_related_params(self):
+        # check if configurations exist
+        if "configurations" in self.project_config:
+            configurations = self.project_config["configurations"]
             # read project file
             with open(self.config_project_path, 'r') as openfile:
                 config_file_string = openfile.read()
             errors_texts = []
-            for name, config in app_bundle_id["configurations"].items():
-                # if from_id and to_id are configured
-                if "from_id" in config and "to_id" in config:
-                    from_id = config["from_id"]
-                    from_id_string = "PRODUCT_BUNDLE_IDENTIFIER = "+from_id+";"
-                    to_id = config["to_id"]
-                    to_id_string = "PRODUCT_BUNDLE_IDENTIFIER = "+to_id+";"
-                    if to_id != '':
-                        # if from_id is in project file
-                        if from_id_string in config_file_string:
-                            config_file_string = config_file_string.replace(from_id_string, to_id_string)
-                        # else if to_id is not set already
-                        elif to_id_string not in config_file_string:
-                            errors_texts.append("app_bundle_id->configurations->"+name+": bundle id '"+from_id+"' was not found in project")
-                    else:
-                        errors_texts.append("app_bundle_id->configurations->"+name+": 'to_id' parameter is empty in config")
-                else:
-                    errors_texts.append("app_bundle_id->configurations->"+name+": bundle ids were not found in config")
+            for name, config in configurations.items():
+                # replace parameters for every config
+                config_file_string = self.replace_parameter_in_config("app_bundle_id", config_file_string, config, name, errors_texts)
+                config_file_string = self.replace_parameter_in_config("product_name", config_file_string, config, name, errors_texts)
             # write to project file
             with open(self.config_project_path, 'w') as openfile:
                 openfile.write(config_file_string)
             # print success message or errors if are presented
             if len(errors_texts) == 0:
-                logging.debug("Bundle ids were successfully changed")
+                logging.debug("Project configurations parameters were successfully changed")
             else:
                 for error in errors_texts:
                     logging.error(error)
         else:
-            logging.error("Bundle ids config is not defined")       
+            logging.error("Project configuration is not defined")
+
+    def replace_parameter_in_config(self, parameter, config_file_string, config, config_name, errors_texts):
+        # if parameter is configured
+        if parameter in config:
+            parameter_value = config[parameter]
+            #  if parameter's value is not empty
+            if parameter_value != '' and parameter_value is not None:
+                parameter_string = ''
+                parameter_regex = ''
+                # define regex rule and replacement string for every possible parameter
+                if parameter == "app_bundle_id":
+                    parameter_string = "PRODUCT_BUNDLE_IDENTIFIER = "+parameter_value+";"
+                    parameter_regex = "PRODUCT_BUNDLE_IDENTIFIER = .*;"
+                elif parameter == "product_name":
+                    parameter_string = "PRODUCT_NAME = \""+parameter_value+"\";"
+                    parameter_regex = "PRODUCT_NAME = \".*\";"
+                # if regex is defined
+                if parameter_regex != '':
+                    # replace parameter in config file
+                    config_file_string = self.replace_parameter_for_target(config_file_string, config_name, parameter_string, parameter_regex, errors_texts)
+                else:
+                    errors_texts.append("project_config->configurations->"+config_name+": Regex rule for '"+parameter+"' is not defined in config script")
+            else:
+                errors_texts.append("project_config->configurations->"+config_name+": '"+parameter+"' parameter is empty in config")
+        else:
+            errors_texts.append("project_config->configurations->"+config_name+": '"+parameter+"' was not found in config")
+        return config_file_string
+
+    def replace_parameter_for_target(self, config_file_string, config_name, new_param_string, search_param_regex, errors_texts):
+        # replace parameter for Debug and Relase Schemes
+        config_file_string = self.replace_parameter_for_scheme(config_file_string, config_name, 'Debug', new_param_string, search_param_regex, errors_texts)
+        config_file_string = self.replace_parameter_for_scheme(config_file_string, config_name, 'Release', new_param_string, search_param_regex, errors_texts)
+        return config_file_string
     
-    def set_dev_team(self):
-        if "dev_team" in self.project_config:
-            dev_team = self.project_config["dev_team"]
-            if dev_team != '':
+    def replace_parameter_for_scheme(self, config_file_string, config_name, scheme_name, new_param_string, search_param_regex, errors_texts):
+        # search substring for current build config only 
+        search_string = re.search(self.regex_string_for_build_config(scheme_name+config_name), config_file_string)
+        # if build config is found
+        if search_string is not None:
+            # get build config as string
+            config_string = search_string.group()
+            config_string_out = config_string
+            # search parameter in config_string
+            parameter_search_string = re.search(search_param_regex, config_string)
+            if parameter_search_string is not None:
+                # get parameter_string as string
+                parameter_string = parameter_search_string.group()
+                # replace existing parameter value with new value
+                config_string_out = config_string.replace(parameter_string, new_param_string)
+            else:
+                errors_texts.append("project_config->configurations->"+config_name+": Check regex please. Can't find place in project file where insert '"+new_param_string+"'")
+            # if something found
+            if config_string != config_string_out:
+                config_file_string = config_file_string.replace(config_string, config_string_out)
+        else:
+            errors_texts.append("project_config->configurations->"+config_name+": not found in project file")
+        return config_file_string
+
+    def regex_string_for_build_config(self, build_config):
+        # regex to search build config inside project file
+        return f"/\* {build_config} \*/ = {{\n\t\t\tisa = XCBuildConfiguration;\n\t\t\tbaseConfigurationReference = [\s|\S]*\t\t\tname = {build_config};"
+    
+    def set_project_global_params(self):
+        # set values for 'global' parameters
+        self.set_global_parameter("dev_team")
+        self.set_global_parameter("marketing_version")
+        self.set_global_parameter("current_project_version")
+
+    def set_global_parameter(self, parameter):
+        # if parameter is defined in config
+        if parameter in self.project_config:
+            parameter_value = self.project_config[parameter]
+            # if parameter value is not empty
+            if parameter_value != '' and parameter_value is not None:
                 # read project file
                 with open(self.config_project_path, 'r') as openfile:
                     config_file_string = openfile.read()
-                config_file_string_out = re.sub('DEVELOPMENT_TEAM = .{10};','DEVELOPMENT_TEAM = '+dev_team+';', config_file_string)
+                config_file_string_out = config_file_string
+                parameter_string = ''
+                parameter_regex = ''
+                # define regex rule and replacement string for every possible parameter
+                if parameter == "dev_team":
+                    parameter_string = 'DEVELOPMENT_TEAM = '+parameter_value+';'
+                    parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+                elif parameter == "marketing_version":
+                    parameter_string = 'MARKETING_VERSION = '+parameter_value+';'
+                    parameter_regex = 'MARKETING_VERSION = .*;'
+                elif parameter == "current_project_version":
+                    parameter_string = 'CURRENT_PROJECT_VERSION = '+parameter_value+';'
+                    parameter_regex = 'CURRENT_PROJECT_VERSION = .*;'
+                # if regex is defined
+                if parameter_regex != '':
+                    # replace all regex findings with new parameters string
+                    config_file_string_out = re.sub(parameter_regex, parameter_string, config_file_string)
+                else:
+                    logging.error("Regex rule for '"+parameter+"' is not defined in config script")
                 # if any entries were found and replaced
                 if config_file_string_out != config_file_string:
                     # write to project file
                     with open(self.config_project_path, 'w') as openfile:
                         openfile.write(config_file_string_out)
-                    logging.debug("Dev Team was set successfuly")
-                else:
-                    logging.error("No dev Team is found in project file")
+                    logging.debug("'"+parameter+"' was set successfuly")
+                # if nothing was found
+                elif re.search(parameter_regex, config_file_string) is None:
+                    logging.error("Check regex please. Nothing was found for '"+parameter+"' in project file")
+                # if parameter was found but it's replaced already
+                elif re.search(parameter_regex, config_file_string).group() == parameter_string and parameter_string != '':
+                    logging.debug("Looks like '"+parameter+"' is set already")
+                # if parameter was not found and it's not empty
+                elif parameter_string != '':
+                    logging.error("No '"+parameter+"' is found in project file")
             else:
-                logging.error("Dev Team is empty in config")
+                logging.error("'"+parameter+"' is empty in config")
         else:
-            logging.error("Dev Team is not defined")       
-
-
+            logging.error("'"+parameter+"' is not defined")
         
 def main():
     """
