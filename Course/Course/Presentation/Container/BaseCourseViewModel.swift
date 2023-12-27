@@ -26,5 +26,4 @@ open class BaseCourseViewModel: ObservableObject {
     func onForeground() {
         try? manager.resumeDownloading()
     }
-    
 }

@@ -131,7 +131,12 @@ public struct CourseVertical: Identifiable {
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
     }
-    
+
+    public var blocksTotalSizeInGb: Double {
+        let total = childs.reduce(0) { $0 + Double($1.fileSize ?? 0) }
+        return total / 1024 / 1024 / 1024
+    }
+
     public init(
         blockId: String,
         id: String,

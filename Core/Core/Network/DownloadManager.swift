@@ -89,6 +89,7 @@ public protocol DownloadManagerProtocol {
     func deleteFile(blocks: [CourseBlock])
     func deleteAllFiles()
     func fileUrl(for blockId: String) -> URL?
+    func isLarge(blocks: [CourseBlock]) -> Bool
 }
 
 public enum DownloadManagerEvent {
@@ -130,6 +131,11 @@ public class DownloadManager: DownloadManagerProtocol {
         currentDownloadEventPublisher
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+
+    public func isLarge(blocks: [CourseBlock]) -> Bool {
+        true
+        //(blocks.reduce(0) {$0 + Double($1.fileSize ?? 0)} / 1024 / 1024 / 1024) > 1
     }
 
     public func addToDownloadQueue(blocks: [CourseBlock]) throws {
@@ -390,6 +396,10 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     public func fileUrl(for blockId: String) -> URL? {
         return nil
     }
-    
+
+    public func isLarge(blocks: [CourseBlock]) -> Bool {
+        false
+    }
+
 }
 #endif

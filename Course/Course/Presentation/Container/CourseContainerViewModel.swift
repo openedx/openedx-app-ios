@@ -40,7 +40,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let enrollmentEnd: Date?
 
     var courseDownloads: [DownloadData] = []
-    private(set) var waitingForDownload: CourseStructure?
+    private(set) var waitingDownload: [CourseBlock]?
     var allowedLargeDownload: Bool = false
 
     private let interactor: CourseInteractorProtocol
@@ -153,68 +153,61 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         let blocks = verticals.flatMap { $0.childs }
             .filter { $0.isDownloadable }
 
+        if isShowedAllowLargeDownloadAlert(blocks: blocks) {
+            return
+        }
+
+        download(state: state, verticals: verticals, blockId: blockId)
+    }
+
+    func downloadAll(courseStructure: CourseStructure, isOn: Bool) {
+        let courseChapters = courseStructure.childs
+
+        let blocks = courseChapters.flatMap { $0.childs }
+            .filter { $0.isDownloadable }
+            .flatMap { $0.childs }
+            .flatMap { $0.childs }
+
+        if isShowedAllowLargeDownloadAlert(blocks: blocks) {
+            return
+        }
+        courseChapters.forEach { courseChapter in
+            courseChapter.childs
+                .filter { $0.isDownloadable }
+                .forEach { sequential in
+                    guard let state = sequentialsDownloadState[sequential.id] else {
+                       return
+                    }
+                    let verticals = sequential.childs
+                    switch state {
+                    case .available:
+                        download(
+                            state: state,
+                            verticals: verticals,
+                            blockId: sequential.id
+                        )
+                    case .downloading, .finished:
+                        if isOn { return }
+                        download(
+                            state: state,
+                            verticals: verticals,
+                            blockId: sequential.id
+                        )
+                    }
+                }
+        }
+    }
+
+    func continueDownload() {
+        guard let blocks = waitingDownload else {
+            return
+        }
         do {
-            switch state {
-            case .available:
-                try manager.addToDownloadQueue(blocks: blocks)
-                sequentialsDownloadState[blockId] = .downloading
-                verticals.forEach {
-                    verticalsDownloadState[$0.id] = .downloading
-                }
-            case .downloading:
-                try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
-                sequentialsDownloadState[blockId] = .available
-                verticals.forEach {
-                    verticalsDownloadState[$0.id] = .available
-                }
-            case .finished:
-                manager.deleteFile(blocks: blocks)
-                sequentialsDownloadState[blockId] = .available
-                verticals.forEach {
-                    verticalsDownloadState[$0.id] = .available
-                }
-            }
+            try manager.addToDownloadQueue(blocks: blocks)
         } catch let error {
             if error is NoWiFiError {
                 errorMessage = CoreLocalization.Error.wifi
             }
-        }
-    }
-
-    func isLarge(courseStructure: CourseStructure) -> Bool {
-        return true
-        //courseStructure.blocksTotalSizeInGb > 1
-    }
-
-    func downloadAll(courseStructure: CourseStructure, isOn: Bool) {
-        waitingForDownload = nil
-        if isOn, !allowedLargeDownload, isLarge(courseStructure: courseStructure) {
-            waitingForDownload = courseStructure
-            showAllowLargeDownload = true
-            return
-        }
-        courseStructure.childs.forEach { courseChapter in
-            courseChapter.childs
-                .filter { $0.isDownloadable }
-                .forEach { sequential in
-                    if let state = sequentialsDownloadState[sequential.id] {
-                        switch state {
-                        case .available:
-                            onDownloadViewTap(
-                                chapter: courseChapter,
-                                blockId: sequential.id,
-                                state: state
-                            )
-                        case .downloading, .finished:
-                            if isOn { return }
-                            onDownloadViewTap(
-                                chapter: courseChapter,
-                                blockId: sequential.id,
-                                state: state
-                            )
-                        }
-                    }
-                }
         }
     }
 
@@ -280,6 +273,48 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
     func getDownloadsForCourse(courseId: String) -> [DownloadData] {
         manager.getDownloadsForCourse(courseId)
+    }
+
+    private func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
+        waitingDownload = nil
+        if !allowedLargeDownload, manager.isLarge(blocks: blocks) {
+            waitingDownload = blocks
+            showAllowLargeDownload = true
+            return true
+        }
+        return false
+    }
+
+    private func download(state: DownloadViewState, verticals: [CourseVertical], blockId: String) {
+        let blocks = verticals.flatMap { $0.childs }
+            .filter { $0.isDownloadable }
+
+        do {
+            switch state {
+            case .available:
+                try manager.addToDownloadQueue(blocks: blocks)
+                sequentialsDownloadState[blockId] = .downloading
+                verticals.forEach {
+                    verticalsDownloadState[$0.id] = .downloading
+                }
+            case .downloading:
+                try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
+                sequentialsDownloadState[blockId] = .available
+                verticals.forEach {
+                    verticalsDownloadState[$0.id] = .available
+                }
+            case .finished:
+                manager.deleteFile(blocks: blocks)
+                sequentialsDownloadState[blockId] = .available
+                verticals.forEach {
+                    verticalsDownloadState[$0.id] = .available
+                }
+            }
+        } catch let error {
+            if error is NoWiFiError {
+                errorMessage = CoreLocalization.Error.wifi
+            }
+        }
     }
 
     @MainActor

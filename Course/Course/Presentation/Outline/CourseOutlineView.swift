@@ -166,13 +166,7 @@ public struct CourseOutlineView: View {
                 message: Text("The videos you've selected are larger than 1 GB. Do you want to download these videos?"),
                 primaryButton: .default(Text("Accept")) {
                     viewModel.allowedLargeDownload = true
-                    viewModel.waitingForDownload.map {
-                        viewModel.downloadAll(
-                            courseStructure: $0,
-                            isOn: true
-                        )
-                    }
-
+                    viewModel.continueDownload()
                 },
                 secondaryButton: .cancel()
             )
