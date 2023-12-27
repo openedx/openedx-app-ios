@@ -9,7 +9,7 @@ import SwiftUI
 import Core
 
 public enum LessonType: Equatable {
-    case web(String)
+    case web(url: String, injections: [WebviewInjection])
     case youtube(viewYouTubeUrl: String, blockID: String)
     case video(videoUrl: String, blockID: String)
     case unknown(String)
@@ -20,7 +20,7 @@ public enum LessonType: Equatable {
         case .course, .chapter, .vertical, .sequential, .unknown:
             return .unknown(block.studentUrl)
         case .html:
-            return .web(block.studentUrl)
+            return .web(url: block.studentUrl, injections: [])
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
@@ -34,8 +34,10 @@ public enum LessonType: Equatable {
                 return .unknown(block.studentUrl)
             }
             
-        case .problem, .dragAndDropV2, .survey:
-            return .web(block.studentUrl)
+        case .problem, .dragAndDropV2:
+            return .web(url: block.studentUrl, injections: [])
+        case .survey:
+            return .web(url: block.studentUrl, injections: [.surveyCSS])
         }
     }
 }

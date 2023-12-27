@@ -15,12 +15,44 @@ public struct WebviewMessage {
     var handler: (String, WKWebView) -> Void
 }
 
-public protocol WebViewScriptInjectionProtocol: Equatable {
+public protocol WebViewScriptInjectionProtocol: Equatable, Identifiable {
+    var id: String { get }
     var script: String { get }
     var message: WebviewMessage? { get }
 }
 
+extension WebViewScriptInjectionProtocol {
+    public func webviewInjection() -> WebviewInjection {
+        WebviewInjection(id: self.id, script: self.script)
+    }
+}
+
+public struct WebviewInjection: WebViewScriptInjectionProtocol {
+    public var id: String
+    public var script: String
+    public var message: WebviewMessage?
+    init(id: String, script: String, message: WebviewMessage? = nil) {
+        self.id = id
+        self.script = script
+        self.message = message
+    }
+    
+    public static func == (lhs: WebviewInjection, rhs: WebviewInjection) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+public extension WebviewInjection {
+
+    static var surveyCSS: WebviewInjection {
+        SurveyCssInjection()
+            .webviewInjection()
+    }
+
+}
+
 public struct SurveyCssInjection: WebViewScriptInjectionProtocol {
+    public var id: String = "SurveyCSSInjection"
     public var message: WebviewMessage?
     
     public var script: String {
@@ -65,9 +97,9 @@ public struct WebView: UIViewRepresentable {
         
         @Published var url: String
         let baseURL: String
-        let injections: [any WebViewScriptInjectionProtocol]?
+        let injections: [WebviewInjection]?
         
-        public init(url: String, baseURL: String, injections: [any WebViewScriptInjectionProtocol]? = nil) {
+        public init(url: String, baseURL: String, injections: [WebviewInjection]? = nil) {
             self.url = url
             self.baseURL = baseURL
             self.injections = injections

@@ -12,12 +12,12 @@ import Theme
 public struct WebUnitView: View {
     
     private var url: String
-    private var injections: [any WebViewScriptInjectionProtocol]?
-    @ObservedObject private var viewModel: WebUnitViewModel
+    private var injections: [WebviewInjection]?
+    @StateObject private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
     
-    public init(url: String, viewModel: WebUnitViewModel, injections: [any WebViewScriptInjectionProtocol]?) {
-        self.viewModel = viewModel
+    public init(url: String, viewModel: WebUnitViewModel, injections: [WebviewInjection]?) {
+        self._viewModel = .init(wrappedValue: viewModel)
         self.url = url
         self.injections = injections
     }
