@@ -3,25 +3,32 @@ This documentation provides instructions on how to implement Theme assets for th
 
 ## Python dependecies 
 The `whitelabel.py` theming script requires the following Python dependencies to be installed:
-- `pip install coloredlogs`
-- `pip install pillow`
-- `pip install pyyaml`
+- `pip3 install coloredlogs`
+- `pip3 install pillow`
+- `pip3 install pyyaml`
 
 ## How to Run the Script
-The theming script `whitelabel.py` can be ran from the OpenEdX iOS root project folder with the following command:
+The theming script `whitelabel.py` can be run from the OpenEdX iOS root project folder with the following command:
 ```bash
-python config_script/whitelabel.py --config-file=path/to/configfile/whitelabel.yaml -v
+python3 config_script/whitelabel.py --config-file=path/to/configfile/whitelabel.yaml -v
 ```
-Where 
-- `config_script/whitelabel.py` is the path to the `whitelabel.py` script.
+where 
+- `config_script/whitelabel.py` is the path to the `whitelabel.py` script
 - `--config-file=path/to/configfile/whitelabel.yaml`  is the path to the configuration file `whitelabel.yaml`
 - `-v` sets the log level.
+
+## Example of whitelabel.yaml
+You can get example of `whitelabel.yaml` file by run next command:
+```bash
+python3 config_script/whitelabel.py --config-file=path/to/configfile/whitelabel.yaml --help-config-file
+```
+Just copy script's output to your `whitelabel.yaml` file.
 
 ## Config Options
 The config file `whitelabel.yaml` can be created by yourself or obtained from some config repo.
 This config can contain the following options:
 ### Folder with source assets
-This is the folder where all image assets, which should be copied into the project, are placed:
+This is the folder where all image assets, which should be copied into the project, are placed (can be relative or absolute):
 ```yaml
 import_dir: 'path/to/images/source'
 ```
@@ -34,9 +41,12 @@ project_config:
     marketing_version: '1.0.1' # App marketing version
     current_project_version: '2' # App build number
     configurations:
-        config1: # Configuration name - can be any
-            app_bundle_id: "bundle.id.app.new" # Bundle ID to be set
-            product_name: "Mobile App Name" # App Name to be set
+        config1: # Build Configuration name in project
+            app_bundle_id: "bundle.id.app.new1" # Bundle ID to be set
+            product_name: "Mobile App Name1" # App Name to be set
+        config2: # Build Configuration name in project
+            app_bundle_id: "bundle.id.app.new2" # Bundle ID to be set
+            product_name: "Mobile App Name2" # App Name to be set
 ```
 ### Assets
 The config `whitelabel.yaml` can contain a few Asset items (every added Xcode project can have its own Assets). 

@@ -8,44 +8,47 @@ import json
 import coloredlogs
 from PIL import Image
 import re
+from textwrap import dedent
 
 class WhitelabelApp:
-    EXAMPLE_CONFIG_FILE = """
-        ---
-        # Notes:
-        # Config file can contain next optins:
-        import_dir: 'path/to/asset/Images' # folder where importing images are placed
-        assets:
-            AssetName:
-                images_path: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
-                colors_path: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
-                icon_path: 'Theme/Assets.xcassets' # path where the app icon is placed in this Asset 
-                images:
-                    image1: # Asset name
-                        image_name: 'some_image.svg' # image to replace the existing one for image1 Asset (light/universal)
-                    image2: # Asset name
-                        current_path: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
-                        image_name: 'Rectangle.png' # image to replace the existing one for image2 Asset (light/universal)
-                        dark_image_name: 'RectangleDark.png' # image to replace the existing dark appearance for image2 Asset (dark)
-                colors:
-                    LoginBackground: # color asset name in Assets
-                        current_path: '' # optional: path to color inside colors_path
-                        light: '#FFFFFF'
-                        dark: '#ED5C13'
-                icon:
-                    AppIcon:
-                        current_path: ''  # optional: path to icon inside icon_path
-                        image_name: 'appIcon.jpg'  # image to replace the current AppIcon - png or jpg are supported
-        project_config:
-            project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
-            dev_team: '1234567890' # apple development team id
-            marketing_version: '1.0.1' # app marketing version
-            current_project_version: '2' # app build number
-            configurations:
-                config1: # configuration name - can be any
-                    app_bundle_id: "bundle.id.app.new" # bundle ID which should be set
-                    product_name: "Mobile App Name" # app name which should be set
-        """
+    EXAMPLE_CONFIG_FILE = dedent("""
+    # Notes:
+    # Config file can contain next options:
+    import_dir: 'path/to/asset/Images' # folder where importing images are placed
+    assets:
+      AssetName:
+        images_path: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
+        colors_path: 'Theme/Theme/Assets.xcassets/Colors' # path where colors are placed in this Asset
+        icon_path: 'Theme/Assets.xcassets' # path where the app icon is placed in this Asset 
+        images:
+          image1: # Asset name
+            image_name: 'some_image.svg' # image to replace the existing one for image1 Asset (light/universal)
+          image2: # Asset name
+            current_path: 'SomeFolder' # Path to image2.imageset inside Assets.xcassets
+            image_name: 'Rectangle.png' # image to replace the existing one for image2 Asset (light/universal)
+            dark_image_name: 'RectangleDark.png' # image to replace the existing dark appearance for image2 Asset (dark)
+        colors:
+          LoginBackground: # color asset name in Assets
+            current_path: '' # optional: path to color inside colors_path
+            light: '#FFFFFF'
+            dark: '#ED5C13'
+        icon:
+          AppIcon:
+            current_path: ''  # optional: path to icon inside icon_path
+            image_name: 'appIcon.jpg'  # image to replace the current AppIcon - png or jpg are supported
+    project_config:
+      project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
+      dev_team: '1234567890' # apple development team id
+      marketing_version: '1.0.1' # app marketing version
+      current_project_version: '2' # app build number
+      configurations:
+        config1: # build configuration name in project
+          app_bundle_id: "bundle.id.app.new1" # bundle ID which should be set
+          product_name: "Mobile App Name1" # app name which should be set
+        config2: # build configuration name in project
+          app_bundle_id: "bundle.id.app.new2" # bundle ID which should be set
+          product_name: "Mobile App Name2" # app name which should be set
+    """)
 
     def __init__(self, **kwargs):            
         self.assets_dir = kwargs.get('import_dir')
@@ -273,7 +276,7 @@ class WhitelabelApp:
                 # if regex is defined
                 if parameter_regex != '':
                     # replace parameter in config file
-                    config_file_string = self.replace_parameter_for_target(config_file_string, config_name, parameter_string, parameter_regex, errors_texts)
+                    config_file_string = self.replace_parameter_for_build_config(config_file_string, config_name, parameter_string, parameter_regex, errors_texts)
                 else:
                     errors_texts.append("project_config->configurations->"+config_name+": Regex rule for '"+parameter+"' is not defined in config script")
             else:
@@ -281,16 +284,10 @@ class WhitelabelApp:
         else:
             errors_texts.append("project_config->configurations->"+config_name+": '"+parameter+"' was not found in config")
         return config_file_string
-
-    def replace_parameter_for_target(self, config_file_string, config_name, new_param_string, search_param_regex, errors_texts):
-        # replace parameter for Debug and Relase Schemes
-        config_file_string = self.replace_parameter_for_scheme(config_file_string, config_name, 'Debug', new_param_string, search_param_regex, errors_texts)
-        config_file_string = self.replace_parameter_for_scheme(config_file_string, config_name, 'Release', new_param_string, search_param_regex, errors_texts)
-        return config_file_string
     
-    def replace_parameter_for_scheme(self, config_file_string, config_name, scheme_name, new_param_string, search_param_regex, errors_texts):
+    def replace_parameter_for_build_config(self, config_file_string, config_name, new_param_string, search_param_regex, errors_texts):
         # search substring for current build config only 
-        search_string = re.search(self.regex_string_for_build_config(scheme_name+config_name), config_file_string)
+        search_string = re.search(self.regex_string_for_build_config(config_name), config_file_string)
         # if build config is found
         if search_string is not None:
             # get build config as string
@@ -314,7 +311,7 @@ class WhitelabelApp:
 
     def regex_string_for_build_config(self, build_config):
         # regex to search build config inside project file
-        return f"/\* {build_config} \*/ = {{\n\t\t\tisa = XCBuildConfiguration;\n\t\t\tbaseConfigurationReference = [\s|\S]*\t\t\tname = {build_config};"
+        return f"/\\* {build_config} \\*/ = {{\n\t\t\tisa = XCBuildConfiguration;\n\t\t\tbaseConfigurationReference = [\\s|\\S]*\t\t\tname = {build_config};"
     
     def set_project_global_params(self):
         # set values for 'global' parameters
