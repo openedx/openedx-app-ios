@@ -138,18 +138,19 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
-        let verticals = chapter.childs
-            .first(where: { $0.id == blockId })?.childs
-            .filter { $0.isDownloadable } ?? []
+        guard let sequential = chapter.childs
+            .first(where: { $0.id == blockId }) else {
+            return
+        }
 
-        let blocks = verticals.flatMap { $0.childs }
+        let blocks =  sequential.childs.flatMap { $0.childs }
             .filter { $0.isDownloadable }
 
         if isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return
         }
 
-        download(state: state, verticals: verticals, blockId: blockId)
+        download(state: state, blocks: blocks)
     }
 
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
@@ -168,7 +169,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .flatMap { $0.childs }
             .flatMap { $0.childs }
 
-        if isShowedAllowLargeDownloadAlert(blocks: blocks) {
+        if isOn, isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return
         }
 
@@ -179,20 +180,17 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     guard let state = sequentialsDownloadState[sequential.id] else {
                        return
                     }
-                    let verticals = sequential.childs
                     switch state {
                     case .available:
                         download(
                             state: state,
-                            verticals: verticals,
-                            blockId: sequential.id
+                            blocks: downloadableBlocks(from: sequential)
                         )
                     case .downloading, .finished:
                         if isOn { return }
                         download(
                             state: state,
-                            verticals: verticals,
-                            blockId: sequential.id
+                            blocks: downloadableBlocks(from: sequential)
                         )
                     }
                 }
@@ -286,36 +284,29 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         return false
     }
 
-    private func download(state: DownloadViewState, verticals: [CourseVertical], blockId: String) {
-        let blocks = verticals.flatMap { $0.childs }
-            .filter { $0.isDownloadable }
-
+    private func download(state: DownloadViewState, blocks: [CourseBlock]) {
         do {
             switch state {
             case .available:
                 try manager.addToDownloadQueue(blocks: blocks)
-                sequentialsDownloadState[blockId] = .downloading
-                verticals.forEach {
-                    verticalsDownloadState[$0.id] = .downloading
-                }
             case .downloading:
                 try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
-                sequentialsDownloadState[blockId] = .available
-                verticals.forEach {
-                    verticalsDownloadState[$0.id] = .available
-                }
             case .finished:
                 manager.deleteFile(blocks: blocks)
-                sequentialsDownloadState[blockId] = .available
-                verticals.forEach {
-                    verticalsDownloadState[$0.id] = .available
-                }
             }
         } catch let error {
             if error is NoWiFiError {
                 errorMessage = CoreLocalization.Error.wifi
             }
         }
+    }
+
+    func downloadableBlocks(from sequential: CourseSequential) -> [CourseBlock] {
+        let verticals = sequential.childs
+        let blocks = verticals
+            .flatMap { $0.childs }
+            .filter { $0.isDownloadable }
+        return blocks
     }
 
     @MainActor
