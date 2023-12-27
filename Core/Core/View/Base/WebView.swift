@@ -15,7 +15,7 @@ public struct WebviewMessage {
     var handler: (String, WKWebView) -> Void
 }
 
-public protocol WebViewScriptInjectionProtocol {
+public protocol WebViewScriptInjectionProtocol: Equatable {
     var script: String { get }
     var message: WebviewMessage? { get }
 }
@@ -42,9 +42,10 @@ public struct SurveyCssInjection: WebViewScriptInjectionProtocol {
     
     var css: String {
         """
-        .survey-table .survey-option .visible-mobile-only {
-            width: calc(100% - 20px) !important;
+        .survey-table:not(.poll-results) .survey-option .visible-mobile-only {
+            width: calc(100% - 21px) !important;
         }
+
         .survey-percentage .percentage {
             width: 54px !important;
         }
@@ -64,9 +65,9 @@ public struct WebView: UIViewRepresentable {
         
         @Published var url: String
         let baseURL: String
-        let injections: [WebViewScriptInjectionProtocol]?
+        let injections: [any WebViewScriptInjectionProtocol]?
         
-        public init(url: String, baseURL: String, injections: [WebViewScriptInjectionProtocol]? = nil) {
+        public init(url: String, baseURL: String, injections: [any WebViewScriptInjectionProtocol]? = nil) {
             self.url = url
             self.baseURL = baseURL
             self.injections = injections

@@ -190,7 +190,7 @@ public struct CourseBlock: Equatable {
         self.youTubeUrl = youTubeUrl
     }
     
-    public func webInjections() -> [WebViewScriptInjectionProtocol] {
+    public func webInjections() -> [any WebViewScriptInjectionProtocol] {
         switch type {
         case .survey:
             return [SurveyCssInjection()]

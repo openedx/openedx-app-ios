@@ -13,7 +13,7 @@ import Theme
 struct WebView: View {
     let url: String
     let viewModel: CourseUnitViewModel
-    let injections: [WebViewScriptInjectionProtocol]?
+    let injections: [any WebViewScriptInjectionProtocol]?
     
     var body: some View {
         VStack(spacing: 0) {
