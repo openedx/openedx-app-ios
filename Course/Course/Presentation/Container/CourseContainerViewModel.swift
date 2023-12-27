@@ -76,13 +76,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         super.init(manager: manager)
         
         manager.eventPublisher()
-            .sink(receiveValue: { [weak self] state in
+            .sink { [weak self] state in
                 guard let self else { return }
                 if case .progress = state { return }
                 DispatchQueue.main.async {
                     self.setDownloadsStates()
                 }
-            })
+            }
             .store(in: &cancellables)
     }
     
@@ -137,14 +137,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         )
     }
 
-    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
-        verticalsDownloadState.filter { dict in
-            courseSequential.childs.contains(where: { item in
-                return dict.key == item.id
-            })
-        }
-    }
-
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
         let verticals = chapter.childs
             .first(where: { $0.id == blockId })?.childs
@@ -160,6 +152,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         download(state: state, verticals: verticals, blockId: blockId)
     }
 
+    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
+        verticalsDownloadState.filter { dict in
+            courseSequential.childs.contains(where: { item in
+                return dict.key == item.id
+            })
+        }
+    }
+
     func downloadAll(courseStructure: CourseStructure, isOn: Bool) {
         let courseChapters = courseStructure.childs
 
@@ -171,6 +171,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         if isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return
         }
+
         courseChapters.forEach { courseChapter in
             courseChapter.childs
                 .filter { $0.isDownloadable }
