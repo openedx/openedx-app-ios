@@ -10,16 +10,66 @@ import WebKit
 import SwiftUI
 import Theme
 
+public struct WebviewMessage {
+    var name: String
+    var handler: (String, WKWebView) -> Void
+}
+
+public protocol WebViewScriptInjectionProtocol {
+    var script: String { get }
+    var message: WebviewMessage? { get }
+}
+
+public struct SurveyCssInjection: WebViewScriptInjectionProtocol {
+    public var message: WebviewMessage?
+    
+    public var script: String {
+        """
+        window.addEventListener("load", () => {
+            var css = `\(css)`,
+                head = document.head || document.getElementsByTagName('head')[0],
+                style = document.createElement('style');
+            head.appendChild(style);
+            style.type = 'text/css';
+            if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+            } else {
+                style.appendChild(document.createTextNode(css));
+            }
+        })
+        """
+    }
+    
+    var css: String {
+        """
+        .survey-table .survey-option .visible-mobile-only {
+            width: calc(100% - 20px) !important;
+        }
+        .survey-percentage .percentage {
+            width: 54px !important;
+        }
+        """
+    }
+    
+    public init() {}
+    
+    public static func == (lhs: SurveyCssInjection, rhs: SurveyCssInjection) -> Bool {
+        lhs.script == rhs.script
+    }
+}
+
 public struct WebView: UIViewRepresentable {
     
     public class ViewModel: ObservableObject {
         
         @Published var url: String
         let baseURL: String
+        let injections: [WebViewScriptInjectionProtocol]?
         
-        public init(url: String, baseURL: String) {
+        public init(url: String, baseURL: String, injections: [WebViewScriptInjectionProtocol]? = nil) {
             self.url = url
             self.baseURL = baseURL
+            self.injections = injections
         }
     }
     
@@ -127,6 +177,11 @@ public struct WebView: UIViewRepresentable {
         let webViewConfig = WKWebViewConfiguration()
         
         let webView = WKWebView(frame: .zero, configuration: webViewConfig)
+#if DEBUG
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
+#endif
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         
@@ -142,6 +197,11 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.layer.cornerRadius = 24
         webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
+        
+        for injection in viewModel.injections ?? [] {
+            let script = WKUserScript(source: injection.script, injectionTime: .atDocumentStart, forMainFrameOnly: true)
+            webView.configuration.userContentController.addUserScript(script)
+        }
         
         return webView
     }

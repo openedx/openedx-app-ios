@@ -34,7 +34,7 @@ public enum LessonType: Equatable {
                 return .unknown(block.studentUrl)
             }
             
-        case .problem:
+        case .problem, .dragAndDropV2, .survey:
             return .web(block.studentUrl)
         }
     }

@@ -13,10 +13,11 @@ import Theme
 struct WebView: View {
     let url: String
     let viewModel: CourseUnitViewModel
+    let injections: [WebViewScriptInjectionProtocol]?
     
     var body: some View {
         VStack(spacing: 0) {
-            WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
+            WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!, injections: injections)
             Spacer(minLength: 5)
         }
         .roundedBackgroundWeb(strokeColor: Theme.Colors.textInputUnfocusedStroke, maxIpadWidth: .infinity)

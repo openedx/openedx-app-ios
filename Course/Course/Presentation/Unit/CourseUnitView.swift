@@ -145,7 +145,11 @@ public struct CourseUnitView: View {
                                         case .web(let url):
                                             if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
-                                                WebView(url: url, viewModel: viewModel)
+                                                WebView(
+                                                    url: url,
+                                                    viewModel: viewModel,
+                                                    injections: block.webInjections()
+                                                )
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
