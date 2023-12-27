@@ -10,35 +10,55 @@ import WebKit
 import SwiftUI
 import Theme
 
-public struct WebviewMessage {
+public struct WebviewMessage: Equatable {
     var name: String
-    var handler: (String, WKWebView) -> Void
+    var handler: (Any, WKWebView?) -> Void
+
+    public static func == (lhs: WebviewMessage, rhs: WebviewMessage) -> Bool {
+        lhs.name == rhs.name
+    }
 }
 
 public protocol WebViewScriptInjectionProtocol: Equatable, Identifiable {
     var id: String { get }
     var script: String { get }
-    var message: WebviewMessage? { get }
+    var messages: [WebviewMessage]? { get }
+    var injectionTime: WKUserScriptInjectionTime { get }
 }
 
 extension WebViewScriptInjectionProtocol {
     public func webviewInjection() -> WebviewInjection {
-        WebviewInjection(id: self.id, script: self.script)
+        WebviewInjection(
+            id: self.id,
+            script: self.script,
+            messages: self.messages,
+            injectionTime: self.injectionTime
+        )
     }
 }
 
 public struct WebviewInjection: WebViewScriptInjectionProtocol {
     public var id: String
     public var script: String
-    public var message: WebviewMessage?
-    init(id: String, script: String, message: WebviewMessage? = nil) {
+    public var messages: [WebviewMessage]?
+    public var injectionTime: WKUserScriptInjectionTime
+    init(
+        id: String,
+        script: String, 
+        messages: [WebviewMessage]? = nil,
+        injectionTime: WKUserScriptInjectionTime = .atDocumentEnd
+    ) {
         self.id = id
         self.script = script
-        self.message = message
+        self.messages = messages
+        self.injectionTime = injectionTime
     }
     
     public static func == (lhs: WebviewInjection, rhs: WebviewInjection) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id &&
+        lhs.script == rhs.script &&
+        lhs.injectionTime == rhs.injectionTime &&
+        lhs.messages == rhs.messages
     }
 }
 
@@ -53,7 +73,8 @@ public extension WebviewInjection {
 
 public struct SurveyCssInjection: WebViewScriptInjectionProtocol {
     public var id: String = "SurveyCSSInjection"
-    public var message: WebviewMessage?
+    public var messages: [WebviewMessage]?
+    public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
     
     public var script: String {
         """
@@ -116,7 +137,7 @@ public struct WebView: UIViewRepresentable {
         self.refreshCookies = refreshCookies
     }
     
-    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
+    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
         var parent: WebView
         
         init(_ parent: WebView) {
@@ -200,6 +221,13 @@ public struct WebView: UIViewRepresentable {
             }
             return .allow
         }
+
+        public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+            let messages = parent.viewModel.injections?.compactMap({$0.messages}).flatMap({$0}) ?? []
+            if let currentMessage = messages.first(where: { $0.name == message.name }) {
+                currentMessage.handler(message.body, message.webView)
+            }
+        }
     }
     
     public func makeCoordinator() -> Coordinator {
@@ -232,8 +260,12 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         
         for injection in viewModel.injections ?? [] {
-            let script = WKUserScript(source: injection.script, injectionTime: .atDocumentStart, forMainFrameOnly: true)
+            let script = WKUserScript(source: injection.script, injectionTime: injection.injectionTime, forMainFrameOnly: true)
             webView.configuration.userContentController.addUserScript(script)
+            
+            for message in injection.messages ?? [] {
+                webView.configuration.userContentController.add(context.coordinator, name: message.name)
+            }
         }
         
         return webView
@@ -249,5 +281,10 @@ public struct WebView: UIViewRepresentable {
                 webview.load(request)
             }
         }
+    }
+    
+    public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.configuration.userContentController.removeAllUserScripts()
+        uiView.configuration.userContentController.removeAllScriptMessageHandlers()
     }
 }
