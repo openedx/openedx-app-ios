@@ -15,7 +15,7 @@ python3 config_script/whitelabel.py --config-file=path/to/configfile/whitelabel.
 where 
 - `config_script/whitelabel.py` is the path to the `whitelabel.py` script
 - `--config-file=path/to/configfile/whitelabel.yaml`  is the path to the configuration file `whitelabel.yaml`
-- `-v` sets the log level.
+- `-v` sets the log level (all messages if '-v' is present and errors only if is not).
 
 ## Example of whitelabel.yaml
 You can get example of `whitelabel.yaml` file by run next command:
