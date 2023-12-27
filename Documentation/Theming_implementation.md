@@ -20,7 +20,7 @@ where
 ## Example of whitelabel.yaml
 You can get example of `whitelabel.yaml` file by run next command:
 ```bash
-python3 config_script/whitelabel.py --config-file=path/to/configfile/whitelabel.yaml --help-config-file
+python3 config_script/whitelabel.py --help-config-file
 ```
 Just copy script's output to your `whitelabel.yaml` file.
 
