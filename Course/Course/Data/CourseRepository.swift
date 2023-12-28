@@ -223,12 +223,25 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: block.displayName,
             studentUrl: block.studentUrl,
             subtitles: subtitles,
-            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url,
-            fileSize: block.userViewData?.encodedVideo?.youTube?.fileSize
+            fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+            youTube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+            desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+            mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+            mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+            hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
         )
     }
     
+    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+        guard let encodedVideo else {
+            return nil
+        }
+        return .init(
+            url: encodedVideo.url,
+            fileSize: encodedVideo.fileSize,
+            streamPriority: encodedVideo.streamPriority
+        )
+    }
 }
 
 // Mark - For testing and SwiftUI preview
@@ -436,11 +449,26 @@ And there are various ways of describing it-- call it oral poetry or
                            displayName: block.displayName,
                            studentUrl: block.studentUrl,
                            subtitles: subtitles,
-                           videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-                           youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url
+                           fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+                           youTube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+                           desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+                           mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+                           mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+                           hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
         )
     }
-    
+
+    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+        guard let encodedVideo else {
+            return nil
+        }
+        return .init(
+            url: encodedVideo.url,
+            fileSize: encodedVideo.fileSize,
+            streamPriority: encodedVideo.streamPriority
+        )
+    }
+
     private let courseStructureJson: String = """
     {"root": "block-v1:QA+comparison+2022+type@course+block@course",
           "blocks": {

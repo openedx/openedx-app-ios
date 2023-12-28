@@ -109,7 +109,14 @@ struct ContinueWithView_Previews: PreviewProvider {
                                         completion: 0,
                                         type: .html,
                                         displayName: "Continue lesson",
-                                        studentUrl: "")
+                                        studentUrl: "",
+                                        fallback: nil,
+                                        youTube: nil,
+                                        desktopMP4: nil,
+                                        mobileHigh: nil,
+                                        mobileLow: nil,
+                                        hls: nil
+                                    )
                                 ])])])
         ]
         

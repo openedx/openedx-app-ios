@@ -177,14 +177,29 @@ public struct CourseBlock: Equatable {
     public let displayName: String
     public let studentUrl: String
     public let subtitles: [SubtitleUrl]?
-    public let videoUrl: String?
-    public let youTubeUrl: String?
-    public let fileSize: Int?
+    public let fallback: CourseBlockVideo?
+    public let desktopMP4: CourseBlockVideo?
+    public let mobileHigh: CourseBlockVideo?
+    public let mobileLow: CourseBlockVideo?
+    public let hls: CourseBlockVideo?
+    public let youTube: CourseBlockVideo?
 
     public var isDownloadable: Bool {
         return videoUrl != nil
     }
-    
+
+    public var videoUrl: String? {
+        fallback?.url ?? desktopMP4?.url ?? mobileHigh?.url ?? mobileLow?.url ?? hls?.url
+    }
+
+    public var fileSize: Int? {
+        fallback?.fileSize ?? desktopMP4?.fileSize ?? mobileHigh?.fileSize ?? mobileLow?.fileSize ?? hls?.fileSize
+    }
+
+    public var youTubeUrl: String? {
+        youTube?.url
+    }
+
     public init(
         blockId: String,
         id: String,
@@ -196,9 +211,12 @@ public struct CourseBlock: Equatable {
         displayName: String,
         studentUrl: String,
         subtitles: [SubtitleUrl]? = nil,
-        videoUrl: String? = nil,
-        youTubeUrl: String? = nil,
-        fileSize: Int? = nil
+        fallback: CourseBlockVideo?,
+        youTube: CourseBlockVideo?,
+        desktopMP4: CourseBlockVideo?,
+        mobileHigh: CourseBlockVideo?,
+        mobileLow: CourseBlockVideo?,
+        hls: CourseBlockVideo?
     ) {
         self.blockId = blockId
         self.id = id
@@ -210,8 +228,23 @@ public struct CourseBlock: Equatable {
         self.displayName = displayName
         self.studentUrl = studentUrl
         self.subtitles = subtitles
-        self.videoUrl = videoUrl
-        self.youTubeUrl = youTubeUrl
+        self.fallback = fallback
+        self.youTube = youTube
+        self.desktopMP4 = desktopMP4
+        self.mobileHigh = mobileHigh
+        self.mobileLow = mobileLow
+        self.hls = hls
+    }
+}
+
+public struct CourseBlockVideo: Equatable {
+    public let url: String?
+    public let fileSize: Int?
+    public let streamPriority: Int?
+
+    public init(url: String?, fileSize: Int?, streamPriority: Int?) {
+        self.url = url
         self.fileSize = fileSize
+        self.streamPriority = streamPriority
     }
 }

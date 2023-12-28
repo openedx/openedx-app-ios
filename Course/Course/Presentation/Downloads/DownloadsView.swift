@@ -61,6 +61,7 @@ struct DownloadsView: View {
                             .lineLimit(1)
                         Text(downloadData.fileSizeInMbText)
                             .font(Theme.Fonts.titleSmall)
+                            .foregroundColor(Theme.Colors.textSecondary)
                             .multilineTextAlignment(.leading)
                             .lineLimit(1)
                         if downloadData.state != .finished {

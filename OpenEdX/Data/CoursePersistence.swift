@@ -121,19 +121,23 @@ public class CoursePersistence: CoursePersistenceProtocol {
             let userViewData = DataLayer.CourseDetailUserViewData(
                 transcripts: nil,
                 encodedVideo: DataLayer.CourseDetailEncodedVideoData(
-                    youTube: DataLayer.CourseDetailYouTubeData(url: $0.youTubeUrl, fileSize: Int($0.fileSize)),
-                    fallback: DataLayer.CourseDetailYouTubeData(url: $0.fallbackUrl, fileSize: Int($0.fileSize))
-                ), topicID: "")
-            return DataLayer.CourseBlock(blockId: $0.blockId ?? "",
-                                          id: $0.id ?? "",
-                                          graded: $0.graded,
-                                          completion: $0.completion,
-                                          studentUrl: $0.studentUrl ?? "",
-                                          type: $0.type ?? "",
-                                          displayName: $0.displayName ?? "",
-                                          descendants: $0.descendants,
-                                          allSources: $0.allSources,
-                                          userViewData: userViewData)
+                    youTube: DataLayer.EncodedVideoData(url: $0.youTubeUrl, fileSize: Int($0.fileSize)),
+                    fallback: DataLayer.EncodedVideoData(url: $0.fallbackUrl, fileSize: Int($0.fileSize))
+                ), 
+                topicID: ""
+            )
+            return DataLayer.CourseBlock(
+                blockId: $0.blockId ?? "",
+                id: $0.id ?? "",
+                graded: $0.graded,
+                completion: $0.completion,
+                studentUrl: $0.studentUrl ?? "",
+                type: $0.type ?? "",
+                displayName: $0.displayName ?? "",
+                descendants: $0.descendants,
+                allSources: $0.allSources,
+                userViewData: userViewData
+            )
         }
         
         let dictionary = blocks?.reduce(into: [:]) { result, block in

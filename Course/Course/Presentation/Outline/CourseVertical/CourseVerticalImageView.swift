@@ -39,8 +39,12 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                fallback: nil,
+                youTube: nil,
+                desktopMP4: nil,
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
             )
         ]
         
@@ -55,8 +59,12 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .problem,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                fallback: nil,
+                youTube: nil,
+                desktopMP4: nil,
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
             )
         ]
         let blocks3 = [
@@ -70,8 +78,12 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .discussion,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                fallback: nil,
+                youTube: nil,
+                desktopMP4: nil,
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
             )
         ]
         let blocks4 = [
@@ -85,8 +97,12 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                fallback: nil,
+                youTube: nil,
+                desktopMP4: nil,
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
             )
         ]
         let blocks5 = [
@@ -100,8 +116,12 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                fallback: nil,
+                youTube: nil,
+                desktopMP4: nil,
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
             )
         ]
         HStack {
