@@ -142,6 +142,26 @@ public struct CourseDetailsView: View {
                         Spacer(minLength: 84)
                     }
                 }
+                if !viewModel.userloggedIn {
+                    LogistrationBottomView { buttonAction in
+                        switch buttonAction {
+                        case .signIn:
+                            viewModel.router.showLoginScreen(
+                                sourceScreen: .courseDetail(
+                                    courseID,
+                                    viewModel.courseDetails?.courseTitle ?? ""
+                                )
+                            )
+                        case .register:
+                            viewModel.router.showRegisterScreen(
+                                sourceScreen: .courseDetail(
+                                    courseID,
+                                    viewModel.courseDetails?.courseTitle ?? ""
+                                )
+                            )
+                        }
+                    }
+                }
             }.padding(.top, 8)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(false)
@@ -200,8 +220,12 @@ private struct CourseStateView: View {
         switch viewModel.courseState() {
         case .enrollOpen:
             StyledButton(CourseLocalization.Details.enrollNow, action: {
-                Task {
-                    await viewModel.enrollToCourse(id: courseDetails.courseID)
+                if !viewModel.userloggedIn {
+                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                } else {
+                    Task {
+                        await viewModel.enrollToCourse(id: courseDetails.courseID)
+                    }
                 }
             })
             .padding(16)
@@ -213,17 +237,23 @@ private struct CourseStateView: View {
                 .padding(.vertical, 24)
         case .alreadyEnrolled:
             StyledButton(CourseLocalization.Details.viewCourse, action: {
-                viewModel.viewCourseClicked(courseId: courseDetails.courseID,
-                                            courseName: courseDetails.courseTitle)
-                viewModel.router.showCourseScreens(
-                    courseID: courseDetails.courseID,
-                    isActive: nil,
-                    courseStart: courseDetails.courseStart,
-                    courseEnd: courseDetails.courseEnd,
-                    enrollmentStart: courseDetails.enrollmentStart,
-                    enrollmentEnd: courseDetails.enrollmentEnd,
-                    title: title
-                )
+                if !viewModel.userloggedIn {
+                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                } else {
+                    viewModel.viewCourseClicked(
+                        courseId: courseDetails.courseID,
+                        courseName: courseDetails.courseTitle
+                    )
+                    viewModel.router.showCourseScreens(
+                        courseID: courseDetails.courseID,
+                        isActive: nil,
+                        courseStart: courseDetails.courseStart,
+                        courseEnd: courseDetails.courseEnd,
+                        enrollmentStart: courseDetails.enrollmentStart,
+                        enrollmentEnd: courseDetails.enrollmentEnd,
+                        title: title
+                    )
+                }
             })
             .padding(16)
         }
@@ -330,7 +360,8 @@ struct CourseDetailsView_Previews: PreviewProvider {
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(),
+            storage: CoreStorageMock()
         )
         
         CourseDetailsView(

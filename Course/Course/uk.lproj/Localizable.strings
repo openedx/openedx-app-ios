@@ -27,7 +27,7 @@
 "COURSEWARE.SECTION" = "Секція “";
 "COURSEWARE.IS_FINISHED" = "“ завершена.";
 "COURSEWARE.CONTINUE" = "Продовжити";
-"COURSEWARE.CONTINUE_WITH" = "Продовжити далі:";
+"COURSEWARE.RESUME_WITH" = "Продовжити далі:";
 
 "ERROR.NO_INTERNET" = "Ви не підключені до Інтернету. Перевірте підключення до Інтернету і спробуйте ще.";
 "ERROR.RELOAD" = "Перезавантажити";

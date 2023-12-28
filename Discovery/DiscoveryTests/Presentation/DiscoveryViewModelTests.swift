@@ -26,11 +26,12 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(), 
+        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
                                            config: ConfigMock(),
                                            interactor: interactor,
                                            connectivity: connectivity,
-                                           analytics: analytics)
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
 
         let items = [
             CourseItem(name: "Test",
@@ -79,7 +80,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                                            config: ConfigMock(),
                                            interactor: interactor,
                                            connectivity: connectivity,
-                                           analytics: analytics)
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         let items = [
             CourseItem(name: "Test",
                        org: "org",
@@ -126,7 +128,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                                            config: ConfigMock(),
                                            interactor: interactor,
                                            connectivity: connectivity,
-                                           analytics: analytics)
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         let items = [
             CourseItem(name: "Test",
                        org: "org",
@@ -175,7 +178,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                                            config: ConfigMock(),
                                            interactor: interactor,
                                            connectivity: connectivity,
-                                           analytics: analytics)
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
                         
@@ -198,7 +202,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                                            config: ConfigMock(),
                                            interactor: interactor,
                                            connectivity: connectivity,
-                                           analytics: analytics)
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         
         let noInternetError = AFError.sessionInvalidated(error: NSError())
                         

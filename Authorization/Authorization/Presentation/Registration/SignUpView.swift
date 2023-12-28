@@ -38,7 +38,7 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        Text(AuthLocalization.SignIn.registerBtn)
+                        Text(CoreLocalization.SignIn.registerBtn)
                             .titleSettings(color: Theme.Colors.white)
                     }
                     VStack {
@@ -177,7 +177,8 @@ struct SignUpView_Previews: PreviewProvider {
             analytics: AuthorizationAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: Validator()
+            validator: Validator(),
+            sourceScreen: .default
         )
         
         SignUpView(viewModel: vm)

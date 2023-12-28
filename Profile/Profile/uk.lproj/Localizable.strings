@@ -17,6 +17,9 @@
 "CONTACT" = "Cлужби підтримки";
 "TERMS" = "Умови використання";
 "PRIVACY" = "Політика конфіденційності";
+"COOKIE_POLICY" = "Cookie policy";
+"DO_NOT_SELL_INFORMATION" = "Do not sell my personal information";
+"FAQ" = "FAQ";
 "LOGOUT" = "Вийти";
 "SWITCH_TO" = "Переключити на";
 "FULL_PROFILE" = "повний профіль";
@@ -73,3 +76,5 @@
 "SETTINGS.UP_TO_DATE" = "Оновлено";
 "SETTINGS.TAP_TO_UPDATE" = "Клацніть, щоб оновити до версії";
 "SETTINGS.TAP_TO_INSTALL" = "Клацніть, щоб встановити обов'язкове оновлення програми";
+
+"ERROR.CANNOT_SEND_EMAIL" = "Cannot send email. It seems your email client is not set up.";

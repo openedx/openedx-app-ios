@@ -816,10 +816,10 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen() {
-        addInvocation(.m_showMainOrWhatsNewScreen)
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen) as? () -> Void
-		perform?()
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
+		perform?(`sourceScreen`)
     }
 
     open func showStartupScreen() {
@@ -828,16 +828,16 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 		perform?()
     }
 
-    open func showLoginScreen() {
-        addInvocation(.m_showLoginScreen)
-		let perform = methodPerformValue(.m_showLoginScreen) as? () -> Void
-		perform?()
+    open func showLoginScreen(sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
+		perform?(`sourceScreen`)
     }
 
-    open func showRegisterScreen() {
-        addInvocation(.m_showRegisterScreen)
-		let perform = methodPerformValue(.m_showRegisterScreen) as? () -> Void
-		perform?()
+    open func showRegisterScreen(sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
+		perform?(`sourceScreen`)
     }
 
     open func showForgotPasswordScreen() {
@@ -846,10 +846,10 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 		perform?()
     }
 
-    open func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool) {
-        addInvocation(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`)))
-		let perform = methodPerformValue(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`))) as? (String?, Bool) -> Void
-		perform?(`searchQuery`, `fromStartupScreen`)
+    open func showDiscoveryScreen(searchQuery: String?, sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>.value(`searchQuery`), Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>.value(`searchQuery`), Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (String?, LogistrationSourceScreen) -> Void
+		perform?(`searchQuery`, `sourceScreen`)
     }
 
     open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, type: AlertViewType) {
@@ -884,12 +884,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showStartupScreen
-        case m_showLoginScreen
-        case m_showRegisterScreen
+        case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showForgotPasswordScreen
-        case m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>, Parameter<Bool>)
+        case m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>, Parameter<LogistrationSourceScreen>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
@@ -924,20 +924,29 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen, .m_showMainOrWhatsNewScreen): return .match
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
 
-            case (.m_showLoginScreen, .m_showLoginScreen): return .match
+            case (.m_showLoginScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showLoginScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				return Matcher.ComparisonResult(results)
 
-            case (.m_showRegisterScreen, .m_showRegisterScreen): return .match
+            case (.m_showRegisterScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showRegisterScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_showForgotPasswordScreen, .m_showForgotPasswordScreen): return .match
 
-            case (.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let lhsSearchquery, let lhsFromstartupscreen), .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let rhsSearchquery, let rhsFromstartupscreen)):
+            case (.m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(let lhsSearchquery, let lhsSourcescreen), .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(let rhsSearchquery, let rhsSourcescreen)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSearchquery, rhs: rhsSearchquery, with: matcher), lhsSearchquery, rhsSearchquery, "searchQuery"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFromstartupscreen, rhs: rhsFromstartupscreen, with: matcher), lhsFromstartupscreen, rhsFromstartupscreen, "fromStartupScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let lhsAlerttitle, let lhsAlertmessage, let lhsPositiveaction, let lhsOnclosetapped, let lhsOktapped, let lhsType), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let rhsAlerttitle, let rhsAlertmessage, let rhsPositiveaction, let rhsOnclosetapped, let rhsOktapped, let rhsType)):
@@ -985,12 +994,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case .m_showMainOrWhatsNewScreen: return 0
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case .m_showStartupScreen: return 0
-            case .m_showLoginScreen: return 0
-            case .m_showRegisterScreen: return 0
+            case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case .m_showForgotPasswordScreen: return 0
-            case let .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(p0, p1): return p0.intValue + p1.intValue
+            case let .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(p0, p1): return p0.intValue + p1.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
@@ -1005,12 +1014,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen: return ".showMainOrWhatsNewScreen()"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
-            case .m_showLoginScreen: return ".showLoginScreen()"
-            case .m_showRegisterScreen: return ".showRegisterScreen()"
+            case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
+            case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
-            case .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen: return ".showDiscoveryScreen(searchQuery:fromStartupScreen:)"
+            case .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen: return ".showDiscoveryScreen(searchQuery:sourceScreen:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
@@ -1039,12 +1048,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen() -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen)}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
-        public static func showLoginScreen() -> Verify { return Verify(method: .m_showLoginScreen)}
-        public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
+        public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
-        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>) -> Verify { return Verify(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`))}
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(`searchQuery`, `sourceScreen`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
@@ -1073,23 +1082,23 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen, performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)
         }
-        public static func showLoginScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showLoginScreen, performs: perform)
+        public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
         }
-        public static func showRegisterScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showRegisterScreen, performs: perform)
+        public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
         }
         public static func showForgotPasswordScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showForgotPasswordScreen, performs: perform)
         }
-        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>, perform: @escaping (String?, Bool) -> Void) -> Perform {
-            return Perform(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`), performs: perform)
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (String?, LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(`searchQuery`, `sourceScreen`), performs: perform)
         }
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)
@@ -1252,10 +1261,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen() {
-        addInvocation(.m_showMainOrWhatsNewScreen)
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen) as? () -> Void
-		perform?()
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
+		perform?(`sourceScreen`)
     }
 
     open func showStartupScreen() {
@@ -1264,16 +1273,16 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?()
     }
 
-    open func showLoginScreen() {
-        addInvocation(.m_showLoginScreen)
-		let perform = methodPerformValue(.m_showLoginScreen) as? () -> Void
-		perform?()
+    open func showLoginScreen(sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
+		perform?(`sourceScreen`)
     }
 
-    open func showRegisterScreen() {
-        addInvocation(.m_showRegisterScreen)
-		let perform = methodPerformValue(.m_showRegisterScreen) as? () -> Void
-		perform?()
+    open func showRegisterScreen(sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
+		perform?(`sourceScreen`)
     }
 
     open func showForgotPasswordScreen() {
@@ -1282,10 +1291,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?()
     }
 
-    open func showDiscoveryScreen(searchQuery: String?, fromStartupScreen: Bool) {
-        addInvocation(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`)))
-		let perform = methodPerformValue(.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>.value(`searchQuery`), Parameter<Bool>.value(`fromStartupScreen`))) as? (String?, Bool) -> Void
-		perform?(`searchQuery`, `fromStartupScreen`)
+    open func showDiscoveryScreen(searchQuery: String?, sourceScreen: LogistrationSourceScreen) {
+        addInvocation(.m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>.value(`searchQuery`), Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
+		let perform = methodPerformValue(.m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>.value(`searchQuery`), Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (String?, LogistrationSourceScreen) -> Void
+		perform?(`searchQuery`, `sourceScreen`)
     }
 
     open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, type: AlertViewType) {
@@ -1319,12 +1328,12 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showStartupScreen
-        case m_showLoginScreen
-        case m_showRegisterScreen
+        case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showForgotPasswordScreen
-        case m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(Parameter<String?>, Parameter<Bool>)
+        case m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>, Parameter<LogistrationSourceScreen>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
@@ -1354,20 +1363,29 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen, .m_showMainOrWhatsNewScreen): return .match
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
 
-            case (.m_showLoginScreen, .m_showLoginScreen): return .match
+            case (.m_showLoginScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showLoginScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				return Matcher.ComparisonResult(results)
 
-            case (.m_showRegisterScreen, .m_showRegisterScreen): return .match
+            case (.m_showRegisterScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showRegisterScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_showForgotPasswordScreen, .m_showForgotPasswordScreen): return .match
 
-            case (.m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let lhsSearchquery, let lhsFromstartupscreen), .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(let rhsSearchquery, let rhsFromstartupscreen)):
+            case (.m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(let lhsSearchquery, let lhsSourcescreen), .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(let rhsSearchquery, let rhsSourcescreen)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSearchquery, rhs: rhsSearchquery, with: matcher), lhsSearchquery, rhsSearchquery, "searchQuery"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFromstartupscreen, rhs: rhsFromstartupscreen, with: matcher), lhsFromstartupscreen, rhsFromstartupscreen, "fromStartupScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let lhsAlerttitle, let lhsAlertmessage, let lhsPositiveaction, let lhsOnclosetapped, let lhsOktapped, let lhsType), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let rhsAlerttitle, let rhsAlertmessage, let rhsPositiveaction, let rhsOnclosetapped, let rhsOktapped, let rhsType)):
@@ -1414,12 +1432,12 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case .m_showMainOrWhatsNewScreen: return 0
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case .m_showStartupScreen: return 0
-            case .m_showLoginScreen: return 0
-            case .m_showRegisterScreen: return 0
+            case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case .m_showForgotPasswordScreen: return 0
-            case let .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(p0, p1): return p0.intValue + p1.intValue
+            case let .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(p0, p1): return p0.intValue + p1.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
@@ -1433,12 +1451,12 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen: return ".showMainOrWhatsNewScreen()"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
-            case .m_showLoginScreen: return ".showLoginScreen()"
-            case .m_showRegisterScreen: return ".showRegisterScreen()"
+            case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
+            case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
-            case .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen: return ".showDiscoveryScreen(searchQuery:fromStartupScreen:)"
+            case .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen: return ".showDiscoveryScreen(searchQuery:sourceScreen:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
@@ -1466,12 +1484,12 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen() -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen)}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
-        public static func showLoginScreen() -> Verify { return Verify(method: .m_showLoginScreen)}
-        public static func showRegisterScreen() -> Verify { return Verify(method: .m_showRegisterScreen)}
+        public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showForgotPasswordScreen() -> Verify { return Verify(method: .m_showForgotPasswordScreen)}
-        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>) -> Verify { return Verify(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`))}
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(`searchQuery`, `sourceScreen`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
@@ -1497,23 +1515,23 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen, performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)
         }
-        public static func showLoginScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showLoginScreen, performs: perform)
+        public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
         }
-        public static func showRegisterScreen(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_showRegisterScreen, performs: perform)
+        public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
         }
         public static func showForgotPasswordScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showForgotPasswordScreen, performs: perform)
         }
-        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, fromStartupScreen: Parameter<Bool>, perform: @escaping (String?, Bool) -> Void) -> Perform {
-            return Perform(method: .m_showDiscoveryScreen__searchQuery_searchQueryfromStartupScreen_fromStartupScreen(`searchQuery`, `fromStartupScreen`), performs: perform)
+        public static func showDiscoveryScreen(searchQuery: Parameter<String?>, sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (String?, LogistrationSourceScreen) -> Void) -> Perform {
+            return Perform(method: .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(`searchQuery`, `sourceScreen`), performs: perform)
         }
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)

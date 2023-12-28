@@ -156,8 +156,11 @@ public struct CourseUnitView: View {
                                         case .unknown(let url):
                                             if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                                             if viewModel.connectivity.isInternetAvaliable {
-                                                UnknownView(url: url, viewModel: viewModel)
-                                                Spacer()
+                                                ScrollView(showsIndicators: false) {
+                                                    UnknownView(url: url, viewModel: viewModel)
+                                                    Spacer()
+                                                        .frame(minHeight: 100)
+                                                }
                                             } else {
                                                 NoInternetView(playerStateSubject: playerStateSubject)
                                             }
@@ -296,21 +299,26 @@ public struct CourseUnitView: View {
                             }
                         }
                         VStack {
-                            NavigationBar(
-                                title: isDropdownActive ? sequenceTitle : "",
-                                leftButtonAction: {
-                                    viewModel.router.back()
-                                    playerStateSubject.send(VideoPlayerState.kill)
-                                }).padding(.top, isHorizontal ? 10 : 0)
+                            Group {
+                                NavigationBar(
+                                    title: isDropdownActive ? sequenceTitle : "",
+                                    leftButtonAction: {
+                                        viewModel.router.back()
+                                        playerStateSubject.send(VideoPlayerState.kill)
+                                    })
+                                .padding(.top, isHorizontal ? 10 : 0)
                                 .padding(.leading, isHorizontal ? -16 : 0)
-                            if isDropdownActive {
-                                CourseUnitDropDownTitle(
-                                    title: unitTitle,
-                                    isAvailable: isDropdownAvailable,
-                                    showDropdown: $showDropdown)
-                                .padding(.top, 0)
-                                .offset(y: -25)
+                                if isDropdownActive {
+                                    CourseUnitDropDownTitle(
+                                        title: unitTitle,
+                                        isAvailable: isDropdownAvailable,
+                                        showDropdown: $showDropdown)
+                                    .padding(.top, 0)
+                                    .padding(.horizontal, 48)
+                                    .offset(y: -25)
+                                }
                             }
+                            .padding(.trailing, isHorizontal ? 215 : 0)
                             Spacer()
                         }
                         HStack(alignment: .center) {

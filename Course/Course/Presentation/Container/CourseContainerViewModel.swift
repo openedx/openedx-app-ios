@@ -277,7 +277,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         return ContinueWith(
                             chapterIndex: chapterIndex,
                             sequentialIndex: sequentialIndex,
-                            verticalIndex: verticalIndex
+                            verticalIndex: verticalIndex,
+                            lastVisitedBlockId: block.id
                         )
                     }
                 }
