@@ -12,9 +12,9 @@ import Combine
 
 public class CourseContainerViewModel: BaseCourseViewModel {
     
+    @Published private(set) var isShowProgress = false
     @Published var courseStructure: CourseStructure?
     @Published var courseVideosStructure: CourseStructure?
-    @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var showAllowLargeDownload: Bool = false
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
@@ -41,12 +41,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
     var courseDownloads: [DownloadData] = []
     private(set) var waitingDownload: [CourseBlock]?
-    var allowedLargeDownload: Bool = false
+    var allowedDownloadLargeDownload: Bool = false
 
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
     private let analytics: CourseAnalytics
-    
+    private var storage: CourseStorage
+
     public init(
         interactor: CourseInteractorProtocol,
         authInteractor: AuthInteractorProtocol,
@@ -55,6 +56,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         config: ConfigProtocol,
         connectivity: ConnectivityProtocol,
         manager: DownloadManagerProtocol,
+        storage: CourseStorage,
         isActive: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
@@ -72,7 +74,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.courseEnd = courseEnd
         self.enrollmentStart = enrollmentStart
         self.enrollmentEnd = enrollmentEnd
-        
+        self.storage = storage
+
         super.init(manager: manager)
         
         manager.eventPublisher()
@@ -146,7 +149,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         let blocks =  sequential.childs.flatMap { $0.childs }
             .filter { $0.isDownloadable }
 
-        if isShowedAllowLargeDownloadAlert(blocks: blocks) {
+        if state == .available, isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return
         }
 
@@ -201,6 +204,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         guard let blocks = waitingDownload else {
             return
         }
+        storage.allowedDownloadLargeFile = true
         do {
             try manager.addToDownloadQueue(blocks: blocks)
         } catch let error {
@@ -276,7 +280,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
     private func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
         waitingDownload = nil
-        if !allowedLargeDownload, manager.isLarge(blocks: blocks) {
+        if storage.allowedDownloadLargeFile == false, manager.isLarge(blocks: blocks) {
             waitingDownload = blocks
             showAllowLargeDownload = true
             return true

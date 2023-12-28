@@ -149,7 +149,11 @@ class AppAssembly: Assembly {
         container.register(WhatsNewStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
-        
+
+        container.register(CourseStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
+
         container.register(ProfileStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)

@@ -70,9 +70,6 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     var totalSize: String? {
         let mb = courseStructure.blocksTotalSizeInMb
-        if mb == 0.0 {
-            return nil
-        }
         return String(format: "%.2f", mb)
     }
 

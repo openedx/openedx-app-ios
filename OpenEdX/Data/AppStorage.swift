@@ -10,8 +10,9 @@ import KeychainSwift
 import Core
 import Profile
 import WhatsNew
+import Course
 
-public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
+public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseStorage {
 
     private let keychain: KeychainSwift
     private let userDefaults: UserDefaults
@@ -190,6 +191,19 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
         }
     }
 
+    public var allowedDownloadLargeFile: Bool? {
+        get {
+            return userDefaults.bool(forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+            } else {
+                userDefaults.removeObject(forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+            }
+        }
+    }
+
     public func clear() {
         accessToken = nil
         refreshToken = nil
@@ -208,4 +222,5 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage {
     private let KEY_WHATSNEW_VERSION = "whatsNewVersion"
     private let KEY_APPLE_SIGN_FULLNAME = "appleSignFullName"
     private let KEY_APPLE_SIGN_EMAIL = "appleSignEmail"
+    private let KEY_ALLOWED_DOWNLOAD_LARGE_FILE = "allowedDownloadLargeFile"
 }

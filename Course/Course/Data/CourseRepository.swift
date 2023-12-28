@@ -437,7 +437,8 @@ And there are various ways of describing it-- call it oral poetry or
                            studentUrl: block.studentUrl,
                            subtitles: subtitles,
                            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-                           youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
+                           youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url
+        )
     }
     
     private let courseStructureJson: String = """

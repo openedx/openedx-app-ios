@@ -45,6 +45,14 @@ public struct DownloadData: Identifiable, Hashable {
     public let type: DownloadType
     public let fileSize: Int
 
+    public var fileSizeInMb: Double {
+        Double(fileSize / 1024 / 1024)
+    }
+
+    public var fileSizeInMbText: String {
+        String(format: "%.2fMB", fileSizeInMb)
+    }
+
     public init(
         id: String,
         courseId: String,
