@@ -10,14 +10,15 @@ import Combine
 
 public protocol CorePersistenceProtocol {
     func publisher() -> AnyPublisher<Int, Never>
-    func getAllDownloadData() -> [DownloadData]
     func addToDownloadQueue(blocks: [CourseBlock])
     func getNextBlockForDownloading() -> DownloadData?
-    func getDownloadsForCourse(_ courseId: String) -> [DownloadData]
     func downloadData(by blockId: String) -> DownloadData?
     func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
     func deleteDownloadData(id: String) throws
     func saveDownloadData(data: DownloadData)
+    func getAllDownloadData(completion: @escaping ([DownloadData]) -> Void)
+    func getDownloadsForCourse(_ courseId: String, completion: @escaping ([DownloadData]) -> Void)
+
 }
 
 public final class CoreBundle {

@@ -122,11 +122,13 @@ struct CourseStructureNestedListView: View {
             switch state {
             case .available:
                 Button {
-                    viewModel.onDownloadViewTap(
-                        chapter: chapter,
-                        blockId: sequential.id,
-                        state: state
-                    )
+                    Task {
+                        await viewModel.onDownloadViewTap(
+                            chapter: chapter,
+                            blockId: sequential.id,
+                            state: state
+                        )
+                    }
                 } label: {
                     DownloadAvailableView()
                         .accessibilityElement(children: .ignore)
@@ -138,11 +140,13 @@ struct CourseStructureNestedListView: View {
                 downloadCount(sequential: sequential)
             case .downloading:
                 Button {
-                    viewModel.onDownloadViewTap(
-                        chapter: chapter,
-                        blockId: sequential.id,
-                        state: state
-                    )
+                    Task {
+                        await viewModel.onDownloadViewTap(
+                            chapter: chapter,
+                            blockId: sequential.id,
+                            state: state
+                        )
+                    }
                 } label: {
                     DownloadProgressView()
                         .accessibilityElement(children: .ignore)
@@ -153,11 +157,14 @@ struct CourseStructureNestedListView: View {
                 }
             case .finished:
                 Button {
-                    viewModel.onDownloadViewTap(
-                        chapter: chapter,
-                        blockId: sequential.id,
-                        state: state
-                    )
+                    Task {
+                        await viewModel.onDownloadViewTap(
+                            chapter: chapter,
+                            blockId: sequential.id,
+                            state: state
+                        )
+                    }
+
                 } label: {
                     DownloadFinishedView()
                         .accessibilityElement(children: .ignore)

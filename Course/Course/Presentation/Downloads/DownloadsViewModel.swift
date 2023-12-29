@@ -23,7 +23,7 @@ final class DownloadsViewModel: ObservableObject {
     ) {
         self.courseId = courseId
         self.manager = manager
-        configure()
+        Task { await configure() }
         observers()
     }
 
@@ -36,15 +36,16 @@ final class DownloadsViewModel: ObservableObject {
         }
     }
 
-    private func configure() {
+    @MainActor
+    private func configure() async {
         defer {
             filter()
         }
         if let courseId = courseId {
-            downloads = manager.getDownloadsForCourse(courseId)
+            downloads = await manager.getDownloadsForCourse(courseId)
             return
         }
-        downloads =  manager.getDownloads()
+        downloads = await manager.getDownloads()
 
     }
 

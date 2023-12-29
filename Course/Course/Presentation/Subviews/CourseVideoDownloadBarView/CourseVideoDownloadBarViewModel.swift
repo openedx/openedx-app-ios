@@ -73,8 +73,8 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         return String(format: "%.2f", mb)
     }
 
-    var allActiveDownloads: [DownloadData] {
-        courseViewModel.manager.getDownloads()
+    func allActiveDownloads() async -> [DownloadData] {
+        await courseViewModel.manager.getDownloads()
             .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
@@ -87,8 +87,9 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         observers()
     }
 
-    func downloadAll() {
-        courseViewModel.downloadAll(
+    @MainActor
+    func downloadAll() async {
+        await courseViewModel.downloadAll(
             courseStructure: courseStructure,
             isOn: isOn ? false : true
         )

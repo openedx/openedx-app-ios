@@ -85,19 +85,22 @@ public class NoWiFiError: LocalizedError {
 //sourcery: AutoMockable
 public protocol DownloadManagerProtocol {
     var currentDownload: DownloadData? { get }
+
     func publisher() -> AnyPublisher<Int, Never>
     func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never>
+
     func addToDownloadQueue(blocks: [CourseBlock]) throws
-    func getDownloadsForCourse(_ courseId: String) -> [DownloadData]
-    func getDownloads() -> [DownloadData]
-    func cancelDownloading(courseId: String, blocks: [CourseBlock]) throws
-    func cancelDownloading(downloadData: DownloadData) throws
+    func isLarge(blocks: [CourseBlock]) -> Bool
     func resumeDownloading() throws
     func pauseDownloading()
     func deleteFile(blocks: [CourseBlock])
-    func deleteAllFiles()
     func fileUrl(for blockId: String) -> URL?
-    func isLarge(blocks: [CourseBlock]) -> Bool
+
+    func getDownloads() async -> [DownloadData]
+    func getDownloadsForCourse(_ courseId: String) async -> [DownloadData]
+    func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws
+    func cancelDownloading(downloadData: DownloadData) throws
+    func deleteAllFiles() async
 }
 
 public enum DownloadManagerEvent {
@@ -114,8 +117,6 @@ public enum DownloadManagerEvent {
 public class DownloadManager: DownloadManagerProtocol {
 
     public var currentDownload: DownloadData?
-
-    private var downloads: [DownloadData] = []
     private let persistence: CorePersistenceProtocol
     private let appStorage: CoreStorage
     private let connectivity: ConnectivityProtocol
@@ -131,7 +132,6 @@ public class DownloadManager: DownloadManagerProtocol {
         self.persistence = persistence
         self.appStorage = appStorage
         self.connectivity = connectivity
-        sync()
     }
     
     public func publisher() -> AnyPublisher<Int, Never> {
@@ -144,13 +144,8 @@ public class DownloadManager: DownloadManagerProtocol {
             .eraseToAnyPublisher()
     }
 
-    private func sync() {
-        downloads = persistence.getAllDownloadData()
-    }
-
     public func isLarge(blocks: [CourseBlock]) -> Bool {
-        true
-        //(blocks.reduce(0) {$0 + Double($1.fileSize ?? 0)} / 1024 / 1024 / 1024) > 1
+        (blocks.reduce(0) {$0 + Double($1.video?.fileSize ?? 0)} / 1024 / 1024 / 1024) > 1
     }
 
     public func addToDownloadQueue(blocks: [CourseBlock]) throws {
@@ -163,45 +158,27 @@ public class DownloadManager: DownloadManagerProtocol {
             throw NoWiFiError()
         }
     }
-    
-    private func newDownload() throws {
-        if userCanDownload() {
-            guard let download = persistence.getNextBlockForDownloading() else {
-                isDownloadingInProgress = false
-                return
+
+    public func getDownloadsForCourse(_ courseId: String) async -> [DownloadData] {
+        await withCheckedContinuation { continuation in
+            persistence.getDownloadsForCourse(courseId) { downloads in
+                continuation.resume(returning: downloads)
             }
-            currentDownload = download
-            try downloadFileWithProgress(download)
-            currentDownloadEventPublisher.send(.started(download))
-        } else {
-            throw NoWiFiError()
         }
     }
-    
-    private func userCanDownload() -> Bool {
-        if appStorage.userSettings?.wifiOnly ?? true {
-            if !connectivity.isMobileData {
-                return true
-            } else {
-                return false
+
+    public func getDownloads() async -> [DownloadData] {
+        await withCheckedContinuation { continuation in
+            persistence.getAllDownloadData { downloads in
+                continuation.resume(returning: downloads)
             }
-        } else {
-            return true
         }
     }
-    
-    public func getDownloadsForCourse(_ courseId: String) -> [DownloadData] {
-        persistence.getDownloadsForCourse(courseId)
-    }
 
-    public func getDownloads() -> [DownloadData] {
-        persistence.getAllDownloadData()
-    }
-
-    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) throws {
+    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {
         downloadRequest?.cancel()
-        
-        let downloaded = getDownloadsForCourse(courseId).filter { $0.state == .finished }
+
+        let downloaded = await getDownloadsForCourse(courseId).filter { $0.state == .finished }
         let blocksForDelete = blocks.filter { block in downloaded.first(where: { $0.id == block.id }) == nil }
 
         deleteFile(blocks: blocksForDelete)
@@ -223,6 +200,87 @@ public class DownloadManager: DownloadManagerProtocol {
             NSLog("Error deleting file: \(error.localizedDescription)")
         }
         try newDownload()
+    }
+
+    private func newDownload() throws {
+        if userCanDownload() {
+            guard let download = persistence.getNextBlockForDownloading() else {
+                isDownloadingInProgress = false
+                return
+            }
+            currentDownload = download
+            try downloadFileWithProgress(download)
+            currentDownloadEventPublisher.send(.started(download))
+        } else {
+            throw NoWiFiError()
+        }
+    }
+
+    public func resumeDownloading() throws {
+        try newDownload()
+    }
+
+    public func pauseDownloading() {
+        guard let currentDownload else { return }
+        downloadRequest?.cancel(byProducingResumeData: { [weak self] resumeData in
+            guard let self else { return }
+            self.persistence.updateDownloadState(
+                id: currentDownload.id,
+                state: .paused,
+                resumeData: resumeData
+            )
+            self.currentDownload?.state = .paused
+            self.currentDownloadEventPublisher.send(.paused(currentDownload))
+        })
+    }
+
+    public func deleteFile(blocks: [CourseBlock]) {
+        for block in blocks {
+            do {
+                try persistence.deleteDownloadData(id: block.id)
+                currentDownloadEventPublisher.send(.deletedFile(block.id))
+                if let fileURL = fileUrl(for: block.id) {
+                    try FileManager.default.removeItem(at: fileURL)
+                }
+            } catch {
+                NSLog("Error deleting file: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    public func deleteAllFiles() async {
+        let downloadData = await getDownloads()
+        downloadData.forEach {
+            if let fileURL = fileUrl(for: $0.id) {
+                do {
+                    try FileManager.default.removeItem(at: fileURL)
+                } catch {
+                    NSLog("Error deleting All files: \(error.localizedDescription)")
+                }
+            }
+        }
+        currentDownloadEventPublisher.send(.clearedAll)
+    }
+
+    public func fileUrl(for blockId: String) -> URL? {
+        guard let data = persistence.downloadData(by: blockId),
+              data.url.count > 0,
+              data.state == .finished else { return nil }
+        let path = videosFolderUrl()
+        let fileName = data.fileName
+        return path?.appendingPathComponent(fileName)
+    }
+
+    private func userCanDownload() -> Bool {
+        if appStorage.userSettings?.wifiOnly ?? true {
+            if !connectivity.isMobileData {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return true
+        }
     }
 
     private func downloadFileWithProgress(_ download: DownloadData) throws {
@@ -264,61 +322,6 @@ public class DownloadManager: DownloadManagerProtocol {
                 }
             })
         }
-    }
-    
-    public func resumeDownloading() throws {
-        try newDownload()
-    }
-    
-    public func pauseDownloading() {
-        guard let currentDownload else { return }
-        downloadRequest?.cancel(byProducingResumeData: { [weak self] resumeData in
-            guard let self else { return }
-            self.persistence.updateDownloadState(
-                id: currentDownload.id,
-                state: .paused,
-                resumeData: resumeData
-            )
-            self.currentDownload?.state = .paused
-            self.currentDownloadEventPublisher.send(.paused(currentDownload))
-        })
-    }
-    
-    public func deleteFile(blocks: [CourseBlock]) {
-        for block in blocks {
-            do {
-                try persistence.deleteDownloadData(id: block.id)
-                currentDownloadEventPublisher.send(.deletedFile(block.id))
-                if let fileURL = fileUrl(for: block.id) {
-                    try FileManager.default.removeItem(at: fileURL)
-                }
-            } catch {
-                NSLog("Error deleting file: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    public func deleteAllFiles() {
-        let downloadData = persistence.getAllDownloadData()
-        currentDownloadEventPublisher.send(.clearedAll)
-        downloadData.forEach {
-            if let fileURL = fileUrl(for: $0.id) {
-                do {
-                    try FileManager.default.removeItem(at: fileURL)
-                } catch {
-                    NSLog("Error deleting All files: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-    
-    public func fileUrl(for blockId: String) -> URL? {
-        guard let data = persistence.downloadData(by: blockId),
-              data.url.count > 0,
-              data.state == .finished else { return nil }
-        let path = videosFolderUrl()
-        let fileName = data.fileName
-        return path?.appendingPathComponent(fileName)
     }
 
     private func videosFolderUrl() -> URL? {
@@ -375,18 +378,21 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     public func addToDownloadQueue(blocks: [CourseBlock]) {
         
     }
-    
-    public func getDownloadsForCourse(_ courseId: String) -> [DownloadData] {
-        return []
-    }
 
     public func getDownloads() -> [DownloadData] {
         []
     }
 
-    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) {
-        
+    public func getDownloadsForCourse(_ courseId: String) async -> [DownloadData] {
+        await withCheckedContinuation { continuation in
+            continuation.resume(returning: [])
+        }
     }
+
+    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {
+
+    }
+
 
     public func cancelDownloading(downloadData: DownloadData) {
 

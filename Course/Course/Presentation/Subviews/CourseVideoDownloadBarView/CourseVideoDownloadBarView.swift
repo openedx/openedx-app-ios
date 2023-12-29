@@ -50,8 +50,11 @@ struct CourseVideoDownloadBarView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            if !viewModel.allActiveDownloads.isEmpty {
-                onTap?()
+            Task {
+                let downloads = await viewModel.allActiveDownloads()
+                if !downloads.isEmpty {
+                    onTap?()
+                }
             }
         }
     }
@@ -109,7 +112,9 @@ struct CourseVideoDownloadBarView: View {
             .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
             .padding(.trailing, 15)
             .onTapGesture {
-                viewModel.downloadAll()
+                Task {
+                    await viewModel.downloadAll()
+                }
             }
     }
 

@@ -71,7 +71,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
             ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: config.oAuthClientId)
         )
         storage.clear()
-        downloadManager.deleteAllFiles()
+        await downloadManager.deleteAllFiles()
         coreDataHandler.clear()
     }
     

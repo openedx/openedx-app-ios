@@ -41,22 +41,28 @@ public class CorePersistence: CorePersistenceProtocol {
             .eraseToAnyPublisher()
     }
 
-    public func getAllDownloadData() -> [DownloadData] {
-        let request = CDDownloadData.fetchRequest()
-        guard let downloadData = try? context.fetch(request) else { return [] }
-        return downloadData.map {
-            DownloadData(
-                id: $0.id ?? "",
-                courseId: $0.courseId ?? "",
-                url: $0.url ?? "",
-                fileName: $0.fileName ?? "",
-                displayName: $0.displayName ?? "",
-                progress: $0.progress,
-                resumeData: $0.resumeData,
-                state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
-                type: DownloadType(rawValue: $0.type ?? "") ?? .video,
-                fileSize: Int($0.fileSize)
-            )
+    public func getAllDownloadData(completion: @escaping ([DownloadData]) -> Void) {
+        context.performAndWait {
+            let request = CDDownloadData.fetchRequest()
+            guard let downloadData = try? context.fetch(request) else {
+                completion([])
+                return
+            }
+            let downloads =  downloadData.map {
+                DownloadData(
+                    id: $0.id ?? "",
+                    courseId: $0.courseId ?? "",
+                    url: $0.url ?? "",
+                    fileName: $0.fileName ?? "",
+                    displayName: $0.displayName ?? "",
+                    progress: $0.progress,
+                    resumeData: $0.resumeData,
+                    state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
+                    type: DownloadType(rawValue: $0.type ?? "") ?? .video,
+                    fileSize: Int($0.fileSize)
+                )
+            }
+            completion(downloads)
         }
     }
 
@@ -105,23 +111,29 @@ public class CorePersistence: CorePersistenceProtocol {
         )
     }
 
-    public func getDownloadsForCourse(_ courseId: String) -> [DownloadData] {
-        let request = CDDownloadData.fetchRequest()
-        request.predicate = NSPredicate(format: "courseId = %@", courseId)
-        guard let downloadData = try? context.fetch(request) else { return [] }
-        return downloadData.map {
-            DownloadData(
-                id: $0.id ?? "",
-                courseId: $0.courseId ?? "",
-                url: $0.url ?? "",
-                fileName: $0.fileName ?? "",
-                displayName: $0.displayName ?? "",
-                progress: $0.progress,
-                resumeData: $0.resumeData,
-                state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
-                type: DownloadType(rawValue: $0.type ?? "") ?? .video,
-                fileSize: Int($0.fileSize)
-            )
+    public func getDownloadsForCourse(_ courseId: String, completion: @escaping ([DownloadData]) -> Void) {
+        context.performAndWait {
+            let request = CDDownloadData.fetchRequest()
+            request.predicate = NSPredicate(format: "courseId = %@", courseId)
+            guard let downloadData = try? context.fetch(request) else {
+                completion([])
+                return
+            }
+            let downloads = downloadData.map {
+                DownloadData(
+                    id: $0.id ?? "",
+                    courseId: $0.courseId ?? "",
+                    url: $0.url ?? "",
+                    fileName: $0.fileName ?? "",
+                    displayName: $0.displayName ?? "",
+                    progress: $0.progress,
+                    resumeData: $0.resumeData,
+                    state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
+                    type: DownloadType(rawValue: $0.type ?? "") ?? .video,
+                    fileSize: Int($0.fileSize)
+                )
+            }
+            completion(downloads)
         }
     }
 
@@ -160,17 +172,19 @@ public class CorePersistence: CorePersistenceProtocol {
     }
 
     public func deleteDownloadData(id: String) throws {
-        let request = CDDownloadData.fetchRequest()
-        request.predicate = NSPredicate(format: "id = %@", id)
-        do {
-            let records = try context.fetch(request)
-            for record in records {
-                context.delete(record)
-                try context.save()
-                print("File erased successfully")
+        context.performAndWait {
+            let request = CDDownloadData.fetchRequest()
+            request.predicate = NSPredicate(format: "id = %@", id)
+            do {
+                let records = try context.fetch(request)
+                for record in records {
+                    context.delete(record)
+                    try context.save()
+                    print("File erased successfully")
+                }
+            } catch {
+                print("Error fetching records: \(error.localizedDescription)")
             }
-        } catch {
-            print("Error fetching records: \(error.localizedDescription)")
         }
     }
     

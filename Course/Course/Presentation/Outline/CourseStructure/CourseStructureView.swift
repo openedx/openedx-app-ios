@@ -80,11 +80,13 @@ struct CourseStructureView: View {
                                     .accessibilityElement(children: .ignore)
                                     .accessibilityLabel(CourseLocalization.Accessibility.download)
                                     .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
+                                        Task {
+                                            await viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
                                     }
                                     .onForeground {
                                         viewModel.onForeground()
@@ -94,11 +96,14 @@ struct CourseStructureView: View {
                                     .accessibilityElement(children: .ignore)
                                     .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                                     .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
+                                        Task {
+                                            await viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
+
                                     }
                                     .onBackground {
                                         viewModel.onBackground()
@@ -108,11 +113,13 @@ struct CourseStructureView: View {
                                     .accessibilityElement(children: .ignore)
                                     .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
                                     .onTapGesture {
-                                        viewModel.onDownloadViewTap(
-                                            chapter: chapter,
-                                            blockId: child.id,
-                                            state: state
-                                        )
+                                        Task {
+                                           await viewModel.onDownloadViewTap(
+                                                chapter: chapter,
+                                                blockId: child.id,
+                                                state: state
+                                            )
+                                        }
                                     }
                             }
                         }

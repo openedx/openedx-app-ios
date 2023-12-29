@@ -82,8 +82,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .sink { [weak self] state in
                 guard let self else { return }
                 if case .progress = state { return }
-                DispatchQueue.main.async {
-                    self.setDownloadsStates()
+                Task {
+                    await self.setDownloadsStates()
                 }
             }
             .store(in: &cancellables)
@@ -111,7 +111,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
                     }
                     courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
-                    setDownloadsStates()
+                    await setDownloadsStates()
                     isShowProgress = false
                     
                 } catch let error {
@@ -140,7 +140,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         )
     }
 
-    func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
+    @MainActor
+    func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) async {
         guard let sequential = chapter.childs
             .first(where: { $0.id == blockId }) else {
             return
@@ -153,18 +154,11 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             return
         }
 
-        download(state: state, blocks: blocks)
+        await download(state: state, blocks: blocks)
     }
 
-    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
-        verticalsDownloadState.filter { dict in
-            courseSequential.childs.contains(where: { item in
-                return dict.key == item.id
-            })
-        }
-    }
-
-    func downloadAll(courseStructure: CourseStructure, isOn: Bool) {
+    @MainActor
+    func downloadAll(courseStructure: CourseStructure, isOn: Bool) async {
         let courseChapters = courseStructure.childs
 
         let blocks = courseChapters.flatMap { $0.childs }
@@ -176,27 +170,35 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             return
         }
 
-        courseChapters.forEach { courseChapter in
-            courseChapter.childs
+        for courseChapter in courseChapters {
+            let sequentials = courseChapter.childs
                 .filter { $0.isDownloadable }
-                .forEach { sequential in
-                    guard let state = sequentialsDownloadState[sequential.id] else {
-                       return
-                    }
-                    switch state {
-                    case .available:
-                        download(
-                            state: state,
-                            blocks: downloadableBlocks(from: sequential)
-                        )
-                    case .downloading, .finished:
-                        if isOn { return }
-                        download(
-                            state: state,
-                            blocks: downloadableBlocks(from: sequential)
-                        )
-                    }
+            for sequential in sequentials {
+                guard let state = sequentialsDownloadState[sequential.id] else {
+                   return
                 }
+                switch state {
+                case .available:
+                    await download(
+                        state: state,
+                        blocks: downloadableBlocks(from: sequential)
+                    )
+                case .downloading, .finished:
+                    if isOn { break }
+                    await download(
+                        state: state,
+                        blocks: downloadableBlocks(from: sequential)
+                    )
+                }
+            }
+        }
+    }
+
+    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
+        verticalsDownloadState.filter { dict in
+            courseSequential.childs.contains(where: { item in
+                return dict.key == item.id
+            })
         }
     }
 
@@ -274,10 +276,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .contains(where: { $0.isDownloadable })
     }
 
-    func getDownloadsForCourse(courseId: String) -> [DownloadData] {
-        manager.getDownloadsForCourse(courseId)
-    }
-
+    @MainActor
     private func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
         waitingDownload = nil
         if storage.allowedDownloadLargeFile == false, manager.isLarge(blocks: blocks) {
@@ -288,13 +287,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         return false
     }
 
-    private func download(state: DownloadViewState, blocks: [CourseBlock]) {
+    @MainActor
+    private func download(state: DownloadViewState, blocks: [CourseBlock]) async {
         do {
             switch state {
             case .available:
                 try manager.addToDownloadQueue(blocks: blocks)
             case .downloading:
-                try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
+                try await manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
             case .finished:
                 manager.deleteFile(blocks: blocks)
             }
@@ -305,6 +305,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
 
+    @MainActor
     func downloadableBlocks(from sequential: CourseSequential) -> [CourseBlock] {
         let verticals = sequential.childs
         let blocks = verticals
@@ -314,9 +315,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     @MainActor
-    private func setDownloadsStates() {
+    private func setDownloadsStates() async {
         guard let course = courseStructure else { return }
-        courseDownloads = manager.getDownloadsForCourse(course.id)
+        self.courseDownloads = await manager.getDownloadsForCourse(course.id)
         var sequentialsStates: [String: DownloadViewState] = [:]
         var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
