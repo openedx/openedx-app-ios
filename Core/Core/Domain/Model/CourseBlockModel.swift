@@ -192,14 +192,6 @@ public struct CourseBlock: Equatable {
         fallback ?? hls ?? desktopMP4 ?? mobileHigh ?? mobileLow
     }
 
-//    public var videoUrl: String? {
-//        fallback?.url ?? hls?.url ?? desktopMP4?.url ?? mobileHigh?.url ?? mobileLow?.url
-//    }
-//
-//    public var fileSize: Int? {
-//        fallback?.fileSize ?? hls?.fileSize ?? desktopMP4?.fileSize ?? mobileHigh?.fileSize ?? mobileLow?.fileSize
-//    }
-
     public var youTubeUrl: String? {
         youTube?.url
     }

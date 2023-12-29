@@ -112,8 +112,10 @@ public enum DownloadManagerEvent {
 }
 
 public class DownloadManager: DownloadManagerProtocol {
+
     public var currentDownload: DownloadData?
 
+    private var downloads: [DownloadData] = []
     private let persistence: CorePersistenceProtocol
     private let appStorage: CoreStorage
     private let connectivity: ConnectivityProtocol
@@ -129,6 +131,7 @@ public class DownloadManager: DownloadManagerProtocol {
         self.persistence = persistence
         self.appStorage = appStorage
         self.connectivity = connectivity
+        sync()
     }
     
     public func publisher() -> AnyPublisher<Int, Never> {
@@ -139,6 +142,10 @@ public class DownloadManager: DownloadManagerProtocol {
         currentDownloadEventPublisher
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+
+    private func sync() {
+        downloads = persistence.getAllDownloadData()
     }
 
     public func isLarge(blocks: [CourseBlock]) -> Bool {

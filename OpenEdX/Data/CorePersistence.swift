@@ -185,7 +185,8 @@ public class CorePersistence: CorePersistenceProtocol {
             newDownloadData.fileName = data.fileName
             newDownloadData.resumeData = data.resumeData
             newDownloadData.state = data.state.rawValue
-            
+            newDownloadData.fileSize = Int32(data.fileSize)
+
             do {
                 try context.save()
             } catch {
