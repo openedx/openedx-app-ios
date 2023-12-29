@@ -52,7 +52,7 @@ public struct CourseStructure: Equatable {
             $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
         }
         .filter { $0.isDownloadable }
-        .compactMap { $0.fileSize }
+        .compactMap { $0.video?.fileSize }
         .reduce(.zero) { $0 + $1 }
     }
 
@@ -133,7 +133,7 @@ public struct CourseVertical: Identifiable {
     }
 
     public var blocksTotalSizeInGb: Double {
-        let total = childs.reduce(0) { $0 + Double($1.fileSize ?? 0) }
+        let total = childs.reduce(0) { $0 + Double($1.video?.fileSize ?? 0) }
         return total / 1024 / 1024 / 1024
     }
 
@@ -185,16 +185,20 @@ public struct CourseBlock: Equatable {
     public let youTube: CourseBlockVideo?
 
     public var isDownloadable: Bool {
-        return videoUrl != nil
+        return video?.url != nil
     }
 
-    public var videoUrl: String? {
-        fallback?.url ?? desktopMP4?.url ?? mobileHigh?.url ?? mobileLow?.url ?? hls?.url
+    public var video: CourseBlockVideo? {
+        fallback ?? hls ?? desktopMP4 ?? mobileHigh ?? mobileLow
     }
 
-    public var fileSize: Int? {
-        fallback?.fileSize ?? desktopMP4?.fileSize ?? mobileHigh?.fileSize ?? mobileLow?.fileSize ?? hls?.fileSize
-    }
+//    public var videoUrl: String? {
+//        fallback?.url ?? hls?.url ?? desktopMP4?.url ?? mobileHigh?.url ?? mobileLow?.url
+//    }
+//
+//    public var fileSize: Int? {
+//        fallback?.fileSize ?? hls?.fileSize ?? desktopMP4?.fileSize ?? mobileHigh?.fileSize ?? mobileLow?.fileSize
+//    }
 
     public var youTubeUrl: String? {
         youTube?.url

@@ -65,7 +65,7 @@ public class CorePersistence: CorePersistenceProtocol {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", block.id)
             guard (try? context.fetch(request).first) == nil else { continue }
-            guard let url = block.videoUrl,
+            guard let url = block.video?.url,
                   let fileExtension = URL(string: url)?.pathExtension
             else { continue }
             let fileName = "\(block.id).\(fileExtension)"
@@ -81,7 +81,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 newDownloadData.resumeData = nil
                 newDownloadData.state = DownloadState.waiting.rawValue
                 newDownloadData.type = DownloadType.video.rawValue
-                newDownloadData.fileSize = Int32(block.fileSize ?? 0)
+                newDownloadData.fileSize = Int32(block.video?.fileSize ?? 0)
             }
         }
     }

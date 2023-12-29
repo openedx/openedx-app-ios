@@ -24,11 +24,11 @@ public enum LessonType: Equatable {
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
-            if block.youTubeUrl != nil, let encodedVideo = block.videoUrl {
+            if block.youTubeUrl != nil, let encodedVideo = block.video?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else if let viewYouTubeUrl = block.youTubeUrl {
                 return .youtube(viewYouTubeUrl: viewYouTubeUrl, blockID: block.id)
-            } else if let encodedVideo = block.videoUrl {
+            } else if let encodedVideo = block.video?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else {
                 return .unknown(block.studentUrl)
