@@ -17,7 +17,7 @@ public struct DiscoveryView: View {
     @State private var searchQuery: String = ""
     @State private var isRefreshing: Bool = false
     
-    private var fromStartupScreen: Bool = false
+    private var sourceScreen: LogistrationSourceScreen
     
     @Environment (\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
@@ -37,12 +37,12 @@ public struct DiscoveryView: View {
         viewModel: DiscoveryViewModel,
         router: DiscoveryRouter,
         searchQuery: String? = nil,
-        fromStartupScreen: Bool = false
+        sourceScreen: LogistrationSourceScreen = .default
     ) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.router = router
-        self.fromStartupScreen = fromStartupScreen
         self._searchQuery = State<String>(initialValue: searchQuery ?? "")
+        self.sourceScreen = sourceScreen
     }
     
     public var body: some View {
@@ -136,6 +136,17 @@ public struct DiscoveryView: View {
                     }
                     .frameLimit()
                 }.accessibilityAction {}
+                
+                if !viewModel.userloggedIn {
+                    LogistrationBottomView { buttonAction in
+                        switch buttonAction {
+                        case .signIn:
+                            viewModel.router.showLoginScreen(sourceScreen: .discovery)
+                        case .register:
+                            viewModel.router.showRegisterScreen(sourceScreen: .discovery)
+                        }
+                    }
+                }
             }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
@@ -161,7 +172,7 @@ public struct DiscoveryView: View {
                 }
             }
         }
-        .navigationBarHidden(fromStartupScreen ? false : true)
+        .navigationBarHidden(sourceScreen != .startup)
         .onFirstAppear {
             if !(searchQuery.isEmpty) {
                 router.showDiscoverySearch(searchQuery: searchQuery)
@@ -169,6 +180,9 @@ public struct DiscoveryView: View {
             }
             Task {
                 await viewModel.discovery(page: 1)
+                if case let .courseDetail(courseID, courseTitle) = sourceScreen {
+                    viewModel.router.showCourseDetais(courseID: courseID, title: courseTitle)
+                }
             }
             viewModel.setupNotifications()
         }
@@ -183,7 +197,8 @@ struct DiscoveryView_Previews: PreviewProvider {
                                     config: ConfigMock(),
                                     interactor: DiscoveryInteractor.mock,
                                     connectivity: Connectivity(),
-                                    analytics: DiscoveryAnalyticsMock())
+                                    analytics: DiscoveryAnalyticsMock(),
+                                    storage: CoreStorageMock())
         let router = DiscoveryRouterMock()
         
         DiscoveryView(viewModel: vm, router: router)

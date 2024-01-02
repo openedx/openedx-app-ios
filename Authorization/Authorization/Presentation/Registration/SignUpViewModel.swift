@@ -19,6 +19,8 @@ public class SignUpViewModel: ObservableObject {
     @Published var scrollTo: Int?
     @Published var showError: Bool = false
     @Published var thirdPartyAuthSuccess: Bool = false
+    let sourceScreen: LogistrationSourceScreen
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -43,7 +45,8 @@ public class SignUpViewModel: ObservableObject {
         analytics: AuthorizationAnalytics,
         config: ConfigProtocol,
         cssInjector: CSSInjector,
-        validator: Validator
+        validator: Validator,
+        sourceScreen: LogistrationSourceScreen
     ) {
         self.interactor = interactor
         self.router = router
@@ -51,6 +54,7 @@ public class SignUpViewModel: ObservableObject {
         self.config = config
         self.cssInjector = cssInjector
         self.validator = validator
+        self.sourceScreen = sourceScreen
     }
 
     var socialAuthEnabled: Bool {
@@ -114,7 +118,7 @@ public class SignUpViewModel: ObservableObject {
             analytics.setUserID("\(user.id)")
             analytics.registrationSuccess()
             isShowProgress = false
-            router.showMainOrWhatsNewScreen()
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
             
         } catch let error {
             isShowProgress = false
@@ -171,7 +175,7 @@ public class SignUpViewModel: ObservableObject {
             analytics.setUserID("\(user.id)")
             analytics.userLogin(method: authMethod)
             isShowProgress = false
-            router.showMainOrWhatsNewScreen()
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
         } catch {
             update(fullName: response.name, email: response.email)
             self.externalToken = response.token

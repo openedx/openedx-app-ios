@@ -25,7 +25,7 @@ final class DeleteAccountViewModelTests: XCTestCase {
         try await viewModel.deleteAccount(password: "123")
         
         Verify(interactor, 1, .deleteAccount(password: .any))
-        Verify(router, .showLoginScreen())
+        Verify(router, .showLoginScreen(sourceScreen: .any))
     }
     
     func testDeletingAccountWrongPassword() async throws {
@@ -39,7 +39,7 @@ final class DeleteAccountViewModelTests: XCTestCase {
         try await viewModel.deleteAccount(password: "123")
         
         Verify(interactor, 1, .deleteAccount(password: .any))
-        Verify(router, 0, .showLoginScreen())
+        Verify(router, 0, .showLoginScreen(sourceScreen: .any))
         
         XCTAssertTrue(viewModel.incorrectPassword)
     }
@@ -60,7 +60,7 @@ final class DeleteAccountViewModelTests: XCTestCase {
         try await viewModel.deleteAccount(password: "123")
         
         Verify(interactor, 1, .deleteAccount(password: .any))
-        Verify(router, 0, .showLoginScreen())
+        Verify(router, 0, .showLoginScreen(sourceScreen: .any))
         
         XCTAssertFalse(viewModel.incorrectPassword)
         XCTAssertTrue(viewModel.showError)
@@ -78,7 +78,7 @@ final class DeleteAccountViewModelTests: XCTestCase {
         try await viewModel.deleteAccount(password: "123")
         
         Verify(interactor, 1, .deleteAccount(password: .any))
-        Verify(router, 0, .showLoginScreen())
+        Verify(router, 0, .showLoginScreen(sourceScreen: .any))
         
         XCTAssertFalse(viewModel.incorrectPassword)
         XCTAssertTrue(viewModel.showError)
@@ -98,7 +98,7 @@ final class DeleteAccountViewModelTests: XCTestCase {
         try await viewModel.deleteAccount(password: "123")
         
         Verify(interactor, 1, .deleteAccount(password: .any))
-        Verify(router, 0, .showLoginScreen())
+        Verify(router, 0, .showLoginScreen(sourceScreen: .any))
         
         XCTAssertFalse(viewModel.incorrectPassword)
         XCTAssertTrue(viewModel.showError)

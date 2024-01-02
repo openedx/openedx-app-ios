@@ -105,7 +105,7 @@ public struct WhatsNewView: View {
                                             index += 1
                                         }
                                     } else {
-                                        router.showMainOrWhatsNewScreen()
+                                        router.showMainOrWhatsNewScreen(sourceScreen: viewModel.sourceScreen)
                                     }
                                 }
                             )
@@ -135,7 +135,7 @@ public struct WhatsNewView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button(action: {
-                        router.showMainOrWhatsNewScreen()
+                        router.showMainOrWhatsNewScreen(sourceScreen: viewModel.sourceScreen)
                     }, label: {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentColor)
