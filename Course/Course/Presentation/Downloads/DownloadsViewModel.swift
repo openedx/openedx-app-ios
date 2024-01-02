@@ -27,9 +27,10 @@ final class DownloadsViewModel: ObservableObject {
         observers()
     }
 
-    func cancelDownloading(downloadData: DownloadData) {
+    @MainActor
+    func cancelDownloading(downloadData: DownloadData) async {
         do {
-            try manager.cancelDownloading(downloadData: downloadData)
+            try await manager.cancelDownloading(downloadData: downloadData)
             downloads.removeAll(where: { $0.id == downloadData.id })
         } catch {
             print(error)

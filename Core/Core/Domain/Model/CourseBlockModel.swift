@@ -57,11 +57,11 @@ public struct CourseStructure: Equatable {
     }
 
     public var blocksTotalSizeInMb: Double {
-        Double(blocksTotalSizeInBytes / 1024 / 1024)
+        Double(blocksTotalSizeInBytes) / 1024.0 / 1024.0
     }
 
     public var blocksTotalSizeInGb: Double {
-        Double(blocksTotalSizeInBytes / 1024 / 1024 / 1024)
+        Double(blocksTotalSizeInBytes) / 1024.0 / 1024.0 / 1024.0
     }
 
 }

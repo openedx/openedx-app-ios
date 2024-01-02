@@ -70,7 +70,9 @@ struct DownloadsView: View {
                     }
                     Spacer()
                     Button {
-                        viewModel.cancelDownloading(downloadData: downloadData)
+                        Task {
+                           await  viewModel.cancelDownloading(downloadData: downloadData)
+                        }
                     } label: {
                         if downloadData.state == .finished {
                             DownloadFinishedView()

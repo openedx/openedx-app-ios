@@ -70,7 +70,11 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     var totalSize: String? {
         let mb = courseStructure.blocksTotalSizeInMb
-        return String(format: "%.2f", mb)
+        let size =  mb - calculateSize(value: mb, percentage: progress * 100)
+        if size == 0.0 {
+            return String(format: "%.2f", mb)
+        }
+        return String(format: "%.2f", size)
     }
 
     func allActiveDownloads() async -> [DownloadData] {
@@ -122,6 +126,11 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
         let isOn = totalCount - finishedCount == downloadingCount
         self.isOn = isOn
+    }
+
+    private func calculateSize(value: Double, percentage: Double) -> Double {
+        let val = value * percentage
+        return val / 100.0
     }
 
     private func observers() {

@@ -137,6 +137,30 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
+    public func downloadData(by blockId: String, completion: @escaping (DownloadData?) -> Void) {
+        context.performAndWait {
+            let request = CDDownloadData.fetchRequest()
+            request.predicate = NSPredicate(format: "id = %@", blockId)
+            guard let downloadData = try? context.fetch(request).first else {
+                completion(nil)
+                return
+            }
+            let data = DownloadData(
+                id: downloadData.id ?? "",
+                courseId: downloadData.courseId ?? "",
+                url: downloadData.url ?? "",
+                fileName: downloadData.fileName ?? "",
+                displayName: downloadData.displayName ?? "",
+                progress: downloadData.progress,
+                resumeData: downloadData.resumeData,
+                state: DownloadState(rawValue: downloadData.state ?? "") ?? .paused,
+                type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video,
+                fileSize: Int(downloadData.fileSize)
+            )
+            completion(data)
+        }
+    }
+
     public func downloadData(by blockId: String) -> DownloadData? {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", blockId)

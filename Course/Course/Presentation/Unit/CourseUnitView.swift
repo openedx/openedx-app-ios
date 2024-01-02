@@ -132,8 +132,9 @@ public struct CourseUnitView: View {
                                                     playerStateSubject: playerStateSubject,
                                                     languages: block.subtitles ?? [],
                                                     isOnScreen: index == viewModel.index
-                                                ).frameLimit()
-                                                
+                                                )
+                                                .frameLimit()
+
                                                 if !isHorizontal {
                                                     Spacer(minLength: 150)
                                                 }
