@@ -104,7 +104,12 @@ public class Router: AuthorizationRouter,
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+            let view = SignInView(
+                viewModel: Container.shared.resolve(
+                    SignInViewModel.self,
+                    argument: LogistrationSourceScreen.default
+                )!
+            )
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: false)
         }
