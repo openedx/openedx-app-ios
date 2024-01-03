@@ -185,11 +185,12 @@ public struct CourseBlock: Equatable {
     public let youTube: CourseBlockVideo?
 
     public var isDownloadable: Bool {
-        return video?.url != nil
+        guard let url = video?.url else { return false }
+        return canDownload(url: url)
     }
 
     public var video: CourseBlockVideo? {
-        fallback ?? hls ?? desktopMP4 ?? mobileHigh ?? mobileLow
+       hls ?? desktopMP4 ?? mobileHigh ?? mobileLow ?? fallback
     }
 
     public var youTubeUrl: String? {
@@ -230,6 +231,14 @@ public struct CourseBlock: Equatable {
         self.mobileHigh = mobileHigh
         self.mobileLow = mobileLow
         self.hls = hls
+    }
+
+    func isVideoUrl(url: String) -> Bool {
+        [".mp4", ".m3u8"].contains(where: { url.contains($0) })
+    }
+
+    private func canDownload(url: String) -> Bool {
+        [".mp4"].contains(where: { url.contains($0) })
     }
 }
 
