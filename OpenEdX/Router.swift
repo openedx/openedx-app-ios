@@ -80,7 +80,6 @@ public class Router: AuthorizationRouter,
                 argument: sourceScreen
             )!
             
-        
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
