@@ -54,26 +54,22 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     var remainingCount: Int {
-        // Verticals
         courseViewModel.verticalsDownloadState.filter { $0.value != .finished }.count
     }
 
     var downloadingCount: Int {
-        // Verticals
         courseViewModel.verticalsDownloadState.filter { $0.value == .downloading }.count
     }
 
     var totalFinishedCount: Int {
-        // Verticals
         courseViewModel.verticalsDownloadState.filter { $0.value == .finished }.count
     }
 
     var totalSize: String? {
         let mb = courseStructure.blocksTotalSizeInMb
+        if mb == 0 { return nil }
         let size =  mb - calculateSize(value: mb, percentage: progress * 100)
-        if size == 0.0 {
-            return String(format: "%.2f", mb)
-        }
+        if size == 0.0 { return String(format: "%.2f", mb) }
         return String(format: "%.2f", size)
     }
 
@@ -102,7 +98,6 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     // MARK: - Private intents
 
     private func toggleStateIsOn() {
-        // Verticals
         let totalCount = courseViewModel.verticalsDownloadState.count
         let availableCount = courseViewModel.verticalsDownloadState.filter { $0.value == .available }.count
         let finishedCount = totalFinishedCount
@@ -128,11 +123,6 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         self.isOn = isOn
     }
 
-    private func calculateSize(value: Double, percentage: Double) -> Double {
-        let val = value * percentage
-        return val / 100.0
-    }
-
     private func observers() {
         currentDownload = courseViewModel.manager.currentDownload
         toggleStateIsOn()
@@ -152,5 +142,10 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 self.toggleStateIsOn()
             }
             .store(in: &cancellables)
+    }
+
+    private func calculateSize(value: Double, percentage: Double) -> Double {
+        let val = value * percentage
+        return val / 100.0
     }
 }
