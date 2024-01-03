@@ -91,6 +91,7 @@ public extension DataLayer {
     
     enum StartType: String, Codable {
         case timestamp
+        case string
         case empty
         case unknown
         
