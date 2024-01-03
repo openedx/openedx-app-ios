@@ -221,6 +221,7 @@ public extension DataLayer {
     enum Mode: String, Codable {
         case audit
         case honor
+        case verified
     }
     
     // MARK: - CourseSharingUtmParameters
