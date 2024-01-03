@@ -199,9 +199,9 @@ public extension DataLayer {
     // MARK: - CourseMode
     struct CourseMode: Codable {
         public let slug: Mode?
-        public let sku: Mode?
-        public let androidSku: Mode?
-        public let iosSku: Mode?
+        public let sku: String?
+        public let androidSku: String?
+        public let iosSku: String?
 
         enum CodingKeys: String, CodingKey {
             case slug
@@ -210,7 +210,7 @@ public extension DataLayer {
             case iosSku = "ios_sku"
         }
 
-        public init(slug: Mode?, sku: Mode?, androidSku: Mode?, iosSku: Mode?) {
+        public init(slug: Mode?, sku: String?, androidSku: String?, iosSku: String?) {
             self.slug = slug
             self.sku = sku
             self.androidSku = androidSku
