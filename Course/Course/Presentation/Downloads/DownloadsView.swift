@@ -12,6 +12,8 @@ import Combine
 
 struct DownloadsView: View {
 
+    // MARK: - Properties
+
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: DownloadsViewModel
 
@@ -23,6 +25,8 @@ struct DownloadsView: View {
             wrappedValue: .init(courseId: courseId, manager: manager)
         )
     }
+
+    // MARK: - Body
 
     var body: some View {
         NavigationView {
@@ -46,8 +50,11 @@ struct DownloadsView: View {
                     }
                 }
             }
+            .padding(.top, 1)
         }
     }
+
+    // MARK: - Views
 
     @ViewBuilder
     func cell(downloadData: DownloadData) -> some View {

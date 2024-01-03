@@ -115,7 +115,9 @@ public enum DownloadManagerEvent {
 }
 
 public class DownloadManager: DownloadManagerProtocol {
-    
+
+    // MARK: - Properties
+
     public var currentDownload: DownloadData?
     private let persistence: CorePersistenceProtocol
     private let appStorage: CoreStorage
@@ -123,6 +125,8 @@ public class DownloadManager: DownloadManagerProtocol {
     private var downloadRequest: DownloadRequest?
     private var isDownloadingInProgress: Bool = false
     private var currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
+
+    // MARK: - Init
 
     public init(
         persistence: CorePersistenceProtocol,
@@ -133,7 +137,9 @@ public class DownloadManager: DownloadManagerProtocol {
         self.appStorage = appStorage
         self.connectivity = connectivity
     }
-    
+
+    // MARK: - Publishers
+
     public func publisher() -> AnyPublisher<Int, Never> {
         persistence.publisher()
     }
@@ -144,8 +150,26 @@ public class DownloadManager: DownloadManagerProtocol {
             .eraseToAnyPublisher()
     }
 
+    // MARK: - Intents
+
     public func isLarge(blocks: [CourseBlock]) -> Bool {
         (blocks.reduce(0) {$0 + Double($1.video?.fileSize ?? 0)} / 1024 / 1024 / 1024) > 1
+    }
+
+    public func getDownloads() async -> [DownloadData] {
+        await withCheckedContinuation { continuation in
+            persistence.getAllDownloadData { downloads in
+                continuation.resume(returning: downloads)
+            }
+        }
+    }
+
+    public func getDownloadsForCourse(_ courseId: String) async -> [DownloadData] {
+        await withCheckedContinuation { continuation in
+            persistence.getDownloadsForCourse(courseId) { downloads in
+                continuation.resume(returning: downloads)
+            }
+        }
     }
 
     public func addToDownloadQueue(blocks: [CourseBlock]) throws {
@@ -159,20 +183,22 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    public func getDownloadsForCourse(_ courseId: String) async -> [DownloadData] {
-        await withCheckedContinuation { continuation in
-            persistence.getDownloadsForCourse(courseId) { downloads in
-                continuation.resume(returning: downloads)
-            }
-        }
+    public func pauseDownloading() {
+        guard let currentDownload else { return }
+        downloadRequest?.cancel(byProducingResumeData: { [weak self] resumeData in
+            guard let self else { return }
+            self.persistence.updateDownloadState(
+                id: currentDownload.id,
+                state: .paused,
+                resumeData: resumeData
+            )
+            self.currentDownload?.state = .paused
+            self.currentDownloadEventPublisher.send(.paused(currentDownload))
+        })
     }
 
-    public func getDownloads() async -> [DownloadData] {
-        await withCheckedContinuation { continuation in
-            persistence.getAllDownloadData { downloads in
-                continuation.resume(returning: downloads)
-            }
-        }
+    public func resumeDownloading() throws {
+        try newDownload()
     }
 
     public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {
@@ -200,38 +226,6 @@ public class DownloadManager: DownloadManagerProtocol {
             NSLog("Error deleting file: \(error.localizedDescription)")
         }
         try newDownload()
-    }
-
-    private func newDownload() throws {
-        if userCanDownload() {
-            guard let download = persistence.getNextBlockForDownloading() else {
-                isDownloadingInProgress = false
-                return
-            }
-            currentDownload = download
-            try downloadFileWithProgress(download)
-            currentDownloadEventPublisher.send(.started(download))
-        } else {
-            throw NoWiFiError()
-        }
-    }
-
-    public func resumeDownloading() throws {
-        try newDownload()
-    }
-
-    public func pauseDownloading() {
-        guard let currentDownload else { return }
-        downloadRequest?.cancel(byProducingResumeData: { [weak self] resumeData in
-            guard let self else { return }
-            self.persistence.updateDownloadState(
-                id: currentDownload.id,
-                state: .paused,
-                resumeData: resumeData
-            )
-            self.currentDownload?.state = .paused
-            self.currentDownloadEventPublisher.send(.paused(currentDownload))
-        })
     }
 
     public func deleteFile(blocks: [CourseBlock]) async {
@@ -262,6 +256,7 @@ public class DownloadManager: DownloadManagerProtocol {
         currentDownloadEventPublisher.send(.clearedAll)
     }
 
+
     public func fileUrl(for blockId: String) async -> URL? {
         await withCheckedContinuation { continuation in
             persistence.downloadData(by: blockId) { [weak self] data in
@@ -283,6 +278,20 @@ public class DownloadManager: DownloadManagerProtocol {
         let path = videosFolderUrl()
         let fileName = data.fileName
         return path?.appendingPathComponent(fileName)
+    }
+
+    private func newDownload() throws {
+        if userCanDownload() {
+            guard let download = persistence.getNextBlockForDownloading() else {
+                isDownloadingInProgress = false
+                return
+            }
+            currentDownload = download
+            try downloadFileWithProgress(download)
+            currentDownloadEventPublisher.send(.started(download))
+        } else {
+            throw NoWiFiError()
+        }
     }
 
     private func userCanDownload() -> Bool {
@@ -337,6 +346,8 @@ public class DownloadManager: DownloadManagerProtocol {
             })
         }
     }
+
+    // MARK: - Private Intents
 
     private func videosFolderUrl() -> URL? {
         let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]

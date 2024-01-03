@@ -11,6 +11,8 @@ import Combine
 
 final class DownloadsViewModel: ObservableObject {
 
+    // MARK: - Properties
+
     @Published private(set) var downloads: [DownloadData] = []
     private let courseId: String?
 
@@ -26,6 +28,8 @@ final class DownloadsViewModel: ObservableObject {
         Task { await configure() }
         observers()
     }
+
+    // MARK: - Intents
 
     @MainActor
     func cancelDownloading(downloadData: DownloadData) async {
