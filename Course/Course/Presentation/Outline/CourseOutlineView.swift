@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Kingfisher
 import Theme
+import Profile
 
 public struct CourseOutlineView: View {
     
@@ -21,6 +22,7 @@ public struct CourseOutlineView: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
 
     @State private var showingDownloads: Bool = false
+    @State private var showingVideoDownloadQuality: Bool = false
 
     public init(
         viewModel: CourseContainerViewModel,
@@ -48,16 +50,7 @@ public struct CourseOutlineView: View {
                                 courseBanner(proxy: proxy)
                             }
 
-                            if isVideo,
-                                let courseVideosStructure = viewModel.courseVideosStructure,
-                                viewModel.hasVideoForDowbloads() {
-                                CourseVideoDownloadBarView(
-                                    courseStructure: courseVideosStructure,
-                                    courseViewModel: viewModel
-                                ) {
-                                    showingDownloads = true
-                                }
-                            }
+                            bars
 
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
@@ -160,6 +153,14 @@ public struct CourseOutlineView: View {
         .sheet(isPresented: $showingDownloads) {
             DownloadsView(manager: viewModel.manager)
         }
+        .sheet(isPresented: $showingVideoDownloadQuality) {
+            viewModel.storage.userSettings.map {
+                VideoDownloadQualityContainerView(
+                    downloadQuality: $0.downloadQuality,
+                    didSelect: viewModel.update(downloadQuality:)
+                )
+            }
+        }
         .alert(isPresented: $viewModel.showAllowLargeDownload) {
             Alert(
                 title: Text("Download"),
@@ -169,6 +170,29 @@ public struct CourseOutlineView: View {
                 },
                 secondaryButton: .cancel()
             )
+        }
+    }
+
+    @ViewBuilder
+    private var bars: some View {
+        if isVideo,
+            let courseVideosStructure = viewModel.courseVideosStructure,
+            viewModel.hasVideoForDowbloads() {
+            Group {
+                CourseVideoDownloadBarView(
+                    courseStructure: courseVideosStructure,
+                    courseViewModel: viewModel
+                ) {
+                    showingDownloads = true
+                }
+                viewModel.userSettings.map {
+                    VideoDownloadQualityBarView(
+                        downloadQuality: $0.downloadQuality
+                    ) {
+                        showingVideoDownloadQuality = true
+                    }
+                }
+            }
         }
     }
 

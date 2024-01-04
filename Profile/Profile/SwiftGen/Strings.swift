@@ -105,6 +105,20 @@ public enum ProfileLocalization {
   }
   public enum Settings {
     /// Lower data usage
+    public static let downloadQuality360Description = ProfileLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_360_DESCRIPTION", fallback: "Lower data usage")
+    /// 360p
+    public static let downloadQuality360Title = ProfileLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_360_TITLE", fallback: "360p")
+    /// 540p
+    public static let downloadQuality540Title = ProfileLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_540_TITLE", fallback: "540p")
+    /// Best quality
+    public static let downloadQuality720Description = ProfileLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_720_DESCRIPTION", fallback: "Best quality")
+    /// 720p
+    public static let downloadQuality720Title = ProfileLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_720_TITLE", fallback: "720p")
+    /// Recommended
+    public static let downloadQualityAutoDescription = ProfileLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_AUTO_DESCRIPTION", fallback: "Recommended")
+    /// Auto
+    public static let downloadQualityAutoTitle = ProfileLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_AUTO_TITLE", fallback: "Auto")
+    /// Lower data usage
     public static let quality360Description = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_DESCRIPTION", fallback: "Lower data usage")
     /// 360p
     public static let quality360Title = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_TITLE", fallback: "360p")
@@ -126,6 +140,8 @@ public enum ProfileLocalization {
     public static let upToDate = ProfileLocalization.tr("Localizable", "SETTINGS.UP_TO_DATE", fallback: "Up-to-date")
     /// Version:
     public static let version = ProfileLocalization.tr("Localizable", "SETTINGS.VERSION", fallback: "Version:")
+    /// Video download quality
+    public static let videoDownloadQualityTitle = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_DOWNLOAD_QUALITY_TITLE", fallback: "Video download quality")
     /// Auto (Recommended)
     public static let videoQualityDescription = ProfileLocalization.tr("Localizable", "SETTINGS.VIDEO_QUALITY_DESCRIPTION", fallback: "Auto (Recommended)")
     /// Video streaming quality

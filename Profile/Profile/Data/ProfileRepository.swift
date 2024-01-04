@@ -144,7 +144,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         if let userSettings = storage.userSettings {
             return userSettings
         } else {
-            return UserSettings(wifiOnly: true, streamingQuality: StreamingQuality.auto)
+            return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
         }
     }
     
@@ -233,7 +233,7 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
     public func deleteAccount(password: String) async throws -> Bool { return false }
     
     public func getSettings() -> UserSettings {
-        return UserSettings(wifiOnly: true, streamingQuality: .auto)
+        return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
     }
     public func saveSettings(_ settings: UserSettings) {}
 }

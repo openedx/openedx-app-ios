@@ -36,6 +36,7 @@
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
 		25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */; };
+		BA58CF5F2B46D695005B102E /* VideoDownloadQualityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF5E2B46D695005B102E /* VideoDownloadQualityView.swift */; };
 		E8264C634DD8AD314ECE8905 /* Pods_App_Profile_ProfileTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		9D125F82E0EAC4B6C0CE280F /* Pods-App-Profile-ProfileTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A9F98CD65D1F657EB8F9EA59 /* Pods-App-Profile.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.releasedev.xcconfig"; sourceTree = "<group>"; };
 		B3F05DC21379BD4FE1AFCCF1 /* Pods-App-Profile.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugprod.xcconfig"; sourceTree = "<group>"; };
+		BA58CF5E2B46D695005B102E /* VideoDownloadQualityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityView.swift; sourceTree = "<group>"; };
 		BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Profile_ProfileTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F52EFE7DC07BE68B9A302DAF /* Pods-App-Profile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debug.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debug.xcconfig"; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			children = (
 				0259104329C39C9E004B5A55 /* SettingsView.swift */,
 				0259104729C3A5F0004B5A55 /* VideoQualityView.swift */,
+				BA58CF5E2B46D695005B102E /* VideoDownloadQualityView.swift */,
 				0259104529C39CCF004B5A55 /* SettingsViewModel.swift */,
 			);
 			path = Settings;
@@ -571,6 +574,7 @@
 				029301DA2938948500E99AB8 /* ProfileType.swift in Sources */,
 				0259104429C39C9E004B5A55 /* SettingsView.swift in Sources */,
 				02B089432A9F832200754BD4 /* ProfileStorage.swift in Sources */,
+				BA58CF5F2B46D695005B102E /* VideoDownloadQualityView.swift in Sources */,
 				021D925228DC918D00ACC565 /* ProfileViewModel.swift in Sources */,
 				0248F9B128DDB09D0041327E /* Strings.swift in Sources */,
 				020306CA2932B14D000949EA /* EditProfileViewModel.swift in Sources */,

@@ -71,6 +71,8 @@
 		197FB8EA8F92F00A8F383D82 /* Pods_App_Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */; };
 		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 		BA58CF5D2B3D804D005B102E /* CourseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF5C2B3D804D005B102E /* CourseStorage.swift */; };
+		BA58CF612B471041005B102E /* VideoDownloadQualityBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */; };
+		BA58CF642B471363005B102E /* VideoDownloadQualityContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF632B471363005B102E /* VideoDownloadQualityContainerView.swift */; };
 		BAAD62C82AFD00EE000E6103 /* CourseStructureNestedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C72AFD00EE000E6103 /* CourseStructureNestedListView.swift */; };
 		BAC0E0D82B32EF03006B68A9 /* DownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC0E0D72B32EF03006B68A9 /* DownloadsView.swift */; };
 		BAC0E0DB2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC0E0DA2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift */; };
@@ -175,6 +177,8 @@
 		ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debug.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debug.xcconfig"; sourceTree = "<group>"; };
 		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BA58CF5C2B3D804D005B102E /* CourseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStorage.swift; sourceTree = "<group>"; };
+		BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityBarView.swift; sourceTree = "<group>"; };
+		BA58CF632B471363005B102E /* VideoDownloadQualityContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityContainerView.swift; sourceTree = "<group>"; };
 		BAAD62C72AFD00EE000E6103 /* CourseStructureNestedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureNestedListView.swift; sourceTree = "<group>"; };
 		BAC0E0D72B32EF03006B68A9 /* DownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsView.swift; sourceTree = "<group>"; };
 		BAC0E0DA2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoDownloadBarViewModel.swift; sourceTree = "<group>"; };
@@ -488,6 +492,15 @@
 			path = Unit;
 			sourceTree = "<group>";
 		};
+		BA58CF622B471047005B102E /* VideoDownloadQualityBarView */ = {
+			isa = PBXGroup;
+			children = (
+				BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */,
+				BA58CF632B471363005B102E /* VideoDownloadQualityContainerView.swift */,
+			);
+			path = VideoDownloadQualityBarView;
+			sourceTree = "<group>";
+		};
 		BAC0E0D92B32F0A2006B68A9 /* CourseVideoDownloadBarView */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				BAC0E0D92B32F0A2006B68A9 /* CourseVideoDownloadBarView */,
+				BA58CF622B471047005B102E /* VideoDownloadQualityBarView */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -792,6 +806,7 @@
 				068DDA622B1E198700FF8CCB /* CourseUnitDropDownTitle.swift in Sources */,
 				BAD9CA4A2B2C88E000DE790A /* CourseVideoDownloadBarView.swift in Sources */,
 				022C64DE29AD167A000F532B /* HandoutsUpdatesDetailView.swift in Sources */,
+				BA58CF612B471041005B102E /* VideoDownloadQualityBarView.swift in Sources */,
 				0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */,
 				068DDA602B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift in Sources */,
 				022C64E029ADEA9B000F532B /* Data_UpdatesResponse.swift in Sources */,
@@ -829,6 +844,7 @@
 				DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */,
 				02F066E829DC71750073E13B /* SubtittlesView.swift in Sources */,
 				022C64E229ADEB83000F532B /* CourseUpdate.swift in Sources */,
+				BA58CF642B471363005B102E /* VideoDownloadQualityContainerView.swift in Sources */,
 				BA58CF5D2B3D804D005B102E /* CourseStorage.swift in Sources */,
 				02454CA62A26196C0043052A /* UnknownView.swift in Sources */,
 				0766DFD0299AB29000EBEF6A /* PlayerViewController.swift in Sources */,

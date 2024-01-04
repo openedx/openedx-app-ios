@@ -20,6 +20,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
     @Published var verticalsDownloadState: [String: DownloadViewState] = [:]
     @Published var continueWith: ContinueWith?
+    @Published var userSettings: UserSettings?
 
     var errorMessage: String? {
         didSet {
@@ -46,7 +47,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
     private let analytics: CourseAnalytics
-    private var storage: CourseStorage
+    private(set) var storage: CourseStorage
 
     public init(
         interactor: CourseInteractorProtocol,
@@ -75,6 +76,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.enrollmentStart = enrollmentStart
         self.enrollmentEnd = enrollmentEnd
         self.storage = storage
+        self.userSettings = storage.userSettings
 
         super.init(manager: manager)
         
@@ -125,7 +127,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-    
+
+    func update(downloadQuality: DownloadQuality) {
+        storage.userSettings?.downloadQuality = downloadQuality
+        userSettings = storage.userSettings
+    }
+
     @MainActor
     func tryToRefreshCookies() async {
         try? await authInteractor.getCookies(force: false)

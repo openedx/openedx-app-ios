@@ -21,7 +21,9 @@ public protocol ProfileRouter: BaseRouter {
     func showSettings()
     
     func showVideoQualityView(viewModel: SettingsViewModel)
-    
+
+    func showVideoDownloadQualityView(downloadQuality: DownloadQuality, didSelect: ((DownloadQuality) -> Void)?)
+
     func showDeleteProfileView()
     
 }
@@ -41,7 +43,9 @@ public class ProfileRouterMock: BaseRouterMock, ProfileRouter {
     public func showSettings() {}
     
     public func showVideoQualityView(viewModel: SettingsViewModel) {}
-    
+
+    public func showVideoDownloadQualityView(downloadQuality: DownloadQuality, didSelect: ((DownloadQuality) -> Void)?) {}
+
     public func showDeleteProfileView() {}
     
 }
