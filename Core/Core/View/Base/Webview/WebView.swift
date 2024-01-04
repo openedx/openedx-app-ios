@@ -10,108 +10,6 @@ import WebKit
 import SwiftUI
 import Theme
 
-public struct WebviewMessage: Equatable {
-    var name: String
-    var handler: (Any, WKWebView?) -> Void
-
-    public static func == (lhs: WebviewMessage, rhs: WebviewMessage) -> Bool {
-        lhs.name == rhs.name
-    }
-}
-
-public protocol WebViewScriptInjectionProtocol: Equatable, Identifiable {
-    var id: String { get }
-    var script: String { get }
-    var messages: [WebviewMessage]? { get }
-    var injectionTime: WKUserScriptInjectionTime { get }
-}
-
-extension WebViewScriptInjectionProtocol {
-    public func webviewInjection() -> WebviewInjection {
-        WebviewInjection(
-            id: self.id,
-            script: self.script,
-            messages: self.messages,
-            injectionTime: self.injectionTime
-        )
-    }
-}
-
-public struct WebviewInjection: WebViewScriptInjectionProtocol {
-    public var id: String
-    public var script: String
-    public var messages: [WebviewMessage]?
-    public var injectionTime: WKUserScriptInjectionTime
-    init(
-        id: String,
-        script: String, 
-        messages: [WebviewMessage]? = nil,
-        injectionTime: WKUserScriptInjectionTime = .atDocumentEnd
-    ) {
-        self.id = id
-        self.script = script
-        self.messages = messages
-        self.injectionTime = injectionTime
-    }
-    
-    public static func == (lhs: WebviewInjection, rhs: WebviewInjection) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.script == rhs.script &&
-        lhs.injectionTime == rhs.injectionTime &&
-        lhs.messages == rhs.messages
-    }
-}
-
-public extension WebviewInjection {
-
-    static var surveyCSS: WebviewInjection {
-        SurveyCssInjection()
-            .webviewInjection()
-    }
-
-}
-
-public struct SurveyCssInjection: WebViewScriptInjectionProtocol {
-    public var id: String = "SurveyCSSInjection"
-    public var messages: [WebviewMessage]?
-    public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
-    
-    public var script: String {
-        """
-        window.addEventListener("load", () => {
-            var css = `\(css)`,
-                head = document.head || document.getElementsByTagName('head')[0],
-                style = document.createElement('style');
-            head.appendChild(style);
-            style.type = 'text/css';
-            if (style.styleSheet) {
-                style.styleSheet.cssText = css;
-            } else {
-                style.appendChild(document.createTextNode(css));
-            }
-        })
-        """
-    }
-    
-    var css: String {
-        """
-        .survey-table:not(.poll-results) .survey-option .visible-mobile-only {
-            width: calc(100% - 21px) !important;
-        }
-
-        .survey-percentage .percentage {
-            width: 54px !important;
-        }
-        """
-    }
-    
-    public init() {}
-    
-    public static func == (lhs: SurveyCssInjection, rhs: SurveyCssInjection) -> Bool {
-        lhs.script == rhs.script
-    }
-}
-
 public struct WebView: UIViewRepresentable {
     
     public class ViewModel: ObservableObject {
@@ -222,7 +120,10 @@ public struct WebView: UIViewRepresentable {
             return .allow
         }
 
-        public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        public func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
             let messages = parent.viewModel.injections?.compactMap({$0.messages}).flatMap({$0}) ?? []
             if let currentMessage = messages.first(where: { $0.name == message.name }) {
                 currentMessage.handler(message.body, message.webView)
@@ -260,7 +161,11 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         
         for injection in viewModel.injections ?? [] {
-            let script = WKUserScript(source: injection.script, injectionTime: injection.injectionTime, forMainFrameOnly: true)
+            let script = WKUserScript(
+                source: injection.script,
+                injectionTime: injection.injectionTime,
+                forMainFrameOnly: true
+            )
             webView.configuration.userContentController.addUserScript(script)
             
             for message in injection.messages ?? [] {
