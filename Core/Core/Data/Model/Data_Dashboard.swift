@@ -186,22 +186,6 @@ public extension DataLayer {
         }
     }
 
-    enum Name: String, Codable {
-        case courseImage = "Course Image"
-    }
-
-    enum Org: String, Codable {
-        case organization = "Organization"
-        case univerity = "Univerity"
-        case university = "University"
-        case unknown
-        
-        public init(from decoder: Decoder) throws {
-            let rawValue = try decoder.singleValueContainer().decode(RawValue.self)
-            self = Org(rawValue: rawValue) ?? .unknown
-        }
-    }
-
     // MARK: - CourseMode
     struct CourseMode: Codable {
         public let slug: Mode?
