@@ -283,6 +283,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .contains(where: { $0.isDownloadable })
     }
 
+
+    func isAllDownloading() -> Bool {
+        let totalCount = verticalsDownloadState.count
+        let downloadingCount = verticalsDownloadState.filter { $0.value == .downloading }.count
+        let finishedCount = verticalsDownloadState.filter { $0.value == .finished }.count
+        if finishedCount == totalCount { return false }
+        return totalCount - finishedCount == downloadingCount
+    }
+
     @MainActor
     private func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
         waitingDownload = nil

@@ -64,3 +64,5 @@
 "DOWNLOAD.DOWNLOAD_TO_DEVICE" = "Download to device";
 "DOWNLOAD.VIDEOS" = "Videos";
 "DOWNLOAD.REMAINING" = "Remaining";
+
+"DOWNLOAD.CHANGE_QUALITY_ALERT" = "You cannot change the download video quality when all videos are downloading";

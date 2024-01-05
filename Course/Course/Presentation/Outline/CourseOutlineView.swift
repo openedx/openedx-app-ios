@@ -189,6 +189,10 @@ public struct CourseOutlineView: View {
                     VideoDownloadQualityBarView(
                         downloadQuality: $0.downloadQuality
                     ) {
+                        if viewModel.isAllDownloading() {
+                            viewModel.errorMessage = CourseLocalization.Download.changeQualityAlert
+                            return
+                        }
                         showingVideoDownloadQuality = true
                     }
                 }
