@@ -203,7 +203,7 @@ class ScreenAssembly: Assembly {
         container.register(CourseRepositoryProtocol.self) { r in
             CourseRepository(
                 api: r.resolve(API.self)!,
-                appStorage: r.resolve(CoreStorage.self)!,
+                coreStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 persistence: r.resolve(CoursePersistenceProtocol.self)!
             )

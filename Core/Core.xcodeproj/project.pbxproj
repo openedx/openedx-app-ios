@@ -55,7 +55,6 @@
 		027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3BA2909478B00392132 /* UIView+EnclosingScrollView.swift */; };
 		027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3BB2909478B00392132 /* UIResponder+CurrentResponder.swift */; };
 		027BD3C52909707700392132 /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3C42909707700392132 /* Shake.swift */; };
-		027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DB33428D8C8FE002B6862 /* Data_MyCourse.swift */; };
 		0282DA7328F98CC9003C3F07 /* WebUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282DA7228F98CC9003C3F07 /* WebUnitView.swift */; };
 		0283347D28D4D3DE00C828FC /* Data_Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283347C28D4D3DE00C828FC /* Data_Discovery.swift */; };
 		0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283347F28D4DCD200C828FC /* ViewExtension.swift */; };
@@ -118,6 +117,7 @@
 		0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE5E28D0B22C006D8A5D /* Strings.swift */; };
 		0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE6028D0B2CB006D8A5D /* Assets.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
+		07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA30427D2B20B299009B64B7 /* SocialAuthError.swift */; };
 		BA76135C2B21BC7300B599B7 /* SocialAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */; };
@@ -219,7 +219,6 @@
 		027BD3BA2909478B00392132 /* UIView+EnclosingScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+EnclosingScrollView.swift"; sourceTree = "<group>"; };
 		027BD3BB2909478B00392132 /* UIResponder+CurrentResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+CurrentResponder.swift"; sourceTree = "<group>"; };
 		027BD3C42909707700392132 /* Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
-		027DB33428D8C8FE002B6862 /* Data_MyCourse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_MyCourse.swift; sourceTree = "<group>"; };
 		0282DA7228F98CC9003C3F07 /* WebUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUnitView.swift; sourceTree = "<group>"; };
 		0283347C28D4D3DE00C828FC /* Data_Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Discovery.swift; sourceTree = "<group>"; };
 		0283347F28D4DCD200C828FC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
@@ -285,6 +284,7 @@
 		0770DE5E28D0B22C006D8A5D /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		0770DE6028D0B2CB006D8A5D /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Animation.swift"; sourceTree = "<group>"; };
+		07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Certificate.swift; sourceTree = "<group>"; };
 		0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugstage.xcconfig"; sourceTree = "<group>"; };
 		1A154A95AF4EE85A4A1C083B /* Pods-App-Core.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releasedev.xcconfig"; sourceTree = "<group>"; };
 		2B7E6FE7843FC4CF2BFA712D /* Pods-App-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debug.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debug.xcconfig"; sourceTree = "<group>"; };
@@ -495,13 +495,13 @@
 				0727878428D31657002E9142 /* Data_User.swift */,
 				0283347C28D4D3DE00C828FC /* Data_Discovery.swift */,
 				02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */,
-				027DB33428D8C8FE002B6862 /* Data_MyCourse.swift */,
 				021D924728DC860C00ACC565 /* Data_UserProfile.swift */,
 				0259104929C4A5B6004B5A55 /* UserSettings.swift */,
 				070019A428F6F17900D5FC78 /* Data_Media.swift */,
 				0236961C28F9A2D200EEF206 /* Data_AuthResponse.swift */,
 				027BD3912907D88F00392132 /* Data_RegistrationFields.swift */,
 				028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */,
+				07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1003,7 +1003,6 @@
 				0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */,
 				BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
-				027DB33528D8C8FE002B6862 /* Data_MyCourse.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
 				BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */,
 				02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */,
@@ -1042,6 +1041,7 @@
 				027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */,
 				024BE3DF29B2615500BCDEE2 /* CGColorExtension.swift in Sources */,
 				0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */,
+				07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */,
 				0727878928D31734002E9142 /* User.swift in Sources */,
 				A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */,
 				02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */,
