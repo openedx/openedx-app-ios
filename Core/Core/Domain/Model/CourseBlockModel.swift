@@ -47,21 +47,21 @@ public struct CourseStructure: Equatable {
         self.certificate = certificate
     }
 
-    public var blocksTotalSizeInBytes: Int {
+    public func blocksTotalSizeInBytes(quality: DownloadQuality) -> Int {
         childs.flatMap {
             $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
         }
         .filter { $0.isDownloadable }
-        .compactMap { $0.video?.fileSize }
+        .compactMap { $0.video(quality: quality)?.fileSize }
         .reduce(.zero) { $0 + $1 }
     }
 
-    public var blocksTotalSizeInMb: Double {
-        Double(blocksTotalSizeInBytes) / 1024.0 / 1024.0
+    public func blocksTotalSizeInMb(quality: DownloadQuality) -> Double {
+        Double(blocksTotalSizeInBytes(quality: quality)) / 1024.0 / 1024.0
     }
 
-    public var blocksTotalSizeInGb: Double {
-        Double(blocksTotalSizeInBytes) / 1024.0 / 1024.0 / 1024.0
+    public func blocksTotalSizeInGb(quality: DownloadQuality) -> Double {
+        Double(blocksTotalSizeInBytes(quality: quality)) / 1024.0 / 1024.0 / 1024.0
     }
 
 }
@@ -132,11 +132,6 @@ public struct CourseVertical: Identifiable {
         return childs.first(where: { $0.isDownloadable }) != nil
     }
 
-    public var blocksTotalSizeInGb: Double {
-        let total = childs.reduce(0) { $0 + Double($1.video?.fileSize ?? 0) }
-        return total / 1024 / 1024 / 1024
-    }
-
     public init(
         blockId: String,
         id: String,
@@ -189,8 +184,17 @@ public struct CourseBlock: Equatable {
         return canDownload(url: url)
     }
 
-    public var video: CourseBlockVideo? {
-       hls ?? desktopMP4 ?? mobileHigh ?? mobileLow ?? fallback
+    public func video(quality: DownloadQuality) -> CourseBlockVideo? {
+        switch quality {
+        case .auto:
+            hls ?? video
+        case .high:
+            desktopMP4 ?? video
+        case .medium:
+            mobileHigh ?? video
+        case .low:
+            mobileLow ?? video
+        }
     }
 
     public var youTubeUrl: String? {
@@ -239,6 +243,10 @@ public struct CourseBlock: Equatable {
 
     private func canDownload(url: String) -> Bool {
         [".mp4"].contains(where: { url.contains($0) })
+    }
+
+    private var video: CourseBlockVideo? {
+       hls ?? desktopMP4 ?? mobileHigh ?? mobileLow ?? fallback
     }
 }
 

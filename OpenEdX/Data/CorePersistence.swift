@@ -66,12 +66,13 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func addToDownloadQueue(blocks: [CourseBlock]) {
+    public func addToDownloadQueue(blocks: [CourseBlock], quality: DownloadQuality) {
         for block in blocks {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", block.id)
             guard (try? context.fetch(request).first) == nil else { continue }
-            guard let url = block.video?.url,
+            guard let video = block.video(quality: quality),
+                  let url = video.url,
                   let fileExtension = URL(string: url)?.pathExtension
             else { continue }
             let fileName = "\(block.id).\(fileExtension)"
@@ -87,7 +88,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 newDownloadData.resumeData = nil
                 newDownloadData.state = DownloadState.waiting.rawValue
                 newDownloadData.type = DownloadType.video.rawValue
-                newDownloadData.fileSize = Int32(block.video?.fileSize ?? 0)
+                newDownloadData.fileSize = Int32(video.fileSize ?? 0)
             }
         }
     }

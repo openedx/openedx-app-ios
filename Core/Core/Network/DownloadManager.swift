@@ -126,6 +126,10 @@ public class DownloadManager: DownloadManagerProtocol {
     private var isDownloadingInProgress: Bool = false
     private var currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
 
+    private var downloadQuality: DownloadQuality {
+        appStorage.userSettings?.downloadQuality ?? .auto
+    }
+
     // MARK: - Init
 
     public init(
@@ -153,7 +157,9 @@ public class DownloadManager: DownloadManagerProtocol {
     // MARK: - Intents
 
     public func isLarge(blocks: [CourseBlock]) -> Bool {
-        (blocks.reduce(0) {$0 + Double($1.video?.fileSize ?? 0)} / 1024 / 1024 / 1024) > 1
+        (blocks.reduce(0) {
+            $0 + Double($1.video(quality: downloadQuality)?.fileSize ?? 0)
+        } / 1024 / 1024 / 1024) > 1
     }
 
     public func getDownloads() async -> [DownloadData] {
@@ -174,7 +180,10 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func addToDownloadQueue(blocks: [CourseBlock]) throws {
         if userCanDownload() {
-            persistence.addToDownloadQueue(blocks: blocks)
+            persistence.addToDownloadQueue(
+                blocks: blocks,
+                quality: downloadQuality
+            )
             currentDownloadEventPublisher.send(.added)
             guard !isDownloadingInProgress else { return }
             try newDownload()
@@ -256,7 +265,6 @@ public class DownloadManager: DownloadManagerProtocol {
         currentDownloadEventPublisher.send(.clearedAll)
     }
 
-
     public func fileUrl(for blockId: String) async -> URL? {
         await withCheckedContinuation { continuation in
             persistence.downloadData(by: blockId) { [weak self] data in
@@ -281,17 +289,16 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func newDownload() throws {
-        if userCanDownload() {
-            guard let download = persistence.getNextBlockForDownloading() else {
-                isDownloadingInProgress = false
-                return
-            }
-            currentDownload = download
-            try downloadFileWithProgress(download)
-            currentDownloadEventPublisher.send(.started(download))
-        } else {
+        guard userCanDownload() else {
             throw NoWiFiError()
         }
+        guard let download = persistence.getNextBlockForDownloading() else {
+            isDownloadingInProgress = false
+            return
+        }
+        currentDownload = download
+        try downloadFileWithProgress(download)
+        currentDownloadEventPublisher.send(.started(download))
     }
 
     private func userCanDownload() -> Bool {
@@ -307,43 +314,45 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadFileWithProgress(_ download: DownloadData) throws {
-        if let url = URL(string: download.url) {
-            persistence.updateDownloadState(
-                id: download.id,
-                state: .inProgress,
-                resumeData: download.resumeData
-            )
-            self.isDownloadingInProgress = true
-            if let resumeData = download.resumeData {
-                downloadRequest = AF.download(resumingWith: resumeData)
-            } else {
-                downloadRequest = AF.download(url)
-            }
+        guard let url = URL(string: download.url) else {
+            return
+        }
 
-            downloadRequest?.downloadProgress { [weak self]  prog in
-                guard let self else { return }
-                let fractionCompleted = prog.fractionCompleted
-                self.currentDownload?.progress = fractionCompleted
-                self.currentDownload?.state = .inProgress
-                self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
-                let completed = Double(fractionCompleted * 100)
-                print(">>>>> Downloading", download.url, completed, "%")
-            }
+        persistence.updateDownloadState(
+            id: download.id,
+            state: .inProgress,
+            resumeData: download.resumeData
+        )
+        self.isDownloadingInProgress = true
+        if let resumeData = download.resumeData {
+            downloadRequest = AF.download(resumingWith: resumeData)
+        } else {
+            downloadRequest = AF.download(url)
+        }
 
-            downloadRequest?.responseData(completionHandler: { [weak self] data in
-                guard let self else { return }
-                if let data = data.value, let url = self.videosFolderUrl() {
-                    self.saveFile(fileName: download.fileName, data: data, folderURL: url)
-                    self.persistence.updateDownloadState(
-                        id: download.id,
-                        state: .finished,
-                        resumeData: nil
-                    )
-                    self.currentDownload?.state = .finished
-                    self.currentDownloadEventPublisher.send(.finished(download))
-                    try? self.newDownload()
-                }
-            })
+        downloadRequest?.downloadProgress { [weak self]  prog in
+            guard let self else { return }
+            let fractionCompleted = prog.fractionCompleted
+            self.currentDownload?.progress = fractionCompleted
+            self.currentDownload?.state = .inProgress
+            self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
+            let completed = Double(fractionCompleted * 100)
+            print(">>>>> Downloading", download.url, completed, "%")
+        }
+
+        downloadRequest?.responseData { [weak self] data in
+            guard let self else { return }
+            if let data = data.value, let url = self.videosFolderUrl() {
+                self.saveFile(fileName: download.fileName, data: data, folderURL: url)
+                self.persistence.updateDownloadState(
+                    id: download.id,
+                    state: .finished,
+                    resumeData: nil
+                )
+                self.currentDownload?.state = .finished
+                self.currentDownloadEventPublisher.send(.finished(download))
+                try? self.newDownload()
+            }
         }
     }
 
@@ -397,7 +406,11 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     }
 
     public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
-        return Just(.canceled(.init(id: "", courseId: "", url: "", fileName: "", displayName: "", progress: 1, resumeData: nil, state: .inProgress, type: .video, fileSize: 0))).eraseToAnyPublisher()
+        return Just(
+            .canceled(
+                .init(id: "", courseId: "", url: "", fileName: "", displayName: "", progress: 1, resumeData: nil, state: .inProgress, type: .video, fileSize: 0)
+            )
+        ).eraseToAnyPublisher()
     }
 
     public func addToDownloadQueue(blocks: [CourseBlock]) {
@@ -417,7 +430,6 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {
 
     }
-
 
     public func cancelDownloading(downloadData: DownloadData) {
 

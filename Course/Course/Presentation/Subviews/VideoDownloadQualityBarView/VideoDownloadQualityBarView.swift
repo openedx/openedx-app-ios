@@ -42,9 +42,7 @@ struct VideoDownloadQualityBarView: View {
             Divider()
         }
         .contentShape(Rectangle())
-        .onTapGesture {
-            onTap?()
-        }
+        .onTapGesture { onTap?() }
     }
 
     @ViewBuilder

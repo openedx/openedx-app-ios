@@ -10,7 +10,7 @@ import Combine
 
 public protocol CorePersistenceProtocol {
     func publisher() -> AnyPublisher<Int, Never>
-    func addToDownloadQueue(blocks: [CourseBlock])
+    func addToDownloadQueue(blocks: [CourseBlock], quality: DownloadQuality)
     func getNextBlockForDownloading() -> DownloadData?
     func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
     func deleteDownloadData(id: String) throws

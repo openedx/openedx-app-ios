@@ -176,9 +176,9 @@ public struct CourseOutlineView: View {
     @ViewBuilder
     private var bars: some View {
         if isVideo,
-            let courseVideosStructure = viewModel.courseVideosStructure,
-            viewModel.hasVideoForDowbloads() {
-            Group {
+           let courseVideosStructure = viewModel.courseVideosStructure,
+           viewModel.hasVideoForDowbloads() {
+            VStack(spacing: 0) {
                 CourseVideoDownloadBarView(
                     courseStructure: courseVideosStructure,
                     courseViewModel: viewModel

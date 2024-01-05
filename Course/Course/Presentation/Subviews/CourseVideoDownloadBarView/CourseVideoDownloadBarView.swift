@@ -92,10 +92,7 @@ struct CourseVideoDownloadBarView: View {
                         } else {
                             Text("\(CourseLocalization.Download.remaining) \(viewModel.remainingCount)")
                         }
-                        viewModel.totalSize.map {
-                            Text(", \($0)MB Total")
-                        }
-
+                        viewModel.totalSize.map { Text(", \($0)MB Total") }
                     }
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textSecondary)
