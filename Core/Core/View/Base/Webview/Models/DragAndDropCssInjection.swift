@@ -8,7 +8,7 @@
 import WebKit
 
 public struct DragAndDropCssInjection: WebViewScriptInjectionProtocol, CSSInjectionProtocol {
-    public var id: String = "SurveyCSSInjection"
+    public var id: String = "DragAndDropCSSInjection"
     public var messages: [WebviewMessage]?
     public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
     
