@@ -38,7 +38,7 @@ public extension WebviewInjection {
             .webviewInjection()
     }
     
-    static var dragAndDropXss: WebviewInjection {
+    static var dragAndDropCss: WebviewInjection {
         DragAndDropCssInjection()
             .webviewInjection()
     }

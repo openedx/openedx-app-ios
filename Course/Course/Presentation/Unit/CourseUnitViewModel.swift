@@ -37,7 +37,7 @@ public enum LessonType: Equatable {
         case .problem:
             return .web(url: block.studentUrl, injections: [])
         case .dragAndDropV2:
-            return .web(url: block.studentUrl, injections: [.dragAndDropXss])
+            return .web(url: block.studentUrl, injections: [.dragAndDropCss])
         case .survey:
             return .web(url: block.studentUrl, injections: [.surveyCSS])
         }
