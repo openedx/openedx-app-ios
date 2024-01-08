@@ -162,9 +162,9 @@ public struct CourseOutlineView: View {
         }
         .alert(isPresented: $viewModel.showAllowLargeDownload) {
             Alert(
-                title: Text("Download"),
-                message: Text("The videos you've selected are larger than 1 GB. Do you want to download these videos?"),
-                primaryButton: .default(Text("Accept")) {
+                title: Text(CourseLocalization.Download.download),
+                message: Text(CourseLocalization.Download.downloadLargeFileMessage),
+                primaryButton: .default(Text(CourseLocalization.Alert.accept)) {
                     viewModel.continueDownload()
                 },
                 secondaryButton: .cancel()

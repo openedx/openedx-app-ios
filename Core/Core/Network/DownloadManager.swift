@@ -256,7 +256,6 @@ public class DownloadManager: DownloadManagerProtocol {
         currentDownloadEventPublisher.send(.clearedAll)
     }
 
-
     public func fileUrl(for blockId: String) async -> URL? {
         await withCheckedContinuation { continuation in
             persistence.downloadData(by: blockId) { [weak self] data in

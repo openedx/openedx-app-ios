@@ -35,6 +35,7 @@
 "ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 
 "ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
+"ALERT.ACCEPT" = "Accept";
 
 "COURSE_CONTAINER.COURSE" =  "Course";
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
@@ -58,9 +59,13 @@
 "ACCESSIBILITY.CANCEL_DOWNLOAD" = "Cancel download";
 "ACCESSIBILITY.DELETE_DOWNLOAD" = "Delete download";
 
-"DOWNLOAD.TITLE" = "Downloads";
+"DOWNLOAD.DOWNLOADS" = "Downloads";
+"DOWNLOAD.DOWNLOAD" = "Download";
 "DOWNLOAD.ALL_VIDEOS_DOWNLOADED" = "All videos downloaded";
 "DOWNLOAD.DOWNLOADING_VIDEOS" = "Downloading videos...";
 "DOWNLOAD.DOWNLOAD_TO_DEVICE" = "Download to device";
 "DOWNLOAD.VIDEOS" = "Videos";
 "DOWNLOAD.REMAINING" = "Remaining";
+"DOWNLOAD.DOWNLOAD_LARGE_FILE_MESSAGE" = "The videos you've selected are larger than 1 GB. Do you want to download these videos?";
+
+

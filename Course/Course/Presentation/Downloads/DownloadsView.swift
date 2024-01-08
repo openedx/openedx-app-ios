@@ -39,7 +39,7 @@ struct DownloadsView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(CourseLocalization.Download.title)
+            .navigationTitle(CourseLocalization.Download.downloads)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
