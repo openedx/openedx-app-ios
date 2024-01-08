@@ -125,6 +125,8 @@ public class DownloadManager: DownloadManagerProtocol {
     private var downloadRequest: DownloadRequest?
     private var isDownloadingInProgress: Bool = false
     private var currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
+    private let backgroundTaskProvider = BackgroundTaskProvider()
+    private var cancellables = Set<AnyCancellable>()
 
     private var downloadQuality: DownloadQuality {
         appStorage.userSettings?.downloadQuality ?? .auto
@@ -140,6 +142,7 @@ public class DownloadManager: DownloadManagerProtocol {
         self.persistence = persistence
         self.appStorage = appStorage
         self.connectivity = connectivity
+        self.backgroundTask()
     }
 
     // MARK: - Publishers
@@ -356,7 +359,39 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
+    func cancelAllInProgress() {
+        downloadRequest?.cancel()
+        persistence.getAllDownloadData {  [weak self] downloadDatas in
+            guard let self else { return }
+            Task {
+                for downloadData in downloadDatas.filter({ $0.state == .inProgress || $0.state == .waiting }) {
+                    do {
+                        try self.persistence.deleteDownloadData(id: downloadData.id)
+                        if let fileUrl = await self.fileUrl(for: downloadData.id) {
+                            try FileManager.default.removeItem(at: fileUrl)
+                        }
+                        self.currentDownloadEventPublisher.send(.canceled(downloadData))
+                    } catch {
+                        NSLog("Error deleting file: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: - Private Intents
+
+    private func backgroundTask() {
+        backgroundTaskProvider.eventPublisher()
+            .sink { [weak self] state in
+                guard let self else { return }
+                switch state {
+                case.didBecomeActive: break
+                case .didEnterBackground: self.cancelAllInProgress()
+                }
+            }
+            .store(in: &cancellables)
+    }
 
     private func videosFolderUrl() -> URL? {
         let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -388,6 +423,85 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 }
+
+@available(iOSApplicationExtension, unavailable)
+public final class BackgroundTaskProvider {
+
+    private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    private var currentEventPublisher: PassthroughSubject<Events, Never> = .init()
+
+    public enum Events {
+        case didBecomeActive
+        case didEnterBackground
+    }
+
+    public func eventPublisher() -> AnyPublisher<Events, Never> {
+        currentEventPublisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+
+    // MARK: - Init -
+
+    deinit {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+
+    public init() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didEnterBackgroundNotification),
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didBecomeActiveNotification),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+
+    @objc
+    func didEnterBackgroundNotification() {
+        registerBackgroundTask()
+        currentEventPublisher.send(.didEnterBackground)
+    }
+
+    @objc
+    func didBecomeActiveNotification() {
+        endBackgroundTaskIfActive()
+        currentEventPublisher.send(.didBecomeActive)
+    }
+
+    // MARK: - Background Task -
+
+    private func registerBackgroundTask() {
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            debugLog("iOS has signaled time has expired")
+            self?.endBackgroundTaskIfActive()
+        }
+    }
+
+    private func endBackgroundTaskIfActive() {
+        let isBackgroundTaskActive = backgroundTask != .invalid
+        if isBackgroundTaskActive {
+            debugLog("Background task ended.")
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = .invalid
+        }
+    }
+}
+
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
