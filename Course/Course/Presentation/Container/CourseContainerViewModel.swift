@@ -283,7 +283,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .contains(where: { $0.isDownloadable })
     }
 
-
     func isAllDownloading() -> Bool {
         let totalCount = verticalsDownloadState.count
         let downloadingCount = verticalsDownloadState.filter { $0.value == .downloading }.count
