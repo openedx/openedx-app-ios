@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct SocialAuthButton: View {
 
@@ -54,7 +55,7 @@ public struct SocialAuthButton: View {
         .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: 42)
         .background(backgroundColor)
         .clipShape(
-            RoundedRectangle(cornerRadius: cornerRadius)
+            Theme.Shapes.buttonShape
         )
 
     }

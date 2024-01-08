@@ -10,7 +10,7 @@ import Core
 import Alamofire
 
 enum CourseEndpoint: EndPointType {
-    case getCourseDetail(courseID: String)
+    case getCourseDetail(courseID: String, username: String)
     case getCourseBlocks(courseID: String, userName: String)
     case pageHTML(pageUrlString: String)
     case enrollToCourse(courseID: String)
@@ -23,11 +23,11 @@ enum CourseEndpoint: EndPointType {
 
     var path: String {
         switch self {
-        case .getCourseDetail(let courseID):
-            return "/mobile_api_extensions/v1/courses/\(courseID)"
+        case .getCourseDetail(let courseID, _):
+            return "/api/courses/v1/courses/\(courseID)"
         case .getCourseBlocks:
-            return "/mobile_api_extensions/v1/blocks/"
-        case .pageHTML(pageUrlString: let url):
+            return "/api/mobile/v3/course_info/blocks/"
+        case .pageHTML(let url):
             return "/xblock/\(url)"
         case .enrollToCourse:
             return "/api/enrollment/v1/enrollment"
@@ -35,13 +35,13 @@ enum CourseEndpoint: EndPointType {
             return "/api/completion/v1/completion-batch"
         case let .getHandouts(courseID):
             return "/api/mobile/v1/course_info/\(courseID)/handouts"
-        case .getUpdates(courseID: let courseID):
+        case .getUpdates(let courseID):
             return "/api/mobile/v1/course_info/\(courseID)/updates"
         case let .resumeBlock(userName, courseID):
             return "/api/mobile/v1/users/\(userName)/course_status_info/\(courseID)"
         case let .getSubtitles(url, _):
             return url
-        case .getCourseDates(courseID: let courseID):
+        case .getCourseDates(let courseID):
             return "/api/course_home/v1/dates/\(courseID)"
         }
     }
@@ -77,8 +77,9 @@ enum CourseEndpoint: EndPointType {
 
     var task: HTTPTask {
         switch self {
-        case .getCourseDetail:
-            return .requestParameters(encoding: URLEncoding.queryString)
+        case let .getCourseDetail(_, username):
+            let params: [String: Encodable] = ["username": username]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         case let .getCourseBlocks(courseID, userName):
             let params: [String: Encodable] = [
                 "username": userName,

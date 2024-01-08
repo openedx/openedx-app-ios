@@ -14,9 +14,11 @@ public struct Theme {
     
     public struct Colors {
         public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
+        public private(set) static var accentButtonColor = ThemeAssets.accentButtonColor.swiftUIColor
         public private(set) static var alert = ThemeAssets.alert.swiftUIColor
         public private(set) static var avatarStroke = ThemeAssets.avatarStroke.swiftUIColor
         public private(set) static var background = ThemeAssets.background.swiftUIColor
+        public private(set) static var loginBackground = ThemeAssets.loginBackground.swiftUIColor
         public private(set) static var backgroundStroke = ThemeAssets.backgroundStroke.swiftUIColor
         public private(set) static var cardViewBackground = ThemeAssets.cardViewBackground.swiftUIColor
         public private(set) static var cardViewStroke = ThemeAssets.cardViewStroke.swiftUIColor
@@ -36,6 +38,7 @@ public struct Theme {
         public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
+        public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -112,10 +115,17 @@ public struct Theme {
     }
     
     public struct Shapes {
+        public static var isRoundedCorners: Bool = true
         public static let screenBackgroundRadius = 24.0
         public static let cardImageRadius = 10.0
-        public static let textInputShape = RoundedRectangle(cornerRadius: 8)
-        public static let buttonShape = RoundedCorners(tl: 8, tr: 8, bl: 8, br: 8)
+        public static let textInputShape =  {
+            let radius: CGFloat = isRoundedCorners ? 8 : 0
+            return RoundedRectangle(cornerRadius: radius)
+        }()
+        public static let buttonShape = {
+            let radius: CGFloat = isRoundedCorners ? 8 : 0
+            return RoundedCorners(tl: radius, tr: radius, bl: radius, br: radius)
+        }()
         public static let unitButtonShape = RoundedCorners(tl: 21, tr: 21, bl: 21, br: 21)
         public static let roundedScreenBackgroundShape = RoundedCorners(
             tl: Theme.Shapes.screenBackgroundRadius,

@@ -90,8 +90,15 @@ public extension DataLayer {
     }
     
     enum StartType: String, Codable {
-        case empty
         case timestamp
+        case string
+        case empty
+        case unknown
+        
+        public init(from decoder: Decoder) throws {
+            let rawValue = try decoder.singleValueContainer().decode(RawValue.self)
+            self = StartType(rawValue: rawValue) ?? .unknown
+        }
     }
 }
 

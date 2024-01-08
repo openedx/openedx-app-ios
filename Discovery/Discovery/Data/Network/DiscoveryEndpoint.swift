@@ -18,7 +18,7 @@ enum DiscoveryEndpoint: EndPointType {
         case .getDiscovery:
             return "/api/courses/v1/courses/"
         case .searchCourses:
-            return "/mobile_api_extensions/courses/v1/courses/"
+            return "/api/courses/v1/courses/"
         }
     }
     
@@ -48,6 +48,7 @@ enum DiscoveryEndpoint: EndPointType {
             let params: Parameters = [
                 "username": username,
                 "mobile": true,
+                "mobile_search": true,
                 "page": page,
                 "search_term": searchTerm
             ]

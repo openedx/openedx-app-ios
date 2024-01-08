@@ -22,7 +22,7 @@ public struct StyledButton: View {
     public init(_ title: String,
                 action: @escaping () -> Void,
                 isTransparent: Bool = false,
-                color: Color = Theme.Colors.accentColor,
+                color: Color = Theme.Colors.accentButtonColor,
                 textColor: Color = Theme.Colors.styledButtonText,
                 disabledTextColor: Color = Theme.Colors.textPrimary,
                 borderColor: Color = .clear,
@@ -58,9 +58,10 @@ public struct StyledButton: View {
                 .fill(isTransparent ? .clear : buttonColor)
         )
         .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                    .foregroundColor(isTransparent ? Theme.Colors.white : borderColor)
+            Theme.Shapes.buttonShape
+                .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                .foregroundColor(isTransparent ? Theme.Colors.white : borderColor)
+        
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
