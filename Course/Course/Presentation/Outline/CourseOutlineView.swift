@@ -55,26 +55,39 @@ public struct CourseOutlineView: View {
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
                                !isVideo {
+                                let chapter = courseStructure.childs[continueWith.chapterIndex]
+                                let sequential = chapter.childs[continueWith.sequentialIndex]
+                                let continueUnit = sequential.childs[continueWith.verticalIndex]
                                 
                                 // MARK: - ContinueWith button
                                 ContinueWithView(
                                     data: continueWith,
-                                    courseStructure: courseStructure
+                                    courseContinueUnit: continueUnit
                                 ) {
-                                    let chapter = courseStructure.childs[continueWith.chapterIndex]
-                                    let sequential = chapter.childs[continueWith.sequentialIndex]
+                                    var continueBlock: CourseBlock?
+                                    continueUnit.childs.forEach { block in
+                                        if block.id == continueWith.lastVisitedBlockId {
+                                            continueBlock = block
+                                        }
+                                    }
                                     
                                     viewModel.trackResumeCourseTapped(
-                                        blockId: sequential.childs[continueWith.verticalIndex].blockId
+                                        blockId: continueBlock?.id ?? ""
                                     )
-                                    viewModel.router.showCourseVerticalView(
-                                        courseID: courseStructure.id,
-                                        courseName: courseStructure.displayName,
-                                        title: sequential.displayName,
-                                        chapters: courseStructure.childs,
-                                        chapterIndex: continueWith.chapterIndex,
-                                        sequentialIndex: continueWith.sequentialIndex
-                                    )
+                                    
+                                    if let course = viewModel.courseStructure {
+                                        viewModel.router.showCourseUnit(
+                                            courseName: course.displayName,
+                                            blockId: continueBlock?.id ?? "",
+                                            courseID: course.id,
+                                            sectionName: continueUnit.displayName,
+                                            verticalIndex: continueWith.verticalIndex,
+                                            chapters: course.childs,
+                                            chapterIndex: continueWith.chapterIndex,
+                                            sequentialIndex: continueWith.sequentialIndex
+                                        )
+                                    }
+//"Saeed"
                                 }
                             }
                             

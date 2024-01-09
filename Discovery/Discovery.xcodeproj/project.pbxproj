@@ -86,6 +86,7 @@
 		CFC849442996A52A0055E497 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		CFC8494D299A66080055E497 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CFC8494F299BE52C0055E497 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
+		E0D586132B29F25A009B4BA7 /* Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E192F9B4A7EECED9665AB8A7 /* Pods-App-Discovery.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discovery/Pods-App-Discovery.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F340BD73D38B0DF9E4EA6482 /* Pods-App-Discovery-DiscoveryUnitTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		FF565519B9BBC73E92249648 /* Pods-App-Discovery-DiscoveryUnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.release.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -226,6 +227,7 @@
 		072787AB28D34D15002E9142 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E0D586132B29F25A009B4BA7 /* Authorization.framework */,
 				072787AC28D34D15002E9142 /* Core.framework */,
 				919E55130969D91EF03C4C0B /* Pods_App_Discovery.framework */,
 				780FC373E1D479E58870BD85 /* Pods_App_Discovery_DiscoveryUnitTests.framework */,

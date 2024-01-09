@@ -58,12 +58,12 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(viewControllers, animated: true)
     }
     
-    public func showMainOrWhatsNewScreen() {
+    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
         showToolBar()
         var storage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
 
-        let viewModel = WhatsNewViewModel(storage: storage)
+        let viewModel = WhatsNewViewModel(storage: storage, sourceScreen: sourceScreen)
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
@@ -75,15 +75,24 @@ public class Router: AuthorizationRouter,
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let viewModel = Container.shared.resolve(
+                MainScreenViewModel.self,
+                argument: sourceScreen
+            )!
+            
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         }
     }
     
-    public func showLoginScreen() {
-        let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+    public func showLoginScreen(sourceScreen: LogistrationSourceScreen) {
+        guard let viewModel = Container.shared.resolve(
+            SignInViewModel.self,
+            argument: sourceScreen
+        ) else { return }
+        
+        let view = SignInView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -94,7 +103,12 @@ public class Router: AuthorizationRouter,
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+            let view = SignInView(
+                viewModel: Container.shared.resolve(
+                    SignInViewModel.self,
+                    argument: LogistrationSourceScreen.default
+                )!
+            )
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: false)
         }
@@ -165,10 +179,19 @@ public class Router: AuthorizationRouter,
         navigationController.present(view, animated: true)
     }
     
-    public func showRegisterScreen() {
-        let view = SignUpView(viewModel: Container.shared.resolve(SignUpViewModel.self)!)
+    public func showRegisterScreen(sourceScreen: LogistrationSourceScreen) {
+        guard let viewModel = Container.shared.resolve(
+            SignUpViewModel.self,
+            argument: sourceScreen
+        ), let authAnalytics = Container.shared.resolve(
+            AuthorizationAnalytics.self
+        ) else { return }
+        
+        let view = SignUpView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
+        
+        authAnalytics.signUpClicked()
     }
     
     public func showForgotPasswordScreen() {
@@ -195,12 +218,12 @@ public class Router: AuthorizationRouter,
         navigationController.pushFade(viewController: controller)
     }
     
-    public func showDiscoveryScreen(searchQuery: String? = nil, fromStartupScreen: Bool = false) {
+    public func showDiscoveryScreen(searchQuery: String? = nil, sourceScreen: LogistrationSourceScreen) {
         let view = DiscoveryView(
             viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
             router: Container.shared.resolve(DiscoveryRouter.self)!,
             searchQuery: searchQuery,
-            fromStartupScreen: fromStartupScreen
+            sourceScreen: sourceScreen
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)

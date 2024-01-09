@@ -38,13 +38,13 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        Text(AuthLocalization.SignIn.registerBtn)
-                            .titleSettings(color: Theme.Colors.white)
+                        Text(CoreLocalization.SignIn.registerBtn)
+                            .titleSettings(color: Theme.Colors.loginNavigationText)
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .backButtonStyle(color: Theme.Colors.white)
+                                .backButtonStyle(color: Theme.Colors.loginNavigationText)
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)
                         .padding(.leading, isHorizontal ? 48 : 0)
@@ -177,7 +177,8 @@ struct SignUpView_Previews: PreviewProvider {
             analytics: AuthorizationAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: Validator()
+            validator: Validator(),
+            sourceScreen: .default
         )
         
         SignUpView(viewModel: vm)

@@ -40,7 +40,7 @@ public class DeleteAccountViewModel: ObservableObject {
         do {
             if try await interactor.deleteAccount(password: password) {
                 isShowProgress = false
-                router.showLoginScreen()
+                router.showLoginScreen(sourceScreen: .default)
             } else {
                 isShowProgress = false
                 incorrectPassword = true

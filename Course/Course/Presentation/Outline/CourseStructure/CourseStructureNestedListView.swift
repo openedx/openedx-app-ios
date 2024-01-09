@@ -50,14 +50,9 @@ struct CourseStructureNestedListView: View {
                 .lineLimit(1)
                 .foregroundColor(Theme.Colors.textPrimary)
             Spacer()
-            if isExpanded {
-                Image(systemName: "chevron.right")
-                    .foregroundColor(Theme.Colors.accentColor)
-                    .rotationEffect(.degrees(90))
-            } else {
-                Image(systemName: "chevron.right")
-                    .foregroundColor(Theme.Colors.accentColor)
-            }
+            Image(systemName: "chevron.right")
+                .foregroundColor(Theme.Colors.accentColor)
+                .dropdownArrowRotationAnimation(value: isExpanded)
         }
         .padding(.horizontal, 30)
         .padding(.vertical, 15)

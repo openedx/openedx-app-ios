@@ -26,25 +26,30 @@ public protocol CourseRepositoryProtocol {
 public class CourseRepository: CourseRepositoryProtocol {
     
     private let api: API
-    private let appStorage: CoreStorage
+    private let coreStorage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: CoursePersistenceProtocol
     
-    public init(api: API,
-                appStorage: CoreStorage,
-                config: ConfigProtocol,
-                persistence: CoursePersistenceProtocol) {
+    public init(
+        api: API,
+        coreStorage: CoreStorage,
+        config: ConfigProtocol,
+        persistence: CoursePersistenceProtocol
+    ) {
         self.api = api
-        self.appStorage = appStorage
+        self.coreStorage = coreStorage
         self.config = config
         self.persistence = persistence
     }
     
     public func getCourseDetails(courseID: String) async throws -> CourseDetails {
-        let response = try await api.requestData(CourseEndpoint.getCourseDetail(courseID: courseID))
-            .mapResponse(DataLayer.CourseDetailsResponse.self)
+        let response = try await api.requestData(
+            CourseEndpoint.getCourseDetail(courseID: courseID, username: coreStorage.user?.username ?? "")
+        ).mapResponse(DataLayer.CourseDetailsResponse.self)
             .domain(baseURL: config.baseURL.absoluteString)
+        
         persistence.saveCourseDetails(course: response)
+        
         return response
     }
     
@@ -54,7 +59,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         let course = try await api.requestData(
-            CourseEndpoint.getCourseBlocks(courseID: courseID, userName: appStorage.user?.username ?? "")
+            CourseEndpoint.getCourseBlocks(courseID: courseID, userName: coreStorage.user?.username ?? "")
         ).mapResponse(DataLayer.CourseStructure.self)
         persistence.saveCourseStructure(structure: course)
         let parsedStructure = parseCourseStructure(course: course)
@@ -77,7 +82,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
         try await api.requestData(CourseEndpoint.blockCompletionRequest(
-            username: appStorage.user?.username ?? "",
+            username: coreStorage.user?.username ?? "",
             courseID: courseID,
             blockID: blockID)
         )
@@ -96,7 +101,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     
     public func resumeBlock(courseID: String) async throws -> ResumeBlock {
         return try await api.requestData(CourseEndpoint
-            .resumeBlock(userName: appStorage.user?.username ?? "", courseID: courseID))
+            .resumeBlock(userName: coreStorage.user?.username ?? "", courseID: courseID))
         .mapResponse(DataLayer.ResumeBlock.self).domain
     }
     

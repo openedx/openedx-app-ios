@@ -22,6 +22,12 @@ struct CourseUnitVerticalsDropdownView: View {
                 .onTapGesture {
                     showDropdown.toggle()
                 }
+                .simultaneousGesture(
+                    DragGesture()
+                        .onChanged { _ in
+                            if showDropdown { showDropdown.toggle() }
+                        }
+                )
             CourseUnitDropDownList(content: {
                 ForEach(verticals, id: \.id) { vertical in
                     let isLast = verticals.last?.id == vertical.id
@@ -31,6 +37,10 @@ struct CourseUnitVerticalsDropdownView: View {
                         isLast: isLast,
                         isSelected: isSelected
                     ) {
+                        if isSelected {
+                            showDropdown.toggle()
+                            return
+                        }
                         action(vertical)
                     }
                 }

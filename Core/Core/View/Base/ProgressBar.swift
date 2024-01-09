@@ -39,7 +39,7 @@ public struct ProgressBar: View {
         ZStack {
             Circle()
                 .stroke(lineWidth: lineWidth)
-                .foregroundColor(Color.blue.opacity(0.3))
+                .foregroundColor(Theme.Colors.accentColor.opacity(0.3))
                 .frame(width: size, height: size)
             
             Circle()
