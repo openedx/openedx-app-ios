@@ -22,7 +22,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
 
-    private(set) var availableBlocks: Set<CourseBlock> = []
+    private(set) var availableVerticals: Set<CourseVertical> = []
 
     var errorMessage: String? {
         didSet {
@@ -335,7 +335,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private func setDownloadsStates() async {
         guard let course = courseStructure else { return }
         self.courseDownloads = await manager.getDownloadsForCourse(course.id)
-        self.availableBlocks = []
+        self.availableVerticals = []
         var sequentialsStates: [String: DownloadViewState] = [:]
         var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
@@ -356,15 +356,16 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         } else {
                             sequentialsChilds.append(.available)
                             verticalsChilds.append(.available)
-                            availableBlocks.insert(block)
                         }
                     }
                     if verticalsChilds.first(where: { $0 == .downloading }) != nil {
                         verticalsStates[vertical.id] = .downloading
+                        availableVerticals.insert(vertical)
                     } else if verticalsChilds.allSatisfy({ $0 == .finished }) {
                         verticalsStates[vertical.id] = .finished
                     } else {
                         verticalsStates[vertical.id] = .available
+                        availableVerticals.insert(vertical)
                     }
                 }
                 if sequentialsChilds.first(where: { $0 == .downloading }) != nil {

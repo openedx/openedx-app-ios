@@ -53,7 +53,10 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     var remainingCount: Int {
-        courseViewModel.verticalsDownloadState.filter { $0.value != .finished }.count
+        if !isOn {
+            return courseViewModel.availableVerticals.count
+        }
+        return courseViewModel.verticalsDownloadState.filter { $0.value != .finished }.count
     }
 
     var downloadingCount: Int {
@@ -81,7 +84,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         }
 
         let size = blockToMB(
-            data: courseViewModel.availableBlocks,
+            data: courseViewModel.availableVerticals,
             quality: quality
         )
 
@@ -164,7 +167,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         return val / 100.0
     }
 
-    private func blockToMB(data: Set<CourseBlock>, quality: DownloadQuality) -> Double {
-        data.reduce(0) { $0 + Double($1.video(quality: quality)?.fileSize ?? 0) } / 1024.0 / 1024.0
+    private func blockToMB(data: Set<CourseVertical>, quality: DownloadQuality) -> Double {
+        data.flatMap { $0.childs }.reduce(0) { $0 + Double($1.video(quality: quality)?.fileSize ?? 0) } / 1024.0 / 1024.0
     }
 }
