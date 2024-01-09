@@ -154,7 +154,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 displayName: downloadData.displayName ?? "",
                 progress: downloadData.progress,
                 resumeData: downloadData.resumeData,
-                state: DownloadState(rawValue: downloadData.state ?? "") ?? .paused,
+                state: DownloadState(rawValue: downloadData.state ?? "") ?? .waiting,
                 type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video,
                 fileSize: Int(downloadData.fileSize)
             )
@@ -174,7 +174,7 @@ public class CorePersistence: CorePersistenceProtocol {
             displayName: downloadData.displayName ?? "",
             progress: downloadData.progress,
             resumeData: downloadData.resumeData,
-            state: DownloadState(rawValue: downloadData.state ?? "") ?? .paused,
+            state: DownloadState(rawValue: downloadData.state ?? "") ?? .waiting,
             type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video,
             fileSize: Int(downloadData.fileSize)
         )

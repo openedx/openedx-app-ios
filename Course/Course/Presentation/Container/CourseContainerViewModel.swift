@@ -22,6 +22,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
 
+    private(set) var availableBlocks: Set<CourseBlock> = []
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -333,6 +335,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private func setDownloadsStates() async {
         guard let course = courseStructure else { return }
         self.courseDownloads = await manager.getDownloadsForCourse(course.id)
+        self.availableBlocks = []
         var sequentialsStates: [String: DownloadViewState] = [:]
         var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
@@ -346,9 +349,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                             case .waiting, .inProgress:
                                 sequentialsChilds.append(.downloading)
                                 verticalsChilds.append(.downloading)
-                            case .paused:
-                                sequentialsChilds.append(.available)
-                                verticalsChilds.append(.available)
                             case .finished:
                                 sequentialsChilds.append(.finished)
                                 verticalsChilds.append(.finished)
@@ -356,6 +356,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         } else {
                             sequentialsChilds.append(.available)
                             verticalsChilds.append(.available)
+                            availableBlocks.insert(block)
                         }
                     }
                     if verticalsChilds.first(where: { $0 == .downloading }) != nil {

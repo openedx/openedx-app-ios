@@ -45,8 +45,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         courseViewModel.courseDownloads[index].progress = currentDownload.progress
         return courseViewModel
             .courseDownloads
-            .map { $0.progress }
-            .reduce(.zero, +) / Double(courseViewModel.courseDownloads.count)
+            .reduce(0) { $0 + $1.progress } / Double(courseViewModel.courseDownloads.count)
     }
 
     var isAllDownloaded: Bool {
@@ -66,12 +65,26 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     var totalSize: String? {
+        let quality = courseViewModel.userSettings?.downloadQuality ?? .auto
         let mb = courseStructure.blocksTotalSizeInMb(
-            quality: courseViewModel.userSettings?.downloadQuality ?? .auto
+            quality: quality
         )
+
         if mb == 0 { return nil }
-        let size =  mb - calculateSize(value: mb, percentage: progress * 100)
-        if size == 0.0 { return String(format: "%.2f", mb) }
+
+        if isOn {
+            let size =  mb - calculateSize(value: mb, percentage: progress * 100)
+            if size == 0 {
+                return String(format: "%.2f", mb)
+            }
+            return String(format: "%.2f", size)
+        }
+
+        let size = blockToMB(
+            data: courseViewModel.availableBlocks,
+            quality: quality
+        )
+
         return String(format: "%.2f", size)
     }
 
@@ -149,5 +162,9 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private func calculateSize(value: Double, percentage: Double) -> Double {
         let val = value * percentage
         return val / 100.0
+    }
+
+    private func blockToMB(data: Set<CourseBlock>, quality: DownloadQuality) -> Double {
+        data.reduce(0) { $0 + Double($1.video(quality: quality)?.fileSize ?? 0) } / 1024.0 / 1024.0
     }
 }
