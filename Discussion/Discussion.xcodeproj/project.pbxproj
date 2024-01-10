@@ -59,6 +59,7 @@
 		0766DFCA299AA3D400EBEF6A /* Data_CreatedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFC9299AA3D400EBEF6A /* Data_CreatedComment.swift */; };
 		7527943BE0D66C33B167A41A /* Pods_App_Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7A0375EDDEB8948165EAD /* Pods_App_Discussion.framework */; };
 		9FC0EF907C0334E383C300C4 /* Pods_App_Discussion_DiscussionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */; };
+		E0B9F6A92B4E6A6F00168366 /* CourseDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F6A82B4E6A6F00168366 /* CourseDetailsViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +141,7 @@
 		BBF5EC7249109D6718A229CF /* Pods-App-Discussion.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugdev.xcconfig"; sourceTree = "<group>"; };
 		C214357310D8AC9185B38ABA /* Pods-App-Discussion-DiscussionTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discussion_DiscussionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0B9F6A82B4E6A6F00168366 /* CourseDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		ED561A5DE961B1E12B42F4E0 /* Pods-App-Discussion.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F57B9404423B3E624DD25D81 /* Pods-App-Discussion.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasestage.xcconfig"; sourceTree = "<group>"; };
 		FE1509B856949D2742A10836 /* Pods-App-Discussion-DiscussionTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 		0766DFD8299ADAB500EBEF6A /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E0B9F6A72B4E6A6F00168366 /* Discovery */,
 				0766DFD9299ADADB00EBEF6A /* CreateNewThread */,
 				0766DFDC299ADB1D00EBEF6A /* Comment */,
 				0766DFDE299ADB4900EBEF6A /* Posts */,
@@ -457,6 +460,14 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		E0B9F6A72B4E6A6F00168366 /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				E0B9F6A82B4E6A6F00168366 /* CourseDetailsViewModelTests.swift */,
+			);
+			path = Discovery;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -707,6 +718,7 @@
 				020767682989528B00B976DE /* CreateNewThreadViewModelTests.swift in Sources */,
 				0240D8DE2987FF91003CFE50 /* DiscussionMock.generated.swift in Sources */,
 				02BE57BE298910BD00197812 /* BaseResponsesViewModelTests.swift in Sources */,
+				E0B9F6A92B4E6A6F00168366 /* CourseDetailsViewModelTests.swift in Sources */,
 				020767662989393200B976DE /* ResponsesViewModelTests.swift in Sources */,
 				0201771C29883E96003AC5EF /* ThreadViewModelTests.swift in Sources */,
 				0240D8D22987FE1F003CFE50 /* PostViewModelTests.swift in Sources */,
