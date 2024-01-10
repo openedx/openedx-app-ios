@@ -31,7 +31,7 @@ public struct WebView: UIViewRepresentable {
     
     @ObservedObject var viewModel: ViewModel
     @Binding public var isLoading: Bool
-    weak var webViewNavDelegate: WebViewNavigationDelegate?
+    var webViewNavDelegate: WebViewNavigationDelegate?
     
     var refreshCookies: () async -> Void
     
