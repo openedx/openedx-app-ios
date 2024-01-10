@@ -39,6 +39,7 @@ class WhitelabelApp:
     project_config:
       project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
       dev_team: '1234567890' # apple development team id
+      project_extra_targets: ['Target1', 'Target2'] # targets in the workspace other than 'OpenEdX' in which the new dev_team should be set
       marketing_version: '1.0.1' # app marketing version
       current_project_version: '2' # app build number
       configurations:
@@ -256,7 +257,7 @@ class WhitelabelApp:
                 for error in errors_texts:
                     logging.error(error)
         else:
-            logging.error("Project configuration is not defined")
+            logging.error("Project configurations are not defined")
 
     def replace_parameter_in_config(self, parameter, config_file_string, config, config_name, errors_texts):
         # if parameter is configured
@@ -318,6 +319,7 @@ class WhitelabelApp:
         self.set_global_parameter("dev_team")
         self.set_global_parameter("marketing_version")
         self.set_global_parameter("current_project_version")
+        self.set_team_for_extra_targets()
 
     def set_global_parameter(self, parameter):
         # if parameter is defined in config
@@ -366,7 +368,45 @@ class WhitelabelApp:
                 logging.error("'"+parameter+"' is empty in config")
         else:
             logging.error("'"+parameter+"' is not defined")
+
+    def set_team_for_extra_targets(self):
+        # if parameter is defined in config
+        if "project_extra_targets" in self.project_config:
+            if "dev_team" in self.project_config:
+                targets = self.project_config["project_extra_targets"]
+                for target in targets:
+                    self.set_team_for_target(target)
+            else:
+                logging.error("'dev_team' is not defined in config")
+        else:
+            logging.error("'project_extra_targets' are not defined in config")
+
+    def set_team_for_target(self, target):
+        dev_team = self.project_config["dev_team"]
+        # related path to target config
+        path_to_target_config =  os.path.join(self.config_project_path.replace("/project.pbxproj", ""), "..", target,target+".xcodeproj", "project.pbxproj")
+        # read project file for target
+        with open(path_to_target_config, 'r') as openfile:
+            config_file_string = openfile.read()
+        config_file_string_out = config_file_string
+        # string and regex for dev team
+        parameter_string = 'DEVELOPMENT_TEAM = '+dev_team+';'
+        parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+        # replace all regex findings with new parameters string
+        config_file_string_out = re.sub(parameter_regex, parameter_string, config_file_string)
+        # if something was changed
+        if config_file_string_out != config_file_string:
+            # write to target's project file
+            with open(path_to_target_config, 'w') as openfile:
+                openfile.write(config_file_string_out)
+            logging.debug("DEVELOPMENT_TEAM for '"+target+"' target was set successfuly")
+        # if nothing was found
+        elif re.search(parameter_regex, config_file_string) is None:
+                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+" target project file")
+        else:
+            logging.debug("Looks like DEVELOPMENT_TEAM for '"+target+"' target is set already")
         
+
 def main():
     """
     Parse the command line arguments, and pass them to WhitelabelApp.

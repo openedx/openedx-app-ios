@@ -38,6 +38,7 @@ The theming script can change the app name, version, development team and app bu
 project_config:
     project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
     dev_team: '1234567890' # Apple development team ID
+    project_extra_targets: ['Target1', 'Target2'] # targets in the workspace other than 'OpenEdX' in which the new dev_team should be set
     marketing_version: '1.0.1' # App marketing version
     current_project_version: '2' # App build number
     configurations:
