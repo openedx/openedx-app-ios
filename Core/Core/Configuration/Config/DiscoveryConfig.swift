@@ -44,7 +44,7 @@ public class DiscoveryConfig: NSObject {
         webview = DiscoveryWebviewConfig(dictionary: dictionary[DiscoveryKeys.webview] as? [String: AnyObject] ?? [:])
     }
     
-    var isEnabled: Bool {
+    public var enabled: Bool {
         return type != .none
     }
 }

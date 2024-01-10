@@ -9,7 +9,6 @@ import Foundation
 import Core
 import WebKit
 import SwiftUI
-import Course
 import Swinject
 
 public class DiscoveryWebviewModel: ObservableObject {
@@ -27,7 +26,7 @@ public class DiscoveryWebviewModel: ObservableObject {
     let router: DiscoveryRouter
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
-    private let interactor: CourseInteractorProtocol
+    private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     var request: URLRequest?
     private let storage: CoreStorage
@@ -40,7 +39,7 @@ public class DiscoveryWebviewModel: ObservableObject {
     public init(
         router: DiscoveryRouter,
         config: ConfigProtocol,
-        interactor: CourseInteractorProtocol,
+        interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
         analytics: DiscoveryAnalytics,
         storage: CoreStorage,
@@ -69,7 +68,9 @@ public class DiscoveryWebviewModel: ObservableObject {
             }
             
             showProgress = true
-            courseDetails = try await getCourseDetail(courseID: courseID)
+            if courseDetails == nil {
+                courseDetails = try await getCourseDetail(courseID: courseID)
+            }
             
             if courseDetails?.isEnrolled ?? false || courseState == .alreadyEnrolled {
                 showProgress = false
@@ -77,11 +78,9 @@ public class DiscoveryWebviewModel: ObservableObject {
                 return
             }
             
-            let courseAnalytics = Container.shared.resolve(CourseAnalytics.self)
-            
-            courseAnalytics?.courseEnrollClicked(courseId: courseID, courseName: courseDetails?.courseTitle ?? "")
+            analytics.courseEnrollClicked(courseId: courseID, courseName: courseDetails?.courseTitle ?? "")
             _ = try await interactor.enrollToCourse(courseID: courseID)
-            courseAnalytics?.courseEnrollSuccess(courseId: courseID, courseName: courseDetails?.courseTitle ?? "")
+            analytics.courseEnrollSuccess(courseId: courseID, courseName: courseDetails?.courseTitle ?? "")
             courseDetails?.isEnrolled = true
             showProgress = false
             NotificationCenter.default.post(name: .onCourseEnrolled, object: courseID)
@@ -219,9 +218,9 @@ extension DiscoveryWebviewModel: WebViewNavigationDelegate {
     }
     
     @discardableResult private func showCourseDetails() -> Bool {
-        guard let courseRouter = Container.shared.resolve(CourseRouter.self),
-              let courseDetails = courseDetails else { return false }
-        courseRouter.showCourseScreens(
+        guard let courseDetails = courseDetails else { return false }
+        
+        router.showCourseScreens(
             courseID: courseDetails.courseID,
             isActive: nil,
             courseStart: courseDetails.courseStart,

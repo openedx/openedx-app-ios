@@ -47,6 +47,16 @@ public enum DiscoveryLocalization {
     /// Leaving the app
     public static let leavingAppTitle = DiscoveryLocalization.tr("Localizable", "ALERT.LEAVING_APP_TITLE", fallback: "Leaving the app")
   }
+  public enum Details {
+    /// Enroll now
+    public static let enrollNow = DiscoveryLocalization.tr("Localizable", "DETAILS.ENROLL_NOW", fallback: "Enroll now")
+    /// You cannot enroll in this course because the enrollment date is over.
+    public static let enrollmentDateIsOver = DiscoveryLocalization.tr("Localizable", "DETAILS.ENROLLMENT_DATE_IS_OVER", fallback: "You cannot enroll in this course because the enrollment date is over.")
+    /// Course details
+    public static let title = DiscoveryLocalization.tr("Localizable", "DETAILS.TITLE", fallback: "Course details")
+    /// View course
+    public static let viewCourse = DiscoveryLocalization.tr("Localizable", "DETAILS.VIEW_COURSE", fallback: "View course")
+  }
   public enum Header {
     /// Discover new
     public static let title1 = DiscoveryLocalization.tr("Localizable", "HEADER.TITLE_1", fallback: "Discover new")

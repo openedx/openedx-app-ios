@@ -14,6 +14,15 @@ public protocol DiscoveryRouter: BaseRouter {
     func showUpdateRequiredView(showAccountLink: Bool)
     func showUpdateRecomendedView()
     func showDiscoverySearch(searchQuery: String?)
+    func showCourseScreens(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    )
 }
 
 // Mark - For testing and SwiftUI preview
@@ -27,5 +36,14 @@ public class DiscoveryRouterMock: BaseRouterMock, DiscoveryRouter {
     public func showUpdateRequiredView(showAccountLink: Bool) {}
     public func showUpdateRecomendedView() {}
     public func showDiscoverySearch(searchQuery: String? = nil) {}
+    public func showCourseScreens(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    ) {}
 }
 #endif

@@ -29,3 +29,8 @@
 
 "ALERT.LEAVING_APP_TITLE" = "Leaving the app";
 "ALERT.LEAVING_APP_MESSAGE" = "You are now leaving the app and opening a browser";
+
+"DETAILS.TITLE" = "Course details";
+"DETAILS.VIEW_COURSE" = "View course";
+"DETAILS.ENROLL_NOW" = "Enroll now";
+"DETAILS.ENROLLMENT_DATE_IS_OVER" = "You cannot enroll in this course because the enrollment date is over.";

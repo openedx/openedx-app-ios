@@ -41,32 +41,34 @@ struct MainScreenView: View {
     
     var body: some View {
         TabView(selection: $selection) {
-            ZStack {
-                let config = Container.shared.resolve(ConfigProtocol.self)
-                if config?.discovery.type == .native {
-                    DiscoveryView(
-                        viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
-                        router: Container.shared.resolve(DiscoveryRouter.self)!,
-                        sourceScreen: viewModel.sourceScreen
-                    )
-                } else if config?.discovery.type == .webview {
-                    DiscoveryWebview(
-                        viewModel: Container.shared.resolve(
-                            DiscoveryWebviewModel.self, 
-                            argument: viewModel.sourceScreen)!,
-                        router: Container.shared.resolve(DiscoveryRouter.self)!
-                    )
+            let config = Container.shared.resolve(ConfigProtocol.self)
+            if config?.discovery.enabled ?? false {
+                ZStack {
+                    if config?.discovery.type == .native {
+                        DiscoveryView(
+                            viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
+                            router: Container.shared.resolve(DiscoveryRouter.self)!,
+                            sourceScreen: viewModel.sourceScreen
+                        )
+                    } else if config?.discovery.type == .webview {
+                        DiscoveryWebview(
+                            viewModel: Container.shared.resolve(
+                                DiscoveryWebviewModel.self,
+                                argument: viewModel.sourceScreen)!,
+                            router: Container.shared.resolve(DiscoveryRouter.self)!
+                        )
+                    }
+                    
+                    if updateAvaliable {
+                        UpdateNotificationView(config: viewModel.config)
+                    }
                 }
-                
-                if updateAvaliable {
-                    UpdateNotificationView(config: viewModel.config)
+                .tabItem {
+                    CoreAssets.discovery.swiftUIImage.renderingMode(.template)
+                    Text(CoreLocalization.Mainscreen.discovery)
                 }
+                .tag(MainTab.discovery)
             }
-            .tabItem {
-                CoreAssets.discovery.swiftUIImage.renderingMode(.template)
-                Text(CoreLocalization.Mainscreen.discovery)
-            }
-            .tag(MainTab.discovery)
             
             ZStack {
                 DashboardView(
