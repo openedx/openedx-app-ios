@@ -36,6 +36,7 @@
 		E0B9F6A12B4D57F800168366 /* CourseDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F69B2B4D57F800168366 /* CourseDetailsViewModel.swift */; };
 		E0B9F6A42B4D59E000168366 /* CourseDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F6A32B4D59E000168366 /* CourseDetails.swift */; };
 		E0B9F6A62B4D620100168366 /* Data_CourseDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F6A52B4D620100168366 /* Data_CourseDetailsResponse.swift */; };
+		E0B9F6AB2B4E718F00168366 /* CourseDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F6AA2B4E718F00168366 /* CourseDetailsViewModelTests.swift */; };
 		E0D586202B300095009B4BA7 /* DiscoverWebviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */; };
 		E0D586212B300095009B4BA7 /* DiscoveryWebview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */; };
 		E0D586232B3000AD009B4BA7 /* DiscoveryURIDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586222B3000AD009B4BA7 /* DiscoveryURIDetails.swift */; };
@@ -99,6 +100,7 @@
 		E0B9F69B2B4D57F800168366 /* CourseDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailsViewModel.swift; sourceTree = "<group>"; };
 		E0B9F6A32B4D59E000168366 /* CourseDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetails.swift; sourceTree = "<group>"; };
 		E0B9F6A52B4D620100168366 /* Data_CourseDetailsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data_CourseDetailsResponse.swift; sourceTree = "<group>"; };
+		E0B9F6AA2B4E718F00168366 /* CourseDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		E0D586132B29F25A009B4BA7 /* Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverWebviewModel.swift; sourceTree = "<group>"; };
 		E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryWebview.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 		0766DFD1299AD97300EBEF6A /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E0B9F6AA2B4E718F00168366 /* CourseDetailsViewModelTests.swift */,
 				022D04892976D7E100E0059B /* DiscoveryViewModelTests.swift */,
 				CFC8494F299BE52C0055E497 /* SearchViewModelTests.swift */,
 			);
@@ -521,6 +524,7 @@
 			files = (
 				022D048A2976D7E100E0059B /* DiscoveryViewModelTests.swift in Sources */,
 				022D04982976DA8A00E0059B /* DiscoveryMock.generated.swift in Sources */,
+				E0B9F6AB2B4E718F00168366 /* CourseDetailsViewModelTests.swift in Sources */,
 				CFC84950299BE52C0055E497 /* SearchViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

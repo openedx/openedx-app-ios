@@ -8,16 +8,16 @@
 import SwiftyMocky
 import XCTest
 @testable import Core
-@testable import Course
+@testable import Discovery
 import Alamofire
 import SwiftUI
 
 final class CourseDetailsViewModelTests: XCTestCase {
 
     func testGetCourseDetailSuccess() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -61,9 +61,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testGetCourseDetailSuccessOffline() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -106,9 +106,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testGetCourseDetailNoInternetError() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -138,9 +138,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testGetCourseDetailNoCacheError() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -168,9 +168,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testGetCourseDetailUnknownError() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -198,9 +198,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testEnrollToCourseSuccess() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -229,9 +229,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testEnrollToCourseUnknownError() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -260,9 +260,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testEnrollToCourseNoInternetError() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
@@ -292,9 +292,9 @@ final class CourseDetailsViewModelTests: XCTestCase {
     }
     
     func testEnrollToCourseNoCacheError() async throws {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let analytics = CourseAnalyticsMock()
+        let interactor = DiscoveryInteractorProtocolMock()
+        let router = DiscoveryRouterMock()
+        let analytics = DiscoveryAnalyticsMock()
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
