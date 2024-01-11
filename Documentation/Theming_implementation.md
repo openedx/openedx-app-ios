@@ -77,13 +77,13 @@ assets:
 ```
 
 ### Font
-The config `whitelabel.yaml` can contain path to font file and existing font in project will be overriden with this font. 
-This ttf file should contain a few ttf font 'merged' into one ttf file. Font types are using in the app:
+The `whitelabel.yaml` configuration may contain the path to a font file, and an existing font in the project will be replaced with this font. 
+This ttf file must contain multiple ttf fonts "merged" into a single ttf file. Font types used in the application:
 - regular
 - medium
 - semiBold
 - bold
-For this feature the Config should contain next parameters:
+For this function, the configuration must contain the following parameters:
 ```yaml
 font:
     font_import_file_path: 'path/to/importing/Font_file.ttf' # path to ttf font file what should be imported to project
