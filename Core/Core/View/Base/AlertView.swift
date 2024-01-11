@@ -198,19 +198,19 @@ public struct AlertView: View {
                             }, label: {
                                 ZStack {
                                     Text(CoreLocalization.Alert.logout)
-                                        .foregroundColor(.black)
+                                        .foregroundColor(Theme.Colors.white)
                                         .font(Theme.Fonts.labelLarge)
                                         .frame(maxWidth: .infinity)
                                         .padding(.horizontal, 16)
                                     Image(systemName: "rectangle.portrait.and.arrow.right")
-                                        .foregroundColor(.black)
+                                        .foregroundColor(Theme.Colors.white)
                                         .frame(minWidth: 190, minHeight: 48, alignment: .trailing)
                                 }
                                 .frame(maxWidth: 215, minHeight: 48)
                             })
                             .background(
                                 Theme.Shapes.buttonShape
-                                    .fill(Theme.Colors.warning)
+                                    .fill(Theme.Colors.accentColor)
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
@@ -230,7 +230,7 @@ public struct AlertView: View {
                                 }, label: {
                                     ZStack {
                                         Text(CoreLocalization.Alert.leave)
-                                            .foregroundColor(.black)
+                                            .foregroundColor(Theme.Colors.white)
                                             .font(Theme.Fonts.labelLarge)
                                             .frame(maxWidth: .infinity)
                                             .padding(.horizontal, 16)
@@ -239,7 +239,7 @@ public struct AlertView: View {
                                 })
                                 .background(
                                     Theme.Shapes.buttonShape
-                                        .fill(Theme.Colors.warning)
+                                        .fill(Theme.Colors.accentColor)
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
@@ -258,7 +258,7 @@ public struct AlertView: View {
                                 }, label: {
                                     ZStack {
                                         Text(CoreLocalization.Alert.keepEditing)
-                                            .foregroundColor(Theme.Colors.textPrimary)
+                                            .foregroundColor(Theme.Colors.accentColor)
                                             .font(Theme.Fonts.labelLarge)
                                             .frame(maxWidth: .infinity)
                                             .padding(.horizontal, 16)
@@ -277,7 +277,7 @@ public struct AlertView: View {
                                             lineJoin: .round,
                                             miterLimit: 1
                                         ))
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.secondardButtonBorderColor)
                                 )
                                 .frame(maxWidth: 215)
                             }.padding(.trailing, isHorizontal ? 20 : 0)
@@ -292,6 +292,7 @@ public struct AlertView: View {
                     Image(systemName: "xmark")
                         .padding(.trailing, 40)
                         .padding(.top, 24)
+                        .foregroundColor(Theme.Colors.accentXColor)
                 })
                 
             }.frame(maxWidth: type == .logOut ? 390 : nil)

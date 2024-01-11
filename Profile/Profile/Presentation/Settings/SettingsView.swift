@@ -37,7 +37,7 @@ public struct SettingsView: View {
                                 description: ProfileLocalization.Settings.wifiDescription
                             )
                             Toggle(isOn: $viewModel.wifiOnly, label: {})
-                                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                                .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
                                 .frame(width: 50)
                         }.foregroundColor(Theme.Colors.textPrimary)
                         Divider()

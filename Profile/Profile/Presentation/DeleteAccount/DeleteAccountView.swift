@@ -33,7 +33,7 @@ public struct DeleteAccountView: View {
                                 .offset(x: -7, y: -27)
                         }.padding(.top, 50)
                         Text(ProfileLocalization.DeleteAccount.areYouSure)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(Theme.Colors.navigationBarTintColor)
                         + Text(ProfileLocalization.DeleteAccount.wantToDelete)
                             .foregroundColor(Theme.Colors.alert)
                     }.multilineTextAlignment(.center)
@@ -95,7 +95,7 @@ public struct DeleteAccountView: View {
                             Task {
                                 try await viewModel.deleteAccount(password: viewModel.password)
                             }
-                        }, color: Theme.Colors.alert,
+                        }, color: Theme.Colors.accentColor,
                                      isActive: viewModel.password.count >= 2)
                         .padding(.top, 18)
                     }
@@ -107,12 +107,24 @@ public struct DeleteAccountView: View {
                         HStack(spacing: 9) {
                             CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
                                 .rotationEffect(Angle(degrees: 180))
+                                .foregroundColor(Theme.Colors.accentColor)
                             Text(ProfileLocalization.DeleteAccount.backToProfile)
                                 .font(Theme.Fonts.labelLarge)
+                                .foregroundColor(Theme.Colors.accentColor)
                         }
                     })
-                    .padding(.top, 35)
+                    .frame(maxWidth: .infinity, minHeight: 42)
+                    .background(
+                        Theme.Shapes.buttonShape
+                            .fill(Theme.Colors.white)
+                    )
+                    .overlay(
+                        Theme.Shapes.buttonShape
+                            .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                            .foregroundColor(Theme.Colors.secondardButtonBorderColor)
                     
+                    )
+                    .padding(.top, 35)
                 }
             }.padding(.horizontal, 24)
                 .frame(minHeight: 0,

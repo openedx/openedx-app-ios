@@ -15,7 +15,6 @@ public struct StyledButton: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private let buttonColor: Color
     private let textColor: Color
-    private let disabledTextColor: Color
     private let isActive: Bool
     private let borderColor: Color
     
@@ -24,21 +23,14 @@ public struct StyledButton: View {
                 isTransparent: Bool = false,
                 color: Color = Theme.Colors.accentButtonColor,
                 textColor: Color = Theme.Colors.styledButtonText,
-                disabledTextColor: Color = Theme.Colors.textPrimary,
                 borderColor: Color = .clear,
                 isActive: Bool = true) {
         self.title = title
         self.action = action
         self.isTransparent = isTransparent
         self.textColor = textColor
-        self.disabledTextColor = disabledTextColor
         self.borderColor = borderColor
-        
-        if isActive {
-            self.buttonColor = color
-        } else {
-            self.buttonColor = Theme.Colors.cardViewStroke
-        }
+        self.buttonColor = color
         self.isActive = isActive
     }
     
@@ -46,7 +38,7 @@ public struct StyledButton: View {
         Button(action: action) {
             Text(title)
                 .tracking(isTransparent ? 0 : 1.3)
-                .foregroundColor(isActive ? textColor : disabledTextColor)
+                .foregroundColor(textColor)
                 .font(Theme.Fonts.labelLarge)
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 16)
@@ -65,6 +57,7 @@ public struct StyledButton: View {
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
+        .opacity(isActive ? 1.0 : 0.3)
     }
 }
 
