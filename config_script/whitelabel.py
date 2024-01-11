@@ -14,7 +14,7 @@ class WhitelabelApp:
     EXAMPLE_CONFIG_FILE = dedent("""
     # Notes:
     # Config file can contain next options:
-    import_dir: 'path/to/asset/Images' # folder where importing images are placed
+    images_import_dir: 'path/to/asset/Images' # folder where importing images are placed
     assets:
       AssetName:
         images_path: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
@@ -49,15 +49,25 @@ class WhitelabelApp:
         config2: # build configuration name in project
           app_bundle_id: "bundle.id.app.new2" # bundle ID which should be set
           product_name: "Mobile App Name2" # app name which should be set
+    font:
+      font_import_file_path: 'path/to/importing/Font_file.ttf' # path to ttf font file what should be imported to project
+      project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
+      project_font_names_json_path: 'path/to/names/file/in project/fonts.json' # path to existing font names json-file in project
+      font_names:
+        regular: 'FontName-Regular'
+        medium: 'FontName-Medium'
+        semiBold: 'FontName-Semibold'
+        bold: 'FontName-Bold'
     """)
 
     def __init__(self, **kwargs):            
-        self.assets_dir = kwargs.get('import_dir')
+        self.assets_dir = kwargs.get('images_import_dir')
         if not self.assets_dir:
             self.assets_dir = '.'
 
         self.assets = kwargs.get('assets', {})
         self.project_config = kwargs.get('project_config', {})
+        self.font = kwargs.get('font', {})
 
         if "project_path" in self.project_config:
             self.config_project_path = self.project_config["project_path"]
@@ -67,6 +77,7 @@ class WhitelabelApp:
     def whitelabel(self):
         # Update the properties, resources, and configuration of the current app.
         self.copy_assets()
+        self.copy_font()
         self.set_app_project_config()
 
     def copy_assets(self):
@@ -405,7 +416,49 @@ class WhitelabelApp:
                 logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+" target project file")
         else:
             logging.debug("Looks like DEVELOPMENT_TEAM for '"+target+"' target is set already")
-        
+    
+    def copy_font(self):
+        if self.font:
+            if "font_import_file_path" in self.font:
+                font_import_file_path = self.font["font_import_file_path"]
+                if "project_font_file_path" in self.font:
+                    project_font_file_path = self.font["project_font_file_path"]
+                    self.copy_font_file(font_import_file_path, project_font_file_path)
+                else:
+                    logging.error("'project_font_file_path' not found in config")
+            else:
+                logging.error("'font_import_file_path' not found in config")
+            if "font_names" in self.font:
+                font_names = self.font["font_names"]
+                self.set_font_names(font_names)
+            else:
+                logging.error("'font_names' not found in config")
+        else:
+            logging.debug("Font not found in config")
+
+    def copy_font_file(self, file_src, file_dest):
+        try:
+            shutil.copy(file_src, file_dest)
+        except IOError as e:
+            logging.error("Unable to copy file. "+e)
+        else:
+            logging.debug("Font was copied to project")
+
+    def set_font_names(self, font_names):
+        if "project_font_names_json_path" in self.font:
+            project_font_names_json_path = self.font["project_font_names_json_path"]
+            with open(project_font_names_json_path, 'r') as openfile:
+                json_object = json.load(openfile)
+            for key, value in json_object.items():
+                if key in font_names:
+                    config_font_name_value = font_names[key]
+                    json_object[key] = config_font_name_value
+            new_json = json.dumps(json_object) 
+            with open(project_font_names_json_path, 'w') as openfile:
+                openfile.write(new_json)
+            logging.debug("Font names were set successfuly")
+        else:
+            logging.error("'project_font_names_json_path' not found in config")
 
 def main():
     """

@@ -30,7 +30,7 @@ This config can contain the following options:
 ### Folder with source assets
 This is the folder where all image assets, which should be copied into the project, are placed (can be relative or absolute):
 ```yaml
-import_dir: 'path/to/images/source'
+images_import_dir: 'path/to/images/source'
 ```
 ### Xcode Project Settings
 The theming script can change the app name, version, development team and app bundle ID:
@@ -75,6 +75,27 @@ assets:
                 current_path: '' # optional: path to icon inside icon_path
                 image_name: 'appIcon.jpg' # image to replace the current AppIcon - png or jpg are supported
 ```
+
+### Font
+The config `whitelabel.yaml` can contain path to font file and existing font in project will be overriden with this font. 
+This ttf file should contain a few ttf font 'merged' into one ttf file. Font types are using in the app:
+- regular
+- medium
+- semiBold
+- bold
+For this feature the Config should contain next parameters:
+```yaml
+font:
+    font_import_file_path: 'path/to/importing/Font_file.ttf' # path to ttf font file what should be imported to project
+    project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
+    project_font_names_json_path: 'path/to/names/file/in project/fonts.json' # path to existing font names json-file in project
+    font_names:
+        regular: 'FontName-Regular'
+        medium: 'FontName-Medium'
+        semiBold: 'FontName-Semibold'
+        bold: 'FontName-Bold'
+```
+
 ### Log level
 You can set the log level to 'DEBUG' by adding the `-v` parameter to the script running.
 The default log level is 'WARN'
