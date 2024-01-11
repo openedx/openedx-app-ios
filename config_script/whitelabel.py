@@ -418,18 +418,22 @@ class WhitelabelApp:
             logging.debug("Looks like DEVELOPMENT_TEAM for '"+target+"' target is set already")
     
     def copy_font(self):
+        # check if font config exists
         if self.font:
             if "font_import_file_path" in self.font:
                 font_import_file_path = self.font["font_import_file_path"]
                 if "project_font_file_path" in self.font:
                     project_font_file_path = self.font["project_font_file_path"]
+                    # if source and destination file exist
                     self.copy_font_file(font_import_file_path, project_font_file_path)
                 else:
                     logging.error("'project_font_file_path' not found in config")
             else:
                 logging.error("'font_import_file_path' not found in config")
+            # read font names from config
             if "font_names" in self.font:
                 font_names = self.font["font_names"]
+                # set font names
                 self.set_font_names(font_names)
             else:
                 logging.error("'font_names' not found in config")
@@ -437,6 +441,7 @@ class WhitelabelApp:
             logging.debug("Font not found in config")
 
     def copy_font_file(self, file_src, file_dest):
+        # try to copy font file and show success/error message
         try:
             shutil.copy(file_src, file_dest)
         except IOError as e:
@@ -447,13 +452,17 @@ class WhitelabelApp:
     def set_font_names(self, font_names):
         if "project_font_names_json_path" in self.font:
             project_font_names_json_path = self.font["project_font_names_json_path"]
+            # read names json file from project
             with open(project_font_names_json_path, 'r') as openfile:
                 json_object = json.load(openfile)
-            for key, value in json_object.items():
+            # go through font types and replace with values from config
+            for key, _ in json_object.items():
                 if key in font_names:
                     config_font_name_value = font_names[key]
                     json_object[key] = config_font_name_value
+            # generate new json
             new_json = json.dumps(json_object) 
+            # write to json file
             with open(project_font_names_json_path, 'w') as openfile:
                 openfile.write(new_json)
             logging.debug("Font names were set successfuly")
