@@ -84,6 +84,8 @@ public struct CourseContainerView: View {
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())
         .onChange(of: selection, perform: didSelect)
+        .navigationBackground(color: Theme.UIColors.background)
+        .background(Theme.Colors.background)
     }
 
     @ViewBuilder

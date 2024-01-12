@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 import SwiftUI
 import Theme
 
@@ -193,13 +193,22 @@ public extension View {
         } else {
             return self.introspect(
                 .navigationView(style: .stack),
-                on: .iOS(.v14, .v15, .v16, .v17),
+                on: .iOS(.v15...),
                 scope: .ancestor) {
                     $0.isNavigationBarHidden = true
                 }
         }
     }
     
+    func navigationBackground(color: UIColor) -> some View {
+        return self.introspect(
+            .navigationView(style: .stack),
+            on: .iOS(.v15...),
+            scope: .ancestor) {
+                $0.navigationBar.barTintColor = color
+            }
+    }
+
     func hideScrollContentBackground() -> some View {
         if #available(iOS 16.0, *) {
             return self.scrollContentBackground(.hidden)

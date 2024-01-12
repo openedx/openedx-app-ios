@@ -91,6 +91,22 @@ public struct Theme {
         }
     }
     
+    public struct UIColors {
+        public private(set) static var textPrimary = ThemeAssets.textPrimary.color
+        public private(set) static var accentColor = ThemeAssets.accentColor.color
+        public private(set) static var background = ThemeAssets.background.color
+
+        public static func update(
+            textPrimary: UIColor = ThemeAssets.textPrimary.color,
+            accentColor: UIColor = ThemeAssets.accentColor.color,
+            background: UIColor = ThemeAssets.background.color
+        ) {
+            self.textPrimary = textPrimary
+            self.accentColor = accentColor
+            self.background = background
+        }
+    }
+
     public struct Fonts {
         
         public static let displayLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 57)
