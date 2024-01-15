@@ -33,7 +33,7 @@ public struct CourseContainerView: View {
             case .dates:
                 return CourseLocalization.CourseContainer.dates
             case .discussion:
-                return CourseLocalization.CourseContainer.discussion
+                return CourseLocalization.CourseContainer.discussions
             case .handounds:
                 return CourseLocalization.CourseContainer.handouts
             }
