@@ -55,17 +55,17 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     var remainingVideos: Int {
         let inProgress = courseViewModel.downloadableVerticals.filter { $0.state != .finished }
-        return inProgress.flatMap { $0.vertical.childs }.count
+        return inProgress.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }.count
     }
 
     var downloadingVideos: Int {
         let downloading = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }
-        return downloading.flatMap { $0.vertical.childs }.count
+        return downloading.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }.count
     }
 
     var totalFinishedVideos: Int {
         let finished = courseViewModel.downloadableVerticals.filter { $0.state == .finished }
-        return finished.flatMap { $0.vertical.childs }.count
+        return finished.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }.count
     }
 
     var totalSize: String? {
@@ -87,7 +87,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         let size = blockToMB(
             data: Set(courseViewModel.downloadableVerticals
                 .filter { $0.state != .finished }
-                .flatMap { $0.vertical.childs }
+                .flatMap { $0.vertical.childs.filter { $0.isDownloadable } }
             ),
             quality: quality
         )

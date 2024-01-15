@@ -202,7 +202,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 return verticalState.vertical.id == item.id
             })
         }
-        return verticals.flatMap { $0.vertical.childs }
+        return verticals.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }
     }
 
     func continueDownload() {
