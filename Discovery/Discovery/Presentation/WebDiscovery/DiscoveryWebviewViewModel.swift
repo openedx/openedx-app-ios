@@ -8,6 +8,7 @@
 import Foundation
 import Core
 import SwiftUI
+import WebKit
 
 public class DiscoveryWebviewViewModel: ObservableObject {
     @Published var courseDetails: CourseDetails?
