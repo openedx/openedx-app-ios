@@ -187,19 +187,19 @@ public struct CourseBlock: Equatable {
     public func video(quality: DownloadQuality) -> CourseBlockVideo? {
         switch quality {
         case .auto:
-            return [hls, desktopMP4, mobileHigh, mobileLow, fallback]
+            [hls, desktopMP4, mobileHigh, mobileLow, fallback]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
         case .high:
-            return [desktopMP4, mobileHigh, mobileLow, hls, fallback]
+            [desktopMP4, mobileHigh, mobileLow, hls, fallback]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
         case .medium:
-            return [mobileHigh, mobileLow, hls, desktopMP4, fallback]
+            [mobileHigh, mobileLow, hls, desktopMP4, fallback]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
         case .low:
-            return [mobileLow, mobileHigh, hls, desktopMP4, fallback]
+            [mobileLow, mobileHigh, hls, desktopMP4, fallback]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
         }
