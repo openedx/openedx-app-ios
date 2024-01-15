@@ -97,11 +97,11 @@ public extension DownloadQuality {
         switch self {
         case .auto:
             return ProfileLocalization.Settings.downloadQualityAutoTitle
-        case .low:
+        case .low_360:
             return ProfileLocalization.Settings.downloadQuality360Title
-        case .medium:
+        case .medium_540:
             return ProfileLocalization.Settings.downloadQuality540Title
-        case .high:
+        case .high_720:
             return ProfileLocalization.Settings.downloadQuality720Title
         }
     }
@@ -110,11 +110,11 @@ public extension DownloadQuality {
         switch self {
         case .auto:
             return ProfileLocalization.Settings.downloadQualityAutoDescription
-        case .low:
+        case .low_360:
             return ProfileLocalization.Settings.downloadQuality360Description
-        case .medium:
+        case .medium_540:
             return nil
-        case .high:
+        case .high_720:
             return ProfileLocalization.Settings.downloadQuality720Description
         }
     }
@@ -124,18 +124,17 @@ public extension DownloadQuality {
         case .auto:
             return ProfileLocalization.Settings.downloadQualityAutoTitle + " ("
             + ProfileLocalization.Settings.downloadQualityAutoDescription + ")"
-        case .low:
+        case .low_360:
             return ProfileLocalization.Settings.downloadQuality360Title + " ("
             + ProfileLocalization.Settings.downloadQuality360Description + ")"
-        case .medium:
+        case .medium_540:
             return ProfileLocalization.Settings.downloadQuality540Title
-        case .high:
+        case .high_720:
             return ProfileLocalization.Settings.downloadQuality720Title + " ("
             + ProfileLocalization.Settings.downloadQuality720Description + ")"
         }
     }
 }
-
 
 #if DEBUG
 struct VideoDownloadQualityView_Previews: PreviewProvider {

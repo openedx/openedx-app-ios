@@ -32,7 +32,7 @@ public enum StreamingQuality: Codable {
 
 public enum DownloadQuality: Codable, CaseIterable {
     case auto
-    case low
-    case medium
-    case high
+    case low_360
+    case medium_540
+    case high_720
 }
