@@ -83,6 +83,7 @@ This ttf file must contain multiple ttf fonts "merged" into a single ttf file. F
 - medium
 - semiBold
 - bold
+
 For this function, the configuration must contain the following parameters:
 ```yaml
 font:
