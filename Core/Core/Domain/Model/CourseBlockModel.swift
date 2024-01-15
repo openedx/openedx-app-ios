@@ -180,20 +180,28 @@ public struct CourseBlock: Equatable {
     public let youTube: CourseBlockVideo?
 
     public var isDownloadable: Bool {
-        guard let url = video?.url else { return false }
-        return canDownload(url: url)
+        [hls, desktopMP4, mobileHigh, mobileLow, fallback]
+            .contains { $0?.isDownloadable == true }
     }
 
     public func video(quality: DownloadQuality) -> CourseBlockVideo? {
         switch quality {
         case .auto:
-            hls ?? video
+            return [hls, desktopMP4, mobileHigh, mobileLow, fallback]
+                .first(where: { $0?.isDownloadable == true })?
+                .flatMap { $0 }
         case .high:
-            desktopMP4 ?? video
+            return [desktopMP4, mobileHigh, mobileLow, hls, fallback]
+                .first(where: { $0?.isDownloadable == true })?
+                .flatMap { $0 }
         case .medium:
-            mobileHigh ?? video
+            return [mobileHigh, mobileLow, hls, desktopMP4, fallback]
+                .first(where: { $0?.isDownloadable == true })?
+                .flatMap { $0 }
         case .low:
-            mobileLow ?? video
+            return [mobileLow, mobileHigh, hls, desktopMP4, fallback]
+                .first(where: { $0?.isDownloadable == true })?
+                .flatMap { $0 }
         }
     }
 
@@ -237,14 +245,6 @@ public struct CourseBlock: Equatable {
         self.hls = hls
     }
 
-    func isVideoUrl(url: String) -> Bool {
-        [".mp4", ".m3u8"].contains(where: { url.contains($0) })
-    }
-
-    private func canDownload(url: String) -> Bool {
-        [".mp4"].contains(where: { url.contains($0) })
-    }
-
     private var video: CourseBlockVideo? {
        hls ?? desktopMP4 ?? mobileHigh ?? mobileLow ?? fallback
     }
@@ -259,5 +259,13 @@ public struct CourseBlockVideo: Equatable {
         self.url = url
         self.fileSize = fileSize
         self.streamPriority = streamPriority
+    }
+
+    public var isVideoURL: Bool {
+        [".mp4", ".m3u8"].contains(where: { url?.contains($0) == true })
+    }
+
+    public var isDownloadable: Bool {
+        [".mp4"].contains(where: { url?.contains($0) == true })
     }
 }
