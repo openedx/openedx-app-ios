@@ -75,5 +75,6 @@ final class DownloadsViewModel: ObservableObject {
     private func filter() {
         downloads = downloads
             .filter { $0.state == .inProgress || $0.state == .waiting }
+            .sorted(by: { $0.state.order < $1.state.order })
     }
 }

@@ -23,7 +23,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     var title: String {
         if isOn {
-            if remainingCount == 0 {
+            if remainingFiles == 0 {
                 return CourseLocalization.Download.allVideosDownloaded
             } else {
                 return CourseLocalization.Download.downloadingVideos
@@ -49,19 +49,23 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     var isAllDownloaded: Bool {
-        totalFinishedCount == courseViewModel.downloadableVerticals.count
+        let totalFinishedCount = courseViewModel.downloadableVerticals.filter { $0.state == .finished }.count
+        return totalFinishedCount == courseViewModel.downloadableVerticals.count
     }
 
-    var remainingCount: Int {
-        return courseViewModel.downloadableVerticals.filter { $0.state != .finished }.count
+    var remainingFiles: Int {
+        let inProgress = courseViewModel.downloadableVerticals.filter { $0.state != .finished }
+        return inProgress.flatMap { $0.vertical.childs }.count
     }
 
-    var downloadingCount: Int {
-        courseViewModel.downloadableVerticals.filter { $0.state == .downloading }.count
+    var downloadingFiles: Int {
+        let downloading = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }
+        return downloading.flatMap { $0.vertical.childs }.count
     }
 
-    var totalFinishedCount: Int {
-        courseViewModel.downloadableVerticals.filter { $0.state == .finished }.count
+    var totalFinishedFiles: Int {
+        let finished = courseViewModel.downloadableVerticals.filter { $0.state == .finished }
+        return finished.flatMap { $0.vertical.childs }.count
     }
 
     var totalSize: String? {
@@ -117,8 +121,9 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private func toggleStateIsOn() {
         let totalCount = courseViewModel.downloadableVerticals.count
         let availableCount = courseViewModel.downloadableVerticals.filter { $0.state == .available }.count
-        let finishedCount = totalFinishedCount
-        let downloadingCount = downloadingCount
+        let finishedCount = courseViewModel.downloadableVerticals.filter { $0.state == .finished }.count
+        let downloadingCount = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }.count
+
         if downloadingCount == totalCount {
             self.isOn = true
             return
