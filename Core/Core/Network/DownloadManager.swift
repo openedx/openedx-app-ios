@@ -343,7 +343,6 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     func waitingAll() {
-        downloadRequest?.cancel()
         persistence.getAllDownloadData {  [weak self] downloadDatas in
             guard let self else { return }
             Task {
@@ -355,6 +354,7 @@ public class DownloadManager: DownloadManagerProtocol {
                     )
                     self.currentDownloadEventPublisher.send(.added)
                 }
+                self.downloadRequest?.cancel()
             }
         }
     }

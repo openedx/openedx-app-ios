@@ -25,8 +25,7 @@ public struct ScrollSlidingTabBar: View {
         selection: Binding<Int>,
         tabs: [String],
         style: Style = .default,
-        onTap: ((Int) -> Void)? = nil)
-    {
+        onTap: ((Int) -> Void)? = nil) {
         self._selection = selection
         self.tabs = tabs
         self.style = style
@@ -163,7 +162,7 @@ extension ScrollSlidingTabBar {
         public static let `default` = Style(
             font: .body,
             selectedFont: .body.bold(),
-            activeAccentColor: Theme.Colors.accentColor ,
+            activeAccentColor: Theme.Colors.accentColor,
             inactiveAccentColor: .black.opacity(0.4),
             indicatorHeight: 2,
             borderColor: .gray.opacity(0.2),

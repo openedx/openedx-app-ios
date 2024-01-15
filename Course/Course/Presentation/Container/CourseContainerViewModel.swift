@@ -10,6 +10,11 @@ import SwiftUI
 import Core
 import Combine
 
+struct VerticalsDownloadState: Hashable {
+    let vertical: CourseVertical
+    let state: DownloadViewState
+}
+
 public class CourseContainerViewModel: BaseCourseViewModel {
     
     @Published private(set) var isShowProgress = false
@@ -22,7 +27,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
 
-    private(set) var availableVerticals: Set<CourseVertical> = []
+    private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
 
     var errorMessage: String? {
         didSet {
@@ -167,39 +172,29 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     @MainActor
-    func downloadAll(courseStructure: CourseStructure, isOn: Bool) async {
-        let courseChapters = courseStructure.childs
-
-        let blocks = courseChapters.flatMap { $0.childs }
-            .filter { $0.isDownloadable }
-            .flatMap { $0.childs }
-            .flatMap { $0.childs }
+    func downloadAll(isOn: Bool) async {
+        let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
 
         if isOn, isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return
         }
 
-        for courseChapter in courseChapters {
-            let sequentials = courseChapter.childs
-                .filter { $0.isDownloadable }
-            for sequential in sequentials {
-                guard let state = sequentialsDownloadState[sequential.id] else {
-                   return
-                }
-                switch state {
-                case .available:
-                    await download(
-                        state: state,
-                        blocks: downloadableBlocks(from: sequential)
-                    )
-                case .downloading, .finished:
-                    if isOn { break }
-                    await download(
-                        state: state,
-                        blocks: downloadableBlocks(from: sequential)
-                    )
-                }
-            }
+        if isOn {
+            let blocks = downloadableVerticals.filter { $0.state != .finished }.flatMap { $0.vertical.childs }
+            await download(
+                state: .available,
+                blocks: blocks
+            )
+        } else {
+            let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
+            await download(
+                state: .downloading,
+                blocks: blocks
+            )
+            await download(
+                state: .finished,
+                blocks: blocks
+            )
         }
     }
 
@@ -335,7 +330,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private func setDownloadsStates() async {
         guard let course = courseStructure else { return }
         self.courseDownloads = await manager.getDownloadsForCourse(course.id)
-        self.availableVerticals = []
+        self.downloadableVerticals = []
         var sequentialsStates: [String: DownloadViewState] = [:]
         var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
@@ -360,12 +355,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     }
                     if verticalsChilds.first(where: { $0 == .downloading }) != nil {
                         verticalsStates[vertical.id] = .downloading
-                        availableVerticals.insert(vertical)
+                        downloadableVerticals.insert(.init(vertical: vertical, state: .downloading))
                     } else if verticalsChilds.allSatisfy({ $0 == .finished }) {
                         verticalsStates[vertical.id] = .finished
+                        downloadableVerticals.insert(.init(vertical: vertical, state: .finished))
                     } else {
                         verticalsStates[vertical.id] = .available
-                        availableVerticals.insert(vertical)
+                        downloadableVerticals.insert(.init(vertical: vertical, state: .available))
                     }
                 }
                 if sequentialsChilds.first(where: { $0 == .downloading }) != nil {

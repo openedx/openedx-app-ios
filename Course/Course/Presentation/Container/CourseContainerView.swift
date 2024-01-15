@@ -97,7 +97,7 @@ public struct CourseContainerView: View {
                     isVideo: false
                 )
             } else {
-                VStack {
+                VStack(spacing: 0) {
                     if viewModel.config.uiComponents.courseTopTabBarEnabled {
                         topTabBar
                     }

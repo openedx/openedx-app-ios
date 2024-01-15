@@ -124,8 +124,9 @@ public struct CourseOutlineView: View {
                         .onRightSwipeGesture {
                             viewModel.router.back()
                         }
-                }.padding(.top, 8)
-                    .accessibilityAction {}
+                }
+                .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
+                .accessibilityAction {}
 
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(

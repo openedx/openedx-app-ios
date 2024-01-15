@@ -49,22 +49,19 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     var isAllDownloaded: Bool {
-        totalFinishedCount == courseViewModel.verticalsDownloadState.count
+        totalFinishedCount == courseViewModel.downloadableVerticals.count
     }
 
     var remainingCount: Int {
-        if !isOn {
-            return courseViewModel.availableVerticals.count
-        }
-        return courseViewModel.verticalsDownloadState.filter { $0.value != .finished }.count
+        return courseViewModel.downloadableVerticals.filter { $0.state != .finished }.count
     }
 
     var downloadingCount: Int {
-        courseViewModel.verticalsDownloadState.filter { $0.value == .downloading }.count
+        courseViewModel.downloadableVerticals.filter { $0.state == .downloading }.count
     }
 
     var totalFinishedCount: Int {
-        courseViewModel.verticalsDownloadState.filter { $0.value == .finished }.count
+        courseViewModel.downloadableVerticals.filter { $0.state == .finished }.count
     }
 
     var totalSize: String? {
@@ -84,7 +81,10 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         }
 
         let size = blockToMB(
-            data: courseViewModel.availableVerticals,
+            data: Set(courseViewModel.downloadableVerticals
+                .filter { $0.state != .finished }
+                .flatMap { $0.vertical.childs }
+            ),
             quality: quality
         )
 
@@ -108,7 +108,6 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     @MainActor
     func downloadAll() async {
         await courseViewModel.downloadAll(
-            courseStructure: courseStructure,
             isOn: isOn ? false : true
         )
     }
@@ -116,8 +115,8 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     // MARK: - Private intents
 
     private func toggleStateIsOn() {
-        let totalCount = courseViewModel.verticalsDownloadState.count
-        let availableCount = courseViewModel.verticalsDownloadState.filter { $0.value == .available }.count
+        let totalCount = courseViewModel.downloadableVerticals.count
+        let availableCount = courseViewModel.downloadableVerticals.filter { $0.state == .available }.count
         let finishedCount = totalFinishedCount
         let downloadingCount = downloadingCount
         if downloadingCount == totalCount {
@@ -167,7 +166,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         return val / 100.0
     }
 
-    private func blockToMB(data: Set<CourseVertical>, quality: DownloadQuality) -> Double {
-        data.flatMap { $0.childs }.reduce(0) { $0 + Double($1.video(quality: quality)?.fileSize ?? 0) } / 1024.0 / 1024.0
+    private func blockToMB(data: Set<CourseBlock>, quality: DownloadQuality) -> Double {
+        data.reduce(0) { $0 + Double($1.video(quality: quality)?.fileSize ?? 0) } / 1024.0 / 1024.0
     }
 }
