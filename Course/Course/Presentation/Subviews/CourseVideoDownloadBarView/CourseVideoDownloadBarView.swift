@@ -87,10 +87,10 @@ struct CourseVideoDownloadBarView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
                 HStack(spacing: 0) {
                     Group {
-                        if viewModel.remainingFiles == 0 {
-                            Text("\(CourseLocalization.Download.videos) \(viewModel.totalFinishedFiles)")
+                        if viewModel.remainingVideos == 0 {
+                            Text("\(CourseLocalization.Download.videos) \(viewModel.totalFinishedVideos)")
                         } else {
-                            Text("\(CourseLocalization.Download.remaining) \(viewModel.remainingFiles)")
+                            Text("\(CourseLocalization.Download.remaining) \(viewModel.remainingVideos)")
                         }
                         viewModel.totalSize.map { Text(", \($0)MB Total") }
                     }

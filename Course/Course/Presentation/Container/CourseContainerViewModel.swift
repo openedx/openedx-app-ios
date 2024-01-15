@@ -196,12 +196,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
 
-    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [VerticalsDownloadState] {
-        downloadableVerticals.filter { verticalState in
+    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {
+        let verticals = downloadableVerticals.filter { verticalState in
             courseSequential.childs.contains(where: { item in
                 return verticalState.vertical.id == item.id
             })
         }
+        return verticals.flatMap { $0.vertical.childs }
     }
 
     func continueDownload() {

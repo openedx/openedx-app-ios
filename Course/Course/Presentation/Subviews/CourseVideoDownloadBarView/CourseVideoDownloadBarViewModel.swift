@@ -23,7 +23,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     var title: String {
         if isOn {
-            if remainingFiles == 0 {
+            if remainingVideos == 0 {
                 return CourseLocalization.Download.allVideosDownloaded
             } else {
                 return CourseLocalization.Download.downloadingVideos
@@ -53,17 +53,17 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         return totalFinishedCount == courseViewModel.downloadableVerticals.count
     }
 
-    var remainingFiles: Int {
+    var remainingVideos: Int {
         let inProgress = courseViewModel.downloadableVerticals.filter { $0.state != .finished }
         return inProgress.flatMap { $0.vertical.childs }.count
     }
 
-    var downloadingFiles: Int {
+    var downloadingVideos: Int {
         let downloading = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }
         return downloading.flatMap { $0.vertical.childs }.count
     }
 
-    var totalFinishedFiles: Int {
+    var totalFinishedVideos: Int {
         let finished = courseViewModel.downloadableVerticals.filter { $0.state == .finished }
         return finished.flatMap { $0.vertical.childs }.count
     }
