@@ -53,7 +53,7 @@ struct MainScreenView: View {
                     } else if config?.discovery.type == .webview {
                         DiscoveryWebview(
                             viewModel: Container.shared.resolve(
-                                DiscoveryWebviewModel.self,
+                                DiscoveryWebviewViewModel.self,
                                 argument: viewModel.sourceScreen)!,
                             router: Container.shared.resolve(DiscoveryRouter.self)!
                         )

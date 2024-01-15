@@ -20,7 +20,7 @@ public struct DiscoveryWebview: View {
     @State private var searchQuery: String = ""
     @State private var isLoading: Bool = true
     
-    @ObservedObject private var viewModel: DiscoveryWebviewModel
+    @ObservedObject private var viewModel: DiscoveryWebviewViewModel
     private var router: DiscoveryRouter
     private var discoveryType: DiscoveryWebviewType
     private var pathID: String
@@ -64,7 +64,7 @@ public struct DiscoveryWebview: View {
     }
     
     public init(
-        viewModel: DiscoveryWebviewModel,
+        viewModel: DiscoveryWebviewViewModel,
         router: DiscoveryRouter,
         searchQuery: String? = nil,
         discoveryType: DiscoveryWebviewType = .discovery,

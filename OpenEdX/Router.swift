@@ -217,7 +217,7 @@ public class Router: AuthorizationRouter,
     ) {
         let view = DiscoveryWebview(
             viewModel: Container.shared.resolve(
-                DiscoveryWebviewModel.self,
+                DiscoveryWebviewViewModel.self,
                 argument: sourceScreen)!,
             router: Container.shared.resolve(DiscoveryRouter.self)!,
             discoveryType: discoveryType,
@@ -252,7 +252,7 @@ public class Router: AuthorizationRouter,
         } else if config?.discovery.type == .webview {
             let view = DiscoveryWebview(
                 viewModel: Container.shared.resolve(
-                    DiscoveryWebviewModel.self,
+                    DiscoveryWebviewViewModel.self,
                     argument: sourceScreen
                 )!,
                 router: Container.shared.resolve(DiscoveryRouter.self)!,

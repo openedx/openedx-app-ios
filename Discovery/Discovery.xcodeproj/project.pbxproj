@@ -37,7 +37,7 @@
 		E0B9F6A42B4D59E000168366 /* CourseDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F6A32B4D59E000168366 /* CourseDetails.swift */; };
 		E0B9F6A62B4D620100168366 /* Data_CourseDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F6A52B4D620100168366 /* Data_CourseDetailsResponse.swift */; };
 		E0B9F6AB2B4E718F00168366 /* CourseDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B9F6AA2B4E718F00168366 /* CourseDetailsViewModelTests.swift */; };
-		E0D586202B300095009B4BA7 /* DiscoverWebviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */; };
+		E0D586202B300095009B4BA7 /* DiscoveryWebviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5861E2B300095009B4BA7 /* DiscoveryWebviewViewModel.swift */; };
 		E0D586212B300095009B4BA7 /* DiscoveryWebview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */; };
 		E0D586232B3000AD009B4BA7 /* DiscoveryURIDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586222B3000AD009B4BA7 /* DiscoveryURIDetails.swift */; };
 		E0D586252B300134009B4BA7 /* URL+PathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586242B300134009B4BA7 /* URL+PathExtension.swift */; };
@@ -102,7 +102,7 @@
 		E0B9F6A52B4D620100168366 /* Data_CourseDetailsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data_CourseDetailsResponse.swift; sourceTree = "<group>"; };
 		E0B9F6AA2B4E718F00168366 /* CourseDetailsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		E0D586132B29F25A009B4BA7 /* Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverWebviewModel.swift; sourceTree = "<group>"; };
+		E0D5861E2B300095009B4BA7 /* DiscoveryWebviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryWebviewViewModel.swift; sourceTree = "<group>"; };
 		E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryWebview.swift; sourceTree = "<group>"; };
 		E0D586222B3000AD009B4BA7 /* DiscoveryURIDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryURIDetails.swift; sourceTree = "<group>"; };
 		E0D586242B300134009B4BA7 /* URL+PathExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+PathExtension.swift"; sourceTree = "<group>"; };
@@ -315,7 +315,7 @@
 		E0D5861D2B300095009B4BA7 /* WebDiscovery */ = {
 			isa = PBXGroup;
 			children = (
-				E0D5861E2B300095009B4BA7 /* DiscoverWebviewModel.swift */,
+				E0D5861E2B300095009B4BA7 /* DiscoveryWebviewViewModel.swift */,
 				E0D5861F2B300095009B4BA7 /* DiscoveryWebview.swift */,
 				E0D586222B3000AD009B4BA7 /* DiscoveryURIDetails.swift */,
 				E0D586242B300134009B4BA7 /* URL+PathExtension.swift */,
@@ -553,7 +553,7 @@
 				029242EB2AE6AB7B00A940EC /* UpdateNotificationView.swift in Sources */,
 				02EF39DC28D86BEF0058F6BD /* Strings.swift in Sources */,
 				E0B9F69C2B4D57F800168366 /* SearchView.swift in Sources */,
-				E0D586202B300095009B4BA7 /* DiscoverWebviewModel.swift in Sources */,
+				E0D586202B300095009B4BA7 /* DiscoveryWebviewViewModel.swift in Sources */,
 				02F1752F2A4DA3B60019CD70 /* DiscoveryAnalytics.swift in Sources */,
 				E0D586212B300095009B4BA7 /* DiscoveryWebview.swift in Sources */,
 			);

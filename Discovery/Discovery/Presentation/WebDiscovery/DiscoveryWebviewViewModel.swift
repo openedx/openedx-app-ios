@@ -1,5 +1,5 @@
 //
-//  DiscoverWebviewModel.swift
+//  DiscoveryWebviewViewModel.swift
 //  Discovery
 //
 //  Created by SaeedBashir on 12/16/23.
@@ -7,11 +7,9 @@
 
 import Foundation
 import Core
-import WebKit
 import SwiftUI
-import Swinject
 
-public class DiscoveryWebviewModel: ObservableObject {
+public class DiscoveryWebviewViewModel: ObservableObject {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
@@ -111,7 +109,7 @@ public class DiscoveryWebviewModel: ObservableObject {
     }
 }
 
-extension DiscoveryWebviewModel: WebViewNavigationDelegate {
+extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     public func webView(
         _ webView: WKWebView,
         shouldLoad request: URLRequest,
