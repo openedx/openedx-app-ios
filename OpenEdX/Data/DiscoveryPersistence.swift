@@ -71,18 +71,20 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
         let request = CDCourseDetails.fetchRequest()
         request.predicate = NSPredicate(format: "courseID = %@", courseID)
         guard let courseDetails = try? context.fetch(request).first else { throw NoCachedDataError() }
-        return CourseDetails(courseID: courseDetails.courseID ?? "",
-                             org: courseDetails.org ?? "",
-                             courseTitle: courseDetails.courseTitle ?? "",
-                             courseDescription: courseDetails.courseDescription ?? "",
-                             courseStart: courseDetails.courseStart,
-                             courseEnd: courseDetails.courseEnd,
-                             enrollmentStart: courseDetails.enrollmentStart,
-                             enrollmentEnd: courseDetails.enrollmentEnd,
-                             isEnrolled: courseDetails.isEnrolled,
-                             overviewHTML: courseDetails.overviewHTML ?? "",
-                             courseBannerURL: courseDetails.courseBannerURL ?? "",
-                             courseVideoURL: nil)
+        return CourseDetails(
+            courseID: courseDetails.courseID ?? "",
+            org: courseDetails.org ?? "",
+            courseTitle: courseDetails.courseTitle ?? "",
+            courseDescription: courseDetails.courseDescription ?? "",
+            courseStart: courseDetails.courseStart,
+            courseEnd: courseDetails.courseEnd,
+            enrollmentStart: courseDetails.enrollmentStart,
+            enrollmentEnd: courseDetails.enrollmentEnd,
+            isEnrolled: courseDetails.isEnrolled,
+            overviewHTML: courseDetails.overviewHTML ?? "",
+            courseBannerURL: courseDetails.courseBannerURL ?? "",
+            courseVideoURL: nil
+        )
     }
     
     public func saveCourseDetails(course: CourseDetails) {

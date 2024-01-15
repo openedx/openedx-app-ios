@@ -33,7 +33,7 @@ public class DiscoveryWebviewModel: ObservableObject {
     var sourceScreen: LogistrationSourceScreen
     
     var userloggedIn: Bool {
-        return !(storage.user?.username?.isEmpty ?? true)
+        return storage.user?.username?.isEmpty == false
     }
     
     public init(

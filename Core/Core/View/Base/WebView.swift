@@ -99,7 +99,8 @@ public struct WebView: UIViewRepresentable {
             let isWebViewDelegateHandled = await (
                 parent.webViewNavDelegate?.webView(
                     webView,
-                    shouldLoad: navigationAction.request, navigationAction: navigationAction) ?? false
+                    shouldLoad: navigationAction.request,
+                    navigationAction: navigationAction) ?? false
             )
             
             if isWebViewDelegateHandled {
@@ -188,8 +189,6 @@ public struct WebView: UIViewRepresentable {
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
         webView.scrollView.alwaysBounceVertical = false
-//        webView.scrollView.layer.cornerRadius = 24
-//        webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         
         return webView
