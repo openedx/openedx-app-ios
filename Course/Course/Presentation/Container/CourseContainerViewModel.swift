@@ -23,11 +23,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var showError: Bool = false
     @Published var showAllowLargeDownload: Bool = false
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
-    @Published var verticalsDownloadState: [String: DownloadViewState] = [:]
+    @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
-
-    private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
 
     var errorMessage: String? {
         didSet {
@@ -198,10 +196,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
 
-    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [String: DownloadViewState] {
-        verticalsDownloadState.filter { dict in
+    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [VerticalsDownloadState] {
+        downloadableVerticals.filter { verticalState in
             courseSequential.childs.contains(where: { item in
-                return dict.key == item.id
+                return verticalState.vertical.id == item.id
             })
         }
     }
@@ -281,9 +279,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     func isAllDownloading() -> Bool {
-        let totalCount = verticalsDownloadState.count
-        let downloadingCount = verticalsDownloadState.filter { $0.value == .downloading }.count
-        let finishedCount = verticalsDownloadState.filter { $0.value == .finished }.count
+        let totalCount = downloadableVerticals.count
+        let downloadingCount = downloadableVerticals.filter { $0.state == .downloading }.count
+        let finishedCount = downloadableVerticals.filter { $0.state == .finished }.count
         if finishedCount == totalCount { return false }
         return totalCount - finishedCount == downloadingCount
     }
@@ -373,7 +371,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
             self.sequentialsDownloadState = sequentialsStates
-            self.verticalsDownloadState = verticalsStates
         }
     }
     

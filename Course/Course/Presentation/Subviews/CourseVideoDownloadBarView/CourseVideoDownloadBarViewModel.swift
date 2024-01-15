@@ -143,7 +143,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private func observers() {
         currentDownload = courseViewModel.manager.currentDownload
         toggleStateIsOn()
-        courseViewModel.$verticalsDownloadState
+        courseViewModel.$downloadableVerticals
             .sink { [weak self] _ in
                 guard let self else { return }
                 self.currentDownload = self.courseViewModel.manager.currentDownload
