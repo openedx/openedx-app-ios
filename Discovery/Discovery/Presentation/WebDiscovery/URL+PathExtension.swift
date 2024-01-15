@@ -13,7 +13,7 @@ public extension URL {
     }
     
     var isValidAppURLScheme: Bool {
-        return scheme ?? "" == URIString.appURLScheme.rawValue && 
+        return scheme ?? "" == URIString.appURLScheme.rawValue 
     }
     
     var queryParameters: [String: Any]? {
