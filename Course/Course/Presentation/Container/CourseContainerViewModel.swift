@@ -330,7 +330,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.courseDownloads = await manager.getDownloadsForCourse(course.id)
         self.downloadableVerticals = []
         var sequentialsStates: [String: DownloadViewState] = [:]
-        var verticalsStates: [String: DownloadViewState] = [:]
+        //var verticalsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
                 var sequentialsChilds: [DownloadViewState] = []
@@ -352,13 +352,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         }
                     }
                     if verticalsChilds.first(where: { $0 == .downloading }) != nil {
-                        verticalsStates[vertical.id] = .downloading
                         downloadableVerticals.insert(.init(vertical: vertical, state: .downloading))
                     } else if verticalsChilds.allSatisfy({ $0 == .finished }) {
-                        verticalsStates[vertical.id] = .finished
                         downloadableVerticals.insert(.init(vertical: vertical, state: .finished))
                     } else {
-                        verticalsStates[vertical.id] = .available
                         downloadableVerticals.insert(.init(vertical: vertical, state: .available))
                     }
                 }
