@@ -119,7 +119,11 @@ public struct CourseSequential: Identifiable {
     }
 }
 
-public struct CourseVertical: Identifiable {
+public struct CourseVertical: Identifiable, Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     public let blockId: String
     public let id: String
     public let courseId: String
@@ -161,7 +165,11 @@ public struct SubtitleUrl: Equatable {
     }
 }
 
-public struct CourseBlock: Equatable {
+public struct CourseBlock: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     public let blockId: String
     public let id: String
     public let courseId: String

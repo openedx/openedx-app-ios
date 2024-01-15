@@ -129,9 +129,6 @@ struct CourseStructureNestedListView: View {
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(CourseLocalization.Accessibility.download)
                 }
-                .onForeground {
-                    viewModel.onForeground()
-                }
                 downloadCount(sequential: sequential)
             case .downloading:
                 Button {
@@ -147,9 +144,6 @@ struct CourseStructureNestedListView: View {
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                 }
-                .onBackground {
-                    viewModel.onBackground()
-                }
             case .finished:
                 Button {
                     Task {
@@ -164,9 +158,6 @@ struct CourseStructureNestedListView: View {
                     DownloadFinishedView()
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
-                }
-                .onBackground {
-                    viewModel.onBackground()
                 }
                 downloadCount(sequential: sequential)
             }

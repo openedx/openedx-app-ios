@@ -12,7 +12,6 @@ import Combine
 public enum DownloadState: String {
     case waiting
     case inProgress
-    case paused
     case finished
 
     public var order: Int {
@@ -21,10 +20,8 @@ public enum DownloadState: String {
             1
         case .waiting:
             2
-        case .paused:
-            3
         case .finished:
-            4
+            3
         }
     }
 }
@@ -99,7 +96,6 @@ public protocol DownloadManagerProtocol {
     func addToDownloadQueue(blocks: [CourseBlock]) throws
     func isLarge(blocks: [CourseBlock]) -> Bool
     func resumeDownloading() throws
-    func pauseDownloading()
     func fileUrl(for blockId: String) -> URL?
 }
 
@@ -143,6 +139,7 @@ public class DownloadManager: DownloadManagerProtocol {
         self.appStorage = appStorage
         self.connectivity = connectivity
         self.backgroundTask()
+        try? self.resumeDownloading()
     }
 
     // MARK: - Publishers
@@ -193,20 +190,6 @@ public class DownloadManager: DownloadManagerProtocol {
         } else {
             throw NoWiFiError()
         }
-    }
-
-    public func pauseDownloading() {
-        guard let currentDownload else { return }
-        downloadRequest?.cancel(byProducingResumeData: { [weak self] resumeData in
-            guard let self else { return }
-            self.persistence.updateDownloadState(
-                id: currentDownload.id,
-                state: .paused,
-                resumeData: resumeData
-            )
-            self.currentDownload?.state = .paused
-            self.currentDownloadEventPublisher.send(.paused(currentDownload))
-        })
     }
 
     public func resumeDownloading() throws {
@@ -359,21 +342,18 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    func cancelAllInProgress() {
+    func waitingAll() {
         downloadRequest?.cancel()
         persistence.getAllDownloadData {  [weak self] downloadDatas in
             guard let self else { return }
             Task {
-                for downloadData in downloadDatas.filter({ $0.state == .inProgress || $0.state == .waiting }) {
-                    do {
-                        try self.persistence.deleteDownloadData(id: downloadData.id)
-                        if let fileUrl = await self.fileUrl(for: downloadData.id) {
-                            try FileManager.default.removeItem(at: fileUrl)
-                        }
-                        self.currentDownloadEventPublisher.send(.canceled(downloadData))
-                    } catch {
-                        NSLog("Error deleting file: \(error.localizedDescription)")
-                    }
+                for downloadData in downloadDatas.filter({ $0.state == .inProgress }) {
+                    self.persistence.updateDownloadState(
+                        id: downloadData.id,
+                        state: .waiting,
+                        resumeData: nil
+                    )
+                    self.currentDownloadEventPublisher.send(.added)
                 }
             }
         }
@@ -386,8 +366,8 @@ public class DownloadManager: DownloadManagerProtocol {
             .sink { [weak self] state in
                 guard let self else { return }
                 switch state {
-                case.didBecomeActive: break
-                case .didEnterBackground: self.cancelAllInProgress()
+                case.didBecomeActive: try? self.resumeDownloading()
+                case .didEnterBackground: self.waitingAll()
                 }
             }
             .store(in: &cancellables)
@@ -502,7 +482,6 @@ public final class BackgroundTaskProvider {
     }
 }
 
-
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public class DownloadManagerMock: DownloadManagerProtocol {
@@ -550,10 +529,6 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     }
 
     public func resumeDownloading() {
-        
-    }
-    
-    public func pauseDownloading() {
         
     }
     

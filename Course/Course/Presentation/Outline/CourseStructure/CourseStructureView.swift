@@ -88,9 +88,6 @@ struct CourseStructureView: View {
                                             )
                                         }
                                     }
-                                    .onForeground {
-                                        viewModel.onForeground()
-                                    }
                             case .downloading:
                                 DownloadProgressView()
                                     .accessibilityElement(children: .ignore)
@@ -103,10 +100,6 @@ struct CourseStructureView: View {
                                                 state: state
                                             )
                                         }
-
-                                    }
-                                    .onBackground {
-                                        viewModel.onBackground()
                                     }
                             case .finished:
                                 DownloadFinishedView()

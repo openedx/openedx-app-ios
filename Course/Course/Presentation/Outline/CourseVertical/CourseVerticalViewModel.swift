@@ -109,8 +109,6 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
                     switch download.state {
                     case .waiting, .inProgress:
                         childs.append(.downloading)
-                    case .paused:
-                        childs.append(.available)
                     case .finished:
                         childs.append(.finished)
                     }
