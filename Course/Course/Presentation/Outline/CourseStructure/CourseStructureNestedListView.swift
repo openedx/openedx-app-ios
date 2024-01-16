@@ -96,10 +96,12 @@ struct CourseStructureNestedListView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
             }
             Spacer()
-            downloadButton(
-                sequential: sequential,
-                chapter: chapter
-            )
+            if viewModel.isInternetAvaliable {
+                downloadButton(
+                    sequential: sequential,
+                    chapter: chapter
+                )
+            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(sequential.displayName)

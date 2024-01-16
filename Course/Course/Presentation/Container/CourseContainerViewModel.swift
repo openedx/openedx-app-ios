@@ -26,6 +26,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
+    @Published var isInternetAvaliable: Bool = true
 
     var errorMessage: String? {
         didSet {
@@ -82,9 +83,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.enrollmentEnd = enrollmentEnd
         self.storage = storage
         self.userSettings = storage.userSettings
+        self.isInternetAvaliable = connectivity.isInternetAvaliable
 
         super.init(manager: manager)
-        
+
         manager.eventPublisher()
             .sink { [weak self] state in
                 guard let self else { return }
@@ -94,6 +96,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
             .store(in: &cancellables)
+
+        connectivity.internetReachableSubject
+            .sink { [weak self] state in
+            guard let self else { return }
+                self.isInternetAvaliable = self.connectivity.isInternetAvaliable
+        }
+        .store(in: &cancellables)
+
+
     }
     
     @MainActor
@@ -102,7 +113,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             if courseStart < Date() {
                 isShowProgress = withProgress
                 do {
-                    if connectivity.isInternetAvaliable {
+                    if isInternetAvaliable {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                         isShowProgress = false
                         if let courseStructure {
@@ -154,6 +165,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
     @MainActor
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) async {
+        if !isInternetAvaliable { return }
         guard let sequential = chapter.childs
             .first(where: { $0.id == blockId }) else {
             return

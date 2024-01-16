@@ -142,7 +142,7 @@ public struct CourseOutlineView: View {
                         Spacer()
                         SnackBarView(message: viewModel.errorMessage)
                     }
-                    .padding(.bottom, viewModel.connectivity.isInternetAvaliable
+                    .padding(.bottom, viewModel.isInternetAvaliable
                              ? 0 : OfflineSnackBarView.height)
                     .transition(.move(edge: .bottom))
                     .onAppear {
@@ -193,11 +193,22 @@ public struct CourseOutlineView: View {
            let courseVideosStructure = viewModel.courseVideosStructure,
            viewModel.hasVideoForDowbloads() {
             VStack(spacing: 0) {
-                CourseVideoDownloadBarView(
-                    courseStructure: courseVideosStructure,
-                    courseViewModel: viewModel
-                ) {
-                    showingDownloads = true
+                if viewModel.isInternetAvaliable {
+                    CourseVideoDownloadBarView(
+                        courseStructure: courseVideosStructure,
+                        courseViewModel: viewModel
+                    ) { showingDownloads = true }
+                } else {
+                    VStack(spacing: 0) {
+                        Text(CourseLocalization.Download.noWifiMessage)
+                            .font(Theme.Fonts.labelLarge)
+                            .multilineTextAlignment(.center)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 10)
+                        Spacer()
+                        Divider()
+                    }
+
                 }
                 viewModel.userSettings.map {
                     VideoDownloadQualityBarView(
