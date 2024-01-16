@@ -87,24 +87,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
         super.init(manager: manager)
 
-        manager.eventPublisher()
-            .sink { [weak self] state in
-                guard let self else { return }
-                if case .progress = state { return }
-                Task {
-                    await self.setDownloadsStates()
-                }
-            }
-            .store(in: &cancellables)
-
-        connectivity.internetReachableSubject
-            .sink { [weak self] state in
-            guard let self else { return }
-                self.isInternetAvaliable = self.connectivity.isInternetAvaliable
-        }
-        .store(in: &cancellables)
-
-
+        self.observers()
     }
     
     @MainActor
@@ -402,5 +385,24 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
         return nil
+    }
+
+    private func observers() {
+        manager.eventPublisher()
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case .progress = state { return }
+                Task {
+                    await self.setDownloadsStates()
+                }
+            }
+            .store(in: &cancellables)
+
+        connectivity.internetReachableSubject
+            .sink { [weak self] state in
+            guard let self else { return }
+                self.isInternetAvaliable = self.connectivity.isInternetAvaliable
+        }
+        .store(in: &cancellables)
     }
 }
