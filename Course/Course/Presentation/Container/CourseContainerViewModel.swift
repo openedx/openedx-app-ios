@@ -148,7 +148,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
     @MainActor
     func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) async {
-        if !isInternetAvaliable { return }
         guard let sequential = chapter.childs
             .first(where: { $0.id == blockId }) else {
             return

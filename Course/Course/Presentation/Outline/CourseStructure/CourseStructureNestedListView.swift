@@ -96,12 +96,11 @@ struct CourseStructureNestedListView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
             }
             Spacer()
-            if viewModel.isInternetAvaliable {
-                downloadButton(
-                    sequential: sequential,
-                    chapter: chapter
-                )
-            }
+            downloadButton(
+                sequential: sequential,
+                chapter: chapter
+            )
+
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(sequential.displayName)
@@ -118,33 +117,37 @@ struct CourseStructureNestedListView: View {
         if let state = viewModel.sequentialsDownloadState[sequential.id] {
             switch state {
             case .available:
-                Button {
-                    Task {
-                        await viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: sequential.id,
-                            state: state
-                        )
+                if viewModel.isInternetAvaliable {
+                    Button {
+                        Task {
+                            await viewModel.onDownloadViewTap(
+                                chapter: chapter,
+                                blockId: sequential.id,
+                                state: state
+                            )
+                        }
+                    } label: {
+                        DownloadAvailableView()
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(CourseLocalization.Accessibility.download)
                     }
-                } label: {
-                    DownloadAvailableView()
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel(CourseLocalization.Accessibility.download)
+                    downloadCount(sequential: sequential)
                 }
-                downloadCount(sequential: sequential)
             case .downloading:
-                Button {
-                    Task {
-                        await viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: sequential.id,
-                            state: state
-                        )
+                if viewModel.isInternetAvaliable {
+                    Button {
+                        Task {
+                            await viewModel.onDownloadViewTap(
+                                chapter: chapter,
+                                blockId: sequential.id,
+                                state: state
+                            )
+                        }
+                    } label: {
+                        DownloadProgressView()
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                     }
-                } label: {
-                    DownloadProgressView()
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                 }
             case .finished:
                 Button {
