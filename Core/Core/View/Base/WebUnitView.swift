@@ -12,12 +12,14 @@ import Theme
 public struct WebUnitView: View {
     
     private var url: String
-    @ObservedObject private var viewModel: WebUnitViewModel
+    private var injections: [WebviewInjection]?
+    @StateObject private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
     
-    public init(url: String, viewModel: WebUnitViewModel) {
-        self.viewModel = viewModel
+    public init(url: String, viewModel: WebUnitViewModel, injections: [WebviewInjection]?) {
+        self._viewModel = .init(wrappedValue: viewModel)
         self.url = url
+        self.injections = injections
     }
     
     @ViewBuilder
@@ -55,7 +57,11 @@ public struct WebUnitView: View {
                     ScrollView {
                         if viewModel.cookiesReady {
                             WebView(
-                                viewModel: .init(url: url, baseURL: viewModel.config.baseURL.absoluteString),
+                                viewModel: .init(
+                                    url: url,
+                                    baseURL: viewModel.config.baseURL.absoluteString,
+                                    injections: injections
+                                ),
                                 isLoading: $isWebViewLoading, refreshCookies: {
                                     await viewModel.updateCookies(force: true)
                                 })

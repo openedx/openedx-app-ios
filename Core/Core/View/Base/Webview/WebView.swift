@@ -22,10 +22,12 @@ public struct WebView: UIViewRepresentable {
         
         @Published var url: String
         let baseURL: String
+        let injections: [WebviewInjection]?
         
-        public init(url: String, baseURL: String) {
+        public init(url: String, baseURL: String, injections: [WebviewInjection]? = nil) {
             self.url = url
             self.baseURL = baseURL
+            self.injections = injections
         }
     }
     
@@ -47,7 +49,7 @@ public struct WebView: UIViewRepresentable {
         self.webViewNavDelegate = navigationDelegate
     }
     
-    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
+    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
         var parent: WebView
         
         init(_ parent: WebView) {
@@ -165,6 +167,16 @@ public struct WebView: UIViewRepresentable {
         deinit {
             NotificationCenter.default.removeObserver(self)
         }
+
+        public func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
+            let messages = parent.viewModel.injections?.compactMap({$0.messages}).flatMap({$0}) ?? []
+            if let currentMessage = messages.first(where: { $0.name == message.name }) {
+                currentMessage.handler(message.body, message.webView)
+            }
+        }
     }
     
     public func makeCoordinator() -> Coordinator {
@@ -175,6 +187,11 @@ public struct WebView: UIViewRepresentable {
         let webViewConfig = WKWebViewConfiguration()
         
         let webView = WKWebView(frame: .zero, configuration: webViewConfig)
+        #if DEBUG
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
+        #endif
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         
@@ -191,6 +208,19 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         
+        for injection in viewModel.injections ?? [] {
+            let script = WKUserScript(
+                source: injection.script,
+                injectionTime: injection.injectionTime,
+                forMainFrameOnly: true
+            )
+            webView.configuration.userContentController.addUserScript(script)
+            
+            for message in injection.messages ?? [] {
+                webView.configuration.userContentController.add(context.coordinator, name: message.name)
+            }
+        }
+        
         return webView
     }
     
@@ -204,5 +234,10 @@ public struct WebView: UIViewRepresentable {
                 webview.load(request)
             }
         }
+    }
+    
+    public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.configuration.userContentController.removeAllUserScripts()
+        uiView.configuration.userContentController.removeAllScriptMessageHandlers()
     }
 }

@@ -15,7 +15,7 @@ private enum FeaturesKeys: String {
 public class FeaturesConfig: NSObject {
     public var whatNewEnabled: Bool
     public var startupScreenEnabled: Bool
-    
+
     init(dictionary: [String: Any]) {
         whatNewEnabled = dictionary[FeaturesKeys.whatNewEnabled.rawValue] as? Bool ?? false
         startupScreenEnabled = dictionary[FeaturesKeys.startupScreenEnabled.rawValue] as? Bool ?? false
