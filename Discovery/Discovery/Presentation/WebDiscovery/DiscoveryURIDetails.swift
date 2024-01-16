@@ -14,7 +14,7 @@ public enum URIString: String {
     case pathPlaceHolder = "{path_id}"
 }
 
-public  enum URLParameterKeys: String, RawStringExtractable {
+public enum URLParameterKeys: String, RawStringExtractable {
     case pathId = "path_id"
     case courseId = "course_id"
     case emailOptIn = "email_opt_in"
