@@ -17,7 +17,7 @@ public enum AlertViewType: Equatable {
     var contentPadding: CGFloat {
         switch self {
         case .`default`:
-            return 5
+            return 16
         case .action, .logOut, .leaveProfile:
             return 36
         }
@@ -113,6 +113,7 @@ public struct AlertView: View {
                                 Text(alertTitle)
                                     .font(Theme.Fonts.titleLarge)
                                     .padding(.horizontal, 40)
+                                    .padding(.top, 10)
                                 Text(alertMessage)
                                     .font(Theme.Fonts.bodyMedium)
                                     .multilineTextAlignment(.center)
@@ -151,11 +152,15 @@ public struct AlertView: View {
                     HStack {
                         switch type {
                         case let .`default`(positiveAction):
-                            StyledButton(positiveAction, action: { okTapped() })
-                                .frame(maxWidth: 135)
-                            StyledButton(CoreLocalization.Alert.cancel, action: { onCloseTapped() })
-                                .frame(maxWidth: 135)
-                                .saturation(0)
+                            HStack {
+                                StyledButton(positiveAction, action: { okTapped() })
+                                    .frame(maxWidth: 135)
+                                StyledButton(CoreLocalization.Alert.cancel, action: { onCloseTapped() })
+                                    .frame(maxWidth: 135)
+                                    .saturation(0)
+                            }
+                            .padding(.leading, 10)
+                            .padding(.trailing, 10)
                         case let .action(action, _):
                             if !isHorizontal {
                                 VStack(spacing: 20) {
@@ -274,7 +279,7 @@ public struct AlertView: View {
                             }.padding(.trailing, isHorizontal ? 20 : 0)
                         }
                     }
-                    .padding(.top, 5)
+                    .padding(.top, 16)
                     .padding(.bottom, isHorizontal ? 16 : type.contentPadding)
                 }
                 Button(action: {

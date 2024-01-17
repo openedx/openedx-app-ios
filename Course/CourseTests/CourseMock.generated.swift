@@ -1138,24 +1138,6 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
 
 
-    open func courseEnrollClicked(courseId: String, courseName: String) {
-        addInvocation(.m_courseEnrollClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
-		let perform = methodPerformValue(.m_courseEnrollClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
-		perform?(`courseId`, `courseName`)
-    }
-
-    open func courseEnrollSuccess(courseId: String, courseName: String) {
-        addInvocation(.m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
-		let perform = methodPerformValue(.m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
-		perform?(`courseId`, `courseName`)
-    }
-
-    open func viewCourseClicked(courseId: String, courseName: String) {
-        addInvocation(.m_viewCourseClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
-		let perform = methodPerformValue(.m_viewCourseClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
-		perform?(`courseId`, `courseName`)
-    }
-
     open func resumeCourseTapped(courseId: String, courseName: String, blockId: String) {
         addInvocation(.m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`)))
 		let perform = methodPerformValue(.m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`))) as? (String, String, String) -> Void
@@ -1236,9 +1218,6 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
 
     fileprivate enum MethodType {
-        case m_courseEnrollClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
-        case m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
-        case m_viewCourseClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>, Parameter<String>, Parameter<String>)
         case m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
         case m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
@@ -1255,24 +1234,6 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_courseEnrollClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_viewCourseClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_viewCourseClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
-				return Matcher.ComparisonResult(results)
-
             case (.m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(let lhsCourseid, let lhsCoursename, let lhsBlockid), .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(let rhsCourseid, let rhsCoursename, let rhsBlockid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
@@ -1369,9 +1330,6 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
         func intValue() -> Int {
             switch self {
-            case let .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
-            case let .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
-            case let .m_viewCourseClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
@@ -1389,9 +1347,6 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         }
         func assertionName() -> String {
             switch self {
-            case .m_courseEnrollClicked__courseId_courseIdcourseName_courseName: return ".courseEnrollClicked(courseId:courseName:)"
-            case .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName: return ".courseEnrollSuccess(courseId:courseName:)"
-            case .m_viewCourseClicked__courseId_courseIdcourseName_courseName: return ".viewCourseClicked(courseId:courseName:)"
             case .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId: return ".resumeCourseTapped(courseId:courseName:blockId:)"
             case .m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".sequentialClicked(courseId:courseName:blockId:blockName:)"
             case .m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".verticalClicked(courseId:courseName:blockId:blockName:)"
@@ -1423,9 +1378,6 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func courseEnrollClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
-        public static func courseEnrollSuccess(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
-        public static func viewCourseClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_viewCourseClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func resumeCourseTapped(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>) -> Verify { return Verify(method: .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(`courseId`, `courseName`, `blockId`))}
         public static func sequentialClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
         public static func verticalClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
@@ -1445,15 +1397,6 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func courseEnrollClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
-            return Perform(method: .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
-        }
-        public static func courseEnrollSuccess(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
-            return Perform(method: .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
-        }
-        public static func viewCourseClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
-            return Perform(method: .m_viewCourseClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
-        }
         public static func resumeCourseTapped(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, perform: @escaping (String, String, String) -> Void) -> Perform {
             return Perform(method: .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(`courseId`, `courseName`, `blockId`), performs: perform)
         }
@@ -1612,22 +1555,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 
 
 
-    open func getCourseDetails(courseID: String) throws -> CourseDetails {
-        addInvocation(.m_getCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_getCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
-		var __value: CourseDetails
-		do {
-		    __value = try methodReturnValue(.m_getCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
-		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getCourseDetails(courseID: String). Use given")
-			Failure("Stub return value not specified for getCourseDetails(courseID: String). Use given")
-		} catch {
-		    throw error
-		}
-		return __value
-    }
-
     open func getCourseBlocks(courseID: String) throws -> CourseStructure {
         addInvocation(.m_getCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`)))
 		let perform = methodPerformValue(.m_getCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
@@ -1658,22 +1585,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getLoadedCourseDetails(courseID: String) throws -> CourseDetails {
-        addInvocation(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
-		var __value: CourseDetails
-		do {
-		    __value = try methodReturnValue(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
-		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getLoadedCourseDetails(courseID: String). Use given")
-			Failure("Stub return value not specified for getLoadedCourseDetails(courseID: String). Use given")
-		} catch {
-		    throw error
-		}
-		return __value
-    }
-
     open func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         addInvocation(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`)))
 		let perform = methodPerformValue(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
@@ -1684,22 +1595,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		} catch MockError.notStubed {
 			onFatalFailure("Stub return value not specified for getLoadedCourseBlocks(courseID: String). Use given")
 			Failure("Stub return value not specified for getLoadedCourseBlocks(courseID: String). Use given")
-		} catch {
-		    throw error
-		}
-		return __value
-    }
-
-    open func enrollToCourse(courseID: String) throws -> Bool {
-        addInvocation(.m_enrollToCourse__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_enrollToCourse__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
-		var __value: Bool
-		do {
-		    __value = try methodReturnValue(.m_enrollToCourse__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
-		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for enrollToCourse(courseID: String). Use given")
-			Failure("Stub return value not specified for enrollToCourse(courseID: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -1800,12 +1695,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 
 
     fileprivate enum MethodType {
-        case m_getCourseDetails__courseID_courseID(Parameter<String>)
         case m_getCourseBlocks__courseID_courseID(Parameter<String>)
         case m_getCourseVideoBlocks__fullStructure_fullStructure(Parameter<CourseStructure>)
-        case m_getLoadedCourseDetails__courseID_courseID(Parameter<String>)
         case m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>)
-        case m_enrollToCourse__courseID_courseID(Parameter<String>)
         case m_blockCompletionRequest__courseID_courseIDblockID_blockID(Parameter<String>, Parameter<String>)
         case m_getHandouts__courseID_courseID(Parameter<String>)
         case m_getUpdates__courseID_courseID(Parameter<String>)
@@ -1815,11 +1707,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_getCourseDetails__courseID_courseID(let lhsCourseid), .m_getCourseDetails__courseID_courseID(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
-				return Matcher.ComparisonResult(results)
-
             case (.m_getCourseBlocks__courseID_courseID(let lhsCourseid), .m_getCourseBlocks__courseID_courseID(let rhsCourseid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
@@ -1830,17 +1717,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFullstructure, rhs: rhsFullstructure, with: matcher), lhsFullstructure, rhsFullstructure, "fullStructure"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_getLoadedCourseDetails__courseID_courseID(let lhsCourseid), .m_getLoadedCourseDetails__courseID_courseID(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
-				return Matcher.ComparisonResult(results)
-
             case (.m_getLoadedCourseBlocks__courseID_courseID(let lhsCourseid), .m_getLoadedCourseBlocks__courseID_courseID(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_enrollToCourse__courseID_courseID(let lhsCourseid), .m_enrollToCourse__courseID_courseID(let rhsCourseid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
@@ -1882,12 +1759,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 
         func intValue() -> Int {
             switch self {
-            case let .m_getCourseDetails__courseID_courseID(p0): return p0.intValue
             case let .m_getCourseBlocks__courseID_courseID(p0): return p0.intValue
             case let .m_getCourseVideoBlocks__fullStructure_fullStructure(p0): return p0.intValue
-            case let .m_getLoadedCourseDetails__courseID_courseID(p0): return p0.intValue
             case let .m_getLoadedCourseBlocks__courseID_courseID(p0): return p0.intValue
-            case let .m_enrollToCourse__courseID_courseID(p0): return p0.intValue
             case let .m_blockCompletionRequest__courseID_courseIDblockID_blockID(p0, p1): return p0.intValue + p1.intValue
             case let .m_getHandouts__courseID_courseID(p0): return p0.intValue
             case let .m_getUpdates__courseID_courseID(p0): return p0.intValue
@@ -1898,12 +1772,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         func assertionName() -> String {
             switch self {
-            case .m_getCourseDetails__courseID_courseID: return ".getCourseDetails(courseID:)"
             case .m_getCourseBlocks__courseID_courseID: return ".getCourseBlocks(courseID:)"
             case .m_getCourseVideoBlocks__fullStructure_fullStructure: return ".getCourseVideoBlocks(fullStructure:)"
-            case .m_getLoadedCourseDetails__courseID_courseID: return ".getLoadedCourseDetails(courseID:)"
             case .m_getLoadedCourseBlocks__courseID_courseID: return ".getLoadedCourseBlocks(courseID:)"
-            case .m_enrollToCourse__courseID_courseID: return ".enrollToCourse(courseID:)"
             case .m_blockCompletionRequest__courseID_courseIDblockID_blockID: return ".blockCompletionRequest(courseID:blockID:)"
             case .m_getHandouts__courseID_courseID: return ".getHandouts(courseID:)"
             case .m_getUpdates__courseID_courseID: return ".getUpdates(courseID:)"
@@ -1923,23 +1794,14 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
 
 
-        public static func getCourseDetails(courseID: Parameter<String>, willReturn: CourseDetails...) -> MethodStub {
-            return Given(method: .m_getCourseDetails__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
         public static func getCourseBlocks(courseID: Parameter<String>, willReturn: CourseStructure...) -> MethodStub {
             return Given(method: .m_getCourseBlocks__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willReturn: CourseStructure...) -> MethodStub {
             return Given(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getLoadedCourseDetails(courseID: Parameter<String>, willReturn: CourseDetails...) -> MethodStub {
-            return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
         public static func getLoadedCourseBlocks(courseID: Parameter<String>, willReturn: CourseStructure...) -> MethodStub {
             return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
-        public static func enrollToCourse(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
-            return Given(method: .m_enrollToCourse__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getHandouts(courseID: Parameter<String>, willReturn: String?...) -> MethodStub {
             return Given(method: .m_getHandouts__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1963,16 +1825,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func getCourseDetails(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func getCourseDetails(courseID: Parameter<String>, willProduce: (StubberThrows<CourseDetails>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (CourseDetails).self)
-			willProduce(stubber)
-			return given
-        }
         public static func getCourseBlocks(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
         }
@@ -1983,16 +1835,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func getLoadedCourseDetails(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func getLoadedCourseDetails(courseID: Parameter<String>, willProduce: (StubberThrows<CourseDetails>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (CourseDetails).self)
-			willProduce(stubber)
-			return given
-        }
         public static func getLoadedCourseBlocks(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
         }
@@ -2000,16 +1842,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (CourseStructure).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func enrollToCourse(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_enrollToCourse__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func enrollToCourse(courseID: Parameter<String>, willProduce: (StubberThrows<Bool>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_enrollToCourse__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Bool).self)
 			willProduce(stubber)
 			return given
         }
@@ -2078,12 +1910,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func getCourseDetails(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseDetails__courseID_courseID(`courseID`))}
         public static func getCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseBlocks__courseID_courseID(`courseID`))}
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>) -> Verify { return Verify(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`))}
-        public static func getLoadedCourseDetails(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`))}
         public static func getLoadedCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`))}
-        public static func enrollToCourse(courseID: Parameter<String>) -> Verify { return Verify(method: .m_enrollToCourse__courseID_courseID(`courseID`))}
         public static func blockCompletionRequest(courseID: Parameter<String>, blockID: Parameter<String>) -> Verify { return Verify(method: .m_blockCompletionRequest__courseID_courseIDblockID_blockID(`courseID`, `blockID`))}
         public static func getHandouts(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getHandouts__courseID_courseID(`courseID`))}
         public static func getUpdates(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getUpdates__courseID_courseID(`courseID`))}
@@ -2096,23 +1925,14 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func getCourseDetails(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_getCourseDetails__courseID_courseID(`courseID`), performs: perform)
-        }
         public static func getCourseBlocks(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getCourseBlocks__courseID_courseID(`courseID`), performs: perform)
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, perform: @escaping (CourseStructure) -> Void) -> Perform {
             return Perform(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`), performs: perform)
         }
-        public static func getLoadedCourseDetails(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), performs: perform)
-        }
         public static func getLoadedCourseBlocks(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), performs: perform)
-        }
-        public static func enrollToCourse(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_enrollToCourse__courseID_courseID(`courseID`), performs: perform)
         }
         public static func blockCompletionRequest(courseID: Parameter<String>, blockID: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .m_blockCompletionRequest__courseID_courseIDblockID_blockID(`courseID`, `blockID`), performs: perform)

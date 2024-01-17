@@ -62,19 +62,6 @@ public enum CourseLocalization {
     /// Videos
     public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.VIDEOS", fallback: "Videos")
   }
-  public enum Details {
-    /// Enroll now
-    public static let enrollNow = CourseLocalization.tr("Localizable", "DETAILS.ENROLL_NOW", fallback: "Enroll now")
-    /// You cannot enroll in this course because the enrollment date is over.
-    public static let enrollmentDateIsOver = CourseLocalization.tr("Localizable", "DETAILS.ENROLLMENT_DATE_IS_OVER", fallback: "You cannot enroll in this course because the enrollment date is over.")
-    /// Localizable.strings
-    ///   Course
-    /// 
-    ///   Created by  Stepanok Ivan on 26.09.2022.
-    public static let title = CourseLocalization.tr("Localizable", "DETAILS.TITLE", fallback: "Course details")
-    /// View course
-    public static let viewCourse = CourseLocalization.tr("Localizable", "DETAILS.VIEW_COURSE", fallback: "View course")
-  }
   public enum Download {
     /// All videos downloaded
     public static let allVideosDownloaded = CourseLocalization.tr("Localizable", "DOWNLOAD.ALL_VIDEOS_DOWNLOADED", fallback: "All videos downloaded")
@@ -131,7 +118,10 @@ public enum CourseLocalization {
   public enum Outline {
     /// Certificate
     public static let certificate = CourseLocalization.tr("Localizable", "OUTLINE.CERTIFICATE", fallback: "Certificate")
-    /// Congratulations!
+    /// Localizable.strings
+    ///   Course
+    /// 
+    ///   Created by  Stepanok Ivan on 26.09.2022.
     public static let congratulations = CourseLocalization.tr("Localizable", "OUTLINE.CONGRATULATIONS", fallback: "Congratulations!")
     /// This course hasn't started yet.
     public static let courseHasntStarted = CourseLocalization.tr("Localizable", "OUTLINE.COURSE_HASNT_STARTED", fallback: "This course hasn't started yet.")

@@ -69,6 +69,7 @@
 
 "WEBVIEW.ALERT.OK" = "Так";
 "WEBVIEW.ALERT.CANCEL" = "Скасувати";
+"WEBVIEW.ALERT.CONTINUE" = "Continue";
 
 
 "REVIEW.VOTE_TITLE" = "Вам подобається Open edX?";

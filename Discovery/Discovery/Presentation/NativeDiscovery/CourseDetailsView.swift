@@ -165,7 +165,7 @@ public struct CourseDetailsView: View {
             }.padding(.top, 8)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(false)
-            .navigationTitle(CourseLocalization.Details.title)
+            .navigationTitle(DiscoveryLocalization.Details.title)
             
             .onReceive(NotificationCenter
                 .Publisher(center: .default,
@@ -219,9 +219,13 @@ private struct CourseStateView: View {
     var body: some View {
         switch viewModel.courseState() {
         case .enrollOpen:
-            StyledButton(CourseLocalization.Details.enrollNow, action: {
+            StyledButton(DiscoveryLocalization.Details.enrollNow, action: {
                 if !viewModel.userloggedIn {
-                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                    viewModel.router.showRegisterScreen(
+                        sourceScreen: .courseDetail(
+                            courseDetails.courseID,
+                            courseDetails.courseTitle)
+                    )
                 } else {
                     Task {
                         await viewModel.enrollToCourse(id: courseDetails.courseID)
@@ -230,15 +234,19 @@ private struct CourseStateView: View {
             })
             .padding(16)
         case .enrollClose:
-            Text(CourseLocalization.Details.enrollmentDateIsOver)
+            Text(DiscoveryLocalization.Details.enrollmentDateIsOver)
                 .multilineTextAlignment(.center)
                 .font(Theme.Fonts.titleSmall)
                 .cardStyle()
                 .padding(.vertical, 24)
         case .alreadyEnrolled:
-            StyledButton(CourseLocalization.Details.viewCourse, action: {
+            StyledButton(DiscoveryLocalization.Details.viewCourse, action: {
                 if !viewModel.userloggedIn {
-                    viewModel.router.showRegisterScreen(sourceScreen: .courseDetail(courseDetails.courseID, courseDetails.courseTitle))
+                    viewModel.router.showRegisterScreen(
+                        sourceScreen: .courseDetail(
+                            courseDetails.courseID,
+                            courseDetails.courseTitle)
+                    )
                 } else {
                     viewModel.viewCourseClicked(
                         courseId: courseDetails.courseID,
@@ -355,9 +363,9 @@ private struct CourseBannerView: View {
 struct CourseDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = CourseDetailsViewModel(
-            interactor: CourseInteractor.mock,
-            router: CourseRouterMock(),
-            analytics: CourseAnalyticsMock(),
+            interactor: DiscoveryInteractor.mock,
+            router: DiscoveryRouterMock(),
+            analytics: DiscoveryAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity(),
