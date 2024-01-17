@@ -33,6 +33,7 @@ public struct StartupView: View {
                     .padding(.bottom, isHorizontal ? 0 : 20)
                     .padding(.horizontal, isHorizontal ? 10 : 24)
                     .colorMultiply(Theme.Colors.accentColor)
+                    .accessibilityIdentifier("logo_image")
                 
                 VStack {
                     VStack(alignment: .leading) {
@@ -40,12 +41,14 @@ public struct StartupView: View {
                             .font(Theme.Fonts.titleLarge)
                             .foregroundColor(Theme.Colors.textPrimary)
                             .padding(.bottom, isHorizontal ? 10 : 20 )
+                            .accessibilityIdentifier("heading_text")
                         
                         Text(AuthLocalization.Startup.searchTitle)
                             .font(Theme.Fonts.bodyLarge)
                             .bold()
                             .foregroundColor(Theme.Colors.textPrimary)
                             .padding(.top, isHorizontal ? 0 : 24)
+                            .accessibilityIdentifier("search_title_text")
                         
                         HStack(spacing: 11) {
                             Image(systemName: "magnifyingglass")
@@ -62,6 +65,7 @@ public struct StartupView: View {
                             .autocorrectionDisabled()
                             .frame(minHeight: 50)
                             .submitLabel(.search)
+                            .accessibilityIdentifier("explore_courses_textfield")
                             
                         }.overlay(
                             Theme.Shapes.textInputShape
@@ -85,6 +89,7 @@ public struct StartupView: View {
                                 .font(Theme.Fonts.bodyLarge)
                         }
                         .padding(.top, isHorizontal ? 0 : 5)
+                        .accessibilityIdentifier("explorer_courses_button")
                         Spacer()
                     }
                     .padding(.horizontal, isHorizontal ? 10 : 24)

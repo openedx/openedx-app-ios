@@ -37,6 +37,7 @@ public struct LogistrationBottomView: View {
                     action(.register)
                 }
                 .frame(maxWidth: .infinity)
+                .accessibilityIdentifier("logistration_register_button")
                 
                 StyledButton(
                     CoreLocalization.SignIn.logInBtn,
@@ -48,6 +49,7 @@ public struct LogistrationBottomView: View {
                     borderColor: Theme.Colors.textInputStroke
                 )
                 .frame(width: 100)
+                .accessibilityIdentifier("logistration_signin_button")
             }
             .padding(.horizontal, isHorizontal ? 0 :  0)
         }

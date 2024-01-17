@@ -32,7 +32,9 @@ public struct SignUpView: View {
                 ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
-            }.frame(maxWidth: .infinity, maxHeight: 200)
+            }
+            .frame(maxWidth: .infinity, maxHeight: 200)
+            .accessibilityIdentifier("auth_bg_image")
             
             // MARK: - Page name
             VStack(alignment: .center) {
@@ -40,6 +42,7 @@ public struct SignUpView: View {
                     HStack {
                         Text(CoreLocalization.SignIn.registerBtn)
                             .titleSettings(color: Theme.Colors.loginNavigationText)
+                            .accessibilityIdentifier("register_text")
                     }
                     VStack {
                         Button(action: { viewModel.router.back() }, label: {
@@ -48,6 +51,7 @@ public struct SignUpView: View {
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)
                         .padding(.leading, isHorizontal ? 48 : 0)
+                        .accessibilityIdentifier("back_button")
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
@@ -63,19 +67,23 @@ public struct SignUpView: View {
                                     .font(Theme.Fonts.displaySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
+                                    .accessibilityIdentifier("signup_text")
                                 Text(AuthLocalization.SignUp.subtitle)
                                     .font(Theme.Fonts.titleSmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
+                                    .accessibilityIdentifier("signup_subtitle_text")
 
                                 if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)
                                         .foregroundColor(Theme.Colors.textPrimary)
+                                        .accessibilityIdentifier("social_auth_success_text")
                                     Text(AuthLocalization.SignUp.successSigninSublabel)
                                         .font(Theme.Fonts.titleSmall)
                                         .foregroundColor(Theme.Colors.textSecondary)
                                         .padding(.bottom, 20)
+                                        .accessibilityIdentifier("social_auth_success_subtext_text")
                                 }
 
                                 let requiredFields = viewModel.fields.filter {$0.field.required}
@@ -99,12 +107,14 @@ public struct SignUpView: View {
                                              ? AuthLocalization.SignUp.hideFields
                                              : AuthLocalization.SignUp.showFields)
                                     })
+                                    .accessibilityLabel("optional_fields_text")
                                 }
                                 
                                 if viewModel.isShowProgress {
                                     HStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
                                             .padding(20)
+                                            .accessibilityLabel("progressbar")
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
@@ -116,6 +126,7 @@ public struct SignUpView: View {
                                     }
                                     .padding(.top, 40)
                                     .frame(maxWidth: .infinity)
+                                    .accessibilityLabel("signup_button")
                                 }
                                 if viewModel.socialAuthEnabled,
                                     !requiredFields.isEmpty {
@@ -153,6 +164,7 @@ public struct SignUpView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
+                        .accessibilityLabel("error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
