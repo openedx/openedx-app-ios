@@ -73,11 +73,7 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
     
     public func enrollToCourse(courseID: String) async throws -> Bool {
         let enroll = try await api.request(DiscoveryEndpoint.enrollToCourse(courseID: courseID))
-        if enroll.statusCode == 200 {
-            return true
-        } else {
-            return false
-        }
+        return enroll.statusCode == 200
     }
 }
 

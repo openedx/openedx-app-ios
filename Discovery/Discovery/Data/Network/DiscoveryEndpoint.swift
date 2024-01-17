@@ -23,7 +23,7 @@ enum DiscoveryEndpoint: EndPointType {
             return "/api/courses/v1/courses/"
         case .getCourseDetail(courseID: let courseID, _):
             return "/api/courses/v1/courses/\(courseID)"
-        case .enrollToCourse(courseID: _):
+        case .enrollToCourse:
             return "/api/enrollment/v1/enrollment"
         }
     }
@@ -32,7 +32,7 @@ enum DiscoveryEndpoint: EndPointType {
         switch self {
         case .getDiscovery, .searchCourses:
             return .get
-        case .getCourseDetail(courseID: _, username: _):
+        case .getCourseDetail:
             return .get
         case .enrollToCourse:
             return .post
