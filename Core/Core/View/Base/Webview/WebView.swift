@@ -10,8 +10,6 @@ import WebKit
 import SwiftUI
 import Theme
 
-public let WebviewReloadNotification = "webviewReloadNotification"
-
 public protocol WebViewNavigationDelegate: AnyObject {
     func webView(_ webView: WKWebView, shouldLoad request: URLRequest, navigationAction: WKNavigationAction) -> Bool
 }
@@ -152,7 +150,7 @@ public struct WebView: UIViewRepresentable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(reload),
-                name: Notification.Name(WebviewReloadNotification),
+                name: .webviewReloadNotification,
                 object: nil
             )
         }

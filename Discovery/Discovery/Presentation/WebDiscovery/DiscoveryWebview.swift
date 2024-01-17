@@ -136,7 +136,7 @@ public struct DiscoveryWebview: View {
                 connectivity: viewModel.connectivity,
                 reloadAction: {
                     NotificationCenter.default.post(
-                        name: NSNotification.Name(rawValue: WebviewReloadNotification),
+                        name: .webviewReloadNotification,
                         object: nil
                     )
                 })
