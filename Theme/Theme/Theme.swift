@@ -41,6 +41,7 @@ public struct Theme {
         public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
         public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor
         public private(set) static var progressSkip = ThemeAssets.progressSkip.swiftUIColor
+        public private(set) static var progressSelectedAndDone = ThemeAssets.selectedAndDone.swiftUIColor
         public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
 
         public static func update(

@@ -25,9 +25,15 @@ struct LessonLineProgressView: View {
                 let data = Array(vertical.childs.enumerated())
                 ForEach(data, id: \.offset) { index, item in
                     let selected = viewModel.verticals[viewModel.verticalIndex].childs[index]
-                    if selected == viewModel.selectedLesson() {
+                    let isSelected = selected == viewModel.selectedLesson()
+                    let isDone = item.completion == 1.0 || vertical.completion == 1.0
+                    if  isSelected && isDone {
+                        Theme.Colors.progressSelectedAndDone
+                            .frame(height: 7)
+                    } else if isSelected {
                         Theme.Colors.onProgress
-                    } else if item.completion == 1.0 || vertical.completion == 1.0 {
+                            .frame(height: 7)
+                    } else if isDone {
                         Theme.Colors.progressDone
                     } else {
                         Theme.Colors.progressSkip
