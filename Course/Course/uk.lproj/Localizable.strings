@@ -65,6 +65,7 @@
 "DOWNLOAD.DOWNLOAD_TO_DEVICE" = "Download to device";
 "DOWNLOAD.VIDEOS" = "Videos";
 "DOWNLOAD.REMAINING" = "Remaining";
+"DOWNLOAD.UNTITLED"= "Untitled";
 
 "DOWNLOAD.CHANGE_QUALITY_ALERT" = "You cannot change the download video quality when all videos are downloading";
 "DOWNLOAD.DOWNLOAD_LARGE_FILE_MESSAGE" = "The videos you've selected are larger than 1 GB. Do you want to download these videos?";

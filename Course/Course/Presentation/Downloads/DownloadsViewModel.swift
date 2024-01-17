@@ -31,6 +31,12 @@ final class DownloadsViewModel: ObservableObject {
 
     // MARK: - Intents
 
+    func title(downloadData: DownloadData) -> String {
+        downloadData.displayName.isEmpty ?
+        "(\(CourseLocalization.Download.untitled))" :
+        downloadData.displayName
+    }
+
     @MainActor
     func cancelDownloading(downloadData: DownloadData) async {
         do {

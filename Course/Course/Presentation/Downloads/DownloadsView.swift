@@ -62,7 +62,7 @@ struct DownloadsView: View {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(downloadData.displayName)
+                        Text(viewModel.title(downloadData: downloadData))
                             .font(Theme.Fonts.titleMedium)
                             .multilineTextAlignment(.leading)
                             .lineLimit(1)
