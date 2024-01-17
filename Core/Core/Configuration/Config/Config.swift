@@ -13,6 +13,7 @@ public protocol ConfigProtocol {
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
     var appStoreLink: String { get }
+    var faq: URL? { get }
     var platformName: String { get }
     var agreement: AgreementConfig { get }
     var firebase: FirebaseConfig { get }
@@ -21,6 +22,7 @@ public protocol ConfigProtocol {
     var google: GoogleConfig { get }
     var appleSignIn: AppleSignInConfig { get }
     var features: FeaturesConfig { get }
+    var theme: ThemeConfig { get }
     var uiComponents: UIComponentsConfig { get }
 }
 
@@ -38,6 +40,7 @@ private enum ConfigKeys: String {
     case platformName = "PLATFORM_NAME"
     case organizationCode = "ORGANIZATION_CODE"
     case appstoreID = "APP_STORE_ID"
+    case faq = "FAQ_URL"
 }
 
 public class Config {
@@ -137,6 +140,14 @@ extension Config: ConfigProtocol {
     public var appStoreLink: String {
         "itms-apps://itunes.apple.com/app/id\(appStoreId)?mt=8"
     }
+
+    public var faq: URL? {
+        guard let urlString = string(for: ConfigKeys.faq.rawValue),
+              let url = URL(string: urlString) else {
+            return nil
+        }
+        return url
+    }
 }
 
 // Mark - For testing and SwiftUI preview
@@ -151,7 +162,10 @@ public class ConfigMock: Config {
         "WHATS_NEW_ENABLED": false,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
-            "TOS_URL": "https://www.example.com/tos"
+            "TOS_URL": "https://www.example.com/tos",
+            "DATA_SELL_CONSENT_URL": "https://www.example.com/sell",
+            "COOKIE_POLICY_URL": "https://www.example.com/cookie",
+            "SUPPORTED_LANGUAGES": ["es"]
         ],
         "GOOGLE": [
             "ENABLED": true,

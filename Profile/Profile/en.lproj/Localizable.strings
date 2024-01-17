@@ -16,7 +16,11 @@
 "SUPPORT_INFO" = "Support info";
 "CONTACT" = "Contact support";
 "TERMS" = "Terms of use";
-"PRIVACY" = "Privacy and policy";
+"PRIVACY" = "Privacy policy";
+"COOKIE_POLICY" = "Cookie policy";
+"DO_NOT_SELL_INFORMATION" = "Do not sell my personal information";
+"FAQ" = "FAQ";
+
 "LOGOUT" = "Log out";
 "SWITCH_TO" = "Switch to";
 "FULL_PROFILE" = "full profile";
@@ -73,3 +77,5 @@
 "SETTINGS.UP_TO_DATE" = "Up-to-date";
 "SETTINGS.TAP_TO_UPDATE" = "Tap to update to version";
 "SETTINGS.TAP_TO_INSTALL" = "Tap to install required app update";
+
+"ERROR.CANNOT_SEND_EMAIL" = "Cannot send email. It seems your email client is not set up.";

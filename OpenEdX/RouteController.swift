@@ -49,7 +49,12 @@ class RouteController: UIViewController {
             present(navigation, animated: false)
         } else {
             let controller = UIHostingController(
-                rootView: SignInView(viewModel: diContainer.resolve(SignInViewModel.self)!)
+                rootView: SignInView(
+                    viewModel: diContainer.resolve(
+                        SignInViewModel.self,
+                        argument: LogistrationSourceScreen.default
+                    )!
+                )
             )
             navigation.viewControllers = [controller]
             present(navigation, animated: false)
@@ -74,7 +79,10 @@ class RouteController: UIViewController {
             let controller = UIHostingController(rootView: whatsNewView)
             navigation.viewControllers = [controller]
         } else {
-            let viewModel = Container.shared.resolve(MainScreenViewModel.self)!
+            let viewModel = Container.shared.resolve(
+                MainScreenViewModel.self,
+                argument: LogistrationSourceScreen.default
+            )!
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigation.viewControllers = [controller]
         }

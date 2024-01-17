@@ -30,7 +30,7 @@ enum ProfileEndpoint: EndPointType {
         case .deleteProfilePicture(username: let username):
             return "/api/user/v1/accounts/\(username)/image"
         case .deleteAccount:
-            return "/mobile_api_extensions/user/v1/accounts/deactivate_logout/"
+            return "/api/user/v1/accounts/deactivate_logout/"
         }
     }
     

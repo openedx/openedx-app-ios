@@ -157,13 +157,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             certificate: nil
         )
         
-        Given(interactor, .getCourseBlocksOffline(courseID: .any, willReturn: courseStructure))
+        Given(interactor, .getLoadedCourseBlocks(courseID: .any, willReturn: courseStructure))
         Given(interactor, .getCourseVideoBlocks(fullStructure: .any,
                                                 willReturn: courseStructure))
         
         await viewModel.getCourseBlocks(courseID: "123")
         
-        Verify(interactor, .getCourseBlocksOffline(courseID: .any))
+        Verify(interactor, .getLoadedCourseBlocks(courseID: .any))
         Verify(interactor, .getCourseVideoBlocks(fullStructure: .any))
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.showError)

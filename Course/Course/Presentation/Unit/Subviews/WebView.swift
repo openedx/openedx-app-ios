@@ -12,14 +12,15 @@ import Theme
 
 struct WebView: View {
     let url: String
-    let viewModel: CourseUnitViewModel
+    let injections: [WebviewInjection]
     var roundedBackgroundEnabled: Bool = true
 
     var body: some View {
         VStack(spacing: 0) {
             WebUnitView(
                 url: url,
-                viewModel: Container.shared.resolve(WebUnitViewModel.self)!
+                viewModel: Container.shared.resolve(WebUnitViewModel.self)!,
+                injections: injections
             )
             if roundedBackgroundEnabled {
                 Spacer(minLength: 5)

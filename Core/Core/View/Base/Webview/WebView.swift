@@ -17,10 +17,12 @@ public struct WebView: UIViewRepresentable {
         @Published var url: String
         let baseURL: String
         let ajaxProvider = AjaxProvider()
-
-        public init(url: String, baseURL: String) {
+        let injections: [WebviewInjection]?
+        
+        public init(url: String, baseURL: String, injections: [WebviewInjection]? = nil) {
             self.url = url
             self.baseURL = baseURL
+            self.injections = injections
         }
     }
     
@@ -49,6 +51,11 @@ public struct WebView: UIViewRepresentable {
         let webViewConfig = WKWebViewConfiguration()
         
         let webView = WKWebView(frame: .zero, configuration: webViewConfig)
+        #if DEBUG
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
+        #endif
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         
@@ -71,6 +78,20 @@ public struct WebView: UIViewRepresentable {
                 scriptMessageHandler: context.coordinator
             )
         }
+        
+        for injection in viewModel.injections ?? [] {
+            let script = WKUserScript(
+                source: injection.script,
+                injectionTime: injection.injectionTime,
+                forMainFrameOnly: true
+            )
+            webView.configuration.userContentController.addUserScript(script)
+            
+            for message in injection.messages ?? [] {
+                webView.configuration.userContentController.add(context.coordinator, name: message.name)
+            }
+        }
+        
 
         return webView
     }
@@ -88,7 +109,6 @@ public struct WebView: UIViewRepresentable {
     }
 
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
-
         var parent: WebView
 
         private var ajaxProvider: AjaxProvider {
@@ -181,10 +201,19 @@ public struct WebView: UIViewRepresentable {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
+            let messages = parent.viewModel.injections?.compactMap({$0.messages}).flatMap({$0}) ?? []
+            if let currentMessage = messages.first(where: { $0.name == message.name }) {
+                currentMessage.handler(message.body, message.webView)
+            }
             if message.name == parent.viewModel.ajaxProvider.AJAXCallBackHandler {
                 guard let data = message.body as? [AnyHashable: Any] else { return }
                 parent.viewModel.ajaxProvider.isCompletionCallback(with: data)
             }
         }
+    }
+
+    public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.configuration.userContentController.removeAllUserScripts()
+        uiView.configuration.userContentController.removeAllScriptMessageHandlers()
     }
 }

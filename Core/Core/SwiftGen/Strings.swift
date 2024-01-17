@@ -31,8 +31,6 @@ public enum CoreLocalization {
     public static let backToOutline = CoreLocalization.tr("Localizable", "COURSEWARE.BACK_TO_OUTLINE", fallback: "Back to outline")
     /// Continue
     public static let `continue` = CoreLocalization.tr("Localizable", "COURSEWARE.CONTINUE", fallback: "Continue")
-    /// Continue with:
-    public static let continueWith = CoreLocalization.tr("Localizable", "COURSEWARE.CONTINUE_WITH", fallback: "Continue with:")
     /// Course content
     public static let courseContent = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT", fallback: "Course content")
     /// Course units
@@ -55,6 +53,8 @@ public enum CoreLocalization {
     public static let previous = CoreLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Prev")
     /// Resume
     public static let resume = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME", fallback: "Resume")
+    /// Resume with:
+    public static let resumeWith = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
     /// Section “
     public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
   }
@@ -176,6 +176,12 @@ public enum CoreLocalization {
       /// Select email client:
       public static let title = CoreLocalization.tr("Localizable", "REVIEW.EMAIL.TITLE", fallback: "Select email client:")
     }
+  }
+  public enum SignIn {
+    /// Sign in
+    public static let logInBtn = CoreLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
+    /// Register
+    public static let registerBtn = CoreLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
   }
   public enum View {
     public enum Snackbar {

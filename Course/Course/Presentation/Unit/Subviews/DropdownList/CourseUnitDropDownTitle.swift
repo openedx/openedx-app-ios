@@ -24,12 +24,8 @@ struct CourseUnitDropDownTitle: View {
                         .opacity(showDropdown ? 0.7 : 1.0)
                         .lineLimit(1)
                     if isAvailable {
-                        if showDropdown {
-                            Image(systemName: "chevron.right")
-                                .rotationEffect(.degrees(90))
-                        } else {
-                            Image(systemName: "chevron.right")
-                        }
+                        Image(systemName: "chevron.right")
+                            .dropdownArrowRotationAnimation(value: showDropdown)
                     }
                 }
             }

@@ -39,7 +39,9 @@ public enum BlockType: String {
     case chapter
     case video
     case problem
+    case survey
     case unknown
+    case dragAndDropV2 = "drag-and-drop-v2"
     
     public var image: Image {
         switch self {

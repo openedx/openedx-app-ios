@@ -6,22 +6,27 @@
 //
 
 import SwiftUI
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 import Theme
 
 public struct WebUnitView: View {
-    
-    @ObservedObject private var viewModel: WebUnitViewModel
+
+    @StateObject private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
 
     private var url: String
+    private var injections: [WebviewInjection]?
 
     public init(
         url: String,
-        viewModel: WebUnitViewModel
+        viewModel: WebUnitViewModel,
+        injections: [WebviewInjection]?
     ) {
-        self.viewModel = viewModel
+        self._viewModel = .init(
+            wrappedValue: viewModel
+        )
         self.url = url
+        self.injections = injections
     }
     
     @ViewBuilder
@@ -59,15 +64,26 @@ public struct WebUnitView: View {
                     ScrollView {
                         if viewModel.cookiesReady {
                             WebView(
-                                viewModel: .init(url: url, baseURL: viewModel.config.baseURL.absoluteString),
-                                isLoading: $isWebViewLoading, 
-                                refreshCookies: { await viewModel.updateCookies(force: true) },
+                                viewModel: .init(
+                                    url: url,
+                                    baseURL: viewModel.config.baseURL.absoluteString,
+                                    injections: injections
+                                ),
+                                isLoading: $isWebViewLoading,
+                                refreshCookies: {
+                                    await viewModel.updateCookies(
+                                        force: true
+                                    )
+                                },
                                 isAddAjaxCallbackScript: true
                             )
-                            .frame(width: reader.size.width, height: reader.size.height)
+                            .frame(
+                                width: reader.size.width,
+                                height: reader.size.height
+                            )
                         }
                     }
-                    .introspect(.scrollView, on: .iOS(.v14, .v15, .v16, .v17), customize: { scrollView in
+                    .introspect(.scrollView, on: .iOS(.v15...), customize: { scrollView in
                         scrollView.isScrollEnabled = false
                     })
                     if viewModel.updatingCookies || isWebViewLoading {

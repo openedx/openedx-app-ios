@@ -35,7 +35,7 @@ public struct SignInView: View {
                 VStack {
                     Button(action: { viewModel.router.back() }, label: {
                         CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                            .backButtonStyle(color: .white)
+                            .backButtonStyle(color: Theme.Colors.loginNavigationText)
                     })
                     .foregroundColor(Theme.Colors.styledButtonText)
                     .padding(.leading, isHorizontal ? 48 : 0)
@@ -100,9 +100,8 @@ public struct SignInView: View {
                                 )
                             HStack {
                                 if !viewModel.config.features.startupScreenEnabled {
-                                    Button(AuthLocalization.SignIn.registerBtn) {
-                                        viewModel.trackSignUpClicked()
-                                        viewModel.router.showRegisterScreen()
+                                    Button(CoreLocalization.SignIn.registerBtn) {
+                                        viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
                                     }.foregroundColor(Theme.Colors.accentColor)
                                     
                                     Spacer()
@@ -121,7 +120,7 @@ public struct SignInView: View {
                                         .padding(20)
                                 }.frame(maxWidth: .infinity)
                             } else {
-                                StyledButton(AuthLocalization.SignIn.logInBtn) {
+                                StyledButton(CoreLocalization.SignIn.logInBtn) {
                                     Task {
                                         await viewModel.login(username: email, password: password)
                                     }
@@ -142,7 +141,7 @@ public struct SignInView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 50)
-                }.roundedBackground(Theme.Colors.background)
+                }.roundedBackground(Theme.Colors.loginBackground)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
             }
@@ -192,7 +191,8 @@ struct SignInView_Previews: PreviewProvider {
             router: AuthorizationRouterMock(),
             config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
-            validator: Validator()
+            validator: Validator(),
+            sourceScreen: .default
         )
         
         SignInView(viewModel: vm)

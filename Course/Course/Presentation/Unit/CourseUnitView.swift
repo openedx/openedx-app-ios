@@ -217,12 +217,12 @@ public struct CourseUnitView: View {
                             }
                         }
                         // MARK: Web
-                    case .web(let url):
+                    case let .web(url, injections):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                             if viewModel.connectivity.isInternetAvaliable {
                                 WebView(
                                     url: url,
-                                    viewModel: viewModel,
+                                    injections: injections,
                                     roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
                                 )
                             } else {
@@ -235,8 +235,11 @@ public struct CourseUnitView: View {
                     case .unknown(let url):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                             if viewModel.connectivity.isInternetAvaliable {
-                                UnknownView(url: url, viewModel: viewModel)
-                                Spacer()
+                                ScrollView(showsIndicators: false) {
+                                    UnknownView(url: url, viewModel: viewModel)
+                                    Spacer()
+                                        .frame(minHeight: 100)
+                                }
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
@@ -408,9 +411,11 @@ public struct CourseUnitView: View {
                         showDropdown: $showDropdown
                     )
                     .padding(.bottom, 0)
+                    .padding(.horizontal, 48)
                 }
             }
             .background(Theme.Colors.background)
+            .padding(.trailing, isHorizontal ? 215 : 0)
 
             if viewModel.courseUnitProgressEnabled {
                 LessonLineProgressView(viewModel: viewModel)
