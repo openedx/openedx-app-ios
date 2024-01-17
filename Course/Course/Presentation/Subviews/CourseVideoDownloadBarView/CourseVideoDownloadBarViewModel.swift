@@ -55,17 +55,17 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     var remainingVideos: Int {
         let inProgress = courseViewModel.downloadableVerticals.filter { $0.state != .finished }
-        return inProgress.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }.count
+        return inProgress.flatMap { $0.downloadableBlocks }.count
     }
 
     var downloadingVideos: Int {
         let downloading = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }
-        return downloading.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }.count
+        return downloading.flatMap { $0.downloadableBlocks }.count
     }
 
     var totalFinishedVideos: Int {
         let finished = courseViewModel.downloadableVerticals.filter { $0.state == .finished }
-        return finished.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }.count
+        return finished.flatMap { $0.downloadableBlocks }.count
     }
 
     var totalSize: String? {
@@ -87,17 +87,12 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         let size = blockToMB(
             data: Set(courseViewModel.downloadableVerticals
                 .filter { $0.state != .finished }
-                .flatMap { $0.vertical.childs.filter { $0.isDownloadable } }
+                .flatMap { $0.downloadableBlocks }
             ),
             quality: quality
         )
 
         return String(format: "%.2f", size)
-    }
-
-    func allActiveDownloads() async -> [DownloadData] {
-        await courseViewModel.manager.getDownloads()
-            .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
     init(
@@ -107,6 +102,11 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         self.courseStructure = courseStructure
         self.courseViewModel = courseViewModel
         observers()
+    }
+
+    func allActiveDownloads() async -> [DownloadData] {
+        await courseViewModel.manager.getDownloads()
+            .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
     @MainActor

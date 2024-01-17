@@ -143,16 +143,19 @@ public struct CourseUnitView: View {
                                             }
                                         }
                                             // MARK: Web
-                                        case .web(let url):
+                                        case let .web(url, injections):
                                             if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                                            if viewModel.connectivity.isInternetAvaliable {
-                                                WebView(url: url, viewModel: viewModel)
+                                                if viewModel.connectivity.isInternetAvaliable {
+                                                    WebView(
+                                                        url: url,
+                                                        injections: injections
+                                                    )
+                                                } else {
+                                                    NoInternetView(playerStateSubject: playerStateSubject)
+                                                }
                                             } else {
-                                                NoInternetView(playerStateSubject: playerStateSubject)
+                                                EmptyView()
                                             }
-                                        } else {
-                                            EmptyView()
-                                        }
                                             // MARK: Unknown
                                         case .unknown(let url):
                                             if index >= viewModel.index - 1 && index <= viewModel.index + 1 {

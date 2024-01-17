@@ -10,11 +10,6 @@ import SwiftUI
 import Core
 import Combine
 
-struct VerticalsDownloadState: Hashable {
-    let vertical: CourseVertical
-    let state: DownloadViewState
-}
-
 public class CourseContainerViewModel: BaseCourseViewModel {
     
     @Published private(set) var isShowProgress = false
@@ -403,5 +398,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 self.isInternetAvaliable = self.connectivity.isInternetAvaliable
         }
         .store(in: &cancellables)
+    }
+}
+
+struct VerticalsDownloadState: Hashable {
+    let vertical: CourseVertical
+    let state: DownloadViewState
+
+    var downloadableBlocks: [CourseBlock] {
+        vertical.childs.filter { $0.isDownloadable }
     }
 }

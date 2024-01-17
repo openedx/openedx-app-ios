@@ -14,7 +14,7 @@ class WhitelabelApp:
     EXAMPLE_CONFIG_FILE = dedent("""
     # Notes:
     # Config file can contain next options:
-    import_dir: 'path/to/asset/Images' # folder where importing images are placed
+    images_import_dir: 'path/to/asset/Images' # folder where importing images are placed
     assets:
       AssetName:
         images_path: 'Theme/Theme/Assets.xcassets' # path where images are placed in this Asset
@@ -39,6 +39,7 @@ class WhitelabelApp:
     project_config:
       project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
       dev_team: '1234567890' # apple development team id
+      project_extra_targets: ['Target1', 'Target2'] # targets in the workspace other than 'OpenEdX' in which the new dev_team should be set
       marketing_version: '1.0.1' # app marketing version
       current_project_version: '2' # app build number
       configurations:
@@ -48,15 +49,25 @@ class WhitelabelApp:
         config2: # build configuration name in project
           app_bundle_id: "bundle.id.app.new2" # bundle ID which should be set
           product_name: "Mobile App Name2" # app name which should be set
+    font:
+      font_import_file_path: 'path/to/importing/Font_file.ttf' # path to ttf font file what should be imported to project
+      project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
+      project_font_names_json_path: 'path/to/names/file/in project/fonts.json' # path to existing font names json-file in project
+      font_names:
+        regular: 'FontName-Regular'
+        medium: 'FontName-Medium'
+        semiBold: 'FontName-Semibold'
+        bold: 'FontName-Bold'
     """)
 
     def __init__(self, **kwargs):            
-        self.assets_dir = kwargs.get('import_dir')
+        self.assets_dir = kwargs.get('images_import_dir')
         if not self.assets_dir:
             self.assets_dir = '.'
 
         self.assets = kwargs.get('assets', {})
         self.project_config = kwargs.get('project_config', {})
+        self.font = kwargs.get('font', {})
 
         if "project_path" in self.project_config:
             self.config_project_path = self.project_config["project_path"]
@@ -66,6 +77,7 @@ class WhitelabelApp:
     def whitelabel(self):
         # Update the properties, resources, and configuration of the current app.
         self.copy_assets()
+        self.copy_font()
         self.set_app_project_config()
 
     def copy_assets(self):
@@ -256,7 +268,7 @@ class WhitelabelApp:
                 for error in errors_texts:
                     logging.error(error)
         else:
-            logging.error("Project configuration is not defined")
+            logging.error("Project configurations are not defined")
 
     def replace_parameter_in_config(self, parameter, config_file_string, config, config_name, errors_texts):
         # if parameter is configured
@@ -318,6 +330,7 @@ class WhitelabelApp:
         self.set_global_parameter("dev_team")
         self.set_global_parameter("marketing_version")
         self.set_global_parameter("current_project_version")
+        self.set_team_for_extra_targets()
 
     def set_global_parameter(self, parameter):
         # if parameter is defined in config
@@ -366,7 +379,96 @@ class WhitelabelApp:
                 logging.error("'"+parameter+"' is empty in config")
         else:
             logging.error("'"+parameter+"' is not defined")
-        
+
+    def set_team_for_extra_targets(self):
+        # if parameter is defined in config
+        if "project_extra_targets" in self.project_config:
+            if "dev_team" in self.project_config:
+                targets = self.project_config["project_extra_targets"]
+                for target in targets:
+                    self.set_team_for_target(target)
+            else:
+                logging.error("'dev_team' is not defined in config")
+        else:
+            logging.error("'project_extra_targets' are not defined in config")
+
+    def set_team_for_target(self, target):
+        dev_team = self.project_config["dev_team"]
+        # related path to target config
+        path_to_target_config =  os.path.join(self.config_project_path.replace("/project.pbxproj", ""), "..", target,target+".xcodeproj", "project.pbxproj")
+        # read project file for target
+        with open(path_to_target_config, 'r') as openfile:
+            config_file_string = openfile.read()
+        config_file_string_out = config_file_string
+        # string and regex for dev team
+        parameter_string = 'DEVELOPMENT_TEAM = '+dev_team+';'
+        parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+        # replace all regex findings with new parameters string
+        config_file_string_out = re.sub(parameter_regex, parameter_string, config_file_string)
+        # if something was changed
+        if config_file_string_out != config_file_string:
+            # write to target's project file
+            with open(path_to_target_config, 'w') as openfile:
+                openfile.write(config_file_string_out)
+            logging.debug("DEVELOPMENT_TEAM for '"+target+"' target was set successfuly")
+        # if nothing was found
+        elif re.search(parameter_regex, config_file_string) is None:
+                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+" target project file")
+        else:
+            logging.debug("Looks like DEVELOPMENT_TEAM for '"+target+"' target is set already")
+    
+    def copy_font(self):
+        # check if font config exists
+        if self.font:
+            if "font_import_file_path" in self.font:
+                font_import_file_path = self.font["font_import_file_path"]
+                if "project_font_file_path" in self.font:
+                    project_font_file_path = self.font["project_font_file_path"]
+                    # if source and destination file exist
+                    self.copy_font_file(font_import_file_path, project_font_file_path)
+                else:
+                    logging.error("'project_font_file_path' not found in config")
+            else:
+                logging.error("'font_import_file_path' not found in config")
+            # read font names from config
+            if "font_names" in self.font:
+                font_names = self.font["font_names"]
+                # set font names
+                self.set_font_names(font_names)
+            else:
+                logging.error("'font_names' not found in config")
+        else:
+            logging.debug("Font not found in config")
+
+    def copy_font_file(self, file_src, file_dest):
+        # try to copy font file and show success/error message
+        try:
+            shutil.copy(file_src, file_dest)
+        except IOError as e:
+            logging.error("Unable to copy file. "+e)
+        else:
+            logging.debug("Font was copied to project")
+
+    def set_font_names(self, font_names):
+        if "project_font_names_json_path" in self.font:
+            project_font_names_json_path = self.font["project_font_names_json_path"]
+            # read names json file from project
+            with open(project_font_names_json_path, 'r') as openfile:
+                json_object = json.load(openfile)
+            # go through font types and replace with values from config
+            for key, _ in json_object.items():
+                if key in font_names:
+                    config_font_name_value = font_names[key]
+                    json_object[key] = config_font_name_value
+            # generate new json
+            new_json = json.dumps(json_object) 
+            # write to json file
+            with open(project_font_names_json_path, 'w') as openfile:
+                openfile.write(new_json)
+            logging.debug("Font names were set successfuly")
+        else:
+            logging.error("'project_font_names_json_path' not found in config")
+
 def main():
     """
     Parse the command line arguments, and pass them to WhitelabelApp.

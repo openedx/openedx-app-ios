@@ -30,7 +30,7 @@ This config can contain the following options:
 ### Folder with source assets
 This is the folder where all image assets, which should be copied into the project, are placed (can be relative or absolute):
 ```yaml
-import_dir: 'path/to/images/source'
+images_import_dir: 'path/to/images/source'
 ```
 ### Xcode Project Settings
 The theming script can change the app name, version, development team and app bundle ID:
@@ -38,6 +38,7 @@ The theming script can change the app name, version, development team and app bu
 project_config:
     project_path: 'path/to/project/project.pbxproj' # path to project.pbxproj file
     dev_team: '1234567890' # Apple development team ID
+    project_extra_targets: ['Target1', 'Target2'] # targets in the workspace other than 'OpenEdX' in which the new dev_team should be set
     marketing_version: '1.0.1' # App marketing version
     current_project_version: '2' # App build number
     configurations:
@@ -74,6 +75,28 @@ assets:
                 current_path: '' # optional: path to icon inside icon_path
                 image_name: 'appIcon.jpg' # image to replace the current AppIcon - png or jpg are supported
 ```
+
+### Font
+The `whitelabel.yaml` configuration may contain the path to a font file, and an existing font in the project will be replaced with this font. 
+This ttf file must contain multiple ttf fonts "merged" into a single ttf file. Font types used in the application:
+- regular
+- medium
+- semiBold
+- bold
+
+For this function, the configuration must contain the following parameters:
+```yaml
+font:
+    font_import_file_path: 'path/to/importing/Font_file.ttf' # path to ttf font file what should be imported to project
+    project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
+    project_font_names_json_path: 'path/to/names/file/in project/fonts.json' # path to existing font names json-file in project
+    font_names:
+        regular: 'FontName-Regular'
+        medium: 'FontName-Medium'
+        semiBold: 'FontName-Semibold'
+        bold: 'FontName-Bold'
+```
+
 ### Log level
 You can set the log level to 'DEBUG' by adding the `-v` parameter to the script running.
 The default log level is 'WARN'

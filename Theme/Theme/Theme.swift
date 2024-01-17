@@ -91,6 +91,20 @@ public struct Theme {
         }
     }
     
+    // Use this structure where the computed Color.uiColor() extension is not appropriate.
+    public struct UIColors {
+        public private(set) static var textPrimary = ThemeAssets.textPrimary.color
+        public private(set) static var accentColor = ThemeAssets.accentColor.color
+
+        public static func update(
+            textPrimary: UIColor = ThemeAssets.textPrimary.color,
+            accentColor: UIColor = ThemeAssets.accentColor.color
+        ) {
+            self.textPrimary = textPrimary
+            self.accentColor = accentColor
+        }
+    }
+
     public struct Fonts {
         
         public static let displayLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 57)
