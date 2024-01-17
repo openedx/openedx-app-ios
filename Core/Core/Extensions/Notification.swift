@@ -13,4 +13,5 @@ public extension Notification.Name {
     static let onActualVersionReceived = Notification.Name("onActualVersionReceived")
     static let onAppUpgradeAccountSettingsTapped = Notification.Name("onAppUpgradeAccountSettingsTapped")
     static let onNewVersionAvaliable = Notification.Name("onNewVersionAvaliable")
+    static let webviewReloadNotification = Notification.Name("webviewReloadNotification")
 }

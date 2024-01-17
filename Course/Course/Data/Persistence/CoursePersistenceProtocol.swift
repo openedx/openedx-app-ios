@@ -9,8 +9,6 @@ import CoreData
 import Core
 
 public protocol CoursePersistenceProtocol {
-    func loadCourseDetails(courseID: String) throws -> CourseDetails
-    func saveCourseDetails(course: CourseDetails)
     func loadEnrollments() throws -> [Core.CourseItem]
     func saveEnrollments(items: [Core.CourseItem])
     func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure

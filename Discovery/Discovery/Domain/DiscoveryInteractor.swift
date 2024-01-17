@@ -13,6 +13,9 @@ public protocol DiscoveryInteractorProtocol {
     func discovery(page: Int) async throws -> [CourseItem]
     func discoveryOffline() throws -> [CourseItem]
     func search(page: Int, searchTerm: String) async throws -> [CourseItem]
+    func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails
+    func getCourseDetails(courseID: String) async throws -> CourseDetails
+    func enrollToCourse(courseID: String) async throws -> Bool
 }
 
 public class DiscoveryInteractor: DiscoveryInteractorProtocol {
@@ -33,6 +36,18 @@ public class DiscoveryInteractor: DiscoveryInteractorProtocol {
     
     public func discoveryOffline() throws -> [CourseItem] {
         return try repository.getDiscoveryOffline()
+    }
+    
+    public func getCourseDetails(courseID: String) async throws -> CourseDetails {
+        return try await repository.getCourseDetails(courseID: courseID)
+    }
+    
+    public func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
+        return try await repository.getLoadedCourseDetails(courseID: courseID)
+    }
+    
+    public func enrollToCourse(courseID: String) async throws -> Bool {
+        return try await repository.enrollToCourse(courseID: courseID)
     }
 }
 
