@@ -315,7 +315,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     @MainActor
-    private func setDownloadsStates() async {
+    func setDownloadsStates() async {
         guard let course = courseStructure else { return }
         self.courseDownloads = await manager.getDownloadsForCourse(course.id)
         self.downloadableVerticals = []
@@ -386,7 +386,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .sink { [weak self] state in
                 guard let self else { return }
                 if case .progress = state { return }
-                Task {
+                Task.detached(priority: .high) {
                     await self.setDownloadsStates()
                 }
             }
