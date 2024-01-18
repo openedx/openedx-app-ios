@@ -252,10 +252,6 @@ public struct CourseBlock: Hashable {
         self.mobileLow = mobileLow
         self.hls = hls
     }
-
-    private var video: CourseBlockVideo? {
-       hls ?? desktopMP4 ?? mobileHigh ?? mobileLow ?? fallback
-    }
 }
 
 public struct CourseBlockVideo: Equatable {

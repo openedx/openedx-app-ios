@@ -501,7 +501,18 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
         return Just(
             .canceled(
-                .init(id: "", courseId: "", url: "", fileName: "", displayName: "", progress: 1, resumeData: nil, state: .inProgress, type: .video, fileSize: 0)
+                .init(
+                    id: "",
+                    courseId: "",
+                    url: "",
+                    fileName: "",
+                    displayName: "",
+                    progress: 1,
+                    resumeData: nil,
+                    state: .inProgress,
+                    type: .video,
+                    fileSize: 0
+                )
             )
         ).eraseToAnyPublisher()
     }

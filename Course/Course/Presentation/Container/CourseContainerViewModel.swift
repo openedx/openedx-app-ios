@@ -393,7 +393,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .store(in: &cancellables)
 
         connectivity.internetReachableSubject
-            .sink { [weak self] state in
+            .sink { [weak self] _ in
             guard let self else { return }
                 self.isInternetAvaliable = self.connectivity.isInternetAvaliable
         }

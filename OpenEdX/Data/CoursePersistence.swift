@@ -163,7 +163,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 courseDetail.type = block.type
                 courseDetail.completion = block.completion ?? 0
 
-                if let youTube = block.userViewData?.encodedVideo?.youTube {
+                if block.userViewData?.encodedVideo?.youTube != nil {
                     let youTube = CDCourseBlockVideo(context: self.context)
                     youTube.url = block.userViewData?.encodedVideo?.youTube?.url
                     youTube.fileSize = Int32(block.userViewData?.encodedVideo?.youTube?.fileSize ?? 0)

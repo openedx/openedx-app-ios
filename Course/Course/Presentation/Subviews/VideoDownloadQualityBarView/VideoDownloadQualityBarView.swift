@@ -48,13 +48,19 @@ struct VideoDownloadQualityBarView: View {
     @ViewBuilder
     private var titles: some View {
         VStack(alignment: .leading) {
-            Text(ProfileLocalization.Settings.videoDownloadQualityTitle)
+            let videoDownloadQualityTitle = ProfileLocalization.Settings.videoDownloadQualityTitle
+            Text(videoDownloadQualityTitle)
             .lineLimit(1)
             .font(Theme.Fonts.titleMedium)
             .foregroundColor(Theme.Colors.textPrimary)
-            Text(downloadQuality.settingsDescription)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(videoDownloadQualityTitle)
+            let settingsDescription = downloadQuality.settingsDescription
+            Text(settingsDescription)
                 .font(Theme.Fonts.labelLarge)
                 .foregroundColor(Theme.Colors.textSecondary)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(settingsDescription)
         }
         .padding(.horizontal, 10)
     }

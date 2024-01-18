@@ -60,13 +60,16 @@ public struct VideoDownloadQualityView: View {
                                     title: quality.title,
                                     description: quality.description
                                 )
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
                                 Spacer()
                                 CoreAssets.checkmark.swiftUIImage
                                     .renderingMode(.template)
                                     .foregroundColor(.accentColor)
                                     .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
 
-                            }.foregroundColor(Theme.Colors.textPrimary)
+                            }
+                            .foregroundColor(Theme.Colors.textPrimary)
                         }
                         Divider()
                     }

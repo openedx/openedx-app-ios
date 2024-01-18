@@ -62,15 +62,21 @@ struct DownloadsView: View {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(viewModel.title(downloadData: downloadData))
+                        let title = viewModel.title(downloadData: downloadData)
+                        Text(title)
                             .font(Theme.Fonts.titleMedium)
                             .multilineTextAlignment(.leading)
                             .lineLimit(1)
-                        Text(downloadData.fileSizeInMbText)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(title)
+                        let fileSizeInMbText = downloadData.fileSizeInMbText
+                        Text(fileSizeInMbText)
                             .font(Theme.Fonts.titleSmall)
                             .foregroundColor(Theme.Colors.textSecondary)
                             .multilineTextAlignment(.leading)
                             .lineLimit(1)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(fileSizeInMbText)
                         if downloadData.state != .finished {
                             ProgressView(value: downloadData.progress, total: 1.0)
                         }
@@ -78,7 +84,7 @@ struct DownloadsView: View {
                     Spacer()
                     Button {
                         Task {
-                           await  viewModel.cancelDownloading(downloadData: downloadData)
+                           await viewModel.cancelDownloading(downloadData: downloadData)
                         }
                     } label: {
                         if downloadData.state == .finished {

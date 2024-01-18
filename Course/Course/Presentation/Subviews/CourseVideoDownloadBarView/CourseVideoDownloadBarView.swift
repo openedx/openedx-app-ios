@@ -88,11 +88,22 @@ struct CourseVideoDownloadBarView: View {
                 HStack(spacing: 0) {
                     Group {
                         if viewModel.remainingVideos == 0 {
-                            Text("\(CourseLocalization.Download.videos) \(viewModel.totalFinishedVideos)")
+                            let text = "\(CourseLocalization.Download.videos) \(viewModel.totalFinishedVideos)"
+                            Text(text)
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(text)
                         } else {
-                            Text("\(CourseLocalization.Download.remaining) \(viewModel.remainingVideos)")
+                            let text = "\(CourseLocalization.Download.remaining) \(viewModel.remainingVideos)"
+                            Text(text)
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(text)
                         }
-                        viewModel.totalSize.map { Text(", \($0)MB Total") }
+                        if let totalSize = viewModel.totalSize {
+                            let text = ", \(totalSize)MB \(CourseLocalization.Download.total)"
+                            Text(text)
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(text)
+                        }
                     }
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textSecondary)

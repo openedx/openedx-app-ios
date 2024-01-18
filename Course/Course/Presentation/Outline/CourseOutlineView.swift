@@ -200,11 +200,14 @@ public struct CourseOutlineView: View {
                     ) { showingDownloads = true }
                 } else {
                     VStack(spacing: 0) {
-                        Text(CourseLocalization.Download.noWifiMessage)
+                        let text = CourseLocalization.Download.noWifiMessage
+                        Text(text)
                             .font(Theme.Fonts.labelLarge)
                             .multilineTextAlignment(.center)
                             .padding(.vertical, 5)
                             .padding(.horizontal, 10)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(text)
                         Spacer()
                         Divider()
                     }
