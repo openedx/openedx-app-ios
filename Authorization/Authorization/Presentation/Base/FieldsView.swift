@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct FieldsView: View {
     
@@ -56,20 +57,43 @@ struct FieldsView: View {
                     .id(index)
                 Text("Checkbox is not support")
             case .plaintext:
-                HTMLFormattedText(
-                    cssInjector.injectCSS(
-                        colorScheme: colorScheme,
-                        html: config.field.label,
-                        type: .discovery,
-                        fontSize: 90, screenWidth: proxy.size.width)
-                )
-                .id(UUID())
-                .padding(.horizontal, -6)
-                
+                if config.field.name == "honor_code",
+                   let eulaURL = self.config.agreement.eulaURL,
+                   let tosURL =  self.config.agreement.tosURL,
+                   let policy = self.config.agreement.privacyPolicyURL {
+                    let text = AuthLocalization.SignUp.agreement(
+                        "\(self.config.platformName)",
+                        eulaURL,
+                        "\(self.config.platformName)",
+                        tosURL,
+                        policy
+                    )
+                    Text(.init(text))
+                        .tint(Theme.Colors.accentColor)
+                        .font(Theme.Fonts.labelSmall)
+                        .padding(.vertical, 3)
+                        .id(UUID())
+                        .environment(\.openURL, OpenURLAction(handler: handleURL))
+                } else {
+                    HTMLFormattedText(
+                        cssInjector.injectCSS(
+                            colorScheme: colorScheme,
+                            html: config.field.label,
+                            type: .discovery,
+                            fontSize: 90, screenWidth: proxy.size.width)
+                    )
+                    .id(UUID())
+                    .padding(.horizontal, -6)
+                }
             case .unknown:
                 Text("This field not support")
             }
         }
+    }
+
+    private func handleURL(_ url: URL) -> OpenURLAction.Result {
+        router.showWebBrowser(title: url.host ?? "", url: url)
+        return .handled
     }
 }
 

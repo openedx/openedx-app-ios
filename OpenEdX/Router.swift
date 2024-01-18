@@ -193,7 +193,7 @@ public class Router: AuthorizationRouter,
         
         authAnalytics.signUpClicked()
     }
-    
+
     public func showForgotPasswordScreen() {
         let view = ResetPasswordView(viewModel: Container.shared.resolve(ResetPasswordViewModel.self)!)
         let controller = UIHostingController(rootView: view)
@@ -590,5 +590,15 @@ public class Router: AuthorizationRouter,
     
     private func showToolBar() {
         self.navigationController.setNavigationBarHidden(false, animated: false)
+    }
+
+    public func showWebBrowser(title: String, url: URL) {
+        let webBrowser = WebBrowser(
+            url: url.absoluteString,
+            pageTitle: title,
+            showProgress: true
+        )
+        let controller = UIHostingController(rootView: webBrowser)
+        navigationController.pushViewController(controller, animated: true)
     }
 }

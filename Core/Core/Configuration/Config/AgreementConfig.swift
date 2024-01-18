@@ -12,6 +12,7 @@ private enum AgreementKeys: String {
     case tosURL = "TOS_URL"
     case cookiePolicyURL = "COOKIE_POLICY_URL"
     case dataSellContentURL = "DATA_SELL_CONSENT_URL"
+    case eulaURL = "EULA_URL"
     case supportedLanguages = "SUPPORTED_LANGUAGES"
 }
 
@@ -20,12 +21,14 @@ public class AgreementConfig: NSObject {
     public var tosURL: URL?
     public var cookiePolicyURL: URL?
     public var dataSellContentURL: URL?
+    public var eulaURL: URL?
     public var supportedLanguages: [String]?
 
     init(dictionary: [String: AnyObject]) {
         supportedLanguages = dictionary[AgreementKeys.supportedLanguages.rawValue] as? [String]
         cookiePolicyURL = (dictionary[AgreementKeys.cookiePolicyURL.rawValue] as? String).flatMap(URL.init)
         dataSellContentURL = (dictionary[AgreementKeys.dataSellContentURL.rawValue] as? String).flatMap(URL.init)
+        eulaURL = (dictionary[AgreementKeys.eulaURL.rawValue] as? String).flatMap(URL.init)
 
         super.init()
 
