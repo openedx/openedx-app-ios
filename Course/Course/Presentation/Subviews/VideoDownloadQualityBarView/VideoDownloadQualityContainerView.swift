@@ -37,6 +37,7 @@ struct VideoDownloadQualityContainerView: View {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentColor)
                     }
+                    .accessibilityIdentifier("close_button")
                 }
             }
             .padding(.top, 1)

@@ -67,10 +67,12 @@ public struct VideoDownloadQualityView: View {
                                     .renderingMode(.template)
                                     .foregroundColor(.accentColor)
                                     .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
+                                    .accessibilityIdentifier("checkmark_image")
 
                             }
                             .foregroundColor(Theme.Colors.textPrimary)
                         }
+                        .accessibilityIdentifier("quality_button_cell")
                         Divider()
                     }
                 }

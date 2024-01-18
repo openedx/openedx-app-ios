@@ -48,6 +48,7 @@ struct DownloadsView: View {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentColor)
                     }
+                    .accessibilityIdentifier("close_button")
                 }
             }
             .padding(.top, 1)
@@ -69,6 +70,7 @@ struct DownloadsView: View {
                             .lineLimit(1)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(title)
+                            .accessibilityIdentifier("file_name_text")
                         let fileSizeInMbText = downloadData.fileSizeInMbText
                         Text(fileSizeInMbText)
                             .font(Theme.Fonts.titleSmall)
@@ -77,8 +79,10 @@ struct DownloadsView: View {
                             .lineLimit(1)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(fileSizeInMbText)
+                            .accessibilityIdentifier("file_size_text")
                         if downloadData.state != .finished {
                             ProgressView(value: downloadData.progress, total: 1.0)
+                                .accessibilityIdentifier("progress_line_view")
                         }
                     }
                     Spacer()
@@ -87,16 +91,10 @@ struct DownloadsView: View {
                            await viewModel.cancelDownloading(downloadData: downloadData)
                         }
                     } label: {
-                        if downloadData.state == .finished {
-                            DownloadFinishedView()
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .accessibilityElement(children: .ignore)
-                                .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
-                        } else {
-                            DownloadProgressView()
-                                .accessibilityElement(children: .ignore)
-                                .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
-                        }
+                        DownloadProgressView()
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
+                            .accessibilityIdentifier("cancel_download_button")
                     }
                     .padding(.horizontal, 15)
                 }

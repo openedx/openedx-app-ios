@@ -208,6 +208,7 @@ public struct CourseOutlineView: View {
                             .padding(.horizontal, 10)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(text)
+                            .accessibilityIdentifier("no_wifi_text")
                         Spacer()
                         Divider()
                     }

@@ -31,6 +31,7 @@ struct VideoDownloadQualityBarView: View {
                         .scaledToFit()
                         .font(.system(size: 25, weight: .medium))
                         .frame(width: 25, height: 25)
+                        .accessibilityIdentifier("gearshape_image")
 
                 }
                 .frame(width: 40, height: 40)
@@ -43,6 +44,7 @@ struct VideoDownloadQualityBarView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture { onTap?() }
+        .accessibilityIdentifier("video_download_quality_bar")
     }
 
     @ViewBuilder
@@ -55,12 +57,14 @@ struct VideoDownloadQualityBarView: View {
             .foregroundColor(Theme.Colors.textPrimary)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(videoDownloadQualityTitle)
+            .accessibilityIdentifier("video_quality_title_text")
             let settingsDescription = downloadQuality.settingsDescription
             Text(settingsDescription)
                 .font(Theme.Fonts.labelLarge)
                 .foregroundColor(Theme.Colors.textSecondary)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(settingsDescription)
+                .accessibilityIdentifier("video_quality_description_text")
         }
         .padding(.horizontal, 10)
     }

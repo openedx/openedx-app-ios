@@ -45,6 +45,7 @@ struct CourseVideoDownloadBarView: View {
             .padding(.vertical, 10)
             if viewModel.isOn, !isAllDownloaded {
                 ProgressView(value: viewModel.progress, total: 1)
+                    .accessibilityIdentifier("progress_line_view")
             }
             Divider()
         }
@@ -57,6 +58,7 @@ struct CourseVideoDownloadBarView: View {
                 }
             }
         }
+        .accessibilityIdentifier("videos_download_bar")
     }
 
     // MARK: - Views
@@ -65,12 +67,14 @@ struct CourseVideoDownloadBarView: View {
         VStack {
             if viewModel.isOn, !viewModel.isAllDownloaded {
                 ProgressView()
+                    .accessibilityIdentifier("progress_view")
             } else {
                 CoreAssets.video.swiftUIImage
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30, height: 30)
+                    .accessibilityIdentifier("video_image")
             }
         }
         .frame(width: 40, height: 40)
@@ -81,10 +85,14 @@ struct CourseVideoDownloadBarView: View {
     private var titles: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(viewModel.title)
-                .lineLimit(1)
-                .font(Theme.Fonts.titleMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
+                let title = viewModel.title
+                Text(title)
+                    .lineLimit(1)
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(title)
+                    .accessibilityIdentifier("bar_title_text")
                 HStack(spacing: 0) {
                     Group {
                         if viewModel.remainingVideos == 0 {
@@ -92,17 +100,20 @@ struct CourseVideoDownloadBarView: View {
                             Text(text)
                                 .accessibilityElement(children: .ignore)
                                 .accessibilityLabel(text)
+                                .accessibilityIdentifier("videos_total_finished_text")
                         } else {
                             let text = "\(CourseLocalization.Download.remaining) \(viewModel.remainingVideos)"
                             Text(text)
                                 .accessibilityElement(children: .ignore)
                                 .accessibilityLabel(text)
+                                .accessibilityIdentifier("remaining_videos_text")
                         }
                         if let totalSize = viewModel.totalSize {
                             let text = ", \(totalSize)MB \(CourseLocalization.Download.total)"
                             Text(text)
                                 .accessibilityElement(children: .ignore)
                                 .accessibilityLabel(text)
+                                .accessibilityIdentifier("total_size_text")
                         }
                     }
                     .font(Theme.Fonts.labelLarge)
@@ -122,5 +133,6 @@ struct CourseVideoDownloadBarView: View {
             .onTapGesture {
                 Task { await viewModel.downloadAll()  }
             }
+            .accessibilityIdentifier("download_toggle")
     }
 }
