@@ -115,7 +115,7 @@ public struct RegistrationTextField: View {
                 .foregroundColor(config.error == ""
                                  ? Theme.Colors.textSecondary
                                  : Color.red)
-                .accessibilityIdentifier("\(config.field.name)_text")
+                .accessibilityIdentifier("\(config.field.name)_instructions_text")
         }
     }
 }
