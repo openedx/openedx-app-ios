@@ -8,7 +8,6 @@
 import SwiftUI
 import Core
 import Theme
-import Profile
 
 struct VideoDownloadQualityContainerView: View {
 

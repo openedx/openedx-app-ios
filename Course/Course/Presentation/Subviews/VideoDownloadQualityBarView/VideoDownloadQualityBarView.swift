@@ -50,7 +50,7 @@ struct VideoDownloadQualityBarView: View {
     @ViewBuilder
     private var titles: some View {
         VStack(alignment: .leading) {
-            let videoDownloadQualityTitle = ProfileLocalization.Settings.videoDownloadQualityTitle
+            let videoDownloadQualityTitle = CoreLocalization.Settings.videoDownloadQualityTitle
             Text(videoDownloadQualityTitle)
             .lineLimit(1)
             .font(Theme.Fonts.titleMedium)

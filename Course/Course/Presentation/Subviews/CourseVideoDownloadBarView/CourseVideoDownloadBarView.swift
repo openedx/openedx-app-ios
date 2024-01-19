@@ -131,7 +131,7 @@ struct CourseVideoDownloadBarView: View {
             .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
             .padding(.trailing, 15)
             .onTapGesture {
-                Task { await viewModel.downloadAll()  }
+                Task { await viewModel.onToggle()  }
             }
             .accessibilityIdentifier("download_toggle")
     }

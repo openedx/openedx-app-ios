@@ -1,12 +1,11 @@
 //
 //  VideoDownloadQualityView.swift
-//  Profile
+//  Core
 //
-//  Created by Eugene Yatsenko on 04.01.2024.
+//  Created by Eugene Yatsenko on 19.01.2024.
 //
 
 import SwiftUI
-import Core
 import Kingfisher
 import Theme
 
@@ -88,11 +87,35 @@ public struct VideoDownloadQualityView: View {
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
-        .navigationTitle(ProfileLocalization.Settings.videoDownloadQualityTitle)
+        .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+    }
+}
+
+public struct SettingsCell: View {
+
+    private var title: String
+    private var description: String?
+
+    public init(title: String, description: String?) {
+        self.title = title
+        self.description = description
+    }
+
+    public var body: some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(Theme.Fonts.titleMedium)
+            if let description {
+                Text(description)
+                    .font(Theme.Fonts.labelMedium)
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
+        }.foregroundColor(Theme.Colors.textPrimary)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -101,62 +124,43 @@ public extension DownloadQuality {
     var title: String {
         switch self {
         case .auto:
-            return ProfileLocalization.Settings.downloadQualityAutoTitle
+            return CoreLocalization.Settings.downloadQualityAutoTitle
         case .low_360:
-            return ProfileLocalization.Settings.downloadQuality360Title
+            return CoreLocalization.Settings.downloadQuality360Title
         case .medium_540:
-            return ProfileLocalization.Settings.downloadQuality540Title
+            return CoreLocalization.Settings.downloadQuality540Title
         case .high_720:
-            return ProfileLocalization.Settings.downloadQuality720Title
+            return CoreLocalization.Settings.downloadQuality720Title
         }
     }
 
     var description: String? {
         switch self {
         case .auto:
-            return ProfileLocalization.Settings.downloadQualityAutoDescription
+            return CoreLocalization.Settings.downloadQualityAutoDescription
         case .low_360:
-            return ProfileLocalization.Settings.downloadQuality360Description
+            return CoreLocalization.Settings.downloadQuality360Description
         case .medium_540:
             return nil
         case .high_720:
-            return ProfileLocalization.Settings.downloadQuality720Description
+            return CoreLocalization.Settings.downloadQuality720Description
         }
     }
 
     var settingsDescription: String {
         switch self {
         case .auto:
-            return ProfileLocalization.Settings.downloadQualityAutoTitle + " ("
-            + ProfileLocalization.Settings.downloadQualityAutoDescription + ")"
+            return CoreLocalization.Settings.downloadQualityAutoTitle + " ("
+            + CoreLocalization.Settings.downloadQualityAutoDescription + ")"
         case .low_360:
-            return ProfileLocalization.Settings.downloadQuality360Title + " ("
-            + ProfileLocalization.Settings.downloadQuality360Description + ")"
+            return CoreLocalization.Settings.downloadQuality360Title + " ("
+            + CoreLocalization.Settings.downloadQuality360Description + ")"
         case .medium_540:
-            return ProfileLocalization.Settings.downloadQuality540Title
+            return CoreLocalization.Settings.downloadQuality540Title
         case .high_720:
-            return ProfileLocalization.Settings.downloadQuality720Title + " ("
-            + ProfileLocalization.Settings.downloadQuality720Description + ")"
+            return CoreLocalization.Settings.downloadQuality720Title + " ("
+            + CoreLocalization.Settings.downloadQuality720Description + ")"
         }
     }
 }
 
-#if DEBUG
-struct VideoDownloadQualityView_Previews: PreviewProvider {
-    static var previews: some View {
-        let router = ProfileRouterMock()
-        let vm = SettingsViewModel(interactor: ProfileInteractor.mock,
-                                   router: router)
-
-        VideoDownloadQualityView(downloadQuality: vm.userSettings.downloadQuality) { _ in }
-            .preferredColorScheme(.light)
-            .previewDisplayName("VideoQualityView Light")
-            .loadFonts()
-
-        VideoDownloadQualityView(downloadQuality: vm.userSettings.downloadQuality) { _ in }
-            .preferredColorScheme(.dark)
-            .previewDisplayName("VideoQualityView Dark")
-            .loadFonts()
-    }
-}
-#endif

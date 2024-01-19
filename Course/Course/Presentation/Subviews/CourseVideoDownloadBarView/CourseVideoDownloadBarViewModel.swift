@@ -48,23 +48,27 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             .reduce(0) { $0 + $1.progress } / Double(courseViewModel.courseDownloads.count)
     }
 
+    var downloadableVerticals: Set<VerticalsDownloadState> {
+        courseViewModel.downloadableVerticals
+    }
+
     var isAllDownloaded: Bool {
-        let totalFinishedCount = courseViewModel.downloadableVerticals.filter { $0.state == .finished }.count
-        return totalFinishedCount == courseViewModel.downloadableVerticals.count
+        let totalFinishedCount = downloadableVerticals.filter { $0.state == .finished }.count
+        return totalFinishedCount == downloadableVerticals.count
     }
 
     var remainingVideos: Int {
-        let inProgress = courseViewModel.downloadableVerticals.filter { $0.state != .finished }
+        let inProgress = downloadableVerticals.filter { $0.state != .finished }
         return inProgress.flatMap { $0.downloadableBlocks }.count
     }
 
     var downloadingVideos: Int {
-        let downloading = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }
+        let downloading = downloadableVerticals.filter { $0.state == .downloading }
         return downloading.flatMap { $0.downloadableBlocks }.count
     }
 
     var totalFinishedVideos: Int {
-        let finished = courseViewModel.downloadableVerticals.filter { $0.state == .finished }
+        let finished = downloadableVerticals.filter { $0.state == .finished }
         return finished.flatMap { $0.downloadableBlocks }.count
     }
 
@@ -85,7 +89,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         }
 
         let size = blockToMB(
-            data: Set(courseViewModel.downloadableVerticals
+            data: Set(downloadableVerticals
                 .filter { $0.state != .finished }
                 .flatMap { $0.downloadableBlocks }
             ),
@@ -110,10 +114,37 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     @MainActor
-    func downloadAll() async {
-        await courseViewModel.downloadAll(
+    func onToggle() async {
+        await downloadAll(
             isOn: isOn ? false : true
         )
+    }
+
+    @MainActor
+    private func downloadAll(isOn: Bool) async {
+        let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
+
+        if isOn, courseViewModel.isShowedAllowLargeDownloadAlert(blocks: blocks) {
+            return
+        }
+
+        if isOn {
+            let blocks = downloadableVerticals.filter { $0.state != .finished }.flatMap { $0.vertical.childs }
+            await courseViewModel.download(
+                state: .available,
+                blocks: blocks
+            )
+        } else {
+            let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
+            await courseViewModel.download(
+                state: .downloading,
+                blocks: blocks
+            )
+            await courseViewModel.download(
+                state: .finished,
+                blocks: blocks
+            )
+        }
     }
 
     // MARK: - Private intents

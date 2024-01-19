@@ -9,7 +9,6 @@ import SwiftUI
 import Core
 import Kingfisher
 import Theme
-import Profile
 
 public struct CourseOutlineView: View {
     

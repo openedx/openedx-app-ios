@@ -158,33 +158,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         await download(state: state, blocks: blocks)
     }
 
-    @MainActor
-    func downloadAll(isOn: Bool) async {
-        let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
-
-        if isOn, isShowedAllowLargeDownloadAlert(blocks: blocks) {
-            return
-        }
-
-        if isOn {
-            let blocks = downloadableVerticals.filter { $0.state != .finished }.flatMap { $0.vertical.childs }
-            await download(
-                state: .available,
-                blocks: blocks
-            )
-        } else {
-            let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
-            await download(
-                state: .downloading,
-                blocks: blocks
-            )
-            await download(
-                state: .finished,
-                blocks: blocks
-            )
-        }
-    }
-
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {
         let verticals = downloadableVerticals.filter { verticalState in
             courseSequential.childs.contains(where: { item in
@@ -277,18 +250,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     @MainActor
-    private func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
-        waitingDownload = nil
-        if storage.allowedDownloadLargeFile == false, manager.isLarge(blocks: blocks) {
-            waitingDownload = blocks
-            showAllowLargeDownload = true
-            return true
-        }
-        return false
-    }
-
-    @MainActor
-    private func download(state: DownloadViewState, blocks: [CourseBlock]) async {
+    func download(state: DownloadViewState, blocks: [CourseBlock]) async {
         do {
             switch state {
             case .available:
@@ -303,6 +265,17 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 errorMessage = CoreLocalization.Error.wifi
             }
         }
+    }
+
+    @MainActor
+    func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
+        waitingDownload = nil
+        if storage.allowedDownloadLargeFile == false, manager.isLarge(blocks: blocks) {
+            waitingDownload = blocks
+            showAllowLargeDownload = true
+            return true
+        }
+        return false
     }
 
     @MainActor

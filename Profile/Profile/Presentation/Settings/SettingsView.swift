@@ -66,7 +66,7 @@ public struct SettingsView: View {
                                 )
                             } label: {
                                 SettingsCell(
-                                    title: ProfileLocalization.Settings.videoDownloadQualityTitle,
+                                    title: CoreLocalization.Settings.videoDownloadQualityTitle,
                                     description: viewModel.userSettings.downloadQuality.settingsDescription
                                 )
                             }

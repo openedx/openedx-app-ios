@@ -126,6 +126,7 @@
 		07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA30427D2B20B299009B64B7 /* SocialAuthError.swift */; };
+		BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */; };
 		BA593F1C2AF8E498009ADB51 /* ScrollSlidingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA593F1B2AF8E498009ADB51 /* ScrollSlidingTabBar.swift */; };
 		BA593F1E2AF8E4A0009ADB51 /* FrameReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA593F1D2AF8E4A0009ADB51 /* FrameReader.swift */; };
 		BA76135C2B21BC7300B599B7 /* SocialAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */; };
@@ -295,6 +296,7 @@
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A53A32342B233DEC005FE38A /* ThemeConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeConfig.swift; sourceTree = "<group>"; };
 		BA30427D2B20B299009B64B7 /* SocialAuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialAuthError.swift; sourceTree = "<group>"; };
+		BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityView.swift; sourceTree = "<group>"; };
 		BA593F1B2AF8E498009ADB51 /* ScrollSlidingTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollSlidingTabBar.swift; sourceTree = "<group>"; };
 		BA593F1D2AF8E4A0009ADB51 /* FrameReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameReader.swift; sourceTree = "<group>"; };
 		BA76135B2B21BC7300B599B7 /* SocialAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthResponse.swift; sourceTree = "<group>"; };
@@ -673,6 +675,7 @@
 				027BD3C42909707700392132 /* Shake.swift */,
 				023A1135291432B200D0D354 /* RegistrationTextField.swift */,
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
+				BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */,
 				BA593F1A2AF8E487009ADB51 /* ScrollSlidingTabBar */,
 				BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */,
 				BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */,
@@ -978,6 +981,7 @@
 				0241666B28F5A78B00082765 /* HTMLFormattedText.swift in Sources */,
 				02D800CC29348F460099CF16 /* ImagePicker.swift in Sources */,
 				027BD3B92909476200392132 /* KeyboardAvoidingModifier.swift in Sources */,
+				BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */,
 				0770DE2C28D092B3006D8A5D /* NetworkLogger.swift in Sources */,
 				064987972B4D69FF0071642A /* WebView.swift in Sources */,
 				0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */,
