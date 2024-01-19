@@ -152,8 +152,8 @@ public struct CourseUnitView: View {
             .frame(
                 width: reader.size.width,
                 height: isHorizontal ?
-                (viewModel.courseUnitProgressEnabled ? 85 : 75) :
-                (viewModel.courseUnitProgressEnabled ? 60 : 50)
+                (viewModel.courseUnitProgressEnabled ? 78 : 75) :
+                (viewModel.courseUnitProgressEnabled ? 68 : 50)
             )
     }
 
