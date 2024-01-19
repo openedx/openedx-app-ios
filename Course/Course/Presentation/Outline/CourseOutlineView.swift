@@ -193,32 +193,16 @@ public struct CourseOutlineView: View {
            let courseVideosStructure = viewModel.courseVideosStructure,
            viewModel.hasVideoForDowbloads() {
             VStack(spacing: 0) {
-                if showingNoWifiMessage {
-                    VStack(spacing: 0) {
-                        let text = CourseLocalization.Download.noWifiMessage
-                        Text(text)
-                            .font(Theme.Fonts.labelLarge)
-                            .multilineTextAlignment(.center)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .accessibilityElement(children: .ignore)
-                            .accessibilityLabel(text)
-                            .accessibilityIdentifier("no_wifi_text")
-                        Spacer()
-                        Divider()
-                    }.onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            showingNoWifiMessage = false
-                        }
+                CourseVideoDownloadBarView(
+                    courseStructure: courseVideosStructure,
+                    courseViewModel: viewModel,
+                    onNotInternetAvaliable: {
+                        viewModel.errorMessage = CourseLocalization.Download.noWifiMessage
+                    },
+                    onTap: { 
+                        showingDownloads = true
                     }
-                } else {
-                    CourseVideoDownloadBarView(
-                        courseStructure: courseVideosStructure,
-                        courseViewModel: viewModel,
-                        onNotInternetAvaliable: { showingNoWifiMessage = true },
-                        onTap: { showingDownloads = true }
-                    )
-                }
+                )
                 viewModel.userSettings.map {
                     VideoDownloadQualityBarView(
                         downloadQuality: $0.downloadQuality
