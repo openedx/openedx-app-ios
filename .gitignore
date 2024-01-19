@@ -116,3 +116,4 @@ venv/
 Podfile.lock
 config_settings.yaml
 default_config/
+default_config/config_settings.yaml
