@@ -89,6 +89,7 @@ public protocol DownloadManagerProtocol {
     func getDownloadsForCourse(_ courseId: String) async -> [DownloadData]
     func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws
     func cancelDownloading(downloadData: DownloadData) async throws
+    func cancelDownloading(courseId: String) async
     func deleteFile(blocks: [CourseBlock]) async
     func deleteAllFiles() async
     func fileUrl(for blockId: String) async -> URL?
@@ -223,6 +224,22 @@ public class DownloadManager: DownloadManagerProtocol {
         try newDownload()
     }
 
+    public func cancelDownloading(courseId: String) async {
+        let downloads = await getDownloadsForCourse(courseId)
+        for downloadData in downloads {
+            do {
+                try persistence.deleteDownloadData(id: downloadData.id)
+                if let fileUrl = await fileUrl(for: downloadData.id) {
+                    try FileManager.default.removeItem(at: fileUrl)
+                }
+            } catch {
+                NSLog("Error deleting file: \(error.localizedDescription)")
+            }
+        }
+        currentDownloadEventPublisher.send(.clearedAll)
+        downloadRequest?.cancel()
+    }
+
     public func deleteFile(blocks: [CourseBlock]) async {
         for block in blocks {
             do {
@@ -258,7 +275,7 @@ public class DownloadManager: DownloadManagerProtocol {
                     continuation.resume(returning: nil)
                     return
                 }
-                let path = self?.videosFolderUrl()
+                let path = self?.videosFolderUrl
                 let fileName = data.fileName
                 continuation.resume(returning: path?.appendingPathComponent(fileName))
             }
@@ -269,7 +286,7 @@ public class DownloadManager: DownloadManagerProtocol {
         guard let data = persistence.downloadData(by: blockId),
               data.url.count > 0,
               data.state == .finished else { return nil }
-        let path = videosFolderUrl()
+        let path = videosFolderUrl
         let fileName = data.fileName
         return path?.appendingPathComponent(fileName)
     }
@@ -328,7 +345,7 @@ public class DownloadManager: DownloadManagerProtocol {
 
         downloadRequest?.responseData { [weak self] data in
             guard let self else { return }
-            if let data = data.value, let url = self.videosFolderUrl() {
+            if let data = data.value, let url = self.videosFolderUrl {
                 self.saveFile(fileName: download.fileName, data: data, folderURL: url)
                 self.persistence.updateDownloadState(
                     id: download.id,
@@ -373,7 +390,7 @@ public class DownloadManager: DownloadManagerProtocol {
             .store(in: &cancellables)
     }
 
-    private func videosFolderUrl() -> URL? {
+    lazy var videosFolderUrl: URL? = {
         let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let directoryURL = documentDirectoryURL.appendingPathComponent("Files", isDirectory: true)
         
@@ -392,8 +409,8 @@ public class DownloadManager: DownloadManagerProtocol {
                 return nil
             }
         }
-    }
-    
+    }()
+
     private func saveFile(fileName: String, data: Data, folderURL: URL) {
         let fileURL = folderURL.appendingPathComponent(fileName)
         do {
@@ -536,6 +553,10 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     }
 
     public func cancelDownloading(downloadData: DownloadData) {
+
+    }
+
+    public func cancelDownloading(courseId: String) async {
 
     }
 

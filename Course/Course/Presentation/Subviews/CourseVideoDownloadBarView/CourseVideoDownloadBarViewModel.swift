@@ -135,15 +135,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 blocks: blocks
             )
         } else {
-            let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
-            await courseViewModel.download(
-                state: .downloading,
-                blocks: blocks
-            )
-            await courseViewModel.download(
-                state: .finished,
-                blocks: blocks
-            )
+            await courseViewModel.manager.cancelDownloading(courseId: courseStructure.id)
         }
     }
 
