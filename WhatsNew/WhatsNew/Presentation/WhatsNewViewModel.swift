@@ -14,10 +14,12 @@ public class WhatsNewViewModel: ObservableObject {
     @Published var newItems: [WhatsNewPage] = []
     private let storage: WhatsNewStorage
     var sourceScreen: LogistrationSourceScreen
+    private let config: ConfigProtocol
     
-    public init(storage: WhatsNewStorage, sourceScreen: LogistrationSourceScreen = .default) {
+    public init(storage: WhatsNewStorage, sourceScreen: LogistrationSourceScreen = .default, config: ConfigProtocol) {
         self.storage = storage
         self.sourceScreen = sourceScreen
+        self.config = config
         newItems = loadWhatsNew()
     }
     
@@ -54,7 +56,12 @@ public class WhatsNewViewModel: ObservableObject {
     
     func loadWhatsNew() -> [WhatsNewPage] {
         guard let domain = loadWhatsNewModel()?.domain else { return [] }
-        return domain
+        if let imageOrTitle = config.uiComponents.whatsNewImageOrTitlePageSkip,
+            !imageOrTitle.isEmpty {
+            return domain.filter { $0.image != imageOrTitle && $0.title != imageOrTitle }
+        } else {
+            return domain
+        }
     }
     
     private func loadWhatsNewModel() -> WhatsNewModel? {
