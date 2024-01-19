@@ -1,5 +1,5 @@
 //
-//  DownloadToDeviceBarView.swift
+//  CourseVideoDownloadBarView.swift
 //  Course
 //
 //  Created by Eugene Yatsenko on 15.12.2023.
@@ -34,7 +34,6 @@ struct CourseVideoDownloadBarView: View {
     // MARK: - Body
 
     var body: some View {
-        let isAllDownloaded = viewModel.isAllDownloaded
         VStack(spacing: 0) {
             Divider()
             HStack(spacing: 0) {
@@ -43,7 +42,7 @@ struct CourseVideoDownloadBarView: View {
                 toggle
             }
             .padding(.vertical, 10)
-            if viewModel.isOn, !isAllDownloaded {
+            if viewModel.isOn, !viewModel.allVideosDownloaded {
                 ProgressView(value: viewModel.progress, total: 1)
                     .accessibilityIdentifier("progress_line_view")
             }
@@ -65,7 +64,7 @@ struct CourseVideoDownloadBarView: View {
 
     private var image: some View {
         VStack {
-            if viewModel.isOn, !viewModel.isAllDownloaded {
+            if viewModel.isOn, !viewModel.allVideosDownloaded {
                 ProgressView()
                     .accessibilityIdentifier("progress_view")
             } else {

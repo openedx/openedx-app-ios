@@ -10,7 +10,7 @@ import Core
 
 public enum LessonType: Equatable {
     case web(url: String, injections: [WebviewInjection])
-    case youtube(viewYouTubeUrl: String, blockID: String)
+    case youtube(youtubeVideoUrl: String, blockID: String)
     case video(videoUrl: String, blockID: String)
     case unknown(String)
     case discussion(String, String, String)
@@ -24,10 +24,10 @@ public enum LessonType: Equatable {
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
-            if block.youTubeUrl != nil, let encodedVideo = block.video(quality: .auto)?.url {
+            if block.youtubeVideoUrl != nil, let encodedVideo = block.video(quality: .auto)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
-            } else if let viewYouTubeUrl = block.youTubeUrl {
-                return .youtube(viewYouTubeUrl: viewYouTubeUrl, blockID: block.id)
+            } else if let youtubeVideoUrl = block.youtubeVideoUrl {
+                return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockID: block.id)
             } else if let encodedVideo = block.video(quality: .auto)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else {

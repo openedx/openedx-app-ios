@@ -42,8 +42,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let enrollmentEnd: Date?
 
     var courseDownloads: [DownloadData] = []
-    private(set) var waitingDownload: [CourseBlock]?
-    var allowedDownloadLargeDownload: Bool = false
+    private(set) var waitingDownloads: [CourseBlock]?
 
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
@@ -82,7 +81,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
         super.init(manager: manager)
 
-        self.observers()
+        addObservers()
     }
     
     @MainActor
@@ -168,7 +167,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     func continueDownload() {
-        guard let blocks = waitingDownload else {
+        guard let blocks = waitingDownloads else {
             return
         }
         do {
@@ -268,9 +267,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
     @MainActor
     func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
-        waitingDownload = nil
-        if storage.allowedDownloadLargeFile == false, manager.isLarge(blocks: blocks) {
-            waitingDownload = blocks
+        waitingDownloads = nil
+        if storage.allowedDownloadLargeFile == false, manager.isLargeVideosSize(blocks: blocks) {
+            waitingDownloads = blocks
             showAllowLargeDownload = true
             return true
         }
@@ -289,8 +288,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func setDownloadsStates() async {
         guard let course = courseStructure else { return }
-        self.courseDownloads = await manager.getDownloadsForCourse(course.id)
-        self.downloadableVerticals = []
+        courseDownloads = await manager.getDownloadsForCourse(course.id)
+        downloadableVerticals = []
         var sequentialsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
@@ -353,7 +352,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         return nil
     }
 
-    private func observers() {
+    private func addObservers() {
         manager.eventPublisher()
             .sink { [weak self] state in
                 guard let self else { return }

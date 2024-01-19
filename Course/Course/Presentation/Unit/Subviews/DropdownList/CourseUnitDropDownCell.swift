@@ -82,7 +82,7 @@ struct CourseUnitDropDownCell_Previews: PreviewProvider {
                     displayName: "Lesson 1",
                     studentUrl: "",
                     fallback: nil,
-                    youTube: nil,
+                    youtube: nil,
                     desktopMP4: nil,
                     mobileHigh: nil,
                     mobileLow: nil,

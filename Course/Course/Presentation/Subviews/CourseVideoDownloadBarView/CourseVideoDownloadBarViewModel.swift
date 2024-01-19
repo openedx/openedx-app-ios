@@ -52,7 +52,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         courseViewModel.downloadableVerticals
     }
 
-    var isAllDownloaded: Bool {
+    var allVideosDownloaded: Bool {
         let totalFinishedCount = downloadableVerticals.filter { $0.state == .finished }.count
         return totalFinishedCount == downloadableVerticals.count
     }
@@ -74,7 +74,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     var totalSize: String? {
         let quality = courseViewModel.userSettings?.downloadQuality ?? .auto
-        let mb = courseStructure.blocksTotalSizeInMb(
+        let mb = courseStructure.totalVideosSizeInMb(
             quality: quality
         )
 

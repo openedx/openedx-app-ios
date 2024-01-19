@@ -171,7 +171,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     courseDetail.youTube = youTube
                 }
 
-                if let fallback = block.userViewData?.encodedVideo?.fallback {
+                if block.userViewData?.encodedVideo?.fallback != nil {
                     let fallback = CDCourseBlockVideo(context: self.context)
                     fallback.url = block.userViewData?.encodedVideo?.fallback?.url
                     fallback.fileSize = Int32(block.userViewData?.encodedVideo?.fallback?.fileSize ?? 0)
@@ -179,7 +179,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     courseDetail.fallback = fallback
                 }
 
-                if let desktopMP4 = block.userViewData?.encodedVideo?.desktopMP4 {
+                if block.userViewData?.encodedVideo?.desktopMP4 != nil {
                     let desktopMP4 = CDCourseBlockVideo(context: self.context)
                     desktopMP4.url = block.userViewData?.encodedVideo?.desktopMP4?.url
                     desktopMP4.fileSize = Int32(block.userViewData?.encodedVideo?.desktopMP4?.fileSize ?? 0)
@@ -187,7 +187,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     courseDetail.desktopMP4 = desktopMP4
                 }
 
-                if let mobileHigh = block.userViewData?.encodedVideo?.mobileHigh {
+                if block.userViewData?.encodedVideo?.mobileHigh != nil {
                     let mobileHigh = CDCourseBlockVideo(context: self.context)
                     mobileHigh.url = block.userViewData?.encodedVideo?.mobileHigh?.url
                     mobileHigh.fileSize = Int32(block.userViewData?.encodedVideo?.mobileHigh?.fileSize ?? 0)
@@ -195,7 +195,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     courseDetail.mobileHigh = mobileHigh
                 }
 
-                if let mobileLow = block.userViewData?.encodedVideo?.mobileLow {
+                if block.userViewData?.encodedVideo?.mobileLow != nil {
                     let mobileLow = CDCourseBlockVideo(context: self.context)
                     mobileLow.url = block.userViewData?.encodedVideo?.mobileLow?.url
                     mobileLow.fileSize = Int32(block.userViewData?.encodedVideo?.mobileLow?.fileSize ?? 0)
@@ -203,7 +203,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     courseDetail.mobileLow = mobileLow
                 }
 
-                if let hls = block.userViewData?.encodedVideo?.hls {
+                if block.userViewData?.encodedVideo?.hls != nil {
                     let hls = CDCourseBlockVideo(context: self.context)
                     hls.url = block.userViewData?.encodedVideo?.hls?.url
                     hls.fileSize = Int32(block.userViewData?.encodedVideo?.hls?.fileSize ?? 0)

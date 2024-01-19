@@ -138,7 +138,7 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func downloadData(by blockId: String, completion: @escaping (DownloadData?) -> Void) {
+    public func downloadData(for blockId: String, completion: @escaping (DownloadData?) -> Void) {
         context.performAndWait {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", blockId)
@@ -162,7 +162,7 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func downloadData(by blockId: String) -> DownloadData? {
+    public func downloadData(for blockId: String) -> DownloadData? {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", blockId)
         guard let downloadData = try? context.fetch(request).first else { return nil }

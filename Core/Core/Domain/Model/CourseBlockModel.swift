@@ -47,7 +47,7 @@ public struct CourseStructure: Equatable {
         self.certificate = certificate
     }
 
-    public func blocksTotalSizeInBytes(quality: DownloadQuality) -> Int {
+    public func totalVideosSizeInBytes(quality: DownloadQuality) -> Int {
         childs.flatMap {
             $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
         }
@@ -56,12 +56,12 @@ public struct CourseStructure: Equatable {
         .reduce(.zero) { $0 + $1 }
     }
 
-    public func blocksTotalSizeInMb(quality: DownloadQuality) -> Double {
-        Double(blocksTotalSizeInBytes(quality: quality)) / 1024.0 / 1024.0
+    public func totalVideosSizeInMb(quality: DownloadQuality) -> Double {
+        Double(totalVideosSizeInBytes(quality: quality)) / 1024.0 / 1024.0
     }
 
-    public func blocksTotalSizeInGb(quality: DownloadQuality) -> Double {
-        Double(blocksTotalSizeInBytes(quality: quality)) / 1024.0 / 1024.0 / 1024.0
+    public func totalVideosSizeInGb(quality: DownloadQuality) -> Double {
+        Double(totalVideosSizeInBytes(quality: quality)) / 1024.0 / 1024.0 / 1024.0
     }
 
 }
@@ -185,7 +185,7 @@ public struct CourseBlock: Hashable {
     public let mobileHigh: CourseBlockVideo?
     public let mobileLow: CourseBlockVideo?
     public let hls: CourseBlockVideo?
-    public let youTube: CourseBlockVideo?
+    public let youtube: CourseBlockVideo?
 
     public var isDownloadable: Bool {
         [hls, desktopMP4, mobileHigh, mobileLow, fallback]
@@ -213,8 +213,8 @@ public struct CourseBlock: Hashable {
         }
     }
 
-    public var youTubeUrl: String? {
-        youTube?.url
+    public var youtubeVideoUrl: String? {
+        youtube?.url
     }
 
     public init(
@@ -229,7 +229,7 @@ public struct CourseBlock: Hashable {
         studentUrl: String,
         subtitles: [SubtitleUrl]? = nil,
         fallback: CourseBlockVideo?,
-        youTube: CourseBlockVideo?,
+        youtube: CourseBlockVideo?,
         desktopMP4: CourseBlockVideo?,
         mobileHigh: CourseBlockVideo?,
         mobileLow: CourseBlockVideo?,
@@ -246,7 +246,7 @@ public struct CourseBlock: Hashable {
         self.studentUrl = studentUrl
         self.subtitles = subtitles
         self.fallback = fallback
-        self.youTube = youTube
+        self.youtube = youtube
         self.desktopMP4 = desktopMP4
         self.mobileHigh = mobileHigh
         self.mobileLow = mobileLow

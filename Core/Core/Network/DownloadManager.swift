@@ -95,7 +95,7 @@ public protocol DownloadManagerProtocol {
     func fileUrl(for blockId: String) async -> URL?
 
     func addToDownloadQueue(blocks: [CourseBlock]) throws
-    func isLarge(blocks: [CourseBlock]) -> Bool
+    func isLargeVideosSize(blocks: [CourseBlock]) -> Bool
     func resumeDownloading() throws
     func fileUrl(for blockId: String) -> URL?
 }
@@ -158,7 +158,7 @@ public class DownloadManager: DownloadManagerProtocol {
 
     // MARK: - Intents
 
-    public func isLarge(blocks: [CourseBlock]) -> Bool {
+    public func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
         (blocks.reduce(0) {
             $0 + Double($1.video(quality: downloadQuality)?.fileSize ?? 0)
         } / 1024 / 1024 / 1024) > 1
@@ -271,7 +271,7 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func fileUrl(for blockId: String) async -> URL? {
         await withCheckedContinuation { continuation in
-            persistence.downloadData(by: blockId) { [weak self] data in
+            persistence.downloadData(for: blockId) { [weak self] data in
                 guard let data = data, data.url.count > 0, data.state == .finished else {
                     continuation.resume(returning: nil)
                     return
@@ -284,7 +284,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     public func fileUrl(for blockId: String) -> URL? {
-        guard let data = persistence.downloadData(by: blockId),
+        guard let data = persistence.downloadData(for: blockId),
               data.url.count > 0,
               data.state == .finished else { return nil }
         let path = videosFolderUrl
@@ -341,7 +341,7 @@ public class DownloadManager: DownloadManagerProtocol {
             self.currentDownload?.state = .inProgress
             self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
             let completed = Double(fractionCompleted * 100)
-            print(">>>>> Downloading", download.url, completed, "%")
+            debugLog(">>>>> Downloading", download.url, completed, "%")
         }
 
         downloadRequest?.responseData { [weak self] data in
@@ -360,7 +360,7 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    func waitingAll() {
+    private func waitingAll() {
         persistence.getAllDownloadData {  [weak self] downloadDatas in
             guard let self else { return }
             Task {
@@ -577,7 +577,7 @@ public class DownloadManagerMock: DownloadManagerProtocol {
         return nil
     }
 
-    public func isLarge(blocks: [CourseBlock]) -> Bool {
+    public func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
         false
     }
 
