@@ -66,12 +66,12 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func addToDownloadQueue(blocks: [CourseBlock], quality: DownloadQuality) {
+    public func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) {
         for block in blocks {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", block.id)
             guard (try? context.fetch(request).first) == nil else { continue }
-            guard let video = block.video(quality: quality),
+            guard let video = block.video(downloadQuality: downloadQuality),
                   let url = video.url,
                   let fileExtension = URL(string: url)?.pathExtension
             else { continue }

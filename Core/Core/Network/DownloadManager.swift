@@ -160,7 +160,7 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
         (blocks.reduce(0) {
-            $0 + Double($1.video(quality: downloadQuality)?.fileSize ?? 0)
+            $0 + Double($1.video(downloadQuality: downloadQuality)?.fileSize ?? 0)
         } / 1024 / 1024 / 1024) > 1
     }
 
@@ -184,7 +184,7 @@ public class DownloadManager: DownloadManagerProtocol {
         if userCanDownload() {
             persistence.addToDownloadQueue(
                 blocks: blocks,
-                quality: downloadQuality
+                downloadQuality: downloadQuality
             )
             currentDownloadEventPublisher.send(.added)
             guard !isDownloadingInProgress else { return }

@@ -21,6 +21,10 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
+    var isInternetAvaliable: Bool {
+        courseViewModel.isInternetAvaliable
+    }
+
     var title: String {
         if isOn {
             if remainingVideos == 0 {
@@ -73,9 +77,9 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     var totalSize: String? {
-        let quality = courseViewModel.userSettings?.downloadQuality ?? .auto
+        let downloadQuality = courseViewModel.userSettings?.downloadQuality ?? .auto
         let mb = courseStructure.totalVideosSizeInMb(
-            quality: quality
+            downloadQuality: downloadQuality
         )
 
         if mb == 0 { return nil }
@@ -93,7 +97,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 .filter { $0.state != .finished }
                 .flatMap { $0.downloadableBlocks }
             ),
-            quality: quality
+            downloadQuality: downloadQuality
         )
 
         return String(format: "%.2f", size)
@@ -194,7 +198,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         return val / 100.0
     }
 
-    private func blockToMB(data: Set<CourseBlock>, quality: DownloadQuality) -> Double {
-        data.reduce(0) { $0 + Double($1.video(quality: quality)?.fileSize ?? 0) } / 1024.0 / 1024.0
+    private func blockToMB(data: Set<CourseBlock>, downloadQuality: DownloadQuality) -> Double {
+        data.reduce(0) { $0 + Double($1.video(downloadQuality: downloadQuality)?.fileSize ?? 0) } / 1024.0 / 1024.0
     }
 }

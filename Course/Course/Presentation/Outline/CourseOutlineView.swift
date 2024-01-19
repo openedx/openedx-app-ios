@@ -22,6 +22,7 @@ public struct CourseOutlineView: View {
 
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
+    @State private var showingNoWifiMessage: Bool = false
 
     public init(
         viewModel: CourseContainerViewModel,
@@ -49,7 +50,7 @@ public struct CourseOutlineView: View {
                                 courseBanner(proxy: proxy)
                             }
 
-                            bars
+                            downloadQualityBars
 
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
@@ -187,17 +188,12 @@ public struct CourseOutlineView: View {
     }
 
     @ViewBuilder
-    private var bars: some View {
+    private var downloadQualityBars: some View {
         if isVideo,
            let courseVideosStructure = viewModel.courseVideosStructure,
            viewModel.hasVideoForDowbloads() {
             VStack(spacing: 0) {
-                if viewModel.isInternetAvaliable {
-                    CourseVideoDownloadBarView(
-                        courseStructure: courseVideosStructure,
-                        courseViewModel: viewModel
-                    ) { showingDownloads = true }
-                } else {
+                if showingNoWifiMessage {
                     VStack(spacing: 0) {
                         let text = CourseLocalization.Download.noWifiMessage
                         Text(text)
@@ -210,8 +206,18 @@ public struct CourseOutlineView: View {
                             .accessibilityIdentifier("no_wifi_text")
                         Spacer()
                         Divider()
+                    }.onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            showingNoWifiMessage = false
+                        }
                     }
-
+                } else {
+                    CourseVideoDownloadBarView(
+                        courseStructure: courseVideosStructure,
+                        courseViewModel: viewModel,
+                        onNotInternetAvaliable: { showingNoWifiMessage = true },
+                        onTap: { showingDownloads = true }
+                    )
                 }
                 viewModel.userSettings.map {
                     VideoDownloadQualityBarView(

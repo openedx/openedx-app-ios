@@ -15,7 +15,7 @@ public enum LessonType: Equatable {
     case unknown(String)
     case discussion(String, String, String)
     
-    static func from(_ block: CourseBlock) -> Self {
+    static func from(_ block: CourseBlock, streamingQuality: StreamingQuality) -> Self {
         switch block.type {
         case .course, .chapter, .vertical, .sequential, .unknown:
             return .unknown(block.studentUrl)
@@ -24,11 +24,11 @@ public enum LessonType: Equatable {
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
-            if block.youtubeVideoUrl != nil, let encodedVideo = block.video(quality: .auto)?.url {
+            if block.youtubeVideoUrl != nil, let encodedVideo = block.video(streamingQuality: streamingQuality)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else if let youtubeVideoUrl = block.youtubeVideoUrl {
                 return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockID: block.id)
-            } else if let encodedVideo = block.video(quality: .auto)?.url {
+            } else if let encodedVideo = block.video(streamingQuality: streamingQuality)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else {
                 return .unknown(block.studentUrl)
@@ -78,12 +78,17 @@ public class CourseUnitViewModel: ObservableObject {
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
+    let storage: CourseStorage
     private let manager: DownloadManagerProtocol
     private var subtitlesDownloaded: Bool = false
     let chapters: [CourseChapter]
     let chapterIndex: Int
     let sequentialIndex: Int
-    
+
+    var streamingQuality: StreamingQuality  {
+        storage.userSettings?.streamingQuality ?? .auto
+    }
+
     func loadIndex() {
         index = selectLesson()
     }
@@ -100,6 +105,7 @@ public class CourseUnitViewModel: ObservableObject {
         router: CourseRouter,
         analytics: CourseAnalytics,
         connectivity: ConnectivityProtocol,
+        storage: CourseStorage,
         manager: DownloadManagerProtocol
     ) {
         self.lessonID = lessonID
@@ -115,6 +121,7 @@ public class CourseUnitViewModel: ObservableObject {
         self.analytics = analytics
         self.connectivity = connectivity
         self.manager = manager
+        self.storage = storage
     }
     
     private func selectLesson() -> Int {

@@ -92,7 +92,7 @@ public struct CourseUnitView: View {
                                             }
                                         }
                                     }
-                                        switch LessonType.from(block) {
+                                    switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
                                             // MARK: YouTube
                                         case let .youtube(url, blockID):
                                             if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
@@ -527,7 +527,8 @@ struct CourseUnitView_Previews: PreviewProvider {
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(), 
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         ), sectionName: "")
     }

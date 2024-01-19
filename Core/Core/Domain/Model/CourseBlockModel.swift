@@ -47,21 +47,21 @@ public struct CourseStructure: Equatable {
         self.certificate = certificate
     }
 
-    public func totalVideosSizeInBytes(quality: DownloadQuality) -> Int {
+    public func totalVideosSizeInBytes(downloadQuality: DownloadQuality) -> Int {
         childs.flatMap {
             $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
         }
         .filter { $0.isDownloadable }
-        .compactMap { $0.video(quality: quality)?.fileSize }
+        .compactMap { $0.video(downloadQuality: downloadQuality)?.fileSize }
         .reduce(.zero) { $0 + $1 }
     }
 
-    public func totalVideosSizeInMb(quality: DownloadQuality) -> Double {
-        Double(totalVideosSizeInBytes(quality: quality)) / 1024.0 / 1024.0
+    public func totalVideosSizeInMb(downloadQuality: DownloadQuality) -> Double {
+        Double(totalVideosSizeInBytes(downloadQuality: downloadQuality)) / 1024.0 / 1024.0
     }
 
-    public func totalVideosSizeInGb(quality: DownloadQuality) -> Double {
-        Double(totalVideosSizeInBytes(quality: quality)) / 1024.0 / 1024.0 / 1024.0
+    public func totalVideosSizeInGb(downloadQuality: DownloadQuality) -> Double {
+        Double(totalVideosSizeInBytes(downloadQuality: downloadQuality)) / 1024.0 / 1024.0 / 1024.0
     }
 
 }
@@ -192,8 +192,8 @@ public struct CourseBlock: Hashable {
             .contains { $0?.isDownloadable == true }
     }
 
-    public func video(quality: DownloadQuality) -> CourseBlockVideo? {
-        switch quality {
+    public func video(downloadQuality: DownloadQuality) -> CourseBlockVideo? {
+        switch downloadQuality {
         case .auto:
             [mobileLow, mobileHigh, desktopMP4, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
@@ -208,6 +208,32 @@ public struct CourseBlock: Hashable {
                 .flatMap { $0 }
         case .low_360:
             [mobileLow, mobileHigh, desktopMP4, fallback, hls]
+                .first(where: { $0?.isDownloadable == true })?
+                .flatMap { $0 }
+        }
+    }
+
+    public func video(streamingQuality: StreamingQuality) -> CourseBlockVideo? {
+        switch streamingQuality {
+        case .auto:
+            [mobileLow, mobileHigh, desktopMP4, fallback, hls]
+                .compactMap { $0 }
+                .sorted(by: { ($0?.streamPriority ?? 0) < ($1?.streamPriority ?? 0) })
+                .first?
+                .flatMap { $0 }
+        case .high:
+            [desktopMP4, mobileHigh, mobileLow, fallback, hls]
+                .compactMap { $0 }
+                .first?
+                .flatMap { $0 }
+        case .medium:
+            [mobileHigh, mobileLow, desktopMP4, fallback, hls]
+                .compactMap { $0 }
+                .first?
+                .flatMap { $0 }
+        case .low:
+            [mobileLow, mobileHigh, desktopMP4, fallback, hls]
+                .compactMap { $0 }
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
         }

@@ -16,10 +16,12 @@ struct CourseVideoDownloadBarView: View {
 
     @StateObject var viewModel: CourseVideoDownloadBarViewModel
     private var onTap: (() -> Void)?
+    private var onNotInternetAvaliable: (() -> Void)?
 
     init(
         courseStructure: CourseStructure,
         courseViewModel: CourseContainerViewModel,
+        onNotInternetAvaliable: (() -> Void)?,
         onTap: (() -> Void)? = nil
     ) {
         self._viewModel = .init(
@@ -28,6 +30,7 @@ struct CourseVideoDownloadBarView: View {
                 courseViewModel: courseViewModel
             )
         )
+        self.onNotInternetAvaliable = onNotInternetAvaliable
         self.onTap = onTap
     }
 
@@ -44,6 +47,7 @@ struct CourseVideoDownloadBarView: View {
             .padding(.vertical, 10)
             if viewModel.isOn, !viewModel.allVideosDownloaded {
                 ProgressView(value: viewModel.progress, total: 1)
+                    .tint(Theme.Colors.accentColor)
                     .accessibilityIdentifier("progress_line_view")
             }
             Divider()
@@ -130,6 +134,10 @@ struct CourseVideoDownloadBarView: View {
             .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
             .padding(.trailing, 15)
             .onTapGesture {
+                if !viewModel.isInternetAvaliable {
+                    onNotInternetAvaliable?()
+                    return
+                }
                 Task { await viewModel.onToggle()  }
             }
             .accessibilityIdentifier("download_toggle")

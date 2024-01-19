@@ -82,6 +82,7 @@ struct DownloadsView: View {
                             .accessibilityIdentifier("file_size_text")
                         if downloadData.state != .finished {
                             ProgressView(value: downloadData.progress, total: 1.0)
+                                .tint(Theme.Colors.accentColor)
                                 .accessibilityIdentifier("progress_line_view")
                         }
                     }
