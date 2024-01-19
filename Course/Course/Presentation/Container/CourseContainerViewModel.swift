@@ -171,7 +171,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         guard let blocks = waitingDownload else {
             return
         }
-        storage.allowedDownloadLargeFile = true
         do {
             try manager.addToDownloadQueue(blocks: blocks)
         } catch let error {

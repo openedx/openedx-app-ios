@@ -107,6 +107,7 @@ public enum DownloadManagerEvent {
     case paused(DownloadData)
     case canceled(DownloadData)
     case finished(DownloadData)
+    case courseCanceled(String)
     case deletedFile(String)
     case clearedAll
 }
@@ -236,7 +237,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 NSLog("Error deleting file: \(error.localizedDescription)")
             }
         }
-        currentDownloadEventPublisher.send(.clearedAll)
+        currentDownloadEventPublisher.send(.courseCanceled(courseId))
         downloadRequest?.cancel()
     }
 
