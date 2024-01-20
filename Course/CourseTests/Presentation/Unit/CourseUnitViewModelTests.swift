@@ -25,7 +25,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                     displayName: "Lesson 1",
                     studentUrl: "",
                     fallback: nil,
-                    youTube: nil,
+                    youtube: nil,
                     desktopMP4: nil,
                     mobileHigh: nil,
                     mobileLow: nil,
@@ -41,7 +41,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                     displayName: "Lesson 2",
                     studentUrl: "2",
                     fallback: nil,
-                    youTube: nil,
+                    youtube: nil,
                     desktopMP4: nil,
                     mobileHigh: nil,
                     mobileLow: nil,
@@ -57,7 +57,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                     displayName: "Lesson 3",
                     studentUrl: "3",
                     fallback: nil,
-                    youTube: nil,
+                    youtube: nil,
                     desktopMP4: nil,
                     mobileHigh: nil,
                     mobileLow: nil,
@@ -73,7 +73,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                     displayName: "4",
                     studentUrl: "4",
                     fallback: nil,
-                    youTube: nil,
+                    youtube: nil,
                     desktopMP4: nil,
                     mobileHigh: nil,
                     mobileLow: nil,
@@ -146,6 +146,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -173,7 +174,8 @@ final class CourseUnitViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             analytics: analytics,
-            connectivity: connectivity,
+            connectivity: connectivity, 
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -207,6 +209,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -242,6 +245,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -276,6 +280,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         

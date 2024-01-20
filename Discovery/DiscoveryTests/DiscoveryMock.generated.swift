@@ -1893,6 +1893,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		}
     }
 
+    open func cancelDownloading(courseId: String) {
+        addInvocation(.m_cancelDownloading__courseId_courseId(Parameter<String>.value(`courseId`)))
+		let perform = methodPerformValue(.m_cancelDownloading__courseId_courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
+		perform?(`courseId`)
+    }
+
     open func deleteFile(blocks: [CourseBlock]) {
         addInvocation(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
 		let perform = methodPerformValue(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
@@ -1931,16 +1937,16 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		}
     }
 
-    open func isLarge(blocks: [CourseBlock]) -> Bool {
-        addInvocation(.m_isLarge__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_isLarge__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
+    open func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
+        addInvocation(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
+		let perform = methodPerformValue(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
 		perform?(`blocks`)
 		var __value: Bool
 		do {
-		    __value = try methodReturnValue(.m_isLarge__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted()
+		    __value = try methodReturnValue(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted()
 		} catch {
-			onFatalFailure("Stub return value not specified for isLarge(blocks: [CourseBlock]). Use given")
-			Failure("Stub return value not specified for isLarge(blocks: [CourseBlock]). Use given")
+			onFatalFailure("Stub return value not specified for isLargeVideosSize(blocks: [CourseBlock]). Use given")
+			Failure("Stub return value not specified for isLargeVideosSize(blocks: [CourseBlock]). Use given")
 		}
 		return __value
     }
@@ -1966,11 +1972,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_getDownloadsForCourse__courseId(Parameter<String>)
         case m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>, Parameter<[CourseBlock]>)
         case m_cancelDownloading__downloadData_downloadData(Parameter<DownloadData>)
+        case m_cancelDownloading__courseId_courseId(Parameter<String>)
         case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
         case m_deleteAllFiles
         case m_fileUrl__for_blockId(Parameter<String>)
         case m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>)
-        case m_isLarge__blocks_blocks(Parameter<[CourseBlock]>)
+        case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
         case m_resumeDownloading
         case p_currentDownload_get
 
@@ -1998,6 +2005,11 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDownloaddata, rhs: rhsDownloaddata, with: matcher), lhsDownloaddata, rhsDownloaddata, "downloadData"))
 				return Matcher.ComparisonResult(results)
 
+            case (.m_cancelDownloading__courseId_courseId(let lhsCourseid), .m_cancelDownloading__courseId_courseId(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_deleteFile__blocks_blocks(let lhsBlocks), .m_deleteFile__blocks_blocks(let rhsBlocks)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
@@ -2015,7 +2027,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_isLarge__blocks_blocks(let lhsBlocks), .m_isLarge__blocks_blocks(let rhsBlocks)):
+            case (.m_isLargeVideosSize__blocks_blocks(let lhsBlocks), .m_isLargeVideosSize__blocks_blocks(let rhsBlocks)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
 				return Matcher.ComparisonResult(results)
@@ -2034,11 +2046,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case let .m_getDownloadsForCourse__courseId(p0): return p0.intValue
             case let .m_cancelDownloading__courseId_courseIdblocks_blocks(p0, p1): return p0.intValue + p1.intValue
             case let .m_cancelDownloading__downloadData_downloadData(p0): return p0.intValue
+            case let .m_cancelDownloading__courseId_courseId(p0): return p0.intValue
             case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
             case .m_deleteAllFiles: return 0
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
             case let .m_addToDownloadQueue__blocks_blocks(p0): return p0.intValue
-            case let .m_isLarge__blocks_blocks(p0): return p0.intValue
+            case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
             case .m_resumeDownloading: return 0
             case .p_currentDownload_get: return 0
             }
@@ -2051,11 +2064,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_getDownloadsForCourse__courseId: return ".getDownloadsForCourse(_:)"
             case .m_cancelDownloading__courseId_courseIdblocks_blocks: return ".cancelDownloading(courseId:blocks:)"
             case .m_cancelDownloading__downloadData_downloadData: return ".cancelDownloading(downloadData:)"
+            case .m_cancelDownloading__courseId_courseId: return ".cancelDownloading(courseId:)"
             case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
             case .m_deleteAllFiles: return ".deleteAllFiles()"
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
             case .m_addToDownloadQueue__blocks_blocks: return ".addToDownloadQueue(blocks:)"
-            case .m_isLarge__blocks_blocks: return ".isLarge(blocks:)"
+            case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
             case .m_resumeDownloading: return ".resumeDownloading()"
             case .p_currentDownload_get: return "[get] .currentDownload"
             }
@@ -2089,8 +2103,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func fileUrl(for blockId: Parameter<String>, willReturn: URL?...) -> MethodStub {
             return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func isLarge(blocks: Parameter<[CourseBlock]>, willReturn: Bool...) -> MethodStub {
-            return Given(method: .m_isLarge__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func publisher(willProduce: (Stubber<AnyPublisher<Int, Never>>) -> Void) -> MethodStub {
             let willReturn: [AnyPublisher<Int, Never>] = []
@@ -2127,9 +2141,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func isLarge(blocks: Parameter<[CourseBlock]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+        public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
-			let given: Given = { return Given(method: .m_isLarge__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let given: Given = { return Given(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
@@ -2185,11 +2199,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func getDownloadsForCourse(_ courseId: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadsForCourse__courseId(`courseId`))}
         public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`))}
         public static func cancelDownloading(downloadData: Parameter<DownloadData>) -> Verify { return Verify(method: .m_cancelDownloading__downloadData_downloadData(`downloadData`))}
+        public static func cancelDownloading(courseId: Parameter<String>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseId(`courseId`))}
         public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
         public static func deleteAllFiles() -> Verify { return Verify(method: .m_deleteAllFiles)}
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocks(`blocks`))}
-        public static func isLarge(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLarge__blocks_blocks(`blocks`))}
+        public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
         public static var currentDownload: Verify { return Verify(method: .p_currentDownload_get) }
     }
@@ -2216,6 +2231,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelDownloading(downloadData: Parameter<DownloadData>, perform: @escaping (DownloadData) -> Void) -> Perform {
             return Perform(method: .m_cancelDownloading__downloadData_downloadData(`downloadData`), performs: perform)
         }
+        public static func cancelDownloading(courseId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_cancelDownloading__courseId_courseId(`courseId`), performs: perform)
+        }
         public static func deleteFile(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
             return Perform(method: .m_deleteFile__blocks_blocks(`blocks`), performs: perform)
         }
@@ -2228,8 +2246,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
             return Perform(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), performs: perform)
         }
-        public static func isLarge(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
-            return Perform(method: .m_isLarge__blocks_blocks(`blocks`), performs: perform)
+        public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
+            return Perform(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), performs: perform)
         }
         public static func resumeDownloading(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_resumeDownloading, performs: perform)
