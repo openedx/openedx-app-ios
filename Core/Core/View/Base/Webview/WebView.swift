@@ -183,17 +183,10 @@ public struct WebView: UIViewRepresentable {
     
     private var userAgent: String {
         if let info = Bundle.main.infoDictionary,
-           let executable = info[kCFBundleExecutableKey as String],
-           let bundle = info[kCFBundleIdentifierKey as String],
-           let version = info["CFBundleShortVersionString"] {
-            let os = ProcessInfo.processInfo.operatingSystemVersionString
-            var mutableUserAgent = NSMutableString(
-                string: "\(executable)/\(bundle) (\(version); OS \(os))"
-            ) as CFMutableString
-            let transform = NSString(string: "Any-Latin; Latin-ASCII; [:^ASCII:] Remove") as CFString
-            if CFStringTransform(mutableUserAgent, nil, transform, false) == true {
-                return mutableUserAgent as String
-            }
+            let executable = info[kCFBundleExecutableKey as String],
+            let bundle = info[kCFBundleIdentifierKey as String],
+            let version = info["CFBundleShortVersionString"] {
+            return [executable, bundle, version].compactMap { $0 as? String ?? "" }.joined(separator: "/")
         }
         return "Alamofire"
     }
