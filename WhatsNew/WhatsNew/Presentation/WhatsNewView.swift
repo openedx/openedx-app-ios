@@ -41,6 +41,7 @@ public struct WhatsNewView: View {
                                         .scaledToFit()
                                         .frame(minWidth: 250, maxWidth: 300)
                                         .padding(24)
+                                        .accessibilityIdentifier("whatsnew_image")
                                 }.frame(minHeight: 250, maxHeight: 416)
                                 Spacer()
                             }
@@ -82,9 +83,11 @@ public struct WhatsNewView: View {
                             if !viewModel.newItems.isEmpty {
                                 Text(viewModel.newItems[viewModel.index].title)
                                     .font(Theme.Fonts.titleMedium)
+                                    .accessibilityIdentifier("title_text")
                                 Text(viewModel.newItems[viewModel.index].description)
                                     .font(Theme.Fonts.bodyMedium)
                                     .multilineTextAlignment(.center)
+                                    .accessibilityIdentifier("description_text")
                             }
                         }.frame(height: 100)
                             .allowsHitTesting(false)
@@ -96,7 +99,9 @@ public struct WhatsNewView: View {
                                         index -= 1
                                     }
                                 }
-                            }).opacity(viewModel.index != 0 ? 1 : 0)
+                            })
+                            .opacity(viewModel.index != 0 ? 1 : 0)
+                            .accessibilityIdentifier("previous_button")
                             WhatsNewNavigationButton(
                                 type: viewModel.index < viewModel.newItems.count - 1 ? .next : .done,
                                 action: {
@@ -109,6 +114,7 @@ public struct WhatsNewView: View {
                                     }
                                 }
                             )
+                            .accessibilityIdentifier("next_button")
                         }
                     }
                     .padding(.bottom, isHorizontal ? 0 : 52)
@@ -124,6 +130,7 @@ public struct WhatsNewView: View {
                         .allowsHitTesting(false)
                         .padding(.top, isHorizontal ? 0 : 170)
                         .padding(.bottom, 8)
+                        .accessibilityIdentifier("whatsnew_pagecontrol")
                 }
                 
             }.onChange(of: index) { ind in
@@ -140,6 +147,7 @@ public struct WhatsNewView: View {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentColor)
                     })
+                    .accessibilityIdentifier("close_button")
                 })
             }
         }

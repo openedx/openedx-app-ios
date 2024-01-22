@@ -81,9 +81,11 @@ public struct PickerMenu: View {
                     VStack {
                         Text(titleText)
                             .foregroundColor(Theme.Colors.textPrimary)
+                            .accessibilityIdentifier("picker_title_text")
                         TextField(CoreLocalization.Picker.search, text: $search)
                             .padding(.all, 8)
                             .background(Theme.Colors.textInputStroke.cornerRadius(6))
+                            .accessibilityIdentifier("picker_search_textfield")
                         Picker("", selection: $selectedItem) {
                             ForEach(filteredItems, id: \.self) { item in
                                 Text(item.value)
@@ -91,6 +93,7 @@ public struct PickerMenu: View {
                             }
                         }
                         .pickerStyle(.wheel)
+                        .accessibilityIdentifier("picker")
                     }
                     .frame(minWidth: 0, 
                            maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
@@ -122,6 +125,7 @@ public struct PickerMenu: View {
                     }
                     .padding(.bottom, 4)
                     .disabled(acceptButtonDisabled)
+                    .accessibilityIdentifier("picker_accept_button")
 
                 }
                 .avoidKeyboard(dismissKeyboardByTap: true)
