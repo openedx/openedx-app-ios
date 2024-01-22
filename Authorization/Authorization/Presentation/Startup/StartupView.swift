@@ -89,7 +89,7 @@ public struct StartupView: View {
                                 .font(Theme.Fonts.bodyLarge)
                         }
                         .padding(.top, isHorizontal ? 0 : 5)
-                        .accessibilityIdentifier("explorer_courses_button")
+                        .accessibilityIdentifier("explore_courses_button")
                         Spacer()
                     }
                     .padding(.horizontal, isHorizontal ? 10 : 24)

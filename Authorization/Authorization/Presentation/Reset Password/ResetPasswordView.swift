@@ -140,7 +140,7 @@ public struct ResetPasswordView: View {
                         .shadowCardStyle(bgColor: Theme.Colors.accentColor,
                                          textColor: Theme.Colors.white)
                         .padding(.top, 80)
-                        .accessibilityIdentifier("showalert_text")
+                        .accessibilityIdentifier("show_alert_text")
                     Spacer()
                     
                 }
@@ -157,7 +157,7 @@ public struct ResetPasswordView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
-                        .accessibilityIdentifier("showerror_snackbar")
+                        .accessibilityIdentifier("show_error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
