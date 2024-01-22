@@ -181,6 +181,23 @@ public struct WebView: UIViewRepresentable {
         Coordinator(self)
     }
     
+    private var userAgent: String {
+        if let info = Bundle.main.infoDictionary,
+           let executable = info[kCFBundleExecutableKey as String],
+           let bundle = info[kCFBundleIdentifierKey as String],
+           let version = info["CFBundleShortVersionString"] {
+            let os = ProcessInfo.processInfo.operatingSystemVersionString
+            var mutableUserAgent = NSMutableString(
+                string: "\(executable)/\(bundle) (\(version); OS \(os))"
+            ) as CFMutableString
+            let transform = NSString(string: "Any-Latin; Latin-ASCII; [:^ASCII:] Remove") as CFString
+            if CFStringTransform(mutableUserAgent, nil, transform, false) == true {
+                return mutableUserAgent as String
+            }
+        }
+        return "Alamofire"
+    }
+
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
         let webViewConfig = WKWebViewConfiguration()
         
@@ -218,6 +235,8 @@ public struct WebView: UIViewRepresentable {
                 webView.configuration.userContentController.add(context.coordinator, name: message.name)
             }
         }
+        
+        webView.customUserAgent = userAgent
         
         return webView
     }
