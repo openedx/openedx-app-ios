@@ -59,9 +59,8 @@ public class WhatsNewViewModel: ObservableObject {
         if let imageOrTitle = config.uiComponents.whatsNewImageOrTitlePageSkip,
             !imageOrTitle.isEmpty {
             return domain.filter { $0.image != imageOrTitle && $0.title != imageOrTitle }
-        } else {
-            return domain
         }
+        return domain
     }
     
     private func loadWhatsNewModel() -> WhatsNewModel? {
