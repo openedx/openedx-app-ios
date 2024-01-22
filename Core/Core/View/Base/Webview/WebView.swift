@@ -182,13 +182,14 @@ public struct WebView: UIViewRepresentable {
     }
     
     private var userAgent: String {
-        if let info = Bundle.main.infoDictionary,
-            let executable = info[kCFBundleExecutableKey as String],
-            let bundle = info[kCFBundleIdentifierKey as String],
-            let version = info["CFBundleShortVersionString"] {
-            return [executable, bundle, version].compactMap { $0 as? String ?? "" }.joined(separator: "/")
-        }
-        return "Alamofire"
+        let info = Bundle.main.infoDictionary
+        return [
+            info?[kCFBundleExecutableKey as String],
+            info?[kCFBundleIdentifierKey as String],
+            info?["CFBundleShortVersionString"]
+        ]
+            .compactMap { $0 as? String ?? "" }
+            .joined(separator: "/")
     }
 
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
