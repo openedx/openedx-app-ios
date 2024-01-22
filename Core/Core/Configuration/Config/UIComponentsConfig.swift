@@ -21,9 +21,9 @@ public class UIComponentsConfig: NSObject {
     public let whatsNewImageOrTitlePageSkip: String?
 
     init(dictionary: [String: Any]) {
-        courseNestedListEnabled = dictionary[Keys.courseNestedListEnabled.rawValue] as? Bool ?? false
-        courseBannerEnabled = dictionary[Keys.courseBannerEnabled.rawValue] as? Bool ?? false
-        courseTopTabBarEnabled = dictionary[Keys.courseTopTabBarEnabled.rawValue] as? Bool ?? false
+        courseNestedListEnabled = dictionary[Keys.courseNestedListEnabled] as? Bool ?? false
+        courseBannerEnabled = dictionary[Keys.courseBannerEnabled] as? Bool ?? false
+        courseTopTabBarEnabled = dictionary[Keys.courseTopTabBarEnabled] as? Bool ?? false
         whatsNewImageOrTitlePageSkip = dictionary[Keys.whatsNewImageOrTitlePageSkip] as? String
         super.init()
     }
