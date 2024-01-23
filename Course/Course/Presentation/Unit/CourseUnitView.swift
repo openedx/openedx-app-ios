@@ -158,8 +158,10 @@ public struct CourseUnitView: View {
     }
 
     // swiftlint:disable function_body_length
+    @ViewBuilder
     private func content(reader: GeometryProxy) -> some View {
-        LazyHStack(alignment: .top, spacing: 0) {
+        let alignment = UnitAlignment(horizontalAlignment: .top, verticalAlignment: .leading)
+        UnitStack(isVerticalNavigation: !viewModel.courseUnitProgressEnabled, alignment: alignment, spacing: 0) {
             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
             ForEach(data, id: \.offset) { index, block in
                 VStack(spacing: 0) {
