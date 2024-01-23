@@ -13,7 +13,8 @@ import Alamofire
 import SwiftUI
 
 final class CourseUnitViewModelTests: XCTestCase {
-    
+    var config = Config()
+
     static let blocks = [
         CourseBlock(blockId: "1",
                     id: "1",
@@ -123,6 +124,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             sequentialIndex: 0,
             verticalIndex: 0,
             interactor: interactor,
+            config: config,
             router: router,
             analytics: analytics,
             connectivity: connectivity,
@@ -151,6 +153,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             sequentialIndex: 0,
             verticalIndex: 0,
             interactor: interactor,
+            config: config,
             router: router,
             analytics: analytics,
             connectivity: connectivity,
@@ -184,6 +187,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             sequentialIndex: 0,
             verticalIndex: 0,
             interactor: interactor,
+            config: config,
             router: router,
             analytics: analytics,
             connectivity: connectivity,
@@ -219,6 +223,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             sequentialIndex: 0,
             verticalIndex: 0,
             interactor: interactor,
+            config: config,
             router: router,
             analytics: analytics,
             connectivity: connectivity,
@@ -253,6 +258,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             sequentialIndex: 0,
             verticalIndex: 0,
             interactor: interactor,
+            config: config,
             router: router,
             analytics: analytics,
             connectivity: connectivity,
