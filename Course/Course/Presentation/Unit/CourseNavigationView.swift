@@ -35,10 +35,7 @@ struct CourseNavigationView: View {
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
-                        UnitButtonView(type: .previous, action: {
-                            playerStateSubject.send(VideoPlayerState.pause)
-                            viewModel.select(move: .previous)
-                        })
+                        prevButton
                     }
                     lastButton
                 } else {
@@ -82,7 +79,7 @@ struct CourseNavigationView: View {
                 playerStateSubject.send(VideoPlayerState.pause)
                 viewModel.select(move: .previous)
             }
-        )
+        )       
     }
     
     private var lastButton: some View {

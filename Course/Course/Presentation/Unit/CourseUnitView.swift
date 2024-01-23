@@ -27,7 +27,7 @@ public struct CourseUnitView: View {
             }
         }
     }
-    @State var offsetView: CGFloat = 0
+    @State var offsetView: CGPoint = .zero
     @State var showDiscussion: Bool = false
     @Environment(\.isPresented) private var isPresented
     @Environment(\.isHorizontal) private var isHorizontal
@@ -159,7 +159,7 @@ public struct CourseUnitView: View {
 
     // swiftlint:disable function_body_length
     private func content(reader: GeometryProxy) -> some View {
-        LazyVStack(alignment: .leading, spacing: 0) {
+        LazyHStack(alignment: .top, spacing: 0) {
             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
             ForEach(data, id: \.offset) { index, block in
                 VStack(spacing: 0) {
@@ -282,32 +282,32 @@ public struct CourseUnitView: View {
                 .id(index)
             }
         }
-        .offset(y: offsetView)
+        .offset(x: offsetView.x, y: offsetView.y)
         .clipped()
         .onAppear {
-            offsetView = -(reader.size.height * CGFloat(viewModel.index))
+            offsetView = viewOffset(for: viewModel.index, with: reader.size)
         }
         .onAppear {
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification,
                                                    object: nil, queue: .main) { _ in
-                offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                offsetView = viewOffset(for: viewModel.index, with: reader.size)
             }
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification,
                                                    object: nil, queue: .main) { _ in
-                offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                offsetView = viewOffset(for: viewModel.index, with: reader.size)
             }
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification,
                                                    object: nil, queue: .main) { _ in
-                offsetView = -(reader.size.height * CGFloat(viewModel.index))
+                offsetView = viewOffset(for: viewModel.index, with: reader.size)
             }
         }
         .onChange(of: UIDevice.current.orientation, perform: { _ in
-            offsetView = -(reader.size.height * CGFloat(viewModel.index))
+            offsetView = viewOffset(for: viewModel.index, with: reader.size)
         })
         .onChange(of: viewModel.verticalIndex, perform: { index in
             DispatchQueue.main.async {
                 withAnimation(Animation.easeInOut(duration: 0.2)) {
-                    offsetView = -(reader.size.height * CGFloat(index))
+                    offsetView = viewOffset(for: index, with: reader.size)
                 }
             }
 
@@ -315,7 +315,7 @@ public struct CourseUnitView: View {
         .onChange(of: viewModel.index, perform: { index in
             DispatchQueue.main.async {
                 withAnimation(Animation.easeInOut(duration: 0.2)) {
-                    offsetView = -(reader.size.height * CGFloat(index))
+                    offsetView = viewOffset(for: index, with: reader.size)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         showDiscussion = viewModel.selectedLesson().type == .discussion
                     }
@@ -336,6 +336,12 @@ public struct CourseUnitView: View {
     }
     // swiftlint:enable function_body_length
 
+    private func viewOffset(for index: Int, with size: CGSize) -> CGPoint {
+        let x: CGFloat = viewModel.courseUnitProgressEnabled ? -(size.width * CGFloat(index)) : 0
+        let y: CGFloat = viewModel.courseUnitProgressEnabled ? 0 : -(size.height * CGFloat(index))
+        return CGPoint(x: x, y: y)
+    }
+    
     private func dropdown(block: CourseBlock) -> some View {
         HStack {
             if block.type == .video {
