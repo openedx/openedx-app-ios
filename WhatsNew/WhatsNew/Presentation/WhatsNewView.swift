@@ -153,7 +153,7 @@ struct WhatsNewView_Previews: PreviewProvider {
     static var previews: some View {
         WhatsNewView(
             router: WhatsNewRouterMock(),
-            viewModel: WhatsNewViewModel(storage: WhatsNewStorageMock(), config: ConfigMock())
+            viewModel: WhatsNewViewModel(storage: WhatsNewStorageMock())
         )
         .loadFonts()
     }

@@ -12,16 +12,14 @@ import Core
 final class WhatsNewTests: XCTestCase {
 
     func testGetVersion() throws {
-        let config = ConfigMock()
-        let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock(), config: config)
+        let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock())
         let version = viewModel.getVersion()
         XCTAssertNotNil(version)
         XCTAssertTrue(version == "1.0")
     }
     
     func testshouldShowWhatsNew() throws {
-        let config = ConfigMock()
-        let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock(), config: config)
+        let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock())
         let version = viewModel.getVersion()
         XCTAssertNotNil(version)
         XCTAssertTrue(viewModel.shouldShowWhatsNew())

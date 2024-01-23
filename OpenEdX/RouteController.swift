@@ -65,7 +65,7 @@ class RouteController: UIViewController {
         var storage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
 
-        let viewModel = WhatsNewViewModel(storage: storage, config: config)
+        let viewModel = WhatsNewViewModel(storage: storage)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
 
         if shouldShowWhatsNew && config.features.whatNewEnabled {

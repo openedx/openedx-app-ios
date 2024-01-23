@@ -63,7 +63,7 @@ public class Router: AuthorizationRouter,
         var storage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
 
-        let viewModel = WhatsNewViewModel(storage: storage, sourceScreen: sourceScreen, config: config)
+        let viewModel = WhatsNewViewModel(storage: storage, sourceScreen: sourceScreen)
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
