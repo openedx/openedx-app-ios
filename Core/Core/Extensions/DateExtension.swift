@@ -9,12 +9,18 @@ import Foundation
 
 public extension Date {
     init(iso8601: String) {
-        let date: Date
+        let formats = ["yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"]
+        var date: Date
         var dateFormatter: DateFormatter?
         dateFormatter = DateFormatter()
-        dateFormatter?.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         dateFormatter?.locale = Locale(identifier: "en_US_POSIX")
-        date = dateFormatter?.date(from: iso8601) ?? Date()
+        
+        date = formats.compactMap { format in
+            dateFormatter?.dateFormat = format
+            return dateFormatter?.date(from: iso8601)
+        }
+        .first ?? Date()
+        
         defer {
             dateFormatter = nil
         }
@@ -104,7 +110,7 @@ public extension Date {
         case .iso8601:
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         case .shortWeekdayMonthDayYear:
-            dateFormatter.dateFormat = "EEE, MMM d, yyyy"
+            applyDateFormatterForShortWeekdayMonthDayYear(dateFormatter: dateFormatter)
         }
         
         let date = dateFormatter.string(from: self)
@@ -134,7 +140,56 @@ public extension Date {
         case .iso8601:
             return date
         case .shortWeekdayMonthDayYear:
-            return date
+            return getShortWeekdayMonthDayYear(dateFormatterString: date)
         }
+    }
+    
+    private func applyDateFormatterForShortWeekdayMonthDayYear(dateFormatter: DateFormatter) {
+        if isCurrentYear() {
+            let days = Calendar.current.dateComponents([.day], from: self, to: Date())
+            if let day = days.day, (-6 ... -2).contains(day) {
+                dateFormatter.dateFormat = "EEEE"
+            } else {
+                dateFormatter.dateFormat = "MMMM d"
+            }
+        } else {
+            dateFormatter.dateFormat = "MMMM d, yyyy"
+        }
+    }
+    
+    private func getShortWeekdayMonthDayYear(dateFormatterString: String) -> String {
+        let days = Calendar.current.dateComponents([.day], from: self, to: Date())
+        
+        if let day = days.day {
+            guard isCurrentYear() else {
+                // It's past year or future year
+                return dateFormatterString
+            }
+            
+            switch day {
+            case -6...(-2):
+                return dateFormatterString
+            case 2...6:
+                return self.timeAgoDisplay()
+            case -1:
+                return CoreLocalization.CourseDates.tomorrow
+            case 1:
+                return CoreLocalization.CourseDates.yesterday
+            default:
+                if day > 6 || day < -6 {
+                    return dateFormatterString
+                } else {
+                    // It means, date is in hours past due or upcoming
+                    return self.timeAgoDisplay()
+                }
+            }
+        } else {
+            return dateFormatterString
+        }
+    }
+    
+    func isCurrentYear() -> Bool {
+        let years = Calendar.current.dateComponents([.year], from: self, to: Date())
+        return years.year == 0
     }
 }

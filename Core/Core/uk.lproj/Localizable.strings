@@ -94,6 +94,9 @@
 "COURSE_DATES.DUE_NEXT" = "Due next";
 "COURSE_DATES.UNRELEASED" = "Unreleased";
 "COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
+"COURSE_DATES.TOMORROW" = "Tomorrow";
+"COURSE_DATES.YESTERDAY" = "Yesterday";
+"COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
 
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 "AUTHORIZATION_FAILED" = "Authorization failed.";

@@ -43,12 +43,18 @@ public class CourseDatesViewModel: ObservableObject {
         self.courseID = courseID
     }
         
-    var sortedDates: [Date] {
-        courseDates?.sortedDateToCourseDateBlockDict.keys.sorted() ?? []
-    }
-    
-    func blocks(for date: Date) -> [CourseDateBlock] {
-        courseDates?.sortedDateToCourseDateBlockDict[date] ?? []
+    var sortedStatuses: [CompletionStatus] {
+        let desiredSequence = [CompletionStatus.completed,
+                               CompletionStatus.pastDue,
+                               CompletionStatus.today,
+                               CompletionStatus.thisWeek,
+                               CompletionStatus.nextWeek,
+                               CompletionStatus.upcoming]
+        
+        // Filter out keys that don't exist in the dictionary
+        let filteredKeys = desiredSequence.filter {
+            courseDates?.sortedStatusToDateToCourseDateBlockDict.keys.contains($0) ?? false }
+        return filteredKeys
     }
     
     @MainActor

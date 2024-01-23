@@ -14,41 +14,46 @@ public struct CourseDates {
     let hasEnded, learnerIsFullAccess: Bool
     let userTimezone: String?
     
-    var sortedDateToCourseDateBlockDict: [Date: [CourseDateBlock]] {
-        var dateToCourseDateBlockDict: [Date: [CourseDateBlock]] = [:]
-        var hasToday = false
-        let today = Date.today
-        
-        let calendar = Calendar.current
-        let todayComponents = calendar.dateComponents([.year, .month, .day], from: .today)
+    var sortedStatusToDateToCourseDateBlockDict: [CompletionStatus: [Date: [CourseDateBlock]]] {
+        var statusToDateToCourseDateBlockDict: [CompletionStatus: [Date: [CourseDateBlock]]] = [:]
+        var statusToCourseDateBlockDict: [CompletionStatus: [CourseDateBlock]] = [:]
         
         for block in courseDateBlocks {
             let date = block.date
-            let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-            
-            if dateComponents == todayComponents {
-                hasToday = true
+            switch true {
+            case block.complete ?? false:
+                statusToCourseDateBlockDict[.completed, default: []].append(block)
+            case date.isInPast:
+                statusToCourseDateBlockDict[.pastDue, default: []].append(block)
+            case date.isToday:
+                if date < Date() {
+                    statusToCourseDateBlockDict[.pastDue, default: []].append(block)
+                } else {
+                    statusToCourseDateBlockDict[.today, default: []].append(block)
+                }
+            case date.isThisWeek:
+                statusToCourseDateBlockDict[.thisWeek, default: []].append(block)
+            case date.isNextWeek:
+                statusToCourseDateBlockDict[.nextWeek, default: []].append(block)
+            case date.isUpcoming:
+                statusToCourseDateBlockDict[.upcoming, default: []].append(block)
+            default:
+                statusToCourseDateBlockDict[.upcoming, default: []].append(block)
             }
+        }
+        
+        for status in statusToCourseDateBlockDict.keys {
+            let courseDateBlocks = statusToCourseDateBlockDict[status]
+            var dateToCourseDateBlockDict: [Date: [CourseDateBlock]] = [:]
             
-            dateToCourseDateBlockDict[date, default: []].append(block)
+            for block in courseDateBlocks ?? [] {
+                let date = block.date
+                dateToCourseDateBlockDict[date, default: []].append(block)
+            }
+            statusToDateToCourseDateBlockDict[status] = dateToCourseDateBlockDict
         }
         
-        if !hasToday {
-            let todayBlock = CourseDateBlock(
-                assignmentType: nil,
-                complete: nil,
-                date: today,
-                dateType: "",
-                description: "",
-                learnerHasAccess: true,
-                link: "", linkText: nil,
-                title: CoreLocalization.CourseDates.today,
-                extraInfo: nil,
-                firstComponentBlockID: "uniqueIDForToday")
-            dateToCourseDateBlockDict[today] = [todayBlock]
-        }
-        
-        return dateToCourseDateBlockDict
+        return statusToDateToCourseDateBlockDict
     }
 }
 
@@ -79,6 +84,29 @@ extension Date {
     
     var isInFuture: Bool {
         return Date.compare(self, to: .today) == .orderedDescending
+    }
+    
+    var isThisWeek: Bool {
+        // Items due within the next 7 days (7*24 hours from now)
+        let calendar = Calendar.current
+        let nextDay = calendar.date(byAdding: .day, value: 1, to: .today) ?? .distantPast
+        let nextSeventhDay = calendar.date(byAdding: .day, value: 8, to: .today) ?? .distantPast
+        return (nextDay...nextSeventhDay).contains(self)
+    }
+    
+    var isNextWeek: Bool {
+        // Items due within the next 14 days (14*24 hours from now)
+        let calendar = Calendar.current
+        let nextEighthDay = calendar.date(byAdding: .day, value: 8, to: .today) ?? .distantPast
+        let nextFourteenthDay = calendar.date(byAdding: .day, value: 15, to: .today) ?? .distantPast
+        return (nextEighthDay...nextFourteenthDay).contains(self)
+    }
+    
+    var isUpcoming: Bool {
+        // Items due after the next 14 days (14*24 hours from now)
+        let calendar = Calendar.current
+        let nextFourteenthDay = calendar.date(byAdding: .day, value: 14, to: .today) ?? .distantPast
+        return Date.compare(self, to: nextFourteenthDay) == .orderedDescending
     }
 }
 
@@ -114,6 +142,18 @@ public struct CourseDateBlock: Identifiable {
     
     var isInFuture: Bool {
         return date.isInFuture
+    }
+    
+    var isThisWeek: Bool {
+        return date.isThisWeek
+    }
+    
+    var isNextWeek: Bool {
+        return date.isNextWeek
+    }
+    
+    var isUpcoming: Bool {
+        return date.isUpcoming
     }
     
     var isAssignment: Bool {
@@ -167,6 +207,27 @@ public struct CourseDateBlock: Identifiable {
         
         return BlockStatus.status(of: dateType)
     }
+    
+    var blockImage: ImageAsset? {
+        if !learnerHasAccess {
+            return CoreAssets.locked
+        }
+        
+        if isAssignment {
+            return CoreAssets.assignment
+        }
+        
+        switch blockStatus {
+        case .courseStartDate, .courseEndDate, .verifiedUpgradeDeadline, .verificationDeadlineDate:
+            return CoreAssets.school
+        case .courseExpiredDate:
+            return CoreAssets.locked
+        case .certificateAvailbleDate:
+            return CoreAssets.certificateIcon
+        default:
+            return nil
+        }
+    }
 }
 
 public struct DatesBannerInfo {
@@ -201,4 +262,13 @@ public enum BlockStatus {
         default: return .event
         }
     }
+}
+
+public enum CompletionStatus: String {
+    case completed = "Completed"
+    case pastDue = "Past Due"
+    case today = "Today"
+    case thisWeek = "This Week"
+    case nextWeek = "Next Week"
+    case upcoming = "Upcoming"
 }
