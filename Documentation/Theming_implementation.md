@@ -97,6 +97,17 @@ font:
         bold: 'FontName-Bold'
 ```
 
+### What's New
+The `whitelabel.yaml` configuration may contain the path to a What's New json file, and an existing json file in the project will be replaced with this json file. 
+
+For this function, the configuration must contain the following parameters:
+```yaml
+whatsnew:
+      whatsnew_import_file_path: 'path/to/importing/whats_new.json' # path to what's new json file what should be imported to project
+      project_whatsnew_file_path: 'path/to/json/file/in/project/WhatsNew.json' # path to existing json-file in project
+```
+
+
 ### Log level
 You can set the log level to 'DEBUG' by adding the `-v` parameter to the script running.
 The default log level is 'WARN'
