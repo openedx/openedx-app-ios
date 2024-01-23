@@ -281,35 +281,36 @@ public struct CourseUnitView: View {
                     width: isHorizontal ? reader.size.width - 16 : reader.size.width,
                     height: reader.size.height
                 )
+                .padding(.trailing, isHorizontal ? reader.safeAreaInsets.trailing + 16 : 0)
                 .id(index)
             }
         }
         .offset(x: offsetView.x, y: offsetView.y)
         .clipped()
         .onAppear {
-            offsetView = viewOffset(for: viewModel.index, with: reader.size)
+            offsetView = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
         }
         .onAppear {
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification,
                                                    object: nil, queue: .main) { _ in
-                offsetView = viewOffset(for: viewModel.index, with: reader.size)
+                offsetView = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
             }
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification,
                                                    object: nil, queue: .main) { _ in
-                offsetView = viewOffset(for: viewModel.index, with: reader.size)
+                offsetView = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
             }
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification,
                                                    object: nil, queue: .main) { _ in
-                offsetView = viewOffset(for: viewModel.index, with: reader.size)
+                offsetView = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
             }
         }
         .onChange(of: UIDevice.current.orientation, perform: { _ in
-            offsetView = viewOffset(for: viewModel.index, with: reader.size)
+            offsetView = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
         })
         .onChange(of: viewModel.verticalIndex, perform: { index in
             DispatchQueue.main.async {
                 withAnimation(Animation.easeInOut(duration: 0.2)) {
-                    offsetView = viewOffset(for: index, with: reader.size)
+                    offsetView = viewOffset(for: index, with: reader.size, insets: reader.safeAreaInsets)
                 }
             }
 
@@ -317,7 +318,7 @@ public struct CourseUnitView: View {
         .onChange(of: viewModel.index, perform: { index in
             DispatchQueue.main.async {
                 withAnimation(Animation.easeInOut(duration: 0.2)) {
-                    offsetView = viewOffset(for: index, with: reader.size)
+                    offsetView = viewOffset(for: index, with: reader.size, insets: reader.safeAreaInsets)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         showDiscussion = viewModel.selectedLesson().type == .discussion
                     }
@@ -338,8 +339,8 @@ public struct CourseUnitView: View {
     }
     // swiftlint:enable function_body_length
 
-    private func viewOffset(for index: Int, with size: CGSize) -> CGPoint {
-        let x: CGFloat = viewModel.courseUnitProgressEnabled ? -(size.width * CGFloat(index)) : 0
+    private func viewOffset(for index: Int, with size: CGSize, insets: EdgeInsets) -> CGPoint {
+        let x: CGFloat = viewModel.courseUnitProgressEnabled ? -(size.width * CGFloat(index) + (isHorizontal ? insets.trailing * CGFloat(index) : 0) ) : 0
         let y: CGFloat = viewModel.courseUnitProgressEnabled ? 0 : -(size.height * CGFloat(index))
         return CGPoint(x: x, y: y)
     }
