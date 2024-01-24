@@ -123,4 +123,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = RouteController()
     }
     
+    // Push Notifications
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let pushManager = Container.shared.resolve(PushNotificationsManager.self)!
+        pushManager.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
+    }
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        let pushManager = Container.shared.resolve(PushNotificationsManager.self)!
+        pushManager.didFailToRegisterForRemoteNotificationsWithError(error: error)
+    }
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let pushManager = Container.shared.resolve(PushNotificationsManager.self)!
+        pushManager.didReceiveRemoteNotification(userInfo: userInfo)
+        completionHandler(.newData)
+    }
 }

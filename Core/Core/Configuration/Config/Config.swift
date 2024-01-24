@@ -25,6 +25,7 @@ public protocol ConfigProtocol {
     var theme: ThemeConfig { get }
     var uiComponents: UIComponentsConfig { get }
     var discovery: DiscoveryConfig { get }
+    var braze: BrazeConfig { get }
 }
 
 public enum TokenType: String {

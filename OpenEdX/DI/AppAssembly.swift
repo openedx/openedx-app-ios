@@ -157,6 +157,12 @@ class AppAssembly: Assembly {
         container.register(Validator.self) { _ in
             Validator()
         }.inObjectScope(.container)
+        
+        container.register(PushNotificationsManager.self) { r in
+            PushNotificationsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
     }
 }
 // swiftlint:enable function_body_length
