@@ -1156,11 +1156,32 @@ open class DiscoveryAnalyticsMock: DiscoveryAnalytics, Mock {
 		perform?(`courseID`, `courseName`)
     }
 
+    open func viewCourseClicked(courseId: String, courseName: String) {
+        addInvocation(.m_viewCourseClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
+		let perform = methodPerformValue(.m_viewCourseClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
+		perform?(`courseId`, `courseName`)
+    }
+
+    open func courseEnrollClicked(courseId: String, courseName: String) {
+        addInvocation(.m_courseEnrollClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
+		let perform = methodPerformValue(.m_courseEnrollClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
+		perform?(`courseId`, `courseName`)
+    }
+
+    open func courseEnrollSuccess(courseId: String, courseName: String) {
+        addInvocation(.m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
+		let perform = methodPerformValue(.m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
+		perform?(`courseId`, `courseName`)
+    }
+
 
     fileprivate enum MethodType {
         case m_discoverySearchBarClicked
         case m_discoveryCoursesSearch__label_labelcoursesCount_coursesCount(Parameter<String>, Parameter<Int>)
         case m_discoveryCourseClicked__courseID_courseIDcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_viewCourseClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_courseEnrollClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1177,6 +1198,24 @@ open class DiscoveryAnalyticsMock: DiscoveryAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_viewCourseClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_viewCourseClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_courseEnrollClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -1186,6 +1225,9 @@ open class DiscoveryAnalyticsMock: DiscoveryAnalytics, Mock {
             case .m_discoverySearchBarClicked: return 0
             case let .m_discoveryCoursesSearch__label_labelcoursesCount_coursesCount(p0, p1): return p0.intValue + p1.intValue
             case let .m_discoveryCourseClicked__courseID_courseIDcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case let .m_viewCourseClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case let .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case let .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             }
         }
         func assertionName() -> String {
@@ -1193,6 +1235,9 @@ open class DiscoveryAnalyticsMock: DiscoveryAnalytics, Mock {
             case .m_discoverySearchBarClicked: return ".discoverySearchBarClicked()"
             case .m_discoveryCoursesSearch__label_labelcoursesCount_coursesCount: return ".discoveryCoursesSearch(label:coursesCount:)"
             case .m_discoveryCourseClicked__courseID_courseIDcourseName_courseName: return ".discoveryCourseClicked(courseID:courseName:)"
+            case .m_viewCourseClicked__courseId_courseIdcourseName_courseName: return ".viewCourseClicked(courseId:courseName:)"
+            case .m_courseEnrollClicked__courseId_courseIdcourseName_courseName: return ".courseEnrollClicked(courseId:courseName:)"
+            case .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName: return ".courseEnrollSuccess(courseId:courseName:)"
             }
         }
     }
@@ -1214,6 +1259,9 @@ open class DiscoveryAnalyticsMock: DiscoveryAnalytics, Mock {
         public static func discoverySearchBarClicked() -> Verify { return Verify(method: .m_discoverySearchBarClicked)}
         public static func discoveryCoursesSearch(label: Parameter<String>, coursesCount: Parameter<Int>) -> Verify { return Verify(method: .m_discoveryCoursesSearch__label_labelcoursesCount_coursesCount(`label`, `coursesCount`))}
         public static func discoveryCourseClicked(courseID: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_discoveryCourseClicked__courseID_courseIDcourseName_courseName(`courseID`, `courseName`))}
+        public static func viewCourseClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_viewCourseClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
+        public static func courseEnrollClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
+        public static func courseEnrollSuccess(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
     }
 
     public struct Perform {
@@ -1228,6 +1276,15 @@ open class DiscoveryAnalyticsMock: DiscoveryAnalytics, Mock {
         }
         public static func discoveryCourseClicked(courseID: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .m_discoveryCourseClicked__courseID_courseIDcourseName_courseName(`courseID`, `courseName`), performs: perform)
+        }
+        public static func viewCourseClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_viewCourseClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
+        }
+        public static func courseEnrollClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_courseEnrollClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
+        }
+        public static func courseEnrollSuccess(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_courseEnrollSuccess__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
         }
     }
 
@@ -1396,11 +1453,62 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
 		return __value
     }
 
+    open func getLoadedCourseDetails(courseID: String) throws -> CourseDetails {
+        addInvocation(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseDetails
+		do {
+		    __value = try methodReturnValue(.m_getLoadedCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getLoadedCourseDetails(courseID: String). Use given")
+			Failure("Stub return value not specified for getLoadedCourseDetails(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+    open func getCourseDetails(courseID: String) throws -> CourseDetails {
+        addInvocation(.m_getCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseDetails
+		do {
+		    __value = try methodReturnValue(.m_getCourseDetails__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getCourseDetails(courseID: String). Use given")
+			Failure("Stub return value not specified for getCourseDetails(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+    open func enrollToCourse(courseID: String) throws -> Bool {
+        addInvocation(.m_enrollToCourse__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_enrollToCourse__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_enrollToCourse__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for enrollToCourse(courseID: String). Use given")
+			Failure("Stub return value not specified for enrollToCourse(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_discovery__page_page(Parameter<Int>)
         case m_discoveryOffline
         case m_search__page_pagesearchTerm_searchTerm(Parameter<Int>, Parameter<String>)
+        case m_getLoadedCourseDetails__courseID_courseID(Parameter<String>)
+        case m_getCourseDetails__courseID_courseID(Parameter<String>)
+        case m_enrollToCourse__courseID_courseID(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1416,6 +1524,21 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPage, rhs: rhsPage, with: matcher), lhsPage, rhsPage, "page"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSearchterm, rhs: rhsSearchterm, with: matcher), lhsSearchterm, rhsSearchterm, "searchTerm"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_getLoadedCourseDetails__courseID_courseID(let lhsCourseid), .m_getLoadedCourseDetails__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getCourseDetails__courseID_courseID(let lhsCourseid), .m_getCourseDetails__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_enrollToCourse__courseID_courseID(let lhsCourseid), .m_enrollToCourse__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -1425,6 +1548,9 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
             case let .m_discovery__page_page(p0): return p0.intValue
             case .m_discoveryOffline: return 0
             case let .m_search__page_pagesearchTerm_searchTerm(p0, p1): return p0.intValue + p1.intValue
+            case let .m_getLoadedCourseDetails__courseID_courseID(p0): return p0.intValue
+            case let .m_getCourseDetails__courseID_courseID(p0): return p0.intValue
+            case let .m_enrollToCourse__courseID_courseID(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -1432,6 +1558,9 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
             case .m_discovery__page_page: return ".discovery(page:)"
             case .m_discoveryOffline: return ".discoveryOffline()"
             case .m_search__page_pagesearchTerm_searchTerm: return ".search(page:searchTerm:)"
+            case .m_getLoadedCourseDetails__courseID_courseID: return ".getLoadedCourseDetails(courseID:)"
+            case .m_getCourseDetails__courseID_courseID: return ".getCourseDetails(courseID:)"
+            case .m_enrollToCourse__courseID_courseID: return ".enrollToCourse(courseID:)"
             }
         }
     }
@@ -1453,6 +1582,15 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
         }
         public static func search(page: Parameter<Int>, searchTerm: Parameter<String>, willReturn: [CourseItem]...) -> MethodStub {
             return Given(method: .m_search__page_pagesearchTerm_searchTerm(`page`, `searchTerm`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, willReturn: CourseDetails...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCourseDetails(courseID: Parameter<String>, willReturn: CourseDetails...) -> MethodStub {
+            return Given(method: .m_getCourseDetails__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func enrollToCourse(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_enrollToCourse__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func discovery(page: Parameter<Int>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_discovery__page_page(`page`), products: willThrow.map({ StubProduct.throw($0) }))
@@ -1484,6 +1622,36 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, willProduce: (StubberThrows<CourseDetails>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (CourseDetails).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getCourseDetails(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getCourseDetails(courseID: Parameter<String>, willProduce: (StubberThrows<CourseDetails>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getCourseDetails__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (CourseDetails).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func enrollToCourse(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_enrollToCourse__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func enrollToCourse(courseID: Parameter<String>, willProduce: (StubberThrows<Bool>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_enrollToCourse__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -1492,6 +1660,9 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
         public static func discovery(page: Parameter<Int>) -> Verify { return Verify(method: .m_discovery__page_page(`page`))}
         public static func discoveryOffline() -> Verify { return Verify(method: .m_discoveryOffline)}
         public static func search(page: Parameter<Int>, searchTerm: Parameter<String>) -> Verify { return Verify(method: .m_search__page_pagesearchTerm_searchTerm(`page`, `searchTerm`))}
+        public static func getLoadedCourseDetails(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`))}
+        public static func getCourseDetails(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseDetails__courseID_courseID(`courseID`))}
+        public static func enrollToCourse(courseID: Parameter<String>) -> Verify { return Verify(method: .m_enrollToCourse__courseID_courseID(`courseID`))}
     }
 
     public struct Perform {
@@ -1506,6 +1677,15 @@ open class DiscoveryInteractorProtocolMock: DiscoveryInteractorProtocol, Mock {
         }
         public static func search(page: Parameter<Int>, searchTerm: Parameter<String>, perform: @escaping (Int, String) -> Void) -> Perform {
             return Perform(method: .m_search__page_pagesearchTerm_searchTerm(`page`, `searchTerm`), performs: perform)
+        }
+        public static func getLoadedCourseDetails(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getLoadedCourseDetails__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func getCourseDetails(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseDetails__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func enrollToCourse(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_enrollToCourse__courseID_courseID(`courseID`), performs: perform)
         }
     }
 

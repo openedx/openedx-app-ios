@@ -80,7 +80,6 @@ public class Router: AuthorizationRouter,
                 argument: sourceScreen
             )!
             
-        
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
@@ -104,7 +103,12 @@ public class Router: AuthorizationRouter,
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let view = SignInView(viewModel: Container.shared.resolve(SignInViewModel.self)!)
+            let view = SignInView(
+                viewModel: Container.shared.resolve(
+                    SignInViewModel.self,
+                    argument: LogistrationSourceScreen.default
+                )!
+            )
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: false)
         }
@@ -206,6 +210,26 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showWebDiscoveryDetails(
+        pathID: String,
+        discoveryType: DiscoveryWebviewType,
+        sourceScreen: LogistrationSourceScreen
+    ) {
+        let view = DiscoveryWebview(
+            viewModel: Container.shared.resolve(
+                DiscoveryWebviewViewModel.self,
+                argument: sourceScreen)!,
+            router: Container.shared.resolve(DiscoveryRouter.self)!,
+            discoveryType: discoveryType,
+            pathID: pathID
+        )
+        
+        DispatchQueue.main.async { [weak self] in
+            let controller = UIHostingController(rootView: view)
+            self?.navigationController.pushViewController(controller, animated: true)
+        }
+    }
+    
     public func showDiscoverySearch(searchQuery: String? = nil) {
         let viewModel = Container.shared.resolve(SearchViewModel<RunLoop>.self)!
         let view = SearchView(viewModel: viewModel, searchQuery: searchQuery)
@@ -215,14 +239,29 @@ public class Router: AuthorizationRouter,
     }
     
     public func showDiscoveryScreen(searchQuery: String? = nil, sourceScreen: LogistrationSourceScreen) {
-        let view = DiscoveryView(
-            viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
-            router: Container.shared.resolve(DiscoveryRouter.self)!,
-            searchQuery: searchQuery,
-            sourceScreen: sourceScreen
-        )
-        let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        let config = Container.shared.resolve(ConfigProtocol.self)
+        if config?.discovery.type == .native {
+            let view = DiscoveryView(
+                viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
+                router: Container.shared.resolve(DiscoveryRouter.self)!,
+                searchQuery: searchQuery,
+                sourceScreen: sourceScreen
+            )
+            let controller = UIHostingController(rootView: view)
+            navigationController.pushViewController(controller, animated: true)
+        } else if config?.discovery.type == .webview {
+            let view = DiscoveryWebview(
+                viewModel: Container.shared.resolve(
+                    DiscoveryWebviewViewModel.self,
+                    argument: sourceScreen
+                )!,
+                router: Container.shared.resolve(DiscoveryRouter.self)!,
+                searchQuery: searchQuery
+            )
+            
+            let controller = UIHostingController(rootView: view)
+            navigationController.pushViewController(controller, animated: true)
+        }
     }
     
     public func showDiscussionsSearch(courseID: String) {

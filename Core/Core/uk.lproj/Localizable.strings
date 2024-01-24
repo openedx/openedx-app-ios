@@ -32,7 +32,7 @@
 "COURSEWARE.IS_FINISHED" = "“ завершена.";
 "COURSEWARE.CONTINUE" = "Продовжити";
 "COURSEWARE.RESUME" = "Resume";
-"COURSEWARE.CONTINUE_WITH" = "Продовжити далі:";
+"COURSEWARE.RESUME_WITH" = "Продовжити далі:";
 "COURSEWARE.NEXT_SECTION" = "Наступний розділ";
 
 "COURSEWARE.NEXT_SECTION_DESCRIPTION_FIRST" = "Щоб перейти до “";
@@ -69,6 +69,7 @@
 
 "WEBVIEW.ALERT.OK" = "Так";
 "WEBVIEW.ALERT.CANCEL" = "Скасувати";
+"WEBVIEW.ALERT.CONTINUE" = "Continue";
 
 
 "REVIEW.VOTE_TITLE" = "Вам подобається Open edX?";

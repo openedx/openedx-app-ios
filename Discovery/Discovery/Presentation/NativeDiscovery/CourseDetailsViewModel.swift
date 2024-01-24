@@ -29,9 +29,9 @@ public class CourseDetailsViewModel: ObservableObject {
         }
     }
     
-    private let interactor: CourseInteractorProtocol
-    private let analytics: CourseAnalytics
-    let router: CourseRouter
+    private let interactor: DiscoveryInteractorProtocol
+    private let analytics: DiscoveryAnalytics
+    let router: DiscoveryRouter
     let config: ConfigProtocol
     let cssInjector: CSSInjector
     let connectivity: ConnectivityProtocol
@@ -42,9 +42,9 @@ public class CourseDetailsViewModel: ObservableObject {
     }
     
     public init(
-        interactor: CourseInteractorProtocol,
-        router: CourseRouter,
-        analytics: CourseAnalytics,
+        interactor: DiscoveryInteractorProtocol,
+        router: DiscoveryRouter,
+        analytics: DiscoveryAnalytics,
         config: ConfigProtocol,
         cssInjector: CSSInjector,
         connectivity: ConnectivityProtocol,

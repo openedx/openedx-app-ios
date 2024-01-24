@@ -22,7 +22,9 @@ public protocol ConfigProtocol {
     var google: GoogleConfig { get }
     var appleSignIn: AppleSignInConfig { get }
     var features: FeaturesConfig { get }
+    var theme: ThemeConfig { get }
     var uiComponents: UIComponentsConfig { get }
+    var discovery: DiscoveryConfig { get }
 }
 
 public enum TokenType: String {

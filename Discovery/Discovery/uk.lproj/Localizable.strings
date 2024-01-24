@@ -26,3 +26,11 @@
 "UPDATE_NEEDED_NOT_NOW" = "Не зараз";
 
 "UPDATE_NEW_AVALIABLE" = "Доступне нове оновлення! Оновіть зараз, щоб отримати найновіші функції та виправлення";
+
+"ALERT.LEAVING_APP_TITLE" = "Leaving the app";
+"ALERT.LEAVING_APP_MESSAGE" = "You are now leaving the app and opening a browser";
+
+"DETAILS.TITLE" = "Деталі курсу";
+"DETAILS.VIEW_COURSE" = "Переглянути курс";
+"DETAILS.ENROLL_NOW" = "Зареєструватися";
+"DETAILS.ENROLLMENT_DATE_IS_OVER" = "Ви не можете зареєструватися на цей курс, оскільки дата реєстрації закінчилася.";

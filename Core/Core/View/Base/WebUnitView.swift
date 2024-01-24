@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 import Theme
 
 public struct WebUnitView: View {
@@ -68,7 +68,7 @@ public struct WebUnitView: View {
                             .frame(width: reader.size.width, height: reader.size.height)
                         }
                     }
-                    .introspect(.scrollView, on: .iOS(.v14, .v15, .v16, .v17), customize: { scrollView in
+                    .introspect(.scrollView, on: .iOS(.v15...), customize: { scrollView in
                         scrollView.isScrollEnabled = false
                     })
                     if viewModel.updatingCookies || isWebViewLoading {

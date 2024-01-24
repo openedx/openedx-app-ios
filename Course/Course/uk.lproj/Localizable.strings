@@ -6,11 +6,6 @@
   
 */
 
-"DETAILS.TITLE" = "Деталі курсу";
-"DETAILS.VIEW_COURSE" = "Переглянути курс";
-"DETAILS.ENROLL_NOW" = "Зареєструватися";
-"DETAILS.ENROLLMENT_DATE_IS_OVER" = "Ви не можете зареєструватися на цей курс, оскільки дата реєстрації закінчилася.";
-
 "OUTLINE.CONGRATULATIONS" = "Вітаємо!";
 "OUTLINE.PASSED_THE_COURSE" = "Ви пройшли курс";
 "OUTLINE.VIEW_CERTIFICATE" = "Переглянути сертифікат";
@@ -27,7 +22,7 @@
 "COURSEWARE.SECTION" = "Секція “";
 "COURSEWARE.IS_FINISHED" = "“ завершена.";
 "COURSEWARE.CONTINUE" = "Продовжити";
-"COURSEWARE.CONTINUE_WITH" = "Продовжити далі:";
+"COURSEWARE.RESUME_WITH" = "Продовжити далі:";
 
 "ERROR.NO_INTERNET" = "Ви не підключені до Інтернету. Перевірте підключення до Інтернету і спробуйте ще.";
 "ERROR.RELOAD" = "Перезавантажити";

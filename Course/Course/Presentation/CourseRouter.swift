@@ -12,16 +12,6 @@ public protocol CourseRouter: BaseRouter {
     
     func presentAppReview()
     
-    func showCourseScreens(
-        courseID: String,
-        isActive: Bool?,
-        courseStart: Date?,
-        courseEnd: Date?,
-        enrollmentStart: Date?,
-        enrollmentEnd: Date?,
-        title: String
-    )
-    
     func showCourseUnit(
         courseName: String,
         blockId: String,
@@ -74,16 +64,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     public override init() {}
     
     public func presentAppReview() {}
-    
-    public func showCourseScreens(
-        courseID: String,
-        isActive: Bool?,
-        courseStart: Date?,
-        courseEnd: Date?,
-        enrollmentStart: Date?,
-        enrollmentEnd: Date?,
-        title: String
-    ) {}
     
     public func showCourseUnit(
         courseName: String,

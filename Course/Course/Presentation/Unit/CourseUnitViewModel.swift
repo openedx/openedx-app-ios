@@ -34,8 +34,10 @@ public enum LessonType: Equatable {
                 return .unknown(block.studentUrl)
             }
             
-        case .problem, .dragAndDropV2, .openassessment:
+        case .problem, .openassessment:
             return .web(url: block.studentUrl, injections: [])
+        case .dragAndDropV2:
+            return .web(url: block.studentUrl, injections: [.dragAndDropCss])
         case .survey:
             return .web(url: block.studentUrl, injections: [.surveyCSS])
         }
@@ -48,7 +50,13 @@ public class CourseUnitViewModel: ObservableObject {
         case next
         case previous
     }
-    
+
+    struct VerticalData {
+        var chapterIndex: Int
+        var sequentialIndex: Int
+        var verticalIndex: Int
+    }
+
     var verticals: [CourseVertical]
     var verticalIndex: Int
     var courseName: String
@@ -183,10 +191,15 @@ public class CourseUnitViewModel: ObservableObject {
         analytics.finishVerticalBackToOutlineClicked(courseId: courseID, courseName: courseName)
     }
 
-    //MARK: Navigation to next vertical
-    typealias VerticalData = (chapterIndex: Int, sequentialIndex: Int, verticalIndex: Int)
+    // MARK: Navigation to next vertical
     var nextData: VerticalData? {
-        nextData(from: (chapterIndex, sequentialIndex, verticalIndex))
+        nextData(
+            from: VerticalData(
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex,
+                verticalIndex: verticalIndex
+            )
+        )
     }
     
     private func chapter(for data: VerticalData) -> CourseChapter? {
@@ -221,15 +234,18 @@ public class CourseUnitViewModel: ObservableObject {
     private func nextData(from data: VerticalData) -> VerticalData? {
         var resultData: VerticalData = data
         if let verticals = verticals(for: data), verticals.count > data.verticalIndex + 1 {
-            resultData = (data.chapterIndex, data.sequentialIndex, data.verticalIndex + 1)
+            resultData.verticalIndex = data.verticalIndex + 1
         } else if let sequentials = sequentials(for: data), sequentials.count > data.sequentialIndex + 1 {
-            resultData = (data.chapterIndex, data.sequentialIndex + 1, 0)
+            resultData.sequentialIndex = data.sequentialIndex + 1
+            resultData.verticalIndex = 0
         } else if chapters.count > data.chapterIndex + 1 {
-            resultData = (data.chapterIndex + 1, 0, 0)
+            resultData.chapterIndex = data.chapterIndex + 1
+            resultData.sequentialIndex = 0
+            resultData.verticalIndex = 0
         } else {
             return nil
         }
-        
+
         if let vertical = vertical(for: resultData), vertical.childs.count > 0 {
             return resultData
         } else {

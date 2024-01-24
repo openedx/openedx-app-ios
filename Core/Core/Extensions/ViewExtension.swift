@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 import SwiftUI
 import Theme
 
@@ -193,13 +193,13 @@ public extension View {
         } else {
             return self.introspect(
                 .navigationView(style: .stack),
-                on: .iOS(.v14, .v15, .v16, .v17),
+                on: .iOS(.v15...),
                 scope: .ancestor) {
                     $0.isNavigationBarHidden = true
                 }
         }
     }
-    
+
     func hideScrollContentBackground() -> some View {
         if #available(iOS 16.0, *) {
             return self.scrollContentBackground(.hidden)
@@ -237,6 +237,21 @@ public extension View {
     
     func onFirstAppear(_ action: @escaping () -> Void) -> some View {
         modifier(FirstAppear(action: action))
+    }
+}
+
+public extension View {
+    /// Applies the given transform if the given condition evaluates to `true`.
+    /// - Parameters:
+    ///   - condition: The condition to evaluate.
+    ///   - transform: The transform to apply to the source `View`.
+    /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
     }
 }
 

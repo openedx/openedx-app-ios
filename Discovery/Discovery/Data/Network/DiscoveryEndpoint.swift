@@ -12,13 +12,19 @@ import Alamofire
 enum DiscoveryEndpoint: EndPointType {
     case getDiscovery(username: String, page: Int)
     case searchCourses(username: String, page: Int, searchTerm: String)
+    case getCourseDetail(courseID: String, username: String)
+    case enrollToCourse(courseID: String)
     
     var path: String {
         switch self {
         case .getDiscovery:
             return "/api/courses/v1/courses/"
         case .searchCourses:
-            return "/mobile_api_extensions/courses/v1/courses/"
+            return "/api/courses/v1/courses/"
+        case .getCourseDetail(courseID: let courseID, _):
+            return "/api/courses/v1/courses/\(courseID)"
+        case .enrollToCourse:
+            return "/api/enrollment/v1/enrollment"
         }
     }
     
@@ -26,6 +32,10 @@ enum DiscoveryEndpoint: EndPointType {
         switch self {
         case .getDiscovery, .searchCourses:
             return .get
+        case .getCourseDetail:
+            return .get
+        case .enrollToCourse:
+            return .post
         }
     }
     
@@ -37,7 +47,6 @@ enum DiscoveryEndpoint: EndPointType {
         switch self {
         case let .getDiscovery(_, page):
             let params: Parameters = [
-//                "username": username,
                 "mobile": true,
                 "permissions": ["enroll", "see_about_page", "see_in_catalog"],
                 "page": page
@@ -48,10 +57,24 @@ enum DiscoveryEndpoint: EndPointType {
             let params: Parameters = [
                 "username": username,
                 "mobile": true,
+                "mobile_search": true,
                 "page": page,
                 "search_term": searchTerm
             ]
             
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            
+        case .enrollToCourse(courseID: let courseID):
+            let params: [String: Any] = [
+                "course_details": [
+                    "course_id": courseID,
+                    "email_opt_in": true
+                ]
+            ]
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+            
+        case let .getCourseDetail(_, username):
+            let params: [String: Encodable] = ["username": username]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         }
     }

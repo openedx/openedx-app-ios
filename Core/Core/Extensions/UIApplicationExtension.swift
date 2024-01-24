@@ -45,10 +45,10 @@ extension UINavigationController {
         navigationBar.shadowImage = UIImage()
         
         let image = CoreAssets.arrowLeft.image
-        navigationBar.backIndicatorImage = image.withTintColor(Theme.Colors.accentColor.uiColor())
+        navigationBar.backIndicatorImage = image.withTintColor(Theme.UIColors.accentColor)
         navigationBar.backItem?.backButtonTitle = " "
-        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.Colors.accentColor.uiColor())
-        navigationBar.titleTextAttributes = [.foregroundColor: Theme.Colors.textPrimary.uiColor()]
+        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.UIColors.accentColor)
+        navigationBar.titleTextAttributes = [.foregroundColor: Theme.UIColors.textPrimary]
     }
 }
 

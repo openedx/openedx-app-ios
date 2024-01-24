@@ -37,11 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initDI()
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
+            Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
             if let configuration = config.firebase.firebaseOptions {
                 FirebaseApp.configure(options: configuration)
                 Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
             }
-
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
                     application,
