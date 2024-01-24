@@ -52,6 +52,10 @@ class ConfigTests: XCTestCase {
         ],
         "APPLE_SIGNIN": [
             "ENABLED": true
+        ],
+        "BRAZE": [
+            "ENABLED": true,
+            "PUSH_NOTIFICATIONS_ENABLED": true
         ]
     ]
     
@@ -114,5 +118,11 @@ class ConfigTests: XCTestCase {
         let config = Config(properties: properties)
 
         XCTAssertTrue(config.appleSignIn.enabled)
+    }
+    
+    func testBrazeConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.braze.pushNotificationsEnabled)
     }
 }
