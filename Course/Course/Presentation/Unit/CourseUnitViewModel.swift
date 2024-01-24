@@ -34,12 +34,14 @@ public enum LessonType: Equatable {
                 return .unknown(block.studentUrl)
             }
             
-        case .problem, .openassessment:
+        case .problem:
             return .web(url: block.studentUrl, injections: [])
         case .dragAndDropV2:
             return .web(url: block.studentUrl, injections: [.dragAndDropCss])
         case .survey:
             return .web(url: block.studentUrl, injections: [.surveyCSS])
+        case .openassessment, .peelInstructionTool:
+            return .web(url: block.studentUrl, injections: [])
         }
     }
 }
