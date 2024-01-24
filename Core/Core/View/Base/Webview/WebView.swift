@@ -10,6 +10,10 @@ import WebKit
 import SwiftUI
 import Theme
 
+public protocol WebViewNavigationDelegate: AnyObject {
+    func webView(_ webView: WKWebView, shouldLoad request: URLRequest, navigationAction: WKNavigationAction) -> Bool
+}
+
 public struct WebView: UIViewRepresentable {
     
     public class ViewModel: ObservableObject {
@@ -28,6 +32,8 @@ public struct WebView: UIViewRepresentable {
     
     @ObservedObject var viewModel: ViewModel
     @Binding public var isLoading: Bool
+    var webViewNavDelegate: WebViewNavigationDelegate?
+    
     var refreshCookies: () async -> Void
     var isAddAjaxCallbackScript: Bool
 
@@ -35,13 +41,15 @@ public struct WebView: UIViewRepresentable {
         viewModel: ViewModel,
         isLoading: Binding<Bool>,
         refreshCookies: @escaping () async -> Void,
-        isAddAjaxCallbackScript: Bool = false
+        isAddAjaxCallbackScript: Bool = false,
+        navigationDelegate: WebViewNavigationDelegate? = nil
     ) {
         self.viewModel = viewModel
         self._isLoading = isLoading
         self.refreshCookies = refreshCookies
         self.isAddAjaxCallbackScript = isAddAjaxCallbackScript
-    }
+        self.webViewNavDelegate = navigationDelegate
+    }    
 
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -59,6 +67,8 @@ public struct WebView: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         
+        context.coordinator.webview = webView
+        
         webView.scrollView.bounces = false
         webView.scrollView.alwaysBounceHorizontal = false
         webView.scrollView.showsHorizontalScrollIndicator = false
@@ -68,8 +78,6 @@ public struct WebView: UIViewRepresentable {
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
         webView.scrollView.alwaysBounceVertical = false
-        webView.scrollView.layer.cornerRadius = 24
-        webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
 
         if isAddAjaxCallbackScript {
@@ -117,6 +125,9 @@ public struct WebView: UIViewRepresentable {
 
         init(_ parent: WebView) {
             self.parent = parent
+            super.init()
+
+            addObserver()
         }
 
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -155,9 +166,20 @@ public struct WebView: UIViewRepresentable {
             _ webView: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction
         ) async -> WKNavigationActionPolicy {
-
+            
             guard let url = navigationAction.request.url else { return .cancel }
-
+            
+            let isWebViewDelegateHandled = await (
+                parent.webViewNavDelegate?.webView(
+                    webView,
+                    shouldLoad: navigationAction.request,
+                    navigationAction: navigationAction) ?? false
+            )
+            
+            if isWebViewDelegateHandled {
+                return .cancel
+            }
+            
             let baseURL = await parent.viewModel.baseURL
             if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
                 if navigationAction.navigationType == .other {
@@ -171,7 +193,7 @@ public struct WebView: UIViewRepresentable {
                 }
                 return .cancel
             }
-
+            
             return .allow
         }
 
@@ -195,6 +217,26 @@ public struct WebView: UIViewRepresentable {
                 }
             }
             return .allow
+        }
+        
+        private func addObserver() {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(reload),
+                name: .webviewReloadNotification,
+                object: nil
+            )
+        }
+
+        fileprivate var webview: WKWebView?
+        
+        @objc private func reload() {
+            parent.isLoading = true
+            webview?.reload()
+        }
+        
+        deinit {
+            NotificationCenter.default.removeObserver(self)
         }
 
         public func userContentController(

@@ -47,10 +47,11 @@ public struct NavigationBar: View {
             HStack {
                 Text(title)
                     .titleSettings(color: titleColor)
+                    .accessibilityIdentifier("title_text")
             }
             .padding(.horizontal, 24)
             if leftButton {
-                VStack {
+            VStack {
                     Button(action: {
                         leftButtonAction?()
                     }, label: {
@@ -59,13 +60,12 @@ public struct NavigationBar: View {
                             .padding(8)
                     })
                     .foregroundColor(Theme.Colors.styledButtonText)
-                }
-                .frame(
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    alignment: .topLeading
-                )
-
+                    .accessibilityIdentifier("back_button")
+                    
+                }.frame(minWidth: 0,
+                        maxWidth: .infinity,
+                        alignment: .topLeading)
+                
             }
             if rightButtonType != nil {
                 VStack {
@@ -82,8 +82,7 @@ public struct NavigationBar: View {
                                 Text(CoreLocalization.done)
                                     .font(Theme.Fonts.labelLarge)
                                     .foregroundColor(Theme.Colors.accentColor)
-                            }
-                            .offset(y: -6)
+                            }.offset(y: -6)
                         case .edit:
                             CoreAssets.edit.swiftUIImage
                                 .resizable()
@@ -98,12 +97,10 @@ public struct NavigationBar: View {
                     .opacity(rightButtonIsActive ? 1 : 0.3)
                     .padding(.trailing, 16)
                     .foregroundColor(Theme.Colors.styledButtonText)
-                }
-                .frame(
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    alignment: .topTrailing
-                )
+                    .accessibilityIdentifier("right_button")
+                }.frame(minWidth: 0,
+                        maxWidth: .infinity,
+                        alignment: .topTrailing)
             }
         }
     }

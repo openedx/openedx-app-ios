@@ -38,6 +38,7 @@ public struct RegistrationTextField: View {
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.top, 18)
+                    .accessibilityIdentifier("\(config.field.name)_text")
             }
             if isTextArea {
                 TextEditor(text: $config.text)
@@ -60,6 +61,7 @@ public struct RegistrationTextField: View {
                             )
                     )
                     .shake($config.shake)
+                    .accessibilityIdentifier("\(config.field.name)_textarea")
             } else {
                 if textContentType == .password {
                     SecureField(placeholder, text: $config.text)
@@ -82,6 +84,7 @@ public struct RegistrationTextField: View {
                                 )
                         )
                         .shake($config.shake)
+                        .accessibilityIdentifier("\(config.field.name)_textfield")
                 } else {
                     TextField(placeholder, text: $config.text)
                         .keyboardType(keyboardType)
@@ -103,6 +106,7 @@ public struct RegistrationTextField: View {
                                 )
                         )
                         .shake($config.shake)
+                        .accessibilityIdentifier("\(config.field.name)_textfield")
                 }
             }
             
@@ -111,6 +115,7 @@ public struct RegistrationTextField: View {
                 .foregroundColor(config.error == ""
                                  ? Theme.Colors.textSecondary
                                  : Color.red)
+                .accessibilityIdentifier("\(config.field.name)_instructions_text")
         }
     }
 }

@@ -9,11 +9,8 @@ import Foundation
 import Core
 
 public protocol CourseRepositoryProtocol {
-    func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
-    func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails
     func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure
-    func enrollToCourse(courseID: String) async throws -> Bool
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
@@ -41,21 +38,6 @@ public class CourseRepository: CourseRepositoryProtocol {
         self.config = config
         self.persistence = persistence
     }
-    
-    public func getCourseDetails(courseID: String) async throws -> CourseDetails {
-        let response = try await api.requestData(
-            CourseEndpoint.getCourseDetail(courseID: courseID, username: coreStorage.user?.username ?? "")
-        ).mapResponse(DataLayer.CourseDetailsResponse.self)
-            .domain(baseURL: config.baseURL.absoluteString)
-        
-        persistence.saveCourseDetails(course: response)
-        
-        return response
-    }
-    
-    public func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
-        return try persistence.loadCourseDetails(courseID: courseID)
-    }
         
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         let course = try await api.requestData(
@@ -69,15 +51,6 @@ public class CourseRepository: CourseRepositoryProtocol {
     public func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         let localData = try persistence.loadCourseStructure(courseID: courseID)
         return parseCourseStructure(course: localData)
-    }
-    
-    public func enrollToCourse(courseID: String) async throws -> Bool {
-        let enroll = try await api.request(CourseEndpoint.enrollToCourse(courseID: courseID))
-        if enroll.statusCode == 200 {
-            return true
-        } else {
-            return false
-        }
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
@@ -264,45 +237,11 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         }
     }
     
-    func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
-        return CourseDetails(
-            courseID: "courseID",
-            org: "Organization",
-            courseTitle: "Course title",
-            courseDescription: "Course description",
-            courseStart: Date(iso8601: "2021-05-26T12:13:14Z"),
-            courseEnd: Date(iso8601: "2022-05-26T12:13:14Z"),
-            enrollmentStart: nil,
-            enrollmentEnd: nil,
-            isEnrolled: false,
-            overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
-            courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
-        )
-    }
-    
     func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         let decoder = JSONDecoder()
         let jsonData = Data(courseStructureJson.utf8)
         let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
         return parseCourseStructure(course: courseBlocks)
-    }
-    
-    public  func getCourseDetails(courseID: String) async throws -> CourseDetails {
-        return CourseDetails(
-            courseID: "courseID",
-            org: "Organization",
-            courseTitle: "Course title",
-            courseDescription: "Course description",
-            courseStart: Date(iso8601: "2021-05-26T12:13:14Z"),
-            courseEnd: Date(iso8601: "2022-05-26T12:13:14Z"),
-            enrollmentStart: nil,
-            enrollmentEnd: nil,
-            isEnrolled: false,
-            overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
-            courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
-        )
     }
         
     public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
@@ -312,10 +251,6 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         } catch {
             throw error
         }
-    }
-    
-    public  func enrollToCourse(courseID: String) async throws -> Bool {
-        return true
     }
     
     public  func blockCompletionRequest(courseID: String, blockID: String) {

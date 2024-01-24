@@ -109,6 +109,18 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(DiscoveryWebviewViewModel.self) { r, sourceScreen in
+            DiscoveryWebviewViewModel(
+                router: r.resolve(DiscoveryRouter.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(DiscoveryAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                sourceScreen: sourceScreen
+            )
+        }
+        
         container.register(SearchViewModel.self) { r in
             SearchViewModel(
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
@@ -215,9 +227,9 @@ class ScreenAssembly: Assembly {
         }
         container.register(CourseDetailsViewModel.self) { r in
             CourseDetailsViewModel(
-                interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
-                analytics: r.resolve(CourseAnalytics.self)!,
+                interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
+                router: r.resolve(DiscoveryRouter.self)!,
+                analytics: r.resolve(DiscoveryAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
