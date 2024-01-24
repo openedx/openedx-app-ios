@@ -49,7 +49,7 @@ public struct WebView: UIViewRepresentable {
         self.refreshCookies = refreshCookies
         self.isAddAjaxCallbackScript = isAddAjaxCallbackScript
         self.webViewNavDelegate = navigationDelegate
-    }    
+    }
 
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -100,7 +100,6 @@ public struct WebView: UIViewRepresentable {
             }
         }
         
-
         return webView
     }
     
