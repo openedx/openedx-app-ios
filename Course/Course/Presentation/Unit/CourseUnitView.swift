@@ -289,11 +289,14 @@ public struct CourseUnitView: View {
         .offset(x: offset.x, y: offset.y)
         .animation(.easeInOut(duration: 0.2), value: viewModel.index)
         .clipped()
-        .onChange(of: viewModel.index, perform: { index in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                showDiscussion = viewModel.selectedLesson().type == .discussion
+        .onChange(
+            of: viewModel.index,
+            perform: { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    showDiscussion = viewModel.selectedLesson().type == .discussion
+                }
             }
-        })
+        )
 
         .onReceive(
             NotificationCenter.default.publisher(
