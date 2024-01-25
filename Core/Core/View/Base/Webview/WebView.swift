@@ -100,6 +100,8 @@ public struct WebView: UIViewRepresentable {
             }
         }
         
+        webView.customUserAgent = userAgent
+        
         return webView
     }
     
@@ -251,6 +253,17 @@ public struct WebView: UIViewRepresentable {
                 parent.viewModel.ajaxProvider.isCompletionCallback(with: data)
             }
         }
+    }
+
+    private var userAgent: String {
+        let info = Bundle.main.infoDictionary
+        return [
+            info?[kCFBundleExecutableKey as String],
+            info?[kCFBundleIdentifierKey as String],
+            info?["CFBundleShortVersionString"]
+        ]
+            .compactMap { $0 as? String ?? "" }
+            .joined(separator: "/")
     }
 
     public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
