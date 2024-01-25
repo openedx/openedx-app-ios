@@ -21,7 +21,7 @@ public struct CourseDates {
         for block in courseDateBlocks {
             let date = block.date
             switch true {
-            case block.complete ?? false:
+            case block.complete ?? false || block.blockStatus == .courseStartDate:
                 statusBlocks[.completed, default: []].append(block)
             case date.isInPast:
                 statusBlocks[.pastDue, default: []].append(block)

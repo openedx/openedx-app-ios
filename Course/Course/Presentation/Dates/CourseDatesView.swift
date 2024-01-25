@@ -190,24 +190,22 @@ struct CompletedBlocks: View {
                             .foregroundStyle(Theme.Colors.textPrimary)
                         
                         ForEach(blocks) { block in
-                            ForEach(blocks) { block in
-                                HStack(alignment: .top) {
-                                    block.blockImage?.swiftUIImage
+                            HStack(alignment: .top) {
+                                block.blockImage?.swiftUIImage
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                StyleBlock(block: block, viewModel: viewModel)
+                                    .padding(.bottom, 15)
+                                Spacer()
+                                if block.canShowLink && !block.firstComponentBlockID.isEmpty {
+                                    Image(systemName: "chevron.right")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 6.55, height: 11.15)
+                                        .labelStyle(.iconOnly)
                                         .foregroundColor(Theme.Colors.textPrimary)
-                                    StyleBlock(block: block, viewModel: viewModel)
-                                        .padding(.bottom, 15)
-                                    Spacer()
-                                    if block.canShowLink && !block.firstComponentBlockID.isEmpty {
-                                        Image(systemName: "chevron.right")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 6.55, height: 11.15)
-                                            .labelStyle(.iconOnly)
-                                            .foregroundColor(Theme.Colors.textPrimary)
-                                    }
                                 }
-                                .padding(.trailing, 15)
                             }
+                            .padding(.trailing, 15)
                         }
                     }
                 }
@@ -218,9 +216,9 @@ struct CompletedBlocks: View {
         }
         .overlay(
           RoundedRectangle(cornerRadius: 8)
-            .stroke(Theme.Colors.cardViewStroke, lineWidth: 2)
+            .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
         )
-        .background(Theme.Colors.cardViewBackground)
+        .background(Theme.Colors.datesSectionBackground)
     }
 }
 
@@ -298,8 +296,10 @@ struct StyleBlock: View {
                 }
             }())
             .onTapGesture {
-                Task {
-                    await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                if block.canShowLink && !block.firstComponentBlockID.isEmpty {
+                    Task {
+                        await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                    }
                 }
             }
     }

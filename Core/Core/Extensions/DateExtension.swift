@@ -189,7 +189,8 @@ public extension Date {
     }
     
     func isCurrentYear() -> Bool {
-        let components = Calendar.current.dateComponents([.year], from: self, to: Date())
-        return components.year == 0
+        let selfYear = Calendar.current.component(.year, from: self)
+        let runningYear = Calendar.current.component(.year, from: Date())
+        return selfYear == runningYear
     }
 }

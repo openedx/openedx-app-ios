@@ -44,6 +44,8 @@ public struct Theme {
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
         public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
+        public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
+        public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -73,7 +75,9 @@ public struct Theme {
             textInputUnfocusedBackground: Color = ThemeAssets.textInputUnfocusedBackground.swiftUIColor,
             textInputUnfocusedStroke: Color = ThemeAssets.textInputUnfocusedStroke.swiftUIColor,
             warning: Color = ThemeAssets.warning.swiftUIColor,
-            white: Color = ThemeAssets.white.swiftUIColor
+            white: Color = ThemeAssets.white.swiftUIColor,
+            datesSectionBackground: Color = ThemeAssets.datesSectionBackground.swiftUIColor,
+            datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.alert = alert
@@ -103,6 +107,8 @@ public struct Theme {
             self.textInputUnfocusedStroke = textInputUnfocusedStroke
             self.warning = warning
             self.white = white
+            self.datesSectionBackground = datesSectionBackground
+            self.datesSectionStroke = datesSectionStroke
         }
     }
     

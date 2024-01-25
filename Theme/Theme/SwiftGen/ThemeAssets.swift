@@ -57,6 +57,8 @@ public enum ThemeAssets {
   public static let textInputUnfocusedStroke = ColorAsset(name: "TextInputUnfocusedStroke")
   public static let warning = ColorAsset(name: "warning")
   public static let white = ColorAsset(name: "white")
+  public static let datesSectionBackground = ColorAsset(name: "DatesSectionBackground")
+  public static let datesSectionStroke = ColorAsset(name: "DatesSectionStroke")
   public static let appLogo = ImageAsset(name: "appLogo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
