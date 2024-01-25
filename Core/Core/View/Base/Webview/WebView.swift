@@ -181,6 +181,17 @@ public struct WebView: UIViewRepresentable {
         Coordinator(self)
     }
     
+    private var userAgent: String {
+        let info = Bundle.main.infoDictionary
+        return [
+            info?[kCFBundleExecutableKey as String],
+            info?[kCFBundleIdentifierKey as String],
+            info?["CFBundleShortVersionString"]
+        ]
+            .compactMap { $0 as? String ?? "" }
+            .joined(separator: "/")
+    }
+
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
         let webViewConfig = WKWebViewConfiguration()
         
@@ -218,6 +229,8 @@ public struct WebView: UIViewRepresentable {
                 webView.configuration.userContentController.add(context.coordinator, name: message.name)
             }
         }
+        
+        webView.customUserAgent = userAgent
         
         return webView
     }
