@@ -53,7 +53,7 @@ public class CourseDatesViewModel: ObservableObject {
         
         // Filter out keys that don't exist in the dictionary
         let filteredKeys = desiredSequence.filter {
-            courseDates?.sortedStatusToDateToCourseDateBlockDict.keys.contains($0) ?? false }
+            courseDates?.statusDatesBlocks.keys.contains($0) ?? false }
         return filteredKeys
     }
     

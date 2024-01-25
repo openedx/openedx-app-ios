@@ -14,46 +14,46 @@ public struct CourseDates {
     let hasEnded, learnerIsFullAccess: Bool
     let userTimezone: String?
     
-    var sortedStatusToDateToCourseDateBlockDict: [CompletionStatus: [Date: [CourseDateBlock]]] {
-        var statusToDateToCourseDateBlockDict: [CompletionStatus: [Date: [CourseDateBlock]]] = [:]
-        var statusToCourseDateBlockDict: [CompletionStatus: [CourseDateBlock]] = [:]
+    var statusDatesBlocks: [CompletionStatus: [Date: [CourseDateBlock]]] {
+        var statusDatesBlocks: [CompletionStatus: [Date: [CourseDateBlock]]] = [:]
+        var statusBlocks: [CompletionStatus: [CourseDateBlock]] = [:]
         
         for block in courseDateBlocks {
             let date = block.date
             switch true {
             case block.complete ?? false:
-                statusToCourseDateBlockDict[.completed, default: []].append(block)
+                statusBlocks[.completed, default: []].append(block)
             case date.isInPast:
-                statusToCourseDateBlockDict[.pastDue, default: []].append(block)
+                statusBlocks[.pastDue, default: []].append(block)
             case date.isToday:
                 if date < Date() {
-                    statusToCourseDateBlockDict[.pastDue, default: []].append(block)
+                    statusBlocks[.pastDue, default: []].append(block)
                 } else {
-                    statusToCourseDateBlockDict[.today, default: []].append(block)
+                    statusBlocks[.today, default: []].append(block)
                 }
             case date.isThisWeek:
-                statusToCourseDateBlockDict[.thisWeek, default: []].append(block)
+                statusBlocks[.thisWeek, default: []].append(block)
             case date.isNextWeek:
-                statusToCourseDateBlockDict[.nextWeek, default: []].append(block)
+                statusBlocks[.nextWeek, default: []].append(block)
             case date.isUpcoming:
-                statusToCourseDateBlockDict[.upcoming, default: []].append(block)
+                statusBlocks[.upcoming, default: []].append(block)
             default:
-                statusToCourseDateBlockDict[.upcoming, default: []].append(block)
+                statusBlocks[.upcoming, default: []].append(block)
             }
         }
         
-        for status in statusToCourseDateBlockDict.keys {
-            let courseDateBlocks = statusToCourseDateBlockDict[status]
+        for status in statusBlocks.keys {
+            let courseDateBlocks = statusBlocks[status]
             var dateToCourseDateBlockDict: [Date: [CourseDateBlock]] = [:]
             
             for block in courseDateBlocks ?? [] {
                 let date = block.date
                 dateToCourseDateBlockDict[date, default: []].append(block)
             }
-            statusToDateToCourseDateBlockDict[status] = dateToCourseDateBlockDict
+            statusDatesBlocks[status] = dateToCourseDateBlockDict
         }
         
-        return statusToDateToCourseDateBlockDict
+        return statusDatesBlocks
     }
 }
 
@@ -210,22 +210,24 @@ public struct CourseDateBlock: Identifiable {
     
     var blockImage: ImageAsset? {
         if !learnerHasAccess {
-            return CoreAssets.locked
+            return CoreAssets.lockIcon
         }
         
         if isAssignment {
-            return CoreAssets.assignment
+            return CoreAssets.assignmentIcon
         }
         
         switch blockStatus {
-        case .courseStartDate, .courseEndDate, .verifiedUpgradeDeadline, .verificationDeadlineDate:
-            return CoreAssets.school
+        case .courseStartDate, .courseEndDate:
+            return CoreAssets.schoolCapIcon
+        case .verifiedUpgradeDeadline, .verificationDeadlineDate:
+            return CoreAssets.calendarIcon
         case .courseExpiredDate:
-            return CoreAssets.locked
+            return CoreAssets.lockWithWatchIcon
         case .certificateAvailbleDate:
             return CoreAssets.certificateIcon
         default:
-            return nil
+            return CoreAssets.calendarIcon
         }
     }
 }

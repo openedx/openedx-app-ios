@@ -32,7 +32,7 @@ public extension Date {
         formatter.locale = .current
         formatter.unitsStyle = .full
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        if self.description == Date().description {
+        if description == Date().description {
             return CoreLocalization.Date.justNow
         } else {
             return formatter.localizedString(for: self, relativeTo: Date())
@@ -110,7 +110,7 @@ public extension Date {
         case .iso8601:
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         case .shortWeekdayMonthDayYear:
-            applyDateFormatterForShortWeekdayMonthDayYear(dateFormatter: dateFormatter)
+            applyShortWeekdayMonthDayYear(dateFormatter: dateFormatter)
         }
         
         let date = dateFormatter.string(from: self)
@@ -130,7 +130,7 @@ public extension Date {
             let days = Calendar.current.dateComponents([.day], from: self, to: Date())
             if let day = days.day {
                 if day < 2 {
-                    return self.timeAgoDisplay()
+                    return timeAgoDisplay()
                 } else {
                     return date
                 }
@@ -144,7 +144,7 @@ public extension Date {
         }
     }
     
-    private func applyDateFormatterForShortWeekdayMonthDayYear(dateFormatter: DateFormatter) {
+    private func applyShortWeekdayMonthDayYear(dateFormatter: DateFormatter) {
         if isCurrentYear() {
             let days = Calendar.current.dateComponents([.day], from: self, to: Date())
             if let day = days.day, (-6 ... -2).contains(day) {
@@ -170,7 +170,7 @@ public extension Date {
             case -6...(-2):
                 return dateFormatterString
             case 2...6:
-                return self.timeAgoDisplay()
+                return timeAgoDisplay()
             case -1:
                 return CoreLocalization.CourseDates.tomorrow
             case 1:
@@ -180,7 +180,7 @@ public extension Date {
                     return dateFormatterString
                 } else {
                     // It means, date is in hours past due or upcoming
-                    return self.timeAgoDisplay()
+                    return timeAgoDisplay()
                 }
             }
         } else {
@@ -189,7 +189,7 @@ public extension Date {
     }
     
     func isCurrentYear() -> Bool {
-        let years = Calendar.current.dateComponents([.year], from: self, to: Date())
-        return years.year == 0
+        let components = Calendar.current.dateComponents([.year], from: self, to: Date())
+        return components.year == 0
     }
 }

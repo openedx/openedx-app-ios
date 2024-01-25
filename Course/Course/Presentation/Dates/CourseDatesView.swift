@@ -101,7 +101,7 @@ struct CourseDateListView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
-                        let courseDateBlockDict = courseDates.sortedStatusToDateToCourseDateBlockDict[status]!
+                        let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
                         if status == .completed {
                             CompletedBlocks(isExpanded: $isExpanded,
                                             courseDateBlockDict: courseDateBlockDict,
@@ -267,7 +267,15 @@ struct StyleBlock: View {
     let viewModel: CourseDatesViewModel
     
     var body: some View {
-        styleBlock(block: block)
+        VStack(alignment: .leading) {
+            styleBlock(block: block)
+            if !block.description.isEmpty {
+                Text(block.description)
+                    .font(Theme.Fonts.labelSmall)
+                    .foregroundStyle(Theme.Colors.thisWeekTimelineColor)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
     }
     
     func styleBlock(block: CourseDateBlock) -> some View {

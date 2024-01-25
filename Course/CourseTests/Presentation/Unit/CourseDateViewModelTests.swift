@@ -139,7 +139,7 @@ final class CourseDateViewModelTests: XCTestCase {
             userTimezone: nil
         )
         
-        let sortedDict = courseDates.sortedStatusToDateToCourseDateBlockDict[.completed]
+        let sortedDict = courseDates.statusDatesBlocks[.completed]
         
         XCTAssertEqual(sortedDict?.keys.sorted().first, Date.today)
     }
@@ -186,7 +186,7 @@ final class CourseDateViewModelTests: XCTestCase {
             userTimezone: nil
         )
         
-        let sortedDict = courseDates.sortedStatusToDateToCourseDateBlockDict[.completed]
+        let sortedDict = courseDates.statusDatesBlocks[.completed]
         XCTAssertEqual(sortedDict?[block1.date]?.count, 2, "There should be two blocks for the given date.")
     }
     
