@@ -35,11 +35,6 @@ public enum ThemeAssets {
   public static let cardViewStroke = ColorAsset(name: "CardViewStroke")
   public static let certificateForeground = ColorAsset(name: "CertificateForeground")
   public static let commentCellBackground = ColorAsset(name: "CommentCellBackground")
-  public static let nextWeekTimelineColor = ColorAsset(name: "NextWeekTimelineColor")
-  public static let thisWeekTimelineColor = ColorAsset(name: "ThisWeekTimelineColor")
-  public static let todayTimelineColor = ColorAsset(name: "TodayTimelineColor")
-  public static let upcomingTimelineColor = ColorAsset(name: "UpcomingTimelineColor")
-  public static let pastDueTimelineColor = ColorAsset(name: "pastDueTimelineColor")
   public static let loginBackground = ColorAsset(name: "LoginBackground")
   public static let loginNavigationText = ColorAsset(name: "LoginNavigationText")
   public static let shadowColor = ColorAsset(name: "ShadowColor")
@@ -59,6 +54,11 @@ public enum ThemeAssets {
   public static let white = ColorAsset(name: "white")
   public static let datesSectionBackground = ColorAsset(name: "DatesSectionBackground")
   public static let datesSectionStroke = ColorAsset(name: "DatesSectionStroke")
+  public static let nextWeekTimelineColor = ColorAsset(name: "NextWeekTimelineColor")
+  public static let thisWeekTimelineColor = ColorAsset(name: "ThisWeekTimelineColor")
+  public static let todayTimelineColor = ColorAsset(name: "TodayTimelineColor")
+  public static let upcomingTimelineColor = ColorAsset(name: "UpcomingTimelineColor")
+  public static let pastDueTimelineColor = ColorAsset(name: "pastDueTimelineColor")
   public static let appLogo = ImageAsset(name: "appLogo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
