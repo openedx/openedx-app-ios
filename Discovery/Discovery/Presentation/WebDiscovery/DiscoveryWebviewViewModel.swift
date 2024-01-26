@@ -153,7 +153,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func urlAction(from url: URL) -> WebviewActions? {
-        guard url.isValidAppURLScheme,
+        guard isValidAppURLScheme(url),
                 let url = WebviewActions(rawValue: url.appURLHost) else { return nil }
         return url
     }
@@ -192,7 +192,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func detailPathID(from url: URL) -> String? {
-        guard url.isValidAppURLScheme,
+        guard isValidAppURLScheme(url),
               let path = url.queryParameters?[URLParameterKeys.pathId] as? String,
               url.appURLHost == WebviewActions.courseDetail.rawValue else { return nil }
         
@@ -200,7 +200,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func parse(url: URL) -> (courseId: String?, emailOptIn: Bool)? {
-        guard url.isValidAppURLScheme else { return nil }
+        guard isValidAppURLScheme(url) else { return nil }
         
         let courseId = url.queryParameters?[URLParameterKeys.courseId] as? String
         let emailOptIn = (url.queryParameters?[URLParameterKeys.emailOptIn] as? String).flatMap {Bool($0)}
@@ -209,7 +209,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func programDetailPathId(from url: URL) -> String? {
-        guard url.isValidAppURLScheme,
+        guard isValidAppURLScheme(url),
               let path = url.queryParameters?[URLParameterKeys.pathId] as? String,
               url.appURLHost == WebviewActions.programDetail.rawValue else { return nil }
         
@@ -230,5 +230,9 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         )
         
         return true
+    }
+    
+    private func isValidAppURLScheme(_ url: URL) -> Bool {
+        return url.scheme ?? "" == config.URIScheme
     }
 }
