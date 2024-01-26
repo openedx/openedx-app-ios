@@ -60,7 +60,7 @@ class WhitelabelApp:
         bold: 'FontName-Bold'
     whatsnew:
       whatsnew_import_file_path: 'path/to/importing/whats_new.json'
-      project_whatsnew_file_path: 'path/to/json/file/in/project/WhatsNew.json'
+      project_whatsnew_file_path: 'path/to/json/file/in/project/whats_new.json'
     """)
 
     def __init__(self, **kwargs):            
@@ -73,17 +73,21 @@ class WhitelabelApp:
         self.font = kwargs.get('font', {})
         self.whatsnew = kwargs.get('whatsnew', {})
 
-        if "project_path" in self.project_config:
-            self.config_project_path = self.project_config["project_path"]
+        if self.project_config:
+            if "project_path" in self.project_config:
+                self.config_project_path = self.project_config["project_path"]
+            else:
+                logging.error("Path to project file is not defined")
         else:
-            logging.error("Path to project file is not defined")
+            logging.debug("Project settings config not found")
     
     def whitelabel(self):
         # Update the properties, resources, and configuration of the current app.
         self.copy_assets()
         self.copy_font()
         self.copy_whatsnew()
-        self.set_app_project_config()
+        if self.project_config:
+            self.set_app_project_config()
 
     def copy_assets(self):
         if self.assets:
@@ -92,7 +96,7 @@ class WhitelabelApp:
                 self.replace_colors(asset)
                 self.replace_app_icon(asset)
         else:
-            logging.debug("Assets not found")
+            logging.debug("Assets config not found")
 
     def replace_images(self, asset_data):
         asset = asset_data[1]
@@ -482,7 +486,13 @@ class WhitelabelApp:
                 if "project_whatsnew_file_path" in self.whatsnew:
                     project_whatsnew_file_path = self.whatsnew["project_whatsnew_file_path"]
                     # if source and destination file exist
-                    self.copy_file(whatsnew_import_file_path, project_whatsnew_file_path, "What's new")
+                    if os.path.exists(whatsnew_import_file_path):
+                        if os.path.exists(project_whatsnew_file_path):
+                            self.copy_file(whatsnew_import_file_path, project_whatsnew_file_path, "What's new")
+                        else:
+                            logging.error(project_whatsnew_file_path+" file doesn't exist")
+                    else:
+                        logging.error(whatsnew_import_file_path+" file doesn't exist")
                 else:
                     logging.error("'project_whatsnew_file_path' not found in config")
             else:

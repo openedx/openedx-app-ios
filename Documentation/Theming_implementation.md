@@ -104,7 +104,7 @@ For this function, the configuration must contain the following parameters:
 ```yaml
 whatsnew:
       whatsnew_import_file_path: 'path/to/importing/whats_new.json' # path to what's new json file what should be imported to project
-      project_whatsnew_file_path: 'path/to/json/file/in/project/WhatsNew.json' # path to existing json-file in project
+      project_whatsnew_file_path: 'path/to/json/file/in/project/whats_new.json' # path to existing json-file in project
 ```
 
 
