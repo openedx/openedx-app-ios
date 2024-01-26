@@ -25,7 +25,7 @@ public protocol ConfigProtocol {
     var theme: ThemeConfig { get }
     var uiComponents: UIComponentsConfig { get }
     var discovery: DiscoveryConfig { get }
-    var program: ProgramConfig { get }
+    var program: DiscoveryConfig { get }
 }
 
 public enum TokenType: String {

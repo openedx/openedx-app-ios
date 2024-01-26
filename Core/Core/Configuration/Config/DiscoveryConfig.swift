@@ -55,3 +55,10 @@ extension Config {
         DiscoveryConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
     }
 }
+
+private let programKey = "PROGRAM"
+extension Config {
+    public var program: DiscoveryConfig {
+        DiscoveryConfig(dictionary: self[programKey] as? [String: AnyObject] ?? [:])
+    }
+}

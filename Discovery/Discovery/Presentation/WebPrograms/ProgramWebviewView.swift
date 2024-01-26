@@ -26,9 +26,9 @@ public struct ProgramWebviewView: View {
     private var URLString: String {
         switch viewType {
         case .program:
-            return viewModel.config.program.programURL ?? ""
+            return viewModel.config.program.webview.baseURL ?? ""
         case .programDetail:
-            let template = viewModel.config.program.programDetailURLTemplate
+            let template = viewModel.config.program.webview.programDetailTemplate
             return template?.replacingOccurrences(
                 of: URIString.pathPlaceHolder.rawValue,
                 with: pathID
