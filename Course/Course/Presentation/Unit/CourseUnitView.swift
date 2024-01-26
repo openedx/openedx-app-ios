@@ -401,6 +401,7 @@ public struct CourseUnitView: View {
 
             if viewModel.courseUnitProgressEnabled {
                 LessonLineProgressView(viewModel: viewModel)
+                    .padding(.top, 4)
             }
             Spacer()
         }
