@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     didFinishLaunchingWithOptions: launchOptions
                 )
             }
+            configureDeepLinkServices(launchOptions: launchOptions)
         }
 
         Theme.Fonts.registerFonts()
@@ -62,6 +63,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
         
+        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
+            pushManager.performRegistration()
+        }
+
         return true
     }
 
@@ -70,6 +75,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
         if let config = Container.shared.resolve(ConfigProtocol.self) {
+            if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self),
+                deepLinkManager.serviceEnabled {
+                if deepLinkManager.handledURLWith(app: app, open: url, options: options) {
+                    return true
+                }
+            }
+
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
                     app,
@@ -125,16 +137,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Push Notifications
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let pushManager = Container.shared.resolve(PushNotificationsManager.self)!
-        pushManager.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
+        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
+            pushManager.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
+        }
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        let pushManager = Container.shared.resolve(PushNotificationsManager.self)!
-        pushManager.didFailToRegisterForRemoteNotificationsWithError(error: error)
+        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
+            pushManager.didFailToRegisterForRemoteNotificationsWithError(error: error)
+        }
     }
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let pushManager = Container.shared.resolve(PushNotificationsManager.self)!
-        pushManager.didReceiveRemoteNotification(userInfo: userInfo)
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
+            pushManager.didReceiveRemoteNotification(userInfo: userInfo)
+        }
         completionHandler(.newData)
+    }
+    
+    // Deep link
+    func configureDeepLinkServices(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) {
+            deepLinkManager.configureDeepLinkService(launchOptions: launchOptions)
+        }
     }
 }

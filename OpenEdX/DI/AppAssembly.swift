@@ -163,6 +163,12 @@ class AppAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
+
+        container.register(DeepLinkManager.self) { r in
+            DeepLinkManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
     }
 }
 // swiftlint:enable function_body_length

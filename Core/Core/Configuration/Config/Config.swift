@@ -26,6 +26,7 @@ public protocol ConfigProtocol {
     var uiComponents: UIComponentsConfig { get }
     var discovery: DiscoveryConfig { get }
     var braze: BrazeConfig { get }
+    var branch: BranchConfig { get }
 }
 
 public enum TokenType: String {
@@ -65,7 +66,7 @@ public class Config {
               let dict = try? PropertyListSerialization.propertyList(
                 from: data,
                 options: [],
-                format: nil) as? [String: Any] 
+                format: nil) as? [String: Any]
         else { return }
         
         properties = dict

@@ -50,6 +50,10 @@
 		A50066912B61467B0024680B /* BrazeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066902B61467B0024680B /* BrazeProvider.swift */; };
 		A50066932B614DCD0024680B /* FCMListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066922B614DCD0024680B /* FCMListener.swift */; };
 		A50066952B614DEF0024680B /* BrazeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066942B614DEF0024680B /* BrazeListener.swift */; };
+		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
+		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
+		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
+		A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59585AE2B62A07100A35A20 /* BranchService.swift */; };
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -125,6 +129,10 @@
 		A50066902B61467B0024680B /* BrazeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeProvider.swift; sourceTree = "<group>"; };
 		A50066922B614DCD0024680B /* FCMListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMListener.swift; sourceTree = "<group>"; };
 		A50066942B614DEF0024680B /* BrazeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeListener.swift; sourceTree = "<group>"; };
+		A59568942B61630500ED4F90 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
+		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
+		A59585AE2B62A07100A35A20 /* BranchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchService.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +278,7 @@
 		A50066882B613E800024680B /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				A59568932B6162E400ED4F90 /* DeepLinkManager */,
 				A50066872B613E4B0024680B /* PushNotificationsManager */,
 				A50066892B613E990024680B /* AnalyticsManager */,
 			);
@@ -301,6 +310,25 @@
 				A50066942B614DEF0024680B /* BrazeListener.swift */,
 			);
 			path = Listeners;
+			sourceTree = "<group>";
+		};
+		A59568932B6162E400ED4F90 /* DeepLinkManager */ = {
+			isa = PBXGroup;
+			children = (
+				A59568942B61630500ED4F90 /* DeepLinkManager.swift */,
+				A59585AE2B62A07100A35A20 /* BranchService.swift */,
+				A59585AD2B62677B00A35A20 /* Link */,
+			);
+			path = DeepLinkManager;
+			sourceTree = "<group>";
+		};
+		A59585AD2B62677B00A35A20 /* Link */ = {
+			isa = PBXGroup;
+			children = (
+				A59568962B61653700ED4F90 /* DeepLink.swift */,
+				A59568982B616D9400ED4F90 /* PushLink.swift */,
+			);
+			path = Link;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -472,6 +500,7 @@
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
+				A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */,
 				A50066912B61467B0024680B /* BrazeProvider.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
@@ -487,8 +516,11 @@
 				0770DE2028D0858A006D8A5D /* Router.swift in Sources */,
 				0293A2092A6FCDE50090A336 /* DashboardPersistence.swift in Sources */,
 				0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */,
+				A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */,
 				A50066952B614DEF0024680B /* BrazeListener.swift in Sources */,
 				071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */,
+				A59568972B61653700ED4F90 /* DeepLink.swift in Sources */,
+				A59568992B616D9400ED4F90 /* PushLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

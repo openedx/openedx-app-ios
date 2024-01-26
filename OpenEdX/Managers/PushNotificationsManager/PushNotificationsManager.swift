@@ -7,6 +7,8 @@
 
 import Foundation
 import Core
+import UIKit
+import Swinject
 
 public protocol PushNotificationsProvider {
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data)
@@ -14,7 +16,18 @@ public protocol PushNotificationsProvider {
 }
 
 protocol PushNotificationsListener {
+    func notificationToThisListener(userinfo: [AnyHashable: Any]) -> Bool
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any])
+}
+
+extension PushNotificationsListener {
+    func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
+       guard let dictionary = userInfo as? [String: Any], notificationToThisListener(userinfo: userInfo) else { return }
+       let link = PushLink(dictionary: dictionary)
+       if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) {
+           deepLinkManager.processNotification(with: link)
+       }
+   }
 }
 
 class PushNotificationsManager {
@@ -47,6 +60,21 @@ class PushNotificationsManager {
             rListeners.append(BrazeListener())
         }
         return rListeners
+    }
+    
+    // Register for push notifications
+    public func performRegistration() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            if granted {
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            } else if let error = error {
+                debugLog("Push notifications permission error: \(error.localizedDescription)")
+            } else {
+                debugLog("Permission for push notifications denied.")
+            }
+        }
     }
     
     // Proccess functions from app delegate

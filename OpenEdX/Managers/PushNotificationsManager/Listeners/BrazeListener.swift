@@ -8,7 +8,5 @@
 import Foundation
 
 class BrazeListener: PushNotificationsListener {
-    func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-        
-    }
+    func notificationToThisListener(userinfo: [AnyHashable: Any]) -> Bool { false }
 }

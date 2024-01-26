@@ -8,7 +8,5 @@
 import Foundation
 
 class FCMListener: PushNotificationsListener {
-    func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-        
-    }
+    func notificationToThisListener(userinfo: [AnyHashable: Any]) -> Bool { false }
 }
