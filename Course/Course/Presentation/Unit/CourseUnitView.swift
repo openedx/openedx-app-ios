@@ -282,7 +282,8 @@ public struct CourseUnitView: View {
                     width: isHorizontal ? reader.size.width - 16 : reader.size.width,
                     height: reader.size.height
                 )
-                .padding(.trailing, isHorizontal ? reader.safeAreaInsets.trailing + 16 : 0)
+                .padding(.leading, isHorizontal ? 8 : 0)
+                .padding(.trailing, isHorizontal ? reader.safeAreaInsets.trailing + 8 : 0)
                 .id(index)
             }
         }
