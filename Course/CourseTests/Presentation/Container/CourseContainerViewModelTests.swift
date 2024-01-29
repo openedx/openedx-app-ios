@@ -410,7 +410,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             certificate: nil
         )
 
-        let downloadData = DownloadData(
+        let downloadData = DownloadDataTask(
             id: "1",
             courseId: "course123",
             url: "https://example.com/file.mp4",
@@ -428,7 +428,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
-        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -544,7 +544,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
-        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: []))
+        Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -660,7 +660,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
-        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: []))
+        Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -777,7 +777,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
-        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: []))
+        Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -882,7 +882,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             certificate: nil
         )
 
-        let downloadData = DownloadData(
+        let downloadData = DownloadDataTask(
             id: "1",
             courseId: "course123",
             url: "https://example.com/file.mp4",
@@ -900,7 +900,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
-        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -1005,7 +1005,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             certificate: nil
         )
 
-        let downloadData = DownloadData(
+        let downloadData = DownloadDataTask(
             id: "1",
             courseId: "course123",
             url: "https://example.com/file.mp4",
@@ -1023,7 +1023,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
-        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -1146,7 +1146,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             certificate: nil
         )
 
-        let downloadData = DownloadData(
+        let downloadData = DownloadDataTask(
             id: "1",
             courseId: "course123",
             url: "https://example.com/file.mp4",
@@ -1164,7 +1164,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
-        Given(downloadManager, .getDownloadsForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,

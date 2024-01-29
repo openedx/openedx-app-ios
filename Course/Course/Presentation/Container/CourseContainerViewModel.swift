@@ -16,7 +16,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var courseStructure: CourseStructure?
     @Published var courseVideosStructure: CourseStructure?
     @Published var showError: Bool = false
-    @Published var showAllowLargeDownload: Bool = false
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
     @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
     @Published var continueWith: ContinueWith?
@@ -270,7 +269,19 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         waitingDownloads = nil
         if storage.allowedDownloadLargeFile == false, manager.isLargeVideosSize(blocks: blocks) {
             waitingDownloads = blocks
-            showAllowLargeDownload = true
+            router.presentAlert(
+                alertTitle: CourseLocalization.Download.download,
+                alertMessage: CourseLocalization.Download.downloadLargeFileMessage,
+                positiveAction: CourseLocalization.Alert.accept,
+                onCloseTapped: {
+                    self.router.dismiss(animated: true)
+                },
+                okTapped: {
+                    self.continueDownload()
+                    self.router.dismiss(animated: true)
+                },
+                type: .default(positiveAction: CourseLocalization.Alert.accept)
+            )
             return true
         }
         return false

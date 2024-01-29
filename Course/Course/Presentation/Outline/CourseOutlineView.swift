@@ -175,16 +175,6 @@ public struct CourseOutlineView: View {
                 )
             }
         }
-        .alert(isPresented: $viewModel.showAllowLargeDownload) {
-            Alert(
-                title: Text(CourseLocalization.Download.download),
-                message: Text(CourseLocalization.Download.downloadLargeFileMessage),
-                primaryButton: .default(Text(CourseLocalization.Alert.accept)) {
-                    viewModel.continueDownload()
-                },
-                secondaryButton: .cancel()
-            )
-        }
     }
 
     @ViewBuilder
