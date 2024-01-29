@@ -71,7 +71,7 @@ public class CorePersistence: CorePersistenceProtocol {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", block.id)
             guard (try? context.fetch(request).first) == nil else { continue }
-            guard let video = block.video(downloadQuality: downloadQuality),
+            guard let video = block.encodedVideo?.video(downloadQuality: downloadQuality),
                   let url = video.url,
                   let fileExtension = URL(string: url)?.pathExtension
             else { continue }

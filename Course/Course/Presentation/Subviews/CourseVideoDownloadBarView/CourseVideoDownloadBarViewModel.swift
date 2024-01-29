@@ -199,6 +199,8 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     private func blockToMB(data: Set<CourseBlock>, downloadQuality: DownloadQuality) -> Double {
-        data.reduce(0) { $0 + Double($1.video(downloadQuality: downloadQuality)?.fileSize ?? 0) } / 1024.0 / 1024.0
+        data.reduce(0) {
+            $0 + Double($1.encodedVideo?.video(downloadQuality: downloadQuality)?.fileSize ?? 0)
+        } / 1024.0 / 1024.0
     }
 }

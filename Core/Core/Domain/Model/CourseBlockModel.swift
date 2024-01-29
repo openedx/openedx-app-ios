@@ -52,7 +52,7 @@ public struct CourseStructure: Equatable {
             $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
         }
         .filter { $0.isDownloadable }
-        .compactMap { $0.video(downloadQuality: downloadQuality)?.fileSize }
+        .compactMap { $0.encodedVideo?.video(downloadQuality: downloadQuality)?.fileSize }
         .reduce(.zero) { $0 + $1 }
     }
 
@@ -166,6 +166,12 @@ public struct SubtitleUrl: Equatable {
 }
 
 public struct CourseBlock: Hashable {
+    public static func == (lhs: CourseBlock, rhs: CourseBlock) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.blockId == rhs.blockId &&
+        lhs.completion == rhs.completion
+    }
+    
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -180,12 +186,63 @@ public struct CourseBlock: Hashable {
     public let displayName: String
     public let studentUrl: String
     public let subtitles: [SubtitleUrl]?
+    public let encodedVideo: CourseBlockEncodedVideo?
+
+    public var isDownloadable: Bool {
+        encodedVideo?.isDownloadable ?? false
+    }
+
+    public init(
+        blockId: String,
+        id: String,
+        courseId: String,
+        topicId: String? = nil,
+        graded: Bool,
+        completion: Double,
+        type: BlockType,
+        displayName: String,
+        studentUrl: String,
+        subtitles: [SubtitleUrl]? = nil,
+        encodedVideo: CourseBlockEncodedVideo?
+    ) {
+        self.blockId = blockId
+        self.id = id
+        self.courseId = courseId
+        self.topicId = topicId
+        self.graded = graded
+        self.completion = completion
+        self.type = type
+        self.displayName = displayName
+        self.studentUrl = studentUrl
+        self.subtitles = subtitles
+        self.encodedVideo = encodedVideo
+    }
+}
+
+public struct CourseBlockEncodedVideo {
+
     public let fallback: CourseBlockVideo?
     public let desktopMP4: CourseBlockVideo?
     public let mobileHigh: CourseBlockVideo?
     public let mobileLow: CourseBlockVideo?
     public let hls: CourseBlockVideo?
     public let youtube: CourseBlockVideo?
+
+    public init(
+        fallback: CourseBlockVideo?,
+        youtube: CourseBlockVideo?,
+        desktopMP4: CourseBlockVideo?,
+        mobileHigh: CourseBlockVideo?,
+        mobileLow: CourseBlockVideo?,
+        hls: CourseBlockVideo?
+    ) {
+        self.fallback = fallback
+        self.youtube = youtube
+        self.desktopMP4 = desktopMP4
+        self.mobileHigh = mobileHigh
+        self.mobileLow = mobileLow
+        self.hls = hls
+    }
 
     public var isDownloadable: Bool {
         [hls, desktopMP4, mobileHigh, mobileLow, fallback]
@@ -243,41 +300,6 @@ public struct CourseBlock: Hashable {
         youtube?.url
     }
 
-    public init(
-        blockId: String,
-        id: String,
-        courseId: String,
-        topicId: String? = nil,
-        graded: Bool,
-        completion: Double,
-        type: BlockType,
-        displayName: String,
-        studentUrl: String,
-        subtitles: [SubtitleUrl]? = nil,
-        fallback: CourseBlockVideo?,
-        youtube: CourseBlockVideo?,
-        desktopMP4: CourseBlockVideo?,
-        mobileHigh: CourseBlockVideo?,
-        mobileLow: CourseBlockVideo?,
-        hls: CourseBlockVideo?
-    ) {
-        self.blockId = blockId
-        self.id = id
-        self.courseId = courseId
-        self.topicId = topicId
-        self.graded = graded
-        self.completion = completion
-        self.type = type
-        self.displayName = displayName
-        self.studentUrl = studentUrl
-        self.subtitles = subtitles
-        self.fallback = fallback
-        self.youtube = youtube
-        self.desktopMP4 = desktopMP4
-        self.mobileHigh = mobileHigh
-        self.mobileLow = mobileLow
-        self.hls = hls
-    }
 }
 
 public struct CourseBlockVideo: Equatable {

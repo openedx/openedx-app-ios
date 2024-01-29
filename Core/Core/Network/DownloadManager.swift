@@ -160,7 +160,7 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
         (blocks.reduce(0) {
-            $0 + Double($1.video(downloadQuality: downloadQuality)?.fileSize ?? 0)
+            $0 + Double($1.encodedVideo?.video(downloadQuality: downloadQuality)?.fileSize ?? 0)
         } / 1024 / 1024 / 1024) > 1
     }
 

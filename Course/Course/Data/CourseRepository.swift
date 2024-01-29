@@ -201,12 +201,14 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: block.displayName,
             studentUrl: block.studentUrl,
             subtitles: subtitles,
-            fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
-            youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
-            desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
-            mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
-            mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
-            hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+            encodedVideo: .init(
+                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+            )
         )
     }
     
@@ -379,22 +381,25 @@ And there are various ways of describing it-- call it oral poetry or
             return SubtitleUrl(language: $0.key, url: url)
         }
             
-        return CourseBlock(blockId: block.blockId,
-                           id: block.id,
-                           courseId: courseId,
-                           topicId: block.userViewData?.topicID,
-                           graded: block.graded,
-                           completion: block.completion ?? 0,
-                           type: BlockType(rawValue: block.type) ?? .unknown,
-                           displayName: block.displayName,
-                           studentUrl: block.studentUrl,
-                           subtitles: subtitles,
-                           fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
-                           youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
-                           desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
-                           mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
-                           mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
-                           hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+        return CourseBlock(
+            blockId: block.blockId,
+            id: block.id,
+            courseId: courseId,
+            topicId: block.userViewData?.topicID,
+            graded: block.graded,
+            completion: block.completion ?? 0,
+            type: BlockType(rawValue: block.type) ?? .unknown,
+            displayName: block.displayName,
+            studentUrl: block.studentUrl,
+            subtitles: subtitles,
+            encodedVideo: .init(
+                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+            )
         )
     }
 

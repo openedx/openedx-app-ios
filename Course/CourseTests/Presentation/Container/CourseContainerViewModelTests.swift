@@ -52,12 +52,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .problem,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: nil,
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: nil
         )
         let vertical = CourseVertical(
             blockId: "",
@@ -360,12 +355,15 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
+
         )
 
         let vertical = CourseVertical(
@@ -487,12 +485,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
         )
 
         let vertical = CourseVertical(
@@ -601,12 +601,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
         )
 
         let vertical = CourseVertical(
@@ -716,12 +718,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
         )
 
         let vertical = CourseVertical(
@@ -824,12 +828,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
         )
 
         let vertical = CourseVertical(
@@ -945,12 +951,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
         )
 
         let vertical = CourseVertical(
@@ -1065,12 +1073,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
         )
         let block2 = CourseBlock(
             blockId: "123",
@@ -1082,12 +1092,14 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
-            fallback: nil,
-            youtube: nil,
-            desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
-            mobileHigh: nil,
-            mobileLow: nil,
-            hls: nil
+            encodedVideo: .init(
+                fallback: nil,
+                youtube: nil,
+                desktopMP4: .init(url: "test.mp4", fileSize: 1000, streamPriority: 1),
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            )
         )
 
         let vertical = CourseVertical(

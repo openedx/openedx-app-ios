@@ -85,12 +85,7 @@ struct ContinueWithView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
-                fallback: nil,
-                youtube: nil,
-                desktopMP4: nil,
-                mobileHigh: nil,
-                mobileLow: nil,
-                hls: nil
+                encodedVideo: nil
             ),
             CourseBlock(
                 blockId: "2",
@@ -101,12 +96,8 @@ struct ContinueWithView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
-                fallback: nil,
-                youtube: nil,
-                desktopMP4: nil,
-                mobileHigh: nil,
-                mobileLow: nil,
-                hls: nil
+                encodedVideo: nil
+
             )
         ]
         

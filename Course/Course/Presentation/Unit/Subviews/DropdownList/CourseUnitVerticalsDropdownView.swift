@@ -67,12 +67,8 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 1",
                 studentUrl: "",
-                fallback: nil,
-                youtube: nil,
-                desktopMP4: nil,
-                mobileHigh: nil,
-                mobileLow: nil,
-                hls: nil
+                encodedVideo: nil
+
             ),
             CourseBlock(
                 blockId: "2",
@@ -84,12 +80,8 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 2",
                 studentUrl: "2",
-                fallback: nil,
-                youtube: nil,
-                desktopMP4: nil,
-                mobileHigh: nil,
-                mobileLow: nil,
-                hls: nil
+                encodedVideo: nil
+
             ),
             CourseBlock(
                 blockId: "3",
@@ -101,12 +93,8 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "Lesson 3",
                 studentUrl: "3",
-                fallback: nil,
-                youtube: nil,
-                desktopMP4: nil,
-                mobileHigh: nil,
-                mobileLow: nil,
-                hls: nil
+                encodedVideo: nil
+
             ),
             CourseBlock(
                 blockId: "4",
@@ -118,12 +106,7 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "4",
                 studentUrl: "4",
-                fallback: nil,
-                youtube: nil,
-                desktopMP4: nil,
-                mobileHigh: nil,
-                mobileLow: nil,
-                hls: nil
+                encodedVideo: nil
             )
         ]
         
