@@ -58,6 +58,10 @@ public struct CourseUnitView: View {
         viewModel.verticals.count > 1
     }
     
+    var isHorizontalNavigation: Bool {
+        viewModel.courseUnitProgressEnabled
+    }
+    
     public init(
         viewModel: CourseUnitViewModel,
         sectionName: String,
@@ -162,7 +166,7 @@ public struct CourseUnitView: View {
     private func content(reader: GeometryProxy) -> some View {
         let alignment = UnitAlignment(horizontalAlignment: .top, verticalAlignment: .leading)
         let offset = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
-        UnitStack(isVerticalNavigation: !viewModel.courseUnitProgressEnabled, alignment: alignment, spacing: 0) {
+        UnitStack(isVerticalNavigation: !isHorizontalNavigation, alignment: alignment, spacing: 0) {
             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
             ForEach(data, id: \.offset) { index, block in
                 VStack(spacing: 0) {
@@ -279,10 +283,10 @@ public struct CourseUnitView: View {
 
                 }
                 .frame(
-                    width: isHorizontal ? reader.size.width - 16 : reader.size.width,
+                    width: isHorizontal ? reader.size.width - (isHorizontalNavigation ? 0 : 16) : reader.size.width,
                     height: reader.size.height
                 )
-                .padding(.trailing, isHorizontal ? reader.safeAreaInsets.trailing + 16 : 0)
+                .padding(.trailing, isHorizontal && isHorizontalNavigation ? reader.safeAreaInsets.trailing : 0)
                 .id(index)
             }
         }
@@ -313,8 +317,8 @@ public struct CourseUnitView: View {
 
     private func viewOffset(for index: Int, with size: CGSize, insets: EdgeInsets) -> CGPoint {
         let rightInset = (isHorizontal ? insets.trailing * CGFloat(index) : 0)
-        let x: CGFloat = viewModel.courseUnitProgressEnabled ? -(size.width * CGFloat(index) + rightInset) : 0
-        let y: CGFloat = viewModel.courseUnitProgressEnabled ? 0 : -(size.height * CGFloat(index))
+        let x: CGFloat = isHorizontalNavigation ? -(size.width * CGFloat(index) + rightInset) : 0
+        let y: CGFloat = isHorizontalNavigation ? 0 : -(size.height * CGFloat(index))
         return CGPoint(x: x, y: y)
     }
     
@@ -401,6 +405,7 @@ public struct CourseUnitView: View {
 
             if viewModel.courseUnitProgressEnabled {
                 LessonLineProgressView(viewModel: viewModel)
+                    .padding(.top, 4)
             }
             Spacer()
         }

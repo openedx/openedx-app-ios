@@ -79,7 +79,7 @@ struct CourseNavigationView: View {
                 playerStateSubject.send(VideoPlayerState.pause)
                 viewModel.select(move: .previous)
             }
-        )       
+        )
     }
     
     private var lastButton: some View {
