@@ -20,8 +20,7 @@ struct WebView: View {
             WebUnitView(
                 url: url,
                 viewModel: Container.shared.resolve(WebUnitViewModel.self)!,
-                injections: injections//,
-//                roundedBackgroundEnabled: roundedBackgroundEnabled
+                injections: injections
             )
             if roundedBackgroundEnabled {
                 Spacer(minLength: 5)
