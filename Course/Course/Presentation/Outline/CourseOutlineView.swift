@@ -199,7 +199,7 @@ public struct CourseOutlineView: View {
                     onNotInternetAvaliable: {
                         viewModel.errorMessage = CourseLocalization.Download.noWifiMessage
                     },
-                    onTap: { 
+                    onTap: {
                         showingDownloads = true
                     }
                 )
