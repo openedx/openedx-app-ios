@@ -47,7 +47,7 @@ struct AjaxInjection: WebViewScriptInjectionProtocol {
 
     var messages: [WebviewMessage]? {
         [
-            WebviewMessage(name: AJAXCallBackHandler) { result, webView in
+            WebviewMessage(name: AJAXCallBackHandler) { result, _ in
                 guard let data = result as? [AnyHashable: Any] else { return }
                 let callback = AJAXCallbackData(data: data)
                 let requestURL = callback.url
