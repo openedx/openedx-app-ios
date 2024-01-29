@@ -97,6 +97,7 @@ public class ProgramWebviewViewModel: ObservableObject {
 }
 
 extension ProgramWebviewViewModel: WebViewNavigationDelegate {
+    @MainActor
     public func webView(
         _ webView: WKWebView,
         shouldLoad request: URLRequest,
@@ -144,6 +145,7 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
         return url
     }
     
+    @MainActor
     private  func handleNavigation(url: URL, urlAction: WebviewActions) -> Bool {
         switch urlAction {
         case .courseEnrollment:
@@ -162,7 +164,7 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
         case .enrolledCourseDetail:
             if let urlData = parse(url: url), let courseID = urlData.courseId {
                 showProgress = true
-                Task { @MainActor in
+                Task {
                     do {
                         courseDetails = try await getCourseDetail(courseID: courseID)
                         showCourseDetails()
