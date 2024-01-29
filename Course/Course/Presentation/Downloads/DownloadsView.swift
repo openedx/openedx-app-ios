@@ -58,12 +58,12 @@ struct DownloadsView: View {
     // MARK: - Views
 
     @ViewBuilder
-    func cell(downloadData: DownloadData) -> some View {
+    func cell(task: DownloadDataTask) -> some View {
         VStack(spacing: 0) {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        let title = viewModel.title(downloadData: downloadData)
+                        let title = viewModel.title(task: task)
                         Text(title)
                             .font(Theme.Fonts.titleMedium)
                             .multilineTextAlignment(.leading)
@@ -71,7 +71,7 @@ struct DownloadsView: View {
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(title)
                             .accessibilityIdentifier("file_name_text")
-                        let fileSizeInMbText = downloadData.fileSizeInMbText
+                        let fileSizeInMbText = task.fileSizeInMbText
                         Text(fileSizeInMbText)
                             .font(Theme.Fonts.titleSmall)
                             .foregroundColor(Theme.Colors.textSecondary)
@@ -80,8 +80,8 @@ struct DownloadsView: View {
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(fileSizeInMbText)
                             .accessibilityIdentifier("file_size_text")
-                        if downloadData.state != .finished {
-                            ProgressView(value: downloadData.progress, total: 1.0)
+                        if task.state != .finished {
+                            ProgressView(value: task.progress, total: 1.0)
                                 .tint(Theme.Colors.accentColor)
                                 .accessibilityIdentifier("progress_line_view")
                         }
@@ -89,7 +89,7 @@ struct DownloadsView: View {
                     Spacer()
                     Button {
                         Task {
-                           await viewModel.cancelDownloading(downloadData: downloadData)
+                           await viewModel.cancelDownloading(task: task)
                         }
                     } label: {
                         DownloadProgressView()

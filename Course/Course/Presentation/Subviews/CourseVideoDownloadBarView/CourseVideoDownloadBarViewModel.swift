@@ -16,7 +16,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private let courseStructure: CourseStructure
     private let courseViewModel: CourseContainerViewModel
 
-    @Published private(set) var currentDownload: DownloadData?
+    @Published private(set) var currentDownloadTask: DownloadDataTask?
     @Published private(set) var isOn: Bool = false
 
     private var cancellables = Set<AnyCancellable>()
@@ -38,18 +38,18 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     var progress: Double {
-        guard let currentDownload = currentDownload else {
+        guard let currentDownloadTask = currentDownloadTask else {
             return 0.0
         }
-        guard let index = courseViewModel.courseDownloads.firstIndex(
-            where: { $0.id == currentDownload.id }
+        guard let index = courseViewModel.courseDownloadTasks.firstIndex(
+            where: { $0.id == currentDownloadTask.id }
         ) else {
             return 0.0
         }
-        courseViewModel.courseDownloads[index].progress = currentDownload.progress
+        courseViewModel.courseDownloadTasks[index].progress = currentDownloadTask.progress
         return courseViewModel
-            .courseDownloads
-            .reduce(0) { $0 + $1.progress } / Double(courseViewModel.courseDownloads.count)
+            .courseDownloadTasks
+            .reduce(0) { $0 + $1.progress } / Double(courseViewModel.courseDownloadTasks.count)
     }
 
     var downloadableVerticals: Set<VerticalsDownloadState> {
@@ -112,8 +112,8 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         observers()
     }
 
-    func allActiveDownloads() async -> [DownloadData] {
-        await courseViewModel.manager.getDownloads()
+    func allActiveDownloads() async -> [DownloadDataTask] {
+        await courseViewModel.manager.getDownloadTasks()
             .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
@@ -173,12 +173,12 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     private func observers() {
-        currentDownload = courseViewModel.manager.currentDownload
+        currentDownloadTask = courseViewModel.manager.currentDownloadTask
         toggleStateIsOn()
         courseViewModel.$downloadableVerticals
             .sink { [weak self] _ in
                 guard let self else { return }
-                self.currentDownload = self.courseViewModel.manager.currentDownload
+                self.currentDownloadTask = self.courseViewModel.manager.currentDownloadTask
                 self.toggleStateIsOn()
         }
         .store(in: &cancellables)
@@ -186,7 +186,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             .sink { [weak self] state in
                 guard let self else { return }
                 if case .progress = state {
-                    self.currentDownload = self.courseViewModel.manager.currentDownload
+                    self.currentDownloadTask = self.courseViewModel.manager.currentDownloadTask
                 }
                 self.toggleStateIsOn()
             }

@@ -100,12 +100,12 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
     @MainActor
     private func setDownloadsStates() async {
         guard let courseId = verticals.first?.courseId else { return }
-        let downloads = await manager.getDownloadsForCourse(courseId)
+        let downloadTasks = await manager.getDownloadTasksForCourse(courseId)
         var states: [String: DownloadViewState] = [:]
         for vertical in verticals where vertical.isDownloadable {
             var childs: [DownloadViewState] = []
             for block in vertical.childs where block.isDownloadable {
-                if let download = downloads.first(where: { $0.id == block.id }) {
+                if let download = downloadTasks.first(where: { $0.id == block.id }) {
                     switch download.state {
                     case .waiting, .inProgress:
                         childs.append(.downloading)

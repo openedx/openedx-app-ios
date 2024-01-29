@@ -41,7 +41,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
 
-    var courseDownloads: [DownloadData] = []
+    var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
 
     private let interactor: CourseInteractorProtocol
@@ -288,7 +288,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func setDownloadsStates() async {
         guard let course = courseStructure else { return }
-        courseDownloads = await manager.getDownloadsForCourse(course.id)
+        courseDownloadTasks = await manager.getDownloadTasksForCourse(course.id)
         downloadableVerticals = []
         var sequentialsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
@@ -297,7 +297,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 for vertical in sequential.childs where vertical.isDownloadable {
                     var verticalsChilds: [DownloadViewState] = []
                     for block in vertical.childs where block.isDownloadable {
-                        if let download = courseDownloads.first(where: { $0.id == block.id }) {
+                        if let download = courseDownloadTasks.first(where: { $0.id == block.id }) {
                             switch download.state {
                             case .waiting, .inProgress:
                                 sequentialsChilds.append(.downloading)

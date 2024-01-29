@@ -41,7 +41,7 @@ public class CorePersistence: CorePersistenceProtocol {
             .eraseToAnyPublisher()
     }
 
-    public func getAllDownloadData(completion: @escaping ([DownloadData]) -> Void) {
+    public func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void) {
         context.performAndWait {
             let request = CDDownloadData.fetchRequest()
             guard let downloadData = try? context.fetch(request) else {
@@ -49,7 +49,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 return
             }
             let downloads =  downloadData.map {
-                DownloadData(
+                DownloadDataTask(
                     id: $0.id ?? "",
                     courseId: $0.courseId ?? "",
                     url: $0.url ?? "",
@@ -93,12 +93,12 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func getNextBlockForDownloading() -> DownloadData? {
+    public func getNextBlockForDownloading() -> DownloadDataTask? {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "state != %@", DownloadState.finished.rawValue)
         request.fetchLimit = 1
         guard let data = try? context.fetch(request).first else { return nil }
-        return DownloadData(
+        return DownloadDataTask(
             id: data.id ?? "",
             courseId: data.courseId ?? "",
             url: data.url ?? "",
@@ -112,7 +112,7 @@ public class CorePersistence: CorePersistenceProtocol {
         )
     }
 
-    public func getDownloadsForCourse(_ courseId: String, completion: @escaping ([DownloadData]) -> Void) {
+    public func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void) {
         context.performAndWait {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "courseId = %@", courseId)
@@ -121,7 +121,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 return
             }
             let downloads = downloadData.map {
-                DownloadData(
+                DownloadDataTask(
                     id: $0.id ?? "",
                     courseId: $0.courseId ?? "",
                     url: $0.url ?? "",
@@ -138,7 +138,7 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func downloadData(for blockId: String, completion: @escaping (DownloadData?) -> Void) {
+    public func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void) {
         context.performAndWait {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", blockId)
@@ -146,7 +146,7 @@ public class CorePersistence: CorePersistenceProtocol {
                 completion(nil)
                 return
             }
-            let data = DownloadData(
+            let data = DownloadDataTask(
                 id: downloadData.id ?? "",
                 courseId: downloadData.courseId ?? "",
                 url: downloadData.url ?? "",
@@ -162,11 +162,11 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func downloadData(for blockId: String) -> DownloadData? {
+    public func downloadDataTask(for blockId: String) -> DownloadDataTask? {
         let request = CDDownloadData.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", blockId)
         guard let downloadData = try? context.fetch(request).first else { return nil }
-        return DownloadData(
+        return DownloadDataTask(
             id: downloadData.id ?? "",
             courseId: downloadData.courseId ?? "",
             url: downloadData.url ?? "",
@@ -196,7 +196,7 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func deleteDownloadData(id: String) throws {
+    public func deleteDownloadDataTask(id: String) throws {
         context.performAndWait {
             let request = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", id)
@@ -213,7 +213,7 @@ public class CorePersistence: CorePersistenceProtocol {
         }
     }
     
-    public func saveDownloadData(data: DownloadData) {
+    public func saveDownloadDataTask(data: DownloadDataTask) {
         context.performAndWait {
             let newDownloadData = CDDownloadData(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump

@@ -13,7 +13,7 @@ final class DownloadsViewModel: ObservableObject {
 
     // MARK: - Properties
 
-    @Published private(set) var downloads: [DownloadData] = []
+    @Published private(set) var downloads: [DownloadDataTask] = []
     private let courseId: String?
 
     private let manager: DownloadManagerProtocol
@@ -31,17 +31,17 @@ final class DownloadsViewModel: ObservableObject {
 
     // MARK: - Intents
 
-    func title(downloadData: DownloadData) -> String {
-        downloadData.displayName.isEmpty ?
+    func title(task: DownloadDataTask) -> String {
+        task.displayName.isEmpty ?
         "(\(CourseLocalization.Download.untitled))" :
-        downloadData.displayName
+        task.displayName
     }
 
     @MainActor
-    func cancelDownloading(downloadData: DownloadData) async {
+    func cancelDownloading(task: DownloadDataTask) async {
         do {
-            try await manager.cancelDownloading(downloadData: downloadData)
-            downloads.removeAll(where: { $0.id == downloadData.id })
+            try await manager.cancelDownloading(task: task)
+            downloads.removeAll(where: { $0.id == task.id })
         } catch {
             print(error)
         }
@@ -53,10 +53,10 @@ final class DownloadsViewModel: ObservableObject {
             filter()
         }
         if let courseId = courseId {
-            downloads = await manager.getDownloadsForCourse(courseId)
+            downloads = await manager.getDownloadTasksForCourse(courseId)
             return
         }
-        downloads = await manager.getDownloads()
+        downloads = await manager.getDownloadTasks()
 
     }
 
