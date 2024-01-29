@@ -16,6 +16,7 @@ import GoogleSignIn
 import FacebookCore
 import MSAL
 import Theme
+import BrazeKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }
     
+    var braze: Braze?
+
     var window: UIWindow?
         
     private var assembler: Assembler?

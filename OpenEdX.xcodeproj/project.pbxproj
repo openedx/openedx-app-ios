@@ -54,6 +54,9 @@
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
 		A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59585AE2B62A07100A35A20 /* BranchService.swift */; };
+		A5BECBD02B67C161001776CD /* BrazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5BECBCF2B67C161001776CD /* BrazeKit */; };
+		A5BECBD22B67C161001776CD /* BrazeKitCompat in Frameworks */ = {isa = PBXBuildFile; productRef = A5BECBD12B67C161001776CD /* BrazeKitCompat */; };
+		A5BECBD42B67C161001776CD /* BrazeLocation in Frameworks */ = {isa = PBXBuildFile; productRef = A5BECBD32B67C161001776CD /* BrazeLocation */; };
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -152,7 +155,10 @@
 				BA3042792B1F7147009B64B7 /* MSAL in Frameworks */,
 				072787B128D34D83002E9142 /* Discovery.framework in Frameworks */,
 				0218196428F734FA00202564 /* Discussion.framework in Frameworks */,
+				A5BECBD02B67C161001776CD /* BrazeKit in Frameworks */,
 				0219C67728F4347600D64452 /* Course.framework in Frameworks */,
+				A5BECBD42B67C161001776CD /* BrazeLocation in Frameworks */,
+				A5BECBD22B67C161001776CD /* BrazeKitCompat in Frameworks */,
 				027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */,
 				95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */,
 			);
@@ -354,6 +360,9 @@
 			name = OpenEdX;
 			packageProductDependencies = (
 				BA3042782B1F7147009B64B7 /* MSAL */,
+				A5BECBCF2B67C161001776CD /* BrazeKit */,
+				A5BECBD12B67C161001776CD /* BrazeKitCompat */,
+				A5BECBD32B67C161001776CD /* BrazeLocation */,
 			);
 			productName = OpenEdX;
 			productReference = 07D5DA3128D075AA00752FD9 /* OpenEdX.app */;
@@ -386,6 +395,7 @@
 			mainGroup = 07D5DA2828D075AA00752FD9;
 			packageReferences = (
 				BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
+				A5BECBCE2B67C161001776CD /* XCRemoteSwiftPackageReference "braze-swift-sdk" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
 			projectDirPath = "";
@@ -1143,6 +1153,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A5BECBCE2B67C161001776CD /* XCRemoteSwiftPackageReference "braze-swift-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braze-inc/braze-swift-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.5.0;
+			};
+		};
 		BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
@@ -1154,6 +1172,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A5BECBCF2B67C161001776CD /* BrazeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5BECBCE2B67C161001776CD /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			productName = BrazeKit;
+		};
+		A5BECBD12B67C161001776CD /* BrazeKitCompat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5BECBCE2B67C161001776CD /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			productName = BrazeKitCompat;
+		};
+		A5BECBD32B67C161001776CD /* BrazeLocation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5BECBCE2B67C161001776CD /* XCRemoteSwiftPackageReference "braze-swift-sdk" */;
+			productName = BrazeLocation;
+		};
 		BA3042782B1F7147009B64B7 /* MSAL */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;

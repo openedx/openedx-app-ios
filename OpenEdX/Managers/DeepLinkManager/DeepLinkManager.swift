@@ -46,7 +46,7 @@ class DeepLinkManager {
     // Handle open url
     func handledURLWith(
         app: UIApplication,
-        open url: URL, 
+        open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
         if let service = service {
