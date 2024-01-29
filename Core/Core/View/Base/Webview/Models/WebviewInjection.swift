@@ -11,23 +11,27 @@ public struct WebviewInjection: WebViewScriptInjectionProtocol {
     public var script: String
     public var messages: [WebviewMessage]?
     public var injectionTime: WKUserScriptInjectionTime
+    public var forMainFrameOnly: Bool
     init(
         id: String,
         script: String,
         messages: [WebviewMessage]? = nil,
-        injectionTime: WKUserScriptInjectionTime = .atDocumentEnd
+        injectionTime: WKUserScriptInjectionTime = .atDocumentEnd,
+        forMainFrameOnly: Bool = true
     ) {
         self.id = id
         self.script = script
         self.messages = messages
         self.injectionTime = injectionTime
+        self.forMainFrameOnly = forMainFrameOnly
     }
     
     public static func == (lhs: WebviewInjection, rhs: WebviewInjection) -> Bool {
         lhs.id == rhs.id &&
         lhs.script == rhs.script &&
         lhs.injectionTime == rhs.injectionTime &&
-        lhs.messages == rhs.messages
+        lhs.messages == rhs.messages &&
+        lhs.forMainFrameOnly == rhs.forMainFrameOnly
     }
 }
 

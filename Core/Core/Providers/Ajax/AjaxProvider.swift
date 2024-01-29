@@ -73,6 +73,7 @@ struct AjaxInjection: WebViewScriptInjectionProtocol {
             }
          ]
     }
+    var forMainFrameOnly: Bool = false
     
     var injectionTime: WKUserScriptInjectionTime = .atDocumentEnd
     
