@@ -209,7 +209,6 @@ public class CourseRepository: CourseRepositoryProtocol {
 }
 
 // Mark - For testing and SwiftUI preview
-// swiftlint:disable all
 #if DEBUG
 class CourseRepositoryMock: CourseRepositoryProtocol {
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
@@ -230,7 +229,8 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     
     func getCourseDates(courseID: String) async throws -> CourseDates {
         do {
-            let courseDates = try CourseRepository.courseDatesJSON.data(using: .utf8)!.mapResponse(DataLayer.CourseDates.self)
+            let courseDates = try
+            CourseRepository.courseDatesJSON.data(using: .utf8)!.mapResponse(DataLayer.CourseDates.self)
             return courseDates.domain
         } catch {
             throw error
@@ -246,7 +246,8 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         
     public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         do {
-            let courseBlocks = try CourseRepository.courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
+            let courseBlocks = try
+            CourseRepository.courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
             return parseCourseStructure(course: courseBlocks)
         } catch {
             throw error
@@ -377,7 +378,6 @@ And there are various ways of describing it-- call it oral poetry or
                            subtitles: subtitles,
                            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
                            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
-    }    
+    }
 }
 #endif
-// swiftlint:enable all

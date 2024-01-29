@@ -44,12 +44,14 @@ public class CourseDatesViewModel: ObservableObject {
     }
         
     var sortedStatuses: [CompletionStatus] {
-        let desiredSequence = [CompletionStatus.completed,
-                               CompletionStatus.pastDue,
-                               CompletionStatus.today,
-                               CompletionStatus.thisWeek,
-                               CompletionStatus.nextWeek,
-                               CompletionStatus.upcoming]
+        let desiredSequence = [
+            CompletionStatus.completed,
+            CompletionStatus.pastDue,
+            CompletionStatus.today,
+            CompletionStatus.thisWeek,
+            CompletionStatus.nextWeek,
+            CompletionStatus.upcoming
+        ]
         
         // Filter out keys that don't exist in the dictionary
         let filteredKeys = desiredSequence.filter {

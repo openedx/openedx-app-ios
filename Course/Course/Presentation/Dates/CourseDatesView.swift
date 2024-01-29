@@ -103,9 +103,11 @@ struct CourseDateListView: View {
                     ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
                         let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
                         if status == .completed {
-                            CompletedBlocks(isExpanded: $isExpanded,
-                                            courseDateBlockDict: courseDateBlockDict,
-                                            viewModel: viewModel)
+                            CompletedBlocks(
+                                isExpanded: $isExpanded,
+                                courseDateBlockDict: courseDateBlockDict,
+                                viewModel: viewModel
+                            )
                         } else {
                             Text(status.rawValue)
                                 .font(Theme.Fonts.titleSmall)
@@ -121,9 +123,11 @@ struct CourseDateListView: View {
                                         Text(block.formattedDate)
                                             .font(Theme.Fonts.labelMedium)
                                             .foregroundStyle(Theme.Colors.textPrimary)
-                                        BlockStatusView(viewModel: viewModel,
-                                                        block: block,
-                                                        blocks: blocks)
+                                        BlockStatusView(
+                                            viewModel: viewModel,
+                                            block: block,
+                                            blocks: blocks
+                                        )
                                     }
                                 }
                             }
@@ -160,7 +164,10 @@ struct CompletedBlocks: View {
                         
                         if !isExpanded {
                             let totalCount = courseDateBlockDict.values.reduce(0) { $0 + $1.count }
-                            Text("\(totalCount) \(CoreLocalization.CourseDates.itemsHidden)")
+                            let itemsHidden = totalCount == 1 ?
+                            CoreLocalization.CourseDates.itemHidden :
+                            CoreLocalization.CourseDates.itemsHidden
+                            Text("\(totalCount) \(itemsHidden)")
                                 .font(Theme.Fonts.labelMedium)
                                 .foregroundColor(Theme.Colors.textPrimary)
                         }
@@ -169,9 +176,9 @@ struct CompletedBlocks: View {
                     .padding(.leading, 16)
                     .padding(.vertical, 8)
                     
-                    Image(systemName: "chevron.down")
+                    Image(systemName: "chevron.right")
                         .labelStyle(.iconOnly)
-                        .rotationEffect(.degrees(isExpanded ? 180 : 0))
+                        .dropdownArrowRotationAnimation(value: isExpanded)
                         .foregroundColor(Theme.Colors.textPrimary)
                         .padding()
                 }
@@ -269,7 +276,7 @@ struct StyleBlock: View {
             styleBlock(block: block)
             if !block.description.isEmpty {
                 Text(block.description)
-                    .font(Theme.Fonts.labelSmall)
+                    .font(Theme.Fonts.labelMedium)
                     .foregroundStyle(Theme.Colors.thisWeekTimelineColor)
                     .fixedSize(horizontal: false, vertical: true)
             }

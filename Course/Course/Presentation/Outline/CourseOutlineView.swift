@@ -81,7 +81,6 @@ public struct CourseOutlineView: View {
                                             sequentialIndex: continueWith.sequentialIndex
                                         )
                                     }
-//"Saeed"
                                 }
                             }
                             

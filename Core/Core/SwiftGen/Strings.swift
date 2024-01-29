@@ -63,6 +63,8 @@ public enum CoreLocalization {
     public static let completed = CoreLocalization.tr("Localizable", "COURSE_DATES.COMPLETED", fallback: "Completed")
     /// Due next
     public static let dueNext = CoreLocalization.tr("Localizable", "COURSE_DATES.DUE_NEXT", fallback: "Due next")
+    /// Item Hidden
+    public static let itemHidden = CoreLocalization.tr("Localizable", "COURSE_DATES.ITEM_HIDDEN", fallback: "Item Hidden")
     /// Items Hidden
     public static let itemsHidden = CoreLocalization.tr("Localizable", "COURSE_DATES.ITEMS_HIDDEN", fallback: "Items Hidden")
     /// Past due

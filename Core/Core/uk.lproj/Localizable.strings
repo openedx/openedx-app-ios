@@ -97,6 +97,7 @@
 "COURSE_DATES.TOMORROW" = "Tomorrow";
 "COURSE_DATES.YESTERDAY" = "Yesterday";
 "COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
+"COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
 
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 "AUTHORIZATION_FAILED" = "Authorization failed.";
