@@ -16,20 +16,20 @@ public struct WebUnitView: View {
 
     private var url: String
     private var injections: [WebviewInjection]?
-    private var roundedBackgroundEnabled: Bool
+//    private var roundedBackgroundEnabled: Bool
 
     public init(
         url: String,
         viewModel: WebUnitViewModel,
-        injections: [WebviewInjection]?,
-        roundedBackgroundEnabled: Bool = true
+        injections: [WebviewInjection]?//,
+//        roundedBackgroundEnabled: Bool = true
     ) {
         self._viewModel = .init(
             wrappedValue: viewModel
         )
         self.url = url
         self.injections = injections
-        self.roundedBackgroundEnabled = roundedBackgroundEnabled
+//        self.roundedBackgroundEnabled = roundedBackgroundEnabled
     }
     
     @ViewBuilder
@@ -78,8 +78,8 @@ public struct WebUnitView: View {
                                         force: true
                                     )
                                 },
-                                isAddAjaxCallbackScript: true,
-                                roundedBackgroundEnabled: roundedBackgroundEnabled
+                                isAddAjaxCallbackScript: true//,
+//                                roundedBackgroundEnabled: roundedBackgroundEnabled
                             )
                             .frame(
                                 width: reader.size.width,

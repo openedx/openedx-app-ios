@@ -36,22 +36,22 @@ public struct WebView: UIViewRepresentable {
     
     var refreshCookies: () async -> Void
     var isAddAjaxCallbackScript: Bool
-    var roundedBackgroundEnabled: Bool
+//    var roundedBackgroundEnabled: Bool
 
     public init(
         viewModel: ViewModel,
         isLoading: Binding<Bool>,
         refreshCookies: @escaping () async -> Void,
         isAddAjaxCallbackScript: Bool = false,
-        navigationDelegate: WebViewNavigationDelegate? = nil,
-        roundedBackgroundEnabled: Bool = false
+        navigationDelegate: WebViewNavigationDelegate? = nil//,
+//        roundedBackgroundEnabled: Bool = false
     ) {
         self.viewModel = viewModel
         self._isLoading = isLoading
         self.refreshCookies = refreshCookies
         self.isAddAjaxCallbackScript = isAddAjaxCallbackScript
         self.webViewNavDelegate = navigationDelegate
-        self.roundedBackgroundEnabled = roundedBackgroundEnabled
+//        self.roundedBackgroundEnabled = roundedBackgroundEnabled
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -81,10 +81,10 @@ public struct WebView: UIViewRepresentable {
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
         webView.scrollView.alwaysBounceVertical = false
-        if roundedBackgroundEnabled {
-            webView.scrollView.layer.cornerRadius = 24
-            webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        }
+//        if roundedBackgroundEnabled {
+//            webView.scrollView.layer.cornerRadius = 24
+//            webView.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+//        }
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
 
         if isAddAjaxCallbackScript {
