@@ -20,7 +20,6 @@ public struct WebView: UIViewRepresentable {
         
         @Published var url: String
         let baseURL: String
-        let ajaxProvider = AjaxProvider()
         let injections: [WebviewInjection]?
         
         public init(url: String, baseURL: String, injections: [WebviewInjection]? = nil) {
@@ -35,19 +34,16 @@ public struct WebView: UIViewRepresentable {
     var webViewNavDelegate: WebViewNavigationDelegate?
     
     var refreshCookies: () async -> Void
-    var isAddAjaxCallbackScript: Bool
 
     public init(
         viewModel: ViewModel,
         isLoading: Binding<Bool>,
         refreshCookies: @escaping () async -> Void,
-        isAddAjaxCallbackScript: Bool = false,
         navigationDelegate: WebViewNavigationDelegate? = nil
     ) {
         self.viewModel = viewModel
         self._isLoading = isLoading
         self.refreshCookies = refreshCookies
-        self.isAddAjaxCallbackScript = isAddAjaxCallbackScript
         self.webViewNavDelegate = navigationDelegate
     }
 
@@ -79,13 +75,6 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-
-        if isAddAjaxCallbackScript {
-            viewModel.ajaxProvider.addAjaxCallbackScript(
-                in: webView.configuration.userContentController,
-                scriptMessageHandler: context.coordinator
-            )
-        }
         
         for injection in viewModel.injections ?? [] {
             let script = WKUserScript(
@@ -119,10 +108,6 @@ public struct WebView: UIViewRepresentable {
 
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
         var parent: WebView
-
-        private var ajaxProvider: AjaxProvider {
-            parent.viewModel.ajaxProvider
-        }
 
         init(_ parent: WebView) {
             self.parent = parent
@@ -247,10 +232,6 @@ public struct WebView: UIViewRepresentable {
             let messages = parent.viewModel.injections?.compactMap({$0.messages}).flatMap({$0}) ?? []
             if let currentMessage = messages.first(where: { $0.name == message.name }) {
                 currentMessage.handler(message.body, message.webView)
-            }
-            if message.name == parent.viewModel.ajaxProvider.AJAXCallBackHandler {
-                guard let data = message.body as? [AnyHashable: Any] else { return }
-                parent.viewModel.ajaxProvider.isCompletionCallback(with: data)
             }
         }
     }

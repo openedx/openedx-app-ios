@@ -43,4 +43,8 @@ public extension WebviewInjection {
             .webviewInjection()
     }
 
+    static var ajaxCallback: WebviewInjection {
+        AjaxInjection()
+            .webviewInjection()
+    }
 }
