@@ -8,5 +8,6 @@
 import Foundation
 
 class BrazeListener: PushNotificationsListener {
-    func notificationToThisListener(userinfo: [AnyHashable: Any]) -> Bool { false }
+    // check if userinfo contains data for this Listener
+    func shouldListenNotification(userinfo: [AnyHashable: Any]) -> Bool { false }
 }

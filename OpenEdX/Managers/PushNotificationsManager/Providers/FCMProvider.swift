@@ -8,7 +8,7 @@
 import Foundation
 
 class FCMProvider: PushNotificationsProvider {
-    func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data) {
+    func registerWithDeviceToken(deviceToken: Data) {
         
     }
     func didFailToRegisterForRemoteNotificationsWithError(error: Error) {

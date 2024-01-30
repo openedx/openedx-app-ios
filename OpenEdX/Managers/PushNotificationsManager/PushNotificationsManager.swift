@@ -11,18 +11,18 @@ import UIKit
 import Swinject
 
 public protocol PushNotificationsProvider {
-    func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data)
+    func registerWithDeviceToken(deviceToken: Data)
     func didFailToRegisterForRemoteNotificationsWithError(error: Error)
 }
 
 protocol PushNotificationsListener {
-    func notificationToThisListener(userinfo: [AnyHashable: Any]) -> Bool
+    func shouldListenNotification(userinfo: [AnyHashable: Any]) -> Bool
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any])
 }
 
 extension PushNotificationsListener {
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-       guard let dictionary = userInfo as? [String: Any], notificationToThisListener(userinfo: userInfo) else { return }
+       guard let dictionary = userInfo as? [String: Any], shouldListenNotification(userinfo: userInfo) else { return }
        let link = PushLink(dictionary: dictionary)
        if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) {
            deepLinkManager.processNotification(with: link)
@@ -80,7 +80,7 @@ class PushNotificationsManager {
     // Proccess functions from app delegate
     public func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data) {
         for provider in providers {
-            provider.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
+            provider.registerWithDeviceToken(deviceToken: deviceToken)
         }
     }
     public func didFailToRegisterForRemoteNotificationsWithError(error: Error) {

@@ -25,6 +25,7 @@ class DeepLinkManager {
     }
     
     private func serviceFor(config: ConfigProtocol) -> DeepLinkService? {
+        // init deep link service
         if config.branch.enabled {
             return BranchService()
         }
