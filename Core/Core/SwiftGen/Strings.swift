@@ -19,6 +19,8 @@ public enum CoreLocalization {
     public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "ACCEPT")
     /// CANCEL
     public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "CANCEL")
+    /// DELETE
+    public static let delete = CoreLocalization.tr("Localizable", "ALERT.DELETE", fallback: "DELETE")
     /// Keep editing
     public static let keepEditing = CoreLocalization.tr("Localizable", "ALERT.KEEP_EDITING", fallback: "Keep editing")
     /// Leave

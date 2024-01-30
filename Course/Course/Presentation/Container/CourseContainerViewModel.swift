@@ -280,7 +280,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     self.continueDownload()
                     self.router.dismiss(animated: true)
                 },
-                type: .default(positiveAction: CourseLocalization.Alert.accept)
+                type: .default(positiveAction: CourseLocalization.Alert.accept, image: nil)
             )
             return true
         }

@@ -51,6 +51,7 @@
 "ALERT.LOGOUT" = "Log out";
 "ALERT.LEAVE" = "Leave";
 "ALERT.KEEP_EDITING" = "Keep editing";
+"ALERT.DELETE" = "DELETE";
 
 "NO_INTERNET.OFFLINE" = "Offline";
 "NO_INTERNET.DISMISS" = "Dismiss";

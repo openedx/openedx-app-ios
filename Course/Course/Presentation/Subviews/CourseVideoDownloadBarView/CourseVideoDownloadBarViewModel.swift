@@ -119,6 +119,26 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     @MainActor
     func onToggle() async {
+        if allVideosDownloaded {
+            courseViewModel.router.presentAlert(
+                alertTitle: "Warning",
+                alertMessage: "Are you sure you want to delete all video(s) for \"\(courseStructure.displayName)\"?",
+                positiveAction: CoreLocalization.Alert.delete,
+                onCloseTapped: { [weak self] in
+                    self?.courseViewModel.router.dismiss(animated: true)
+                },
+                okTapped: { [weak self] in
+                    Task {
+                        await self?.downloadAll(
+                            isOn: false
+                        )
+                    }
+                    self?.courseViewModel.router.dismiss(animated: true)
+                },
+                type: .default(positiveAction: CoreLocalization.Alert.delete, image: CoreAssets.bgDelete.swiftUIImage)
+            )
+            return
+        }
         await downloadAll(
             isOn: isOn ? false : true
         )

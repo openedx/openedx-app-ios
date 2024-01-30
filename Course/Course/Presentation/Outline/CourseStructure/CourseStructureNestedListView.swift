@@ -27,6 +27,7 @@ struct CourseStructureNestedListView: View {
 
     var body: some View {
         ForEach(course.childs, content: disclosureGroup)
+
     }
 
     private func disclosureGroup(chapter: CourseChapter) -> some View {
@@ -151,14 +152,28 @@ struct CourseStructureNestedListView: View {
                 }
             case .finished:
                 Button {
-                    Task {
-                        await viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: sequential.id,
-                            state: state
+                    viewModel.router.presentAlert(
+                        alertTitle: "Warning",
+                        alertMessage: "Are you sure you want to delete video(s) for \"\(sequential.displayName)\"?",
+                        positiveAction: CoreLocalization.Alert.delete,
+                        onCloseTapped: {
+                            viewModel.router.dismiss(animated: true)
+                        },
+                        okTapped: {
+                            Task {
+                                await viewModel.onDownloadViewTap(
+                                    chapter: chapter,
+                                    blockId: sequential.id,
+                                    state: state
+                                )
+                            }
+                            viewModel.router.dismiss(animated: true)
+                        },
+                        type: .default(
+                            positiveAction: CoreLocalization.Alert.delete,
+                            image: CoreAssets.bgDelete.swiftUIImage
                         )
-                    }
-
+                    )
                 } label: {
                     DownloadFinishedView()
                         .accessibilityElement(children: .ignore)
