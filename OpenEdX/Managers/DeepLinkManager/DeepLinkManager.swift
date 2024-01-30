@@ -10,8 +10,6 @@ import Core
 import UIKit
 
 public protocol DeepLinkService {
-    func processNotification(with link: PushLink)
-    func processDeepLink(with params: [String: Any])
     func configureWith(launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
     func handledURLWith(app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool
 }
@@ -47,7 +45,7 @@ class DeepLinkManager {
     // Handle open url
     func handledURLWith(
         app: UIApplication,
-        open url: URL, 
+        open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
         if let service = service {
@@ -59,14 +57,14 @@ class DeepLinkManager {
     // This method process push notification with the link object
     func processNotification(with link: PushLink) {
         if let service = service {
-            service.processNotification(with: link)
+            // redirect if possible
         }
     }
     
     // This method process the deep link with response parameters
     func processDeepLink(with params: [String: Any]) {
         if let service = service {
-            service.processDeepLink(with: params)
+            // redirect if possible
         }
     }
     
