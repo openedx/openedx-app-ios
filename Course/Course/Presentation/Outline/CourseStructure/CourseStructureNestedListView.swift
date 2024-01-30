@@ -27,7 +27,6 @@ struct CourseStructureNestedListView: View {
 
     var body: some View {
         ForEach(course.childs, content: disclosureGroup)
-
     }
 
     private func disclosureGroup(chapter: CourseChapter) -> some View {
