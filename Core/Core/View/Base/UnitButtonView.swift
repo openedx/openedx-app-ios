@@ -55,10 +55,6 @@ public struct UnitButtonView: View {
         isVerticalNavigation ? -90 : 180
     }
 
-    private var prevButtonDegrees: Double {
-        isVerticalNavigation ? 90 : 0
-    }
-
     public init(
         type: UnitButtonType,
         isVerticalNavigation: Bool = true,
@@ -101,15 +97,24 @@ public struct UnitButtonView: View {
                         }
                     case .previous:
                         HStack {
-                            Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.accentColor)
-                                .font(Theme.Fonts.labelLarge)
-                                .padding(.leading, 20)
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .rotationEffect(Angle.degrees(prevButtonDegrees))
-                                .padding(.trailing, 20)
-                                .foregroundColor(Theme.Colors.accentColor)
-                            
+                            if isVerticalNavigation {
+                                Text(type.stringValue())
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .font(Theme.Fonts.labelLarge)
+                                    .padding(.leading, 20)
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                    .rotationEffect(Angle.degrees(90))
+                                    .padding(.trailing, 20)
+                                    .foregroundColor(Theme.Colors.accentColor)
+                            } else {
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                    .padding(.leading, 20)
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                Text(type.stringValue())
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .font(Theme.Fonts.labelLarge)
+                                    .padding(.trailing, 20)
+                            }
                         }
                     case .last:
                         HStack {
