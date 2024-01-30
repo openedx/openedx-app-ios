@@ -21,6 +21,10 @@ public enum CourseLocalization {
   public enum Alert {
     /// Accept
     public static let accept = CourseLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "Accept")
+    /// Are you sure you want to delete all video(s) for
+    public static let deleteAllVideos = CourseLocalization.tr("Localizable", "ALERT.DELETE_ALL_VIDEOS", fallback: "Are you sure you want to delete all video(s) for")
+    /// Are you sure you want to delete video(s) for
+    public static let deleteVideos = CourseLocalization.tr("Localizable", "ALERT.DELETE_VIDEOS", fallback: "Are you sure you want to delete video(s) for")
     /// Rotate your device to view this video in full screen.
     public static let rotateDevice = CourseLocalization.tr("Localizable", "ALERT.ROTATE_DEVICE", fallback: "Rotate your device to view this video in full screen.")
   }

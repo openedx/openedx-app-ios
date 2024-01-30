@@ -153,7 +153,7 @@ struct CourseStructureNestedListView: View {
                 Button {
                     viewModel.router.presentAlert(
                         alertTitle: "Warning",
-                        alertMessage: "Are you sure you want to delete video(s) for \"\(sequential.displayName)\"?",
+                        alertMessage: "\(CourseLocalization.Alert.deleteVideos) \"\(sequential.displayName)\"?",
                         positiveAction: CoreLocalization.Alert.delete,
                         onCloseTapped: {
                             viewModel.router.dismiss(animated: true)

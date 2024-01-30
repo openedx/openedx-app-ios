@@ -122,7 +122,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         if allVideosDownloaded {
             courseViewModel.router.presentAlert(
                 alertTitle: "Warning",
-                alertMessage: "Are you sure you want to delete all video(s) for \"\(courseStructure.displayName)\"?",
+                alertMessage: "\(CourseLocalization.Alert.deleteAllVideos) \"\(courseStructure.displayName)\"?",
                 positiveAction: CoreLocalization.Alert.delete,
                 onCloseTapped: { [weak self] in
                     self?.courseViewModel.router.dismiss(animated: true)

@@ -31,6 +31,8 @@
 
 "ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
 "ALERT.ACCEPT" = "Accept";
+"ALERT.DELETE_ALL_VIDEOS" = "Are you sure you want to delete all video(s) for";
+"ALERT.DELETE_VIDEOS" = "Are you sure you want to delete video(s) for";
 
 "COURSE_CONTAINER.COURSE" =  "Course";
 "COURSE_CONTAINER.VIDEOS" =  "Videos";

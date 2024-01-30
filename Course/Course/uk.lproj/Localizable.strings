@@ -30,6 +30,8 @@
 
 "ALERT.ROTATE_DEVICE" = "Поверніть пристрій, щоб переглянути це відео на весь екран.";
 "ALERT.ACCEPT" = "Accept";
+"ALERT.DELETE_ALL_VIDEOS" = "Are you sure you want to delete all video(s) for";
+"ALERT.DELETE_VIDEOS" = "Are you sure you want to delete video(s) for";
 
 "COURSE_CONTAINER.COURSE" =  "Курс";
 "COURSE_CONTAINER.VIDEOS" =  "Всі відео";
