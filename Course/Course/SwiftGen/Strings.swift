@@ -27,6 +27,8 @@ public enum CourseLocalization {
     public static let deleteVideos = CourseLocalization.tr("Localizable", "ALERT.DELETE_VIDEOS", fallback: "Are you sure you want to delete video(s) for")
     /// Rotate your device to view this video in full screen.
     public static let rotateDevice = CourseLocalization.tr("Localizable", "ALERT.ROTATE_DEVICE", fallback: "Rotate your device to view this video in full screen.")
+    /// Turning off the switch will stop downloading and delete all downloaded videos for
+    public static let stopDownloading = CourseLocalization.tr("Localizable", "ALERT.STOP_DOWNLOADING", fallback: "Turning off the switch will stop downloading and delete all downloaded videos for")
   }
   public enum Courseware {
     /// Back to outline

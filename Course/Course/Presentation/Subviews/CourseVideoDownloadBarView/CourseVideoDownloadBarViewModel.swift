@@ -128,20 +128,38 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                     self?.courseViewModel.router.dismiss(animated: true)
                 },
                 okTapped: { [weak self] in
+                    guard let self else { return }
                     Task {
-                        await self?.downloadAll(
-                            isOn: false
-                        )
+                        await self.downloadAll(isOn: false)
                     }
-                    self?.courseViewModel.router.dismiss(animated: true)
+                    self.courseViewModel.router.dismiss(animated: true)
                 },
                 type: .default(positiveAction: CoreLocalization.Alert.delete, image: CoreAssets.bgDelete.swiftUIImage)
             )
             return
         }
-        await downloadAll(
-            isOn: isOn ? false : true
-        )
+
+        if isOn {
+            courseViewModel.router.presentAlert(
+                alertTitle: "Warning",
+                alertMessage: "\(CourseLocalization.Alert.stopDownloading) \"\(courseStructure.displayName)\"?",
+                positiveAction: CoreLocalization.Alert.accept,
+                onCloseTapped: { [weak self] in
+                    self?.courseViewModel.router.dismiss(animated: true)
+                },
+                okTapped: { [weak self] in
+                    guard let self else { return }
+                    Task {
+                        await self.downloadAll(isOn: false)
+                    }
+                    self.courseViewModel.router.dismiss(animated: true)
+                },
+                type: .default(positiveAction: CoreLocalization.Alert.accept, image: nil)
+            )
+            return
+        }
+
+        await downloadAll(isOn: true)
     }
 
     @MainActor
