@@ -191,7 +191,7 @@ public class CorePersistence: CorePersistenceProtocol {
             do {
                 try context.save()
             } catch {
-                print("⛔️⛔️⛔️⛔️⛔️", error)
+                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
             }
         }
     }
@@ -205,10 +205,10 @@ public class CorePersistence: CorePersistenceProtocol {
                 for record in records {
                     context.delete(record)
                     try context.save()
-                    print("File erased successfully")
+                    debugLog("File erased successfully")
                 }
             } catch {
-                print("Error fetching records: \(error.localizedDescription)")
+                debugLog("Error fetching records: \(error.localizedDescription)")
             }
         }
     }
@@ -229,7 +229,7 @@ public class CorePersistence: CorePersistenceProtocol {
             do {
                 try context.save()
             } catch {
-                print("⛔️⛔️⛔️⛔️⛔️", error)
+                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
             }
         }
     }

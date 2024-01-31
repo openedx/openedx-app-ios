@@ -234,7 +234,7 @@ public class DownloadManager: DownloadManagerProtocol {
                     try FileManager.default.removeItem(at: fileUrl)
                 }
             } catch {
-                NSLog("Error deleting file: \(error.localizedDescription)")
+                debugLog("Error deleting file: \(error.localizedDescription)")
             }
         }
         currentDownloadEventPublisher.send(.courseCanceled(courseId))
@@ -251,7 +251,7 @@ public class DownloadManager: DownloadManagerProtocol {
                     try FileManager.default.removeItem(at: fileURL)
                 }
             } catch {
-                NSLog("Error deleting file: \(error.localizedDescription)")
+                debugLog("Error deleting file: \(error.localizedDescription)")
             }
         }
     }
@@ -263,7 +263,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 do {
                     try FileManager.default.removeItem(at: fileURL)
                 } catch {
-                    NSLog("Error deleting All files: \(error.localizedDescription)")
+                    debugLog("Error deleting All files: \(error.localizedDescription)")
                 }
             }
         }
@@ -407,7 +407,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 )
                 return URL(fileURLWithPath: directoryURL.path)
             } catch {
-                print(error.localizedDescription)
+                debugLog(error.localizedDescription)
                 return nil
             }
         }
@@ -418,7 +418,7 @@ public class DownloadManager: DownloadManagerProtocol {
         do {
             try data.write(to: fileURL)
         } catch {
-            NSLog("SaveFile Error", error.localizedDescription)
+            debugLog("SaveFile Error", error.localizedDescription)
         }
     }
 }

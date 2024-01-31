@@ -43,7 +43,7 @@ final class DownloadsViewModel: ObservableObject {
             try await manager.cancelDownloading(task: task)
             downloads.removeAll(where: { $0.id == task.id })
         } catch {
-            print(error)
+            debugLog(error)
         }
     }
 

@@ -62,7 +62,6 @@
 "SETTINGS.WIFI_TITLE" = "Тільки Wi-fi";
 "SETTINGS.WIFI_DESCRIPTION" = "Завантажувати відео, лише коли Wi-Fi увімкнено";
 "SETTINGS.VIDEO_QUALITY_TITLE" = "Якість потокового відео";
-"SETTINGS.VIDEO_DOWNLOAD_QUALITY_TITLE" = "Video download quality";
 "SETTINGS.VIDEO_QUALITY_DESCRIPTION" = "Авто (Рекомендовано)";
 
 "SETTINGS.QUALITY_AUTO_TITLE" = "Авто";
