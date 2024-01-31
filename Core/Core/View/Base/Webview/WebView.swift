@@ -57,7 +57,24 @@ public struct WebView: UIViewRepresentable {
             addObserver()
         }
         
+        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            webView.isHidden = true
+        }
+        
+        public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            webView.isHidden = false
+        }
+        
+        public func webView(
+            _ webView: WKWebView,
+            didFailProvisionalNavigation navigation: WKNavigation!,
+            withError error: Error
+        ) {
+            webView.isHidden = false
+        }
+        
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            webView.isHidden = false
             DispatchQueue.main.async {
                 self.parent.isLoading = false
             }
@@ -213,7 +230,7 @@ public struct WebView: UIViewRepresentable {
         webView.configuration.suppressesIncrementalRendering = true
         webView.isOpaque = false
         webView.backgroundColor = .clear
-        webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
+        webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         
