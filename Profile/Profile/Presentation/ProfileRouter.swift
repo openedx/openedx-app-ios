@@ -22,7 +22,10 @@ public protocol ProfileRouter: BaseRouter {
     
     func showVideoQualityView(viewModel: SettingsViewModel)
 
-    func showVideoDownloadQualityView(downloadQuality: DownloadQuality, didSelect: ((DownloadQuality) -> Void)?)
+    func showVideoDownloadQualityView(
+        downloadQuality: DownloadQuality,
+        didSelect: ((DownloadQuality) -> Void)?
+    )
 
     func showDeleteProfileView()
     
