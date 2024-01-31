@@ -47,6 +47,7 @@ public struct NavigationBar: View {
             HStack {
                 Text(title)
                     .titleSettings(color: titleColor)
+                    .accessibilityIdentifier("title_text")
             }
             .padding(.horizontal, 24)
             if leftButton {
@@ -59,6 +60,7 @@ public struct NavigationBar: View {
                             .padding(8)
                     })
                     .foregroundColor(Theme.Colors.styledButtonText)
+                    .accessibilityIdentifier("back_button")
                     
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
@@ -95,6 +97,7 @@ public struct NavigationBar: View {
                     .opacity(rightButtonIsActive ? 1 : 0.3)
                     .padding(.trailing, 16)
                     .foregroundColor(Theme.Colors.styledButtonText)
+                    .accessibilityIdentifier("right_button")
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .topTrailing)

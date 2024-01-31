@@ -68,7 +68,7 @@ class PlistManager:
                 with open(path, 'r') as file:
                     dict = yaml.safe_load(file)
                     if dict is not None:
-                        properties.update(dict)
+                        properties = merge_dicts(properties, dict)
             except FileNotFoundError:
                 print(f"{path} not found. Skipping.")
 
@@ -82,7 +82,7 @@ class PlistManager:
                 with open(path, 'r') as file:
                     yaml_data = yaml.safe_load(file)
                     if yaml_data is not None:
-                        plist_data.update(yaml_data)
+                        plist_data = merge_dicts(plist_data, yaml_data)
             except FileNotFoundError:
                 print(f"{path} not found. Skipping.")
             except yaml.YAMLError as e:
@@ -117,7 +117,14 @@ class PlistManager:
         except Exception as e:
             print(f"Error reading plist file: {e}")
             return None
-            
+
+def merge_dicts(d1, d2):
+    for k, v in d2.items():
+        if k in d1:
+            d1[k] = dict(v,**d1[k])
+        else:
+            d1[k] = v
+    return d1
 
 class ConfigurationManager:
     def __init__(self, plist_manager):

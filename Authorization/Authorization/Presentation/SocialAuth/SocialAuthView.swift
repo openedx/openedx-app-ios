@@ -52,6 +52,7 @@ struct SocialAuthView: View {
             Text("\(AuthLocalization.or) \(title.lowercased()):")
                 .padding(.vertical, 20)
                 .font(.system(size: 17, weight: .medium))
+                .accessibilityIdentifier("social_auth_title_text")
             Spacer()
         }
     }
@@ -67,7 +68,8 @@ struct SocialAuthView: View {
                     action: { Task { await viewModel.signInWithGoogle() } }
                 )
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
+                .accessibilityLabel("\(title) \(AuthLocalization.google)")
+                .accessibilityIdentifier("social_auth_google_button")
             }
             if viewModel.faceboolEnabled {
                 SocialAuthButton(
@@ -78,6 +80,7 @@ struct SocialAuthView: View {
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
+                .accessibilityIdentifier("social_auth_facebook_button")
             }
             if viewModel.microsoftEnabled {
                 SocialAuthButton(
@@ -88,6 +91,7 @@ struct SocialAuthView: View {
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.microsoft)")
+                .accessibilityIdentifier("social_auth_microsoft_button")
             }
             if viewModel.appleSignInEnabled {
                 SocialAuthButton(
@@ -98,6 +102,7 @@ struct SocialAuthView: View {
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(title) \(AuthLocalization.apple)")
+                .accessibilityIdentifier("social_auth_apple_button")
             }
         }
     }
