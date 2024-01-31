@@ -89,7 +89,7 @@ public protocol DownloadManagerProtocol {
     func getDownloadTasksForCourse(_ courseId: String) async -> [DownloadDataTask]
     func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws
     func cancelDownloading(task: DownloadDataTask) async throws
-    func cancelDownloading(courseId: String) async
+    func cancelDownloading(courseId: String) async throws
     func deleteFile(blocks: [CourseBlock]) async
     func deleteAllFiles() async
     func fileUrl(for blockId: String) async -> URL?
@@ -225,7 +225,7 @@ public class DownloadManager: DownloadManagerProtocol {
         try newDownload()
     }
 
-    public func cancelDownloading(courseId: String) async {
+    public func cancelDownloading(courseId: String) async throws {
         let downloads = await getDownloadTasksForCourse(courseId)
         for downloadData in downloads {
             do {
@@ -239,6 +239,7 @@ public class DownloadManager: DownloadManagerProtocol {
         }
         currentDownloadEventPublisher.send(.courseCanceled(courseId))
         downloadRequest?.cancel()
+        try newDownload()
     }
 
     public func deleteFile(blocks: [CourseBlock]) async {

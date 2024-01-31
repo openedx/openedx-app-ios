@@ -159,7 +159,12 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 blocks: blocks
             )
         } else {
-            await courseViewModel.manager.cancelDownloading(courseId: courseStructure.id)
+            do {
+                try await courseViewModel.manager.cancelDownloading(courseId: courseStructure.id)
+            } catch {
+                debugLog(error)
+            }
+
         }
     }
 
