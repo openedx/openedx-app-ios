@@ -30,7 +30,19 @@ public class SignUpViewModel: ObservableObject {
     }
     
     @Published var fields: [FieldConfiguration] = []
-    
+    var requiredFields: [FieldConfiguration] {
+        var fields = fields.filter { $0.field.required }
+        if config.agreement.eulaURL != nil,
+           !fields.contains(where: { $0.field.type == .checkbox }),
+           let ckeckbox = self.fields.first(where: { $0.field.type == .checkbox }) {
+            fields.append(ckeckbox)
+        }
+        return fields
+    }
+    var nonRequiredFields: [FieldConfiguration] {
+        fields.filter { !$0.field.required }
+    }
+
     let router: AuthorizationRouter
     let config: ConfigProtocol
     let cssInjector: CSSInjector
@@ -38,7 +50,7 @@ public class SignUpViewModel: ObservableObject {
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
-    
+
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,

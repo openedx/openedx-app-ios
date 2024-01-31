@@ -18,7 +18,8 @@ struct FieldsView: View {
     let proxy: GeometryProxy
     @Environment(\.colorScheme) var colorScheme
     @State private var text: String = ""
-    
+    @State private var sendMarketing: Bool = true
+
     var body: some View {
         ForEach(0..<fields.count, id: \.self) { index in
             let config = fields[index]
@@ -55,39 +56,59 @@ struct FieldsView: View {
             case .checkbox:
                 EmptyView()
                     .id(index)
-                Text("Checkbox is not support")
             case .plaintext:
-                if config.field.name == "honor_code",
-                   let eulaURL = self.config.agreement.eulaURL,
-                   let tosURL =  self.config.agreement.tosURL,
-                   let policy = self.config.agreement.privacyPolicyURL {
-                    let text = AuthLocalization.SignUp.agreement(
-                        "\(self.config.platformName)",
-                        eulaURL,
-                        "\(self.config.platformName)",
-                        tosURL,
-                        policy
-                    )
-                    Text(.init(text))
-                        .tint(Theme.Colors.accentColor)
-                        .font(Theme.Fonts.labelSmall)
-                        .padding(.vertical, 3)
-                        .id(UUID())
-                        .environment(\.openURL, OpenURLAction(handler: handleURL))
-                } else {
-                    HTMLFormattedText(
-                        cssInjector.injectCSS(
-                            colorScheme: colorScheme,
-                            html: config.field.label,
-                            type: .discovery,
-                            fontSize: 90, screenWidth: proxy.size.width)
-                    )
-                    .id(UUID())
-                    .padding(.horizontal, -6)
-                }
+                plaintext(config: config)
             case .unknown:
                 Text("This field not support")
             }
+        }
+    }
+
+    @ViewBuilder
+    private func plaintext(config: FieldConfiguration) -> some View {
+        if config.field.name == "honor_code",
+           let eulaURL = self.config.agreement.eulaURL,
+           let tosURL =  self.config.agreement.tosURL,
+           let policy = self.config.agreement.privacyPolicyURL {
+            let text = AuthLocalization.SignUp.agreement(
+                "\(self.config.platformName)",
+                eulaURL,
+                "\(self.config.platformName)",
+                tosURL,
+                policy
+            )
+            let checkBox = fields.first(where: {$0.field.type == .checkbox})
+            checkBox.flatMap { _ in
+                CheckBoxView(
+                    checked: $sendMarketing,
+                    text: "I agree that \(self.config.platformName) may send me marketing messages.",
+                    font: Theme.Fonts.labelSmall
+                )
+                .padding(.vertical, 10)
+                .onAppear {
+                    checkBox?.text = "\(sendMarketing)"
+                }
+                .onChange(of: sendMarketing) { newValue in
+                    checkBox?.text = "\(newValue)"
+                }
+            }
+            Text(.init(text))
+                .tint(Theme.Colors.accentColor)
+                .font(Theme.Fonts.labelSmall)
+                .padding(.vertical, 3)
+                .id(UUID())
+                .environment(\.openURL, OpenURLAction(handler: handleURL))
+            Divider()
+        } else {
+            HTMLFormattedText(
+                cssInjector.injectCSS(
+                    colorScheme: colorScheme,
+                    html: config.field.label,
+                    type: .discovery,
+                    fontSize: 90, screenWidth: proxy.size.width)
+            )
+            .id(UUID())
+            .padding(.horizontal, -6)
         }
     }
 

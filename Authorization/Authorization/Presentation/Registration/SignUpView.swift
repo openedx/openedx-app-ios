@@ -78,9 +78,9 @@ public struct SignUpView: View {
                                         .padding(.bottom, 20)
                                 }
 
-                                let requiredFields = viewModel.fields.filter {$0.field.required}
-                                let nonRequiredFields = viewModel.fields.filter {!$0.field.required}
-                                
+                                let requiredFields = viewModel.requiredFields
+                                let nonRequiredFields = viewModel.nonRequiredFields
+
                                 FieldsView(fields: requiredFields,
                                            router: viewModel.router,
                                            config: viewModel.config,
