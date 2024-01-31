@@ -81,7 +81,7 @@ struct FieldsView: View {
             checkBox.flatMap { _ in
                 CheckBoxView(
                     checked: $sendMarketing,
-                    text: "I agree that \(self.config.platformName) may send me marketing messages.",
+                    text: AuthLocalization.SignUp.marketingEmailTitle("\(self.config.platformName)"),
                     font: Theme.Fonts.labelSmall
                 )
                 .padding(.vertical, 10)

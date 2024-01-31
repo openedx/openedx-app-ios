@@ -30,6 +30,7 @@ accordance with the [Privacy Policy.](%@)";
 "SIGN_UP.SUCCESS_SIGNIN_LABEL" = "You've successfully signed in.";
 "SIGN_UP.SUCCESS_SIGNIN_SUBLABEL" = "We just need a little more information before you start learning.";
 "SIGN_UP.AGREEMENT" = "By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and vou acknowledge that edX and each Member process your personal data inaccordance with the [Privacy Policy.](%@)";
+"SIGN_UP.MARKETING_EMAIL_TITLE" = "I agree that %@ may send me marketing messages.";
 
 "FORGOT.TITLE"= "Forgot password";
 "FORGOT.DESCRIPTION" = "Please enter your log-in or recovery email address below and we will send you an email with instructions.";

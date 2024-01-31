@@ -81,6 +81,10 @@ public enum AuthLocalization {
     public static let createAccountBtn = AuthLocalization.tr("Localizable", "SIGN_UP.CREATE_ACCOUNT_BTN", fallback: "Create account")
     /// Hide optional Fields
     public static let hideFields = AuthLocalization.tr("Localizable", "SIGN_UP.HIDE_FIELDS", fallback: "Hide optional Fields")
+    /// I agree that %@ may send me marketing messages.
+    public static func marketingEmailTitle(_ p1: Any) -> String {
+      return AuthLocalization.tr("Localizable", "SIGN_UP.MARKETING_EMAIL_TITLE", String(describing: p1), fallback: "I agree that %@ may send me marketing messages.")
+    }
     /// Show optional Fields
     public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
     /// Create new account.
