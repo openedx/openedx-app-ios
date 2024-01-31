@@ -74,8 +74,7 @@ public struct WebUnitView: View {
                                     await viewModel.updateCookies(
                                         force: true
                                     )
-                                },
-                                isAddAjaxCallbackScript: true
+                                }
                             )
                             .frame(
                                 width: reader.size.width,

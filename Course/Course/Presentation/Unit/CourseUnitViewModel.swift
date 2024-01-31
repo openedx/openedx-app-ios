@@ -20,7 +20,7 @@ public enum LessonType: Equatable {
         case .course, .chapter, .vertical, .sequential, .unknown:
             return .unknown(block.studentUrl)
         case .html:
-            return .web(url: block.studentUrl, injections: [])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback])
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
@@ -35,11 +35,11 @@ public enum LessonType: Equatable {
             }
             
         case .problem:
-            return .web(url: block.studentUrl, injections: [])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback])
         case .dragAndDropV2:
-            return .web(url: block.studentUrl, injections: [.dragAndDropCss])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback, .dragAndDropCss])
         case .survey:
-            return .web(url: block.studentUrl, injections: [.surveyCSS])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback, .surveyCSS])
         }
     }
 }

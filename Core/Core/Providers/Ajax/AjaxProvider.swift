@@ -9,15 +9,7 @@ import Foundation
 import WebKit
 import Swinject
 
-public extension NSNotification {
-    static let blockCompletion = Notification.Name.init("block_completion")
-}
-
-final class AjaxProvider {
-
-    let AJAXCallBackHandler = "ajaxCallbackHandler"
-    let ajaxScriptFile = "ajaxHandler"
-
+struct AjaxInjection: WebViewScriptInjectionProtocol {
     private struct AJAXCallbackData {
         private enum Keys: String {
             case url = "url"
@@ -36,52 +28,60 @@ final class AjaxProvider {
         }
     }
 
-    enum XBlockCompletionCallbackType: String {
-       case html = "publish_completion"
-       case problem = "problem_check"
-       case dragAndDrop = "do_attempt"
-       case ora = "render_grade"
-   }
+    private enum XBlockCompletionCallbackType: String {
+        case html = "publish_completion"
+        case problem = "problem_check"
+        case dragAndDrop = "do_attempt"
+        case ora = "render_grade"
+    }
 
-    func addAjaxCallbackScript(
-        in contentController: WKUserContentController,
-        scriptMessageHandler: WKScriptMessageHandler
-    ) {
+    private let AJAXCallBackHandler = "ajaxCallbackHandler"
+    private let ajaxScriptFile = "ajaxHandler"
+
+    var id: String = "AjaxInjection"
+    var script: String {
         guard let url = Bundle(for: CoreBundle.self).url(forResource: ajaxScriptFile, withExtension: "js"),
-              let handler = try? String(contentsOf: url, encoding: .utf8) else { return }
-        let script = WKUserScript(source: handler, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-        contentController.add(scriptMessageHandler, name: AJAXCallBackHandler)
-        contentController.addUserScript(script)
+              let script = try? String(contentsOf: url, encoding: .utf8) else { return "" }
+        return script
     }
 
-    @discardableResult
-    func isCompletionCallback(with data: [AnyHashable: Any]) -> Bool {
-        let callback = AJAXCallbackData(data: data)
-        let requestURL = callback.url
+    var messages: [WebviewMessage]? {
+        [
+            WebviewMessage(name: AJAXCallBackHandler) { result, _ in
+                guard let data = result as? [AnyHashable: Any] else { return }
+                let callback = AJAXCallbackData(data: data)
+                let requestURL = callback.url
 
-        if callback.statusCode != 200 {
-            return false
-        }
+                if callback.statusCode != 200 {
+                    return
+                }
 
-        var complete = false
-        if isBlockOf(type: .ora, with: requestURL) {
-            complete = callback.responseText.contains("is--complete")
-        } else {
-            complete = isBlockOf(type: .html, with: requestURL)
-                || isBlockOf(type: .problem, with: requestURL)
-                || isBlockOf(type: .dragAndDrop, with: requestURL)
-        }
-        if complete {
-            NotificationCenter.default.post(
-                name: NSNotification.blockCompletion,
-                object: nil
-            )
-        }
-        return complete
+                var complete = false
+                if isBlockOf(type: .ora, with: requestURL) {
+                    complete = callback.responseText.contains("is--complete")
+                } else {
+                    complete = isBlockOf(type: .html, with: requestURL)
+                        || isBlockOf(type: .problem, with: requestURL)
+                        || isBlockOf(type: .dragAndDrop, with: requestURL)
+                }
+                if complete {
+                    NotificationCenter.default.post(
+                        name: NSNotification.blockCompletion,
+                        object: nil
+                    )
+                }
+            }
+         ]
     }
-
+    var forMainFrameOnly: Bool = false
+    
+    var injectionTime: WKUserScriptInjectionTime = .atDocumentEnd
+    
     private func isBlockOf(type: XBlockCompletionCallbackType, with requestURL: String) -> Bool {
         return requestURL.contains(type.rawValue)
     }
+}
 
+public extension NSNotification {
+    static let blockCompletion = Notification.Name.init("block_completion")
 }
