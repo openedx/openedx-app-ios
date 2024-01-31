@@ -24,6 +24,11 @@ public struct Theme {
         public private(set) static var cardViewStroke = ThemeAssets.cardViewStroke.swiftUIColor
         public private(set) static var certificateForeground = ThemeAssets.certificateForeground.swiftUIColor
         public private(set) static var commentCellBackground = ThemeAssets.commentCellBackground.swiftUIColor
+        public private(set) static var nextWeekTimelineColor = ThemeAssets.nextWeekTimelineColor.swiftUIColor
+        public private(set) static var pastDueTimelineColor = ThemeAssets.pastDueTimelineColor.swiftUIColor
+        public private(set) static var thisWeekTimelineColor = ThemeAssets.thisWeekTimelineColor.swiftUIColor
+        public private(set) static var todayTimelineColor = ThemeAssets.todayTimelineColor.swiftUIColor
+        public private(set) static var upcomingTimelineColor = ThemeAssets.upcomingTimelineColor.swiftUIColor
         public private(set) static var shadowColor = ThemeAssets.shadowColor.swiftUIColor
         public private(set) static var snackbarErrorColor = ThemeAssets.snackbarErrorColor.swiftUIColor
         public private(set) static var snackbarErrorTextColor = ThemeAssets.snackbarErrorTextColor.swiftUIColor
@@ -39,6 +44,8 @@ public struct Theme {
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
         public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
+        public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
+        public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -50,6 +57,11 @@ public struct Theme {
             cardViewStroke: Color = ThemeAssets.cardViewStroke.swiftUIColor,
             certificateForeground: Color = ThemeAssets.certificateForeground.swiftUIColor,
             commentCellBackground: Color = ThemeAssets.commentCellBackground.swiftUIColor,
+            nextWeekTimelineColor: Color = ThemeAssets.nextWeekTimelineColor.swiftUIColor,
+            pastDueTimelineColor: Color = ThemeAssets.pastDueTimelineColor.swiftUIColor,
+            thisWeekTimelineColor: Color = ThemeAssets.thisWeekTimelineColor.swiftUIColor,
+            todayTimelineColor: Color = ThemeAssets.todayTimelineColor.swiftUIColor,
+            upcomingTimelineColor: Color = ThemeAssets.upcomingTimelineColor.swiftUIColor,
             shadowColor: Color = ThemeAssets.shadowColor.swiftUIColor,
             snackbarErrorColor: Color = ThemeAssets.snackbarErrorColor.swiftUIColor,
             snackbarErrorTextColor: Color = ThemeAssets.snackbarErrorTextColor.swiftUIColor,
@@ -63,7 +75,9 @@ public struct Theme {
             textInputUnfocusedBackground: Color = ThemeAssets.textInputUnfocusedBackground.swiftUIColor,
             textInputUnfocusedStroke: Color = ThemeAssets.textInputUnfocusedStroke.swiftUIColor,
             warning: Color = ThemeAssets.warning.swiftUIColor,
-            white: Color = ThemeAssets.white.swiftUIColor
+            white: Color = ThemeAssets.white.swiftUIColor,
+            datesSectionBackground: Color = ThemeAssets.datesSectionBackground.swiftUIColor,
+            datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.alert = alert
@@ -74,6 +88,11 @@ public struct Theme {
             self.cardViewStroke = cardViewStroke
             self.certificateForeground = certificateForeground
             self.commentCellBackground = commentCellBackground
+            self.nextWeekTimelineColor = nextWeekTimelineColor
+            self.pastDueTimelineColor = pastDueTimelineColor
+            self.thisWeekTimelineColor = thisWeekTimelineColor
+            self.todayTimelineColor = todayTimelineColor
+            self.upcomingTimelineColor = upcomingTimelineColor
             self.shadowColor = shadowColor
             self.snackbarErrorColor = snackbarErrorColor
             self.snackbarErrorTextColor = snackbarErrorTextColor
@@ -88,6 +107,8 @@ public struct Theme {
             self.textInputUnfocusedStroke = textInputUnfocusedStroke
             self.warning = warning
             self.white = white
+            self.datesSectionBackground = datesSectionBackground
+            self.datesSectionStroke = datesSectionStroke
         }
     }
     

@@ -65,14 +65,22 @@ public enum CoreLocalization {
     public static let completed = CoreLocalization.tr("Localizable", "COURSE_DATES.COMPLETED", fallback: "Completed")
     /// Due next
     public static let dueNext = CoreLocalization.tr("Localizable", "COURSE_DATES.DUE_NEXT", fallback: "Due next")
+    /// Item Hidden
+    public static let itemHidden = CoreLocalization.tr("Localizable", "COURSE_DATES.ITEM_HIDDEN", fallback: "Item Hidden")
+    /// Items Hidden
+    public static let itemsHidden = CoreLocalization.tr("Localizable", "COURSE_DATES.ITEMS_HIDDEN", fallback: "Items Hidden")
     /// Past due
     public static let pastDue = CoreLocalization.tr("Localizable", "COURSE_DATES.PAST_DUE", fallback: "Past due")
     /// Today
     public static let today = CoreLocalization.tr("Localizable", "COURSE_DATES.TODAY", fallback: "Today")
+    /// Tomorrow
+    public static let tomorrow = CoreLocalization.tr("Localizable", "COURSE_DATES.TOMORROW", fallback: "Tomorrow")
     /// Unreleased
     public static let unreleased = CoreLocalization.tr("Localizable", "COURSE_DATES.UNRELEASED", fallback: "Unreleased")
     /// Verified Only
     public static let verifiedOnly = CoreLocalization.tr("Localizable", "COURSE_DATES.VERIFIED_ONLY", fallback: "Verified Only")
+    /// Yesterday
+    public static let yesterday = CoreLocalization.tr("Localizable", "COURSE_DATES.YESTERDAY", fallback: "Yesterday")
   }
   public enum Date {
     /// Ended
