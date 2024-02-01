@@ -17,7 +17,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
     var seconds: ((Double) -> Void)
     
     init(
-        videoURL: URL?, 
+        videoURL: URL?,
         controller: AVPlayerViewController,
         bitrate: CGSize,
         progress: @escaping ((Float) -> Void),
@@ -53,12 +53,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
         DispatchQueue.main.async {
             let asset = playerController.player?.currentItem?.asset as? AVURLAsset
             if asset?.url.absoluteString != videoURL?.absoluteString {
-                var player = playerController.player
-                if player == nil {
-                    player = AVPlayer()
-                    player?.allowsExternalPlayback = true
-                    playerController.player = player
-                }
+                let player = context.coordinator.player(from: playerController)
                 player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
                 player?.currentItem?.preferredMaximumResolution = videoResolution
                 
@@ -81,6 +76,16 @@ struct PlayerViewController: UIViewControllerRepresentable {
     class Coordinator {
         var currentPlayer: AVPlayer?
         var observer: Any?
+        
+        func player(from playerController: AVPlayerViewController) -> AVPlayer? {
+            var player = playerController.player
+            if player == nil {
+                player = AVPlayer()
+                player?.allowsExternalPlayback = true
+                playerController.player = player
+            }
+            return player
+        }
         
         func setPlayer(_ player: AVPlayer?, currentProgress: @escaping ((Float, Double) -> Void)) {
             if let observer = observer {
