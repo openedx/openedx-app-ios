@@ -19,6 +19,8 @@ public enum CoreLocalization {
     public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "ACCEPT")
     /// CANCEL
     public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "CANCEL")
+    /// DELETE
+    public static let delete = CoreLocalization.tr("Localizable", "ALERT.DELETE", fallback: "DELETE")
     /// Keep editing
     public static let keepEditing = CoreLocalization.tr("Localizable", "ALERT.KEEP_EDITING", fallback: "Keep editing")
     /// Leave
@@ -184,6 +186,24 @@ public enum CoreLocalization {
       /// Select email client:
       public static let title = CoreLocalization.tr("Localizable", "REVIEW.EMAIL.TITLE", fallback: "Select email client:")
     }
+  }
+  public enum Settings {
+    /// Lower data usage
+    public static let downloadQuality360Description = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_360_DESCRIPTION", fallback: "Lower data usage")
+    /// 360p
+    public static let downloadQuality360Title = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_360_TITLE", fallback: "360p")
+    /// 540p
+    public static let downloadQuality540Title = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_540_TITLE", fallback: "540p")
+    /// Best quality
+    public static let downloadQuality720Description = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_720_DESCRIPTION", fallback: "Best quality")
+    /// 720p
+    public static let downloadQuality720Title = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_720_TITLE", fallback: "720p")
+    /// Recommended
+    public static let downloadQualityAutoDescription = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_AUTO_DESCRIPTION", fallback: "Recommended")
+    /// Auto
+    public static let downloadQualityAutoTitle = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_AUTO_TITLE", fallback: "Auto")
+    /// Video download quality
+    public static let videoDownloadQualityTitle = CoreLocalization.tr("Localizable", "SETTINGS.VIDEO_DOWNLOAD_QUALITY_TITLE", fallback: "Video download quality")
   }
   public enum SignIn {
     /// Sign in

@@ -547,7 +547,19 @@ public class Router: AuthorizationRouter,
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
-    
+
+    public func showVideoDownloadQualityView(
+        downloadQuality: DownloadQuality,
+        didSelect: ((DownloadQuality) -> Void)?
+    ) {
+        let view = VideoDownloadQualityView(
+            downloadQuality: downloadQuality,
+            didSelect: didSelect
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+
     private func present<ToPresent: View>(transitionStyle: UIModalTransitionStyle, view: ToPresent) {
         navigationController.present(
             prepareToPresent(view, transitionStyle: transitionStyle),

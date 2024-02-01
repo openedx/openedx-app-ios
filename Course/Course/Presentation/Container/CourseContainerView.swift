@@ -33,7 +33,7 @@ public struct CourseContainerView: View {
             case .dates:
                 return CourseLocalization.CourseContainer.dates
             case .discussion:
-                return CourseLocalization.CourseContainer.discussion
+                return CourseLocalization.CourseContainer.discussions
             case .handounds:
                 return CourseLocalization.CourseContainer.handouts
             }
@@ -98,7 +98,7 @@ public struct CourseContainerView: View {
                     isVideo: false
                 )
             } else {
-                VStack {
+                VStack(spacing: 0) {
                     if viewModel.config.uiComponents.courseTopTabBarEnabled {
                         topTabBar
                     }
@@ -242,6 +242,7 @@ struct CourseScreensView_Previews: PreviewProvider {
                 config: ConfigMock(),
                 connectivity: Connectivity(),
                 manager: DownloadManagerMock(),
+                storage: CourseStorageMock(),
                 isActive: true,
                 courseStart: nil,
                 courseEnd: nil,

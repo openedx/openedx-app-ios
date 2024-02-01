@@ -80,27 +80,24 @@ struct ContinueWithView_Previews: PreviewProvider {
                 blockId: "1",
                 id: "1",
                 courseId: "123",
-                topicId: "1",
-                graded: false,
+                graded: true,
                 completion: 0,
-                type: .video,
-                displayName: "Lesson 1",
+                type: .html,
+                displayName: "Continue lesson",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             ),
             CourseBlock(
                 blockId: "2",
                 id: "2",
                 courseId: "123",
-                topicId: "2",
-                graded: false,
+                graded: true,
                 completion: 0,
-                type: .video,
-                displayName: "Lesson 2",
-                studentUrl: "2",
-                videoUrl: nil,
-                youTubeUrl: nil
+                type: .html,
+                displayName: "Continue lesson",
+                studentUrl: "",
+                encodedVideo: nil
+
             )
         ]
         
@@ -120,8 +117,7 @@ struct ContinueWithView_Previews: PreviewProvider {
                 completion: 1,
                 childs: blocks
             )
-        ) {
-        }
+        ) { }
     }
 }
 #endif

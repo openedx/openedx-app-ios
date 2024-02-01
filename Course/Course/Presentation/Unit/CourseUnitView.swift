@@ -81,6 +81,7 @@ public struct CourseUnitView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .clipped()
+
                     // MARK: Progress Dots
                     if !viewModel.courseUnitProgressEnabled {
                         LessonProgressView(viewModel: viewModel)
@@ -169,7 +170,7 @@ public struct CourseUnitView: View {
                     if isDropdownActive {
                         dropdown(block: block)
                     }
-                    switch LessonType.from(block) {
+                    switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
                         // MARK: YouTube
                     case let .youtube(url, blockID):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
@@ -190,6 +191,7 @@ public struct CourseUnitView: View {
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
+                            
                         } else {
                             EmptyView()
                         }
@@ -448,8 +450,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             ),
             CourseBlock(
                 blockId: "2",
@@ -461,8 +462,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 2",
                 studentUrl: "2",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             ),
             CourseBlock(
                 blockId: "3",
@@ -474,8 +474,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "Lesson 3",
                 studentUrl: "3",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             ),
             CourseBlock(
                 blockId: "4",
@@ -487,8 +486,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "4",
                 studentUrl: "4",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             ),
         ]
         
@@ -559,7 +557,8 @@ struct CourseUnitView_Previews: PreviewProvider {
             config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(), 
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         ), sectionName: "")
     }
