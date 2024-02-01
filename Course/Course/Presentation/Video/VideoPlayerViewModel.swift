@@ -32,8 +32,6 @@ public class VideoPlayerViewModel: ObservableObject {
         }
     }
 
-    public var didUnitCompletion: (() -> Void)?
-
     public init(
         blockID: String,
         courseID: String,

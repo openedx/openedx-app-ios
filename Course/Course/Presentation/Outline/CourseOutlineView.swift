@@ -159,7 +159,7 @@ public struct CourseOutlineView: View {
         )
         .onReceive(
             NotificationCenter.default.publisher(
-                for: NSNotification.blockChanged
+                for: .blockChanged
             )
         ) { _ in
             Task {

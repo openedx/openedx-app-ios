@@ -12,10 +12,6 @@ import Discussion
 import Combine
 import Theme
 
-public extension NSNotification {
-    static let blockChanged = Notification.Name.init("block_changed")
-}
-
 public struct CourseUnitView: View {
     
     @ObservedObject private var viewModel: CourseUnitViewModel
@@ -379,7 +375,7 @@ public struct CourseUnitView: View {
                     leftButtonAction: {
                         if viewModel.blockChanged {
                             NotificationCenter.default.post(
-                                name: NSNotification.blockChanged,
+                                name: .blockChanged,
                                 object: nil
                             )
                         }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-private enum Keys: String {
+private enum Keys: String, RawStringExtractable {
     case courseNestedListEnabled = "COURSE_NESTED_LIST_ENABLED"
     case courseTopTabBarEnabled = "COURSE_TOP_TAB_BAR_ENABLED"
     case courseBannerEnabled = "COURSE_BANNER_ENABLED"
@@ -21,10 +21,10 @@ public class UIComponentsConfig: NSObject {
     public var courseTopTabBarEnabled: Bool
 
     init(dictionary: [String: Any]) {
-        courseNestedListEnabled = dictionary[Keys.courseNestedListEnabled.rawValue] as? Bool ?? false
-        courseBannerEnabled = dictionary[Keys.courseBannerEnabled.rawValue] as? Bool ?? false
-        courseUnitProgressEnabled = dictionary[Keys.courseUnitProgressEnabled.rawValue] as? Bool ?? false
-        courseTopTabBarEnabled = dictionary[Keys.courseTopTabBarEnabled.rawValue] as? Bool ?? false
+        courseNestedListEnabled = dictionary[Keys.courseNestedListEnabled] as? Bool ?? false
+        courseBannerEnabled = dictionary[Keys.courseBannerEnabled] as? Bool ?? false
+        courseUnitProgressEnabled = dictionary[Keys.courseUnitProgressEnabled] as? Bool ?? false
+        courseTopTabBarEnabled = dictionary[Keys.courseTopTabBarEnabled] as? Bool ?? false
         super.init()
     }
 }
