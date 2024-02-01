@@ -31,13 +31,18 @@ public class SignUpViewModel: ObservableObject {
     
     @Published var fields: [FieldConfiguration] = []
     var requiredFields: [FieldConfiguration] {
-        var fields = fields.filter { $0.field.required }
-        if config.agreement.eulaURL != nil,
-           !fields.contains(where: { $0.field.type == .checkbox }),
-           let ckeckbox = self.fields.first(where: { $0.field.type == .checkbox }) {
-            fields.append(ckeckbox)
+       fields
+            .filter {
+                $0.field.required &&
+                !$0.field.isHonorCode &&
+                $0.field.type != .checkbox
+            }
+    }
+    var agreementsFields: [FieldConfiguration] {
+        fields.filter {
+            $0.field.isHonorCode ||
+            $0.field.type == .checkbox
         }
-        return fields
     }
     var nonRequiredFields: [FieldConfiguration] {
         fields.filter { !$0.field.required }

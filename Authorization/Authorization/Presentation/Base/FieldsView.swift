@@ -66,7 +66,7 @@ struct FieldsView: View {
 
     @ViewBuilder
     private func plaintext(config: FieldConfiguration) -> some View {
-        if config.field.name == "honor_code",
+        if config.field.isHonorCode,
            let eulaURL = self.config.agreement.eulaURL,
            let tosURL =  self.config.agreement.tosURL,
            let policy = self.config.agreement.privacyPolicyURL {
@@ -77,7 +77,7 @@ struct FieldsView: View {
                 tosURL,
                 policy
             )
-            let checkBox = fields.first(where: {$0.field.type == .checkbox})
+            let checkBox = fields.first(where: { $0.field.type == .checkbox })
             checkBox.flatMap { _ in
                 CheckBoxView(
                     checked: $sendMarketing,

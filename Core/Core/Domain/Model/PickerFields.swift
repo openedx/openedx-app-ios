@@ -26,7 +26,11 @@ public struct PickerFields {
     public let name: String
     public let instructions: String
     public let options: [Option]
-    
+
+    public var isHonorCode: Bool {
+        name == "honor_code"
+    }
+
     public struct Option {
         public let value: String
         public let name: String

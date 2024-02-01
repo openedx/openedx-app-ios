@@ -89,27 +89,41 @@ public struct SignUpView: View {
                                 let requiredFields = viewModel.requiredFields
                                 let nonRequiredFields = viewModel.nonRequiredFields
 
-                                FieldsView(fields: requiredFields,
-                                           router: viewModel.router,
-                                           config: viewModel.config,
-                                           cssInjector: viewModel.cssInjector,
-                                           proxy: proxy)
-                                
+                                FieldsView(
+                                    fields: requiredFields,
+                                    router: viewModel.router,
+                                    config: viewModel.config,
+                                    cssInjector: viewModel.cssInjector,
+                                    proxy: proxy
+                                )
+
                                 if !viewModel.isShowProgress {
-                                    DisclosureGroup(isExpanded: $disclosureGroupOpen, content: {
-                                        FieldsView(fields: nonRequiredFields,
+                                    DisclosureGroup(isExpanded: $disclosureGroupOpen) {
+                                        FieldsView(
+                                            fields: nonRequiredFields,
                                                    router: viewModel.router,
                                                    config: viewModel.config,
                                                    cssInjector: viewModel.cssInjector,
-                                                   proxy: proxy).padding(.horizontal, 1)
-                                    }, label: {
+                                                   proxy: proxy
+                                        )
+                                        .padding(.horizontal, 1)
+                                    } label: {
                                         Text(disclosureGroupOpen
                                              ? AuthLocalization.SignUp.hideFields
                                              : AuthLocalization.SignUp.showFields)
-                                    })
+                                    }
                                     .accessibilityLabel("optional_fields_text")
+                                    .padding(.top, 10)
                                 }
-                                
+
+                                FieldsView(
+                                    fields: viewModel.agreementsFields,
+                                    router: viewModel.router,
+                                    config: viewModel.config,
+                                    cssInjector: viewModel.cssInjector,
+                                    proxy: proxy
+                                )
+
                                 if viewModel.isShowProgress {
                                     HStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
@@ -124,7 +138,7 @@ public struct SignUpView: View {
                                         }
                                         viewModel.trackCreateAccountClicked()
                                     }
-                                    .padding(.top, 40)
+                                    .padding(.top, 30)
                                     .frame(maxWidth: .infinity)
                                     .accessibilityLabel("signup_button")
                                 }
