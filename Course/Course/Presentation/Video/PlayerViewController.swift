@@ -33,7 +33,8 @@ struct PlayerViewController: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         controller.modalPresentationStyle = .fullScreen
         controller.allowsPictureInPicturePlayback = true
-        
+        let player = AVPlayer()
+        controller.player = player
         context.coordinator.setPlayer(AVPlayer()) { progress, seconds in
             self.progress(progress)
             self.seconds(seconds)
