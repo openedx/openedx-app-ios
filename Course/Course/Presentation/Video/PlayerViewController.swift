@@ -35,7 +35,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
         controller.allowsPictureInPicturePlayback = true
         let player = AVPlayer()
         controller.player = player
-        context.coordinator.setPlayer(AVPlayer()) { progress, seconds in
+        context.coordinator.setPlayer(player) { progress, seconds in
             self.progress(progress)
             self.seconds(seconds)
         }
