@@ -266,7 +266,16 @@ public class CourseUnitViewModel: ObservableObject {
     private func setBlockCompletionForSelectedLesson() {
         verticals[verticalIndex].childs[index].completion = 1.0
         blockChanged = true
-        debugLog("block completion")
+        NotificationCenter.default.post(
+            name: .onBlockCompletion,
+            object: nil,
+            userInfo: [
+                "chapterID": chapters[chapterIndex].id,
+                "sequentialID": chapters[chapterIndex].childs[sequentialIndex].id,
+                "verticalID": chapters[chapterIndex].childs[sequentialIndex].childs[verticalIndex].id,
+                "blockID": verticals[verticalIndex].childs[index].id
+            ]
+        )
     }
 
     func route(to vertical: CourseVertical) {

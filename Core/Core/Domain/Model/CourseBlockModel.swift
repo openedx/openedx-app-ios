@@ -15,7 +15,7 @@ public struct CourseStructure: Equatable {
     public let encodedVideo: String
     public let displayName: String
     public let topicID: String?
-    public let childs: [CourseChapter]
+    public var childs: [CourseChapter]
     public let media: DataLayer.CourseMedia //FIXME Domain model
     public let certificate: Certificate?
     
@@ -55,7 +55,7 @@ public struct CourseChapter: Identifiable {
     public let id: String
     public let displayName: String
     public let type: BlockType
-    public let childs: [CourseSequential]
+    public var childs: [CourseSequential]
     
     public init(
         blockId: String,
@@ -79,8 +79,8 @@ public struct CourseSequential: Identifiable {
     public let displayName: String
     public let type: BlockType
     public let completion: Double
-    public let childs: [CourseVertical]
-    
+    public var childs: [CourseVertical]
+
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
     }

@@ -375,7 +375,7 @@ public struct CourseUnitView: View {
                     leftButtonAction: {
                         if viewModel.blockChanged {
                             NotificationCenter.default.post(
-                                name: .blockChanged,
+                                name: .onRefreshCourse,
                                 object: nil
                             )
                         }
