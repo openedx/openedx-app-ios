@@ -50,7 +50,7 @@ struct CourseStructureNestedListView: View {
                 .lineLimit(1)
                 .foregroundColor(Theme.Colors.textPrimary)
             Spacer()
-            Image(systemName: "chevron.right")
+            Image(systemName: "chevron.down")
                 .foregroundColor(Theme.Colors.accentColor)
                 .dropdownArrowRotationAnimation(value: isExpanded)
         }
