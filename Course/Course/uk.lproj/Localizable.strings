@@ -29,11 +29,15 @@
 "ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 
 "ALERT.ROTATE_DEVICE" = "Поверніть пристрій, щоб переглянути це відео на весь екран.";
+"ALERT.ACCEPT" = "Accept";
+"ALERT.DELETE_ALL_VIDEOS" = "Are you sure you want to delete all video(s) for";
+"ALERT.DELETE_VIDEOS" = "Are you sure you want to delete video(s) for";
+"ALERT.STOP_DOWNLOADING" = "Turning off the switch will stop downloading and delete all downloaded videos for";
 
 "COURSE_CONTAINER.COURSE" =  "Курс";
 "COURSE_CONTAINER.VIDEOS" =  "Всі відео";
-//"COURSE_CONTAINER.DATES" =  "Dates";
-"COURSE_CONTAINER.DISCUSSION" =  "Дискусії";
+"COURSE_CONTAINER.DATES" =  "Dates";
+"COURSE_CONTAINER.DISCUSSIONS" =  "Дискусії";
 "COURSE_CONTAINER.HANDOUTS" =  "Матеріали";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Матеріали в процесі розробки";
 
@@ -51,3 +55,17 @@
 "ACCESSIBILITY.DOWNLOAD" = "Скачати";
 "ACCESSIBILITY.CANCEL_DOWNLOAD" = "Скасувати завантаження";
 "ACCESSIBILITY.DELETE_DOWNLOAD" = "Видалити файл";
+
+"DOWNLOAD.DOWNLOADS" = "Downloads";
+"DOWNLOAD.DOWNLOAD" = "Download";
+"DOWNLOAD.ALL_VIDEOS_DOWNLOADED" = "All videos downloaded";
+"DOWNLOAD.DOWNLOADING_VIDEOS" = "Downloading videos...";
+"DOWNLOAD.DOWNLOAD_TO_DEVICE" = "Download to device";
+"DOWNLOAD.VIDEOS" = "Videos";
+"DOWNLOAD.REMAINING" = "Remaining";
+"DOWNLOAD.UNTITLED"= "Untitled";
+"DOWNLOAD.TOTAL"= "Total";
+
+"DOWNLOAD.CHANGE_QUALITY_ALERT" = "You cannot change the download video quality when all videos are downloading";
+"DOWNLOAD.DOWNLOAD_LARGE_FILE_MESSAGE" = "The videos you've selected are larger than 1 GB. Do you want to download these videos?";
+"DOWNLOAD.NO_WIFI_MESSAGE" = "Your current download settings only allow downloads over Wi-Fi.\nPlease connect to a Wi-Fi network or change your download settings.";

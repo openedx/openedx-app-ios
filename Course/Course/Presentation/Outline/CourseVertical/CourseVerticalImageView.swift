@@ -39,8 +39,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             )
         ]
         
@@ -55,8 +54,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .problem,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             )
         ]
         let blocks3 = [
@@ -70,8 +68,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .discussion,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             )
         ]
         let blocks4 = [
@@ -85,8 +82,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             )
         ]
         let blocks5 = [
@@ -100,8 +96,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "Block 1",
                 studentUrl: "",
-                videoUrl: nil,
-                youTubeUrl: nil
+                encodedVideo: nil
             )
         ]
         HStack {
