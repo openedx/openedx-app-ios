@@ -81,8 +81,7 @@ struct CourseUnitDropDownCell_Previews: PreviewProvider {
                     type: .video,
                     displayName: "Lesson 1",
                     studentUrl: "",
-                    videoUrl: nil,
-                    youTubeUrl: nil
+                    encodedVideo: nil
                 )
             ]
         )
