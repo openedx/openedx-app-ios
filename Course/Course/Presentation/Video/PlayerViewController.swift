@@ -33,15 +33,11 @@ struct PlayerViewController: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         controller.modalPresentationStyle = .fullScreen
         controller.allowsPictureInPicturePlayback = true
-        controller.player = AVPlayer()
         
-        addPeriodicTimeObserver(
-            controller,
-            currentProgress: { progress, seconds in
-                self.progress(progress)
-                self.seconds(seconds)
-            }
-        )
+        context.coordinator.setPlayer(AVPlayer()) { progress, seconds in
+            self.progress(progress)
+            self.seconds(seconds)
+        }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
@@ -52,40 +48,61 @@ struct PlayerViewController: UIViewControllerRepresentable {
         return controller
     }
     
-    private func addPeriodicTimeObserver(
-        _ controller: AVPlayerViewController,
-        currentProgress: @escaping ((Float, Double) -> Void)
-    ) {
-        let interval = CMTime(
-            seconds: 0.1,
-            preferredTimescale: CMTimeScale(NSEC_PER_SEC)
-        )
-        
-        self.controller.player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
-            var progress: Float = .zero
-            let currentSeconds = CMTimeGetSeconds(time)
-            guard let duration = controller.player?.currentItem?.duration else { return }
-            let totalSeconds = CMTimeGetSeconds(duration)
-            progress = Float(currentSeconds / totalSeconds)
-            currentProgress(progress, currentSeconds)
-        }
-    }
-    
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
         DispatchQueue.main.async {
             let asset = playerController.player?.currentItem?.asset as? AVURLAsset
             if asset?.url.absoluteString != videoURL?.absoluteString {
-                if playerController.player == nil {
-                    playerController.player = AVPlayer()
-                    playerController.player?.allowsExternalPlayback = true
+                var player = playerController.player
+                if player == nil {
+                    player = AVPlayer()
+                    player?.allowsExternalPlayback = true
+                    playerController.player = player
                 }
-                playerController.player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
-                playerController.player?.currentItem?.preferredMaximumResolution = videoResolution
-                addPeriodicTimeObserver(playerController, currentProgress: { progress, seconds in
+                player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
+                player?.currentItem?.preferredMaximumResolution = videoResolution
+                
+                context.coordinator.setPlayer(player) { progress, seconds in
                     self.progress(progress)
                     self.seconds(seconds)
-                })
+                }
             }
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    static func dismantleUIViewController(_ uiViewController: AVPlayerViewController, coordinator: Coordinator) {
+        coordinator.setPlayer(nil) { _, _ in }
+    }
+        
+    class Coordinator {
+        var currentPlayer: AVPlayer?
+        var observer: Any?
+        
+        func setPlayer(_ player: AVPlayer?, currentProgress: @escaping ((Float, Double) -> Void)) {
+            if let observer = observer {
+                currentPlayer?.removeTimeObserver(observer)
+                currentPlayer?.pause()
+            }
+            
+            let interval = CMTime(
+                seconds: 0.1,
+                preferredTimescale: CMTimeScale(NSEC_PER_SEC)
+            )
+            
+            observer = player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) {[weak player] time in
+                var progress: Float = .zero
+                let currentSeconds = CMTimeGetSeconds(time)
+                guard let duration = player?.currentItem?.duration else { return }
+                let totalSeconds = CMTimeGetSeconds(duration)
+                progress = Float(currentSeconds / totalSeconds)
+                currentProgress(progress, currentSeconds)
+            }
+            
+            currentPlayer = player
+            
         }
     }
 }
