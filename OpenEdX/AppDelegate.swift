@@ -9,14 +9,16 @@ import UIKit
 import Core
 import Swinject
 import FirebaseCore
-import FirebaseAnalytics
+//import FirebaseAnalytics
 import FirebaseCrashlytics
 import Profile
 import GoogleSignIn
 import FacebookCore
 import MSAL
 import Theme
-import BrazeKit
+//import BrazeKit
+import Segment
+import SegmentFirebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,7 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }
     
-    var braze: Braze?
+//    var braze: Braze?
+    var analytics: Analytics?
 
     var window: UIWindow?
         
@@ -52,6 +55,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 )
             }
             configureDeepLinkServices(launchOptions: launchOptions)
+            if config.segment.enabled {
+                let configuration = Configuration(writeKey: config.segment.writeKey)
+                                .trackApplicationLifecycleEvents(true)
+                                .flushInterval(10)
+                analytics = Analytics(configuration: configuration)
+                if config.firebase.isAnalyticsSourceSegment {
+                    analytics?.add(plugin: FirebaseDestination())
+                }
+            }
         }
 
         Theme.Fonts.registerFonts()

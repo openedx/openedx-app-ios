@@ -6,18 +6,22 @@
 //
 
 import Foundation
-import BrazeKit
+//import BrazeKit
 import UIKit
+import Segment
+import SegmentBrazeUI
 
 class BrazeProvider: PushNotificationsProvider {
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data) {
-        let configuration = Braze.Configuration(
-            apiKey: "",
-            endpoint: ""
+        (UIApplication.shared.delegate as? AppDelegate)?.analytics?.add(
+            plugin: BrazeDestination(
+                additionalConfiguration: { configuration in
+                    configuration.logger.level = .debug
+                }, additionalSetup: { braze in
+                    braze.notifications.register(deviceToken: deviceToken)
+                }
+            )
         )
-        let braze = Braze(configuration: configuration)
-        braze.notifications.register(deviceToken: deviceToken)
-        (UIApplication.shared.delegate as? AppDelegate)?.braze = braze
     }
     func didFailToRegisterForRemoteNotificationsWithError(error: Error) {
     }

@@ -7,13 +7,14 @@
 
 import Foundation
 import Core
-import FirebaseAnalytics
+//import FirebaseAnalytics
 import Authorization
 import Discovery
 import Dashboard
 import Profile
 import Course
 import Discussion
+import UIKit
 
 class AnalyticsManager: AuthorizationAnalytics,
                         MainScreenAnalytics,
@@ -23,8 +24,12 @@ class AnalyticsManager: AuthorizationAnalytics,
                         CourseAnalytics,
                         DiscussionAnalytics {
     
-    public func setUserID(_ id: String) {
-        Analytics.setUserID(id)
+    public func identify(id: String, username: String, email: String) {
+        let traits : [String: String] = [
+            "email": email,
+            "username": username
+        ]
+        (UIApplication.shared.delegate as? AppDelegate)?.analytics?.identify(userId: id, traits: traits)
     }
     
     public func userLogin(method: AuthMethod) {
@@ -309,7 +314,10 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     private func logEvent(_ event: Event, parameters: [String: Any]? = nil) {
-        Analytics.logEvent(event.rawValue, parameters: parameters)
+        (UIApplication.shared.delegate as? AppDelegate)?.analytics?.track(
+            name: event.rawValue,
+            properties: parameters
+        )
     }
 }
 
