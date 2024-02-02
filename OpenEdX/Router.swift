@@ -230,6 +230,20 @@ public class Router: AuthorizationRouter,
         }
     }
     
+    public func showWebProgramDetails(
+        pathID: String,
+        viewType: ProgramViewType
+    ) {
+        let view = ProgramWebviewView(
+            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+            router: Container.shared.resolve(DiscoveryRouter.self)!,
+            viewType: viewType,
+            pathID: pathID
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     public func showDiscoverySearch(searchQuery: String? = nil) {
         let viewModel = Container.shared.resolve(SearchViewModel<RunLoop>.self)!
         let view = SearchView(viewModel: viewModel, searchQuery: searchQuery)

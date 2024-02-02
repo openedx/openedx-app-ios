@@ -11,7 +11,11 @@ import SwiftUI
 import Theme
 
 public protocol WebViewNavigationDelegate: AnyObject {
-    func webView(_ webView: WKWebView, shouldLoad request: URLRequest, navigationAction: WKNavigationAction) -> Bool
+    func webView(
+        _ webView: WKWebView,
+        shouldLoad request: URLRequest,
+        navigationAction: WKNavigationAction
+    ) async -> Bool
 }
 
 public struct WebView: UIViewRepresentable {
