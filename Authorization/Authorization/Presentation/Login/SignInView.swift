@@ -214,6 +214,7 @@ public struct SignInView: View {
             )
             Text(.init(text))
                 .tint(Theme.Colors.accentColor)
+                .foregroundStyle(Theme.Colors.textSecondary)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
                 .padding(.bottom, 15)

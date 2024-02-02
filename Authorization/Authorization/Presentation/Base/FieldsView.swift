@@ -94,6 +94,7 @@ struct FieldsView: View {
             }
             Text(.init(text))
                 .tint(Theme.Colors.accentColor)
+                .foregroundStyle(Theme.Colors.textSecondary)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.vertical, 3)
                 .id(UUID())
