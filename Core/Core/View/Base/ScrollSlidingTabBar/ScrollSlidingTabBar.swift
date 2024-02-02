@@ -25,8 +25,7 @@ public struct ScrollSlidingTabBar: View {
         selection: Binding<Int>,
         tabs: [String],
         style: Style = .default,
-        onTap: ((Int) -> Void)? = nil)
-    {
+        onTap: ((Int) -> Void)? = nil) {
         self._selection = selection
         self.tabs = tabs
         self.style = style

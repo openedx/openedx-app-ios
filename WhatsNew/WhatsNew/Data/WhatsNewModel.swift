@@ -39,10 +39,8 @@ extension WhatsNewModel {
         let v1 = version1.split(separator: ".").compactMap { Int($0) }
         let v2 = version2.split(separator: ".").compactMap { Int($0) }
 
-        for (a, b) in zip(v1, v2) {
-            if a != b {
-                return a < b ? .orderedAscending : .orderedDescending
-            }
+        for (a, b) in zip(v1, v2) where a != b {
+            return a < b ? .orderedAscending : .orderedDescending
         }
 
         return v1.count < v2.count ? .orderedAscending : (v1.count > v2.count ? .orderedDescending : .orderedSame)
@@ -54,7 +52,6 @@ extension WhatsNewModel {
         }
         return latestVersion
     }
-    
     
     var domain: [WhatsNewPage] {
         guard let latestVersion = findLatestVersion(self.map { $0.version }) else { return [] }

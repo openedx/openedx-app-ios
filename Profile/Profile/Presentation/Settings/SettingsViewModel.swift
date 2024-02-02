@@ -30,8 +30,17 @@ public class SettingsViewModel: ObservableObject {
             }
         }
     }
-    let quality = Array([StreamingQuality.auto, StreamingQuality.low, StreamingQuality.medium, StreamingQuality.high].enumerated())
-    
+
+    let quality = Array(
+        [
+            StreamingQuality.auto,
+            StreamingQuality.low,
+            StreamingQuality.medium,
+            StreamingQuality.high
+        ]
+        .enumerated()
+    )
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -40,8 +49,8 @@ public class SettingsViewModel: ObservableObject {
         }
     }
     
-    private var userSettings: UserSettings
-    
+    @Published private(set) var userSettings: UserSettings
+
     private let interactor: ProfileInteractorProtocol
     let router: ProfileRouter
     
@@ -49,13 +58,19 @@ public class SettingsViewModel: ObservableObject {
         self.interactor = interactor
         self.router = router
         
-        self.userSettings = interactor.getSettings()
+        let userSettings = interactor.getSettings()
+        self.userSettings = userSettings
         self.wifiOnly = userSettings.wifiOnly
         self.selectedQuality = userSettings.streamingQuality
     }
+
+    func update(downloadQuality: DownloadQuality) {
+        self.userSettings.downloadQuality = downloadQuality
+        interactor.saveSettings(userSettings)
+    }
 }
 
-extension StreamingQuality {
+public extension StreamingQuality {
     
     func title() -> String {
         switch self {
