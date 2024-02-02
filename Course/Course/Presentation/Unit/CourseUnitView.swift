@@ -375,12 +375,6 @@ public struct CourseUnitView: View {
                 NavigationBar(
                     title: isDropdownActive ? sequenceTitle : "",
                     leftButtonAction: {
-                        if viewModel.blockChanged {
-                            NotificationCenter.default.post(
-                                name: .onRefreshCourse,
-                                object: nil
-                            )
-                        }
                         viewModel.router.back()
                         playerStateSubject.send(VideoPlayerState.kill)
                     }

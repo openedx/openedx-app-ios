@@ -174,16 +174,6 @@ public struct CourseOutlineView: View {
                 )
             }
         }
-
-        .onReceive(
-            NotificationCenter.default.publisher(
-                for: .onRefreshCourse
-            )
-        ) { _ in
-            Task {
-                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-            }
-        }
         .onReceive(
             NotificationCenter.default.publisher(
                 for: .onBlockCompletion
