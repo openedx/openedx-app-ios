@@ -123,6 +123,9 @@ public struct SignUpView: View {
                                     cssInjector: viewModel.cssInjector,
                                     proxy: proxy
                                 )
+                                .transaction { transaction in
+                                    transaction.animation = nil
+                                }
 
                                 if viewModel.isShowProgress {
                                     HStack(alignment: .center) {
