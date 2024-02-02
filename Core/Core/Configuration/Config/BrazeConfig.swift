@@ -7,7 +7,7 @@
 
 import Foundation
 
-private enum BrazeKeys: String {
+private enum BrazeKeys: String, RawStringExtractable {
     case enabled = "ENABLED"
     case pushNotificationsEnabled = "PUSH_NOTIFICATIONS_ENABLED"
 }
@@ -18,8 +18,8 @@ public final class BrazeConfig: NSObject {
     
     init(dictionary: [String: AnyObject]) {
         super.init()
-        enabled = dictionary[BrazeKeys.enabled.rawValue] as? Bool == true
-        let pushNotificationsEnabled = dictionary[BrazeKeys.pushNotificationsEnabled.rawValue] as? Bool ?? false
+        enabled = dictionary[BrazeKeys.enabled] as? Bool == true
+        let pushNotificationsEnabled = dictionary[BrazeKeys.pushNotificationsEnabled] as? Bool ?? false
         self.pushNotificationsEnabled = enabled && pushNotificationsEnabled
     }
 }
