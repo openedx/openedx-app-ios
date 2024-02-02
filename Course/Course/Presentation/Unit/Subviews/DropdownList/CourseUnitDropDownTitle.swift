@@ -24,7 +24,7 @@ struct CourseUnitDropDownTitle: View {
                         .opacity(showDropdown ? 0.7 : 1.0)
                         .lineLimit(1)
                     if isAvailable {
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.down")
                             .dropdownArrowRotationAnimation(value: showDropdown)
                     }
                 }

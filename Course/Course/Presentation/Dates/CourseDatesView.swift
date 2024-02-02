@@ -176,7 +176,7 @@ struct CompletedBlocks: View {
                     .padding(.leading, 16)
                     .padding(.vertical, 8)
                     
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "chevron.down")
                         .labelStyle(.iconOnly)
                         .dropdownArrowRotationAnimation(value: isExpanded)
                         .foregroundColor(Theme.Colors.textPrimary)

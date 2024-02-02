@@ -49,10 +49,10 @@ public class AppReviewViewModel: ObservableObject {
     @Published var clients: [ThirdPartyMailClient] = []
     let allClients = ThirdPartyMailClient.clients
     
-    private let config: Config
+    private let config: ConfigProtocol
     var storage: CoreStorage
     
-    public init(config: Config, storage: CoreStorage) {
+    public init(config: ConfigProtocol, storage: CoreStorage) {
         self.config = config
         self.storage = storage
     }

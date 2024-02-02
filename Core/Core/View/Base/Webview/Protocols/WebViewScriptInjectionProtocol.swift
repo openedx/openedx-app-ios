@@ -11,6 +11,7 @@ public protocol WebViewScriptInjectionProtocol: Equatable, Identifiable {
     var script: String { get }
     var messages: [WebviewMessage]? { get }
     var injectionTime: WKUserScriptInjectionTime { get }
+    var forMainFrameOnly: Bool { get }
 }
 
 extension WebViewScriptInjectionProtocol {
@@ -19,7 +20,8 @@ extension WebViewScriptInjectionProtocol {
             id: self.id,
             script: self.script,
             messages: self.messages,
-            injectionTime: self.injectionTime
+            injectionTime: self.injectionTime,
+            forMainFrameOnly: self.forMainFrameOnly
         )
     }
 }

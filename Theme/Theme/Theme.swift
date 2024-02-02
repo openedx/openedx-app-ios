@@ -43,6 +43,10 @@ public struct Theme {
         public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
+        public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
+        public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor
+        public private(set) static var progressSkip = ThemeAssets.progressSkip.swiftUIColor
+        public private(set) static var progressSelectedAndDone = ThemeAssets.selectedAndDone.swiftUIColor
         public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
         public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
         public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
@@ -76,6 +80,9 @@ public struct Theme {
             textInputUnfocusedStroke: Color = ThemeAssets.textInputUnfocusedStroke.swiftUIColor,
             warning: Color = ThemeAssets.warning.swiftUIColor,
             white: Color = ThemeAssets.white.swiftUIColor,
+            onProgress: Color = ThemeAssets.onProgress.swiftUIColor,
+            progressDone: Color = ThemeAssets.progressDone.swiftUIColor,
+            progressSkip: Color = ThemeAssets.progressSkip.swiftUIColor,
             datesSectionBackground: Color = ThemeAssets.datesSectionBackground.swiftUIColor,
             datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor
         ) {
@@ -107,6 +114,9 @@ public struct Theme {
             self.textInputUnfocusedStroke = textInputUnfocusedStroke
             self.warning = warning
             self.white = white
+            self.onProgress = onProgress
+            self.progressDone = progressDone
+            self.progressSkip = progressSkip
             self.datesSectionBackground = datesSectionBackground
             self.datesSectionStroke = datesSectionStroke
         }

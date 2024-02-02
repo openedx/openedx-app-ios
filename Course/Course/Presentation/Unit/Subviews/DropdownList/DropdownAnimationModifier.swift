@@ -24,7 +24,7 @@ struct DropdownArrowRotationModifier: ViewModifier {
     var value: Bool
     func body(content: Content) -> some View {
         content
-            .rotationEffect(value ? .degrees(90) : .degrees(0))
+            .rotationEffect(value ? .degrees(180) : .degrees(0))
             .animation(.easeOut(duration: 0.2), value: value)
     }
 }
