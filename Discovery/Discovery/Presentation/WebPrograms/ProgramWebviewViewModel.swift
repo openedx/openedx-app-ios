@@ -129,7 +129,7 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
                     self?.router.dismiss(animated: true)
                 }, okTapped: {
                     UIApplication.shared.open(url, options: [:])
-                }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue)
+                }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue, image: nil)
             )
             return true
         }
