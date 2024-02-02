@@ -158,7 +158,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     @MainActor
-    private  func handleNavigation(url: URL, urlAction: WebviewActions) async -> Bool {
+    private func handleNavigation(url: URL, urlAction: WebviewActions) async -> Bool {
         switch urlAction {
         case .courseEnrollment:
             if let urlData = parse(url: url), let courseID = urlData.courseId {
