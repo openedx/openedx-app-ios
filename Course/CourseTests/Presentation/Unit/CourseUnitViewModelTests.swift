@@ -24,8 +24,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .video,
                     displayName: "Lesson 1",
                     studentUrl: "",
-                    videoUrl: nil,
-                    youTubeUrl: nil),
+                    encodedVideo: nil
+                   ),
         CourseBlock(blockId: "2",
                     id: "2",
                     courseId: "123",
@@ -35,8 +35,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .video,
                     displayName: "Lesson 2",
                     studentUrl: "2",
-                    videoUrl: nil,
-                    youTubeUrl: nil),
+                    encodedVideo: nil
+                   ),
         CourseBlock(blockId: "3",
                     id: "3",
                     courseId: "123",
@@ -46,8 +46,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .unknown,
                     displayName: "Lesson 3",
                     studentUrl: "3",
-                    videoUrl: nil,
-                    youTubeUrl: nil),
+                    encodedVideo: nil
+                   ),
         CourseBlock(blockId: "4",
                     id: "4",
                     courseId: "123",
@@ -57,8 +57,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .unknown,
                     displayName: "4",
                     studentUrl: "4",
-                    videoUrl: nil,
-                    youTubeUrl: nil),
+                    encodedVideo: nil
+                   ),
     ]
     
     let chapters = [
@@ -126,6 +126,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -153,7 +154,8 @@ final class CourseUnitViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             analytics: analytics,
-            connectivity: connectivity,
+            connectivity: connectivity, 
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -187,6 +189,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -222,6 +225,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         
@@ -256,6 +260,7 @@ final class CourseUnitViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             connectivity: connectivity,
+            storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
         

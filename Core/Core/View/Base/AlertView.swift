@@ -9,7 +9,7 @@ import SwiftUI
 import Theme
 
 public enum AlertViewType: Equatable {
-    case `default`(positiveAction: String)
+    case `default`(positiveAction: String, image: SwiftUI.Image?)
     case action(String, SwiftUI.Image)
     case logOut
     case leaveProfile
@@ -110,6 +110,9 @@ public struct AlertView: View {
                                 if case let .action(_, image) = type {
                                     image.padding(.top, 48)
                                 }
+                                if case let .default(_, image) = type {
+                                    image.flatMap { $0.padding(.top, 48) }
+                                }
                                 Text(alertTitle)
                                     .font(Theme.Fonts.titleLarge)
                                     .padding(.horizontal, 40)
@@ -151,7 +154,7 @@ public struct AlertView: View {
                     }
                     HStack {
                         switch type {
-                        case let .`default`(positiveAction):
+                        case let .`default`(positiveAction, _):
                             HStack {
                                 StyledButton(positiveAction, action: { okTapped() })
                                     .frame(maxWidth: 135)
@@ -161,6 +164,7 @@ public struct AlertView: View {
                             }
                             .padding(.leading, 10)
                             .padding(.trailing, 10)
+                            .padding(.bottom, 10)
                         case let .action(action, _):
                             if !isHorizontal {
                                 VStack(spacing: 20) {

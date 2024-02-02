@@ -75,24 +75,50 @@ public class CoursePersistence: CoursePersistenceProtocol {
         
         let requestBlocks = CDCourseBlock.fetchRequest()
         requestBlocks.predicate = NSPredicate(format: "courseID = %@", courseID)
-        
+
         let blocks = try? context.fetch(requestBlocks).map {
             let userViewData = DataLayer.CourseDetailUserViewData(
                 transcripts: nil,
                 encodedVideo: DataLayer.CourseDetailEncodedVideoData(
-                    youTube: DataLayer.CourseDetailYouTubeData(url: $0.youTubeUrl),
-                    fallback: DataLayer.CourseDetailYouTubeData(url: $0.fallbackUrl)
-                ), topicID: "")
-            return DataLayer.CourseBlock(blockId: $0.blockId ?? "",
-                                          id: $0.id ?? "",
-                                          graded: $0.graded,
-                                          completion: $0.completion,
-                                          studentUrl: $0.studentUrl ?? "",
-                                          type: $0.type ?? "",
-                                          displayName: $0.displayName ?? "",
-                                          descendants: $0.descendants,
-                                          allSources: $0.allSources,
-                                          userViewData: userViewData)
+                    youTube: DataLayer.EncodedVideoData(
+                        url: $0.youTube?.url,
+                        fileSize: Int($0.youTube?.fileSize ?? 0)
+                    ),
+                    fallback: DataLayer.EncodedVideoData(
+                        url: $0.fallback?.url,
+                        fileSize: Int($0.fallback?.fileSize ?? 0)
+                    ),
+                    desktopMP4: DataLayer.EncodedVideoData(
+                        url: $0.desktopMP4?.url,
+                        fileSize: Int($0.desktopMP4?.fileSize ?? 0)
+                    ),
+                    mobileHigh: DataLayer.EncodedVideoData(
+                        url: $0.mobileHigh?.url,
+                        fileSize: Int($0.mobileHigh?.fileSize ?? 0)
+                    ),
+                    mobileLow: DataLayer.EncodedVideoData(
+                        url: $0.mobileLow?.url,
+                        fileSize: Int($0.mobileLow?.fileSize ?? 0)
+                    ),
+                    hls: DataLayer.EncodedVideoData(
+                        url: $0.hls?.url,
+                        fileSize: Int($0.hls?.fileSize ?? 0)
+                    )
+                ),
+                topicID: ""
+            )
+            return DataLayer.CourseBlock(
+                blockId: $0.blockId ?? "",
+                id: $0.id ?? "",
+                graded: $0.graded,
+                completion: $0.completion,
+                studentUrl: $0.studentUrl ?? "",
+                type: $0.type ?? "",
+                displayName: $0.displayName ?? "",
+                descendants: $0.descendants,
+                allSources: $0.allSources,
+                userViewData: userViewData
+            )
         }
         
         let dictionary = blocks?.reduce(into: [:]) { result, block in
@@ -135,10 +161,56 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 courseDetail.id = block.id
                 courseDetail.studentUrl = block.studentUrl
                 courseDetail.type = block.type
-                courseDetail.youTubeUrl = block.userViewData?.encodedVideo?.youTube?.url
-                courseDetail.fallbackUrl = block.userViewData?.encodedVideo?.fallback?.url
                 courseDetail.completion = block.completion ?? 0
-                
+
+                if block.userViewData?.encodedVideo?.youTube != nil {
+                    let youTube = CDCourseBlockVideo(context: self.context)
+                    youTube.url = block.userViewData?.encodedVideo?.youTube?.url
+                    youTube.fileSize = Int32(block.userViewData?.encodedVideo?.youTube?.fileSize ?? 0)
+                    youTube.streamPriority = Int32(block.userViewData?.encodedVideo?.youTube?.streamPriority ?? 0)
+                    courseDetail.youTube = youTube
+                }
+
+                if block.userViewData?.encodedVideo?.fallback != nil {
+                    let fallback = CDCourseBlockVideo(context: self.context)
+                    fallback.url = block.userViewData?.encodedVideo?.fallback?.url
+                    fallback.fileSize = Int32(block.userViewData?.encodedVideo?.fallback?.fileSize ?? 0)
+                    fallback.streamPriority = Int32(block.userViewData?.encodedVideo?.fallback?.streamPriority ?? 0)
+                    courseDetail.fallback = fallback
+                }
+
+                if block.userViewData?.encodedVideo?.desktopMP4 != nil {
+                    let desktopMP4 = CDCourseBlockVideo(context: self.context)
+                    desktopMP4.url = block.userViewData?.encodedVideo?.desktopMP4?.url
+                    desktopMP4.fileSize = Int32(block.userViewData?.encodedVideo?.desktopMP4?.fileSize ?? 0)
+                    desktopMP4.streamPriority = Int32(block.userViewData?.encodedVideo?.desktopMP4?.streamPriority ?? 0)
+                    courseDetail.desktopMP4 = desktopMP4
+                }
+
+                if block.userViewData?.encodedVideo?.mobileHigh != nil {
+                    let mobileHigh = CDCourseBlockVideo(context: self.context)
+                    mobileHigh.url = block.userViewData?.encodedVideo?.mobileHigh?.url
+                    mobileHigh.fileSize = Int32(block.userViewData?.encodedVideo?.mobileHigh?.fileSize ?? 0)
+                    mobileHigh.streamPriority = Int32(block.userViewData?.encodedVideo?.mobileHigh?.streamPriority ?? 0)
+                    courseDetail.mobileHigh = mobileHigh
+                }
+
+                if block.userViewData?.encodedVideo?.mobileLow != nil {
+                    let mobileLow = CDCourseBlockVideo(context: self.context)
+                    mobileLow.url = block.userViewData?.encodedVideo?.mobileLow?.url
+                    mobileLow.fileSize = Int32(block.userViewData?.encodedVideo?.mobileLow?.fileSize ?? 0)
+                    mobileLow.streamPriority = Int32(block.userViewData?.encodedVideo?.mobileLow?.streamPriority ?? 0)
+                    courseDetail.mobileLow = mobileLow
+                }
+
+                if block.userViewData?.encodedVideo?.hls != nil {
+                    let hls = CDCourseBlockVideo(context: self.context)
+                    hls.url = block.userViewData?.encodedVideo?.hls?.url
+                    hls.fileSize = Int32(block.userViewData?.encodedVideo?.hls?.fileSize ?? 0)
+                    hls.streamPriority = Int32(block.userViewData?.encodedVideo?.hls?.streamPriority ?? 0)
+                    courseDetail.hls = hls
+                }
+
                 do {
                     try context.save()
                 } catch {
