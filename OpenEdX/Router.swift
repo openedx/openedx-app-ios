@@ -240,11 +240,8 @@ public class Router: AuthorizationRouter,
             viewType: viewType,
             pathID: pathID
         )
-        
-        DispatchQueue.main.async { [weak self] in
-            let controller = UIHostingController(rootView: view)
-            self?.navigationController.pushViewController(controller, animated: true)
-        }
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showDiscoverySearch(searchQuery: String? = nil) {

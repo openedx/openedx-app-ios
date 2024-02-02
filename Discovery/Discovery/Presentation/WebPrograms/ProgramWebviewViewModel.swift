@@ -102,11 +102,11 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
         _ webView: WKWebView,
         shouldLoad request: URLRequest,
         navigationAction: WKNavigationAction
-    ) -> Bool {
+    ) async -> Bool {
         guard let URL = request.url else { return false }
         
         if let urlAction = urlAction(from: URL),
-           handleNavigation(url: URL, urlAction: urlAction) {
+           await handleNavigation(url: URL, urlAction: urlAction) {
             return true
         }
         
@@ -121,18 +121,16 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
         }
         
         if let url = request.url, outsideLink || capturedLink || externalLink, UIApplication.shared.canOpenURL(url) {
-            DispatchQueue.main.async { [weak self] in
-                self?.router.presentAlert(
-                    alertTitle: DiscoveryLocalization.Alert.leavingAppTitle,
-                    alertMessage: DiscoveryLocalization.Alert.leavingAppMessage,
-                    positiveAction: CoreLocalization.Webview.Alert.continue,
-                    onCloseTapped: {
-                        self?.router.dismiss(animated: true)
-                    }, okTapped: {
-                        UIApplication.shared.open(url, options: [:])
-                    }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue)
-                )
-            }
+            router.presentAlert(
+                alertTitle: DiscoveryLocalization.Alert.leavingAppTitle,
+                alertMessage: DiscoveryLocalization.Alert.leavingAppMessage,
+                positiveAction: CoreLocalization.Webview.Alert.continue,
+                onCloseTapped: { [weak self] in
+                    self?.router.dismiss(animated: true)
+                }, okTapped: {
+                    UIApplication.shared.open(url, options: [:])
+                }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue)
+            )
             return true
         }
         
@@ -146,13 +144,11 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
     }
     
     @MainActor
-    private  func handleNavigation(url: URL, urlAction: WebviewActions) -> Bool {
+    private func handleNavigation(url: URL, urlAction: WebviewActions) async -> Bool {
         switch urlAction {
         case .courseEnrollment:
             if let urlData = parse(url: url), let courseID = urlData.courseId {
-                Task {
-                    await enrollTo(courseID: courseID)
-                }
+                await enrollTo(courseID: courseID)
             }
         case .courseDetail:
             guard let pathID = detailPathID(from: url) else { return false }
@@ -164,22 +160,19 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
         case .enrolledCourseDetail:
             if let urlData = parse(url: url), let courseID = urlData.courseId {
                 showProgress = true
-                Task {
-                    do {
-                        courseDetails = try await getCourseDetail(courseID: courseID)
-                        showCourseDetails()
-                        courseDetails = nil
-                        showProgress = false
-                    } catch let error {
-                        showProgress = false
-                        if error.isInternetError || error is NoCachedDataError {
-                            errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                        } else {
-                            errorMessage = CoreLocalization.Error.unknownError
-                        }
+                do {
+                    courseDetails = try await getCourseDetail(courseID: courseID)
+                    showCourseDetails()
+                    courseDetails = nil
+                    showProgress = false
+                } catch let error {
+                    showProgress = false
+                    if error.isInternetError || error is NoCachedDataError {
+                        errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                    } else {
+                        errorMessage = CoreLocalization.Error.unknownError
                     }
                 }
-                
             }
             
         case .programDetail:
