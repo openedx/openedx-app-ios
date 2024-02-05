@@ -50,17 +50,15 @@ struct PlayerViewController: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
-        DispatchQueue.main.async {
-            let asset = playerController.player?.currentItem?.asset as? AVURLAsset
-            if asset?.url.absoluteString != videoURL?.absoluteString {
-                let player = context.coordinator.player(from: playerController)
-                player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
-                player?.currentItem?.preferredMaximumResolution = videoResolution
-                
-                context.coordinator.setPlayer(player) { progress, seconds in
-                    self.progress(progress)
-                    self.seconds(seconds)
-                }
+        let asset = playerController.player?.currentItem?.asset as? AVURLAsset
+        if asset?.url.absoluteString != videoURL?.absoluteString {
+            let player = context.coordinator.player(from: playerController)
+            player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
+            player?.currentItem?.preferredMaximumResolution = videoResolution
+            
+            context.coordinator.setPlayer(player) { progress, seconds in
+                self.progress(progress)
+                self.seconds(seconds)
             }
         }
     }
