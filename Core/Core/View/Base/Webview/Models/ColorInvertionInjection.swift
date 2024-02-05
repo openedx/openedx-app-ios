@@ -28,4 +28,5 @@ public struct ColorInvertionInjection: WebViewScriptInjectionProtocol, CSSInject
     }
     public var messages: [WebviewMessage]?
     public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
+    public var forMainFrameOnly: Bool = true
 }
