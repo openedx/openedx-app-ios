@@ -1,8 +1,8 @@
 //
-//  DiscoveryWebviewViewModel.swift
+//  ProgramWebviewViewModel.swift
 //  Discovery
 //
-//  Created by SaeedBashir on 12/16/23.
+//  Created by SaeedBashir on 1/23/24.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Core
 import SwiftUI
 import WebKit
 
-public class DiscoveryWebviewViewModel: ObservableObject {
+public class ProgramWebviewViewModel: ObservableObject {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
@@ -28,29 +28,19 @@ public class DiscoveryWebviewViewModel: ObservableObject {
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     var request: URLRequest?
-    private let storage: CoreStorage
-    var sourceScreen: LogistrationSourceScreen
-    
-    var userloggedIn: Bool {
-        return storage.user?.username?.isEmpty == false
-    }
     
     public init(
         router: DiscoveryRouter,
         config: ConfigProtocol,
         interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
-        analytics: DiscoveryAnalytics,
-        storage: CoreStorage,
-        sourceScreen: LogistrationSourceScreen = .default
+        analytics: DiscoveryAnalytics
     ) {
         self.router = router
         self.config = config
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
-        self.storage = storage
-        self.sourceScreen = sourceScreen
     }
     
     @MainActor
@@ -61,11 +51,6 @@ public class DiscoveryWebviewViewModel: ObservableObject {
     @MainActor
     func enrollTo(courseID: String) async {
         do {
-            guard userloggedIn else {
-                router.showRegisterScreen(sourceScreen: .discovery)
-                return
-            }
-            
             showProgress = true
             if courseDetails == nil {
                 courseDetails = try await getCourseDetail(courseID: courseID)
@@ -84,6 +69,7 @@ public class DiscoveryWebviewViewModel: ObservableObject {
             showProgress = false
             NotificationCenter.default.post(name: .onCourseEnrolled, object: courseID)
             showCourseDetails()
+            courseDetails = nil
         } catch let error {
             showProgress = false
             if error.isInternetError || error is NoCachedDataError {
@@ -110,7 +96,7 @@ public class DiscoveryWebviewViewModel: ObservableObject {
     }
 }
 
-extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
+extension ProgramWebviewViewModel: WebViewNavigationDelegate {
     @MainActor
     public func webView(
         _ webView: WKWebView,
@@ -169,18 +155,36 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
             router.showWebDiscoveryDetails(
                 pathID: pathID,
                 discoveryType: .courseDetail(pathID),
-                sourceScreen: sourceScreen
+                sourceScreen: .default
             )
         case .enrolledCourseDetail:
-            return showCourseDetails()
+            if let urlData = parse(url: url), let courseID = urlData.courseId {
+                showProgress = true
+                do {
+                    courseDetails = try await getCourseDetail(courseID: courseID)
+                    showCourseDetails()
+                    courseDetails = nil
+                    showProgress = false
+                } catch let error {
+                    showProgress = false
+                    if error.isInternetError || error is NoCachedDataError {
+                        errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                    } else {
+                        errorMessage = CoreLocalization.Error.unknownError
+                    }
+                }
+            }
             
         case .programDetail:
-            guard let pathID = programDetailPathId(from: url) else { return false }
+            guard let pathID = detailPathID(from: url) else { return false }
             router.showWebDiscoveryDetails(
                 pathID: pathID,
                 discoveryType: .programDetail(pathID),
-                sourceScreen: sourceScreen
+                sourceScreen: .default
             )
+        case .enrolledProgramDetail:
+            guard let pathID = detailPathID(from: url) else { return false }
+            router.showWebProgramDetails(pathID: pathID, viewType: .programDetail)
             
         default:
             break
@@ -191,8 +195,8 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     
     private func detailPathID(from url: URL) -> String? {
         guard isValidAppURLScheme(url),
-              let path = url.queryParameters?[URLParameterKeys.pathId] as? String,
-              url.appURLHost == WebviewActions.courseDetail.rawValue else { return nil }
+              let path = url.queryParameters?[URLParameterKeys.pathId] as? String
+        else { return nil }
         
         return path
     }
@@ -204,14 +208,6 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         let emailOptIn = (url.queryParameters?[URLParameterKeys.emailOptIn] as? String).flatMap {Bool($0)}
         
         return (courseId, emailOptIn ?? false)
-    }
-    
-    private func programDetailPathId(from url: URL) -> String? {
-        guard isValidAppURLScheme(url),
-              let path = url.queryParameters?[URLParameterKeys.pathId] as? String,
-              url.appURLHost == WebviewActions.programDetail.rawValue else { return nil }
-        
-        return path
     }
     
     @discardableResult private func showCourseDetails() -> Bool {

@@ -11,7 +11,7 @@ public struct DragAndDropCssInjection: WebViewScriptInjectionProtocol, CSSInject
     public var id: String = "DragAndDropCSSInjection"
     public var messages: [WebviewMessage]?
     public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
-    
+    public var forMainFrameOnly: Bool = true
     public var script: String {
         cssScript(with: css)
     }

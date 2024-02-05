@@ -85,17 +85,27 @@ struct MainScreenView: View {
             }
             .tag(MainTab.dashboard)
             
-            ZStack {
-                Text(CoreLocalization.Mainscreen.inDeveloping)
-                if updateAvaliable {
-                    UpdateNotificationView(config: viewModel.config)
+            if config?.program.enabled ?? false {
+                ZStack {
+                    if config?.program.type == .webview {
+                        ProgramWebviewView(
+                            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+                            router: Container.shared.resolve(DiscoveryRouter.self)!
+                        )
+                    } else if config?.program.type == .native {
+                        Text(CoreLocalization.Mainscreen.inDeveloping)
+                    }
+                    
+                    if updateAvaliable {
+                        UpdateNotificationView(config: viewModel.config)
+                    }
                 }
+                .tabItem {
+                    CoreAssets.programs.swiftUIImage.renderingMode(.template)
+                    Text(CoreLocalization.Mainscreen.programs)
+                }
+                .tag(MainTab.programs)
             }
-            .tabItem {
-                CoreAssets.programs.swiftUIImage.renderingMode(.template)
-                Text(CoreLocalization.Mainscreen.programs)
-            }
-            .tag(MainTab.programs)
             
             VStack {
                 ProfileView(
