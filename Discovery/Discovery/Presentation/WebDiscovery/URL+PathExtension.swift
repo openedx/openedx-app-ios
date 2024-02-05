@@ -12,10 +12,6 @@ public extension URL {
         return host ?? ""
     }
     
-    var isValidAppURLScheme: Bool {
-        return scheme ?? "" == URIString.appURLScheme.rawValue
-    }
-    
     var queryParameters: [String: Any]? {
         guard let queryString = query else {
             return nil

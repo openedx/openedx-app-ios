@@ -59,6 +59,10 @@ public enum ThemeAssets {
   public static let todayTimelineColor = ColorAsset(name: "TodayTimelineColor")
   public static let upcomingTimelineColor = ColorAsset(name: "UpcomingTimelineColor")
   public static let pastDueTimelineColor = ColorAsset(name: "pastDueTimelineColor")
+  public static let onProgress = ColorAsset(name: "OnProgress")
+  public static let progressDone = ColorAsset(name: "ProgressDone")
+  public static let progressSkip = ColorAsset(name: "ProgressSkip")
+  public static let selectedAndDone = ColorAsset(name: "SelectedAndDone")
   public static let appLogo = ImageAsset(name: "appLogo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

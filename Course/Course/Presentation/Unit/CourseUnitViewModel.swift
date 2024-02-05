@@ -20,7 +20,7 @@ public enum LessonType: Equatable {
         case .course, .chapter, .vertical, .sequential, .unknown:
             return .unknown(block.studentUrl)
         case .html:
-            return .web(url: block.studentUrl, injections: [])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback])
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
@@ -35,11 +35,11 @@ public enum LessonType: Equatable {
             }
             
         case .problem:
-            return .web(url: block.studentUrl, injections: [])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback])
         case .dragAndDropV2:
-            return .web(url: block.studentUrl, injections: [.dragAndDropCss])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback, .dragAndDropCss])
         case .survey:
-            return .web(url: block.studentUrl, injections: [.surveyCSS])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback, .surveyCSS])
         }
     }
 }
@@ -76,6 +76,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     private let interactor: CourseInteractorProtocol
     let router: CourseRouter
+    let config: ConfigProtocol
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     let storage: CourseStorage
@@ -92,7 +93,11 @@ public class CourseUnitViewModel: ObservableObject {
     func loadIndex() {
         index = selectLesson()
     }
-    
+
+    var courseUnitProgressEnabled: Bool {
+        config.uiComponents.courseUnitProgressEnabled
+    }
+
     public init(
         lessonID: String,
         courseID: String,
@@ -102,6 +107,7 @@ public class CourseUnitViewModel: ObservableObject {
         sequentialIndex: Int,
         verticalIndex: Int,
         interactor: CourseInteractorProtocol,
+        config: ConfigProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
         connectivity: ConnectivityProtocol,
@@ -117,6 +123,7 @@ public class CourseUnitViewModel: ObservableObject {
         self.verticalIndex = verticalIndex
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         self.interactor = interactor
+        self.config = config
         self.router = router
         self.analytics = analytics
         self.connectivity = connectivity
@@ -164,6 +171,7 @@ public class CourseUnitViewModel: ObservableObject {
     func blockCompletionRequest(blockID: String) async {
         do {
             try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
+            setBlockCompletionForSelectedLesson()
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -172,7 +180,7 @@ public class CourseUnitViewModel: ObservableObject {
             }
         }
     }
-    
+
     func nextTitles() {
         if index != 0 {
             previousLesson = verticals[verticalIndex].childs[index - 1].displayName
@@ -258,6 +266,20 @@ public class CourseUnitViewModel: ObservableObject {
         } else {
             return nextData(from: resultData)
         }
+    }
+
+    private func setBlockCompletionForSelectedLesson() {
+        verticals[verticalIndex].childs[index].completion = 1.0
+        NotificationCenter.default.post(
+            name: .onBlockCompletion,
+            object: nil,
+            userInfo: [
+                "chapterID": chapters[chapterIndex].id,
+                "sequentialID": chapters[chapterIndex].childs[sequentialIndex].id,
+                "verticalID": chapters[chapterIndex].childs[sequentialIndex].childs[verticalIndex].id,
+                "blockID": verticals[verticalIndex].childs[index].id
+            ]
+        )
     }
 
     func route(to vertical: CourseVertical) {

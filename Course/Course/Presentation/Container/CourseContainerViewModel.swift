@@ -229,6 +229,47 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         )
     }
 
+    func completeBlock(
+        chapterID: String,
+        sequentialID: String,
+        verticalID: String,
+        blockID: String
+    ) {
+        guard let chapterIndex = courseStructure?
+            .childs.firstIndex(where: { $0.id == chapterID }) else {
+            return
+        }
+        guard let sequentialIndex = courseStructure?
+            .childs[chapterIndex]
+            .childs.firstIndex(where: { $0.id == sequentialID }) else {
+            return
+        }
+
+        guard let verticalIndex = courseStructure?
+            .childs[chapterIndex]
+            .childs[sequentialIndex]
+            .childs.firstIndex(where: { $0.id == verticalID }) else {
+            return
+        }
+
+        guard let blockIndex = courseStructure?
+            .childs[chapterIndex]
+            .childs[sequentialIndex]
+            .childs[verticalIndex]
+            .childs.firstIndex(where: { $0.id == blockID }) else {
+            return
+        }
+
+        courseStructure?
+            .childs[chapterIndex]
+            .childs[sequentialIndex]
+            .childs[verticalIndex]
+            .childs[blockIndex].completion = 1
+        courseStructure.map {
+            courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: $0)
+        }
+    }
+
     func hasVideoForDowbloads() -> Bool {
         guard let courseVideosStructure = courseVideosStructure else {
             return false

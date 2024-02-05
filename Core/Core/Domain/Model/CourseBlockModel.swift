@@ -19,7 +19,7 @@ public struct CourseStructure: Equatable {
     public let encodedVideo: String
     public let displayName: String
     public let topicID: String?
-    public let childs: [CourseChapter]
+    public var childs: [CourseChapter]
     public let media: DataLayer.CourseMedia //FIXME Domain model
     public let certificate: Certificate?
     
@@ -72,7 +72,7 @@ public struct CourseChapter: Identifiable {
     public let id: String
     public let displayName: String
     public let type: BlockType
-    public let childs: [CourseSequential]
+    public var childs: [CourseSequential]
     
     public init(
         blockId: String,
@@ -96,8 +96,8 @@ public struct CourseSequential: Identifiable {
     public let displayName: String
     public let type: BlockType
     public let completion: Double
-    public let childs: [CourseVertical]
-    
+    public var childs: [CourseVertical]
+
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
     }
@@ -130,7 +130,7 @@ public struct CourseVertical: Identifiable, Hashable {
     public let displayName: String
     public let type: BlockType
     public let completion: Double
-    public let childs: [CourseBlock]
+    public var childs: [CourseBlock]
     
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
@@ -165,7 +165,7 @@ public struct SubtitleUrl: Equatable {
     }
 }
 
-public struct CourseBlock: Hashable {
+public struct CourseBlock: Hashable, Identifiable {
     public static func == (lhs: CourseBlock, rhs: CourseBlock) -> Bool {
         lhs.id == rhs.id &&
         lhs.blockId == rhs.blockId &&
@@ -175,13 +175,13 @@ public struct CourseBlock: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     public let blockId: String
     public let id: String
     public let courseId: String
     public let topicId: String?
     public let graded: Bool
-    public let completion: Double
+    public var completion: Double
     public let type: BlockType
     public let displayName: String
     public let studentUrl: String
