@@ -24,6 +24,8 @@
 		02F1752F2A4DA3B60019CD70 /* DiscoveryAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F1752E2A4DA3B60019CD70 /* DiscoveryAnalytics.swift */; };
 		02F3BFDF29252F2F0051930C /* DiscoveryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFDE29252F2F0051930C /* DiscoveryRouter.swift */; };
 		072787AD28D34D15002E9142 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 072787AC28D34D15002E9142 /* Core.framework */; };
+		1402A0C92B61012F00A0A00B /* ProgramWebviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1402A0C72B61012F00A0A00B /* ProgramWebviewView.swift */; };
+		1402A0CA2B61012F00A0A00B /* ProgramWebviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1402A0C82B61012F00A0A00B /* ProgramWebviewViewModel.swift */; };
 		63C6E9CBBF5E33B8B9B4DFEC /* Pods_App_Discovery_DiscoveryUnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 780FC373E1D479E58870BD85 /* Pods_App_Discovery_DiscoveryUnitTests.framework */; };
 		9F47BCC672941A9854404EC7 /* Pods_App_Discovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 919E55130969D91EF03C4C0B /* Pods_App_Discovery.framework */; };
 		CFC8494C299A66080055E497 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CFC8494E299A66080055E497 /* Localizable.stringsdict */; };
@@ -76,6 +78,8 @@
 		0727879928D34C03002E9142 /* Discovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Discovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		072787AC28D34D15002E9142 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C3850985F33C1AD72BF1B04 /* Pods-App-Discovery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery.release.xcconfig"; path = "Target Support Files/Pods-App-Discovery/Pods-App-Discovery.release.xcconfig"; sourceTree = "<group>"; };
+		1402A0C72B61012F00A0A00B /* ProgramWebviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgramWebviewView.swift; sourceTree = "<group>"; };
+		1402A0C82B61012F00A0A00B /* ProgramWebviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgramWebviewViewModel.swift; sourceTree = "<group>"; };
 		2334C76D248D0A95634AFFD9 /* Pods-App-Discovery-DiscoveryUnitTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 		2760B1F234E01FFCB73F41C2 /* Pods-App-Discovery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery.debug.xcconfig"; path = "Target Support Files/Pods-App-Discovery/Pods-App-Discovery.debug.xcconfig"; sourceTree = "<group>"; };
 		445F0675BF0E1DEB78F3CE73 /* Pods-App-Discovery-DiscoveryUnitTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.releasedev.xcconfig"; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 		070019A228F6EF2700D5FC78 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				1402A0C62B61011D00A0A00B /* WebPrograms */,
 				E0B9F6952B4D57F800168366 /* NativeDiscovery */,
 				E0D5861D2B300095009B4BA7 /* WebDiscovery */,
 				029242E52AE6976E00A940EC /* UpdateViews */,
@@ -264,6 +269,15 @@
 				CFC8494F299BE52C0055E497 /* SearchViewModelTests.swift */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		1402A0C62B61011D00A0A00B /* WebPrograms */ = {
+			isa = PBXGroup;
+			children = (
+				1402A0C72B61012F00A0A00B /* ProgramWebviewView.swift */,
+				1402A0C82B61012F00A0A00B /* ProgramWebviewViewModel.swift */,
+			);
+			path = WebPrograms;
 			sourceTree = "<group>";
 		};
 		88B044C704F7C52F249CC424 /* Pods */ = {
@@ -548,10 +562,12 @@
 				02F3BFDF29252F2F0051930C /* DiscoveryRouter.swift in Sources */,
 				E0D586252B300134009B4BA7 /* URL+PathExtension.swift in Sources */,
 				E0B9F6A62B4D620100168366 /* Data_CourseDetailsResponse.swift in Sources */,
+				1402A0C92B61012F00A0A00B /* ProgramWebviewView.swift in Sources */,
 				029737422949FB3B0051696B /* DiscoveryPersistenceProtocol.swift in Sources */,
 				0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */,
 				029242EB2AE6AB7B00A940EC /* UpdateNotificationView.swift in Sources */,
 				02EF39DC28D86BEF0058F6BD /* Strings.swift in Sources */,
+				1402A0CA2B61012F00A0A00B /* ProgramWebviewViewModel.swift in Sources */,
 				E0B9F69C2B4D57F800168366 /* SearchView.swift in Sources */,
 				E0D586202B300095009B4BA7 /* DiscoveryWebviewViewModel.swift in Sources */,
 				02F1752F2A4DA3B60019CD70 /* DiscoveryAnalytics.swift in Sources */,

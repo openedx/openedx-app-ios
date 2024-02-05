@@ -42,7 +42,7 @@ public struct SettingsView: View {
                         }.foregroundColor(Theme.Colors.textPrimary)
                         Divider()
                         
-                        // MARK: Download Quality
+                        // MARK: Streaming Quality
                         HStack {
                             Button(action: {
                                 viewModel.router.showVideoQualityView(viewModel: viewModel)
@@ -56,10 +56,33 @@ public struct SettingsView: View {
                                 .frame(width: 10)
                         }
                         Divider()
+
+                        // MARK: Download Quality
+                        HStack {
+                            Button {
+                                viewModel.router.showVideoDownloadQualityView(
+                                    downloadQuality: viewModel.userSettings.downloadQuality,
+                                    didSelect: viewModel.update(downloadQuality:)
+                                )
+                            } label: {
+                                SettingsCell(
+                                    title: CoreLocalization.Settings.videoDownloadQualityTitle,
+                                    description: viewModel.userSettings.downloadQuality.settingsDescription
+                                )
+                            }
+                            //                                Spacer()
+                            Image(systemName: "chevron.right")
+                                .padding(.trailing, 12)
+                                .frame(width: 10)
+                        }
+                        Divider()
                     }
-                }.frame(minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading)
+                }
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    alignment: .topLeading
+                )
                 .padding(.horizontal, 24)
             }.frameLimit(sizePortrait: 420)
                 .padding(.top, 8)

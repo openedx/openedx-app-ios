@@ -90,36 +90,38 @@ public struct CourseVerticalView: View {
                                                     .accessibilityElement(children: .ignore)
                                                     .accessibilityLabel(CourseLocalization.Accessibility.download)
                                                     .onTapGesture {
-                                                        viewModel.onDownloadViewTap(
-                                                            blockId: vertical.id,
-                                                            state: state
-                                                        )
-                                                    }
-                                                    .onForeground {
-                                                        viewModel.onForeground()
+                                                        Task {
+                                                            await viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
+                                                        }
+
                                                     }
                                             case .downloading:
                                                 DownloadProgressView()
                                                     .accessibilityElement(children: .ignore)
                                                     .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                                                     .onTapGesture {
-                                                        viewModel.onDownloadViewTap(
-                                                            blockId: vertical.id,
-                                                            state: state
-                                                        )
-                                                    }
-                                                    .onBackground {
-                                                        viewModel.onBackground()
+                                                        Task {
+                                                            await viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
+                                                        }
+
                                                     }
                                             case .finished:
                                                 DownloadFinishedView()
                                                     .accessibilityElement(children: .ignore)
                                                     .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
                                                     .onTapGesture {
-                                                        viewModel.onDownloadViewTap(
-                                                            blockId: vertical.id,
-                                                            state: state
-                                                        )
+                                                        Task {
+                                                            await viewModel.onDownloadViewTap(
+                                                                blockId: vertical.id,
+                                                                state: state
+                                                            )
+                                                        }
                                                     }
                                             }
                                         }

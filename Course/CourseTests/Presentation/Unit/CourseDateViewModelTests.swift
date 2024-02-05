@@ -114,7 +114,7 @@ final class CourseDateViewModelTests: XCTestCase {
         
         let block2 = CourseDateBlock(
             assignmentType: nil,
-            complete: nil,
+            complete: true,
             date: Date.today,
             dateType: "event",
             description: "",
@@ -139,15 +139,15 @@ final class CourseDateViewModelTests: XCTestCase {
             userTimezone: nil
         )
         
-        let sortedDict = courseDates.sortedDateToCourseDateBlockDict
+        let sortedDict = courseDates.statusDatesBlocks[.completed]
         
-        XCTAssertEqual(sortedDict.keys.sorted().first, Date.today)
+        XCTAssertEqual(sortedDict?.keys.sorted().first, Date.today)
     }
     
     func testMultipleBlocksForSameDate() {
         let block1 = CourseDateBlock(
             assignmentType: nil,
-            complete: nil,
+            complete: true,
             date: Date.today,
             dateType: "event",
             description: "",
@@ -161,7 +161,7 @@ final class CourseDateViewModelTests: XCTestCase {
         
         let block2 = CourseDateBlock(
             assignmentType: nil,
-            complete: nil,
+            complete: true,
             date: Date.today,
             dateType: "event",
             description: "",
@@ -186,8 +186,8 @@ final class CourseDateViewModelTests: XCTestCase {
             userTimezone: nil
         )
         
-        let sortedDict = courseDates.sortedDateToCourseDateBlockDict
-        XCTAssertEqual(sortedDict[block1.date]?.count, 2, "There should be two blocks for the given date.")
+        let sortedDict = courseDates.statusDatesBlocks[.completed]
+        XCTAssertEqual(sortedDict?[block1.date]?.count, 2, "There should be two blocks for the given date.")
     }
     
     func testBlockStatusForAssignmentType() {

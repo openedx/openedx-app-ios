@@ -129,29 +129,55 @@ public extension DataLayer {
     }
     
     struct CourseDetailEncodedVideoData: Decodable {
-        public let youTube: CourseDetailYouTubeData?
-        public let fallback: CourseDetailYouTubeData?
-        
+        public let youTube: EncodedVideoData?
+        public let fallback: EncodedVideoData?
+        public let desktopMP4: EncodedVideoData?
+        public let mobileHigh: EncodedVideoData?
+        public let mobileLow: EncodedVideoData?
+        public let hls: EncodedVideoData?
+
         public init(
-            youTube: CourseDetailYouTubeData?,
-            fallback: CourseDetailYouTubeData?
+            youTube: EncodedVideoData?,
+            fallback: EncodedVideoData?,
+            desktopMP4: EncodedVideoData? = nil,
+            mobileHigh: EncodedVideoData? = nil,
+            mobileLow: EncodedVideoData? = nil,
+            hls: EncodedVideoData? = nil
         ) {
             self.youTube = youTube
             self.fallback = fallback
+            self.desktopMP4 = desktopMP4
+            self.mobileHigh = mobileHigh
+            self.mobileLow = mobileLow
+            self.hls = hls
         }
         
         enum CodingKeys: String, CodingKey {
             case youTube = "youtube"
             case fallback
+            case desktopMP4 = "desktop_mp4"
+            case mobileHigh = "mobile_high"
+            case mobileLow = "mobile_low"
+            case hls
         }
     }
     
-    struct CourseDetailYouTubeData: Decodable {
+    struct EncodedVideoData: Decodable {
         public let url: String?
-        
-        public init(url: String?) {
+        public let fileSize: Int?
+        public let streamPriority: Int?
+
+        public init(url: String?, fileSize: Int?, streamPriority: Int? = nil) {
             self.url = url
+            self.fileSize = fileSize
+            self.streamPriority = streamPriority
         }
-        
+
+        enum CodingKeys: String, CodingKey {
+            case url
+            case fileSize = "file_size"
+            case streamPriority = "stream_priority"
+        }
+
     }
 }

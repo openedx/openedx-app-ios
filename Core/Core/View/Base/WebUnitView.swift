@@ -10,14 +10,21 @@ import SwiftUI
 import Theme
 
 public struct WebUnitView: View {
-    
-    private var url: String
-    private var injections: [WebviewInjection]?
+
     @StateObject private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
-    
-    public init(url: String, viewModel: WebUnitViewModel, injections: [WebviewInjection]?) {
-        self._viewModel = .init(wrappedValue: viewModel)
+
+    private var url: String
+    private var injections: [WebviewInjection]?
+
+    public init(
+        url: String,
+        viewModel: WebUnitViewModel,
+        injections: [WebviewInjection]?
+    ) {
+        self._viewModel = .init(
+            wrappedValue: viewModel
+        )
         self.url = url
         self.injections = injections
     }
@@ -62,10 +69,17 @@ public struct WebUnitView: View {
                                     baseURL: viewModel.config.baseURL.absoluteString,
                                     injections: injections
                                 ),
-                                isLoading: $isWebViewLoading, refreshCookies: {
-                                    await viewModel.updateCookies(force: true)
-                                })
-                            .frame(width: reader.size.width, height: reader.size.height)
+                                isLoading: $isWebViewLoading,
+                                refreshCookies: {
+                                    await viewModel.updateCookies(
+                                        force: true
+                                    )
+                                }
+                            )
+                            .frame(
+                                width: reader.size.width,
+                                height: reader.size.height
+                            )
                         }
                     }
                     .introspect(.scrollView, on: .iOS(.v15...), customize: { scrollView in
