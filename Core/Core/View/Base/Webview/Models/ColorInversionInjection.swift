@@ -1,5 +1,5 @@
 //
-//  ColorInvertionInjection.swift
+//  ColorInversionInjection.swift
 //  Core
 //
 //  Created by Vadim Kuznetsov on 31.01.24.
@@ -7,7 +7,7 @@
 
 import WebKit
 
-public struct ColorInvertionInjection: WebViewScriptInjectionProtocol, CSSInjectionProtocol {
+public struct ColorInversionInjection: WebViewScriptInjectionProtocol, CSSInjectionProtocol {
     public var id: String = "ColorInvertionInjection"
     public var script: String {
         let css = """
