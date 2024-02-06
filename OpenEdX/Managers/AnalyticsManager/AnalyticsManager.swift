@@ -7,7 +7,7 @@
 
 import Foundation
 import Core
-//import FirebaseAnalytics
+import FirebaseAnalytics
 import Authorization
 import Discovery
 import Dashboard
@@ -25,7 +25,8 @@ class AnalyticsManager: AuthorizationAnalytics,
                         DiscussionAnalytics {
     
     public func identify(id: String, username: String, email: String) {
-        let traits : [String: String] = [
+        Analytics.setUserID(id)
+        let traits: [String: String] = [
             "email": email,
             "username": username
         ]
@@ -314,6 +315,7 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     private func logEvent(_ event: Event, parameters: [String: Any]? = nil) {
+        Analytics.logEvent(event.rawValue, parameters: parameters)
         (UIApplication.shared.delegate as? AppDelegate)?.analytics?.track(
             name: event.rawValue,
             properties: parameters

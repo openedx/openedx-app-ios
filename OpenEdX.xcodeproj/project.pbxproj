@@ -51,7 +51,6 @@
 		A50066932B614DCD0024680B /* FCMListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066922B614DCD0024680B /* FCMListener.swift */; };
 		A50066952B614DEF0024680B /* BrazeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066942B614DEF0024680B /* BrazeListener.swift */; };
 		A51CDBE52B6D1E93009B6D4E /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBE42B6D1E93009B6D4E /* Segment */; };
-		A51CDBEA2B6D25C9009B6D4E /* SegmentFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBE92B6D25C9009B6D4E /* SegmentFirebase */; };
 		A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */; };
 		A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */; };
 		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
@@ -157,7 +156,6 @@
 				A51CDBE52B6D1E93009B6D4E /* Segment in Frameworks */,
 				072787B128D34D83002E9142 /* Discovery.framework in Frameworks */,
 				0218196428F734FA00202564 /* Discussion.framework in Frameworks */,
-				A51CDBEA2B6D25C9009B6D4E /* SegmentFirebase in Frameworks */,
 				0219C67728F4347600D64452 /* Course.framework in Frameworks */,
 				027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */,
 				95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */,
@@ -363,7 +361,6 @@
 			packageProductDependencies = (
 				BA3042782B1F7147009B64B7 /* MSAL */,
 				A51CDBE42B6D1E93009B6D4E /* Segment */,
-				A51CDBE92B6D25C9009B6D4E /* SegmentFirebase */,
 				A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */,
 				A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */,
 			);
@@ -399,7 +396,6 @@
 			packageReferences = (
 				BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 				A51CDBE32B6D1E93009B6D4E /* XCRemoteSwiftPackageReference "analytics-swift" */,
-				A51CDBE82B6D25C9009B6D4E /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */,
 				A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
@@ -1166,14 +1162,6 @@
 				minimumVersion = 1.5.2;
 			};
 		};
-		A51CDBE82B6D25C9009B6D4E /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/segment-integrations/analytics-swift-firebase";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.4;
-			};
-		};
 		A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braze-inc/braze-segment-swift";
@@ -1197,11 +1185,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A51CDBE32B6D1E93009B6D4E /* XCRemoteSwiftPackageReference "analytics-swift" */;
 			productName = Segment;
-		};
-		A51CDBE92B6D25C9009B6D4E /* SegmentFirebase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A51CDBE82B6D25C9009B6D4E /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */;
-			productName = SegmentFirebase;
 		};
 		A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */ = {
 			isa = XCSwiftPackageProductDependency;

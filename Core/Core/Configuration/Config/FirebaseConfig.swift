@@ -91,6 +91,7 @@ public final class FirebaseConfig: NSObject {
             firebaseOptions.clientID = clientID
             firebaseOptions.storageBucket = storageBucket
             firebaseOptions.databaseURL = databaseURL
+            return firebaseOptions
         }
         
         return nil

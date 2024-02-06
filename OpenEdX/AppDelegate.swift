@@ -18,7 +18,7 @@ import MSAL
 import Theme
 //import BrazeKit
 import Segment
-import SegmentFirebase
+//import SegmentFirebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -60,9 +60,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 .trackApplicationLifecycleEvents(true)
                                 .flushInterval(10)
                 analytics = Analytics(configuration: configuration)
-                if config.firebase.isAnalyticsSourceSegment {
-                    analytics?.add(plugin: FirebaseDestination())
-                }
+//                if config.firebase.isAnalyticsSourceSegment {
+//                    analytics?.add(plugin: FirebaseDestination())
+//                }
             }
         }
 
