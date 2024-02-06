@@ -31,8 +31,7 @@ public class SignUpViewModel: ObservableObject {
     
     @Published var fields: [FieldConfiguration] = []
     var requiredFields: [FieldConfiguration] {
-       fields
-            .filter {
+       fields.filter {
                 $0.field.required &&
                 !$0.field.isHonorCode &&
                 $0.field.type != .checkbox
@@ -44,7 +43,7 @@ public class SignUpViewModel: ObservableObject {
             $0.field.type == .checkbox
         }
     }
-    var nonRequiredFields: [FieldConfiguration] {
+    var optionalFields: [FieldConfiguration] {
         fields.filter { !$0.field.required }
     }
 

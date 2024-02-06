@@ -87,7 +87,7 @@ public struct SignUpView: View {
                                 }
 
                                 let requiredFields = viewModel.requiredFields
-                                let nonRequiredFields = viewModel.nonRequiredFields
+                                let optionalFields = viewModel.optionalFields
 
                                 FieldsView(
                                     fields: requiredFields,
@@ -100,7 +100,7 @@ public struct SignUpView: View {
                                 if !viewModel.isShowProgress {
                                     DisclosureGroup(isExpanded: $disclosureGroupOpen) {
                                         FieldsView(
-                                            fields: nonRequiredFields,
+                                            fields: optionalFields,
                                                    router: viewModel.router,
                                                    config: viewModel.config,
                                                    cssInjector: viewModel.cssInjector,
@@ -162,10 +162,11 @@ public struct SignUpView: View {
                             .padding(.horizontal, 24)
                             .padding(.top, 24)
                             
-                        }.roundedBackground(Theme.Colors.background)
-                            .onRightSwipeGesture {
-                                viewModel.router.back()
-                            }
+                        }
+                        .roundedBackground(Theme.Colors.background)
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
                         .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                         .onChange(of: viewModel.scrollTo, perform: { index in
                             withAnimation {

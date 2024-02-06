@@ -57,7 +57,7 @@ struct FieldsView: View {
                 EmptyView()
                     .id(index)
             case .plaintext:
-                plaintext(config: config)
+                plaintext(fieldConfig: config)
             case .unknown:
                 Text("This field not support")
             }
@@ -65,23 +65,24 @@ struct FieldsView: View {
     }
 
     @ViewBuilder
-    private func plaintext(config: FieldConfiguration) -> some View {
-        if config.field.isHonorCode,
-           let eulaURL = self.config.agreement.eulaURL,
-           let tosURL =  self.config.agreement.tosURL,
-           let policy = self.config.agreement.privacyPolicyURL {
+    private func plaintext(fieldConfig: FieldConfiguration) -> some View {
+        if fieldConfig.field.isHonorCode,
+           let eulaURL = config.agreement.eulaURL,
+           let tosURL = config.agreement.tosURL,
+           let policy = config.agreement.privacyPolicyURL {
             let text = AuthLocalization.SignUp.agreement(
-                "\(self.config.platformName)",
+                "\(config.platformName)",
                 eulaURL,
-                "\(self.config.platformName)",
+                "\(config.platformName)",
                 tosURL,
+                "\(config.platformName)",
                 policy
             )
             let checkBox = fields.first(where: { $0.field.type == .checkbox })
             checkBox.flatMap { _ in
                 CheckBoxView(
                     checked: $sendMarketing,
-                    text: AuthLocalization.SignUp.marketingEmailTitle("\(self.config.platformName)"),
+                    text: AuthLocalization.SignUp.marketingEmailTitle("\(config.platformName)"),
                     font: Theme.Fonts.labelSmall
                 )
                 .padding(.vertical, 10)
@@ -104,7 +105,7 @@ struct FieldsView: View {
             HTMLFormattedText(
                 cssInjector.injectCSS(
                     colorScheme: colorScheme,
-                    html: config.field.label,
+                    html: fieldConfig.field.label,
                     type: .discovery,
                     fontSize: 90, screenWidth: proxy.size.width)
             )

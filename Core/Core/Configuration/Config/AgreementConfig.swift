@@ -7,7 +7,7 @@
 
 import Foundation
 
-private enum AgreementKeys: String {
+private enum AgreementKeys: String, RawStringExtractable {
     case privacyPolicyURL = "PRIVACY_POLICY_URL"
     case tosURL = "TOS_URL"
     case cookiePolicyURL = "COOKIE_POLICY_URL"
@@ -25,10 +25,10 @@ public class AgreementConfig: NSObject {
     public var supportedLanguages: [String]?
 
     init(dictionary: [String: AnyObject]) {
-        supportedLanguages = dictionary[AgreementKeys.supportedLanguages.rawValue] as? [String]
-        cookiePolicyURL = (dictionary[AgreementKeys.cookiePolicyURL.rawValue] as? String).flatMap(URL.init)
-        dataSellContentURL = (dictionary[AgreementKeys.dataSellContentURL.rawValue] as? String).flatMap(URL.init)
-        eulaURL = (dictionary[AgreementKeys.eulaURL.rawValue] as? String).flatMap(URL.init)
+        supportedLanguages = dictionary[AgreementKeys.supportedLanguages] as? [String]
+        cookiePolicyURL = (dictionary[AgreementKeys.cookiePolicyURL] as? String).flatMap(URL.init)
+        dataSellContentURL = (dictionary[AgreementKeys.dataSellContentURL] as? String).flatMap(URL.init)
+        eulaURL = (dictionary[AgreementKeys.eulaURL] as? String).flatMap(URL.init)
 
         super.init()
 

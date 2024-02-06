@@ -11,7 +11,7 @@
 "SIGN_IN.EMAIL" = "Пошта";
 "SIGN_IN.PASSWORD" = "Пароль";
 "SIGN_IN.FORGOT_PASS_BTN" = "Забули пароль?";
-"SIGN_IN.AGREEMENT" = "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and vou acknowledge that edX and each Member process your personal data in
+"SIGN_IN.AGREEMENT" = "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
 accordance with the [Privacy Policy.](%@)";
 
 "ERROR.INVALID_EMAIL_ADDRESS" = "невірна адреса електронної пошти";
@@ -26,7 +26,7 @@ accordance with the [Privacy Policy.](%@)";
 "SIGN_UP.SHOW_FIELDS" = "Показати необовʼязкові поля";
 "SIGN_UP.SUCCESS_SIGNIN_LABEL" = "You've successfully signed in.";
 "SIGN_UP.SUCCESS_SIGNIN_SUBLABEL" = "We just need a little more information before you start learning.";
-"SIGN_UP.AGREEMENT" = "By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and vou acknowledge that edX and each Member process your personal data inaccordance with the [Privacy Policy.](%@)";
+"SIGN_UP.AGREEMENT" = "By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)";
 "SIGN_UP.MARKETING_EMAIL_TITLE" = "I agree that %@ may send me marketing messages.";
 
 "FORGOT.TITLE"= "Відновлення паролю";

@@ -210,6 +210,7 @@ public struct SignInView: View {
                 eulaURL,
                 "\(viewModel.config.platformName)",
                 tosURL,
+                "\(viewModel.config.platformName)",
                 policy
             )
             Text(.init(text))
