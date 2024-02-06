@@ -2,7 +2,7 @@
 //  CheckBoxView.swift
 //  Core
 //
-//  Created by Eugene Yatsenko on 31.01.2024.
+//  Created by  Stepanok Ivan on 12.11.2022.
 //
 
 import SwiftUI
