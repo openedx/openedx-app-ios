@@ -28,6 +28,8 @@ public protocol ConfigProtocol {
     var braze: BrazeConfig { get }
     var branch: BranchConfig { get }
     var segment: SegmentConfig { get }
+    var program: DiscoveryConfig { get }
+    var URIScheme: String { get }
 }
 
 public enum TokenType: String {
@@ -45,6 +47,7 @@ private enum ConfigKeys: String {
     case organizationCode = "ORGANIZATION_CODE"
     case appstoreID = "APP_STORE_ID"
     case faq = "FAQ_URL"
+    case URIScheme = "URI_SCHEME"
 }
 
 public class Config {
@@ -151,6 +154,10 @@ extension Config: ConfigProtocol {
             return nil
         }
         return url
+    }
+    
+    public var URIScheme: String {
+        return string(for: ConfigKeys.URIScheme.rawValue) ?? ""
     }
 }
 

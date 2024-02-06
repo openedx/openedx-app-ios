@@ -75,46 +75,17 @@ struct Line: Shape {
 }
 
 struct TimeLineView: View {
-    let block: CourseDateBlock
-    let date: Date
-    let firstDate: Date?
-    let lastDate: Date?
-    let allHaveSameStatus: Bool
+    let status: CompletionStatus
     
     var body: some View {
         ZStack(alignment: .top) {
             VStack {
                 Line()
-                    .stroke(style: StrokeStyle(lineWidth: 1))
-                    .frame(maxHeight: lastDate == date ? 10 : .infinity, alignment: .top)
-                    .padding(.top, firstDate == date && lastDate != date ? 10 : 0)
-
-                if lastDate == date {
-                    Spacer()
-                }
+                    .stroke(style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .padding(.top, 0)
+                    .foregroundColor(status.foregroundColor)
             }
-            
-            Circle()
-                .frame(width: date.isToday ? 12 : 8, height: date.isToday ? 12 : 8)
-                .foregroundColor({
-                    if date.isToday {
-                        return Theme.Colors.warning
-                    } else if date.isInPast {
-                        switch block.blockStatus {
-                        case .completed: return allHaveSameStatus ? Color.white : Color.gray
-                        case .courseStartDate: return Color.white
-                        case .verifiedOnly: return Color.black
-                        case .pastDue: return Color.gray
-                        default: return Color.gray
-                        }
-                    } else if date.isInFuture {
-                        return Color.black
-                    } else {
-                        return Color.white
-                    }
-                }())
-                .overlay(Circle().stroke(Color.black, lineWidth: 1))
-                .padding(.top, 5)
         }
         .frame(width: 16)
     }
@@ -122,87 +93,197 @@ struct TimeLineView: View {
 
 struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
+    @State private var isExpanded = false
     var courseDates: CourseDates
 
     var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    ForEach(viewModel.sortedDates, id: \.self) { date in
-                        let blocks = courseDates.sortedDateToCourseDateBlockDict[date]!
-                        let block = blocks[0]
-                        
-                        HStack(alignment: .center) {
-                            let ignoredStatuses: [BlockStatus] = [.courseStartDate, .courseEndDate]
-                            let allHaveSameStatus = blocks
-                                .filter { !ignoredStatuses.contains($0.blockStatus) }
-                                .allSatisfy { $0.blockStatus == block.blockStatus }
-                            
-                            TimeLineView(block: block, date: date,
-                                         firstDate: viewModel.sortedDates.first,
-                                         lastDate: viewModel.sortedDates.last,
-                                         allHaveSameStatus: allHaveSameStatus)
-                            
-                            BlockStatusView(viewModel: viewModel,
+                    ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
+                        let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
+                        if status == .completed {
+                            CompletedBlocks(
+                                isExpanded: $isExpanded,
+                                courseDateBlockDict: courseDateBlockDict,
+                                viewModel: viewModel
+                            )
+                        } else {
+                            Text(status.rawValue)
+                                .font(Theme.Fonts.titleSmall)
+                                .padding(.top, 10)
+                                .padding(.bottom, 10)
+                            HStack {
+                                TimeLineView(status: status)
+                                    .padding(.bottom, 15)
+                                VStack(alignment: .leading) {
+                                    ForEach(courseDateBlockDict.keys.sorted(), id: \.self) { date in
+                                        let blocks = courseDateBlockDict[date]!
+                                        let block = blocks[0]
+                                        Text(block.formattedDate)
+                                            .font(Theme.Fonts.labelMedium)
+                                            .foregroundStyle(Theme.Colors.textPrimary)
+                                        BlockStatusView(
+                                            viewModel: viewModel,
                                             block: block,
-                                            allHaveSameStatus: allHaveSameStatus,
-                                            blocks: blocks)
-                                            
-                            Spacer()
+                                            blocks: blocks
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 16)
+                .padding(.vertical, 5)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
 
+struct CompletedBlocks: View {
+    @Binding var isExpanded: Bool
+    let courseDateBlockDict: [Date: [CourseDateBlock]]
+    let viewModel: CourseDatesViewModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            // Toggle button to expand/collapse the cell
+            Button(action: {
+                withAnimation {
+                    isExpanded.toggle()
+                }
+            }) {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(CompletionStatus.completed.rawValue)
+                            .font(Theme.Fonts.titleSmall)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                        
+                        if !isExpanded {
+                            let totalCount = courseDateBlockDict.values.reduce(0) { $0 + $1.count }
+                            let itemsHidden = totalCount == 1 ?
+                            CoreLocalization.CourseDates.itemHidden :
+                            CoreLocalization.CourseDates.itemsHidden
+                            Text("\(totalCount) \(itemsHidden)")
+                                .font(Theme.Fonts.labelMedium)
+                                .foregroundColor(Theme.Colors.textPrimary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 16)
+                    .padding(.vertical, 8)
+                    
+                    Image(systemName: "chevron.down")
+                        .labelStyle(.iconOnly)
+                        .dropdownArrowRotationAnimation(value: isExpanded)
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .padding()
+                }
+            }
+            
+            // Your expandable content goes here
+            if isExpanded {
+                VStack(alignment: .leading) {
+                    ForEach(courseDateBlockDict.keys.sorted(), id: \.self) { date in
+                        let blocks = courseDateBlockDict[date]!
+                        let block = blocks[0]
+                        
+                        Spacer()
+                        Text(block.formattedDate)
+                            .font(Theme.Fonts.labelMedium)
+                            .foregroundStyle(Theme.Colors.textPrimary)
+                        
+                        ForEach(blocks) { block in
+                            HStack(alignment: .top) {
+                                block.blockImage?.swiftUIImage
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                StyleBlock(block: block, viewModel: viewModel)
+                                    .padding(.bottom, 15)
+                                Spacer()
+                                if block.canShowLink && !block.firstComponentBlockID.isEmpty {
+                                    Image(systemName: "chevron.right")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 6.55, height: 11.15)
+                                        .labelStyle(.iconOnly)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                }
+                            }
+                            .padding(.trailing, 15)
+                        }
+                    }
+                }
+                .padding(.bottom, 15)
+                .padding(.leading, 16)
+            }
+
+        }
+        .overlay(
+          RoundedRectangle(cornerRadius: 8)
+            .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+        )
+        .background(Theme.Colors.datesSectionBackground)
+    }
+}
+
 struct BlockStatusView: View {
     let viewModel: CourseDatesViewModel
     let block: CourseDateBlock
-    let allHaveSameStatus: Bool
     let blocks: [CourseDateBlock]
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                Text(block.formattedDate)
-                    .font(Theme.Fonts.bodyLarge)
-                    .bold()
-
-                if block.isToday {
-                    Text(CoreLocalization.CourseDates.today)
-                        .font(Theme.Fonts.bodySmall)
-                        .foregroundColor(Color.black)
-                        .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 8))
-                        .background(Theme.Colors.warning)
-                        .cornerRadius(5)
-                }
-
-                if allHaveSameStatus {
-                    let lockImageText = block.isVerifiedOnly ? Text(Image(systemName: "lock.fill")) : Text("")
-                    Text("\(lockImageText) \(block.blockStatus.title)")
-                        .font(Theme.Fonts.bodySmall)
-                        .foregroundColor(block.blockStatus.foregroundColor)
-                        .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 8))
-                        .background(block.blockStatus.backgroundColor)
-                        .cornerRadius(5)
-                }
-            }
-
             ForEach(blocks) { block in
-                styleBlock(block: block, allHaveSameStatus: allHaveSameStatus)
+                HStack(alignment: .top) {
+                    block.blockImage?.swiftUIImage
+                        .foregroundColor(Theme.Colors.textPrimary)
+                    StyleBlock(block: block, viewModel: viewModel)
+                        .padding(.bottom, 15)
+                    Spacer()
+                    if block.canShowLink && !block.firstComponentBlockID.isEmpty {
+                        Image(systemName: "chevron.right")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 6.55, height: 11.15)
+                            .labelStyle(.iconOnly)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                    }
+                }
+                .padding(.trailing, 15)
             }
             .padding(.top, 0.2)
         }
-        .padding(.vertical, 0)
-        .padding(.leading, 5)
-        .padding(.bottom, 10)
     }
     
-    func styleBlock(block: CourseDateBlock, allHaveSameStatus: Bool) -> some View {
+    func applyStyle(string: String, forgroundColor: Color, backgroundColor: Color) -> AttributedString {
+        var attributedString = AttributedString(string)
+        attributedString.font = Theme.Fonts.bodySmall
+        attributedString.foregroundColor = forgroundColor
+        attributedString.backgroundColor = backgroundColor
+        return attributedString
+    }
+}
+
+struct StyleBlock: View {
+    let block: CourseDateBlock
+    let viewModel: CourseDatesViewModel
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            styleBlock(block: block)
+            if !block.description.isEmpty {
+                Text(block.description)
+                    .font(Theme.Fonts.labelMedium)
+                    .foregroundStyle(Theme.Colors.thisWeekTimelineColor)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+    
+    func styleBlock(block: CourseDateBlock) -> some View {
         var attributedString = AttributedString("")
         
         if let prefix = block.assignmentType, !prefix.isEmpty {
@@ -211,44 +292,28 @@ struct BlockStatusView: View {
         
         attributedString += styleTitle(block: block)
         
-        if !allHaveSameStatus {
-            attributedString.appendSpaces(2)
-            attributedString += applyStyle(
-                string: block.blockStatus.title,
-                forgroundColor: block.blockStatus.foregroundColor,
-                backgroundColor: block.blockStatus.backgroundColor)
-        }
-        
         return Text(attributedString)
-            .font(Theme.Fonts.bodyMedium)
-            .foregroundColor({
+            .font(Theme.Fonts.titleSmall)
+            .lineLimit(1)
+            .foregroundStyle({
                 if block.isAssignment {
-                    return block.isAvailable ? Color.black : Color.gray.opacity(0.6)
+                    return block.isAvailable ? Theme.Colors.textPrimary : Color.gray.opacity(0.6)
                 } else {
-                    return Color.black
+                    return Theme.Colors.textPrimary
                 }
             }())
             .onTapGesture {
-                Task {
-                    await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                if block.canShowLink && !block.firstComponentBlockID.isEmpty {
+                    Task {
+                        await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                    }
                 }
             }
     }
     
     func styleTitle(block: CourseDateBlock) -> AttributedString {
         var attributedString = AttributedString(block.title)
-        attributedString.font = Theme.Fonts.bodyMedium
-        if block.canShowLink && !block.firstComponentBlockID.isEmpty {
-            attributedString.underlineStyle = .single
-        }
-        return attributedString
-    }
-        
-    func applyStyle(string: String, forgroundColor: Color, backgroundColor: Color) -> AttributedString {
-        var attributedString = AttributedString(string)
-        attributedString.font = Theme.Fonts.bodySmall
-        attributedString.foregroundColor = forgroundColor
-        attributedString.backgroundColor = backgroundColor
+        attributedString.font = Theme.Fonts.titleSmall
         return attributedString
     }
 }
@@ -281,6 +346,19 @@ fileprivate extension BlockStatus {
         case .verifiedOnly: return Color.black.opacity(0.5)
         case .pastDue: return Color.gray.opacity(0.4)
         case .dueNext: return Color.black.opacity(0.5)
+        default: return Color.white.opacity(0)
+        }
+    }
+}
+
+fileprivate extension CompletionStatus {
+    var foregroundColor: Color {
+        switch self {
+        case .pastDue: return Theme.Colors.pastDueTimelineColor
+        case .today: return Theme.Colors.todayTimelineColor
+        case .thisWeek: return Theme.Colors.thisWeekTimelineColor
+        case .nextWeek: return Theme.Colors.nextWeekTimelineColor
+        case .upcoming: return Theme.Colors.upcomingTimelineColor
         default: return Color.white.opacity(0)
         }
     }

@@ -30,7 +30,23 @@ public class SignUpViewModel: ObservableObject {
     }
     
     @Published var fields: [FieldConfiguration] = []
-    
+    var requiredFields: [FieldConfiguration] {
+       fields.filter {
+                $0.field.required &&
+                !$0.field.isHonorCode &&
+                $0.field.type != .checkbox
+            }
+    }
+    var agreementsFields: [FieldConfiguration] {
+        fields.filter {
+            $0.field.isHonorCode ||
+            $0.field.type == .checkbox
+        }
+    }
+    var optionalFields: [FieldConfiguration] {
+        fields.filter { !$0.field.required }
+    }
+
     let router: AuthorizationRouter
     let config: ConfigProtocol
     let cssInjector: CSSInjector
@@ -38,7 +54,7 @@ public class SignUpViewModel: ObservableObject {
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
-    
+
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,

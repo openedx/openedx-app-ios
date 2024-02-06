@@ -49,11 +49,22 @@ public struct UnitButtonView: View {
     private let action: () -> Void
     private let type: UnitButtonType
     private let bgColor: Color?
+    private let isVerticalNavigation: Bool
     
-    public init(type: UnitButtonType, bgColor: Color? = nil, action: @escaping () -> Void) {
+    private var nextButtonDegrees: Double {
+        isVerticalNavigation ? -90 : 180
+    }
+
+    public init(
+        type: UnitButtonType,
+        isVerticalNavigation: Bool = true,
+        bgColor: Color? = nil,
+        action: @escaping () -> Void
+    ) {
         self.type = type
         self.bgColor = bgColor
         self.action = action
+        self.isVerticalNavigation = isVerticalNavigation
     }
     
     public  var body: some View {
@@ -68,7 +79,7 @@ public struct UnitButtonView: View {
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
-                                .rotationEffect(Angle.degrees(-90))
+                                .rotationEffect(Angle.degrees(nextButtonDegrees))
                         }.padding(.horizontal, 16)
                     case .next, .nextBig:
                         HStack {
@@ -81,20 +92,29 @@ public struct UnitButtonView: View {
                             }
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(Theme.Colors.styledButtonText)
-                                .rotationEffect(Angle.degrees(-90))
+                                .rotationEffect(Angle.degrees(nextButtonDegrees))
                                 .padding(.trailing, 20)
                         }
                     case .previous:
                         HStack {
-                            Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.accentColor)
-                                .font(Theme.Fonts.labelLarge)
-                                .padding(.leading, 20)
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .rotationEffect(Angle.degrees(90))
-                                .padding(.trailing, 20)
-                                .foregroundColor(Theme.Colors.accentColor)
-                            
+                            if isVerticalNavigation {
+                                Text(type.stringValue())
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .font(Theme.Fonts.labelLarge)
+                                    .padding(.leading, 20)
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                    .rotationEffect(Angle.degrees(90))
+                                    .padding(.trailing, 20)
+                                    .foregroundColor(Theme.Colors.accentColor)
+                            } else {
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                    .padding(.leading, 20)
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                Text(type.stringValue())
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .font(Theme.Fonts.labelLarge)
+                                    .padding(.trailing, 20)
+                            }
                         }
                     case .last:
                         HStack {

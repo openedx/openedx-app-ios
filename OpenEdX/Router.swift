@@ -115,7 +115,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func presentAppReview() {
-        let config = Container.shared.resolve(Config.self)!
+        let config = Container.shared.resolve(ConfigProtocol.self)!
         let storage = Container.shared.resolve(CoreStorage.self)!
         let vm = AppReviewViewModel(config: config, storage: storage)
         if vm.shouldShowRatingView() {
@@ -193,7 +193,7 @@ public class Router: AuthorizationRouter,
         
         authAnalytics.signUpClicked()
     }
-    
+
     public func showForgotPasswordScreen() {
         let view = ResetPasswordView(viewModel: Container.shared.resolve(ResetPasswordViewModel.self)!)
         let controller = UIHostingController(rootView: view)
@@ -228,6 +228,20 @@ public class Router: AuthorizationRouter,
             let controller = UIHostingController(rootView: view)
             self?.navigationController.pushViewController(controller, animated: true)
         }
+    }
+    
+    public func showWebProgramDetails(
+        pathID: String,
+        viewType: ProgramViewType
+    ) {
+        let view = ProgramWebviewView(
+            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+            router: Container.shared.resolve(DiscoveryRouter.self)!,
+            viewType: viewType,
+            pathID: pathID
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showDiscoverySearch(searchQuery: String? = nil) {
@@ -547,7 +561,19 @@ public class Router: AuthorizationRouter,
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
-    
+
+    public func showVideoDownloadQualityView(
+        downloadQuality: DownloadQuality,
+        didSelect: ((DownloadQuality) -> Void)?
+    ) {
+        let view = VideoDownloadQualityView(
+            downloadQuality: downloadQuality,
+            didSelect: didSelect
+        )
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+
     private func present<ToPresent: View>(transitionStyle: UIModalTransitionStyle, view: ToPresent) {
         navigationController.present(
             prepareToPresent(view, transitionStyle: transitionStyle),
@@ -590,5 +616,15 @@ public class Router: AuthorizationRouter,
     
     private func showToolBar() {
         self.navigationController.setNavigationBarHidden(false, animated: false)
+    }
+
+    public func showWebBrowser(title: String, url: URL) {
+        let webBrowser = WebBrowser(
+            url: url.absoluteString,
+            pageTitle: title,
+            showProgress: true
+        )
+        let controller = UIHostingController(rootView: webBrowser)
+        navigationController.pushViewController(controller, animated: true)
     }
 }

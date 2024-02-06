@@ -27,6 +27,11 @@ public protocol DiscoveryRouter: BaseRouter {
         enrollmentEnd: Date?,
         title: String
     )
+    
+    func showWebProgramDetails(
+        pathID: String,
+        viewType: ProgramViewType
+    )
 }
 
 // Mark - For testing and SwiftUI preview
@@ -52,6 +57,11 @@ public class DiscoveryRouterMock: BaseRouterMock, DiscoveryRouter {
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String
+    ) {}
+    
+    public func showWebProgramDetails(
+        pathID: String,
+        viewType: ProgramViewType
     ) {}
 }
 #endif

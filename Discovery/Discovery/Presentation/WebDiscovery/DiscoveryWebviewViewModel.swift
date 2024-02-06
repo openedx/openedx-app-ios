@@ -111,15 +111,16 @@ public class DiscoveryWebviewViewModel: ObservableObject {
 }
 
 extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
+    @MainActor
     public func webView(
         _ webView: WKWebView,
         shouldLoad request: URLRequest,
         navigationAction: WKNavigationAction
-    ) -> Bool {
+    ) async -> Bool {
         guard let URL = request.url else { return false }
         
         if let urlAction = urlAction(from: URL),
-           handleNavigation(url: URL, urlAction: urlAction) {
+           await handleNavigation(url: URL, urlAction: urlAction) {
             return true
         }
         
@@ -134,18 +135,16 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         }
         
         if let url = request.url, outsideLink || capturedLink || externalLink, UIApplication.shared.canOpenURL(url) {
-            DispatchQueue.main.async { [weak self] in
-                self?.router.presentAlert(
-                    alertTitle: DiscoveryLocalization.Alert.leavingAppTitle,
-                    alertMessage: DiscoveryLocalization.Alert.leavingAppMessage,
-                    positiveAction: CoreLocalization.Webview.Alert.continue,
-                    onCloseTapped: {
-                        self?.router.dismiss(animated: true)
-                    }, okTapped: {
-                        UIApplication.shared.open(url, options: [:])
-                    }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue)
-                )
-            }
+            router.presentAlert(
+                alertTitle: DiscoveryLocalization.Alert.leavingAppTitle,
+                alertMessage: DiscoveryLocalization.Alert.leavingAppMessage,
+                positiveAction: CoreLocalization.Webview.Alert.continue,
+                onCloseTapped: { [weak self] in
+                    self?.router.dismiss(animated: true)
+                }, okTapped: {
+                    UIApplication.shared.open(url, options: [:])
+                }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue, image: nil)
+            )
             return true
         }
         
@@ -153,18 +152,17 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func urlAction(from url: URL) -> WebviewActions? {
-        guard url.isValidAppURLScheme,
+        guard isValidAppURLScheme(url),
                 let url = WebviewActions(rawValue: url.appURLHost) else { return nil }
         return url
     }
     
-    private  func handleNavigation(url: URL, urlAction: WebviewActions) -> Bool {
+    @MainActor
+    private func handleNavigation(url: URL, urlAction: WebviewActions) async -> Bool {
         switch urlAction {
         case .courseEnrollment:
             if let urlData = parse(url: url), let courseID = urlData.courseId {
-                Task {
-                    await enrollTo(courseID: courseID)
-                }
+                await enrollTo(courseID: courseID)
             }
         case .courseDetail:
             guard let pathID = detailPathID(from: url) else { return false }
@@ -192,7 +190,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func detailPathID(from url: URL) -> String? {
-        guard url.isValidAppURLScheme,
+        guard isValidAppURLScheme(url),
               let path = url.queryParameters?[URLParameterKeys.pathId] as? String,
               url.appURLHost == WebviewActions.courseDetail.rawValue else { return nil }
         
@@ -200,7 +198,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func parse(url: URL) -> (courseId: String?, emailOptIn: Bool)? {
-        guard url.isValidAppURLScheme else { return nil }
+        guard isValidAppURLScheme(url) else { return nil }
         
         let courseId = url.queryParameters?[URLParameterKeys.courseId] as? String
         let emailOptIn = (url.queryParameters?[URLParameterKeys.emailOptIn] as? String).flatMap {Bool($0)}
@@ -209,7 +207,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     }
     
     private func programDetailPathId(from url: URL) -> String? {
-        guard url.isValidAppURLScheme,
+        guard isValidAppURLScheme(url),
               let path = url.queryParameters?[URLParameterKeys.pathId] as? String,
               url.appURLHost == WebviewActions.programDetail.rawValue else { return nil }
         
@@ -230,5 +228,9 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         )
         
         return true
+    }
+    
+    private func isValidAppURLScheme(_ url: URL) -> Bool {
+        return url.scheme ?? "" == config.URIScheme
     }
 }

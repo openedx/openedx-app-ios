@@ -35,7 +35,6 @@
 		029B78F7292526D60097ACD8 /* BaseResponsesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B78F6292526D50097ACD8 /* BaseResponsesViewModel.swift */; };
 		02BE57BC29890D4A00197812 /* DiscussionTopicsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE57BB29890D4A00197812 /* DiscussionTopicsViewModelTests.swift */; };
 		02BE57BE298910BD00197812 /* BaseResponsesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BE57BD298910BD00197812 /* BaseResponsesViewModelTests.swift */; };
-		02CF2C8E291FA76E00FC1596 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF2C8D291FA76E00FC1596 /* CheckBoxView.swift */; };
 		02D1266E28F73BA700C8E689 /* DiscussionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D1266D28F73BA700C8E689 /* DiscussionRepository.swift */; };
 		02D1267428F75BB700C8E689 /* Data_TopicsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D1267328F75BB700C8E689 /* Data_TopicsResponse.swift */; };
 		02D1267628F76F5D00C8E689 /* DiscussionTopicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D1267528F76F5D00C8E689 /* DiscussionTopicsView.swift */; };
@@ -101,7 +100,6 @@
 		029B78F6292526D50097ACD8 /* BaseResponsesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponsesViewModel.swift; sourceTree = "<group>"; };
 		02BE57BB29890D4A00197812 /* DiscussionTopicsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicsViewModelTests.swift; sourceTree = "<group>"; };
 		02BE57BD298910BD00197812 /* BaseResponsesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponsesViewModelTests.swift; sourceTree = "<group>"; };
-		02CF2C8D291FA76E00FC1596 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
 		02D1266D28F73BA700C8E689 /* DiscussionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionRepository.swift; sourceTree = "<group>"; };
 		02D1267328F75BB700C8E689 /* Data_TopicsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_TopicsResponse.swift; sourceTree = "<group>"; };
 		02D1267528F76F5D00C8E689 /* DiscussionTopicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicsView.swift; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 				02F28A5C28FF23BD00AFDE1B /* Comments */,
 				0282DA5D28F893B7003C3F07 /* Posts */,
 				0282DA5C28F89397003C3F07 /* DiscussionTopics */,
-				02CF2C8D291FA76E00FC1596 /* CheckBoxView.swift */,
 				02F3BFE22925302A0051930C /* DiscussionRouter.swift */,
 				02F175382A4DD5AA0019CD70 /* DiscussionAnalytics.swift */,
 			);
@@ -688,7 +685,6 @@
 				02F3BFEB2926A5B50051930C /* Data_CommentsResponse.swift in Sources */,
 				075DBBB329267D1D00E56134 /* PostState.swift in Sources */,
 				023F14A9291BC02200FD0EFF /* ParentCommentView.swift in Sources */,
-				02CF2C8E291FA76E00FC1596 /* CheckBoxView.swift in Sources */,
 				02D1267628F76F5D00C8E689 /* DiscussionTopicsView.swift in Sources */,
 				02F28A6028FF23F300AFDE1B /* ThreadViewModel.swift in Sources */,
 				0766DFBE299AA18A00EBEF6A /* DiscussionPost.swift in Sources */,

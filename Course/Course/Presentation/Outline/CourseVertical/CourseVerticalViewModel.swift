@@ -49,16 +49,19 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         manager.publisher()
             .sink(receiveValue: { [weak self] _ in
                 guard let self else { return }
-                DispatchQueue.main.async {
-                    self.setDownloadsStates()
+                Task {
+                    await self.setDownloadsStates()
                 }
             })
             .store(in: &cancellables)
         
-        setDownloadsStates()
+        Task {
+            await setDownloadsStates()
+        }
     }
     
-    func onDownloadViewTap(blockId: String, state: DownloadViewState) {
+    @MainActor
+    func onDownloadViewTap(blockId: String, state: DownloadViewState) async {
         if let vertical = verticals.first(where: { $0.id == blockId }) {
             let blocks = vertical.childs.filter { $0.isDownloadable }
             do {
@@ -67,10 +70,10 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
                     try manager.addToDownloadQueue(blocks: blocks)
                     downloadState[vertical.id] = .downloading
                 case .downloading:
-                    try manager.cancelDownloading(courseId: vertical.courseId, blocks: blocks)
+                    try await manager.cancelDownloading(courseId: vertical.courseId, blocks: blocks)
                     downloadState[vertical.id] = .available
                 case .finished:
-                    manager.deleteFile(blocks: blocks)
+                    await manager.deleteFile(blocks: blocks)
                     downloadState[vertical.id] = .available
                 }
             } catch let error {
@@ -94,19 +97,18 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         )
     }
     
-    private func setDownloadsStates() {
+    @MainActor
+    private func setDownloadsStates() async {
         guard let courseId = verticals.first?.courseId else { return }
-        let downloads = manager.getDownloadsForCourse(courseId)
+        let downloadTasks = await manager.getDownloadTasksForCourse(courseId)
         var states: [String: DownloadViewState] = [:]
         for vertical in verticals where vertical.isDownloadable {
             var childs: [DownloadViewState] = []
             for block in vertical.childs where block.isDownloadable {
-                if let download = downloads.first(where: { $0.id == block.id }) {
+                if let download = downloadTasks.first(where: { $0.id == block.id }) {
                     switch download.state {
                     case .waiting, .inProgress:
                         childs.append(.downloading)
-                    case .paused:
-                        childs.append(.available)
                     case .finished:
                         childs.append(.finished)
                     }

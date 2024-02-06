@@ -19,7 +19,7 @@
 "PRIVACY" = "Privacy policy";
 "COOKIE_POLICY" = "Cookie policy";
 "DO_NOT_SELL_INFORMATION" = "Do not sell my personal information";
-"FAQ" = "FAQ";
+"FAQ_TITLE" = "View FAQ";
 
 "LOGOUT" = "Log out";
 "SWITCH_TO" = "Switch to";
@@ -72,6 +72,7 @@
 "SETTINGS.QUALITY_540_TITLE" = "540p";
 "SETTINGS.QUALITY_720_TITLE" = "720p";
 "SETTINGS.QUALITY_720_DESCRIPTION" = "Best quality";
+
 
 "SETTINGS.VERSION" = "Version:";
 "SETTINGS.UP_TO_DATE" = "Up-to-date";

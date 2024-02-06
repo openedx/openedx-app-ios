@@ -6,21 +6,21 @@
 //
 
 import XCTest
+import Core
 @testable import WhatsNew
 
 final class WhatsNewTests: XCTestCase {
 
     func testGetVersion() throws {
-     let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock())
+        let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock())
         let version = viewModel.getVersion()
         XCTAssertNotNil(version)
         XCTAssertTrue(version == "1.0")
     }
     
     func testshouldShowWhatsNew() throws {
-     let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock())
+        let viewModel = WhatsNewViewModel(storage: WhatsNewStorageMock())
         let version = viewModel.getVersion()
-        
         XCTAssertNotNil(version)
         XCTAssertTrue(viewModel.shouldShowWhatsNew())
     }

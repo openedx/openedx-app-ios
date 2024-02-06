@@ -10,36 +10,36 @@ import Core
 
 public enum LessonType: Equatable {
     case web(url: String, injections: [WebviewInjection])
-    case youtube(viewYouTubeUrl: String, blockID: String)
+    case youtube(youtubeVideoUrl: String, blockID: String)
     case video(videoUrl: String, blockID: String)
     case unknown(String)
     case discussion(String, String, String)
     
-    static func from(_ block: CourseBlock) -> Self {
+    static func from(_ block: CourseBlock, streamingQuality: StreamingQuality) -> Self {
         switch block.type {
         case .course, .chapter, .vertical, .sequential, .unknown:
             return .unknown(block.studentUrl)
         case .html:
-            return .web(url: block.studentUrl, injections: [])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback])
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
-            if block.youTubeUrl != nil, let encodedVideo = block.videoUrl {
+            if block.encodedVideo?.youtubeVideoUrl != nil, let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
-            } else if let viewYouTubeUrl = block.youTubeUrl {
-                return .youtube(viewYouTubeUrl: viewYouTubeUrl, blockID: block.id)
-            } else if let encodedVideo = block.videoUrl {
+            } else if let youtubeVideoUrl = block.encodedVideo?.youtubeVideoUrl {
+                return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockID: block.id)
+            } else if let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else {
                 return .unknown(block.studentUrl)
             }
             
         case .problem:
-            return .web(url: block.studentUrl, injections: [])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback])
         case .dragAndDropV2:
-            return .web(url: block.studentUrl, injections: [.dragAndDropCss])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback, .dragAndDropCss])
         case .survey:
-            return .web(url: block.studentUrl, injections: [.surveyCSS])
+            return .web(url: block.studentUrl, injections: [.ajaxCallback, .surveyCSS])
         }
     }
 }
@@ -76,18 +76,28 @@ public class CourseUnitViewModel: ObservableObject {
     
     private let interactor: CourseInteractorProtocol
     let router: CourseRouter
+    let config: ConfigProtocol
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
+    let storage: CourseStorage
     private let manager: DownloadManagerProtocol
     private var subtitlesDownloaded: Bool = false
     let chapters: [CourseChapter]
     let chapterIndex: Int
     let sequentialIndex: Int
-    
+
+    var streamingQuality: StreamingQuality  {
+        storage.userSettings?.streamingQuality ?? .auto
+    }
+
     func loadIndex() {
         index = selectLesson()
     }
-    
+
+    var courseUnitProgressEnabled: Bool {
+        config.uiComponents.courseUnitProgressEnabled
+    }
+
     public init(
         lessonID: String,
         courseID: String,
@@ -97,9 +107,11 @@ public class CourseUnitViewModel: ObservableObject {
         sequentialIndex: Int,
         verticalIndex: Int,
         interactor: CourseInteractorProtocol,
+        config: ConfigProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
         connectivity: ConnectivityProtocol,
+        storage: CourseStorage,
         manager: DownloadManagerProtocol
     ) {
         self.lessonID = lessonID
@@ -111,10 +123,12 @@ public class CourseUnitViewModel: ObservableObject {
         self.verticalIndex = verticalIndex
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         self.interactor = interactor
+        self.config = config
         self.router = router
         self.analytics = analytics
         self.connectivity = connectivity
         self.manager = manager
+        self.storage = storage
     }
     
     private func selectLesson() -> Int {
@@ -157,6 +171,7 @@ public class CourseUnitViewModel: ObservableObject {
     func blockCompletionRequest(blockID: String) async {
         do {
             try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
+            setBlockCompletionForSelectedLesson()
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -165,7 +180,7 @@ public class CourseUnitViewModel: ObservableObject {
             }
         }
     }
-    
+
     func nextTitles() {
         if index != 0 {
             previousLesson = verticals[verticalIndex].childs[index - 1].displayName
@@ -251,6 +266,20 @@ public class CourseUnitViewModel: ObservableObject {
         } else {
             return nextData(from: resultData)
         }
+    }
+
+    private func setBlockCompletionForSelectedLesson() {
+        verticals[verticalIndex].childs[index].completion = 1.0
+        NotificationCenter.default.post(
+            name: .onBlockCompletion,
+            object: nil,
+            userInfo: [
+                "chapterID": chapters[chapterIndex].id,
+                "sequentialID": chapters[chapterIndex].childs[sequentialIndex].id,
+                "verticalID": chapters[chapterIndex].childs[sequentialIndex].childs[verticalIndex].id,
+                "blockID": verticals[verticalIndex].childs[index].id
+            ]
+        )
     }
 
     func route(to vertical: CourseVertical) {

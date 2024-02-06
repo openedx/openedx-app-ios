@@ -179,6 +179,7 @@ public extension View {
             ZStack {
                 self
                     .frame(maxWidth: maxIpadWidth, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
+                    .clipShape(RoundedCorners(tl: 24, tr: 24))
                 RoundedCorners(tl: 24, tr: 24)
                     .stroke(style: StrokeStyle(lineWidth: 1))
                     .foregroundColor(strokeColor)

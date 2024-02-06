@@ -10,7 +10,6 @@ import Core
 
 // Define your uri scheme
 public enum URIString: String {
-    case appURLScheme = "edxapp"
     case pathPlaceHolder = "{path_id}"
 }
 

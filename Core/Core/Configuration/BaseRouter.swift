@@ -32,7 +32,9 @@ public protocol BaseRouter {
     func showForgotPasswordScreen()
     
     func showDiscoveryScreen(searchQuery: String?, sourceScreen: LogistrationSourceScreen)
-        
+
+    func showWebBrowser(title: String, url: URL)
+
     func presentAlert(
         alertTitle: String,
         alertMessage: String,
@@ -96,7 +98,9 @@ open class BaseRouterMock: BaseRouter {
     public func backWithFade() {}
     
     public func removeLastView(controllers: Int) {}
-        
+
+    public func showWebBrowser(title: String, url: URL) {}
+
     public func presentAlert(
         alertTitle: String,
         alertMessage: String,

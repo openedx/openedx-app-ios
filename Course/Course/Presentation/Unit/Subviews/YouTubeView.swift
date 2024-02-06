@@ -20,17 +20,17 @@ struct YouTubeView: View {
     let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
     let languages: [SubtitleUrl]
     let isOnScreen: Bool
-    
+
     var body: some View {
-                let vm = Container.shared.resolve(
-                    YouTubeVideoPlayerViewModel.self,
-                    arguments: url,
-                    blockID,
-                    courseID,
-                    languages,
-                    playerStateSubject
-                )!
-                YouTubeVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
-        .background(Theme.Colors.background)
+        let vm = Container.shared.resolve(
+            YouTubeVideoPlayerViewModel.self,
+            arguments: url,
+            blockID,
+            courseID,
+            languages,
+            playerStateSubject
+        )!
+        YouTubeVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
+            .background(Theme.Colors.background)
     }
 }

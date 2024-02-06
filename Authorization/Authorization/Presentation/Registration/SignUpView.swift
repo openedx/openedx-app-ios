@@ -86,30 +86,47 @@ public struct SignUpView: View {
                                         .accessibilityIdentifier("social_auth_success_subtext_text")
                                 }
 
-                                let requiredFields = viewModel.fields.filter {$0.field.required}
-                                let nonRequiredFields = viewModel.fields.filter {!$0.field.required}
-                                
-                                FieldsView(fields: requiredFields,
-                                           router: viewModel.router,
-                                           config: viewModel.config,
-                                           cssInjector: viewModel.cssInjector,
-                                           proxy: proxy)
-                                
+                                let requiredFields = viewModel.requiredFields
+                                let optionalFields = viewModel.optionalFields
+
+                                FieldsView(
+                                    fields: requiredFields,
+                                    router: viewModel.router,
+                                    config: viewModel.config,
+                                    cssInjector: viewModel.cssInjector,
+                                    proxy: proxy
+                                )
+
                                 if !viewModel.isShowProgress {
-                                    DisclosureGroup(isExpanded: $disclosureGroupOpen, content: {
-                                        FieldsView(fields: nonRequiredFields,
+                                    DisclosureGroup(isExpanded: $disclosureGroupOpen) {
+                                        FieldsView(
+                                            fields: optionalFields,
                                                    router: viewModel.router,
                                                    config: viewModel.config,
                                                    cssInjector: viewModel.cssInjector,
-                                                   proxy: proxy).padding(.horizontal, 1)
-                                    }, label: {
+                                                   proxy: proxy
+                                        )
+                                        .padding(.horizontal, 1)
+                                    } label: {
                                         Text(disclosureGroupOpen
                                              ? AuthLocalization.SignUp.hideFields
                                              : AuthLocalization.SignUp.showFields)
-                                    })
+                                    }
                                     .accessibilityLabel("optional_fields_text")
+                                    .padding(.top, 10)
                                 }
-                                
+
+                                FieldsView(
+                                    fields: viewModel.agreementsFields,
+                                    router: viewModel.router,
+                                    config: viewModel.config,
+                                    cssInjector: viewModel.cssInjector,
+                                    proxy: proxy
+                                )
+                                .transaction { transaction in
+                                    transaction.animation = nil
+                                }
+
                                 if viewModel.isShowProgress {
                                     HStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
@@ -124,7 +141,7 @@ public struct SignUpView: View {
                                         }
                                         viewModel.trackCreateAccountClicked()
                                     }
-                                    .padding(.top, 40)
+                                    .padding(.top, 30)
                                     .frame(maxWidth: .infinity)
                                     .accessibilityLabel("signup_button")
                                 }
@@ -145,10 +162,11 @@ public struct SignUpView: View {
                             .padding(.horizontal, 24)
                             .padding(.top, 24)
                             
-                        }.roundedBackground(Theme.Colors.background)
-                            .onRightSwipeGesture {
-                                viewModel.router.back()
-                            }
+                        }
+                        .roundedBackground(Theme.Colors.background)
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
                         .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                         .onChange(of: viewModel.scrollTo, perform: { index in
                             withAnimation {
