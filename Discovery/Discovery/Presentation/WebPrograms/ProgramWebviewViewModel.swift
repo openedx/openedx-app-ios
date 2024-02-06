@@ -14,6 +14,9 @@ public class ProgramWebviewViewModel: ObservableObject {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
+    @Published var updatingCookies: Bool = false
+    private var retryCount = 1
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -28,19 +31,22 @@ public class ProgramWebviewViewModel: ObservableObject {
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     var request: URLRequest?
+    let authInteractor: AuthInteractorProtocol
     
     public init(
         router: DiscoveryRouter,
         config: ConfigProtocol,
         interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
-        analytics: DiscoveryAnalytics
+        analytics: DiscoveryAnalytics,
+        authInteractor: AuthInteractorProtocol
     ) {
         self.router = router
         self.config = config
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
+        self.authInteractor = authInteractor
     }
     
     @MainActor
@@ -92,6 +98,27 @@ public class ProgramWebviewViewModel: ObservableObject {
             }
         } else {
             return .enrollOpen
+        }
+    }
+    
+    @MainActor
+    func updateCookies(force: Bool = false) async {
+        guard !updatingCookies else { return }
+        do {
+            updatingCookies = true
+            try await authInteractor.getCookies(force: force)
+            updatingCookies = false
+            errorMessage = nil
+        } catch {
+            if error.isInternetError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else if retryCount > 0 {
+                retryCount -= 1
+                await updateCookies(force: force)
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+            updatingCookies = false
         }
     }
 }

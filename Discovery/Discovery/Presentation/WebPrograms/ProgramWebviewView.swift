@@ -61,7 +61,11 @@ public struct ProgramWebviewView: View {
                         baseURL: ""
                     ),
                     isLoading: $isLoading,
-                    refreshCookies: {},
+                    refreshCookies: {
+                        await viewModel.updateCookies(
+                            force: true
+                        )
+                    },
                     navigationDelegate: viewModel
                 )
                 
