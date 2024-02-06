@@ -131,20 +131,16 @@ struct CourseStructureNestedListView: View {
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(CourseLocalization.Accessibility.download)
                     }
-                    downloadCount(sequential: sequential)
                 }
             case .downloading:
                 if viewModel.isInternetAvaliable {
                     Button {
-                        Task {
-                            await viewModel.onDownloadViewTap(
-                                chapter: chapter,
-                                blockId: sequential.id,
-                                state: state
-                            )
-                        }
+                        viewModel.router.showDownloads(
+                            downloads: viewModel.getTasks(sequential: sequential),
+                            manager: viewModel.manager
+                        )
                     } label: {
-                        DownloadProgressView()
+                        DownloadInfoView()
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                     }
@@ -178,8 +174,8 @@ struct CourseStructureNestedListView: View {
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
                 }
-                downloadCount(sequential: sequential)
             }
+            downloadCount(sequential: sequential)
         }
     }
 

@@ -165,6 +165,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         return verticals.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }
     }
 
+    func getTasks(sequential: CourseSequential) -> [DownloadDataTask] {
+        let blocks = verticalsBlocksDownloadable(by: sequential)
+        let tasks = blocks.compactMap { block in
+            courseDownloadTasks.first(where: { $0.id ==  block.id})
+        }
+        return tasks
+    }
+
     func continueDownload() {
         guard let blocks = waitingDownloads else {
             return
