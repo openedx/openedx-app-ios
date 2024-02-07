@@ -15,7 +15,6 @@ public class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProt
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
     @Published public var updatingCookies: Bool = false
-    private var retryCount = 1
     @Published public var cookiesReady: Bool = false
     
     public var errorMessage: String? {
