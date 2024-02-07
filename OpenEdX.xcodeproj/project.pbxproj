@@ -431,6 +431,11 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
 			);
 			name = FirebaseCrashlytics;
 			outputFileListPaths = (
@@ -439,7 +444,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "plistPath=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/GoogleService-Info.plist\"\n\ngoogleAppID=$(/usr/libexec/PlistBuddy -c \"Print :GOOGLE_APP_ID\" \"$plistPath\")\n\nif [ -z \"$googleAppID\" ]\nthen\n    echo \"GoogleAppID is empty. The FirebaseCrashlytics script will be skipped.\"\nelse\n    \"${PODS_ROOT}/FirebaseCrashlytics/run\" --app-id \"$googleAppID\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\nfi\n";
+			shellScript = "plistPath=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/GoogleService-Info.plist\"\n\ngoogleAppID=$(/usr/libexec/PlistBuddy -c \"Print :GOOGLE_APP_ID\" \"$plistPath\")\n\nif [ -z \"$googleAppID\" ]\nthen\n    echo \"GoogleAppID is empty. The FirebaseCrashlytics script will be skipped.\"\nelse\n    \"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nfi\n";
 		};
 		0770DE2328D08647006D8A5D /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
