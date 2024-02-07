@@ -10,18 +10,17 @@ import Core
 import SwiftUI
 import WebKit
 
-public class ProgramWebviewViewModel: ObservableObject {
+public class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
-    @Published var updatingCookies: Bool = false
+    @Published public var updatingCookies: Bool = false
     private var retryCount = 1
+    @Published public var cookiesReady: Bool = false
     
-    var errorMessage: String? {
+    public var errorMessage: String? {
         didSet {
-            withAnimation {
                 showError = errorMessage != nil
-            }
         }
     }
     
@@ -31,7 +30,7 @@ public class ProgramWebviewViewModel: ObservableObject {
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     var request: URLRequest?
-    let authInteractor: AuthInteractorProtocol
+    public let authInteractor: AuthInteractorProtocol
     
     public init(
         router: DiscoveryRouter,
@@ -98,27 +97,6 @@ public class ProgramWebviewViewModel: ObservableObject {
             }
         } else {
             return .enrollOpen
-        }
-    }
-    
-    @MainActor
-    func updateCookies(force: Bool = false) async {
-        guard !updatingCookies else { return }
-        do {
-            updatingCookies = true
-            try await authInteractor.getCookies(force: force)
-            updatingCookies = false
-            errorMessage = nil
-        } catch {
-            if error.isInternetError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else if retryCount > 0 {
-                retryCount -= 1
-                await updateCookies(force: force)
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
-            updatingCookies = false
         }
     }
 }

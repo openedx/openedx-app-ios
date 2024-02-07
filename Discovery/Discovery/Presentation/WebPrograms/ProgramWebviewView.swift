@@ -69,7 +69,7 @@ public struct ProgramWebviewView: View {
                     navigationDelegate: viewModel
                 )
                 
-                if isLoading || viewModel.showProgress {
+                if isLoading || viewModel.showProgress || viewModel.updatingCookies {
                     HStack(alignment: .center) {
                         ProgressBar(
                             size: 40,
@@ -92,6 +92,7 @@ public struct ProgramWebviewView: View {
                             viewModel.errorMessage = nil
                         }
                     }
+                    .animation(.default, value: 1)
                 }
             }
             
