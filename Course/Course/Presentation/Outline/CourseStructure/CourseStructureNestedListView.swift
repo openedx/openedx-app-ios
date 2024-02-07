@@ -140,7 +140,7 @@ struct CourseStructureNestedListView: View {
                             manager: viewModel.manager
                         )
                     } label: {
-                        DownloadInfoView()
+                        CircleProgressView()
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                     }
@@ -164,10 +164,7 @@ struct CourseStructureNestedListView: View {
                             }
                             viewModel.router.dismiss(animated: true)
                         },
-                        type: .default(
-                            positiveAction: CoreLocalization.Alert.delete,
-                            image: CoreAssets.bgDelete.swiftUIImage
-                        )
+                        type: .deleteVideo
                     )
                 } label: {
                     DownloadFinishedView()

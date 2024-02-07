@@ -10,26 +10,6 @@ import Core
 import Theme
 import Combine
 
-struct SheetNavigationViewModifier: ViewModifier {
-    var isSheet: Bool
-
-    func body(content: Content) -> some View {
-        if isSheet {
-            NavigationView {
-                content
-            }
-        } else {
-            content
-        }
-    }
-}
-
-extension View {
-    func sheetNavigation(isSheet: Bool) -> some View {
-        modifier(SheetNavigationViewModifier(isSheet: isSheet))
-    }
-}
-
 public struct DownloadsView: View {
 
     // MARK: - Properties

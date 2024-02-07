@@ -134,7 +134,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                     }
                     self.courseViewModel.router.dismiss(animated: true)
                 },
-                type: .default(positiveAction: CoreLocalization.Alert.delete, image: CoreAssets.bgDelete.swiftUIImage)
+                type: .deleteVideo
             )
             return
         }
@@ -154,7 +154,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                     }
                     self.courseViewModel.router.dismiss(animated: true)
                 },
-                type: .default(positiveAction: CoreLocalization.Alert.accept, image: nil)
+                type: .deleteVideo
             )
             return
         }
