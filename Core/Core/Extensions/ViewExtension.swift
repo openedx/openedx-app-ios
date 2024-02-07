@@ -256,7 +256,7 @@ public extension View {
     }
 }
 
-extension View {
+public extension View {
     @ViewBuilder
     func sheetNavigation(isSheet: Bool) -> some View {
         if isSheet {

@@ -142,7 +142,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         if isOn {
             courseViewModel.router.presentAlert(
                 alertTitle: "Warning",
-                alertMessage: "\(CourseLocalization.Alert.stopDownloading) \"\(courseStructure.displayName)\"?",
+                alertMessage: "\(CourseLocalization.Alert.stopDownloading) \"\(courseStructure.displayName)\"",
                 positiveAction: CoreLocalization.Alert.accept,
                 onCloseTapped: { [weak self] in
                     self?.courseViewModel.router.dismiss(animated: true)
