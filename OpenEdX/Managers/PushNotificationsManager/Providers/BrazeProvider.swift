@@ -8,9 +8,10 @@
 import Foundation
 
 class BrazeProvider: PushNotificationsProvider {
-    func registerWithDeviceToken(deviceToken: Data) {
+    func didRegisterWithDeviceToken(deviceToken: Data) {
         
     }
+
     func didFailToRegisterForRemoteNotificationsWithError(error: Error) {
         
     }

@@ -74,33 +74,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ app: UIApplication,
         open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        if let config = Container.shared.resolve(ConfigProtocol.self) {
-            if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self),
-                deepLinkManager.serviceEnabled {
-                if deepLinkManager.handledURLWith(app: app, open: url, options: options) {
-                    return true
-                }
-            }
+        guard let config = Container.shared.resolve(ConfigProtocol.self) else { return false }
 
-            if config.facebook.enabled {
-                ApplicationDelegate.shared.application(
-                    app,
-                    open: url,
-                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-                    annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-                )
+        if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self),
+            deepLinkManager.anyServiceEnabled {
+            if deepLinkManager.handledURLWith(app: app, open: url, options: options) {
+                return true
             }
+        }
 
-            if config.google.enabled {
-                return GIDSignIn.sharedInstance.handle(url)
-            }
+        if config.facebook.enabled {
+            ApplicationDelegate.shared.application(
+                app,
+                open: url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+            )
+        }
 
-            if config.microsoft.enabled {
-                return MSALPublicClientApplication.handleMSALResponse(
-                    url,
-                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-                )
-            }
+        if config.google.enabled {
+            return GIDSignIn.sharedInstance.handle(url)
+        }
+
+        if config.microsoft.enabled {
+            return MSALPublicClientApplication.handleMSALResponse(
+                url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+            )
         }
 
         return false
@@ -139,14 +139,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Push Notifications
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
-            pushManager.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
-        }
+        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self) else { return }
+        pushManager.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
-            pushManager.didFailToRegisterForRemoteNotificationsWithError(error: error)
-        }
+        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self) else { return }
+        pushManager.didFailToRegisterForRemoteNotificationsWithError(error: error)
     }
     func application(
         _ application: UIApplication,

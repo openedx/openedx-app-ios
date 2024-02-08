@@ -11,7 +11,7 @@ import UIKit
 import Swinject
 
 public protocol PushNotificationsProvider {
-    func registerWithDeviceToken(deviceToken: Data)
+    func didRegisterWithDeviceToken(deviceToken: Data)
     func didFailToRegisterForRemoteNotificationsWithError(error: Error)
 }
 
@@ -22,11 +22,12 @@ protocol PushNotificationsListener {
 
 extension PushNotificationsListener {
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-       guard let dictionary = userInfo as? [String: Any], shouldListenNotification(userinfo: userInfo) else { return }
-       let link = PushLink(dictionary: dictionary)
-       if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) {
-           deepLinkManager.processNotification(with: link)
-       }
+        guard let dictionary = userInfo as? [String: Any],
+             shouldListenNotification(userinfo: userInfo),
+             let deepLinkManager = Container.shared.resolve(DeepLinkManager.self)
+        else { return }
+        let link = PushLink(dictionary: dictionary)
+        deepLinkManager.processLinkFromNotification(link)
    }
 }
 
@@ -36,30 +37,30 @@ class PushNotificationsManager {
     
     // Init manager
     public init(config: ConfigProtocol) {
-        self.providers = self.providersFor(config: config)
-        self.listeners = self.listenersFor(config: config)
+        providers = providersFor(config: config)
+        listeners = listenersFor(config: config)
     }
     
     private func providersFor(config: ConfigProtocol) -> [PushNotificationsProvider] {
-        var rProviders: [PushNotificationsProvider] = []
+        var pushProviders: [PushNotificationsProvider] = []
         if config.firebase.cloudMessagingEnabled {
-            rProviders.append(FCMProvider())
+            pushProviders.append(FCMProvider())
         }
         if config.braze.pushNotificationsEnabled {
-            rProviders.append(BrazeProvider())
+            pushProviders.append(BrazeProvider())
         }
-        return rProviders
+        return pushProviders
     }
     
     private func listenersFor(config: ConfigProtocol) -> [PushNotificationsListener] {
-        var rListeners: [PushNotificationsListener] = []
+        var pushListeners: [PushNotificationsListener] = []
         if config.firebase.cloudMessagingEnabled {
-            rListeners.append(FCMListener())
+            pushListeners.append(FCMListener())
         }
         if config.braze.pushNotificationsEnabled {
-            rListeners.append(BrazeListener())
+            pushListeners.append(BrazeListener())
         }
-        return rListeners
+        return pushListeners
     }
     
     // Register for push notifications
@@ -80,7 +81,7 @@ class PushNotificationsManager {
     // Proccess functions from app delegate
     public func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data) {
         for provider in providers {
-            provider.registerWithDeviceToken(deviceToken: deviceToken)
+            provider.didRegisterWithDeviceToken(deviceToken: deviceToken)
         }
     }
     public func didFailToRegisterForRemoteNotificationsWithError(error: Error) {
