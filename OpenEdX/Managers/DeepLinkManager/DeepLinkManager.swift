@@ -57,9 +57,7 @@ class DeepLinkManager {
     
     // This method do redirect with link from push notification
     func processLinkFromNotification(_ link: PushLink) {
-        if anyServiceEnabled {
-            // redirect if possible
-        }
+        // redirect if possible
     }
     
     // This method process the deep link with response parameters

@@ -84,23 +84,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         if config.facebook.enabled {
-            ApplicationDelegate.shared.application(
+            if ApplicationDelegate.shared.application(
                 app,
                 open: url,
                 sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
                 annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-            )
+            ) {
+                return true
+            }
         }
 
         if config.google.enabled {
-            return GIDSignIn.sharedInstance.handle(url)
+            if GIDSignIn.sharedInstance.handle(url) {
+                return true
+            }
         }
 
         if config.microsoft.enabled {
-            return MSALPublicClientApplication.handleMSALResponse(
+            if MSALPublicClientApplication.handleMSALResponse(
                 url,
                 sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-            )
+            ) {
+                return true
+            }
         }
 
         return false
@@ -151,16 +157,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
-        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
-            pushManager.didReceiveRemoteNotification(userInfo: userInfo)
+        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self) 
+        else {
+            completionHandler(.newData)
+            return
         }
+        pushManager.didReceiveRemoteNotification(userInfo: userInfo)
         completionHandler(.newData)
     }
     
     // Deep link
     func configureDeepLinkServices(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) {
-            deepLinkManager.configureDeepLinkService(launchOptions: launchOptions)
-        }
+        guard let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) else { return }
+        deepLinkManager.configureDeepLinkService(launchOptions: launchOptions)
     }
 }
