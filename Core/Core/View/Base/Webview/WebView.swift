@@ -51,65 +51,6 @@ public struct WebView: UIViewRepresentable {
         self.webViewNavDelegate = navigationDelegate
     }
 
-    public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
-        let webViewConfig = WKWebViewConfiguration()
-        
-        let webView = WKWebView(frame: .zero, configuration: webViewConfig)
-        #if DEBUG
-        if #available(iOS 16.4, *) {
-            webView.isInspectable = true
-        }
-        #endif
-        webView.navigationDelegate = context.coordinator
-        webView.uiDelegate = context.coordinator
-        
-        context.coordinator.webview = webView
-        
-        webView.scrollView.bounces = false
-        webView.scrollView.alwaysBounceHorizontal = false
-        webView.scrollView.showsHorizontalScrollIndicator = false
-        webView.scrollView.isScrollEnabled = true
-        webView.configuration.suppressesIncrementalRendering = true
-        webView.isOpaque = false
-        webView.backgroundColor = .clear
-        webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
-        webView.scrollView.alwaysBounceVertical = false
-        webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        
-        for injection in viewModel.injections ?? [] {
-            let script = WKUserScript(
-                source: injection.script,
-                injectionTime: injection.injectionTime,
-                forMainFrameOnly: injection.forMainFrameOnly
-            )
-            webView.configuration.userContentController.addUserScript(script)
-            
-            for message in injection.messages ?? [] {
-                webView.configuration.userContentController.add(context.coordinator, name: message.name)
-            }
-        }
-        
-        webView.customUserAgent = userAgent
-        
-        return webView
-    }
-    
-    public func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<WebView>) {
-        if let url = URL(string: viewModel.url) {
-            if webview.url?.absoluteString != url.absoluteString {
-                DispatchQueue.main.async {
-                    isLoading = true
-                }
-                let request = URLRequest(url: url)
-                webview.load(request)
-            }
-        }
-    }
-
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
         var parent: WebView
 
@@ -120,7 +61,24 @@ public struct WebView: UIViewRepresentable {
             addObserver()
         }
 
+        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            webView.isHidden = true
+        }
+        
+        public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            webView.isHidden = false
+        }
+        
+        public func webView(
+            _ webView: WKWebView,
+            didFailProvisionalNavigation navigation: WKNavigation!,
+            withError error: Error
+        ) {
+            webView.isHidden = false
+        }
+        
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            webView.isHidden = false
             DispatchQueue.main.async {
                 self.parent.isLoading = false
             }
@@ -217,7 +175,7 @@ public struct WebView: UIViewRepresentable {
                 object: nil
             )
         }
-
+        
         fileprivate var webview: WKWebView?
         
         @objc private func reload() {
@@ -249,6 +207,65 @@ public struct WebView: UIViewRepresentable {
         ]
             .compactMap { $0 as? String ?? "" }
             .joined(separator: "/")
+    }
+
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
+        let webViewConfig = WKWebViewConfiguration()
+        
+        let webView = WKWebView(frame: .zero, configuration: webViewConfig)
+        #if DEBUG
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
+        #endif
+        webView.navigationDelegate = context.coordinator
+        webView.uiDelegate = context.coordinator
+        
+        context.coordinator.webview = webView
+        
+        webView.scrollView.bounces = false
+        webView.scrollView.alwaysBounceHorizontal = false
+        webView.scrollView.showsHorizontalScrollIndicator = false
+        webView.scrollView.isScrollEnabled = true
+        webView.configuration.suppressesIncrementalRendering = true
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
+        webView.scrollView.alwaysBounceVertical = false
+        webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
+        
+        for injection in viewModel.injections ?? [] {
+            let script = WKUserScript(
+                source: injection.script,
+                injectionTime: injection.injectionTime,
+                forMainFrameOnly: injection.forMainFrameOnly
+            )
+            webView.configuration.userContentController.addUserScript(script)
+            
+            for message in injection.messages ?? [] {
+                webView.configuration.userContentController.add(context.coordinator, name: message.name)
+            }
+        }
+        
+        webView.customUserAgent = userAgent
+        
+        return webView
+    }
+
+    public func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<WebView>) {
+        if let url = URL(string: viewModel.url) {
+            if webview.url?.absoluteString != url.absoluteString {
+                DispatchQueue.main.async {
+                    isLoading = true
+                }
+                let request = URLRequest(url: url)
+                webview.load(request)
+            }
+        }
     }
 
     public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
