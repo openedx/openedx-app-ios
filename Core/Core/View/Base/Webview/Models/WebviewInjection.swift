@@ -47,7 +47,7 @@ public extension WebviewInjection {
             .webviewInjection()
     }
 
-    static var inversionCss: WebviewInjection {
+    static var colorInversionCss: WebviewInjection {
         ColorInversionInjection()
             .webviewInjection()
     }
