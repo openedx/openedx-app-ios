@@ -140,9 +140,7 @@ struct CourseStructureNestedListView: View {
                             manager: viewModel.manager
                         )
                     } label: {
-                        CircleProgressView()
-                            .accessibilityElement(children: .ignore)
-                            .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
+                        ProgressBar(size: 30, lineWidth: 1.75)
                     }
                 }
             case .finished:

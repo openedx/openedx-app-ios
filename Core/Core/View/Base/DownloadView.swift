@@ -14,16 +14,6 @@ public enum DownloadViewState {
     case finished
 }
 
-
-public struct CircleProgressView: View {
-    public init () {
-    }
-
-    public var body: some View {
-        ProgressBar(size: 30, lineWidth: 1.75)
-    }
-}
-
 public struct DownloadAvailableView: View {
     public init () {
     }

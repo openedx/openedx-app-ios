@@ -20,8 +20,8 @@ public struct CourseContainerView: View {
 
         case course
         case videos
-        case dates
         case discussion
+        case dates
         case handounds
 
         var title: String {
