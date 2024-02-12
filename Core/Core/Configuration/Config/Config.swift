@@ -25,6 +25,8 @@ public protocol ConfigProtocol {
     var theme: ThemeConfig { get }
     var uiComponents: UIComponentsConfig { get }
     var discovery: DiscoveryConfig { get }
+    var braze: BrazeConfig { get }
+    var branch: BranchConfig { get }
     var program: DiscoveryConfig { get }
     var URIScheme: String { get }
 }

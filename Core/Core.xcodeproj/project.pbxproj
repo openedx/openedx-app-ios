@@ -125,8 +125,12 @@
 		0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE6028D0B2CB006D8A5D /* Assets.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
 		07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */; };
+		141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
+		A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A595689A2B6173DF00ED4F90 /* BranchConfig.swift */; };
+		A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */; };
 		BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA30427D2B20B299009B64B7 /* SocialAuthError.swift */; };
+		BA4AFB442B6A5AF100A21367 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */; };
 		BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */; };
 		BA593F1C2AF8E498009ADB51 /* ScrollSlidingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA593F1B2AF8E498009ADB51 /* ScrollSlidingTabBar.swift */; };
 		BA593F1E2AF8E4A0009ADB51 /* FrameReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA593F1D2AF8E4A0009ADB51 /* FrameReader.swift */; };
@@ -292,6 +296,7 @@
 		07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Animation.swift"; sourceTree = "<group>"; };
 		07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Certificate.swift; sourceTree = "<group>"; };
 		0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugstage.xcconfig"; sourceTree = "<group>"; };
+		141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewCookiesUpdateProtocol.swift; sourceTree = "<group>"; };
 		1A154A95AF4EE85A4A1C083B /* Pods-App-Core.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releasedev.xcconfig"; sourceTree = "<group>"; };
 		2B7E6FE7843FC4CF2BFA712D /* Pods-App-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debug.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debug.xcconfig"; sourceTree = "<group>"; };
 		349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -299,7 +304,10 @@
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A53A32342B233DEC005FE38A /* ThemeConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeConfig.swift; sourceTree = "<group>"; };
+		A595689A2B6173DF00ED4F90 /* BranchConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchConfig.swift; sourceTree = "<group>"; };
+		A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrazeConfig.swift; sourceTree = "<group>"; };
 		BA30427D2B20B299009B64B7 /* SocialAuthError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialAuthError.swift; sourceTree = "<group>"; };
+		BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
 		BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityView.swift; sourceTree = "<group>"; };
 		BA593F1B2AF8E498009ADB51 /* ScrollSlidingTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollSlidingTabBar.swift; sourceTree = "<group>"; };
 		BA593F1D2AF8E4A0009ADB51 /* FrameReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameReader.swift; sourceTree = "<group>"; };
@@ -485,6 +493,7 @@
 				0649878E2B4D69FE0071642A /* WebView.swift */,
 				0649878F2B4D69FE0071642A /* Protocols */,
 				064987922B4D69FE0071642A /* WebViewHTML.swift */,
+				141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */,
 			);
 			path = Webview;
 			sourceTree = "<group>";
@@ -681,6 +690,7 @@
 				020306CB2932C0C4000949EA /* PickerView.swift */,
 				027BD3C42909707700392132 /* Shake.swift */,
 				023A1135291432B200D0D354 /* RegistrationTextField.swift */,
+				BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */,
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
 				BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */,
 				BA593F1A2AF8E487009ADB51 /* ScrollSlidingTabBar */,
@@ -769,6 +779,8 @@
 				0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */,
 				0727876F28D23411002E9142 /* Config.swift */,
 				DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */,
+				A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */,
+				A595689A2B6173DF00ED4F90 /* BranchConfig.swift */,
 				DBF6F2492B0380E00098414B /* FeaturesConfig.swift */,
 				DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */,
 				BAFB99812B0E2354007D09F9 /* FacebookConfig.swift */,
@@ -1035,9 +1047,11 @@
 				02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */,
 				027BD3AE2909475000392132 /* KeyboardScrollerOptions.swift in Sources */,
 				BAFB99922B14E23D007D09F9 /* AppleSignInConfig.swift in Sources */,
+				141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */,
 				064987992B4D69FF0071642A /* WebViewScriptInjectionProtocol.swift in Sources */,
 				027BD3BE2909478B00392132 /* UIResponder+CurrentResponder.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
+				BA4AFB442B6A5AF100A21367 /* CheckBoxView.swift in Sources */,
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
 				02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
@@ -1051,6 +1065,7 @@
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */,
+				A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */,
 				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
 				BA8FA6612AD5974300EA029A /* AppleAuthProvider.swift in Sources */,
 				BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */,
@@ -1078,6 +1093,7 @@
 				DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
+				A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */,
 				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
 				0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */,
 				BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */,

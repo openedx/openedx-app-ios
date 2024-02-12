@@ -20,8 +20,8 @@ public enum ProfileLocalization {
   public static let doNotSellInformation = ProfileLocalization.tr("Localizable", "DO_NOT_SELL_INFORMATION", fallback: "Do not sell my personal information")
   /// Edit profile
   public static let editProfile = ProfileLocalization.tr("Localizable", "EDIT_PROFILE", fallback: "Edit profile")
-  /// FAQ
-  public static let faq = ProfileLocalization.tr("Localizable", "FAQ", fallback: "FAQ")
+  /// View FAQ
+  public static let faqTitle = ProfileLocalization.tr("Localizable", "FAQ_TITLE", fallback: "View FAQ")
   /// full profile
   public static let fullProfile = ProfileLocalization.tr("Localizable", "FULL_PROFILE", fallback: "full profile")
   /// Profile info

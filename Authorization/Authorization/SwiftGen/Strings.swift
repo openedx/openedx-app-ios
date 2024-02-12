@@ -51,6 +51,11 @@ public enum AuthLocalization {
     public static let title = AuthLocalization.tr("Localizable", "FORGOT.TITLE", fallback: "Forgot password")
   }
   public enum SignIn {
+    /// By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
+    /// accordance with the [Privacy Policy.](%@)
+    public static func agreement(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any, _ p6: Any) -> String {
+      return AuthLocalization.tr("Localizable", "SIGN_IN.AGREEMENT", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), String(describing: p6), fallback: "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in\naccordance with the [Privacy Policy.](%@)")
+    }
     /// Email
     public static let email = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL", fallback: "Email")
     /// Email or username
@@ -68,10 +73,18 @@ public enum AuthLocalization {
     public static let welcomeBack = AuthLocalization.tr("Localizable", "SIGN_IN.WELCOME_BACK", fallback: "Welcome back! Please authorize to continue.")
   }
   public enum SignUp {
+    /// By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)
+    public static func agreement(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any, _ p6: Any) -> String {
+      return AuthLocalization.tr("Localizable", "SIGN_UP.AGREEMENT", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), String(describing: p6), fallback: "By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)")
+    }
     /// Create account
     public static let createAccountBtn = AuthLocalization.tr("Localizable", "SIGN_UP.CREATE_ACCOUNT_BTN", fallback: "Create account")
     /// Hide optional Fields
     public static let hideFields = AuthLocalization.tr("Localizable", "SIGN_UP.HIDE_FIELDS", fallback: "Hide optional Fields")
+    /// I agree that %@ may send me marketing messages.
+    public static func marketingEmailTitle(_ p1: Any) -> String {
+      return AuthLocalization.tr("Localizable", "SIGN_UP.MARKETING_EMAIL_TITLE", String(describing: p1), fallback: "I agree that %@ may send me marketing messages.")
+    }
     /// Show optional Fields
     public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
     /// Create new account.

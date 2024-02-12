@@ -10,15 +10,16 @@ import Core
 import SwiftUI
 import WebKit
 
-public class ProgramWebviewViewModel: ObservableObject {
+public class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
-    var errorMessage: String? {
+    @Published public var updatingCookies: Bool = false
+    @Published public var cookiesReady: Bool = false
+    
+    public var errorMessage: String? {
         didSet {
-            withAnimation {
                 showError = errorMessage != nil
-            }
         }
     }
     
@@ -28,19 +29,22 @@ public class ProgramWebviewViewModel: ObservableObject {
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
     var request: URLRequest?
+    public let authInteractor: AuthInteractorProtocol
     
     public init(
         router: DiscoveryRouter,
         config: ConfigProtocol,
         interactor: DiscoveryInteractorProtocol,
         connectivity: ConnectivityProtocol,
-        analytics: DiscoveryAnalytics
+        analytics: DiscoveryAnalytics,
+        authInteractor: AuthInteractorProtocol
     ) {
         self.router = router
         self.config = config
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
+        self.authInteractor = authInteractor
     }
     
     @MainActor
