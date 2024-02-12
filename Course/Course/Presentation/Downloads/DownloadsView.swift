@@ -10,49 +10,64 @@ import Core
 import Theme
 import Combine
 
-struct DownloadsView: View {
+public struct DownloadsView: View {
 
     // MARK: - Properties
 
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: DownloadsViewModel
 
-    init(
+    var isSheet: Bool = true
+
+    public init(
+        isSheet: Bool = true,
         courseId: String? = nil,
+        downloads: [DownloadDataTask] = [],
         manager: DownloadManagerProtocol
     ) {
+        self.isSheet = isSheet
         self._viewModel = .init(
-            wrappedValue: .init(courseId: courseId, manager: manager)
+            wrappedValue: .init(
+                courseId: courseId,
+                downloads: downloads,
+                manager: manager
+            )
         )
     }
 
     // MARK: - Body
 
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                LazyVStack {
-                    ForEach(
-                        viewModel.downloads,
-                        content: cell
-                    )
-                }
+    public var body: some View {
+        content
+            .sheetNavigation(isSheet: isSheet)
+    }
+
+    private var content: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(
+                    viewModel.downloads,
+                    content: cell
+                )
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(CourseLocalization.Download.downloads)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .foregroundColor(Theme.Colors.accentColor)
-                    }
-                    .accessibilityIdentifier("close_button")
-                }
-            }
-            .padding(.top, 1)
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(CourseLocalization.Download.downloads)
+        .if(isSheet) { view in
+            view
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .foregroundColor(Theme.Colors.accentColor)
+                        }
+                        .accessibilityIdentifier("close_button")
+                    }
+                }
+        }
+        .padding(.top, 1)
     }
 
     // MARK: - Views
