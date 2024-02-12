@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Kingfisher
+import Theme
 
 public struct VideoQualityView: View {
     

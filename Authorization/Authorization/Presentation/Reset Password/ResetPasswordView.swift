@@ -7,12 +7,15 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct ResetPasswordView: View {
     
     @State private var email: String = ""
     
     @State private var isRecovered: Bool = false
+    
+    @Environment (\.isHorizontal) private var isHorizontal
     
     @ObservedObject
     private var viewModel: ResetPasswordViewModel
@@ -24,18 +27,20 @@ public struct ResetPasswordView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
-            }.frame(maxWidth: .infinity, maxHeight: 200)
+            }
+            .frame(maxWidth: .infinity, maxHeight: 200)
+            .accessibilityIdentifier("auth_bg_image")
             
             VStack(alignment: .center) {
                 NavigationBar(title: AuthLocalization.Forgot.title,
-                             titleColor: .white,
-                             leftButtonColor: .white,
+                             titleColor: Theme.Colors.loginNavigationText,
+                             leftButtonColor: Theme.Colors.loginNavigationText,
                              leftButtonAction: {
                    viewModel.router.back()
-               })
+               }).padding(.leading, isHorizontal ? 48 : 0)
                 
                 ScrollView {
                     VStack {
@@ -47,22 +52,26 @@ public struct ResetPasswordView: View {
                                         .frame(width: 100, height: 100)
                                         .padding(.bottom, 40)
                                         .padding(.top, 100)
+                                        .accessibilityIdentifier("check_email_image")
                                     
                                     Text(AuthLocalization.Forgot.checkTitle)
                                         .font(Theme.Fonts.titleLarge)
                                         .multilineTextAlignment(.center)
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 4)
+                                        .accessibilityIdentifier("recover_title_text")
                                     Text(AuthLocalization.Forgot.checkDescription + email)
                                         .font(Theme.Fonts.bodyMedium)
                                         .multilineTextAlignment(.center)
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
-                                    StyledButton(AuthLocalization.SignIn.logInBtn) {
+                                        .accessibilityIdentifier("recover_description_text")
+                                    StyledButton(CoreLocalization.SignIn.logInBtn) {
                                         viewModel.router.backToRoot(animated: true)
                                     }
                                     .padding(.top, 30)
                                     .frame(maxWidth: .infinity)
+                                    .accessibilityIdentifier("signin_button")
                                 }
                             }
                         
@@ -72,13 +81,16 @@ public struct ResetPasswordView: View {
                                     .font(Theme.Fonts.displaySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
+                                    .accessibilityIdentifier("forgot_title_text")
                                 Text(AuthLocalization.Forgot.description)
                                     .font(Theme.Fonts.titleSmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
+                                    .accessibilityIdentifier("forgot_description_text")
                                 Text(AuthLocalization.SignIn.email)
                                     .font(Theme.Fonts.labelLarge)
                                     .foregroundColor(Theme.Colors.textPrimary)
+                                    .accessibilityIdentifier("email_text")
                                 TextField(AuthLocalization.SignIn.email, text: $email)
                                     .keyboardType(.emailAddress)
                                     .textContentType(.emailAddress)
@@ -94,10 +106,12 @@ public struct ResetPasswordView: View {
                                             .stroke(lineWidth: 1)
                                             .fill(Theme.Colors.textInputStroke)
                                     )
+                                    .accessibilityIdentifier("email_textfield")
                                 if viewModel.isShowProgress {
                                     HStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
                                             .padding(20)
+                                            .accessibilityIdentifier("progressbar")
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(AuthLocalization.Forgot.request) {
@@ -107,6 +121,7 @@ public struct ResetPasswordView: View {
                                     }
                                     .padding(.top, 30)
                                     .frame(maxWidth: .infinity)
+                                    .accessibilityIdentifier("reset_password_button")
                                 }
                             }
                         }
@@ -123,8 +138,9 @@ public struct ResetPasswordView: View {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                         textColor: .white)
+                                         textColor: Theme.Colors.white)
                         .padding(.top, 80)
+                        .accessibilityIdentifier("show_alert_text")
                     Spacer()
                     
                 }
@@ -141,6 +157,7 @@ public struct ResetPasswordView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
+                        .accessibilityIdentifier("show_error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
@@ -149,7 +166,10 @@ public struct ResetPasswordView: View {
                     }
             }
         }
+        .ignoresSafeArea(.all, edges: .horizontal)
+
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+        
         .hideNavigationBar()
     }
 }

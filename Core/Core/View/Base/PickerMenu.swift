@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct PickerItem: Hashable {
     public let key: String
@@ -25,6 +26,7 @@ public struct PickerMenu: View {
     
     @State private var search: String = ""
     @State public var selectedItem: PickerItem = PickerItem(key: "", value: "")
+    @Environment (\.isHorizontal) private var isHorizontal
     private let ipadPickerWidth: CGFloat = 300
     private var items: [PickerItem]
     private let titleText: String
@@ -79,9 +81,11 @@ public struct PickerMenu: View {
                     VStack {
                         Text(titleText)
                             .foregroundColor(Theme.Colors.textPrimary)
+                            .accessibilityIdentifier("picker_title_text")
                         TextField(CoreLocalization.Picker.search, text: $search)
                             .padding(.all, 8)
                             .background(Theme.Colors.textInputStroke.cornerRadius(6))
+                            .accessibilityIdentifier("picker_search_textfield")
                         Picker("", selection: $selectedItem) {
                             ForEach(filteredItems, id: \.self) { item in
                                 Text(item.value)
@@ -89,8 +93,13 @@ public struct PickerMenu: View {
                             }
                         }
                         .pickerStyle(.wheel)
+                        .accessibilityIdentifier("picker")
                     }
-                    .frame(minWidth: 0, maxWidth: idiom == .pad ? ipadPickerWidth : .infinity)
+                    .frame(minWidth: 0, 
+                           maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
+                           ? ipadPickerWidth
+                           : .infinity)
+
                     .padding()
                     .background(Theme.Colors.textInputBackground.cornerRadius(16))
                     .padding(.horizontal, 16)
@@ -106,13 +115,18 @@ public struct PickerMenu: View {
                     }) {
                         Text(CoreLocalization.Picker.accept)
                             .foregroundColor(Theme.Colors.textPrimary)
-                            .frame(minWidth: 0, maxWidth: idiom == .pad ? ipadPickerWidth : .infinity)
+                            .frame(minWidth: 0,
+                                   maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
+                                   ? ipadPickerWidth
+                                   : .infinity)
                             .padding()
                             .background(Theme.Colors.textInputBackground.cornerRadius(16))
                             .padding(.horizontal, 16)
                     }
                     .padding(.bottom, 4)
                     .disabled(acceptButtonDisabled)
+                    .accessibilityIdentifier("picker_accept_button")
+
                 }
                 .avoidKeyboard(dismissKeyboardByTap: true)
                 .transition(.move(edge: .bottom))

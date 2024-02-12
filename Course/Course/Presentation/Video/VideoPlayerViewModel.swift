@@ -13,11 +13,12 @@ public class VideoPlayerViewModel: ObservableObject {
     
     private var blockID: String
     private var courseID: String
-    
+
     private let interactor: CourseInteractorProtocol
     public let connectivity: ConnectivityProtocol
     public let router: CourseRouter
-    
+    public let appStorage: CoreStorage
+
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
     var languages: [SubtitleUrl]
@@ -30,13 +31,14 @@ public class VideoPlayerViewModel: ObservableObject {
             showError = errorMessage != nil
         }
     }
-    
+
     public init(
         blockID: String,
         courseID: String,
         languages: [SubtitleUrl],
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
+        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol
     ) {
         self.blockID = blockID
@@ -44,15 +46,19 @@ public class VideoPlayerViewModel: ObservableObject {
         self.languages = languages
         self.interactor = interactor
         self.router = router
+        self.appStorage = appStorage
         self.connectivity = connectivity
         self.prepareLanguages()
     }
     
     @MainActor
     func blockCompletionRequest() async {
-        let fullBlockID = "block-v1:\(courseID.dropFirst(10))+type@video+block@\(blockID)"
         do {
-            try await interactor.blockCompletionRequest(courseID: courseID, blockID: fullBlockID)
+            try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
+            NotificationCenter.default.post(
+                name: NSNotification.blockCompletion,
+                object: nil
+            )
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection

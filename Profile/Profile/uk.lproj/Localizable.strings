@@ -17,6 +17,9 @@
 "CONTACT" = "Cлужби підтримки";
 "TERMS" = "Умови використання";
 "PRIVACY" = "Політика конфіденційності";
+"COOKIE_POLICY" = "Cookie policy";
+"DO_NOT_SELL_INFORMATION" = "Do not sell my personal information";
+"FAQ_TITLE" = "View FAQ";
 "LOGOUT" = "Вийти";
 "SWITCH_TO" = "Переключити на";
 "FULL_PROFILE" = "повний профіль";
@@ -58,13 +61,20 @@
 "SETTINGS.VIDEO_SETTINGS_TITLE" = "Налаштування відео";
 "SETTINGS.WIFI_TITLE" = "Тільки Wi-fi";
 "SETTINGS.WIFI_DESCRIPTION" = "Завантажувати відео, лише коли Wi-Fi увімкнено";
-"SETTINGS.VIDEO_QUALITY_TITLE" = "Якість відео";
+"SETTINGS.VIDEO_QUALITY_TITLE" = "Якість потокового відео";
 "SETTINGS.VIDEO_QUALITY_DESCRIPTION" = "Авто (Рекомендовано)";
 
 "SETTINGS.QUALITY_AUTO_TITLE" = "Авто";
 "SETTINGS.QUALITY_AUTO_DESCRIPTION" = "Рекомендовано";
 "SETTINGS.QUALITY_360_TITLE" = "360p";
-"SETTINGS.QUALITY_360_DESCRIPTION" = "Найменша якість відео";
+"SETTINGS.QUALITY_360_DESCRIPTION" = "економія трафіку";
 "SETTINGS.QUALITY_540_TITLE" = "540p";
 "SETTINGS.QUALITY_720_TITLE" = "720p";
 "SETTINGS.QUALITY_AUTO_DESCRIPTION" = "Найкраща якість";
+
+"SETTINGS.VERSION" = "Версія:";
+"SETTINGS.UP_TO_DATE" = "Оновлено";
+"SETTINGS.TAP_TO_UPDATE" = "Клацніть, щоб оновити до версії";
+"SETTINGS.TAP_TO_INSTALL" = "Клацніть, щоб встановити обов'язкове оновлення програми";
+
+"ERROR.CANNOT_SEND_EMAIL" = "Cannot send email. It seems your email client is not set up.";

@@ -33,7 +33,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let fields = [
@@ -64,7 +65,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -90,7 +92,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .getRegistrationFields(willThrow: NSError()))
@@ -114,10 +117,11 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
-        Given(interactor, .registerUser(fields: .any, willReturn: .init(id: 1,
+        Given(interactor, .registerUser(fields: .any, isSocial: .any, willReturn: .init(id: 1,
                                                                         username: "Name",
                                                                         email: "mail",
                                                                         name: "name",
@@ -127,8 +131,8 @@ final class SignUpViewModelTests: XCTestCase {
         await viewModel.registerUser()
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
-        Verify(interactor, 1, .registerUser(fields: .any))
-        Verify(router, 1, .showMainScreen())
+        Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, false)
@@ -145,7 +149,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         viewModel.fields = [
@@ -158,13 +163,13 @@ final class SignUpViewModelTests: XCTestCase {
         ]
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: ["email": "invalid email"]))
-        Given(interactor, .registerUser(fields: .any, willProduce: {_ in}))
-        
+        Given(interactor, .registerUser(fields: .any, isSocial: .any, willProduce: {_ in}))
+
         await viewModel.registerUser()
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
-        Verify(interactor, 0, .registerUser(fields: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(interactor, 0, .registerUser(fields: .any, isSocial: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, false)
@@ -182,17 +187,18 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
-        Given(interactor, .registerUser(fields: .any, willThrow: APIError.invalidGrant))
-        
+        Given(interactor, .registerUser(fields: .any, isSocial: .any, willThrow: APIError.invalidGrant))
+
         await viewModel.registerUser()
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
-        Verify(interactor, 1, .registerUser(fields: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, true)
@@ -210,17 +216,18 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
-        Given(interactor, .registerUser(fields: .any, willThrow: NSError()))
+        Given(interactor, .registerUser(fields: .any, isSocial: .any, willThrow: NSError()))
 
         await viewModel.registerUser()
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
-        Verify(interactor, 1, .registerUser(fields: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, true)
@@ -238,19 +245,20 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
-        Given(interactor, .registerUser(fields: .any, willThrow: noInternetError))
+        Given(interactor, .registerUser(fields: .any, isSocial: .any, willThrow: noInternetError))
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
         
         await viewModel.registerUser()
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
-        Verify(interactor, 1, .registerUser(fields: .any))
-        Verify(router, 0, .showMainScreen())
+        Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, true)
@@ -268,7 +276,8 @@ final class SignUpViewModelTests: XCTestCase {
             analytics: analytics,
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            validator: validator
+            validator: validator,
+            sourceScreen: .default
         )
         
         viewModel.trackCreateAccountClicked()

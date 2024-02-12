@@ -20,6 +20,7 @@
 "ERROR.USER_NOT_ACTIVE" = "User account is not activated. Please activate your account first.";
 "ERROR.UNKNOWN_ERROR" = "Something went wrong";
 "ERROR.WIFI" = "You can only download files over Wi-Fi. You can change this in the settings.";
+"ERROR.AUTHORIZATION_FAILED" = "Authorization failed.";
 
 "COURSEWARE.COURSE_CONTENT" = "Course content";
 "COURSEWARE.COURSE_UNITS" = "Course units";
@@ -31,7 +32,8 @@
 "COURSEWARE.SECTION" = "Section “";
 "COURSEWARE.IS_FINISHED" = "“ is finished.";
 "COURSEWARE.CONTINUE" = "Continue";
-"COURSEWARE.CONTINUE_WITH" = "Continue with:";
+"COURSEWARE.RESUME" = "Resume";
+"COURSEWARE.RESUME_WITH" = "Resume with:";
 "COURSEWARE.NEXT_SECTION" = "Next section";
 
 "COURSEWARE.NEXT_SECTION_DESCRIPTION_FIRST" = "To proceed with “";
@@ -49,6 +51,7 @@
 "ALERT.LOGOUT" = "Log out";
 "ALERT.LEAVE" = "Leave";
 "ALERT.KEEP_EDITING" = "Keep editing";
+"ALERT.DELETE" = "DELETE";
 
 "NO_INTERNET.OFFLINE" = "Offline";
 "NO_INTERNET.DISMISS" = "Dismiss";
@@ -61,6 +64,15 @@
 "DOWNLOAD_MANAGER.DOWNLOADED" = "Downloaded";
 "DOWNLOAD_MANAGER.COMPLETED" = "Completed";
 
+"SETTINGS.VIDEO_DOWNLOAD_QUALITY_TITLE" = "Video download quality";
+"SETTINGS.DOWNLOAD_QUALITY_AUTO_TITLE" = "Auto";
+"SETTINGS.DOWNLOAD_QUALITY_AUTO_DESCRIPTION" = "Recommended";
+"SETTINGS.DOWNLOAD_QUALITY_360_TITLE" = "360p";
+"SETTINGS.DOWNLOAD_QUALITY_360_DESCRIPTION" = "Lower data usage";
+"SETTINGS.DOWNLOAD_QUALITY_540_TITLE" = "540p";
+"SETTINGS.DOWNLOAD_QUALITY_720_TITLE" = "720p";
+"SETTINGS.DOWNLOAD_QUALITY_720_DESCRIPTION" = "Best quality";
+
 "DONE" = "Done";
 
 "PICKER.SEARCH" = "Search";
@@ -68,3 +80,36 @@
 
 "WEBVIEW.ALERT.OK" = "Ok";
 "WEBVIEW.ALERT.CANCEL" = "Cancel";
+"WEBVIEW.ALERT.CONTINUE" = "Continue";
+
+"REVIEW.VOTE_TITLE" = "Enjoying Open edX?";
+"REVIEW.VOTE_DESCRIPTION" = "Your feedback matters to us. Would you take a moment to rate the app by tapping a star below? Thanks for your support!";
+"REVIEW.FEEDBACK_TITLE" = "Leave Us Feedback";
+"REVIEW.FEEDBACK_DESCRIPTION" = "We’re sorry to hear your learning experience has had some issues. We appreciate all feedback.";
+"REVIEW.THANKS_FOR_VOTE_TITLE" = "Thank You";
+"REVIEW.THANKS_FOR_VOTE_DESCRIPTION" = "Thank you for sharing your feedback with us. Would you like to share your review of this app with other users on the app store?";
+"REVIEW.THANKS_FOR_FEEDBACK_TITLE" = "Thank You";
+"REVIEW.THANKS_FOR_FEEDBACK_DESCRIPTION" = "We received your feedback and will use it to help improve your learning experience going forward. Thank you for sharing!";
+"REVIEW.BETTER" = "What could have been better?";
+"REVIEW.NOT_NOW" = "Not now";
+
+"REVIEW.BUTTON.SUBMIT" = "Submit";
+"REVIEW.BUTTON.SHARE_FEEDBACK" = "Share Feedback";
+"REVIEW.BUTTON.RATE_US" = "Rate Us";
+"REVIEW.EMAIL.TITLE" = "Select email client:";
+
+"COURSE_DATES.TODAY" = "Today";
+"COURSE_DATES.COMPLETED" = "Completed";
+"COURSE_DATES.PAST_DUE" = "Past due";
+"COURSE_DATES.DUE_NEXT" = "Due next";
+"COURSE_DATES.UNRELEASED" = "Unreleased";
+"COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
+"COURSE_DATES.TOMORROW" = "Tomorrow";
+"COURSE_DATES.YESTERDAY" = "Yesterday";
+"COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
+"COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
+
+"SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
+
+"SIGN_IN.LOG_IN_BTN" = "Sign in";
+"SIGN_IN.REGISTER_BTN" = "Register";

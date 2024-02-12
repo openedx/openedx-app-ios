@@ -7,17 +7,19 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct FieldsView: View {
     
     let fields: [FieldConfiguration]
     let router: BaseRouter
-    let configuration: Config
+    let config: ConfigProtocol
     let cssInjector: CSSInjector
     let proxy: GeometryProxy
     @Environment(\.colorScheme) var colorScheme
     @State private var text: String = ""
-    
+    @State private var sendMarketing: Bool = true
+
     var body: some View {
         ForEach(0..<fields.count, id: \.self) { index in
             let config = fields[index]
@@ -54,22 +56,67 @@ struct FieldsView: View {
             case .checkbox:
                 EmptyView()
                     .id(index)
-                Text("Checkbox is not support")
             case .plaintext:
-                HTMLFormattedText(
-                    cssInjector.injectCSS(
-                        colorScheme: colorScheme,
-                        html: config.field.label,
-                        type: .discovery,
-                        fontSize: 90, screenWidth: proxy.size.width)
-                )
-                .id(UUID())
-                .padding(.horizontal, -6)
-                
+                plaintext(fieldConfig: config)
             case .unknown:
                 Text("This field not support")
             }
         }
+    }
+
+    @ViewBuilder
+    private func plaintext(fieldConfig: FieldConfiguration) -> some View {
+        if fieldConfig.field.isHonorCode,
+           let eulaURL = config.agreement.eulaURL,
+           let tosURL = config.agreement.tosURL,
+           let policy = config.agreement.privacyPolicyURL {
+            let text = AuthLocalization.SignUp.agreement(
+                "\(config.platformName)",
+                eulaURL,
+                "\(config.platformName)",
+                tosURL,
+                "\(config.platformName)",
+                policy
+            )
+            let checkBox = fields.first(where: { $0.field.type == .checkbox })
+            checkBox.flatMap { _ in
+                CheckBoxView(
+                    checked: $sendMarketing,
+                    text: AuthLocalization.SignUp.marketingEmailTitle("\(config.platformName)"),
+                    font: Theme.Fonts.labelSmall
+                )
+                .padding(.vertical, 10)
+                .onAppear {
+                    checkBox?.text = "\(sendMarketing)"
+                }
+                .onChange(of: sendMarketing) { newValue in
+                    checkBox?.text = "\(newValue)"
+                }
+            }
+            Text(.init(text))
+                .tint(Theme.Colors.accentColor)
+                .foregroundStyle(Theme.Colors.textSecondary)
+                .font(Theme.Fonts.labelSmall)
+                .padding(.vertical, 3)
+                .id(UUID())
+                .environment(\.openURL, OpenURLAction(handler: handleURL))
+            Divider()
+        } else {
+            HTMLFormattedText(
+                cssInjector.injectCSS(
+                    colorScheme: colorScheme,
+                    html: fieldConfig.field.label,
+                    type: .discovery,
+                    fontSize: 90, screenWidth: proxy.size.width)
+            )
+            .id(UUID())
+            .padding(.horizontal, -6)
+        }
+    }
+
+    private func handleURL(_ url: URL) -> OpenURLAction.Result {
+        router.showWebBrowser(title: url.host ?? "", url: url)
+        return .handled
     }
 }
 
@@ -107,7 +154,7 @@ struct FieldsView_Previews: PreviewProvider {
                 FieldsView(
                     fields: fields,
                     router: AuthorizationRouterMock(),
-                    configuration: ConfigMock(),
+                    config: ConfigMock(),
                     cssInjector: CSSInjectorMock(),
                     proxy: proxy
                 )

@@ -12,9 +12,9 @@ import WebKit
 public final class API {
     
     private let session: Alamofire.Session
-    private let config: Config
+    private let config: ConfigProtocol
     
-    public init(session: Session, config: Config) {
+    public init(session: Session, config: ConfigProtocol) {
         self.session = session
         self.config = config
     }
@@ -65,13 +65,25 @@ public final class API {
         if !route.path.isEmpty {
             url = url.appendingPathComponent(route.path)
         }
-        return try await session.request(
+        
+        let result = session.request(
             url,
             method: route.httpMethod,
             parameters: parameters,
             encoding: encoding,
             headers: route.headers
-        ).validateResponse().serializingData().value
+        ).validateResponse().serializingData()
+        
+            let latestVersion = await result.response.response?.headers["EDX-APP-LATEST-VERSION"]
+            
+            if await result.response.response?.statusCode != 426 {
+                if let latestVersion = latestVersion {
+                    NotificationCenter.default.post(name: .onActualVersionReceived, object: latestVersion)
+                }
+            }
+        
+        return try await result.value
+
     }
     
     private func callCookies(

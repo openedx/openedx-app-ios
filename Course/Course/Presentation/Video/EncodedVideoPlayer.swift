@@ -30,6 +30,7 @@ public struct EncodedVideoPlayer: View {
     @State private var isViewedOnce: Bool = false
     @State private var currentTime: Double = 0
     @State private var isOrientationChanged: Bool = false
+    @State private var pause: Bool = false
     
     @State var showAlert = false
     @State var alertMessage: String? {
@@ -39,6 +40,8 @@ public struct EncodedVideoPlayer: View {
             }
         }
     }
+    
+    @Environment(\.isHorizontal) private var isHorizontal
     
     public init(
         viewModel: EncodedVideoPlayerViewModel,
@@ -50,74 +53,84 @@ public struct EncodedVideoPlayer: View {
     
     public var body: some View {
         ZStack {
-            VStack(alignment: .leading) {
-                PlayerViewController(
-                    videoURL: viewModel.url,
-                    controller: viewModel.controller,
-                    progress: { progress in
-                        if progress >= 0.8 {
-                            if !isViewedOnce {
-                                Task {
-                                    await viewModel.blockCompletionRequest()
-                                }
-                                isViewedOnce = true
+            GeometryReader { reader in
+                VStack {
+                    HStack {
+                        VStack {
+                            PlayerViewController(
+                                videoURL: viewModel.url,
+                                controller: viewModel.controller,
+                                bitrate: viewModel.getVideoResolution(),
+                                progress: { progress in
+                                    if progress >= 0.8 {
+                                        if !isViewedOnce {
+                                            Task {
+                                                await viewModel.blockCompletionRequest()
+                                            }
+                                            isViewedOnce = true
+                                        }
+                                    }
+                                    if progress == 1 {
+                                        viewModel.router.presentAppReview()
+                                    }
+                                }, seconds: { seconds in
+                                    currentTime = seconds
+                                })
+                            .statusBarHidden(false)
+                            .aspectRatio(16 / 9, contentMode: .fit)
+                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
+                            .cornerRadius(12)
+                            if isHorizontal {
+                                Spacer()
                             }
                         }
-                    }, seconds: { seconds in
-                        currentTime = seconds
-                    })
-                .aspectRatio(16 / 9, contentMode: .fit)
-                .cornerRadius(12)
-                .padding(.horizontal, 6)
-                .onReceive(NotificationCenter.Publisher(
-                    center: .default,
-                    name: UIDevice.orientationDidChangeNotification)
-                ) { _ in
-                    if isOnScreen {
-                        self.orientation = UIDevice.current.orientation
-                        if self.orientation.isLandscape {
-                            viewModel.controller.enterFullScreen(animated: true)
-                            viewModel.controller.player?.play()
-                            isOrientationChanged = true
-                        } else {
-                            if isOrientationChanged {
-                                viewModel.controller.exitFullScreen(animated: true)
-                                viewModel.controller.player?.pause()
-                                isOrientationChanged = false
-                            }
+                        if isHorizontal {
+                            SubtittlesView(
+                                languages: viewModel.languages,
+                                currentTime: $currentTime,
+                                viewModel: viewModel,
+                                scrollTo: { date in
+                                    viewModel.controller.player?.seek(
+                                        to: CMTime(
+                                            seconds: date.secondsSinceMidnight(),
+                                            preferredTimescale: 10000
+                                        )
+                                    )
+                                    viewModel.controller.player?.play()
+                                    pauseScrolling()
+                                    currentTime = (date.secondsSinceMidnight() + 1)
+                                })
                         }
                     }
-                }
-                SubtittlesView(languages: viewModel.languages,
-                               currentTime: $currentTime,
-                               viewModel: viewModel)
-                Spacer()
-                if !orientation.isLandscape || idiom != .pad {
-                    VStack {}.onAppear {
-                        isLoading = false
-                        alertMessage = CourseLocalization.Alert.rotateDevice
+                    if !isHorizontal {
+                        SubtittlesView(
+                            languages: viewModel.languages,
+                            currentTime: $currentTime,
+                            viewModel: viewModel,
+                            scrollTo: { date in
+                                viewModel.controller.player?.seek(
+                                    to: CMTime(
+                                        seconds: date.secondsSinceMidnight(),
+                                        preferredTimescale: 10000
+                                    )
+                                )
+                                viewModel.controller.player?.play()
+                                pauseScrolling()
+                                currentTime = (date.secondsSinceMidnight() + 1)
+                            })
                     }
                 }
             }
-            
-            // MARK: - Alert
-            if showAlert, let alertMessage {
-                VStack(alignment: .center) {
-                    Spacer()
-                    HStack(spacing: 6) {
-                        CoreAssets.rotateDevice.swiftUIImage.renderingMode(.template)
-                        Text(alertMessage)
-                    }.shadowCardStyle(bgColor: Theme.Colors.snackbarInfoAlert,
-                                      textColor: .white)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            self.alertMessage = nil
-                            showAlert = false
-                        }
-                    }
-                }
+        }.padding(.horizontal, isHorizontal ? 0 : 8)
+            .onDisappear {
+                viewModel.controller.player?.allowsExternalPlayback = false
             }
+    }
+    
+    private func pauseScrolling() {
+        pause = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.pause = false
         }
     }
 }
@@ -133,7 +146,8 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
+                router: CourseRouterMock(), 
+                appStorage: CoreStorageMock(),
                 connectivity: Connectivity()
             ),
             isOnScreen: true

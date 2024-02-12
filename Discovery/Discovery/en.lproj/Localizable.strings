@@ -13,3 +13,24 @@
 
 "SEARCH.TITLE" = "Search results";
 "SEARCH.EMPTY_DESCRIPTION" = "Start typing to find the course";
+
+"UPDATE_REQUIRED_TITLE" = "App Update Required";
+"UPDATE_REQUIRED_DESCRIPTION" = "This version of the OpenEdX app is out-of-date. To continue learning and get the latest features and fixes, please upgrade to the latest version.";
+"UPDATE_WHY_NEED" = "Why do I need to update?";
+"UPDATE_DEPRECATED_APP" = "Deprecated App Version";
+"UPDATE_BUTTON" = "Update";
+"UPDATE_ACCOUNT_SETTINGS" = "Account Settings";
+
+"UPDATE_NEEDED_TITLE" = "App Update";
+"UPDATE_NEEDED_DESCRIPTION" = "We recommend that you update to the latest version. Upgrade now to receive the latest features and fixes.";
+"UPDATE_NEEDED_NOT_NOW" = "Not Now";
+
+"UPDATE_NEW_AVALIABLE" = "New update available! Upgrade now to receive the latest features and fixes";
+
+"ALERT.LEAVING_APP_TITLE" = "Leaving the app";
+"ALERT.LEAVING_APP_MESSAGE" = "You are now leaving the app and opening a browser";
+
+"DETAILS.TITLE" = "Course details";
+"DETAILS.VIEW_COURSE" = "View course";
+"DETAILS.ENROLL_NOW" = "Enroll now";
+"DETAILS.ENROLLMENT_DATE_IS_OVER" = "You cannot enroll in this course because the enrollment date is over.";

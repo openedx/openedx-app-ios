@@ -10,8 +10,9 @@ import Core
 import Alamofire
 
 public protocol ProfileRepositoryProtocol {
+    func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
-    func getMyProfileOffline() throws -> UserProfile
+    func getMyProfileOffline() -> UserProfile?
     func logOut() async throws
     func uploadProfilePicture(pictureData: Data) async throws
     func deleteProfilePicture() async throws -> Bool
@@ -29,14 +30,14 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     private var storage: CoreStorage & ProfileStorage
     private let downloadManager: DownloadManagerProtocol
     private let coreDataHandler: CoreDataHandlerProtocol
-    private let config: Config
+    private let config: ConfigProtocol
     
     public init(
         api: API,
         storage: CoreStorage & ProfileStorage,
         coreDataHandler: CoreDataHandlerProtocol,
         downloadManager: DownloadManagerProtocol,
-        config: Config
+        config: ConfigProtocol
     ) {
         self.api = api
         self.storage = storage
@@ -45,21 +46,23 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         self.config = config
     }
     
+    public func getUserProfile(username: String) async throws -> UserProfile {
+        let user = try await api.requestData(
+            ProfileEndpoint.getUserProfile(username: username)
+        ).mapResponse(DataLayer.UserProfile.self)
+        return user.domain
+    }
+    
     public func getMyProfile() async throws -> UserProfile {
-        let user =
-        try await api.requestData(
+        let user = try await api.requestData(
             ProfileEndpoint.getUserProfile(username: storage.user?.username ?? "")
         ).mapResponse(DataLayer.UserProfile.self)
         storage.userProfile = user
         return user.domain
     }
     
-    public func getMyProfileOffline() throws -> UserProfile {
-        if let user = storage.userProfile {
-            return user.domain
-        } else {
-            throw NoCachedDataError()
-        }
+    public func getMyProfileOffline() -> UserProfile? {
+        return storage.userProfile?.domain
     }
     
     public func logOut() async throws {
@@ -68,7 +71,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
             ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: config.oAuthClientId)
         )
         storage.clear()
-        downloadManager.deleteAllFiles()
+        await downloadManager.deleteAllFiles()
         coreDataHandler.clear()
     }
     
@@ -141,7 +144,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         if let userSettings = storage.userSettings {
             return userSettings
         } else {
-            return UserSettings(wifiOnly: true, downloadQuality: VideoQuality.auto)
+            return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
         }
     }
     
@@ -154,7 +157,19 @@ public class ProfileRepository: ProfileRepositoryProtocol {
 #if DEBUG
 // swiftlint:disable all
 class ProfileRepositoryMock: ProfileRepositoryProtocol {
-    func getMyProfileOffline() throws -> Core.UserProfile {
+    
+    public func getUserProfile(username: String) async throws -> Core.UserProfile {
+        return Core.UserProfile(avatarUrl: "",
+                                name: "",
+                                username: "",
+                                dateJoined: Date(),
+                                yearOfBirth: 0,
+                                country: "",
+                                shortBiography: "",
+                                isFullProfile: false)
+    }
+    
+    func getMyProfileOffline() -> Core.UserProfile? {
         return UserProfile(
             avatarUrl: "",
             name: "John Lennon",
@@ -218,7 +233,7 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
     public func deleteAccount(password: String) async throws -> Bool { return false }
     
     public func getSettings() -> UserSettings {
-        return UserSettings(wifiOnly: true, downloadQuality: .auto)
+        return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
     }
     public func saveSettings(_ settings: UserSettings) {}
 }

@@ -9,23 +9,44 @@
 "SIGN_IN.LOG_IN_TITLE" = "Sign in";
 "SIGN_IN.WELCOME_BACK" = "Welcome back! Please authorize to continue.";
 "SIGN_IN.EMAIL" = "Email";
+"SIGN_IN.EMAIL_OR_USERNAME" = "Email or username";
 "SIGN_IN.PASSWORD" = "Password";
-"SIGN_IN.REGISTER_BTN" = "Register";
 "SIGN_IN.FORGOT_PASS_BTN" = "Forgot password?";
-"SIGN_IN.LOG_IN_BTN" = "Sign in";
+"SIGN_IN.AGREEMENT" = "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
+accordance with the [Privacy Policy.](%@)";
 
 
 "ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email address";
 "ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
+"ERROR.ACCOUNT_NOT_REGISTERED" = "This %@ account is not linked with any %@ account. Please register.";
+"ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME" = "Invalid email or username";
+"ERROR.DISABLED_ACCOUNT" = "Your account is disabled. Please contact customer support for assistance.";
 
 "SIGN_UP.TITLE" = "Sign up";
 "SIGN_UP.SUBTITLE" = "Create new account.";
 "SIGN_UP.CREATE_ACCOUNT_BTN" = "Create account";
 "SIGN_UP.HIDE_FIELDS" = "Hide optional Fields";
 "SIGN_UP.SHOW_FIELDS" = "Show optional Fields";
+"SIGN_UP.SUCCESS_SIGNIN_LABEL" = "You've successfully signed in.";
+"SIGN_UP.SUCCESS_SIGNIN_SUBLABEL" = "We just need a little more information before you start learning.";
+"SIGN_UP.AGREEMENT" = "By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)";
+"SIGN_UP.MARKETING_EMAIL_TITLE" = "I agree that %@ may send me marketing messages.";
 
 "FORGOT.TITLE"= "Forgot password";
 "FORGOT.DESCRIPTION" = "Please enter your log-in or recovery email address below and we will send you an email with instructions.";
 "FORGOT.REQUEST" = "Reset password";
 "FORGOT.CHECK_TITLE" = "Check your email";
 "FORGOT.CHECK_Description" = "We have sent a password recover instructions to your email ";
+
+"SIGN_IN_WITH" = "Sign in with";
+"REGISTER_WITH" = "Register with";
+"APPLE" = "Apple";
+"GOOGLE" = "Google";
+"FACEBOOK" = "Facebook";
+"MICROSOFT" = "Microsoft";
+"OR" = "Or";
+
+"STARTUP.INFO_MESSAGE" = "Courses and programs from the world's best universities in your pocket.";
+"STARTUP.SEARCH_TITLE" = "What do you want to learn?";
+"STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
+"STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";

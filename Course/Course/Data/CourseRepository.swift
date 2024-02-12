@@ -9,73 +9,53 @@ import Foundation
 import Core
 
 public protocol CourseRepositoryProtocol {
-    func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
-    func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getCourseBlocksOffline(courseID: String) throws -> CourseStructure
-    func enrollToCourse(courseID: String) async throws -> Bool
+    func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func resumeBlock(courseID: String) async throws -> ResumeBlock
     func getSubtitles(url: String, selectedLanguage: String) async throws -> String
+    func getCourseDates(courseID: String) async throws -> CourseDates
+    func getCourseDatesOffline(courseID: String) async throws -> CourseDates
 }
 
 public class CourseRepository: CourseRepositoryProtocol {
     
     private let api: API
-    private let appStorage: CoreStorage
-    private let config: Config
+    private let coreStorage: CoreStorage
+    private let config: ConfigProtocol
     private let persistence: CoursePersistenceProtocol
     
-    public init(api: API,
-                appStorage: CoreStorage,
-                config: Config,
-                persistence: CoursePersistenceProtocol) {
+    public init(
+        api: API,
+        coreStorage: CoreStorage,
+        config: ConfigProtocol,
+        persistence: CoursePersistenceProtocol
+    ) {
         self.api = api
-        self.appStorage = appStorage
+        self.coreStorage = coreStorage
         self.config = config
         self.persistence = persistence
-    }
-    
-    public func getCourseDetails(courseID: String) async throws -> CourseDetails {
-        let response = try await api.requestData(CourseEndpoint.getCourseDetail(courseID: courseID))
-            .mapResponse(DataLayer.CourseDetailsResponse.self)
-            .domain(baseURL: config.baseURL.absoluteString)
-        persistence.saveCourseDetails(course: response)
-        return response
-    }
-    
-    public func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
-        return try persistence.loadCourseDetails(courseID: courseID)
     }
         
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         let course = try await api.requestData(
-            CourseEndpoint.getCourseBlocks(courseID: courseID, userName: appStorage.user?.username ?? "")
+            CourseEndpoint.getCourseBlocks(courseID: courseID, userName: coreStorage.user?.username ?? "")
         ).mapResponse(DataLayer.CourseStructure.self)
         persistence.saveCourseStructure(structure: course)
         let parsedStructure = parseCourseStructure(course: course)
         return parsedStructure
     }
     
-    public func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
+    public func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         let localData = try persistence.loadCourseStructure(courseID: courseID)
         return parseCourseStructure(course: localData)
     }
     
-    public func enrollToCourse(courseID: String) async throws -> Bool {
-        let enroll = try await api.request(CourseEndpoint.enrollToCourse(courseID: courseID))
-        if enroll.statusCode == 200 {
-            return true
-        } else {
-            return false
-        }
-    }
-    
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
         try await api.requestData(CourseEndpoint.blockCompletionRequest(
-            username: appStorage.user?.username ?? "",
+            username: coreStorage.user?.username ?? "",
             courseID: courseID,
             blockID: blockID)
         )
@@ -94,7 +74,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     
     public func resumeBlock(courseID: String) async throws -> ResumeBlock {
         return try await api.requestData(CourseEndpoint
-            .resumeBlock(userName: appStorage.user?.username ?? "", courseID: courseID))
+            .resumeBlock(userName: coreStorage.user?.username ?? "", courseID: courseID))
         .mapResponse(DataLayer.ResumeBlock.self).domain
     }
     
@@ -110,6 +90,18 @@ public class CourseRepository: CourseRepositoryProtocol {
             persistence.saveSubtitles(url: url + selectedLanguage, subtitlesString: subtitles)
             return subtitles
         }
+    }
+    
+    public func getCourseDates(courseID: String) async throws -> CourseDates {
+        let courseDates = try await api.requestData(
+            CourseEndpoint.getCourseDates(courseID: courseID)
+        ).mapResponse(DataLayer.CourseDates.self).domain
+        persistence.saveCourseDates(courseID: courseID, courseDates: courseDates)
+        return courseDates
+    }
+    
+    public func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
+        return try persistence.loadCourseDates(courseID: courseID)
     }
     
     private func parseCourseStructure(course: DataLayer.CourseStructure) -> CourseStructure {
@@ -209,17 +201,37 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: block.displayName,
             studentUrl: block.studentUrl,
             subtitles: subtitles,
-            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url
+            encodedVideo: .init(
+                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+            )
         )
     }
     
+    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+        guard let encodedVideo else {
+            return nil
+        }
+        return .init(
+            url: encodedVideo.url,
+            fileSize: encodedVideo.fileSize,
+            streamPriority: encodedVideo.streamPriority
+        )
+    }
 }
 
 // Mark - For testing and SwiftUI preview
 // swiftlint:disable all
 #if DEBUG
 class CourseRepositoryMock: CourseRepositoryProtocol {
+    func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
+        throw NoCachedDataError()
+    }
+    
     func resumeBlock(courseID: String) async throws -> ResumeBlock {
         ResumeBlock(blockID: "123")
     }
@@ -232,59 +244,31 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         return [CourseUpdate(id: 1, date: "Date", content: "content", status: "status")]
     }
     
-    
-    func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
-        return CourseDetails(
-            courseID: "courseID",
-            org: "Organization",
-            courseTitle: "Course title",
-            courseDescription: "Course description",
-            courseStart: Date(iso8601: "2021-05-26T12:13:14Z"),
-            courseEnd: Date(iso8601: "2022-05-26T12:13:14Z"),
-            enrollmentStart: nil,
-            enrollmentEnd: nil,
-            isEnrolled: false,
-            overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
-            courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
-        )
-    }
-    
-    func getCourseBlocksOffline(courseID: String) throws -> CourseStructure {
-        let decoder = JSONDecoder()
-        let jsonData = Data(courseStructureJson.utf8)
-        let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
-        return parseCourseStructure(course: courseBlocks)
-    }
-    
-    public  func getCourseDetails(courseID: String) async throws -> CourseDetails {
-        return CourseDetails(
-            courseID: "courseID",
-            org: "Organization",
-            courseTitle: "Course title",
-            courseDescription: "Course description",
-            courseStart: Date(iso8601: "2021-05-26T12:13:14Z"),
-            courseEnd: Date(iso8601: "2022-05-26T12:13:14Z"),
-            enrollmentStart: nil,
-            enrollmentEnd: nil,
-            isEnrolled: false,
-            overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
-            courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
-        )
-    }
-        
-    public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
+    func getCourseDates(courseID: String) async throws -> CourseDates {
         do {
-            let courseBlocks = try courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
-            return parseCourseStructure(course: courseBlocks)
+            let courseDates = try
+            CourseRepository.courseDatesJSON.data(using: .utf8)!.mapResponse(DataLayer.CourseDates.self)
+            return courseDates.domain
         } catch {
             throw error
         }
     }
     
-    public  func enrollToCourse(courseID: String) async throws -> Bool {
-        return true
+    func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
+        let decoder = JSONDecoder()
+        let jsonData = Data(CourseRepository.courseStructureJson.utf8)
+        let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
+        return parseCourseStructure(course: courseBlocks)
+    }
+        
+    public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
+        do {
+            let courseBlocks = try
+            CourseRepository.courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
+            return parseCourseStructure(course: courseBlocks)
+        } catch {
+            throw error
+        }
     }
     
     public  func blockCompletionRequest(courseID: String, blockID: String) {
@@ -399,20 +383,39 @@ And there are various ways of describing it-- call it oral poetry or
             return SubtitleUrl(language: $0.key, url: url)
         }
             
-        return CourseBlock(blockId: block.blockId,
-                           id: block.id,
-                           courseId: courseId,
-                           topicId: block.userViewData?.topicID,
-                           graded: block.graded,
-                           completion: block.completion ?? 0,
-                           type: BlockType(rawValue: block.type) ?? .unknown,
-                           displayName: block.displayName,
-                           studentUrl: block.studentUrl,
-                           subtitles: subtitles,
-                           videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-                           youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
+        return CourseBlock(
+            blockId: block.blockId,
+            id: block.id,
+            courseId: courseId,
+            topicId: block.userViewData?.topicID,
+            graded: block.graded,
+            completion: block.completion ?? 0,
+            type: BlockType(rawValue: block.type) ?? .unknown,
+            displayName: block.displayName,
+            studentUrl: block.studentUrl,
+            subtitles: subtitles,
+            encodedVideo: .init(
+                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+            )
+        )
     }
-    
+
+    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+        guard let encodedVideo else {
+            return nil
+        }
+        return .init(
+            url: encodedVideo.url,
+            fileSize: encodedVideo.fileSize,
+            streamPriority: encodedVideo.streamPriority
+        )
+    }
+
     private let courseStructureJson: String = """
     {"root": "block-v1:QA+comparison+2022+type@course+block@course",
           "blocks": {
@@ -1033,6 +1036,373 @@ And there are various ways of describing it-- call it oral poetry or
           },
           "is_self_paced": false
         }
+    """
+    
+    private let courseDatesJSON: String = """
+    {
+        "dates_banner_info": {
+            "missed_deadlines": false,
+            "content_type_gating_enabled": true,
+            "missed_gated_content": false,
+            "verified_upgrade_link": null
+        },
+        "course_date_blocks": [
+            {
+                "assignment_type": null,
+                "complete": null,
+                "date": "2023-08-30T15:00:00Z",
+                "date_type": "course-start-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "",
+                "link_text": "",
+                "title": "Course starts",
+                "extra_info": null,
+                "first_component_block_id": ""
+            },
+            {
+                "assignment_type": "Problem Set",
+                "complete": true,
+                "date": "2023-09-14T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@ca19e125470846f2a36ad1225410e39a",
+                "link_text": "",
+                "title": "Problem Set 1",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@problem+block@bd89c1dd129240f99bb8c5cbe3f56530"
+            },
+            {
+                "assignment_type": "Problem Set",
+                "complete": false,
+                "date": "2023-09-14T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "",
+                "link_text": "",
+                "title": "Problem Set 1.1",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@problem+block@bd89c1dd129240f99bb8c5cbe3f56530a"
+            },
+            {
+                "assignment_type": "Problem Set",
+                "complete": false,
+                "date": "2023-09-21T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@e137765987514da7851a59dedeb5ecec",
+                "link_text": "",
+                "title": "Problem Set 2",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@html+block@c99e81ffff4546e28fecab0a0c381abd"
+            },
+                {
+                    "assignment_type": "Problem Set",
+                    "complete": true,
+                    "date": "2023-09-21T23:30:00Z",
+                    "date_type": "assignment-due-date",
+                    "description": "",
+                    "learner_has_access": true,
+                    "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@e137765987514da7851a59dedeb5ececc",
+                    "link_text": "",
+                    "title": "Problem Set 2.1",
+                    "extra_info": null,
+                    "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@html+block@c99e81ffff4546e28fecab0a0c381abdc"
+                },
+                    {
+                        "assignment_type": "Problem Set",
+                        "complete": false,
+                        "date": "2023-09-21T23:30:00Z",
+                        "date_type": "assignment-due-date",
+                        "description": "",
+                        "learner_has_access": false,
+                        "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@e137765987514da7851a59dedeb5ececcc",
+                        "link_text": "",
+                        "title": "Problem Set 2.2",
+                        "extra_info": null,
+                        "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@html+block@c99e81ffff4546e28fecab0a0c381abdcc"
+                    },
+            {
+                "assignment_type": "Problem Set",
+                "complete": false,
+                "date": "2023-09-28T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@bfe9eb02884a4812883ff9e543887968",
+                "link_text": "",
+                "title": "Problem Set 3",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@html+block@5e117d71433647eaa6de63434641c011"
+            },
+            {
+                "assignment_type": "Midterm",
+                "complete": false,
+                "date": "2023-10-04T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": false,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@bb284b9c4ff04091951f77b50e3b72f4",
+                "link_text": "",
+                "title": "Midterm Exam (time limit removed due to grader issues)",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@vertical+block@ec1c5d83de6244d38b1f3ff4d32b6e17"
+            },
+            {
+                "assignment_type": "Problem Set",
+                "complete": false,
+                "date": "2023-10-12T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@64f4d344ecdc48d2bef514882e6236ab",
+                "link_text": "",
+                "title": "Problem Set 4",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@html+block@eeb64a67e52e4f3e80656b9233204f25"
+            },
+            {
+                "assignment_type": "Problem Set",
+                "complete": false,
+                "date": "2023-10-19T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@79d22d4ab4f740158930fca4e80d67db",
+                "link_text": "",
+                "title": "Problem Set 5",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@html+block@3dde572871fc4b6ebdb47722a184a514"
+            },
+            {
+                "assignment_type": "Problem Set",
+                "complete": false,
+                "date": "2023-10-26T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@3d419098708e4bcd9209ffa31a4cb3dc",
+                "link_text": "",
+                "title": "Problem Set 6",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@problem+block@9b2a0176bf6a4c21ad4a63c2fce2d0cb"
+            },
+            {
+                "assignment_type": "Final Exam",
+                "complete": false,
+                "date": "2023-10-31T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": false,
+                "link": "",
+                "link_text": "",
+                "title": "Final Exam (time limit removed due to grader issues)",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@vertical+block@e7b4f091d7ad457097d0bbda9d9af267"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@221a4c17dba341d6a970a0d80343253c",
+                "link_text": "",
+                "title": "1. Introduction to Python (TIME: 1:03:12)",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@ad9387910b7e47069c452efebd7b36dd"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@35f82f6c3ecb4e9e913dc279a9b73a9f",
+                "link_text": "",
+                "title": "2. Core Elements of Programs (TIME: 54:14)",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@8fb4fa767a204d41a6366c2bc53bea22"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@62f08cc899344863a1ab678aee506dec",
+                "link_text": "",
+                "title": "3. Simple Algorithms (TIME: 41:06)",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@1f2b055948c9467492649b59e24e8fdc"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@38007cdb67c44b46b124cdbce33510b5",
+                "link_text": "",
+                "title": "4. Functions (TIME: 1:08:06)",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@9dc4c11c46274b87964c7534b449d50a"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@01df98c1e74a459b8fb20d2d785622cd",
+                "link_text": "",
+                "title": "5. Tuples and Lists",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@3464df78190b43948ba0507ef4287290"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@8a590293a22e46dd9760ec917d122ec1",
+                "link_text": "",
+                "title": "6. Dictionaries",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@d2abc5b3db0d43ba90c5d3a25e95e2d5"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@78648402e8bf4738ade97101cc1ba263",
+                "link_text": "",
+                "title": "7. Testing and Debugging",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@dd0621fbfe594e789b187a1e4f8406eb"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@c81c3de20ec54c37a04a8b3d1806e82c",
+                "link_text": "",
+                "title": "8. Exceptions and Assertions",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@6038a1b2f8a340eb8cdb41c021d62234"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@37cb9a5012e443bbaa776a80afd9c87a",
+                "link_text": "",
+                "title": "9. Classes and Inheritance",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@b87e596b827142f09e9664fac3ab0be0"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@54cd6b1bbbbe40f294ac0b5664c03f1e",
+                "link_text": "",
+                "title": "10. An Extended Example",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@6bc79b1a29ac46a7857caa53a8e203d0"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@1334ab336b1b4458b5c2972c50e903b2",
+                "link_text": "",
+                "title": "11. Computational Complexity",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@be73e5a3ee7847d98805a257189b9fad"
+            },
+            {
+                "assignment_type": "Finger Exercises",
+                "complete": false,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "assignment-due-date",
+                "description": "",
+                "learner_has_access": true,
+                "link": "https://courses.edx.org/courses/course-v1:MITx+6.00.1x+2T2023a/jump_to/block-v1:MITx+6.00.1x+2T2023a+type@sequential+block@a7387dbd3728491c8f834e29a73e0cf4",
+                "link_text": "",
+                "title": "12. Searching and Sorting Algorithms",
+                "extra_info": null,
+                "first_component_block_id": "block-v1:MITx+6.00.1x+2T2023a+type@video+block@fa7e29b3b95b4a3b963d1c5dfdd4e8f8"
+            },
+            {
+                "assignment_type": null,
+                "complete": null,
+                "date": "2023-11-01T23:30:00Z",
+                "date_type": "course-end-date",
+                "description": "After the course ends, the course content will be archived and no longer active.",
+                "learner_has_access": true,
+                "link": "",
+                "link_text": "",
+                "title": "Course ends",
+                "extra_info": null,
+                "first_component_block_id": ""
+            },
+            {
+                "assignment_type": null,
+                "complete": null,
+                "date": "2023-11-03T00:00:00Z",
+                "date_type": "certificate-available-date",
+                "description": "Day certificates will become available for passing verified learners.",
+                "learner_has_access": true,
+                "link": "",
+                "link_text": "",
+                "title": "Certificate Available",
+                "extra_info": null,
+                "first_component_block_id": ""
+            },
+            {
+                "assignment_type": null,
+                "complete": null,
+                "date": "2023-11-23T12:34:28Z",
+                "date_type": "course-expired-date",
+                "description": "You lose all access to this course, including your progress.",
+                "learner_has_access": true,
+                "link": "",
+                "link_text": "",
+                "title": "Audit Access Expires",
+                "extra_info": null,
+                "first_component_block_id": ""
+            }
+        ],
+        "has_ended": false,
+        "learner_is_full_access": false,
+        "user_timezone": null
+    }
     """
 }
 #endif

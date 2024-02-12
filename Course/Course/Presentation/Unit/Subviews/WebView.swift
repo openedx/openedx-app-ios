@@ -8,16 +8,29 @@
 import SwiftUI
 import Swinject
 import Core
+import Theme
 
 struct WebView: View {
     let url: String
-    let viewModel: CourseUnitViewModel
-    
+    let injections: [WebviewInjection]
+    var roundedBackgroundEnabled: Bool = true
+
     var body: some View {
         VStack(spacing: 0) {
-            WebUnitView(url: url, viewModel: Container.shared.resolve(WebUnitViewModel.self)!)
-            Spacer(minLength: 5)
+            WebUnitView(
+                url: url,
+                viewModel: Container.shared.resolve(WebUnitViewModel.self)!,
+                injections: injections
+            )
+            if roundedBackgroundEnabled {
+                Spacer(minLength: 5)
+            }
         }
-        .roundedBackground(strokeColor: .clear, maxIpadWidth: .infinity)
+        .if(roundedBackgroundEnabled) { view in
+            view.roundedBackgroundWeb(
+                strokeColor: Theme.Colors.textInputUnfocusedStroke,
+                maxIpadWidth: .infinity
+            )
+        }
     }
 }

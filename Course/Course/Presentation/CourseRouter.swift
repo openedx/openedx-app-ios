@@ -10,15 +10,7 @@ import Core
 
 public protocol CourseRouter: BaseRouter {
     
-    func showCourseScreens(
-        courseID: String,
-        isActive: Bool?,
-        courseStart: Date?,
-        courseEnd: Date?,
-        enrollmentStart: Date?,
-        enrollmentEnd: Date?,
-        title: String
-    )
+    func presentAppReview()
     
     func showCourseUnit(
         courseName: String,
@@ -39,7 +31,8 @@ public protocol CourseRouter: BaseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     )
     
     func showCourseVerticalView(
@@ -57,6 +50,11 @@ public protocol CourseRouter: BaseRouter {
         router: Course.CourseRouter,
         cssInjector: CSSInjector
     )
+    
+    func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
+    )
 }
 
 // Mark - For testing and SwiftUI preview
@@ -65,15 +63,7 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public override init() {}
     
-    public func showCourseScreens(
-        courseID: String,
-        isActive: Bool?,
-        courseStart: Date?,
-        courseEnd: Date?,
-        enrollmentStart: Date?,
-        enrollmentEnd: Date?,
-        title: String
-    ) {}
+    public func presentAppReview() {}
     
     public func showCourseUnit(
         courseName: String,
@@ -94,7 +84,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        animated: Bool
     ) {}
     
     public func showCourseVerticalView(
@@ -111,6 +102,11 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
         cssInjector: CSSInjector
+    ) {}
+    
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure
     ) {}
     
 }

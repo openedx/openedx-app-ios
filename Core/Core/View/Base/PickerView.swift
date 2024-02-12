@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 public struct PickerView: View {
     
@@ -25,6 +26,7 @@ public struct PickerView: View {
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.top, 18)
+                    .accessibilityIdentifier("\(config.field.name)_text")
                 HStack {
                     Button(action: {
                         withAnimation(
@@ -47,6 +49,7 @@ public struct PickerView: View {
                         Spacer()
                         Image(systemName: "chevron.down")
                     })
+                    .accessibilityIdentifier("\(config.field.name)_picker_button")
                 }.padding(.all, 14)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .background(
@@ -67,6 +70,7 @@ public struct PickerView: View {
                 .foregroundColor(config.error == ""
                                  ? Theme.Colors.textPrimary
                                  : Color.red)
+                .accessibilityIdentifier("\(config.field.name)_instructions_text")
             }
         }
     }

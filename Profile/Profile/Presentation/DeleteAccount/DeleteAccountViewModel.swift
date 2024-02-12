@@ -40,14 +40,14 @@ public class DeleteAccountViewModel: ObservableObject {
         do {
             if try await interactor.deleteAccount(password: password) {
                 isShowProgress = false
-                router.showLoginScreen()
+                router.showLoginScreen(sourceScreen: .default)
             } else {
                 isShowProgress = false
                 incorrectPassword = true
             }
         } catch {
             isShowProgress = false
-            if error.asAFError?.responseCode == 403 {
+            if error.validationError?.statusCode == 403 {
                 incorrectPassword = true
             } else if let validationError = error.validationError,
                let value = validationError.data?["error_code"] as? String,

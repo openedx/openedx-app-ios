@@ -5,12 +5,12 @@
 //  Created by  Stepanok Ivan on 22.09.2022.
 //
 
-import Foundation
+import Combine
 import Core
 import SwiftUI
 
 public class ProfileViewModel: ObservableObject {
-    
+
     @Published public var userModel: UserProfile?
     @Published public var updatedAvatar: UIImage?
     @Published private(set) var isShowProgress = false
@@ -22,10 +22,21 @@ public class ProfileViewModel: ObservableObject {
             }
         }
     }
+
+    private var cancellables = Set<AnyCancellable>()
     
+    enum VersionState {
+        case actual
+        case updateNeeded
+        case updateRequired
+    }
+    
+    @Published var versionState: VersionState = .actual
+    @Published var currentVersion: String = ""
+    @Published var latestVersion: String = ""
     
     let router: ProfileRouter
-    let config: Config
+    let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
     
     private let interactor: ProfileInteractorProtocol
@@ -35,7 +46,7 @@ public class ProfileViewModel: ObservableObject {
         interactor: ProfileInteractorProtocol,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
-        config: Config,
+        config: ConfigProtocol,
         connectivity: ConnectivityProtocol
     ) {
         self.interactor = interactor
@@ -43,6 +54,29 @@ public class ProfileViewModel: ObservableObject {
         self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
+        generateVersionState()
+    }
+    
+    func openAppStore() {
+        guard let appStoreURL = URL(string: config.appStoreLink) else { return }
+        UIApplication.shared.open(appStoreURL)
+    }
+    
+    func generateVersionState() {
+        guard let info = Bundle.main.infoDictionary else { return }
+        guard let currentVersion = info["CFBundleShortVersionString"] as? String else { return }
+        self.currentVersion = currentVersion
+        NotificationCenter.default.publisher(for: .onActualVersionReceived)
+            .sink { [weak self] notification in
+                guard let latestVersion = notification.object as? String else { return }
+                DispatchQueue.main.async { [weak self] in
+                    self?.latestVersion = latestVersion
+                    
+                    if latestVersion != currentVersion {
+                        self?.versionState = .updateNeeded
+                    }
+                }
+            }.store(in: &cancellables)
     }
     
     func contactSupport() -> URL? {
@@ -60,39 +94,34 @@ public class ProfileViewModel: ObservableObject {
     
     @MainActor
     func getMyProfile(withProgress: Bool = true) async {
-        isShowProgress = withProgress
         do {
-            if connectivity.isInternetAvaliable {
-                userModel = try await interactor.getMyProfile()
-                isShowProgress = false
+            let userModel = interactor.getMyProfileOffline()
+            if userModel == nil && connectivity.isInternetAvaliable {
+                isShowProgress = withProgress
             } else {
-                userModel = try interactor.getMyProfileOffline()
-                isShowProgress = false
+                self.userModel = userModel
             }
+            if connectivity.isInternetAvaliable {
+                self.userModel = try await interactor.getMyProfile()
+            }
+            isShowProgress = false
         } catch let error {
             isShowProgress = false
-            if error.isInternetError || error is NoCachedDataError {
+            if error.isUpdateRequeiredError {
+                self.versionState = .updateRequired
+            } else if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
-            
         }
     }
     
     @MainActor
     func logOut() async {
-        do {
-            try await interactor.logOut()
-            router.showLoginScreen()
-            analytics.userLogout(force: false)
-        } catch let error {
-            if error.isInternetError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
-        }
+        try? await interactor.logOut()
+        router.showStartupScreen()
+        analytics.userLogout(force: false)
     }
     
     func trackProfileVideoSettingsClicked() {

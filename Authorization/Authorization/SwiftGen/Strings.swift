@@ -10,9 +10,31 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum AuthLocalization {
+  /// Apple
+  public static let apple = AuthLocalization.tr("Localizable", "APPLE", fallback: "Apple")
+  /// Facebook
+  public static let facebook = AuthLocalization.tr("Localizable", "FACEBOOK", fallback: "Facebook")
+  /// Google
+  public static let google = AuthLocalization.tr("Localizable", "GOOGLE", fallback: "Google")
+  /// Microsoft
+  public static let microsoft = AuthLocalization.tr("Localizable", "MICROSOFT", fallback: "Microsoft")
+  /// Or
+  public static let or = AuthLocalization.tr("Localizable", "OR", fallback: "Or")
+  /// Register with
+  public static let registerWith = AuthLocalization.tr("Localizable", "REGISTER_WITH", fallback: "Register with")
+  /// Sign in with
+  public static let signInWith = AuthLocalization.tr("Localizable", "SIGN_IN_WITH", fallback: "Sign in with")
   public enum Error {
+    /// This %@ account is not linked with any %@ account. Please register.
+    public static func accountNotRegistered(_ p1: Any, _ p2: Any) -> String {
+      return AuthLocalization.tr("Localizable", "ERROR.ACCOUNT_NOT_REGISTERED", String(describing: p1), String(describing: p2), fallback: "This %@ account is not linked with any %@ account. Please register.")
+    }
+    /// Your account is disabled. Please contact customer support for assistance.
+    public static let disabledAccount = AuthLocalization.tr("Localizable", "ERROR.DISABLED_ACCOUNT", fallback: "Your account is disabled. Please contact customer support for assistance.")
     /// Invalid email address
     public static let invalidEmailAddress = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS", fallback: "Invalid email address")
+    /// Invalid email or username
+    public static let invalidEmailAddressOrUsername = AuthLocalization.tr("Localizable", "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME", fallback: "Invalid email or username")
     /// Invalid password lenght
     public static let invalidPasswordLenght = AuthLocalization.tr("Localizable", "ERROR.INVALID_PASSWORD_LENGHT", fallback: "Invalid password lenght")
   }
@@ -29,12 +51,17 @@ public enum AuthLocalization {
     public static let title = AuthLocalization.tr("Localizable", "FORGOT.TITLE", fallback: "Forgot password")
   }
   public enum SignIn {
+    /// By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
+    /// accordance with the [Privacy Policy.](%@)
+    public static func agreement(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any, _ p6: Any) -> String {
+      return AuthLocalization.tr("Localizable", "SIGN_IN.AGREEMENT", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), String(describing: p6), fallback: "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in\naccordance with the [Privacy Policy.](%@)")
+    }
     /// Email
     public static let email = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL", fallback: "Email")
+    /// Email or username
+    public static let emailOrUsername = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL_OR_USERNAME", fallback: "Email or username")
     /// Forgot password?
     public static let forgotPassBtn = AuthLocalization.tr("Localizable", "SIGN_IN.FORGOT_PASS_BTN", fallback: "Forgot password?")
-    /// Sign in
-    public static let logInBtn = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
     /// Localizable.strings
     ///   Authorization
     /// 
@@ -42,22 +69,42 @@ public enum AuthLocalization {
     public static let logInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_TITLE", fallback: "Sign in")
     /// Password
     public static let password = AuthLocalization.tr("Localizable", "SIGN_IN.PASSWORD", fallback: "Password")
-    /// Register
-    public static let registerBtn = AuthLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
     /// Welcome back! Please authorize to continue.
     public static let welcomeBack = AuthLocalization.tr("Localizable", "SIGN_IN.WELCOME_BACK", fallback: "Welcome back! Please authorize to continue.")
   }
   public enum SignUp {
+    /// By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)
+    public static func agreement(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any, _ p6: Any) -> String {
+      return AuthLocalization.tr("Localizable", "SIGN_UP.AGREEMENT", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), String(describing: p6), fallback: "By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)")
+    }
     /// Create account
     public static let createAccountBtn = AuthLocalization.tr("Localizable", "SIGN_UP.CREATE_ACCOUNT_BTN", fallback: "Create account")
     /// Hide optional Fields
     public static let hideFields = AuthLocalization.tr("Localizable", "SIGN_UP.HIDE_FIELDS", fallback: "Hide optional Fields")
+    /// I agree that %@ may send me marketing messages.
+    public static func marketingEmailTitle(_ p1: Any) -> String {
+      return AuthLocalization.tr("Localizable", "SIGN_UP.MARKETING_EMAIL_TITLE", String(describing: p1), fallback: "I agree that %@ may send me marketing messages.")
+    }
     /// Show optional Fields
     public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
     /// Create new account.
     public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create new account.")
+    /// You've successfully signed in.
+    public static let successSigninLabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_LABEL", fallback: "You've successfully signed in.")
+    /// We just need a little more information before you start learning.
+    public static let successSigninSublabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_SUBLABEL", fallback: "We just need a little more information before you start learning.")
     /// Sign up
     public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
+  }
+  public enum Startup {
+    /// Explore all courses
+    public static let exploreAllCourses = AuthLocalization.tr("Localizable", "STARTUP.EXPLORE_ALL_COURSES", fallback: "Explore all courses")
+    /// Courses and programs from the world's best universities in your pocket.
+    public static let infoMessage = AuthLocalization.tr("Localizable", "STARTUP.INFO_MESSAGE", fallback: "Courses and programs from the world's best universities in your pocket.")
+    /// Search our 3000+ courses
+    public static let searchPlaceholder = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_PLACEHOLDER", fallback: "Search our 3000+ courses")
+    /// What do you want to learn?
+    public static let searchTitle = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_TITLE", fallback: "What do you want to learn?")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

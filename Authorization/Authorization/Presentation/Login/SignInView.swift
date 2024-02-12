@@ -7,11 +7,15 @@
 
 import SwiftUI
 import Core
+import Theme
+import Swinject
 
 public struct SignInView: View {
     
     @State private var email: String = ""
     @State private var password: String = ""
+    
+    @Environment (\.isHorizontal) private var isHorizontal
     
     @ObservedObject
     private var viewModel: SignInViewModel
@@ -23,16 +27,33 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                CoreAssets.authBackground.swiftUIImage
+                ThemeAssets.authBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
+                    .accessibilityIdentifier("auth_bg_image")
             }.frame(maxWidth: .infinity, maxHeight: 200)
+            if viewModel.config.features.startupScreenEnabled {
+                VStack {
+                    Button(action: { viewModel.router.back() }, label: {
+                        CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                            .backButtonStyle(color: Theme.Colors.loginNavigationText)
+                    })
+                    .foregroundColor(Theme.Colors.styledButtonText)
+                    .padding(.leading, isHorizontal ? 48 : 0)
+                    .padding(.top, 11)
+                    .accessibilityIdentifier("back_button")
+                    
+                }.frame(maxWidth: .infinity, alignment: .topLeading)
+                    .padding(.top, isHorizontal ? 20 : 0)
+            }
             
             VStack(alignment: .center) {
-                CoreAssets.appLogo.swiftUIImage
+                ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .frame(maxWidth: 189, maxHeight: 54)
-                    .padding(.vertical, 40)
+                    .padding(.top, isHorizontal ? 20 : 40)
+                    .padding(.bottom, isHorizontal ? 10 : 40)
+                    .accessibilityIdentifier("logo_image")
                 
                 ScrollView {
                     VStack {
@@ -41,15 +62,18 @@ public struct SignInView: View {
                                 .font(Theme.Fonts.displaySmall)
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.bottom, 4)
+                                .accessibilityIdentifier("signin_text")
                             Text(AuthLocalization.SignIn.welcomeBack)
                                 .font(Theme.Fonts.titleSmall)
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.bottom, 20)
+                                .accessibilityIdentifier("welcome_back_text")
                             
-                            Text(AuthLocalization.SignIn.email)
+                            Text(AuthLocalization.SignIn.emailOrUsername)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.textPrimary)
-                            TextField(AuthLocalization.SignIn.email, text: $email)
+                                .accessibilityIdentifier("username_text")
+                            TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
                                 .autocapitalization(.none)
@@ -64,11 +88,13 @@ public struct SignInView: View {
                                         .stroke(lineWidth: 1)
                                         .fill(Theme.Colors.textInputStroke)
                                 )
+                                .accessibilityIdentifier("username_textfield")
                             
                             Text(AuthLocalization.SignIn.password)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.top, 18)
+                                .accessibilityIdentifier("password_text")
                             SecureField(AuthLocalization.SignIn.password, text: $password)
                                 .padding(.all, 14)
                                 .background(
@@ -80,40 +106,59 @@ public struct SignInView: View {
                                         .stroke(lineWidth: 1)
                                         .fill(Theme.Colors.textInputStroke)
                                 )
-                            
+                                .accessibilityIdentifier("password_textfield")
                             HStack {
-                                Button(AuthLocalization.SignIn.registerBtn) {
-                                    viewModel.trackSignUpClicked()
-                                    viewModel.router.showRegisterScreen()
-                                }.foregroundColor(Theme.Colors.accentColor)
-                                
-                                Spacer()
-                                
+                                if !viewModel.config.features.startupScreenEnabled {
+                                    Button(CoreLocalization.SignIn.registerBtn) {
+                                        viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
+                                    }
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .accessibilityIdentifier("register_button")
+                                    
+                                    Spacer()
+                                }
+                                    
                                 Button(AuthLocalization.SignIn.forgotPassBtn) {
                                     viewModel.trackForgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
-                                }.foregroundColor(Theme.Colors.accentColor)
+                                }
+                                .foregroundColor(Theme.Colors.accentColor)
+                                .padding(.top, 0)
+                                .accessibilityIdentifier("forgot_password_button")
                             }
-                            .padding(.top, 10)
+                            
                             if viewModel.isShowProgress {
                                 HStack(alignment: .center) {
                                     ProgressBar(size: 40, lineWidth: 8)
                                         .padding(20)
+                                        .accessibilityIdentifier("progressbar")
                                 }.frame(maxWidth: .infinity)
                             } else {
-                                StyledButton(AuthLocalization.SignIn.logInBtn) {
+                                StyledButton(CoreLocalization.SignIn.logInBtn) {
                                     Task {
                                         await viewModel.login(username: email, password: password)
                                     }
-                                }.frame(maxWidth: .infinity)
-                                    .padding(.top, 40)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 40)
+                                .accessibilityIdentifier("signin_button")
                             }
                         }
+                        if viewModel.socialAuthEnabled {
+                            SocialAuthView(
+                                viewModel: .init(
+                                    config: viewModel.config
+                                ) { result in
+                                    Task { await viewModel.login(with: result) }
+                                }
+                            )
+                        }
+                        agreements
                         Spacer()
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 50)
-                }.roundedBackground(Theme.Colors.background)
+                }.roundedBackground(Theme.Colors.loginBackground)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
             }
@@ -123,7 +168,7 @@ public struct SignInView: View {
                 VStack {
                     Text(viewModel.alertMessage ?? "")
                         .shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                         textColor: .white)
+                                         textColor: Theme.Colors.white)
                         .padding(.top, 80)
                     Spacer()
                     
@@ -141,6 +186,7 @@ public struct SignInView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
+                        .accessibilityLabel("error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
@@ -150,9 +196,36 @@ public struct SignInView: View {
             }
         }
         .hideNavigationBar()
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
+        .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+    }
+
+    @ViewBuilder
+    private var agreements: some View {
+        if let eulaURL = viewModel.config.agreement.eulaURL,
+            let tosURL =  viewModel.config.agreement.tosURL,
+            let policy = viewModel.config.agreement.privacyPolicyURL {
+            let text = AuthLocalization.SignIn.agreement(
+                "\(viewModel.config.platformName)",
+                eulaURL,
+                "\(viewModel.config.platformName)",
+                tosURL,
+                "\(viewModel.config.platformName)",
+                policy
+            )
+            Text(.init(text))
+                .tint(Theme.Colors.accentColor)
+                .foregroundStyle(Theme.Colors.textSecondary)
+                .font(Theme.Fonts.labelSmall)
+                .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
+                .padding(.bottom, 15)
+                .environment(\.openURL, OpenURLAction(handler: handleURL))
+        }
+    }
+
+    private func handleURL(_ url: URL) -> OpenURLAction.Result {
+        viewModel.router.showWebBrowser(title: url.host ?? "", url: url)
+        return .handled
     }
 }
 
@@ -162,8 +235,10 @@ struct SignInView_Previews: PreviewProvider {
         let vm = SignInViewModel(
             interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
+            config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
-            validator: Validator()
+            validator: Validator(),
+            sourceScreen: .default
         )
         
         SignInView(viewModel: vm)

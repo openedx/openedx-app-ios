@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import Theme
 
 public struct PostsView: View {
     
@@ -20,8 +21,16 @@ public struct PostsView: View {
     private let courseID: String
     private var showTopMenu: Bool
     
-    public init(courseID: String, currentBlockID: String, topics: Topics, title: String, type: ThreadType,
-                viewModel: PostsViewModel, router: DiscussionRouter, showTopMenu: Bool = true) {
+    public init(
+        courseID: String,
+        currentBlockID: String,
+        topics: Topics,
+        title: String,
+        type: ThreadType,
+        viewModel: PostsViewModel,
+        router: DiscussionRouter,
+        showTopMenu: Bool = true
+    ) {
         self.courseID = courseID
         self.title = title
         self.currentBlockID = currentBlockID
@@ -114,7 +123,7 @@ public struct PostsView: View {
                                                         .font(Theme.Fonts.labelLarge)
                                                         .padding(6)
                                                 }
-                                                .foregroundColor(.white)
+                                                .foregroundColor(Theme.Colors.white)
                                                 .background(
                                                     Circle()
                                                         .foregroundColor(Theme.Colors.accentColor)
@@ -155,24 +164,31 @@ public struct PostsView: View {
                                                 .multilineTextAlignment(.center)
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.top, 12)
-                                            StyledButton(DiscussionLocalization.Posts.NoDiscussion.createbutton,
-                                                         action: {
-                                                router.createNewThread(courseID: courseID,
-                                                                       selectedTopic: currentBlockID,
-                                                                       onPostCreated: {
-                                                    reloadPage(onSuccess: {
-                                                        withAnimation {
-                                                            scroll.scrollTo(1)
-                                                        }
+                                            StyledButton(
+                                                DiscussionLocalization.Posts.NoDiscussion.createbutton,
+                                                action: {
+                                                    router.createNewThread(courseID: courseID,
+                                                                           selectedTopic: currentBlockID,
+                                                                           onPostCreated: {
+                                                        reloadPage(onSuccess: {
+                                                            withAnimation {
+                                                                scroll.scrollTo(1)
+                                                            }
+                                                        })
                                                     })
-                                                })
-                                            }).frame(width: 215).padding(.top, 40)
+                                                },
+                                                isTransparent: true)
+                                            .frame(width: 215)
+                                            .padding(.top, 40)
+                                            .colorMultiply(.accentColor)
+                                            
                                         }.padding(24)
                                             .padding(.top, 100)
                                     }
                                 }
                             }
-                        }.frameLimit()
+                        }.accessibilityAction {}
+                        .frameLimit()
                             .animation(nil)
                             .onRightSwipeGesture {
                                 router.back()

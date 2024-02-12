@@ -24,6 +24,7 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
+        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol
     ) {
         self.url = url
@@ -32,7 +33,8 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
                    courseID: courseID,
                    languages: languages,
                    interactor: interactor,
-                   router: router,
+                   router: router, 
+                   appStorage: appStorage,
                    connectivity: connectivity)
         
         playerStateSubject.sink(receiveValue: { [weak self] state in
@@ -45,5 +47,20 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
                 break
             }
         }).store(in: &subscription)
+    }
+    
+    func getVideoResolution() -> CGSize {
+        switch appStorage.userSettings?.streamingQuality {
+        case .auto:
+            return CGSize(width: 1280, height: 720)
+        case .low:
+            return CGSize(width: 640, height: 360)
+        case .medium:
+            return CGSize(width: 854, height: 480)
+        case .high:
+            return CGSize(width: 1280, height: 720)
+        case .none:
+            return CGSize(width: 1280, height: 720)
+        }
     }
 }

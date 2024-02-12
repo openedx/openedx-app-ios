@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 import SwiftUI
+import Theme
 
 public extension View {
     
@@ -89,11 +90,59 @@ public extension View {
             .padding(.horizontal, 48)
     }
     
+    @ViewBuilder
     func frameLimit(sizePortrait: CGFloat = 560, sizeLandscape: CGFloat = 648) -> some View {
-        return HStack {
-            Spacer(minLength: 0)
-            self.frame(maxWidth: UIDevice.current.orientation == .portrait ? sizePortrait : sizeLandscape)
-            Spacer(minLength: 0)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            HStack {
+                Spacer(minLength: 0)
+                self.frame(maxWidth: UIDevice.current.orientation.isPortrait ? sizePortrait : sizeLandscape)
+                Spacer(minLength: 0)
+            }
+        } else { self }
+    }
+    
+    @ViewBuilder
+    func adaptiveHStack<Content: View>(
+        spacing: CGFloat = 0,
+        currentOrientation: UIInterfaceOrientation,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        if currentOrientation.isLandscape && UIDevice.current.userInterfaceIdiom != .pad {
+            VStack(alignment: .center, spacing: spacing, content: content)
+        } else if currentOrientation.isPortrait && UIDevice.current.userInterfaceIdiom != .pad {
+            HStack(spacing: spacing, content: content)
+        } else if UIDevice.current.userInterfaceIdiom != .phone {
+            HStack(spacing: spacing, content: content)
+        }
+    }
+    
+    @ViewBuilder
+    func adaptiveStack<Content: View>(
+        spacing: CGFloat = 0,
+        isHorizontal: Bool,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        if isHorizontal, UIDevice.current.userInterfaceIdiom != .pad {
+            HStack(spacing: spacing, content: content)
+        } else {
+            VStack(alignment: .center, spacing: spacing, content: content)
+        }
+    }
+    
+    @ViewBuilder
+    func adaptiveNavigationStack<Content: View>(
+        spacing: CGFloat = 0,
+        isHorizontal: Bool,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            HStack(spacing: spacing, content: content)
+        } else {
+            if isHorizontal {
+                HStack(alignment: .top, spacing: spacing, content: content)
+            } else {
+                VStack(alignment: .center, spacing: spacing, content: content)
+            }
         }
     }
     
@@ -118,19 +167,40 @@ public extension View {
         }
     }
     
+    func roundedBackgroundWeb(
+        _ color: Color = Theme.Colors.background,
+        strokeColor: Color = Theme.Colors.backgroundStroke,
+        ipadMaxHeight: CGFloat = .infinity,
+        maxIpadWidth: CGFloat = 420
+    ) -> some View {
+        var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+        return VStack {
+            VStack {}.frame(height: 1)
+            ZStack {
+                self
+                    .frame(maxWidth: maxIpadWidth, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
+                    .clipShape(RoundedCorners(tl: 24, tr: 24))
+                RoundedCorners(tl: 24, tr: 24)
+                    .stroke(style: StrokeStyle(lineWidth: 1))
+                    .foregroundColor(strokeColor)
+                    .offset(y: -1)
+            }
+        }
+    }
+    
     func hideNavigationBar() -> some View {
         if #available(iOS 16.0, *) {
             return self.navigationBarHidden(true)
         } else {
             return self.introspect(
                 .navigationView(style: .stack),
-                on: .iOS(.v14, .v15, .v16, .v17),
+                on: .iOS(.v15...),
                 scope: .ancestor) {
                     $0.isNavigationBarHidden = true
                 }
         }
     }
-    
+
     func hideScrollContentBackground() -> some View {
         if #available(iOS 16.0, *) {
             return self.scrollContentBackground(.hidden)
@@ -171,6 +241,21 @@ public extension View {
     }
 }
 
+public extension View {
+    /// Applies the given transform if the given condition evaluates to `true`.
+    /// - Parameters:
+    ///   - condition: The condition to evaluate.
+    ///   - transform: The transform to apply to the source `View`.
+    /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+
 private struct FirstAppear: ViewModifier {
     let action: () -> Void
     
@@ -195,7 +280,18 @@ public extension Image {
             .scaledToFit()
             .frame(height: 24)
             .padding(.horizontal, 8)
-            .padding(.top, topPadding)
+            .offset(y: topPadding)
             .foregroundColor(color)
+    }
+}
+
+public extension EnvironmentValues {
+    var isHorizontal: Bool {
+        if UIDevice.current.userInterfaceIdiom != .pad {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                return windowScene.windows.first?.windowScene?.interfaceOrientation.isLandscape ?? true
+            }
+        }
+        return false
     }
 }

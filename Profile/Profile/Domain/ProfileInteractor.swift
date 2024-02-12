@@ -11,8 +11,9 @@ import UIKit
 
 //sourcery: AutoMockable
 public protocol ProfileInteractorProtocol {
+    func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
-    func getMyProfileOffline() throws -> UserProfile
+    func getMyProfileOffline() -> UserProfile?
     func logOut() async throws
     func getSpokenLanguages() -> [PickerFields.Option]
     func getCountries() -> [PickerFields.Option]
@@ -32,12 +33,16 @@ public class ProfileInteractor: ProfileInteractorProtocol {
         self.repository = repository
     }
     
+    public func getUserProfile(username: String) async throws -> UserProfile {
+        return try await repository.getUserProfile(username: username)
+    }
+    
     public func getMyProfile() async throws -> UserProfile {
         return try await repository.getMyProfile()
     }
     
-    public func getMyProfileOffline() throws -> UserProfile {
-        return try repository.getMyProfileOffline()
+    public func getMyProfileOffline() -> UserProfile? {
+        return repository.getMyProfileOffline()
     }
     
     public func logOut() async throws {

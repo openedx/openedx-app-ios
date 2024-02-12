@@ -7,34 +7,34 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct ContinueWith {
     let chapterIndex: Int
     let sequentialIndex: Int
     let verticalIndex: Int
+    let lastVisitedBlockId: String
 }
 
 struct ContinueWithView: View {
     private let data: ContinueWith
-    private let courseStructure: CourseStructure
     private let action: () -> Void
+    private let courseContinueUnit: CourseVertical
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    init(data: ContinueWith, courseStructure: CourseStructure, action: @escaping () -> Void) {
+    init(data: ContinueWith, courseContinueUnit: CourseVertical, action: @escaping () -> Void) {
         self.data = data
-        self.courseStructure = courseStructure
         self.action = action
+        self.courseContinueUnit = courseContinueUnit
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            let chapter = courseStructure.childs[data.chapterIndex]
-            if let vertical = chapter.childs[data.sequentialIndex].childs.first {
                 if idiom == .pad {
                     HStack(alignment: .top) {
                         VStack(alignment: .leading) {
-                            ContinueTitle(vertical: vertical)
+                            ContinueTitle(vertical: courseContinueUnit)
                         }.foregroundColor(Theme.Colors.textPrimary)
                         Spacer()
                         UnitButtonView(type: .continueLesson, action: action)
@@ -43,13 +43,11 @@ struct ContinueWithView: View {
                         .padding(.top, 32)
                 } else {
                     VStack(alignment: .leading) {
-                        ContinueTitle(vertical: vertical)
+                        ContinueTitle(vertical: courseContinueUnit)
                             .foregroundColor(Theme.Colors.textPrimary)
                     }
                     UnitButtonView(type: .continueLesson, action: action)
                 }
-                
-            }
         }.padding(.horizontal, 24)
             .padding(.top, 32)
     }
@@ -60,7 +58,7 @@ private struct ContinueTitle: View {
     let vertical: CourseVertical
     
     var body: some View {
-        Text(CoreLocalization.Courseware.continueWith)
+        Text(CoreLocalization.Courseware.resumeWith)
             .font(Theme.Fonts.labelMedium)
             .foregroundColor(Theme.Colors.textSecondary)
         HStack {
@@ -77,57 +75,49 @@ private struct ContinueTitle: View {
 #if DEBUG
 struct ContinueWithView_Previews: PreviewProvider {
     static var previews: some View {
-        
-        let childs = [
-            CourseChapter(
-                blockId: "123",
-                id: "123",
+        let blocks = [
+            CourseBlock(
+                blockId: "1",
+                id: "1",
+                courseId: "123",
+                graded: true,
+                completion: 0,
+                type: .html,
                 displayName: "Continue lesson",
-                type: .chapter,
-                childs: [
-                    CourseSequential(
-                        blockId: "1",
-                        id: "1",
-                        displayName: "Name",
-                        type: .sequential,
-                        completion: 0,
-                        childs: [
-                            CourseVertical(
-                                blockId: "1",
-                                id: "1",
-                                courseId: "123",
-                                displayName: "Vertical",
-                                type: .vertical,
-                                completion: 0,
-                                childs: [
-                                    CourseBlock(
-                                        blockId: "2",
-                                        id: "2",
-                                        courseId: "123",
-                                        graded: true,
-                                        completion: 0,
-                                        type: .html,
-                                        displayName: "Continue lesson",
-                                        studentUrl: "")
-                                ])])])
+                studentUrl: "",
+                encodedVideo: nil
+            ),
+            CourseBlock(
+                blockId: "2",
+                id: "2",
+                courseId: "123",
+                graded: true,
+                completion: 0,
+                type: .html,
+                displayName: "Continue lesson",
+                studentUrl: "",
+                encodedVideo: nil
+
+            )
         ]
         
         ContinueWithView(
-            data: ContinueWith(chapterIndex: 0, sequentialIndex: 0, verticalIndex: 0),
-            courseStructure: CourseStructure(
-                id: "123",
-                graded: true,
-                completion: 0,
-                viewYouTubeUrl: "",
-                encodedVideo: "",
-                displayName: "Namaste",
-                childs: childs,
-                media: DataLayer.CourseMedia(
-                    image: .init(raw: "", small: "", large: "")
-                ),
-                certificate: nil)
-        ) {
-        }
+            data: ContinueWith(
+                chapterIndex: 0,
+                sequentialIndex: 0,
+                verticalIndex: 0,
+                lastVisitedBlockId: "test_block_id"
+            ),
+            courseContinueUnit: CourseVertical(
+                blockId: "2",
+                id: "2",
+                courseId: "123",
+                displayName: "Second Unit",
+                type: .vertical,
+                completion: 1,
+                childs: blocks
+            )
+        ) { }
     }
 }
 #endif

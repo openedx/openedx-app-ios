@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Combine
 import Swinject
+import Theme
 
 struct YouTubeView: View {
     
@@ -19,25 +20,17 @@ struct YouTubeView: View {
     let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
     let languages: [SubtitleUrl]
     let isOnScreen: Bool
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            VStack(alignment: .leading) {
-                Text(name)
-                    .font(Theme.Fonts.titleLarge)
-                    .padding(.horizontal, 24)
-                
-                let vm = Container.shared.resolve(
-                    YouTubeVideoPlayerViewModel.self,
-                    arguments: url,
-                    blockID,
-                    courseID,
-                    languages,
-                    playerStateSubject
-                )!
-                YouTubeVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
-                Spacer(minLength: 100)
-            }.background(Theme.Colors.background)
-        }
+        let vm = Container.shared.resolve(
+            YouTubeVideoPlayerViewModel.self,
+            arguments: url,
+            blockID,
+            courseID,
+            languages,
+            playerStateSubject
+        )!
+        YouTubeVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
+            .background(Theme.Colors.background)
     }
 }

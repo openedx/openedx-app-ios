@@ -10,17 +10,15 @@ import Core
 
 //sourcery: AutoMockable
 public protocol CourseInteractorProtocol {
-    func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseVideoBlocks(fullStructure: CourseStructure) -> CourseStructure
-    func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails
-    func getCourseBlocksOffline(courseID: String) async throws -> CourseStructure
-    func enrollToCourse(courseID: String) async throws -> Bool
+    func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
     func resumeBlock(courseID: String) async throws -> ResumeBlock
     func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle]
+    func getCourseDates(courseID: String) async throws -> CourseDates
 }
 
 public class CourseInteractor: CourseInteractorProtocol {
@@ -29,10 +27,6 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public init(repository: CourseRepositoryProtocol) {
         self.repository = repository
-    }
-    
-    public func getCourseDetails(courseID: String) async throws -> CourseDetails {
-        return try await repository.getCourseDetails(courseID: courseID)
     }
     
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
@@ -61,16 +55,8 @@ public class CourseInteractor: CourseInteractorProtocol {
         )
     }
     
-    public func getCourseDetailsOffline(courseID: String) async throws -> CourseDetails {
-        return try await repository.getCourseDetailsOffline(courseID: courseID)
-    }
-    
-    public func getCourseBlocksOffline(courseID: String) async throws -> CourseStructure {
-        return try repository.getCourseBlocksOffline(courseID: courseID)
-    }
-    
-    public func enrollToCourse(courseID: String) async throws -> Bool {
-        return try await repository.enrollToCourse(courseID: courseID)
+    public func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure {
+        return try repository.getLoadedCourseBlocks(courseID: courseID)
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
@@ -92,6 +78,10 @@ public class CourseInteractor: CourseInteractorProtocol {
     public func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle] {
         let result = try await repository.getSubtitles(url: url, selectedLanguage: selectedLanguage)
         return parseSubtitles(from: result)
+    }
+    
+    public func getCourseDates(courseID: String) async throws -> CourseDates {
+        return try await repository.getCourseDates(courseID: courseID)
     }
     
     private func filterChapter(chapter: CourseChapter) -> CourseChapter {

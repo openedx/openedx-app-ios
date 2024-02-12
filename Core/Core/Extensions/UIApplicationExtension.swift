@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Theme
 
 extension UIApplication {
     
@@ -44,10 +45,10 @@ extension UINavigationController {
         navigationBar.shadowImage = UIImage()
         
         let image = CoreAssets.arrowLeft.image
-        navigationBar.backIndicatorImage = image.withTintColor(CoreAssets.accentColor.color)
-        navigationBar.tintColor = .clear
-        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(CoreAssets.accentColor.color)
-        navigationBar.titleTextAttributes = [.foregroundColor: CoreAssets.textPrimary.color]
+        navigationBar.backIndicatorImage = image.withTintColor(Theme.UIColors.accentColor)
+        navigationBar.backItem?.backButtonTitle = " "
+        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.UIColors.accentColor)
+        navigationBar.titleTextAttributes = [.foregroundColor: Theme.UIColors.textPrimary]
     }
 }
 
@@ -58,6 +59,10 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+        if #available(iOS 17, *) {
+            return false
+        } else {
+            return viewControllers.count > 1
+        }
     }
 }

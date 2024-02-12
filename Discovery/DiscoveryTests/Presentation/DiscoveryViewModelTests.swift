@@ -26,7 +26,12 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                           config: ConfigMock(),
+                                           interactor: interactor,
+                                           connectivity: connectivity,
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
 
         let items = [
             CourseItem(name: "Test",
@@ -71,8 +76,12 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
-
+        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                           config: ConfigMock(),
+                                           interactor: interactor,
+                                           connectivity: connectivity,
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         let items = [
             CourseItem(name: "Test",
                        org: "org",
@@ -115,8 +124,12 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
-        
+        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                           config: ConfigMock(),
+                                           interactor: interactor,
+                                           connectivity: connectivity,
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         let items = [
             CourseItem(name: "Test",
                        org: "org",
@@ -161,7 +174,12 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                           config: ConfigMock(),
+                                           interactor: interactor,
+                                           connectivity: connectivity,
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
                         
@@ -180,7 +198,12 @@ final class DiscoveryViewModelTests: XCTestCase {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = Connectivity()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
+                                           config: ConfigMock(),
+                                           interactor: interactor,
+                                           connectivity: connectivity,
+                                           analytics: analytics,
+                                           storage: CoreStorageMock())
         
         let noInternetError = AFError.sessionInvalidated(error: NSError())
                         

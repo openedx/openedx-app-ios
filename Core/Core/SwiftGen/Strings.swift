@@ -12,11 +12,15 @@ import Foundation
 public enum CoreLocalization {
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
+  /// The user canceled the sign-in flow.
+  public static let socialSignCanceled = CoreLocalization.tr("Localizable", "SOCIAL_SIGN_CANCELED", fallback: "The user canceled the sign-in flow.")
   public enum Alert {
     /// ACCEPT
     public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "ACCEPT")
     /// CANCEL
     public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "CANCEL")
+    /// DELETE
+    public static let delete = CoreLocalization.tr("Localizable", "ALERT.DELETE", fallback: "DELETE")
     /// Keep editing
     public static let keepEditing = CoreLocalization.tr("Localizable", "ALERT.KEEP_EDITING", fallback: "Keep editing")
     /// Leave
@@ -29,8 +33,6 @@ public enum CoreLocalization {
     public static let backToOutline = CoreLocalization.tr("Localizable", "COURSEWARE.BACK_TO_OUTLINE", fallback: "Back to outline")
     /// Continue
     public static let `continue` = CoreLocalization.tr("Localizable", "COURSEWARE.CONTINUE", fallback: "Continue")
-    /// Continue with:
-    public static let continueWith = CoreLocalization.tr("Localizable", "COURSEWARE.CONTINUE_WITH", fallback: "Continue with:")
     /// Course content
     public static let courseContent = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT", fallback: "Course content")
     /// Course units
@@ -51,8 +53,34 @@ public enum CoreLocalization {
     public static let nextSectionDescriptionLast = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT_SECTION_DESCRIPTION_LAST", fallback: "” press “Next section”.")
     /// Prev
     public static let previous = CoreLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Prev")
+    /// Resume
+    public static let resume = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME", fallback: "Resume")
+    /// Resume with:
+    public static let resumeWith = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
     /// Section “
     public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
+  }
+  public enum CourseDates {
+    /// Completed
+    public static let completed = CoreLocalization.tr("Localizable", "COURSE_DATES.COMPLETED", fallback: "Completed")
+    /// Due next
+    public static let dueNext = CoreLocalization.tr("Localizable", "COURSE_DATES.DUE_NEXT", fallback: "Due next")
+    /// Item Hidden
+    public static let itemHidden = CoreLocalization.tr("Localizable", "COURSE_DATES.ITEM_HIDDEN", fallback: "Item Hidden")
+    /// Items Hidden
+    public static let itemsHidden = CoreLocalization.tr("Localizable", "COURSE_DATES.ITEMS_HIDDEN", fallback: "Items Hidden")
+    /// Past due
+    public static let pastDue = CoreLocalization.tr("Localizable", "COURSE_DATES.PAST_DUE", fallback: "Past due")
+    /// Today
+    public static let today = CoreLocalization.tr("Localizable", "COURSE_DATES.TODAY", fallback: "Today")
+    /// Tomorrow
+    public static let tomorrow = CoreLocalization.tr("Localizable", "COURSE_DATES.TOMORROW", fallback: "Tomorrow")
+    /// Unreleased
+    public static let unreleased = CoreLocalization.tr("Localizable", "COURSE_DATES.UNRELEASED", fallback: "Unreleased")
+    /// Verified Only
+    public static let verifiedOnly = CoreLocalization.tr("Localizable", "COURSE_DATES.VERIFIED_ONLY", fallback: "Verified Only")
+    /// Yesterday
+    public static let yesterday = CoreLocalization.tr("Localizable", "COURSE_DATES.YESTERDAY", fallback: "Yesterday")
   }
   public enum Date {
     /// Ended
@@ -79,6 +107,8 @@ public enum CoreLocalization {
     public static let downloaded = CoreLocalization.tr("Localizable", "DOWNLOAD_MANAGER.DOWNLOADED", fallback: "Downloaded")
   }
   public enum Error {
+    /// Authorization failed.
+    public static let authorizationFailed = CoreLocalization.tr("Localizable", "ERROR.AUTHORIZATION_FAILED", fallback: "Authorization failed.")
     /// Invalid credentials
     public static let invalidCredentials = CoreLocalization.tr("Localizable", "ERROR.INVALID_CREDENTIALS", fallback: "Invalid credentials")
     /// No cached data for offline mode
@@ -123,6 +153,64 @@ public enum CoreLocalization {
     /// Search
     public static let search = CoreLocalization.tr("Localizable", "PICKER.SEARCH", fallback: "Search")
   }
+  public enum Review {
+    /// What could have been better?
+    public static let better = CoreLocalization.tr("Localizable", "REVIEW.BETTER", fallback: "What could have been better?")
+    /// We’re sorry to hear your learning experience has had some issues. We appreciate all feedback.
+    public static let feedbackDescription = CoreLocalization.tr("Localizable", "REVIEW.FEEDBACK_DESCRIPTION", fallback: "We’re sorry to hear your learning experience has had some issues. We appreciate all feedback.")
+    /// Leave Us Feedback
+    public static let feedbackTitle = CoreLocalization.tr("Localizable", "REVIEW.FEEDBACK_TITLE", fallback: "Leave Us Feedback")
+    /// Not now
+    public static let notNow = CoreLocalization.tr("Localizable", "REVIEW.NOT_NOW", fallback: "Not now")
+    /// We received your feedback and will use it to help improve your learning experience going forward. Thank you for sharing!
+    public static let thanksForFeedbackDescription = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_FEEDBACK_DESCRIPTION", fallback: "We received your feedback and will use it to help improve your learning experience going forward. Thank you for sharing!")
+    /// Thank You
+    public static let thanksForFeedbackTitle = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_FEEDBACK_TITLE", fallback: "Thank You")
+    /// Thank you for sharing your feedback with us. Would you like to share your review of this app with other users on the app store?
+    public static let thanksForVoteDescription = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_VOTE_DESCRIPTION", fallback: "Thank you for sharing your feedback with us. Would you like to share your review of this app with other users on the app store?")
+    /// Thank You
+    public static let thanksForVoteTitle = CoreLocalization.tr("Localizable", "REVIEW.THANKS_FOR_VOTE_TITLE", fallback: "Thank You")
+    /// Your feedback matters to us. Would you take a moment to rate the app by tapping a star below? Thanks for your support!
+    public static let voteDescription = CoreLocalization.tr("Localizable", "REVIEW.VOTE_DESCRIPTION", fallback: "Your feedback matters to us. Would you take a moment to rate the app by tapping a star below? Thanks for your support!")
+    /// Enjoying Open edX?
+    public static let voteTitle = CoreLocalization.tr("Localizable", "REVIEW.VOTE_TITLE", fallback: "Enjoying Open edX?")
+    public enum Button {
+      /// Rate Us
+      public static let rateUs = CoreLocalization.tr("Localizable", "REVIEW.BUTTON.RATE_US", fallback: "Rate Us")
+      /// Share Feedback
+      public static let shareFeedback = CoreLocalization.tr("Localizable", "REVIEW.BUTTON.SHARE_FEEDBACK", fallback: "Share Feedback")
+      /// Submit
+      public static let submit = CoreLocalization.tr("Localizable", "REVIEW.BUTTON.SUBMIT", fallback: "Submit")
+    }
+    public enum Email {
+      /// Select email client:
+      public static let title = CoreLocalization.tr("Localizable", "REVIEW.EMAIL.TITLE", fallback: "Select email client:")
+    }
+  }
+  public enum Settings {
+    /// Lower data usage
+    public static let downloadQuality360Description = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_360_DESCRIPTION", fallback: "Lower data usage")
+    /// 360p
+    public static let downloadQuality360Title = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_360_TITLE", fallback: "360p")
+    /// 540p
+    public static let downloadQuality540Title = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_540_TITLE", fallback: "540p")
+    /// Best quality
+    public static let downloadQuality720Description = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_720_DESCRIPTION", fallback: "Best quality")
+    /// 720p
+    public static let downloadQuality720Title = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_720_TITLE", fallback: "720p")
+    /// Recommended
+    public static let downloadQualityAutoDescription = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_AUTO_DESCRIPTION", fallback: "Recommended")
+    /// Auto
+    public static let downloadQualityAutoTitle = CoreLocalization.tr("Localizable", "SETTINGS.DOWNLOAD_QUALITY_AUTO_TITLE", fallback: "Auto")
+    /// Video download quality
+    public static let videoDownloadQualityTitle = CoreLocalization.tr("Localizable", "SETTINGS.VIDEO_DOWNLOAD_QUALITY_TITLE", fallback: "Video download quality")
+  }
+  public enum SignIn {
+    /// Sign in
+    public static let logInBtn = CoreLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
+    /// Register
+    public static let registerBtn = CoreLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
+  }
   public enum View {
     public enum Snackbar {
       /// Try Again
@@ -133,6 +221,8 @@ public enum CoreLocalization {
     public enum Alert {
       /// Cancel
       public static let cancel = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.CANCEL", fallback: "Cancel")
+      /// Continue
+      public static let `continue` = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.CONTINUE", fallback: "Continue")
       /// Ok
       public static let ok = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.OK", fallback: "Ok")
     }

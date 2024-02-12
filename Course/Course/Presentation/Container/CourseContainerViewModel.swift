@@ -12,13 +12,16 @@ import Combine
 
 public class CourseContainerViewModel: BaseCourseViewModel {
     
+    @Published private(set) var isShowProgress = false
     @Published var courseStructure: CourseStructure?
     @Published var courseVideosStructure: CourseStructure?
-    @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
-    @Published var downloadState: [String: DownloadViewState] = [:]
+    @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
+    @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
     @Published var continueWith: ContinueWith?
-    
+    @Published var userSettings: UserSettings?
+    @Published var isInternetAvaliable: Bool = true
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -28,7 +31,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     let router: CourseRouter
-    let config: Config
+    let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
     
     let isActive: Bool?
@@ -36,19 +39,24 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
-    
+
+    var courseDownloadTasks: [DownloadDataTask] = []
+    private(set) var waitingDownloads: [CourseBlock]?
+
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
     private let analytics: CourseAnalytics
-    
+    private(set) var storage: CourseStorage
+
     public init(
         interactor: CourseInteractorProtocol,
         authInteractor: AuthInteractorProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
-        config: Config,
+        config: ConfigProtocol,
         connectivity: ConnectivityProtocol,
         manager: DownloadManagerProtocol,
+        storage: CourseStorage,
         isActive: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
@@ -66,17 +74,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.courseEnd = courseEnd
         self.enrollmentStart = enrollmentStart
         self.enrollmentEnd = enrollmentEnd
-        
+        self.storage = storage
+        self.userSettings = storage.userSettings
+        self.isInternetAvaliable = connectivity.isInternetAvaliable
+
         super.init(manager: manager)
-        
-        manager.publisher()
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-                DispatchQueue.main.async {
-                    self.setDownloadsStates()
-                }
-            })
-            .store(in: &cancellables)
+
+        addObservers()
     }
     
     @MainActor
@@ -85,7 +89,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             if courseStart < Date() {
                 isShowProgress = withProgress
                 do {
-                    if connectivity.isInternetAvaliable {
+                    if isInternetAvaliable {
                         courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                         isShowProgress = false
                         if let courseStructure {
@@ -98,10 +102,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                             }
                         }
                     } else {
-                        courseStructure = try await interactor.getCourseBlocksOffline(courseID: courseID)
+                        courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
                     }
                     courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
-                    setDownloadsStates()
+                    await setDownloadsStates()
                     isShowProgress = false
                     
                 } catch let error {
@@ -115,7 +119,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-    
+
+    func update(downloadQuality: DownloadQuality) {
+        storage.userSettings?.downloadQuality = downloadQuality
+        userSettings = storage.userSettings
+    }
+
     @MainActor
     func tryToRefreshCookies() async {
         try? await authInteractor.getCookies(force: false)
@@ -129,32 +138,46 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             courseStructure: courseStructure
         )
     }
-    
-    func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) {
-        let blocks = chapter.childs
-            .first(where: { $0.id == blockId })?.childs
-            .flatMap { $0.childs }
-            .filter { $0.isDownloadable } ?? []
-        
+
+    @MainActor
+    func onDownloadViewTap(chapter: CourseChapter, blockId: String, state: DownloadViewState) async {
+        guard let sequential = chapter.childs
+            .first(where: { $0.id == blockId }) else {
+            return
+        }
+
+        let blocks =  sequential.childs.flatMap { $0.childs }
+            .filter { $0.isDownloadable }
+
+        if state == .available, isShowedAllowLargeDownloadAlert(blocks: blocks) {
+            return
+        }
+
+        await download(state: state, blocks: blocks)
+    }
+
+    func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {
+        let verticals = downloadableVerticals.filter { verticalState in
+            courseSequential.childs.contains(where: { item in
+                return verticalState.vertical.id == item.id
+            })
+        }
+        return verticals.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }
+    }
+
+    func continueDownload() {
+        guard let blocks = waitingDownloads else {
+            return
+        }
         do {
-            switch state {
-            case .available:
-                try manager.addToDownloadQueue(blocks: blocks)
-                downloadState[blockId] = .downloading
-            case .downloading:
-                try manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
-                downloadState[blockId] = .available
-            case .finished:
-                manager.deleteFile(blocks: blocks)
-                downloadState[blockId] = .available
-            }
+            try manager.addToDownloadQueue(blocks: blocks)
         } catch let error {
             if error is NoWiFiError {
                 errorMessage = CoreLocalization.Error.wifi
             }
         }
     }
-    
+
     func trackSelectedTab(
         selection: CourseContainerView.CourseTab,
         courseId: String,
@@ -165,13 +188,28 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             analytics.courseOutlineCourseTabClicked(courseId: courseId, courseName: courseName)
         case .videos:
             analytics.courseOutlineVideosTabClicked(courseId: courseId, courseName: courseName)
+        case .dates:
+            analytics.courseOutlineDatesTabClicked(courseId: courseId, courseName: courseName)
         case .discussion:
             analytics.courseOutlineDiscussionTabClicked(courseId: courseId, courseName: courseName)
         case .handounds:
             analytics.courseOutlineHandoutsTabClicked(courseId: courseId, courseName: courseName)
         }
     }
-    
+
+    func trackVerticalClicked(
+        courseId: String,
+        courseName: String,
+        vertical: CourseVertical
+    ) {
+        analytics.verticalClicked(
+            courseId: courseId,
+            courseName: courseName,
+            blockId: vertical.blockId,
+            blockName: vertical.displayName
+        )
+    }
+
     func trackSequentialClicked(_ sequential: CourseSequential) {
         guard let course = courseStructure else { return }
         analytics.sequentialClicked(
@@ -190,40 +228,158 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             blockId: blockId
         )
     }
-    
+
+    func completeBlock(
+        chapterID: String,
+        sequentialID: String,
+        verticalID: String,
+        blockID: String
+    ) {
+        guard let chapterIndex = courseStructure?
+            .childs.firstIndex(where: { $0.id == chapterID }) else {
+            return
+        }
+        guard let sequentialIndex = courseStructure?
+            .childs[chapterIndex]
+            .childs.firstIndex(where: { $0.id == sequentialID }) else {
+            return
+        }
+
+        guard let verticalIndex = courseStructure?
+            .childs[chapterIndex]
+            .childs[sequentialIndex]
+            .childs.firstIndex(where: { $0.id == verticalID }) else {
+            return
+        }
+
+        guard let blockIndex = courseStructure?
+            .childs[chapterIndex]
+            .childs[sequentialIndex]
+            .childs[verticalIndex]
+            .childs.firstIndex(where: { $0.id == blockID }) else {
+            return
+        }
+
+        courseStructure?
+            .childs[chapterIndex]
+            .childs[sequentialIndex]
+            .childs[verticalIndex]
+            .childs[blockIndex].completion = 1
+        courseStructure.map {
+            courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: $0)
+        }
+    }
+
+    func hasVideoForDowbloads() -> Bool {
+        guard let courseVideosStructure = courseVideosStructure else {
+            return false
+        }
+        return courseVideosStructure.childs
+            .flatMap { $0.childs }
+            .contains(where: { $0.isDownloadable })
+    }
+
+    func isAllDownloading() -> Bool {
+        let totalCount = downloadableVerticals.count
+        let downloadingCount = downloadableVerticals.filter { $0.state == .downloading }.count
+        let finishedCount = downloadableVerticals.filter { $0.state == .finished }.count
+        if finishedCount == totalCount { return false }
+        return totalCount - finishedCount == downloadingCount
+    }
+
     @MainActor
-    private func setDownloadsStates() {
+    func download(state: DownloadViewState, blocks: [CourseBlock]) async {
+        do {
+            switch state {
+            case .available:
+                try manager.addToDownloadQueue(blocks: blocks)
+            case .downloading:
+                try await manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
+            case .finished:
+                await manager.deleteFile(blocks: blocks)
+            }
+        } catch let error {
+            if error is NoWiFiError {
+                errorMessage = CoreLocalization.Error.wifi
+            }
+        }
+    }
+
+    @MainActor
+    func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
+        waitingDownloads = nil
+        if storage.allowedDownloadLargeFile == false, manager.isLargeVideosSize(blocks: blocks) {
+            waitingDownloads = blocks
+            router.presentAlert(
+                alertTitle: CourseLocalization.Download.download,
+                alertMessage: CourseLocalization.Download.downloadLargeFileMessage,
+                positiveAction: CourseLocalization.Alert.accept,
+                onCloseTapped: {
+                    self.router.dismiss(animated: true)
+                },
+                okTapped: {
+                    self.continueDownload()
+                    self.router.dismiss(animated: true)
+                },
+                type: .default(positiveAction: CourseLocalization.Alert.accept, image: nil)
+            )
+            return true
+        }
+        return false
+    }
+
+    @MainActor
+    func downloadableBlocks(from sequential: CourseSequential) -> [CourseBlock] {
+        let verticals = sequential.childs
+        let blocks = verticals
+            .flatMap { $0.childs }
+            .filter { $0.isDownloadable }
+        return blocks
+    }
+
+    @MainActor
+    func setDownloadsStates() async {
         guard let course = courseStructure else { return }
-        let downloads = manager.getDownloadsForCourse(course.id)
-        var states: [String: DownloadViewState] = [:]
+        courseDownloadTasks = await manager.getDownloadTasksForCourse(course.id)
+        downloadableVerticals = []
+        var sequentialsStates: [String: DownloadViewState] = [:]
         for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
-                var childs: [DownloadViewState] = []
+                var sequentialsChilds: [DownloadViewState] = []
                 for vertical in sequential.childs where vertical.isDownloadable {
+                    var verticalsChilds: [DownloadViewState] = []
                     for block in vertical.childs where block.isDownloadable {
-                        if let download = downloads.first(where: { $0.id == block.id }) {
+                        if let download = courseDownloadTasks.first(where: { $0.id == block.id }) {
                             switch download.state {
                             case .waiting, .inProgress:
-                                childs.append(.downloading)
-                            case .paused:
-                                childs.append(.available)
+                                sequentialsChilds.append(.downloading)
+                                verticalsChilds.append(.downloading)
                             case .finished:
-                                childs.append(.finished)
+                                sequentialsChilds.append(.finished)
+                                verticalsChilds.append(.finished)
                             }
                         } else {
-                            childs.append(.available)
+                            sequentialsChilds.append(.available)
+                            verticalsChilds.append(.available)
                         }
                     }
+                    if verticalsChilds.first(where: { $0 == .downloading }) != nil {
+                        downloadableVerticals.insert(.init(vertical: vertical, state: .downloading))
+                    } else if verticalsChilds.allSatisfy({ $0 == .finished }) {
+                        downloadableVerticals.insert(.init(vertical: vertical, state: .finished))
+                    } else {
+                        downloadableVerticals.insert(.init(vertical: vertical, state: .available))
+                    }
                 }
-                if childs.first(where: { $0 == .downloading }) != nil {
-                    states[sequential.id] = .downloading
-                } else if childs.allSatisfy({ $0 == .finished }) {
-                    states[sequential.id] = .finished
+                if sequentialsChilds.first(where: { $0 == .downloading }) != nil {
+                    sequentialsStates[sequential.id] = .downloading
+                } else if sequentialsChilds.allSatisfy({ $0 == .finished }) {
+                    sequentialsStates[sequential.id] = .finished
                 } else {
-                    states[sequential.id] = .available
+                    sequentialsStates[sequential.id] = .available
                 }
             }
-            self.downloadState = states
+            self.sequentialsDownloadState = sequentialsStates
         }
     }
     
@@ -238,12 +394,42 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         return ContinueWith(
                             chapterIndex: chapterIndex,
                             sequentialIndex: sequentialIndex,
-                            verticalIndex: verticalIndex
+                            verticalIndex: verticalIndex,
+                            lastVisitedBlockId: block.id
                         )
                     }
                 }
             }
         }
         return nil
+    }
+
+    private func addObservers() {
+        manager.eventPublisher()
+            .sink { [weak self] state in
+                guard let self else { return }
+                if case .progress = state { return }
+                Task(priority: .background) {
+                    debugLog(state, "--- state ---")
+                    await self.setDownloadsStates()
+                }
+            }
+            .store(in: &cancellables)
+
+        connectivity.internetReachableSubject
+            .sink { [weak self] _ in
+            guard let self else { return }
+                self.isInternetAvaliable = self.connectivity.isInternetAvaliable
+        }
+        .store(in: &cancellables)
+    }
+}
+
+struct VerticalsDownloadState: Hashable {
+    let vertical: CourseVertical
+    let state: DownloadViewState
+
+    var downloadableBlocks: [CourseBlock] {
+        vertical.childs.filter { $0.isDownloadable }
     }
 }

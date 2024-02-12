@@ -10,10 +10,10 @@ import Alamofire
 
 final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
-    private let config: Config
+    private let config: ConfigProtocol
     private var storage: CoreStorage
     
-    public init(config: Config, storage: CoreStorage) {
+    public init(config: ConfigProtocol, storage: CoreStorage) {
         self.config = config
         self.storage = storage
     }
@@ -35,8 +35,25 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
             
             // Set the Authorization header value using the access token.
             if let token = storage.accessToken {
-                urlRequest.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+                urlRequest.setValue("\(config.tokenType.rawValue) \(token)", forHTTPHeaderField: "Authorization")
             }
+            
+            let userAgent: String = {
+                if let info = Bundle.main.infoDictionary {
+                    let executable: AnyObject = info[kCFBundleExecutableKey as String] as AnyObject? ?? "Unknown" as AnyObject
+                    let bundle: AnyObject = info[kCFBundleIdentifierKey as String] as AnyObject? ?? "Unknown" as AnyObject
+                    let version: AnyObject = info["CFBundleShortVersionString"] as AnyObject? ?? "Unknown" as AnyObject
+                    let os: AnyObject = ProcessInfo.processInfo.operatingSystemVersionString as AnyObject
+                    var mutableUserAgent = NSMutableString(string: "\(executable)/\(bundle) (\(version); OS \(os))") as CFMutableString
+                    let transform = NSString(string: "Any-Latin; Latin-ASCII; [:^ASCII:] Remove") as CFString
+                    if CFStringTransform(mutableUserAgent, nil, transform, false) == true {
+                        return mutableUserAgent as String
+                    }
+                }
+                return "Alamofire"
+            }()
+            
+            urlRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
             
             completion(.success(urlRequest))
         }
@@ -84,49 +101,52 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
     private func refreshToken(
         refreshToken: String,
-        completion: @escaping (_ succeeded: Bool) -> Void) {
-            guard !isRefreshing else { return }
-            
-            isRefreshing = true
-            
-            let url = config.baseURL.appendingPathComponent("/oauth2/access_token")
-            
-            let parameters = [
-                "grant_type": Constants.GrantTypeRefreshToken,
-                "client_id": config.oAuthClientId,
-                "refresh_token": refreshToken
-            ]
-            AF.request(
-                url,
-                method: .post,
-                parameters: parameters,
-                encoding: URLEncoding.httpBody
-            ).response { [weak self] response in
-                guard let self = self else { return }
-                switch response.result {
-                case let .success(data):
-                    do {
-                        let json = try JSONSerialization.jsonObject(
-                            with: data!,
-                            options: .mutableContainers
-                        ) as? [String: AnyObject]
-                        guard let json,
-                              let accessToken = json["access_token"] as? String,
-                              let refreshToken = json["refresh_token"] as? String,
-                              accessToken.count > 0,
-                              refreshToken.count > 0 else {
-                            return completion(false)
-                        }
-                        self.storage.accessToken = accessToken
-                        self.storage.refreshToken = refreshToken
-                        completion(true)
-                    } catch {
-                        completion(false)
+        completion: @escaping (_ succeeded: Bool) -> Void
+    ) {
+        guard !isRefreshing else { return }
+        
+        isRefreshing = true
+        
+        let url = config.baseURL.appendingPathComponent("/oauth2/access_token")
+        
+        let parameters: [String: Encodable] = [
+            "grant_type": Constants.GrantTypeRefreshToken,
+            "client_id": config.oAuthClientId,
+            "refresh_token": refreshToken,
+            "token_type": config.tokenType.rawValue,
+            "asymmetric_jwt": true
+        ]
+        AF.request(
+            url,
+            method: .post,
+            parameters: parameters,
+            encoding: URLEncoding.httpBody
+        ).response { [weak self] response in
+            guard let self = self else { return }
+            switch response.result {
+            case let .success(data):
+                do {
+                    let json = try JSONSerialization.jsonObject(
+                        with: data!,
+                        options: .mutableContainers
+                    ) as? [String: AnyObject]
+                    guard let json,
+                          let accessToken = json["access_token"] as? String,
+                          let refreshToken = json["refresh_token"] as? String,
+                          accessToken.count > 0,
+                          refreshToken.count > 0 else {
+                        return completion(false)
                     }
-                case .failure:
+                    self.storage.accessToken = accessToken
+                    self.storage.refreshToken = refreshToken
+                    completion(true)
+                } catch {
                     completion(false)
                 }
-                self.isRefreshing = false
+            case .failure:
+                completion(false)
             }
+            self.isRefreshing = false
         }
+    }
 }

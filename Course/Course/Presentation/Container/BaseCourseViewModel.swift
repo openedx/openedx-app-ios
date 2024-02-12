@@ -18,13 +18,4 @@ open class BaseCourseViewModel: ObservableObject {
     init(manager: DownloadManagerProtocol) {
         self.manager = manager
     }
-    
-    func onBackground() {
-        manager.pauseDownloading()
-    }
-    
-    func onForeground() {
-        try? manager.resumeDownloading()
-    }
-    
 }

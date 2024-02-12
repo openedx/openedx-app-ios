@@ -27,6 +27,7 @@ setup_xcode_cloud_environment () {
 
     bundle config path vendor/bundle
     bundle install --jobs 4 --retry 3
+    bundle update fastlane
 }
 
 install_xcode_cloud_brew_dependencies () {
@@ -34,10 +35,12 @@ install_xcode_cloud_brew_dependencies () {
 }
 
 setup_github_actions_environment() {
-    brew update && brew install xcodegen git-lfs imagemagick
-
+    # brew update && brew install xcodegen git-lfs imagemagick
+    brew update && brew install xcodegen git-lfs
+    
     bundle config path vendor/bundle
     bundle install --jobs 4 --retry 3
+    bundle update fastlane
 
     pod install
 }

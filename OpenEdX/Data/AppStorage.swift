@@ -9,8 +9,10 @@ import Foundation
 import KeychainSwift
 import Core
 import Profile
+import WhatsNew
+import Course
 
-public class AppStorage: CoreStorage, ProfileStorage {
+public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseStorage {
 
     private let keychain: KeychainSwift
     private let userDefaults: UserDefaults
@@ -32,6 +34,35 @@ public class AppStorage: CoreStorage, ProfileStorage {
             }
         }
     }
+    
+    public var reviewLastShownVersion: String? {
+        get {
+            return userDefaults.string(forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+            } else {
+                userDefaults.removeObject(forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+            }
+        }
+    }
+    
+    public var lastReviewDate: Date? {
+        get {
+            guard let dateString = userDefaults.string(forKey: KEY_REVIEW_LAST_REVIEW_DATE) else {
+                return nil
+            }
+            return Date(iso8601: dateString)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue.dateToString(style: .iso8601), forKey: KEY_REVIEW_LAST_REVIEW_DATE)
+            } else {
+                userDefaults.removeObject(forKey: KEY_REVIEW_LAST_REVIEW_DATE)
+            }
+        }
+    }
 
     public var refreshToken: String? {
         get {
@@ -46,6 +77,32 @@ public class AppStorage: CoreStorage, ProfileStorage {
         }
     }
 
+    public var appleSignFullName: String? {
+        get {
+            return keychain.get(KEY_APPLE_SIGN_FULLNAME)
+        }
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: KEY_APPLE_SIGN_FULLNAME)
+            } else {
+                keychain.delete(KEY_APPLE_SIGN_FULLNAME)
+            }
+        }
+    }
+
+    public var appleSignEmail: String? {
+        get {
+            return keychain.get(KEY_APPLE_SIGN_EMAIL)
+        }
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: KEY_APPLE_SIGN_EMAIL)
+            } else {
+                keychain.delete(KEY_APPLE_SIGN_EMAIL)
+            }
+        }
+    }
+
     public var cookiesDate: String? {
         get {
             return userDefaults.string(forKey: KEY_COOKIES_DATE)
@@ -55,6 +112,19 @@ public class AppStorage: CoreStorage, ProfileStorage {
                 userDefaults.set(newValue, forKey: KEY_COOKIES_DATE)
             } else {
                 userDefaults.removeObject(forKey: KEY_COOKIES_DATE)
+            }
+        }
+    }
+    
+    public var whatsNewVersion: String? {
+        get {
+            return userDefaults.string(forKey: KEY_WHATSNEW_VERSION)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_WHATSNEW_VERSION)
+            } else {
+                userDefaults.removeObject(forKey: KEY_WHATSNEW_VERSION)
             }
         }
     }
@@ -81,7 +151,7 @@ public class AppStorage: CoreStorage, ProfileStorage {
     public var userSettings: UserSettings? {
         get {
             guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
-                let defaultSettings = UserSettings(wifiOnly: true, downloadQuality: .auto)
+                let defaultSettings = UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(defaultSettings) {
                     userDefaults.set(encoded, forKey: KEY_SETTINGS)
@@ -121,6 +191,19 @@ public class AppStorage: CoreStorage, ProfileStorage {
         }
     }
 
+    public var allowedDownloadLargeFile: Bool? {
+        get {
+            return userDefaults.bool(forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+            } else {
+                userDefaults.removeObject(forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+            }
+        }
+    }
+
     public func clear() {
         accessToken = nil
         refreshToken = nil
@@ -134,4 +217,10 @@ public class AppStorage: CoreStorage, ProfileStorage {
     private let KEY_USER_PROFILE = "userProfile"
     private let KEY_USER = "refreshToken"
     private let KEY_SETTINGS = "userSettings"
+    private let KEY_REVIEW_LAST_SHOWN_VERSION = "reviewLastShownVersion"
+    private let KEY_REVIEW_LAST_REVIEW_DATE = "lastReviewDate"
+    private let KEY_WHATSNEW_VERSION = "whatsNewVersion"
+    private let KEY_APPLE_SIGN_FULLNAME = "appleSignFullName"
+    private let KEY_APPLE_SIGN_EMAIL = "appleSignEmail"
+    private let KEY_ALLOWED_DOWNLOAD_LARGE_FILE = "allowedDownloadLargeFile"
 }

@@ -11,15 +11,16 @@ import Foundation
 public protocol AuthInteractorProtocol {
     @discardableResult
     func login(username: String, password: String) async throws -> User
+    @discardableResult
+    func login(externalToken: String, backend: String) async throws -> User
     func resetPassword(email: String) async throws -> ResetPassword
     func getCookies(force: Bool) async throws
     func getRegistrationFields() async throws -> [PickerFields]
-    func registerUser(fields: [String: String]) async throws -> User
+    func registerUser(fields: [String: String], isSocial: Bool) async throws -> User
     func validateRegistrationFields(fields: [String: String]) async throws -> [String: String]
 }
 
 public class AuthInteractor: AuthInteractorProtocol {
-    
     private let repository: AuthRepositoryProtocol
     
     public init(repository: AuthRepositoryProtocol) {
@@ -29,6 +30,11 @@ public class AuthInteractor: AuthInteractorProtocol {
     @discardableResult
     public func login(username: String, password: String) async throws -> User {
         return try await repository.login(username: username, password: password)
+    }
+
+    @discardableResult
+    public func login(externalToken: String, backend: String) async throws -> User {
+        return try await repository.login(externalToken: externalToken, backend: backend)
     }
 
     public func resetPassword(email: String) async throws -> ResetPassword {
@@ -43,8 +49,8 @@ public class AuthInteractor: AuthInteractorProtocol {
         return try await repository.getRegistrationFields()
     }
 
-    public func registerUser(fields: [String: String]) async throws -> User {
-        return try await repository.registerUser(fields: fields)
+    public func registerUser(fields: [String: String], isSocial: Bool) async throws -> User {
+        return try await repository.registerUser(fields: fields, isSocial: isSocial)
     }
 
     public func validateRegistrationFields(fields: [String: String]) async throws -> [String: String] {

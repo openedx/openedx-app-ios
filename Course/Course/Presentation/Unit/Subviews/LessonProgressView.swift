@@ -7,9 +7,12 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct LessonProgressView: View {
     @ObservedObject var viewModel: CourseUnitViewModel
+    
+    @Environment (\.isHorizontal) private var isHorizontal
     
     init(viewModel: CourseUnitViewModel) {
         self.viewModel = viewModel
@@ -36,7 +39,7 @@ struct LessonProgressView: View {
                 }
                 Spacer()
             }
-            .padding(.trailing, 6)
+            .padding(.trailing, isHorizontal ? 0 : 6)
         }
     }
 }

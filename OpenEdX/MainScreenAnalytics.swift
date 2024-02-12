@@ -14,3 +14,12 @@ public protocol MainScreenAnalytics {
     func mainProgramsTabClicked()
     func mainProfileTabClicked()
 }
+
+#if DEBUG
+public class MainScreenAnalyticsMock: MainScreenAnalytics {
+    public func mainDiscoveryTabClicked() {}
+    public func mainDashboardTabClicked() {}
+    public func mainProgramsTabClicked() {}
+    public func mainProfileTabClicked() {}
+}
+#endif

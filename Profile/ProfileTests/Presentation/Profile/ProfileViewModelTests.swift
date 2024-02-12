@@ -14,6 +14,77 @@ import SwiftUI
 
 final class ProfileViewModelTests: XCTestCase {
     
+    func testGetUserProfileSuccess() async throws {
+        let interactor = ProfileInteractorProtocolMock()
+        
+        let viewModel = UserProfileViewModel(
+            interactor: interactor,
+            username: "Steve"
+        )
+        
+        let user = UserProfile(
+            avatarUrl: "",
+            name: "Steve",
+            username: "Steve",
+            dateJoined: Date(),
+            yearOfBirth: 2000,
+            country: "Ua",
+            shortBiography: "Bio",
+            isFullProfile: false
+        )
+        
+        Given(interactor, .getUserProfile(username: .value("Steve"), willReturn: user))
+        
+        await viewModel.getUserProfile()
+        
+        Verify(interactor, 1, .getUserProfile(username: .value("Steve")))
+        
+        XCTAssertEqual(viewModel.userModel, user)
+        XCTAssertFalse(viewModel.isShowProgress)
+        XCTAssertFalse(viewModel.showError)
+        XCTAssertNil(viewModel.errorMessage)
+    }
+    
+    func testGetUserProfileNoInternetError() async throws {
+        let interactor = ProfileInteractorProtocolMock()
+        
+        let viewModel = UserProfileViewModel(
+            interactor: interactor,
+            username: "Steve"
+        )
+        
+        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
+        
+        Given(interactor, .getUserProfile(username: .value("Steve"), willThrow: noInternetError))
+        
+        await viewModel.getUserProfile()
+        
+        Verify(interactor, 1, .getUserProfile(username: .value("Steve")))
+        
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
+        XCTAssertFalse(viewModel.isShowProgress)
+        XCTAssertTrue(viewModel.showError)
+    }
+    
+    func testGetUserProfileUnknownError() async throws {
+        let interactor = ProfileInteractorProtocolMock()
+        
+        let viewModel = UserProfileViewModel(
+            interactor: interactor,
+            username: "Steve"
+        )
+        
+        Given(interactor, .getUserProfile(username: .value("Steve"), willThrow: NSError()))
+        
+        await viewModel.getUserProfile()
+        
+        Verify(interactor, 1, .getUserProfile(username: .value("Steve")))
+        
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
+        XCTAssertFalse(viewModel.isShowProgress)
+        XCTAssertTrue(viewModel.showError)
+    }
+    
     func testGetMyProfileSuccess() async throws {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
@@ -39,6 +110,7 @@ final class ProfileViewModelTests: XCTestCase {
         )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
+        Given(interactor, .getMyProfileOffline(willReturn: user))
         Given(interactor, .getMyProfile(willReturn: user))
         
         await viewModel.getMyProfile()
@@ -101,35 +173,22 @@ final class ProfileViewModelTests: XCTestCase {
             connectivity: connectivity
         )
         
-        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyProfile(willThrow: noInternetError) )
-        
-        await viewModel.getMyProfile()
-        
-        Verify(interactor, 1, .getMyProfile())
-        
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
-        XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-    }
-    
-    func testGetMyProfileNoCacheError() async throws {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
+        let user = UserProfile(
+            avatarUrl: "",
+            name: "Steve",
+            username: "Steve",
+            dateJoined: Date(),
+            yearOfBirth: 2000,
+            country: "Ua",
+            shortBiography: "Bio",
+            isFullProfile: false
         )
         
+        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
+        
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyProfile(willThrow: NoCachedDataError()))
+        Given(interactor, .getMyProfileOffline(willReturn: user))
+        Given(interactor, .getMyProfile(willThrow: noInternetError))
         
         await viewModel.getMyProfile()
         
@@ -179,58 +238,11 @@ final class ProfileViewModelTests: XCTestCase {
         )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .logOut(willProduce: {_ in}))
         
         await viewModel.logOut()
         
-        Verify(router, .showLoginScreen())
+        Verify(router, .showStartupScreen())
         XCTAssertFalse(viewModel.showError)
-    }
-    
-    func testLogOutNoInternetError() async throws {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-        
-        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .logOut(willThrow: noInternetError))
-                
-        await viewModel.logOut()
-        
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
-    }
-    
-    func testLogOutUnknownError() async throws {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-                
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .logOut(willThrow: NSError()))
-                
-        await viewModel.logOut()
-        
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
     }
     
     func testTrackProfileVideoSettingsClicked() {
@@ -322,5 +334,4 @@ final class ProfileViewModelTests: XCTestCase {
         
         Verify(analytics, 1, .profileEditClicked())
     }
-
 }

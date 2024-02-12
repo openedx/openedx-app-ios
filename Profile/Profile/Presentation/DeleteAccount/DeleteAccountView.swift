@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 public struct DeleteAccountView: View {
     
@@ -23,8 +24,14 @@ public struct DeleteAccountView: View {
             ScrollView {
                 VStack {
                     Group {
-                        CoreAssets.deleteAccount.swiftUIImage
-                            .padding(.top, 50)
+                        ZStack {
+                            CoreAssets.bgDelete.swiftUIImage
+                            CoreAssets.deleteChar.swiftUIImage
+                                .foregroundColor(.accentColor)
+                                .offset(y: -31)
+                            CoreAssets.deleteEyes.swiftUIImage
+                                .offset(x: -7, y: -27)
+                        }.padding(.top, 50)
                         Text(ProfileLocalization.DeleteAccount.areYouSure)
                             .foregroundColor(Theme.Colors.textPrimary)
                         + Text(ProfileLocalization.DeleteAccount.wantToDelete)

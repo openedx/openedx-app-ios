@@ -6,11 +6,6 @@
   
 */
 
-"DETAILS.TITLE" = "Course details";
-"DETAILS.VIEW_COURSE" = "View course";
-"DETAILS.ENROLL_NOW" = "Enroll now";
-"DETAILS.ENROLLMENT_DATE_IS_OVER" = "You cannot enroll in this course because the enrollment date is over.";
-
 "OUTLINE.CONGRATULATIONS" = "Congratulations!";
 "OUTLINE.PASSED_THE_COURSE" = "You've passed the course";
 "OUTLINE.VIEW_CERTIFICATE" = "View certificate";
@@ -28,16 +23,22 @@
 "COURSEWARE.SECTION" = "Section “";
 "COURSEWARE.IS_FINISHED" = "“ is finished.";
 "COURSEWARE.CONTINUE" = "Continue";
-"COURSEWARE.CONTINUE_WITH" = "Continue with:";
+"COURSEWARE.RESUME_WITH" = "Resume with:";
 
 "ERROR.NO_INTERNET" = "You are not connected to the Internet. Please check your Internet connection.";
 "ERROR.RELOAD" = "Reload";
+"ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 
 "ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
+"ALERT.ACCEPT" = "Accept";
+"ALERT.DELETE_ALL_VIDEOS" = "Are you sure you want to delete all video(s) for";
+"ALERT.DELETE_VIDEOS" = "Are you sure you want to delete video(s) for";
+"ALERT.STOP_DOWNLOADING" = "Turning off the switch will stop downloading and delete all downloaded videos for";
 
 "COURSE_CONTAINER.COURSE" =  "Course";
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
-"COURSE_CONTAINER.DISCUSSION" =  "Discussion";
+"COURSE_CONTAINER.DATES" =  "Dates";
+"COURSE_CONTAINER.DISCUSSIONS" =  "Discussions";
 "COURSE_CONTAINER.HANDOUTS" =  "Handouts";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
 
@@ -51,3 +52,21 @@
 "NOT_AVALIABLE.BUTTON" = "Open in browser";
 
 "SUBTITLES.TITLE" = "Subtitles";
+
+"ACCESSIBILITY.DOWNLOAD" = "Download";
+"ACCESSIBILITY.CANCEL_DOWNLOAD" = "Cancel download";
+"ACCESSIBILITY.DELETE_DOWNLOAD" = "Delete download";
+
+"DOWNLOAD.DOWNLOADS" = "Downloads";
+"DOWNLOAD.DOWNLOAD" = "Download";
+"DOWNLOAD.ALL_VIDEOS_DOWNLOADED" = "All videos downloaded";
+"DOWNLOAD.DOWNLOADING_VIDEOS" = "Downloading videos...";
+"DOWNLOAD.DOWNLOAD_TO_DEVICE" = "Download to device";
+"DOWNLOAD.VIDEOS" = "Videos";
+"DOWNLOAD.REMAINING" = "Remaining";
+"DOWNLOAD.UNTITLED"= "Untitled";
+"DOWNLOAD.TOTAL"= "Total";
+
+"DOWNLOAD.CHANGE_QUALITY_ALERT" = "You cannot change the download video quality when all videos are downloading";
+"DOWNLOAD.DOWNLOAD_LARGE_FILE_MESSAGE" = "The videos you've selected are larger than 1 GB. Do you want to download these videos?";
+"DOWNLOAD.NO_WIFI_MESSAGE" = "Your current download settings only allow downloads over Wi-Fi.\nPlease connect to a Wi-Fi network or change your download settings.";

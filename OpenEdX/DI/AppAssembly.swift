@@ -15,6 +15,7 @@ import Course
 import Discussion
 import Authorization
 import Profile
+import WhatsNew
 
 // swiftlint:disable function_body_length
 class AppAssembly: Assembly {
@@ -112,12 +113,18 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
-        container.register(Config.self) { _ in
-            Config(baseURL: BuildConfiguration.shared.baseURL, oAuthClientId: BuildConfiguration.shared.clientId)
+        container.register(WhatsNewRouter.self) { r in
+            r.resolve(Router.self)!
         }.inObjectScope(.container)
         
-        container.register(CSSInjector.self) { _ in
-            CSSInjector(baseURL: BuildConfiguration.shared.baseURL)
+        container.register(ConfigProtocol.self) { _ in
+            Config()
+        }.inObjectScope(.container)
+        
+        container.register(CSSInjector.self) { r in
+            CSSInjector(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(KeychainSwift.self) { _ in
@@ -139,6 +146,14 @@ class AppAssembly: Assembly {
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         
+        container.register(WhatsNewStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
+
+        container.register(CourseStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
+
         container.register(ProfileStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)

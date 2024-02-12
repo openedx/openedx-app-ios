@@ -37,6 +37,7 @@ public struct HTMLFormattedText: UIViewRepresentable {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.delegate = context.coordinator
+        textView.accessibilityIdentifier = "honer_code_textarea"
         return textView
     }
     
