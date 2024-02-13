@@ -149,13 +149,29 @@ class AppAssembly: Assembly {
         container.register(WhatsNewStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
-        
+
+        container.register(CourseStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
+
         container.register(ProfileStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         
         container.register(Validator.self) { _ in
             Validator()
+        }.inObjectScope(.container)
+        
+        container.register(PushNotificationsManager.self) { r in
+            PushNotificationsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+
+        container.register(DeepLinkManager.self) { r in
+            DeepLinkManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }.inObjectScope(.container)
     }
 }

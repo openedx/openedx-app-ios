@@ -28,6 +28,12 @@ public enum CoreAssets {
   public static let facebookButtonColor = ColorAsset(name: "FacebookButtonColor")
   public static let googleButtonColor = ColorAsset(name: "GoogleButtonColor")
   public static let microsoftButtonColor = ColorAsset(name: "MicrosoftButtonColor")
+  public static let assignmentIcon = ImageAsset(name: "assignment_icon")
+  public static let calendarIcon = ImageAsset(name: "calendar_icon")
+  public static let certificateIcon = ImageAsset(name: "certificate_icon")
+  public static let lockIcon = ImageAsset(name: "lock_icon")
+  public static let lockWithWatchIcon = ImageAsset(name: "lock_with_watch_icon")
+  public static let schoolCapIcon = ImageAsset(name: "school_cap_icon")
   public static let bookCircle = ImageAsset(name: "book.circle")
   public static let bubbleLeftCircle = ImageAsset(name: "bubble.left.circle")
   public static let docCircle = ImageAsset(name: "doc.circle")
@@ -103,6 +109,7 @@ public enum CoreAssets {
   public static let playVideo = ImageAsset(name: "playVideo")
   public static let star = ImageAsset(name: "star")
   public static let starOutline = ImageAsset(name: "star_outline")
+  public static let warning = ImageAsset(name: "warning")
   public static let warningFilled = ImageAsset(name: "warning_filled")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

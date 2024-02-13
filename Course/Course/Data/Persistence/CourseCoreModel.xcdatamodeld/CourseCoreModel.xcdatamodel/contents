@@ -7,17 +7,26 @@
         <attribute name="courseID" optional="YES" attributeType="String"/>
         <attribute name="descendants" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="displayName" optional="YES" attributeType="String"/>
-        <attribute name="fallbackUrl" optional="YES" attributeType="String"/>
         <attribute name="graded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="studentUrl" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
-        <attribute name="youTubeUrl" optional="YES" attributeType="String"/>
+        <relationship name="desktopMP4" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseBlockVideo"/>
+        <relationship name="fallback" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseBlockVideo"/>
+        <relationship name="hls" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseBlockVideo"/>
+        <relationship name="mobileHigh" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseBlockVideo"/>
+        <relationship name="mobileLow" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseBlockVideo"/>
+        <relationship name="youTube" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseBlockVideo"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="CDCourseBlockVideo" representedClassName="CDCourseBlockVideo" syncable="YES" codeGenerationType="class">
+        <attribute name="fileSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="streamPriority" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
     </entity>
     <entity name="CDCourseDate" representedClassName="CDCourseDate" syncable="YES" codeGenerationType="class">
         <attribute name="hasEnded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>

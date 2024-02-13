@@ -179,6 +179,7 @@ public extension View {
             ZStack {
                 self
                     .frame(maxWidth: maxIpadWidth, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
+                    .clipShape(RoundedCorners(tl: 24, tr: 24))
                 RoundedCorners(tl: 24, tr: 24)
                     .stroke(style: StrokeStyle(lineWidth: 1))
                     .foregroundColor(strokeColor)
@@ -249,6 +250,19 @@ public extension View {
     @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
         if condition {
             transform(self)
+        } else {
+            self
+        }
+    }
+}
+
+public extension View {
+    @ViewBuilder
+    func sheetNavigation(isSheet: Bool) -> some View {
+        if isSheet {
+            NavigationView {
+                self
+            }
         } else {
             self
         }

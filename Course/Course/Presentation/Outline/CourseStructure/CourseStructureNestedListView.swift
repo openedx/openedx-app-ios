@@ -1,5 +1,5 @@
 //
-//  CourseStructureView.swift
+//  CourseStructureNestedListView.swift
 //  Course
 //
 //  Created by Eugene Yatsenko on 09.11.2023.
@@ -10,7 +10,7 @@ import Core
 import Kingfisher
 import Theme
 
-struct CourseExpandableContentView: View {
+struct CourseStructureNestedListView: View {
 
     private let proxy: GeometryProxy
     private let course: CourseStructure
@@ -50,7 +50,7 @@ struct CourseExpandableContentView: View {
                 .lineLimit(1)
                 .foregroundColor(Theme.Colors.textPrimary)
             Spacer()
-            Image(systemName: "chevron.right")
+            Image(systemName: "chevron.down")
                 .foregroundColor(Theme.Colors.accentColor)
                 .dropdownArrowRotationAnimation(value: isExpanded)
         }
@@ -76,10 +76,10 @@ struct CourseExpandableContentView: View {
         chapter: CourseChapter,
         isExpanded: Bool
     ) -> some View {
-        Button {
-            onLabelClick(sequential: sequential, chapter: chapter)
-        } label: {
-            HStack {
+        HStack {
+            Button {
+                onLabelClick(sequential: sequential, chapter: chapter)
+            } label: {
                 Group {
                     if sequential.completion == 1 {
                         CoreAssets.finished.swiftUIImage
@@ -94,23 +94,19 @@ struct CourseExpandableContentView: View {
                         .lineLimit(1)
                 }
                 .foregroundColor(Theme.Colors.textPrimary)
-                Spacer()
-                downloadButton(
-                    sequential: sequential,
-                    chapter: chapter
-                )
-                let downloadable = viewModel.verticalsBlocksDownloadable(by: sequential)
-                if !downloadable.isEmpty {
-                    Text(String(downloadable.count))
-                        .foregroundColor(Color(UIColor.label))
-                }
             }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(sequential.displayName)
-            .padding(.leading, 40)
-            .padding(.trailing, 28)
-            .padding(.vertical, 14)
+            Spacer()
+            downloadButton(
+                sequential: sequential,
+                chapter: chapter
+            )
+
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(sequential.displayName)
+        .padding(.leading, 40)
+        .padding(.trailing, 28)
+        .padding(.vertical, 14)
     }
 
     @ViewBuilder
@@ -121,39 +117,69 @@ struct CourseExpandableContentView: View {
         if let state = viewModel.sequentialsDownloadState[sequential.id] {
             switch state {
             case .available:
-                DownloadAvailableView()
-                    .onTapGesture {
-                        viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: chapter.id,
-                            state: state
-                        )
+                if viewModel.isInternetAvaliable {
+                    Button {
+                        Task {
+                            await viewModel.onDownloadViewTap(
+                                chapter: chapter,
+                                blockId: sequential.id,
+                                state: state
+                            )
+                        }
+                    } label: {
+                        DownloadAvailableView()
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(CourseLocalization.Accessibility.download)
                     }
-                    .onForeground {
-                        viewModel.onForeground()
-                    }
+                }
             case .downloading:
-                DownloadProgressView()
-                    .onTapGesture {
-                        viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: chapter.id,
-                            state: state
+                if viewModel.isInternetAvaliable {
+                    Button {
+                        viewModel.router.showDownloads(
+                            downloads: viewModel.getTasks(sequential: sequential),
+                            manager: viewModel.manager
                         )
+                    } label: {
+                        ProgressBar(size: 30, lineWidth: 1.75)
                     }
-                    .onBackground {
-                        viewModel.onBackground()
-                    }
+                }
             case .finished:
-                DownloadFinishedView()
-                    .onTapGesture {
-                        viewModel.onDownloadViewTap(
-                            chapter: chapter,
-                            blockId: chapter.id,
-                            state: state
-                        )
-                    }
+                Button {
+                    viewModel.router.presentAlert(
+                        alertTitle: "Warning",
+                        alertMessage: "\(CourseLocalization.Alert.deleteVideos) \"\(sequential.displayName)\"?",
+                        positiveAction: CoreLocalization.Alert.delete,
+                        onCloseTapped: {
+                            viewModel.router.dismiss(animated: true)
+                        },
+                        okTapped: {
+                            Task {
+                                await viewModel.onDownloadViewTap(
+                                    chapter: chapter,
+                                    blockId: sequential.id,
+                                    state: state
+                                )
+                            }
+                            viewModel.router.dismiss(animated: true)
+                        },
+                        type: .deleteVideo
+                    )
+                } label: {
+                    DownloadFinishedView()
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
+                }
             }
+            downloadCount(sequential: sequential)
+        }
+    }
+
+    @ViewBuilder
+    private func downloadCount(sequential: CourseSequential) -> some View {
+        let downloadable = viewModel.verticalsBlocksDownloadable(by: sequential)
+        if !downloadable.isEmpty {
+            Text(String(downloadable.count))
+                .foregroundColor(Color(UIColor.label))
         }
     }
 

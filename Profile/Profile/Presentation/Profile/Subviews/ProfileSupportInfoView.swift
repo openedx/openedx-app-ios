@@ -45,7 +45,6 @@ struct ProfileSupportInfoView: View {
             ),
             isEmailSupport: true
         )
-
     }
 
     private func terms(url: URL) -> some View {
@@ -88,7 +87,7 @@ struct ProfileSupportInfoView: View {
         button(
             linkViewModel: .init(
                 url: url,
-                title: ProfileLocalization.faq
+                title: ProfileLocalization.faqTitle
             )
         )
     }

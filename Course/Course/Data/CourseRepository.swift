@@ -201,11 +201,27 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: block.displayName,
             studentUrl: block.studentUrl,
             subtitles: subtitles,
-            videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-            youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url
+            encodedVideo: .init(
+                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+            )
         )
     }
     
+    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+        guard let encodedVideo else {
+            return nil
+        }
+        return .init(
+            url: encodedVideo.url,
+            fileSize: encodedVideo.fileSize,
+            streamPriority: encodedVideo.streamPriority
+        )
+    }
 }
 
 // Mark - For testing and SwiftUI preview
@@ -230,7 +246,8 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     
     func getCourseDates(courseID: String) async throws -> CourseDates {
         do {
-            let courseDates = try courseDatesJSON.data(using: .utf8)!.mapResponse(DataLayer.CourseDates.self)
+            let courseDates = try
+            CourseRepository.courseDatesJSON.data(using: .utf8)!.mapResponse(DataLayer.CourseDates.self)
             return courseDates.domain
         } catch {
             throw error
@@ -239,14 +256,15 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     
     func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         let decoder = JSONDecoder()
-        let jsonData = Data(courseStructureJson.utf8)
+        let jsonData = Data(CourseRepository.courseStructureJson.utf8)
         let courseBlocks = try decoder.decode(DataLayer.CourseStructure.self, from: jsonData)
         return parseCourseStructure(course: courseBlocks)
     }
         
     public  func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         do {
-            let courseBlocks = try courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
+            let courseBlocks = try
+            CourseRepository.courseStructureJson.data(using: .utf8)!.mapResponse(DataLayer.CourseStructure.self)
             return parseCourseStructure(course: courseBlocks)
         } catch {
             throw error
@@ -365,20 +383,39 @@ And there are various ways of describing it-- call it oral poetry or
             return SubtitleUrl(language: $0.key, url: url)
         }
             
-        return CourseBlock(blockId: block.blockId,
-                           id: block.id,
-                           courseId: courseId,
-                           topicId: block.userViewData?.topicID,
-                           graded: block.graded,
-                           completion: block.completion ?? 0,
-                           type: BlockType(rawValue: block.type) ?? .unknown,
-                           displayName: block.displayName,
-                           studentUrl: block.studentUrl,
-                           subtitles: subtitles,
-                           videoUrl: block.userViewData?.encodedVideo?.fallback?.url,
-                           youTubeUrl: block.userViewData?.encodedVideo?.youTube?.url)
+        return CourseBlock(
+            blockId: block.blockId,
+            id: block.id,
+            courseId: courseId,
+            topicId: block.userViewData?.topicID,
+            graded: block.graded,
+            completion: block.completion ?? 0,
+            type: BlockType(rawValue: block.type) ?? .unknown,
+            displayName: block.displayName,
+            studentUrl: block.studentUrl,
+            subtitles: subtitles,
+            encodedVideo: .init(
+                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
+                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
+                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
+                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
+                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
+                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+            )
+        )
     }
-    
+
+    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+        guard let encodedVideo else {
+            return nil
+        }
+        return .init(
+            url: encodedVideo.url,
+            fileSize: encodedVideo.fileSize,
+            streamPriority: encodedVideo.streamPriority
+        )
+    }
+
     private let courseStructureJson: String = """
     {"root": "block-v1:QA+comparison+2022+type@course+block@course",
           "blocks": {

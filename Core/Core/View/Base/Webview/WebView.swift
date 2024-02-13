@@ -11,7 +11,11 @@ import SwiftUI
 import Theme
 
 public protocol WebViewNavigationDelegate: AnyObject {
-    func webView(_ webView: WKWebView, shouldLoad request: URLRequest, navigationAction: WKNavigationAction) -> Bool
+    func webView(
+        _ webView: WKWebView,
+        shouldLoad request: URLRequest,
+        navigationAction: WKNavigationAction
+    ) async -> Bool
 }
 
 public struct WebView: UIViewRepresentable {
@@ -34,7 +38,7 @@ public struct WebView: UIViewRepresentable {
     var webViewNavDelegate: WebViewNavigationDelegate?
     
     var refreshCookies: () async -> Void
-    
+
     public init(
         viewModel: ViewModel,
         isLoading: Binding<Bool>,
@@ -46,49 +50,66 @@ public struct WebView: UIViewRepresentable {
         self.refreshCookies = refreshCookies
         self.webViewNavDelegate = navigationDelegate
     }
-    
+
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
         var parent: WebView
-        
+
         init(_ parent: WebView) {
             self.parent = parent
             super.init()
-            
+
             addObserver()
+        }
+
+        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            webView.isHidden = true
+        }
+        
+        public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            webView.isHidden = false
+        }
+        
+        public func webView(
+            _ webView: WKWebView,
+            didFailProvisionalNavigation navigation: WKNavigation!,
+            withError error: Error
+        ) {
+            webView.isHidden = false
         }
         
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            webView.isHidden = false
             DispatchQueue.main.async {
                 self.parent.isLoading = false
             }
         }
-        
+
         public func webView(
             _ webView: WKWebView,
             runJavaScriptConfirmPanelWithMessage message: String,
             initiatedByFrame frame: WKFrameInfo,
             completionHandler: @escaping (Bool) -> Void
         ) {
-            
+
             let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-            
+
             alertController.addAction(UIAlertAction(
                 title: CoreLocalization.Webview.Alert.ok,
                 style: .default,
                 handler: { _ in
                     completionHandler(true)
                 }))
-            
+
             alertController.addAction(UIAlertAction(
                 title: CoreLocalization.Webview.Alert.cancel,
                 style: .cancel,
                 handler: { _ in
                     completionHandler(false)
                 }))
-            
+
             UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
         }
-        
+
         public func webView(
             _ webView: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction
@@ -123,7 +144,7 @@ public struct WebView: UIViewRepresentable {
             
             return .allow
         }
-        
+
         public func webView(
             _ webView: WKWebView,
             decidePolicyFor navigationResponse: WKNavigationResponse
@@ -133,7 +154,7 @@ public struct WebView: UIViewRepresentable {
                 return .cancel
             }
             let baseURL = await parent.viewModel.baseURL
-            
+
             if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
                 await parent.refreshCookies()
                 DispatchQueue.main.async {
@@ -176,11 +197,7 @@ public struct WebView: UIViewRepresentable {
             }
         }
     }
-    
-    public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
+
     private var userAgent: String {
         let info = Bundle.main.infoDictionary
         return [
@@ -190,6 +207,10 @@ public struct WebView: UIViewRepresentable {
         ]
             .compactMap { $0 as? String ?? "" }
             .joined(separator: "/")
+    }
+
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
@@ -213,7 +234,7 @@ public struct WebView: UIViewRepresentable {
         webView.configuration.suppressesIncrementalRendering = true
         webView.isOpaque = false
         webView.backgroundColor = .clear
-        webView.scrollView.backgroundColor = Theme.Colors.white.uiColor()
+        webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         
@@ -221,7 +242,7 @@ public struct WebView: UIViewRepresentable {
             let script = WKUserScript(
                 source: injection.script,
                 injectionTime: injection.injectionTime,
-                forMainFrameOnly: true
+                forMainFrameOnly: injection.forMainFrameOnly
             )
             webView.configuration.userContentController.addUserScript(script)
             
@@ -234,7 +255,7 @@ public struct WebView: UIViewRepresentable {
         
         return webView
     }
-    
+
     public func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<WebView>) {
         if let url = URL(string: viewModel.url) {
             if webview.url?.absoluteString != url.absoluteString {
@@ -246,7 +267,7 @@ public struct WebView: UIViewRepresentable {
             }
         }
     }
-    
+
     public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
         uiView.configuration.userContentController.removeAllUserScripts()
         uiView.configuration.userContentController.removeAllScriptMessageHandlers()

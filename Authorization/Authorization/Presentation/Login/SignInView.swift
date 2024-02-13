@@ -153,6 +153,7 @@ public struct SignInView: View {
                                 }
                             )
                         }
+                        agreements
                         Spacer()
                     }
                     .padding(.horizontal, 24)
@@ -197,6 +198,34 @@ public struct SignInView: View {
         .hideNavigationBar()
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+    }
+
+    @ViewBuilder
+    private var agreements: some View {
+        if let eulaURL = viewModel.config.agreement.eulaURL,
+            let tosURL =  viewModel.config.agreement.tosURL,
+            let policy = viewModel.config.agreement.privacyPolicyURL {
+            let text = AuthLocalization.SignIn.agreement(
+                "\(viewModel.config.platformName)",
+                eulaURL,
+                "\(viewModel.config.platformName)",
+                tosURL,
+                "\(viewModel.config.platformName)",
+                policy
+            )
+            Text(.init(text))
+                .tint(Theme.Colors.accentColor)
+                .foregroundStyle(Theme.Colors.textSecondary)
+                .font(Theme.Fonts.labelSmall)
+                .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
+                .padding(.bottom, 15)
+                .environment(\.openURL, OpenURLAction(handler: handleURL))
+        }
+    }
+
+    private func handleURL(_ url: URL) -> OpenURLAction.Result {
+        viewModel.router.showWebBrowser(title: url.host ?? "", url: url)
+        return .handled
     }
 }
 

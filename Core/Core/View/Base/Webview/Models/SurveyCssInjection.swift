@@ -11,7 +11,7 @@ public struct SurveyCssInjection: WebViewScriptInjectionProtocol, CSSInjectionPr
     public var id: String = "SurveyCSSInjection"
     public var messages: [WebviewMessage]?
     public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
-    
+    public var forMainFrameOnly: Bool = true
     public var script: String {
         cssScript(with: css)
     }

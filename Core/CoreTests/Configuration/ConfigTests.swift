@@ -52,6 +52,14 @@ class ConfigTests: XCTestCase {
         ],
         "APPLE_SIGNIN": [
             "ENABLED": true
+        ],
+        "BRAZE": [
+            "ENABLED": true,
+            "PUSH_NOTIFICATIONS_ENABLED": true
+        ],
+        "BRANCH": [
+            "ENABLED": true,
+            "KEY": "testBranchKey"
         ]
     ]
     
@@ -114,5 +122,18 @@ class ConfigTests: XCTestCase {
         let config = Config(properties: properties)
 
         XCTAssertTrue(config.appleSignIn.enabled)
+    }
+    
+    func testBrazeConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.braze.pushNotificationsEnabled)
+    }
+    
+    func testBranchConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.branch.enabled)
+        XCTAssertEqual(config.branch.key, "testBranchKey")
     }
 }

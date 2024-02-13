@@ -1,26 +1,35 @@
 //
 //  CheckBoxView.swift
-//  Discussion
+//  Core
 //
-//  Created by  Stepanok Ivan on 12.11.2022.
+//  Created by  Stepanok Ivan on 12.11.2022.
 //
 
 import SwiftUI
-import Core
 import Theme
 
 public struct CheckBoxView: View {
-    @Binding var checked: Bool
-    var text: String
+
+    @Binding private var checked: Bool
+    private var text: String
+    private var font: Font
+
+    public init(checked: Binding<Bool>, text: String, font: Font = Theme.Fonts.labelLarge) {
+        self._checked = checked
+        self.text = text
+        self.font = font
+    }
 
     public var body: some View {
         HStack(spacing: 10) {
-            Image(systemName: checked ? "checkmark.square.fill" : "square")
-                .foregroundColor(checked
-                                 ? Theme.Colors.accentColor
-                                 : Theme.Colors.textPrimary)
+            Image(
+                systemName: checked ? "checkmark.square.fill" : "square"
+            )
+            .foregroundColor(
+                checked ? Theme.Colors.accentColor : Theme.Colors.textPrimary
+            )
             Text(text)
-                .font(Theme.Fonts.labelLarge)
+                .font(font)
         }
         .onTapGesture {
             withAnimation(.linear(duration: 0.1)) {
@@ -35,7 +44,7 @@ struct CheckBoxView_Previews: PreviewProvider {
         CheckBoxView(checked: .constant(false), text: "Check it")
             .preferredColorScheme(.light)
             .previewDisplayName("CheckBoxView Light")
-        
+
         CheckBoxView(checked: .constant(true), text: "Check it")
             .preferredColorScheme(.dark)
             .previewDisplayName("CheckBoxView Dark")

@@ -138,8 +138,8 @@ public enum DiscussionLocalization {
     public static let allPosts = DiscussionLocalization.tr("Localizable", "TOPICS.ALL_POSTS", fallback: "All Posts")
     /// Main categories
     public static let mainCategories = DiscussionLocalization.tr("Localizable", "TOPICS.MAIN_CATEGORIES", fallback: "Main categories")
-    /// Posts i'm following
-    public static let postImFollowing = DiscussionLocalization.tr("Localizable", "TOPICS.POST_IM_FOLLOWING", fallback: "Posts i'm following")
+    /// Posts I'm following
+    public static let postImFollowing = DiscussionLocalization.tr("Localizable", "TOPICS.POST_IM_FOLLOWING", fallback: "Posts I'm following")
     /// Search all posts
     public static let search = DiscussionLocalization.tr("Localizable", "TOPICS.SEARCH", fallback: "Search all posts")
   }
