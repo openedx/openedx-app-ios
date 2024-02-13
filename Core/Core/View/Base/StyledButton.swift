@@ -48,6 +48,7 @@ public struct StyledButton: View {
         .background(
             Theme.Shapes.buttonShape
                 .fill(isTransparent ? .clear : buttonColor)
+                .opacity(isActive ? 1.0 : 0.3)
         )
         .overlay(
             Theme.Shapes.buttonShape
@@ -57,7 +58,6 @@ public struct StyledButton: View {
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
-        .opacity(isActive ? 1.0 : 0.3)
     }
 }
 
