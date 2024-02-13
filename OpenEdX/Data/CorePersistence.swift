@@ -21,12 +21,12 @@ public class CorePersistence: CorePersistenceProtocol {
 
         var predicate: NSPredicate {
             switch self {
-            case let .id(args):
-                NSPredicate(format: "id = %@", args)
-            case .courseId(let args):
-                NSPredicate(format: "courseId = %@", args)
-            case .state(let args):
-                NSPredicate(format: "state != %@", args)
+            case .id(let id):
+                NSPredicate(format: "id = %@", id)
+            case .courseId(let courseId):
+                NSPredicate(format: "courseId = %@", courseId)
+            case .state(let state):
+                NSPredicate(format: "state != %@", state)
             }
         }
     }
