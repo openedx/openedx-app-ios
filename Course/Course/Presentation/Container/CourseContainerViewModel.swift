@@ -349,7 +349,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 for vertical in sequential.childs where vertical.isDownloadable {
                     var verticalsChilds: [DownloadViewState] = []
                     for block in vertical.childs where block.isDownloadable {
-                        if let download = courseDownloadTasks.first(where: { $0.id == block.id }) {
+                        if let download = courseDownloadTasks.first(where: { $0.blockId == block.id }) {
                             switch download.state {
                             case .waiting, .inProgress:
                                 sequentialsChilds.append(.downloading)

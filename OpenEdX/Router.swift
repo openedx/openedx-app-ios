@@ -60,16 +60,22 @@ public class Router: AuthorizationRouter,
     
     public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
         showToolBar()
-        var storage = Container.shared.resolve(WhatsNewStorage.self)!
+        var whatsNewStorage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
+        let persistence = Container.shared.resolve(CorePersistenceProtocol.self)!
+        let coreStorage = Container.shared.resolve(CoreStorage.self)!
 
-        let viewModel = WhatsNewViewModel(storage: storage, sourceScreen: sourceScreen)
+        if let userId = coreStorage.user?.id {
+            persistence.set(userId: userId)
+        }
+
+        let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen)
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
         if shouldShowWhatsNew && config.features.whatNewEnabled {
             if let jsonVersion = viewModel.getVersion() {
-                storage.whatsNewVersion = jsonVersion
+                whatsNewStorage.whatsNewVersion = jsonVersion
             }
             let controller = UIHostingController(rootView: whatsNew)
             navigationController.viewControllers = [controller]

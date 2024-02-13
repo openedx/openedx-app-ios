@@ -12,10 +12,230 @@ import Combine
 
 public class CorePersistence: CorePersistenceProtocol {
 
+    // MARK: - Predicate
+
+    enum CDPredicate {
+        case id(String)
+        case courseId(String)
+        case state(String)
+
+        var predicate: NSPredicate {
+            switch self {
+            case let .id(args):
+                NSPredicate(format: "id = %@", args)
+            case .courseId(let args):
+                NSPredicate(format: "courseId = %@", args)
+            case .state(let args):
+                NSPredicate(format: "state != %@", args)
+            }
+        }
+    }
+
+    // MARK: - Properties
+
     private var context: NSManagedObjectContext
+    private var userId: Int?
 
     public init(context: NSManagedObjectContext) {
         self.context = context
+    }
+
+    public func set(userId: Int) {
+        self.userId = userId
+    }
+
+    public func getUserID() -> Int? {
+        userId
+    }
+
+    // MARK: - Public Intents
+
+    public func addToDownloadQueue(
+        blocks: [CourseBlock],
+        downloadQuality: DownloadQuality
+    ) {
+        for block in blocks {
+            let downloadDataId = downloadDataId(from: block.id)
+
+            let data = try? fetchCDDownloadData(
+                predicate: CDPredicate.id(downloadDataId)
+            )
+            guard data?.first == nil else { continue }
+
+            guard let video = block.encodedVideo?.video(downloadQuality: downloadQuality),
+                  let url = video.url,
+                  let fileExtension = URL(string: url)?.pathExtension
+            else { continue }
+
+            let fileName = "\(block.id).\(fileExtension)"
+            context.performAndWait {
+                let newDownloadData = CDDownloadData(context: context)
+                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+                newDownloadData.id = downloadDataId
+                newDownloadData.blockId = block.id
+                newDownloadData.userId = getUserId32() ?? 0
+                newDownloadData.courseId = block.courseId
+                newDownloadData.url = url
+                newDownloadData.fileName = fileName
+                newDownloadData.displayName = block.displayName
+                newDownloadData.progress = .zero
+                newDownloadData.resumeData = nil
+                newDownloadData.state = DownloadState.waiting.rawValue
+                newDownloadData.type = DownloadType.video.rawValue
+                newDownloadData.fileSize = Int32(video.fileSize ?? 0)
+            }
+        }
+    }
+
+    public func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void) {
+        context.performAndWait {
+            guard let data = try? fetchCDDownloadData() else {
+                completion([])
+                return
+            }
+
+            let downloads = data.downloadDataTasks()
+
+            completion(downloads)
+        }
+    }
+
+    public func getDownloadDataTasksForCourse(
+        _ courseId: String,
+        completion: @escaping ([DownloadDataTask]) -> Void
+    ) {
+        context.performAndWait {
+            guard let data = try? fetchCDDownloadData(
+                predicate: .courseId(courseId)
+            ) else {
+                completion([])
+                return
+            }
+
+            if data.isEmpty {
+                completion([])
+                return
+            }
+
+            let downloads = data
+                .downloadDataTasks()
+                .filter(userId: userId)
+
+            completion(downloads)
+        }
+    }
+
+    public func downloadDataTask(
+        for blockId: String,
+        completion: @escaping (DownloadDataTask?) -> Void
+    ) {
+        context.performAndWait {
+            let data = try? fetchCDDownloadData(
+                predicate: .id(downloadDataId(from: blockId))
+            )
+
+            guard let downloadData = data?.first else {
+                completion(nil)
+                return
+            }
+
+            let downloadDataTask = DownloadDataTask(sourse: downloadData)
+
+            completion(downloadDataTask)
+        }
+    }
+
+    public func downloadDataTask(for blockId: String) -> DownloadDataTask? {
+        let data = try? fetchCDDownloadData(
+            predicate: .id(downloadDataId(from: blockId))
+        )
+
+        guard let downloadData = data?.first else { return nil }
+
+        return DownloadDataTask(sourse: downloadData)
+    }
+
+    public func nextBlockForDownloading() -> DownloadDataTask? {
+        let data = try? fetchCDDownloadData(
+            predicate: .state(DownloadState.finished.rawValue),
+            fetchLimit: 1
+        )
+
+        guard let downloadData = data?.first else {
+            return nil
+        }
+
+        return DownloadDataTask(sourse: downloadData)
+    }
+
+    public func updateDownloadState(
+        id: String,
+        state: DownloadState,
+        resumeData: Data?
+    ) {
+        context.performAndWait {
+            guard let data = try? fetchCDDownloadData(
+                predicate: .id(downloadDataId(from: id))
+            ) else {
+                return
+            }
+
+            guard let task = data.first else { return }
+
+            task.state = state.rawValue
+            if state == .finished { task.progress = 1 }
+            task.resumeData = resumeData
+
+            do {
+                try context.save()
+            } catch {
+                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
+            }
+        }
+    }
+
+    public func deleteDownloadDataTask(id: String) throws {
+        context.performAndWait {
+            do {
+                let records = try fetchCDDownloadData(
+                    predicate: .id(downloadDataId(from: id))
+                )
+
+                for record in records {
+                    context.delete(record)
+                    try context.save()
+                    debugLog("File erased successfully")
+                }
+
+            } catch {
+                debugLog("Error fetching records: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    public func saveDownloadDataTask(_ task: DownloadDataTask) {
+        context.performAndWait {
+            let newDownloadData = CDDownloadData(context: context)
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            newDownloadData.id = task.id
+            newDownloadData.blockId = task.blockId
+            newDownloadData.userId = Int32(task.userId)
+            newDownloadData.courseId = task.courseId
+            newDownloadData.url = task.url
+            newDownloadData.progress = task.progress
+            newDownloadData.fileName = task.fileName
+            newDownloadData.displayName = task.displayName
+            newDownloadData.resumeData = task.resumeData
+            newDownloadData.state = task.state.rawValue
+            newDownloadData.type = task.type.rawValue
+            newDownloadData.fileSize = Int32(task.fileSize)
+
+            do {
+                try context.save()
+            } catch {
+                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
+            }
+        }
     }
 
     public func publisher() -> AnyPublisher<Int, Never> {
@@ -41,196 +261,60 @@ public class CorePersistence: CorePersistenceProtocol {
             .eraseToAnyPublisher()
     }
 
-    public func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void) {
-        context.performAndWait {
-            let request = CDDownloadData.fetchRequest()
-            guard let downloadData = try? context.fetch(request) else {
-                completion([])
-                return
-            }
-            let downloads =  downloadData.map {
-                DownloadDataTask(
-                    id: $0.id ?? "",
-                    courseId: $0.courseId ?? "",
-                    url: $0.url ?? "",
-                    fileName: $0.fileName ?? "",
-                    displayName: $0.displayName ?? "",
-                    progress: $0.progress,
-                    resumeData: $0.resumeData,
-                    state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
-                    type: DownloadType(rawValue: $0.type ?? "") ?? .video,
-                    fileSize: Int($0.fileSize)
-                )
-            }
-            completion(downloads)
-        }
-    }
+    // MARK: - Private Intents
 
-    public func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) {
-        for block in blocks {
-            let request = CDDownloadData.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %@", block.id)
-            guard (try? context.fetch(request).first) == nil else { continue }
-            guard let video = block.encodedVideo?.video(downloadQuality: downloadQuality),
-                  let url = video.url,
-                  let fileExtension = URL(string: url)?.pathExtension
-            else { continue }
-            let fileName = "\(block.id).\(fileExtension)"
-            context.performAndWait {
-                let newDownloadData = CDDownloadData(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                newDownloadData.id = block.id
-                newDownloadData.courseId = block.courseId
-                newDownloadData.url = url
-                newDownloadData.fileName = fileName
-                newDownloadData.displayName = block.displayName
-                newDownloadData.progress = .zero
-                newDownloadData.resumeData = nil
-                newDownloadData.state = DownloadState.waiting.rawValue
-                newDownloadData.type = DownloadType.video.rawValue
-                newDownloadData.fileSize = Int32(video.fileSize ?? 0)
-            }
-        }
-    }
-
-    public func getNextBlockForDownloading() -> DownloadDataTask? {
+    private func fetchCDDownloadData(
+        predicate: CDPredicate? = nil,
+        fetchLimit: Int? = nil
+    ) throws -> [CDDownloadData] {
         let request = CDDownloadData.fetchRequest()
-        request.predicate = NSPredicate(format: "state != %@", DownloadState.finished.rawValue)
-        request.fetchLimit = 1
-        guard let data = try? context.fetch(request).first else { return nil }
-        return DownloadDataTask(
-            id: data.id ?? "",
-            courseId: data.courseId ?? "",
-            url: data.url ?? "",
-            fileName: data.fileName ?? "",
-            displayName: data.displayName ?? "",
-            progress: data.progress,
-            resumeData: data.resumeData,
-            state: DownloadState(rawValue: data.state ?? "") ?? .waiting,
-            type: DownloadType(rawValue: data.type ?? "" ) ?? .video,
-            fileSize: Int(data.fileSize)
-        )
+        if let predicate = predicate {
+            request.predicate = predicate.predicate
+        }
+        if let fetchLimit = fetchLimit {
+            request.fetchLimit = fetchLimit
+        }
+        let data = try context.fetch(request).filter {
+            guard let userId = getUserId32() else {
+                return true
+            }
+            debugLog(userId, "-userId-")
+            return $0.userId == userId
+        }
+        return data
     }
 
-    public func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void) {
-        context.performAndWait {
-            let request = CDDownloadData.fetchRequest()
-            request.predicate = NSPredicate(format: "courseId = %@", courseId)
-            guard let downloadData = try? context.fetch(request) else {
-                completion([])
-                return
+    private func getUserId32() -> Int32? {
+        guard let userId else {
+            return nil
+        }
+        return Int32(userId)
+    }
+
+    private func downloadDataId(from id: String) -> String {
+        guard let userId else {
+            return id
+        }
+        if id.contains(String(userId)) {
+            return id
+        }
+        return "\(userId)_\(id)"
+    }
+}
+
+extension Array where Element == DownloadDataTask {
+    func filter(userId: Int?) -> [DownloadDataTask] {
+        filter {
+            guard let userId else {
+                return true
             }
-            let downloads = downloadData.map {
-                DownloadDataTask(
-                    id: $0.id ?? "",
-                    courseId: $0.courseId ?? "",
-                    url: $0.url ?? "",
-                    fileName: $0.fileName ?? "",
-                    displayName: $0.displayName ?? "",
-                    progress: $0.progress,
-                    resumeData: $0.resumeData,
-                    state: DownloadState(rawValue: $0.state ?? "") ?? .waiting,
-                    type: DownloadType(rawValue: $0.type ?? "") ?? .video,
-                    fileSize: Int($0.fileSize)
-                )
-            }
-            completion(downloads)
+            return $0.userId == userId
         }
     }
+}
 
-    public func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void) {
-        context.performAndWait {
-            let request = CDDownloadData.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %@", blockId)
-            guard let downloadData = try? context.fetch(request).first else {
-                completion(nil)
-                return
-            }
-            let data = DownloadDataTask(
-                id: downloadData.id ?? "",
-                courseId: downloadData.courseId ?? "",
-                url: downloadData.url ?? "",
-                fileName: downloadData.fileName ?? "",
-                displayName: downloadData.displayName ?? "",
-                progress: downloadData.progress,
-                resumeData: downloadData.resumeData,
-                state: DownloadState(rawValue: downloadData.state ?? "") ?? .waiting,
-                type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video,
-                fileSize: Int(downloadData.fileSize)
-            )
-            completion(data)
-        }
-    }
-
-    public func downloadDataTask(for blockId: String) -> DownloadDataTask? {
-        let request = CDDownloadData.fetchRequest()
-        request.predicate = NSPredicate(format: "id = %@", blockId)
-        guard let downloadData = try? context.fetch(request).first else { return nil }
-        return DownloadDataTask(
-            id: downloadData.id ?? "",
-            courseId: downloadData.courseId ?? "",
-            url: downloadData.url ?? "",
-            fileName: downloadData.fileName ?? "",
-            displayName: downloadData.displayName ?? "",
-            progress: downloadData.progress,
-            resumeData: downloadData.resumeData,
-            state: DownloadState(rawValue: downloadData.state ?? "") ?? .waiting,
-            type: DownloadType(rawValue: downloadData.type ?? "" ) ?? .video,
-            fileSize: Int(downloadData.fileSize)
-        )
-    }
-
-    public func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) {
-        context.performAndWait {
-            let request = CDDownloadData.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %@", id)
-            guard let downloadData = try? context.fetch(request).first else { return }
-            downloadData.state = state.rawValue
-            if state == .finished { downloadData.progress = 1 }
-            downloadData.resumeData = resumeData
-            do {
-                try context.save()
-            } catch {
-                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
-            }
-        }
-    }
-
-    public func deleteDownloadDataTask(id: String) throws {
-        context.performAndWait {
-            let request = CDDownloadData.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %@", id)
-            do {
-                let records = try context.fetch(request)
-                for record in records {
-                    context.delete(record)
-                    try context.save()
-                    debugLog("File erased successfully")
-                }
-            } catch {
-                debugLog("Error fetching records: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    public func saveDownloadDataTask(data: DownloadDataTask) {
-        context.performAndWait {
-            let newDownloadData = CDDownloadData(context: context)
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            newDownloadData.id = data.id
-            newDownloadData.courseId = data.courseId
-            newDownloadData.url = data.url
-            newDownloadData.progress = data.progress
-            newDownloadData.fileName = data.fileName
-            newDownloadData.resumeData = data.resumeData
-            newDownloadData.state = data.state.rawValue
-            newDownloadData.fileSize = Int32(data.fileSize)
-
-            do {
-                try context.save()
-            } catch {
-                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
-            }
-        }
+extension Array where Element == CDDownloadData {
+    func downloadDataTasks() -> [DownloadDataTask] {
+        compactMap { DownloadDataTask(sourse: $0) }
     }
 }
