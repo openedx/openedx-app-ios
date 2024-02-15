@@ -53,6 +53,8 @@
 		A51CDBE52B6D1E93009B6D4E /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBE42B6D1E93009B6D4E /* Segment */; };
 		A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */; };
 		A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */; };
+		A52508082B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52508072B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift */; };
+		A525080A2B7E500A0078E1D8 /* SegmentAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52508092B7E500A0078E1D8 /* SegmentAnalyticsService.swift */; };
 		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
@@ -132,10 +134,12 @@
 		A50066902B61467B0024680B /* BrazeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeProvider.swift; sourceTree = "<group>"; };
 		A50066922B614DCD0024680B /* FCMListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMListener.swift; sourceTree = "<group>"; };
 		A50066942B614DEF0024680B /* BrazeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeListener.swift; sourceTree = "<group>"; };
+		A52508072B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAnalyticsService.swift; sourceTree = "<group>"; };
+		A52508092B7E500A0078E1D8 /* SegmentAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentAnalyticsService.swift; sourceTree = "<group>"; };
 		A59568942B61630500ED4F90 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
-		A59585AE2B62A07100A35A20 /* BranchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchService.swift; sourceTree = "<group>"; };
+		A59585AE2B62A07100A35A20 /* BranchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BranchService.swift; path = ../BranchService.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -295,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
+				A52508062B7E4FA90078E1D8 /* Services */,
 				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
 			);
 			path = AnalyticsManager;
@@ -318,11 +323,19 @@
 			path = Listeners;
 			sourceTree = "<group>";
 		};
+		A52508062B7E4FA90078E1D8 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A52508072B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift */,
+				A52508092B7E500A0078E1D8 /* SegmentAnalyticsService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		A59568932B6162E400ED4F90 /* DeepLinkManager */ = {
 			isa = PBXGroup;
 			children = (
 				A59568942B61630500ED4F90 /* DeepLinkManager.swift */,
-				A59585AE2B62A07100A35A20 /* BranchService.swift */,
 				A5F46FD02B692B140003EEEF /* Services */,
 				A59585AD2B62677B00A35A20 /* Link */,
 			);
@@ -526,6 +539,8 @@
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
 				A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */,
+				A525080A2B7E500A0078E1D8 /* SegmentAnalyticsService.swift in Sources */,
+				A52508082B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift in Sources */,
 				A50066912B61467B0024680B /* BrazeProvider.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,

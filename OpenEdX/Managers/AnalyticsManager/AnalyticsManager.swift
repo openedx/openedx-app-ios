@@ -7,14 +7,17 @@
 
 import Foundation
 import Core
-import FirebaseAnalytics
 import Authorization
 import Discovery
 import Dashboard
 import Profile
 import Course
 import Discussion
-import UIKit
+
+protocol AnalyticsService {
+    func identify(id: String, username: String?, email: String?)
+    func logEvent(_ event: Event, parameters: [String: Any]?)
+}
 
 class AnalyticsManager: AuthorizationAnalytics,
                         MainScreenAnalytics,
@@ -24,13 +27,28 @@ class AnalyticsManager: AuthorizationAnalytics,
                         CourseAnalytics,
                         DiscussionAnalytics {
     
+    private var services: [AnalyticsService] = []
+    
+    // Init Analytics Manager
+    public init(config: ConfigProtocol) {
+        services = servicesFor(config: config)
+    }
+
+    private func servicesFor(config: ConfigProtocol) -> [AnalyticsService] {
+        var analyticsServices: [AnalyticsService] = []
+        // add Google Analytics Service
+        analyticsServices.append(GoogleAnalyticsService())
+        // add Segment Analytics Service if enabled
+        if config.segment.enabled {
+            analyticsServices.append(SegmentAnalyticsService())
+        }
+        return analyticsServices
+    }
+    
     public func identify(id: String, username: String, email: String) {
-        Analytics.setUserID(id)
-        let traits: [String: String] = [
-            "email": email,
-            "username": username
-        ]
-        (UIApplication.shared.delegate as? AppDelegate)?.analytics?.identify(userId: id, traits: traits)
+        for service in services {
+            service.identify(id: id, username: username, email: email)
+        }
     }
     
     public func userLogin(method: AuthMethod) {
@@ -315,11 +333,9 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     private func logEvent(_ event: Event, parameters: [String: Any]? = nil) {
-        Analytics.logEvent(event.rawValue, parameters: parameters)
-        (UIApplication.shared.delegate as? AppDelegate)?.analytics?.track(
-            name: event.rawValue,
-            properties: parameters
-        )
+        for service in services {
+            service.logEvent(event, parameters: parameters)
+        }
     }
 }
 

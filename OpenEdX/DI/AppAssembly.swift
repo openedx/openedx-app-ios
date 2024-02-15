@@ -35,8 +35,10 @@ class AppAssembly: Assembly {
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
         
-        container.register(AnalyticsManager.self) { _ in
-            AnalyticsManager()
+        container.register(AnalyticsManager.self) { r in
+            AnalyticsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }
         
         container.register(AuthorizationAnalytics.self) { r in

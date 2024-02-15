@@ -9,16 +9,13 @@ import UIKit
 import Core
 import Swinject
 import FirebaseCore
-//import FirebaseAnalytics
 import FirebaseCrashlytics
 import Profile
 import GoogleSignIn
 import FacebookCore
 import MSAL
 import Theme
-//import BrazeKit
 import Segment
-//import SegmentFirebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }
     
-//    var braze: Braze?
     var analytics: Analytics?
 
     var window: UIWindow?
@@ -60,9 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 .trackApplicationLifecycleEvents(true)
                                 .flushInterval(10)
                 analytics = Analytics(configuration: configuration)
-//                if config.firebase.isAnalyticsSourceSegment {
-//                    analytics?.add(plugin: FirebaseDestination())
-//                }
             }
         }
 
@@ -145,8 +138,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard Date().timeIntervalSince1970 - lastForceLogoutTime > 5 else {
             return
         }
-        let analytics = Container.shared.resolve(AnalyticsManager.self)
-        analytics?.userLogout(force: true)
+        let analyticsManager = Container.shared.resolve(AnalyticsManager.self)
+        analyticsManager?.userLogout(force: true)
         
         lastForceLogoutTime = Date().timeIntervalSince1970
         
