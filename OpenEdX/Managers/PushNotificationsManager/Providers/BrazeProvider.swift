@@ -6,9 +6,7 @@
 //
 
 import Foundation
-//import BrazeKit
 import UIKit
-import Segment
 import SegmentBrazeUI
 
 class BrazeProvider: PushNotificationsProvider {
