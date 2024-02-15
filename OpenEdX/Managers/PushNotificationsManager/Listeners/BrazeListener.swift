@@ -8,7 +8,7 @@
 import Foundation
 
 class BrazeListener: PushNotificationsListener {
-    func notificationToThisListener(userinfo: [AnyHashable: Any]) -> Bool {
+    func shouldListenNotification(userinfo: [AnyHashable: Any]) -> Bool {
         //A push notification sent from the braze has a key ab in it like ab = {c = "c_value";};
         guard let _ = userinfo["ab"] as? [String : Any], userinfo.count > 0
         else { return false }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-private enum BranchKeys: String {
+private enum BranchKeys: String, RawStringExtractable {
     case enabled = "ENABLED"
     case key = "KEY"
 }
@@ -18,8 +18,8 @@ public final class BranchConfig: NSObject {
     
     init(dictionary: [String: AnyObject]) {
         super.init()
-        enabled = dictionary[BranchKeys.enabled.rawValue] as? Bool == true
-        key = dictionary[BranchKeys.key.rawValue] as? String
+        enabled = dictionary[BranchKeys.enabled] as? Bool == true
+        key = dictionary[BranchKeys.key] as? String
     }
 }
 

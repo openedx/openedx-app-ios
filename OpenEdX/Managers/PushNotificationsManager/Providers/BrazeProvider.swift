@@ -12,7 +12,7 @@ import Segment
 import SegmentBrazeUI
 
 class BrazeProvider: PushNotificationsProvider {
-    func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: Data) {
+    func didRegisterWithDeviceToken(deviceToken: Data) {
         (UIApplication.shared.delegate as? AppDelegate)?.analytics?.add(
             plugin: BrazeDestination(
                 additionalConfiguration: { configuration in

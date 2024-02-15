@@ -17,28 +17,30 @@ public protocol DeepLinkService {
 }
 
 class DeepLinkManager {
-    private var service: DeepLinkService?
+    private var services: [DeepLinkService] = []
     
     // Init manager
     public init(config: ConfigProtocol) {
-        self.service = self.serviceFor(config: config)
+        services = servicesFor(config: config)
     }
     
-    private func serviceFor(config: ConfigProtocol) -> DeepLinkService? {
+    private func servicesFor(config: ConfigProtocol) -> [DeepLinkService] {
+        var deepServices: [DeepLinkService] = []
+        // init deep link services
         if config.branch.enabled {
-            return BranchService()
+            deepServices.append(BranchService())
         }
-        return nil
+        return deepServices
     }
     
-    // check if service is added (means enabled)
-    var serviceEnabled: Bool {
-        service != nil
+    // check if any service is added (means enabled)
+    var anyServiceEnabled: Bool {
+        services.count > 0
     }
     
     // Configure services
     func configureDeepLinkService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        if let service = service {
+        for service in services {
             service.configureWith(launchOptions: launchOptions)
         }
     }
@@ -49,23 +51,21 @@ class DeepLinkManager {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        if let service = service {
-            return service.handledURLWith(app: app, open: url, options: options)
+        for service in services where service.handledURLWith(app: app, open: url, options: options) {
+            return true
         }
         return false
     }
     
-    // This method process push notification with the link object
-    func processNotification(with link: PushLink) {
-        if let service = service {
-            service.processNotification(with: link)
-        }
+    // This method do redirect with link from push notification
+    func processLinkFromNotification(_ link: PushLink) {
+        // redirect if possible
     }
     
     // This method process the deep link with response parameters
     func processDeepLink(with params: [String: Any]) {
-        if let service = service {
-            service.processDeepLink(with: params)
+        if anyServiceEnabled {
+            // redirect if possible
         }
     }
     
