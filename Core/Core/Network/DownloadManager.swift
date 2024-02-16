@@ -106,19 +106,24 @@ public protocol DownloadManagerProtocol {
     func publisher() -> AnyPublisher<Int, Never>
     func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never>
 
+    func addToDownloadQueue(blocks: [CourseBlock]) throws
+
     func getDownloadTasks() async -> [DownloadDataTask]
     func getDownloadTasksForCourse(_ courseId: String) async -> [DownloadDataTask]
+
     func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws
     func cancelDownloading(task: DownloadDataTask) async throws
     func cancelDownloading(courseId: String) async throws
+    func cancelAllDownloading() async throws
+
     func deleteFile(blocks: [CourseBlock]) async
     func deleteAllFiles() async
+
     func fileUrl(for blockId: String) async -> URL?
 
-    func addToDownloadQueue(blocks: [CourseBlock]) throws
-    func isLargeVideosSize(blocks: [CourseBlock]) -> Bool
     func resumeDownloading() throws
     func fileUrl(for blockId: String) -> URL?
+    func isLargeVideosSize(blocks: [CourseBlock]) -> Bool
 }
 
 public enum DownloadManagerEvent {
@@ -127,8 +132,9 @@ public enum DownloadManagerEvent {
     case progress(Double, DownloadDataTask)
     case paused(DownloadDataTask)
     case canceled(DownloadDataTask)
-    case finished(DownloadDataTask)
     case courseCanceled(String)
+    case allCanceled
+    case finished(DownloadDataTask)
     case deletedFile(String)
     case clearedAll
 }
@@ -224,13 +230,10 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {
         downloadRequest?.cancel()
-
         let downloaded = await getDownloadTasksForCourse(courseId).filter { $0.state == .finished }
-        let blocksForDelete = blocks
-            .filter {
-                block in downloaded.first(where: { $0.blockId == block.id }) == nil
-            }
-
+        let blocksForDelete = blocks.filter {  block in
+            downloaded.first(where: { $0.blockId == block.id }) == nil
+        }
         await deleteFile(blocks: blocksForDelete)
         downloaded.forEach {
             currentDownloadEventPublisher.send(.canceled($0))
@@ -254,17 +257,16 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func cancelDownloading(courseId: String) async throws {
         let tasks = await getDownloadTasksForCourse(courseId)
-        for task in tasks {
-            do {
-                try persistence.deleteDownloadDataTask(id: task.id)
-                if let fileUrl = await fileUrl(for: task.id) {
-                    try FileManager.default.removeItem(at: fileUrl)
-                }
-            } catch {
-                debugLog("Error deleting file: \(error.localizedDescription)")
-            }
-        }
+        await cancel(tasks: tasks)
         currentDownloadEventPublisher.send(.courseCanceled(courseId))
+        downloadRequest?.cancel()
+        try newDownload()
+    }
+
+    public func cancelAllDownloading() async throws {
+        let tasks = await getDownloadTasks().filter { $0.state != .finished }
+        await cancel(tasks: tasks)
+        currentDownloadEventPublisher.send(.allCanceled)
         downloadRequest?.cancel()
         try newDownload()
     }
@@ -319,6 +321,8 @@ public class DownloadManager: DownloadManagerProtocol {
         let fileName = data.fileName
         return path?.appendingPathComponent(fileName)
     }
+
+    // MARK: - Private Intents
 
     private func newDownload() throws {
         guard userCanDownload() else {
@@ -405,7 +409,18 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    // MARK: - Private Intents
+    private func cancel(tasks: [DownloadDataTask]) async {
+        for task in tasks {
+            do {
+                try persistence.deleteDownloadDataTask(id: task.id)
+                if let fileUrl = await fileUrl(for: task.id) {
+                    try FileManager.default.removeItem(at: fileUrl)
+                }
+            } catch {
+                debugLog("Error deleting file: \(error.localizedDescription)")
+            }
+        }
+    }
 
     private func backgroundTask() {
         backgroundTaskProvider.eventPublisher()
@@ -595,6 +610,10 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     }
 
     public func cancelDownloading(courseId: String) async {
+
+    }
+
+    public func cancelAllDownloading() async throws {
 
     }
 

@@ -412,7 +412,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -884,7 +886,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -1007,7 +1011,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -1148,7 +1154,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
