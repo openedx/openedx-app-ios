@@ -7,11 +7,26 @@
 
 import Foundation
 import UIKit
+import Core
+import BranchSDK
 
 class BranchService: DeepLinkService {
     // configure service
-    func configureWith(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+    func configureWith(
+        manager: DeepLinkManager,
+        config: ConfigProtocol,
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) {
+        guard let key = config.branch.key, config.branch.enabled else { return }
+        Branch.setBranchKey(key)
         
+        if Branch.branchKey() != nil {
+            Branch.getInstance().initSession(launchOptions: launchOptions) { params, error in
+                guard let params = params, error == nil else { return }
+             
+                manager.processDeepLink(with: params)
+            }
+        }
     }
     
     // handle url and call DeepLinkanager.processDeepLink() with params
@@ -20,6 +35,7 @@ class BranchService: DeepLinkService {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any]
     ) -> Bool {
-        false
+        Branch.getInstance().application(app, open: url, options: options)
+        return true
     }
 }

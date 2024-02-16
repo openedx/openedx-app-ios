@@ -16,6 +16,7 @@ import GoogleSignIn
 import FacebookCore
 import MSAL
 import Theme
+import BranchSDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

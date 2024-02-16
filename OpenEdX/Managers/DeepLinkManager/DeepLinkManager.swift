@@ -10,15 +10,25 @@ import Core
 import UIKit
 
 public protocol DeepLinkService {
-    func configureWith(launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
-    func handledURLWith(app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool
+    func configureWith(
+        manager: DeepLinkManager,
+        config: ConfigProtocol,
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    )
+    
+    func handledURLWith(
+        app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any]
+    ) -> Bool
 }
 
-class DeepLinkManager {
+public class DeepLinkManager {
     private var services: [DeepLinkService] = []
+    private let config: ConfigProtocol
     
-    // Init manager
     public init(config: ConfigProtocol) {
+        self.config = config
         services = servicesFor(config: config)
     }
     
@@ -39,7 +49,7 @@ class DeepLinkManager {
     // Configure services
     func configureDeepLinkService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         for service in services {
-            service.configureWith(launchOptions: launchOptions)
+            service.configureWith(manager: self, config: config, launchOptions: launchOptions)
         }
     }
     
@@ -61,8 +71,11 @@ class DeepLinkManager {
     }
     
     // This method process the deep link with response parameters
-    func processDeepLink(with params: [String: Any]) {
-        if anyServiceEnabled {
+    func processDeepLink(with params: [AnyHashable: Any]?) {
+        guard let params = params else { return }
+        
+        let deeplink = DeepLink(dictionary: params)
+        if anyServiceEnabled && deeplink.type != .none {
             // redirect if possible
         }
     }

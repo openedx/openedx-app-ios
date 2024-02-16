@@ -22,7 +22,7 @@ protocol PushNotificationsListener {
 
 extension PushNotificationsListener {
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-        guard let dictionary = userInfo as? [String: Any],
+        guard let dictionary = userInfo as? [String: AnyHashable],
              shouldListenNotification(userinfo: userInfo),
              let deepLinkManager = Container.shared.resolve(DeepLinkManager.self)
         else { return }

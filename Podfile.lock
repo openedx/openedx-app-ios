@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (5.8.0)
+  - BranchSDK (3.0.1)
   - FirebaseAnalytics (10.15.0):
     - FirebaseAnalytics/AdIdSupport (= 10.15.0)
     - FirebaseCore (~> 10.0)
@@ -112,6 +113,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 5.7)
+  - BranchSDK (~> 3.0.1)
   - FirebaseAnalytics (~> 10.11)
   - FirebaseCrashlytics (~> 10.11)
   - KeychainSwift (~> 20.0)
@@ -125,6 +127,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - BranchSDK
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreExtension
@@ -158,6 +161,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
+  BranchSDK: e268bcf41469051c9e83efcd6fd85d0ba91d1d0f
   FirebaseAnalytics: 47cef43728f81a839cf1306576bdd77ffa2eac7e
   FirebaseCore: 2cec518b43635f96afe7ac3a9c513e47558abd2e
   FirebaseCoreExtension: d3f1ea3725fb41f56e8fbfb29eeaff54e7ffb8f6
@@ -180,6 +184,6 @@ SPEC CHECKSUMS:
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
   Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: 544edab2f9ecc4ac18973fb8865f1d0613ec8a28
+PODFILE CHECKSUM: 758e4bb1c4ccff8f637ac431533c4e2a8d22e281
 
-COCOAPODS: 1.15.0
+COCOAPODS: 1.15.2
