@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAnalytics
 
-class GoogleAnalyticsService: AnalyticsService {
+class FirebaseAnalyticsService: AnalyticsService {
     func identify(id: String, username: String?, email: String?) {
         Analytics.setUserID(id)
     }

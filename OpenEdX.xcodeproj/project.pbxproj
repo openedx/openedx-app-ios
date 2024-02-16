@@ -53,7 +53,7 @@
 		A51CDBE52B6D1E93009B6D4E /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBE42B6D1E93009B6D4E /* Segment */; };
 		A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */; };
 		A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */; };
-		A52508082B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52508072B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift */; };
+		A52508082B7E4FCC0078E1D8 /* FirebaseAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52508072B7E4FCC0078E1D8 /* FirebaseAnalyticsService.swift */; };
 		A525080A2B7E500A0078E1D8 /* SegmentAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52508092B7E500A0078E1D8 /* SegmentAnalyticsService.swift */; };
 		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
@@ -134,7 +134,7 @@
 		A50066902B61467B0024680B /* BrazeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeProvider.swift; sourceTree = "<group>"; };
 		A50066922B614DCD0024680B /* FCMListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMListener.swift; sourceTree = "<group>"; };
 		A50066942B614DEF0024680B /* BrazeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeListener.swift; sourceTree = "<group>"; };
-		A52508072B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAnalyticsService.swift; sourceTree = "<group>"; };
+		A52508072B7E4FCC0078E1D8 /* FirebaseAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAnalyticsService.swift; sourceTree = "<group>"; };
 		A52508092B7E500A0078E1D8 /* SegmentAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentAnalyticsService.swift; sourceTree = "<group>"; };
 		A59568942B61630500ED4F90 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
@@ -326,7 +326,7 @@
 		A52508062B7E4FA90078E1D8 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A52508072B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift */,
+				A52508072B7E4FCC0078E1D8 /* FirebaseAnalyticsService.swift */,
 				A52508092B7E500A0078E1D8 /* SegmentAnalyticsService.swift */,
 			);
 			path = Services;
@@ -540,7 +540,7 @@
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
 				A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */,
 				A525080A2B7E500A0078E1D8 /* SegmentAnalyticsService.swift in Sources */,
-				A52508082B7E4FCC0078E1D8 /* GoogleAnalyticsService.swift in Sources */,
+				A52508082B7E4FCC0078E1D8 /* FirebaseAnalyticsService.swift in Sources */,
 				A50066912B61467B0024680B /* BrazeProvider.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
