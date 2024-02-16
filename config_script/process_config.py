@@ -133,7 +133,7 @@ class ConfigurationManager:
     def get_environment_variable(self, variable):
         return os.getenv(variable)
 
-    def add_url_scheme(self, scheme, plist, addURLIdentifier):
+    def add_url_scheme(self, scheme, plist, addBundleURL):
         body = {
             'CFBundleTypeRole': 'Editor',
             'CFBundleURLSchemes': scheme
