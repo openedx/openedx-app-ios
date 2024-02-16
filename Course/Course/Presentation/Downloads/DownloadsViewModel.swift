@@ -21,10 +21,12 @@ final class DownloadsViewModel: ObservableObject {
 
     init(
         courseId: String? = nil,
+        downloads: [DownloadDataTask] = [],
         manager: DownloadManagerProtocol
     ) {
         self.courseId = courseId
         self.manager = manager
+        self.downloads = downloads
         Task { await configure() }
         observers()
     }
@@ -51,6 +53,9 @@ final class DownloadsViewModel: ObservableObject {
     private func configure() async {
         defer {
             filter()
+        }
+        if !downloads.isEmpty {
+            return
         }
         if let courseId = courseId {
             downloads = await manager.getDownloadTasksForCourse(courseId)

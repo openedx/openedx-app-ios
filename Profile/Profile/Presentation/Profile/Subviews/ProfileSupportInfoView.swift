@@ -46,7 +46,6 @@ struct ProfileSupportInfoView: View {
             ),
             isEmailSupport: true
         )
-
     }
 
     private func terms(url: URL) -> some View {

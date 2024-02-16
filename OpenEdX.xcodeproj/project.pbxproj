@@ -45,6 +45,15 @@
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		07D5DA4128D075AB00752FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3F28D075AB00752FD9 /* LaunchScreen.storyboard */; };
 		95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */; };
+		A500668B2B613ED10024680B /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668A2B613ED10024680B /* PushNotificationsManager.swift */; };
+		A500668D2B6143000024680B /* FCMProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668C2B6143000024680B /* FCMProvider.swift */; };
+		A50066912B61467B0024680B /* BrazeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066902B61467B0024680B /* BrazeProvider.swift */; };
+		A50066932B614DCD0024680B /* FCMListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066922B614DCD0024680B /* FCMListener.swift */; };
+		A50066952B614DEF0024680B /* BrazeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066942B614DEF0024680B /* BrazeListener.swift */; };
+		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
+		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
+		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
+		A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59585AE2B62A07100A35A20 /* BranchService.swift */; };
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -115,6 +124,15 @@
 		6F54C19C823A769E18923FA8 /* Pods-App-OpenEdX.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugstage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugstage.xcconfig"; sourceTree = "<group>"; };
 		8284179FC05AEE2591573E20 /* Pods-App-OpenEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A24D6A8E1BC4DF46AD68904C /* Pods-App-OpenEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
+		A500668A2B613ED10024680B /* PushNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationsManager.swift; sourceTree = "<group>"; };
+		A500668C2B6143000024680B /* FCMProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMProvider.swift; sourceTree = "<group>"; };
+		A50066902B61467B0024680B /* BrazeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeProvider.swift; sourceTree = "<group>"; };
+		A50066922B614DCD0024680B /* FCMListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMListener.swift; sourceTree = "<group>"; };
+		A50066942B614DEF0024680B /* BrazeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeListener.swift; sourceTree = "<group>"; };
+		A59568942B61630500ED4F90 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
+		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
+		A59585AE2B62A07100A35A20 /* BranchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchService.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -200,8 +218,7 @@
 				07D5DA3428D075AA00752FD9 /* AppDelegate.swift */,
 				0770DE1628D080A1006D8A5D /* RouteController.swift */,
 				0770DE1F28D0858A006D8A5D /* Router.swift */,
-				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
-				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
+				A50066882B613E800024680B /* Managers */,
 				0293A2012A6FC9E30090A336 /* Data */,
 				0727878C28D347B2002E9142 /* View */,
 				0770DE1A28D084BC006D8A5D /* DI */,
@@ -246,6 +263,80 @@
 				BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		A50066872B613E4B0024680B /* PushNotificationsManager */ = {
+			isa = PBXGroup;
+			children = (
+				A500668A2B613ED10024680B /* PushNotificationsManager.swift */,
+				A50066962B614F0C0024680B /* Providers */,
+				A50066972B614F2B0024680B /* Listeners */,
+			);
+			path = PushNotificationsManager;
+			sourceTree = "<group>";
+		};
+		A50066882B613E800024680B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A59568932B6162E400ED4F90 /* DeepLinkManager */,
+				A50066872B613E4B0024680B /* PushNotificationsManager */,
+				A50066892B613E990024680B /* AnalyticsManager */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		A50066892B613E990024680B /* AnalyticsManager */ = {
+			isa = PBXGroup;
+			children = (
+				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
+				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
+			);
+			path = AnalyticsManager;
+			sourceTree = "<group>";
+		};
+		A50066962B614F0C0024680B /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				A500668C2B6143000024680B /* FCMProvider.swift */,
+				A50066902B61467B0024680B /* BrazeProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		A50066972B614F2B0024680B /* Listeners */ = {
+			isa = PBXGroup;
+			children = (
+				A50066922B614DCD0024680B /* FCMListener.swift */,
+				A50066942B614DEF0024680B /* BrazeListener.swift */,
+			);
+			path = Listeners;
+			sourceTree = "<group>";
+		};
+		A59568932B6162E400ED4F90 /* DeepLinkManager */ = {
+			isa = PBXGroup;
+			children = (
+				A59568942B61630500ED4F90 /* DeepLinkManager.swift */,
+				A5F46FD02B692B140003EEEF /* Services */,
+				A59585AD2B62677B00A35A20 /* Link */,
+			);
+			path = DeepLinkManager;
+			sourceTree = "<group>";
+		};
+		A59585AD2B62677B00A35A20 /* Link */ = {
+			isa = PBXGroup;
+			children = (
+				A59568962B61653700ED4F90 /* DeepLink.swift */,
+				A59568982B616D9400ED4F90 /* PushLink.swift */,
+			);
+			path = Link;
+			sourceTree = "<group>";
+		};
+		A5F46FD02B692B140003EEEF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A59585AE2B62A07100A35A20 /* BranchService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -413,9 +504,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A500668B2B613ED10024680B /* PushNotificationsManager.swift in Sources */,
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
+				A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */,
+				A50066912B61467B0024680B /* BrazeProvider.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
 				02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */,
@@ -423,12 +517,18 @@
 				0770DE5028D0A707006D8A5D /* NetworkAssembly.swift in Sources */,
 				0293A2032A6FCA590090A336 /* CorePersistence.swift in Sources */,
 				0770DE1E28D084E8006D8A5D /* AppAssembly.swift in Sources */,
+				A50066932B614DCD0024680B /* FCMListener.swift in Sources */,
+				A500668D2B6143000024680B /* FCMProvider.swift in Sources */,
 				025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */,
 				024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */,
 				0770DE2028D0858A006D8A5D /* Router.swift in Sources */,
 				0293A2092A6FCDE50090A336 /* DashboardPersistence.swift in Sources */,
 				0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */,
+				A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */,
+				A50066952B614DEF0024680B /* BrazeListener.swift in Sources */,
 				071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */,
+				A59568972B61653700ED4F90 /* DeepLink.swift in Sources */,
+				A59568992B616D9400ED4F90 /* PushLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

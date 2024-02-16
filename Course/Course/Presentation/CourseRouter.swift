@@ -55,6 +55,11 @@ public protocol CourseRouter: BaseRouter {
         componentID: String,
         courseStructure: CourseStructure
     )
+
+    func showDownloads(
+        downloads: [DownloadDataTask],
+        manager: DownloadManagerProtocol
+    )
 }
 
 // Mark - For testing and SwiftUI preview
@@ -108,6 +113,10 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         componentID: String,
         courseStructure: CourseStructure
     ) {}
-    
+
+    public func showDownloads(
+        downloads: [Core.DownloadDataTask],
+        manager: Core.DownloadManagerProtocol
+    ) {}
 }
 #endif
