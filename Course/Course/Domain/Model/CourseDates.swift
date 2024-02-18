@@ -235,6 +235,12 @@ public struct CourseDateBlock: Identifiable {
 public struct DatesBannerInfo {
     let missedDeadlines, contentTypeGatingEnabled, missedGatedContent: Bool
     let verifiedUpgradeLink: String?
+    let status: DataLayer.BannerInfoStatus?
+}
+
+public struct CourseDateBanner {
+    let datesBannerInfo: DatesBannerInfo
+    let hasEnded: Bool
 }
 
 public enum BlockStatus {

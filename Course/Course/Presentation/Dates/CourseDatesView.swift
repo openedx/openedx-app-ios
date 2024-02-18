@@ -35,7 +35,7 @@ public struct CourseDatesView: View {
                             .padding(.horizontal)
                     }
                 } else if let courseDates = viewModel.courseDates, !courseDates.courseDateBlocks.isEmpty {
-                    CourseDateListView(viewModel: viewModel, courseDates: courseDates)
+                    CourseDateListView(viewModel: viewModel, courseDates: courseDates, courseID: courseID)
                         .padding(.top, 10)
                 }
             }
@@ -95,11 +95,21 @@ struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
     @State private var isExpanded = false
     var courseDates: CourseDates
+    let courseID: String
 
     var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
+                    if !courseDates.hasEnded {
+                        AdjustScheduleView(
+                            datesBannerInfo: courseDates.datesBannerInfo,
+                            courseID: courseID,
+                            courseDatesViewModel: viewModel
+                        )
+                        .padding(.bottom, 16)
+                    }
+                    
                     ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
                         let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
                         if status == .completed {

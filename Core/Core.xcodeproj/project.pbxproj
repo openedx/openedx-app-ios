@@ -125,6 +125,7 @@
 		0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE6028D0B2CB006D8A5D /* Assets.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
 		07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */; };
+		97E7DF112B81DE7300A2A09B /* SuccessViewWithButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E7DF102B81DE7300A2A09B /* SuccessViewWithButton.swift */; };
 		141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A595689A2B6173DF00ED4F90 /* BranchConfig.swift */; };
@@ -302,6 +303,7 @@
 		349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
+		97E7DF102B81DE7300A2A09B /* SuccessViewWithButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewWithButton.swift; sourceTree = "<group>"; };
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A53A32342B233DEC005FE38A /* ThemeConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeConfig.swift; sourceTree = "<group>"; };
 		A595689A2B6173DF00ED4F90 /* BranchConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchConfig.swift; sourceTree = "<group>"; };
@@ -679,6 +681,7 @@
 				024FCCFF28EF1CD300232339 /* WebBrowser.swift */,
 				028CE96829858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift */,
 				023A4DD3299E66BD006C0E48 /* OfflineSnackBarView.swift */,
+				97E7DF102B81DE7300A2A09B /* SuccessViewWithButton.swift */,
 				021D925628DCF12900ACC565 /* AlertView.swift */,
 				0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */,
 				02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */,
@@ -1102,6 +1105,7 @@
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
 				BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */,
 				02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */,
+				97E7DF112B81DE7300A2A09B /* SuccessViewWithButton.swift in Sources */,
 				02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */,
 				027BD3AD2909475000392132 /* KeyboardScroller.swift in Sources */,
 				070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */,

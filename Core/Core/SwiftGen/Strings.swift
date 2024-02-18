@@ -71,6 +71,8 @@ public enum CoreLocalization {
     public static let itemsHidden = CoreLocalization.tr("Localizable", "COURSE_DATES.ITEMS_HIDDEN", fallback: "Items Hidden")
     /// Past due
     public static let pastDue = CoreLocalization.tr("Localizable", "COURSE_DATES.PAST_DUE", fallback: "Past due")
+    /// Your due dates have been successfully shifted to help you stay on track.
+    public static let toastSuccessMessage = CoreLocalization.tr("Localizable", "COURSE_DATES.TOAST_SUCCESS_MESSAGE", fallback: "Your due dates have been successfully shifted to help you stay on track.")
     /// Today
     public static let today = CoreLocalization.tr("Localizable", "COURSE_DATES.TODAY", fallback: "Today")
     /// Tomorrow
@@ -79,8 +81,48 @@ public enum CoreLocalization {
     public static let unreleased = CoreLocalization.tr("Localizable", "COURSE_DATES.UNRELEASED", fallback: "Unreleased")
     /// Verified Only
     public static let verifiedOnly = CoreLocalization.tr("Localizable", "COURSE_DATES.VERIFIED_ONLY", fallback: "Verified Only")
+    /// View all dates
+    public static let viewAllDates = CoreLocalization.tr("Localizable", "COURSE_DATES.VIEW_ALL_DATES", fallback: "View all dates")
     /// Yesterday
     public static let yesterday = CoreLocalization.tr("Localizable", "COURSE_DATES.YESTERDAY", fallback: "Yesterday")
+    public enum ResetDate {
+      /// Your dates could not be shifted. Please try again.
+      public static let errorMessage = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.ERROR_MESSAGE", fallback: "Your dates could not be shifted. Please try again.")
+      /// Your dates have been successfully shifted.
+      public static let successMessage = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE", fallback: "Your dates have been successfully shifted.")
+      /// Course Dates
+      public static let title = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.TITLE", fallback: "Course Dates")
+      public enum ResetDateBanner {
+        /// Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.
+        public static let body = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY", fallback: "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.")
+        /// Shift due dates
+        public static let button = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON", fallback: "Shift due dates")
+        /// Missed some deadlines?
+        public static let header = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.HEADER", fallback: "Missed some deadlines?")
+      }
+      public enum TabInfoBanner {
+        /// We built a suggested schedule to help you stay on track. But don’t worry – it’s flexible so you can learn at your own pace. If you happen to fall behind, you’ll be able to adjust the dates to keep yourself on track.
+        public static let body = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.BODY", fallback: "We built a suggested schedule to help you stay on track. But don’t worry – it’s flexible so you can learn at your own pace. If you happen to fall behind, you’ll be able to adjust the dates to keep yourself on track.")
+        /// 
+        public static let header = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.HEADER", fallback: "")
+      }
+      public enum UpgradeToCompleteGradedBanner {
+        /// To complete graded assignments as part of this course, you can upgrade today.
+        public static let body = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BODY", fallback: "To complete graded assignments as part of this course, you can upgrade today.")
+        /// 
+        public static let button = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BUTTON", fallback: "")
+        /// 
+        public static let header = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.HEADER", fallback: "")
+      }
+      public enum UpgradeToResetBanner {
+        /// You are auditing this course, which means that you are unable to participate in graded assignments. It looks like you missed some important deadlines based on our suggested schedule. To complete graded assignments as part of this course and shift the past due assignments into the future, you can upgrade today.
+        public static let body = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BODY", fallback: "You are auditing this course, which means that you are unable to participate in graded assignments. It looks like you missed some important deadlines based on our suggested schedule. To complete graded assignments as part of this course and shift the past due assignments into the future, you can upgrade today.")
+        /// 
+        public static let button = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BUTTON", fallback: "")
+        /// 
+        public static let header = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.HEADER", fallback: "")
+      }
+    }
   }
   public enum Date {
     /// Ended

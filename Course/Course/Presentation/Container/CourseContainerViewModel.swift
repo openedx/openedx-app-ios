@@ -14,6 +14,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     
     @Published private(set) var isShowProgress = false
     @Published var courseStructure: CourseStructure?
+    @Published var courseDeadlineInfo: CourseDateBanner?
     @Published var courseVideosStructure: CourseStructure?
     @Published var showError: Bool = false
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
@@ -21,6 +22,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
     @Published var isInternetAvaliable: Bool = true
+    @Published var dueDatesShifted: Bool = false
 
     var errorMessage: String? {
         didSet {
@@ -47,6 +49,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private let authInteractor: AuthInteractorProtocol
     private let analytics: CourseAnalytics
     private(set) var storage: CourseStorage
+    private var shiftCourseDatesObserver: NSObjectProtocol?
 
     public init(
         interactor: CourseInteractorProtocol,
@@ -81,6 +84,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         super.init(manager: manager)
 
         addObservers()
+        addNotificationObserver()
     }
     
     @MainActor
@@ -119,7 +123,46 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
+    
+    @MainActor
+    func getCourseDeadlineInfo(courseID: String, withProgress: Bool = true) async {
+        isShowProgress = withProgress
+        do {
+            courseDeadlineInfo = try await interactor.getCourseDeadlineInfo(courseID: courseID)
+            if courseDeadlineInfo?.datesBannerInfo == nil {
+                isShowProgress = false
+                errorMessage = CoreLocalization.Error.unknownError
+                return
+            }
+            isShowProgress = false
+        } catch let error {
+            isShowProgress = false
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+    }
 
+    @MainActor
+    func shiftDueDates(courseID: String, withProgress: Bool = true) async {
+        isShowProgress = withProgress
+        dueDatesShifted = false
+        do {
+            try await interactor.shiftDueDates(courseID: courseID)
+            NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
+            isShowProgress = false
+        } catch let error {
+            isShowProgress = false
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+    }
+    
     func update(downloadQuality: DownloadQuality) {
         storage.userSettings?.downloadQuality = downloadQuality
         userSettings = storage.userSettings
@@ -430,6 +473,36 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 self.isInternetAvaliable = self.connectivity.isInternetAvaliable
         }
         .store(in: &cancellables)
+    }
+    
+    deinit {
+        let center = NotificationCenter.default
+        guard let shiftCourseDatesObserver = self.shiftCourseDatesObserver else { return }
+        center.removeObserver(shiftCourseDatesObserver)
+    }
+}
+
+extension CourseContainerViewModel {
+    func addNotificationObserver() {
+        let center = NotificationCenter.default
+        shiftCourseDatesObserver = center.addObserver(
+            forName: .shiftCourseDates,
+            object: nil,
+            queue: nil
+        ) { [weak self] notification in
+            if let courseID = notification.object as? String {
+                guard let strongSelf = self else {
+                    return
+                }
+                Task {
+                    await strongSelf.getCourseBlocks(courseID: courseID, withProgress: true)
+                    await strongSelf.getCourseDeadlineInfo(courseID: courseID, withProgress: true)
+                    DispatchQueue.main.async {
+                        strongSelf.dueDatesShifted = true
+                    }
+                }
+            }
+        }
     }
 }
 

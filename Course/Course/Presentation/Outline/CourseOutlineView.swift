@@ -16,6 +16,7 @@ public struct CourseOutlineView: View {
     private let title: String
     private let courseID: String
     private let isVideo: Bool
+    private let dateTabIndex: Int
     
     @State private var openCertificateView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -23,17 +24,22 @@ public struct CourseOutlineView: View {
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
     @State private var showingNoWifiMessage: Bool = false
+    @Binding private var selection: Int
 
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
         courseID: String,
-        isVideo: Bool
+        isVideo: Bool,
+        selection: Binding<Int>,
+        dateTabIndex: Int
     ) {
         self.title = title
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self.isVideo = isVideo
+        self._selection = selection
+        self.dateTabIndex = dateTabIndex
     }
     
     public var body: some View {
@@ -44,8 +50,21 @@ public struct CourseOutlineView: View {
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
                         await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                        await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
                     }) {
                         VStack(alignment: .leading) {
+                            if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
+                               courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
+                               !courseDeadlineInfo.hasEnded,
+                               !isVideo {
+                                AdjustScheduleView(
+                                    datesBannerInfo: courseDeadlineInfo.datesBannerInfo,
+                                    courseID: courseID,
+                                    courseContainerViewModel: viewModel
+                                )
+                                .padding(.horizontal, 16)
+                                .padding(.top, 16)
+                            }
                             if viewModel.config.uiComponents.courseBannerEnabled {
                                 courseBanner(proxy: proxy)
                             }
@@ -127,11 +146,18 @@ public struct CourseOutlineView: View {
                 .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
                 .accessibilityAction {}
 
+                if viewModel.dueDatesShifted {
+                    SuccessViewWithButton {
+                         selection = dateTabIndex
+                    }
+                }
+                
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
                     reloadAction: {
                         await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                        await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
                     }
                 )
                 
@@ -283,6 +309,7 @@ public struct CourseOutlineView: View {
 #if DEBUG
 struct CourseOutlineView_Previews: PreviewProvider {
     static var previews: some View {
+        @State var selection: Int = 0
         let viewModel = CourseContainerViewModel(
             interactor: CourseInteractor.mock,
             authInteractor: AuthInteractor.mock,
@@ -300,6 +327,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
         )
         Task {
             await viewModel.getCourseBlocks(courseID: "courseId")
+            await viewModel.getCourseDeadlineInfo(courseID: "courseId")
         }
         
         return Group {
@@ -307,7 +335,9 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 viewModel: viewModel,
                 title: "Course title",
                 courseID: "",
-                isVideo: false
+                isVideo: false,
+                selection: $selection,
+                dateTabIndex: 2
             )
             .preferredColorScheme(.light)
             .previewDisplayName("CourseOutlineView Light")
@@ -316,7 +346,9 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 viewModel: viewModel,
                 title: "Course title",
                 courseID: "",
-                isVideo: false
+                isVideo: false,
+                selection: $selection,
+                dateTabIndex: 2
             )
             .preferredColorScheme(.dark)
             .previewDisplayName("CourseOutlineView Dark")

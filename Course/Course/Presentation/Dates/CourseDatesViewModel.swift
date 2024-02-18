@@ -14,6 +14,7 @@ public class CourseDatesViewModel: ObservableObject {
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var courseDates: CourseDates?
+    @Published var dueDatesShifted: Bool = false
     
     var errorMessage: String? {
         didSet {
@@ -28,6 +29,7 @@ public class CourseDatesViewModel: ObservableObject {
     let router: CourseRouter
     let connectivity: ConnectivityProtocol
     let courseID: String
+    private var shiftCourseDatesObserver: NSObjectProtocol?
     
     public init(
         interactor: CourseInteractorProtocol,
@@ -41,6 +43,7 @@ public class CourseDatesViewModel: ObservableObject {
         self.cssInjector = cssInjector
         self.connectivity = connectivity
         self.courseID = courseID
+        addNotificationObserver()
     }
         
     var sortedStatuses: [CompletionStatus] {
@@ -89,6 +92,51 @@ public class CourseDatesViewModel: ObservableObject {
             )
         } catch _ {
             errorMessage = CourseLocalization.Error.componentNotFount
+        }
+    }
+    
+    @MainActor
+    func shiftDueDates(courseID: String, withProgress: Bool = true) async {
+        isShowProgress = withProgress
+        dueDatesShifted = false
+        do {
+            try await interactor.shiftDueDates(courseID: courseID)
+            NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
+            isShowProgress = false
+        } catch let error {
+            isShowProgress = false
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+    }
+    
+    deinit {
+        let center = NotificationCenter.default
+        guard let shiftCourseDatesObserver = self.shiftCourseDatesObserver else { return }
+        center.removeObserver(shiftCourseDatesObserver)
+    }
+}
+
+extension CourseDatesViewModel {
+    func addNotificationObserver() {
+        let center = NotificationCenter.default
+        shiftCourseDatesObserver = center.addObserver(forName: .shiftCourseDates,
+                                               object: nil,
+                                               queue: nil) { [weak self] notification in
+            if let courseID = notification.object as? String {
+                guard let strongSelf = self else {
+                    return
+                }
+                Task {
+                    await strongSelf.getCourseDates(courseID: courseID)
+                    DispatchQueue.main.async {
+                        strongSelf.dueDatesShifted = true
+                    }
+                }
+            }
         }
     }
 }
