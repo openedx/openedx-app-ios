@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseCore
 
 private enum FirebaseKeys: String {
     case enabled = "ENABLED"
@@ -75,26 +74,6 @@ public final class FirebaseConfig: NSObject {
     
     public var isAnalyticsSourceFirebase: Bool {
         return analyticsSource == AnalyticsSource.firebase
-    }
-    
-    public var firebaseOptions: FirebaseOptions? {
-        if enabled,
-           requiredKeysAvailable,
-           let bundleID = bundleID,
-           let googleAppID = googleAppID,
-           let gcmSenderID = gcmSenderID {
-            let firebaseOptions = FirebaseOptions(googleAppID: googleAppID,
-                                                  gcmSenderID: gcmSenderID)
-            firebaseOptions.apiKey = apiKey
-            firebaseOptions.projectID = projectID
-            firebaseOptions.bundleID = bundleID
-            firebaseOptions.clientID = clientID
-            firebaseOptions.storageBucket = storageBucket
-            firebaseOptions.databaseURL = databaseURL
-            return firebaseOptions
-        }
-        
-        return nil
     }
 }
 

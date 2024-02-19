@@ -8,14 +8,13 @@
 import UIKit
 import Core
 import Swinject
-import FirebaseCore
-import FirebaseCrashlytics
 import Profile
 import GoogleSignIn
 import FacebookCore
 import MSAL
 import Theme
 import Segment
+import SegmentFirebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,12 +36,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         initDI()
-        
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
-            if let configuration = config.firebase.firebaseOptions {
-                FirebaseApp.configure(options: configuration)
-                Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+            if config.firebase.isAnalyticsSourceFirebase {
+                FirebaseManager.setup()
             }
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
@@ -56,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 .trackApplicationLifecycleEvents(true)
                                 .flushInterval(10)
                 analytics = Analytics(configuration: configuration)
+                if config.firebase.isAnalyticsSourceSegment {
+                    analytics?.add(plugin: FirebaseDestination())
+                }
             }
         }
 

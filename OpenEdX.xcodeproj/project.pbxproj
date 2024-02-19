@@ -59,6 +59,8 @@
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
 		A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59585AE2B62A07100A35A20 /* BranchService.swift */; };
+		A59702292B83C87900CA064C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59702282B83C87900CA064C /* FirebaseManager.swift */; };
+		A5BD3E302B83B0F7006A8983 /* SegmentFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */; };
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -140,6 +142,7 @@
 		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
 		A59585AE2B62A07100A35A20 /* BranchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BranchService.swift; path = ../BranchService.swift; sourceTree = "<group>"; };
+		A59702282B83C87900CA064C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +165,7 @@
 				0218196428F734FA00202564 /* Discussion.framework in Frameworks */,
 				0219C67728F4347600D64452 /* Course.framework in Frameworks */,
 				027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */,
+				A5BD3E302B83B0F7006A8983 /* SegmentFirebase in Frameworks */,
 				95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */,
 				A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */,
 				A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */,
@@ -291,6 +295,7 @@
 				A59568932B6162E400ED4F90 /* DeepLinkManager */,
 				A50066872B613E4B0024680B /* PushNotificationsManager */,
 				A50066892B613E990024680B /* AnalyticsManager */,
+				A59702272B83C84800CA064C /* FirebaseManager */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -351,6 +356,14 @@
 			path = Link;
 			sourceTree = "<group>";
 		};
+		A59702272B83C84800CA064C /* FirebaseManager */ = {
+			isa = PBXGroup;
+			children = (
+				A59702282B83C87900CA064C /* FirebaseManager.swift */,
+			);
+			path = FirebaseManager;
+			sourceTree = "<group>";
+		};
 		A5F46FD02B692B140003EEEF /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -385,6 +398,7 @@
 				A51CDBE42B6D1E93009B6D4E /* Segment */,
 				A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */,
 				A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */,
+				A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */,
 			);
 			productName = OpenEdX;
 			productReference = 07D5DA3128D075AA00752FD9 /* OpenEdX.app */;
@@ -419,6 +433,7 @@
 				BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 				A51CDBE32B6D1E93009B6D4E /* XCRemoteSwiftPackageReference "analytics-swift" */,
 				A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
+				A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
 			projectDirPath = "";
@@ -550,6 +565,7 @@
 				0293A2032A6FCA590090A336 /* CorePersistence.swift in Sources */,
 				0770DE1E28D084E8006D8A5D /* AppAssembly.swift in Sources */,
 				A50066932B614DCD0024680B /* FCMListener.swift in Sources */,
+				A59702292B83C87900CA064C /* FirebaseManager.swift in Sources */,
 				A500668D2B6143000024680B /* FCMProvider.swift in Sources */,
 				025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */,
 				024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */,
@@ -1199,6 +1215,14 @@
 				minimumVersion = 2.2.0;
 			};
 		};
+		A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/segment-integrations/analytics-swift-firebase";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.5;
+			};
+		};
 		BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
@@ -1224,6 +1248,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
 			productName = SegmentBrazeUI;
+		};
+		A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */;
+			productName = SegmentFirebase;
 		};
 		BA3042782B1F7147009B64B7 /* MSAL */ = {
 			isa = XCSwiftPackageProductDependency;

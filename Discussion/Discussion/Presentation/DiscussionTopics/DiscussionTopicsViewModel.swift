@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import Core
-import FirebaseCrashlytics
 
 public class DiscussionTopicsViewModel: ObservableObject {
     

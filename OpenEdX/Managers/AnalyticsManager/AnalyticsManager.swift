@@ -36,12 +36,12 @@ class AnalyticsManager: AuthorizationAnalytics,
 
     private func servicesFor(config: ConfigProtocol) -> [AnalyticsService] {
         var analyticsServices: [AnalyticsService] = []
-        // add Firebase Analytics Service if enabled and have config
-        if config.firebase.firebaseOptions != nil {
+        // add Firebase Analytics Service if enabled
+        if config.firebase.isAnalyticsSourceFirebase {
             analyticsServices.append(FirebaseAnalyticsService())
         }
         // add Segment Analytics Service if enabled
-        if config.segment.enabled {
+        if config.firebase.isAnalyticsSourceSegment {
             analyticsServices.append(SegmentAnalyticsService())
         }
         return analyticsServices
