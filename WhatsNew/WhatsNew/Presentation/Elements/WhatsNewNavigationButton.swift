@@ -23,12 +23,12 @@ struct WhatsNewNavigationButton: View {
                 if type == .previous {
                     CoreAssets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
-                        .foregroundColor(Theme.Colors.secondardButtonTextColor)
+                        .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                 }
                 
                 Text(type == .previous ? WhatsNewLocalization.buttonPrevious
                      : (type == .next ? WhatsNewLocalization.buttonNext : WhatsNewLocalization.buttonDone ))
-                .foregroundColor(type == .previous ? Theme.Colors.secondardButtonTextColor : Theme.Colors.white)
+                .foregroundColor(type == .previous ? Theme.Colors.secondaryButtonTextColor : Theme.Colors.white)
                 .font(Theme.Fonts.labelLarge)
                 
                 if type == .next {
@@ -60,7 +60,7 @@ struct WhatsNewNavigationButton: View {
             .overlay(
                 Theme.Shapes.buttonShape
                     .stroke(type == .previous
-                            ? Theme.Colors.secondardButtonBorderColor
+                            ? Theme.Colors.secondaryButtonBorderColor
                             : Theme.Colors.background, lineWidth: 1)
             )
             .onTapGesture { action() }

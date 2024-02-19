@@ -99,13 +99,13 @@ public struct UnitButtonView: View {
                         HStack {
                             if isVerticalNavigation {
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.secondardButtonTextColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.leading, 20)
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .rotationEffect(Angle.degrees(90))
                                     .padding(.trailing, 20)
-                                    .foregroundColor(Theme.Colors.secondardButtonTextColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                             } else {
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .padding(.leading, 20)
@@ -139,7 +139,7 @@ public struct UnitButtonView: View {
                     case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
-                                .foregroundColor(bgColor == nil ? .white : Theme.Colors.secondardButtonTextColor)
+                                .foregroundColor(bgColor == nil ? .white : Theme.Colors.secondaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                         }.padding(.horizontal, 16)
                     case .continueLesson, .nextSection:
@@ -174,7 +174,7 @@ public struct UnitButtonView: View {
                                             miterLimit: 1)
                                         )
                                         .foregroundColor(
-                                            type == .previous ? Theme.Colors.secondardButtonBorderColor
+                                            type == .previous ? Theme.Colors.secondaryButtonBorderColor
                                             : Theme.Colors.accentButtonColor
                                         )
                                 )
@@ -200,7 +200,7 @@ public struct UnitButtonView: View {
                                         ))
                                         .foregroundColor(
                                             type == .continueLesson ? Theme.Colors.accentButtonColor 
-                                            : Theme.Colors.secondardButtonBorderColor
+                                            : Theme.Colors.secondaryButtonBorderColor
                                         )
                                 )
                         }

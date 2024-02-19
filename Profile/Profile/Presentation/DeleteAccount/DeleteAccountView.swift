@@ -121,7 +121,7 @@ public struct DeleteAccountView: View {
                     .overlay(
                         Theme.Shapes.buttonShape
                             .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                            .foregroundColor(Theme.Colors.secondardButtonBorderColor)
+                            .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
                     
                     )
                     .padding(.top, 35)

@@ -46,8 +46,8 @@ public struct LogistrationBottomView: View {
                         action(.signIn)
                     },
                     color: Theme.Colors.white,
-                    textColor: Theme.Colors.secondardButtonTextColor,
-                    borderColor: Theme.Colors.secondardButtonBorderColor
+                    textColor: Theme.Colors.secondaryButtonTextColor,
+                    borderColor: Theme.Colors.secondaryButtonBorderColor
                 )
                 .frame(width: 100)
                 .accessibilityIdentifier("logistration_signin_button")

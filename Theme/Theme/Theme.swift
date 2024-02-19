@@ -52,8 +52,8 @@ public struct Theme {
         public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
         public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
         public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
-        public private(set) static var secondardButtonBorderColor = ThemeAssets.secondardButtonBorderColor.swiftUIColor
-        public private(set) static var secondardButtonTextColor = ThemeAssets.secondardButtonTextColor.swiftUIColor
+        public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
+        public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -90,8 +90,8 @@ public struct Theme {
             datesSectionBackground: Color = ThemeAssets.datesSectionBackground.swiftUIColor,
             datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor,
             navigationBarTintColor: Color = ThemeAssets.navigationBarTintColor.swiftUIColor,
-            secondardButtonBorderColor: Color = ThemeAssets.secondardButtonBorderColor.swiftUIColor,
-            secondardButtonTextColor: Color = ThemeAssets.secondardButtonTextColor.swiftUIColor
+            secondaryButtonBorderColor: Color = ThemeAssets.secondaryButtonBorderColor.swiftUIColor,
+            secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
@@ -127,8 +127,8 @@ public struct Theme {
             self.datesSectionBackground = datesSectionBackground
             self.datesSectionStroke = datesSectionStroke
             self.navigationBarTintColor = navigationBarTintColor
-            self.secondardButtonBorderColor = secondardButtonBorderColor
-            self.secondardButtonTextColor = secondardButtonTextColor
+            self.secondaryButtonBorderColor = secondaryButtonBorderColor
+            self.secondaryButtonTextColor = secondaryButtonTextColor
         }
     }
     

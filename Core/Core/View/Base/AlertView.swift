@@ -339,7 +339,7 @@ public struct AlertView: View {
                                 lineJoin: .round,
                                 miterLimit: 1
                             ))
-                            .foregroundColor(Theme.Colors.secondardButtonBorderColor)
+                            .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
                     )
                     .frame(maxWidth: 215)
                 }
@@ -379,7 +379,7 @@ public struct AlertView: View {
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.cancel)
-                                .foregroundColor(Theme.Colors.secondardButtonTextColor)
+                                .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)
@@ -398,7 +398,7 @@ public struct AlertView: View {
                                 lineJoin: .round,
                                 miterLimit: 1
                             ))
-                            .foregroundColor(Theme.Colors.secondardButtonBorderColor)
+                            .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
                     )
                     .frame(maxWidth: 215)
                 }
