@@ -24,7 +24,8 @@ final class CourseDateViewModelTests: XCTestCase {
                     missedDeadlines: false,
                     contentTypeGatingEnabled: false,
                     missedGatedContent: false,
-                    verifiedUpgradeLink: ""),
+                    verifiedUpgradeLink: "",
+                    status: .resetDatesBanner),
             courseDateBlocks: [],
             hasEnded: false,
             learnerIsFullAccess: false,
@@ -131,7 +132,8 @@ final class CourseDateViewModelTests: XCTestCase {
                 missedDeadlines: false,
                 contentTypeGatingEnabled: false,
                 missedGatedContent: false,
-                verifiedUpgradeLink: nil
+                verifiedUpgradeLink: nil,
+                status: .resetDatesBanner
             ),
             courseDateBlocks: [block1, block2],
             hasEnded: false,
@@ -178,7 +180,8 @@ final class CourseDateViewModelTests: XCTestCase {
                 missedDeadlines: false,
                 contentTypeGatingEnabled: false,
                 missedGatedContent: false,
-                verifiedUpgradeLink: nil
+                verifiedUpgradeLink: nil,
+                status: .resetDatesBanner
             ),
             courseDateBlocks: [block1, block2],
             hasEnded: false,
