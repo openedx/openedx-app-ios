@@ -99,6 +99,14 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getCourseDates(courseID: String) async throws -> CourseDates {
+//        do {
+//            let courseDates = try await CourseRepositoryMock().getCourseDates(courseID: courseID)
+//            return courseDates
+//        } catch {
+//            throw error
+//        }
+
+        
         let courseDates = try await api.requestData(
             CourseEndpoint.getCourseDates(courseID: courseID)
         ).mapResponse(DataLayer.CourseDates.self).domain
@@ -107,6 +115,17 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner {
+//        do {
+//            let courseDates = try await CourseRepositoryMock().getCourseDates(courseID: courseID)
+//            return CourseDateBanner(
+//                datesBannerInfo: courseDates.datesBannerInfo,
+//                hasEnded: courseDates.hasEnded
+//            )
+//        } catch {
+//            throw error
+//        }
+
+        
         let courseDateBanner = try await api.requestData(
             CourseEndpoint.getCourseDeadlineInfo(courseID: courseID)
         ).mapResponse(DataLayer.CourseDateBanner.self).domain
