@@ -117,7 +117,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 displayName: $0.displayName ?? "",
                 descendants: $0.descendants,
                 allSources: $0.allSources,
-                userViewData: userViewData
+                userViewData: userViewData,
+                multiDevice: $0.multiDevice
             )
         }
         
@@ -162,6 +163,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 courseDetail.studentUrl = block.studentUrl
                 courseDetail.type = block.type
                 courseDetail.completion = block.completion ?? 0
+                courseDetail.multiDevice = block.multiDevice ?? false
 
                 if block.userViewData?.encodedVideo?.youTube != nil {
                     let youTube = CDCourseBlockVideo(context: self.context)

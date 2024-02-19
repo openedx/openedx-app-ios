@@ -18,8 +18,14 @@ public enum LessonType: Equatable {
     static func from(_ block: CourseBlock, streamingQuality: StreamingQuality) -> Self {
         let mandatoryInjections: [WebviewInjection] = [.colorInversionCss, .ajaxCallback]
         switch block.type {
-        case .course, .chapter, .vertical, .sequential, .unknown:
+        case .course, .chapter, .vertical, .sequential:
             return .unknown(block.studentUrl)
+        case .unknown:
+            if let multiDevice = block.multiDevice, multiDevice {
+                return .web(url: block.studentUrl, injections: mandatoryInjections)
+            } else {
+                return .unknown(block.studentUrl)
+            }
         case .html:
             return .web(url: block.studentUrl, injections: mandatoryInjections)
         case .discussion:

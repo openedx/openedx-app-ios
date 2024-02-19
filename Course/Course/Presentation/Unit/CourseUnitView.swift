@@ -444,7 +444,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 1",
                 studentUrl: "",
-                encodedVideo: nil
+                encodedVideo: nil,
+                multiDevice: true
             ),
             CourseBlock(
                 blockId: "2",
@@ -456,7 +457,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 2",
                 studentUrl: "2",
-                encodedVideo: nil
+                encodedVideo: nil,
+                multiDevice: false
             ),
             CourseBlock(
                 blockId: "3",
@@ -468,7 +470,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "Lesson 3",
                 studentUrl: "3",
-                encodedVideo: nil
+                encodedVideo: nil,
+                multiDevice: true
             ),
             CourseBlock(
                 blockId: "4",
@@ -480,7 +483,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "4",
                 studentUrl: "4",
-                encodedVideo: nil
+                encodedVideo: nil,
+                multiDevice: false
             ),
         ]
         

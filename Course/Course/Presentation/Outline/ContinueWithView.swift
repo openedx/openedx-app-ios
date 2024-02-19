@@ -85,7 +85,8 @@ struct ContinueWithView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
-                encodedVideo: nil
+                encodedVideo: nil,
+                multiDevice: true
             ),
             CourseBlock(
                 blockId: "2",
@@ -96,7 +97,8 @@ struct ContinueWithView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
-                encodedVideo: nil
+                encodedVideo: nil,
+                multiDevice: false
 
             )
         ]
