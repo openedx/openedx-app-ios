@@ -35,7 +35,6 @@ class BranchService: DeepLinkService {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any]
     ) -> Bool {
-        Branch.getInstance().application(app, open: url, options: options)
-        return true
+        return Branch.getInstance().application(app, open: url, options: options)
     }
 }

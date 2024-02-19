@@ -149,7 +149,16 @@ class ConfigurationManager:
         if not found:
             existing.append(body)
             plist['CFBundleURLTypes'] = existing
-
+    
+    def add_custom_array(self, key, array, plist):
+        existing = plist.get(key, [])
+        
+        for element in array:
+            if element not in existing:
+                existing.append(element)
+                
+            plist[key] = existing
+            
     def add_application_query_schemes(self, schemes, plist):
         existing = plist.get('LSApplicationQueriesSchemes', [])
         for scheme in schemes:
@@ -187,6 +196,10 @@ class ConfigurationManager:
         branch = config.get('BRANCH', {})
         enabled = branch.get('ENABLED')
         uriScheme = branch.get('URI_SCHEME')
+        prefix = branch.get('DEEPLINK_PREFIX')
+        
+        if not prefix:
+            prefix = "edx"
         
         if enabled:
             if uriScheme:
@@ -195,6 +208,7 @@ class ConfigurationManager:
                 bundle_identifier = self.plist_manager.get_bundle_identifier()
                 scheme = [bundle_identifier]
             
+            self.add_custom_array("branch_universal_link_domains", [prefix+".app.link", prefix+"-alternate.app.link", prefix+".test-app.link", prefix+"-alternate.test-app.link"], plist)
             self.add_url_scheme(scheme, plist, True)
             
     def add_facebook_config(self, config, plist):
