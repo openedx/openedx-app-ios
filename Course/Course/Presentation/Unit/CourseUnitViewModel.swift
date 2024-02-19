@@ -47,7 +47,7 @@ public enum LessonType: Equatable {
             return .web(url: block.studentUrl, injections: mandatoryInjections + [.dragAndDropCss])
         case .survey:
             return .web(url: block.studentUrl, injections: mandatoryInjections + [.surveyCSS])
-        case .openassessment, .peelInstructionTool:
+        case .openassessment, .peerInstructionTool:
             return .web(url: block.studentUrl, injections: mandatoryInjections)
         }
     }
