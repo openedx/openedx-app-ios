@@ -7,9 +7,11 @@
 
 import Foundation
 import Firebase
+import Core
 
-class FirebaseManager: AnalyticsService {
-    class func setup() {
+class FirebaseAnalyticsManager: AnalyticsService {
+    // Init manager
+    init() {
         FirebaseApp.configure()
     }
 

@@ -12,7 +12,7 @@ import Swinject
 
 class BrazeProvider: PushNotificationsProvider {
     func didRegisterWithDeviceToken(deviceToken: Data) {
-        guard let segmentManager = Container.shared.resolve(SegmentManager.self) else { return }
+        guard let segmentManager = Container.shared.resolve(SegmentAnalyticsManager.self) else { return }
         segmentManager.analytics?.add(
             plugin: BrazeDestination(
                 additionalConfiguration: { configuration in
@@ -23,6 +23,7 @@ class BrazeProvider: PushNotificationsProvider {
             )
         )
     }
+    
     func didFailToRegisterForRemoteNotificationsWithError(error: Error) {
     }
 }

@@ -10,10 +10,11 @@ import Core
 import Segment
 import SegmentFirebase
 
-class SegmentManager: AnalyticsService {
+class SegmentAnalyticsManager: AnalyticsService {
     var analytics: Analytics?
     
-    public func setup(with config: ConfigProtocol) {
+    // Init manager
+    public init(config: ConfigProtocol) {
         let configuration = Configuration(writeKey: config.segment.writeKey)
                         .trackApplicationLifecycleEvents(true)
                         .flushInterval(10)

@@ -34,9 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initDI()
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
-            if config.firebase.isAnalyticsSourceFirebase {
-                FirebaseManager.setup()
-            }
+            
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
                     application,
@@ -44,9 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 )
             }
             configureDeepLinkServices(launchOptions: launchOptions)
-            if config.segment.enabled {
-                configureSegment(config)
-            }
         }
 
         Theme.Fonts.registerFonts()
@@ -168,11 +163,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func configureDeepLinkServices(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         guard let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) else { return }
         deepLinkManager.configureDeepLinkService(launchOptions: launchOptions)
-    }
-    
-    // Segment
-    func configureSegment(_ config: ConfigProtocol) {
-        guard let segmentManager = Container.shared.resolve(SegmentManager.self) else { return }
-        segmentManager.setup(with: config)
     }
 }
