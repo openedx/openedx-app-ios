@@ -13,6 +13,7 @@ import Dashboard
 import Profile
 import Course
 import Discussion
+import Swinject
 
 protocol AnalyticsService {
     func identify(id: String, username: String?, email: String?)
@@ -38,11 +39,12 @@ class AnalyticsManager: AuthorizationAnalytics,
         var analyticsServices: [AnalyticsService] = []
         // add Firebase Analytics Service if enabled
         if config.firebase.isAnalyticsSourceFirebase {
-            analyticsServices.append(FirebaseAnalyticsService())
+            analyticsServices.append(FirebaseManager())
         }
         // add Segment Analytics Service if enabled
-        if config.firebase.isAnalyticsSourceSegment {
-            analyticsServices.append(SegmentAnalyticsService())
+        if config.firebase.isAnalyticsSourceSegment,
+            let segmentManager = Container.shared.resolve(SegmentManager.self) {
+            analyticsServices.append(segmentManager)
         }
         return analyticsServices
     }

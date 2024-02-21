@@ -8,8 +8,17 @@
 import Foundation
 import Firebase
 
-class FirebaseManager {
+class FirebaseManager: AnalyticsService {
     class func setup() {
         FirebaseApp.configure()
     }
+
+    func identify(id: String, username: String?, email: String?) {
+        Analytics.setUserID(id)
+    }
+    
+    func logEvent(_ event: Event, parameters: [String: Any]?) {
+        Analytics.logEvent(event.rawValue, parameters: parameters)
+    }
+
 }

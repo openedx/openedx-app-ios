@@ -10,7 +10,7 @@ import Core
 import Segment
 import SegmentFirebase
 
-class SegmentManager {
+class SegmentManager: AnalyticsService {
     var analytics: Analytics?
     
     public func setup(with config: ConfigProtocol) {
@@ -21,5 +21,21 @@ class SegmentManager {
         if config.firebase.isAnalyticsSourceSegment {
             analytics?.add(plugin: FirebaseDestination())
         }
+    }
+    
+    func identify(id: String, username: String?, email: String?) {
+        guard let email = email, let username = username else { return }
+        let traits: [String: String] = [
+            "email": email,
+            "username": username
+        ]
+        analytics?.identify(userId: id, traits: traits)
+    }
+    
+    func logEvent(_ event: Event, parameters: [String: Any]?) {
+        analytics?.track(
+            name: event.rawValue,
+            properties: parameters
+        )
     }
 }
