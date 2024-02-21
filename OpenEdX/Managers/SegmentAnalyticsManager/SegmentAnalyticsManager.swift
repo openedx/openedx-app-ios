@@ -1,5 +1,5 @@
 //
-//  SegmentManager.swift
+//  SegmentAnalyticsManager.swift
 //  OpenEdX
 //
 //  Created by Anton Yarmolenka on 21/02/2024.

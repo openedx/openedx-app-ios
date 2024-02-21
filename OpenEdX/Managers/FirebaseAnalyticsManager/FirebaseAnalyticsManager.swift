@@ -1,5 +1,5 @@
 //
-//  FirebaseManager.swift
+//  FirebaseAnalyticsManager.swift
 //  OpenEdX
 //
 //  Created by Anton Yarmolenka on 19/02/2024.

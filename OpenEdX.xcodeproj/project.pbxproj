@@ -293,8 +293,8 @@
 				A59568932B6162E400ED4F90 /* DeepLinkManager */,
 				A50066872B613E4B0024680B /* PushNotificationsManager */,
 				A50066892B613E990024680B /* AnalyticsManager */,
-				A59702272B83C84800CA064C /* FirebaseManager */,
-				A5C10D8D2B861A56008E864D /* SegmentManager */,
+				A59702272B83C84800CA064C /* FirebaseAnalyticsManager */,
+				A5C10D8D2B861A56008E864D /* SegmentAnalyticsManager */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -345,20 +345,20 @@
 			path = Link;
 			sourceTree = "<group>";
 		};
-		A59702272B83C84800CA064C /* FirebaseManager */ = {
+		A59702272B83C84800CA064C /* FirebaseAnalyticsManager */ = {
 			isa = PBXGroup;
 			children = (
 				A59702282B83C87900CA064C /* FirebaseAnalyticsManager.swift */,
 			);
-			path = FirebaseManager;
+			path = FirebaseAnalyticsManager;
 			sourceTree = "<group>";
 		};
-		A5C10D8D2B861A56008E864D /* SegmentManager */ = {
+		A5C10D8D2B861A56008E864D /* SegmentAnalyticsManager */ = {
 			isa = PBXGroup;
 			children = (
 				A5C10D8E2B861A70008E864D /* SegmentAnalyticsManager.swift */,
 			);
-			path = SegmentManager;
+			path = SegmentAnalyticsManager;
 			sourceTree = "<group>";
 		};
 		A5F46FD02B692B140003EEEF /* Services */ = {
