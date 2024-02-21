@@ -61,6 +61,7 @@
 		A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59585AE2B62A07100A35A20 /* BranchService.swift */; };
 		A59702292B83C87900CA064C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59702282B83C87900CA064C /* FirebaseManager.swift */; };
 		A5BD3E302B83B0F7006A8983 /* SegmentFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */; };
+		A5C10D8F2B861A70008E864D /* SegmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C10D8E2B861A70008E864D /* SegmentManager.swift */; };
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -143,6 +144,7 @@
 		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
 		A59585AE2B62A07100A35A20 /* BranchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BranchService.swift; path = ../BranchService.swift; sourceTree = "<group>"; };
 		A59702282B83C87900CA064C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		A5C10D8E2B861A70008E864D /* SegmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentManager.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -296,6 +298,7 @@
 				A50066872B613E4B0024680B /* PushNotificationsManager */,
 				A50066892B613E990024680B /* AnalyticsManager */,
 				A59702272B83C84800CA064C /* FirebaseManager */,
+				A5C10D8D2B861A56008E864D /* SegmentManager */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -362,6 +365,14 @@
 				A59702282B83C87900CA064C /* FirebaseManager.swift */,
 			);
 			path = FirebaseManager;
+			sourceTree = "<group>";
+		};
+		A5C10D8D2B861A56008E864D /* SegmentManager */ = {
+			isa = PBXGroup;
+			children = (
+				A5C10D8E2B861A70008E864D /* SegmentManager.swift */,
+			);
+			path = SegmentManager;
 			sourceTree = "<group>";
 		};
 		A5F46FD02B692B140003EEEF /* Services */ = {
@@ -576,6 +587,7 @@
 				A50066952B614DEF0024680B /* BrazeListener.swift in Sources */,
 				071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */,
 				A59568972B61653700ED4F90 /* DeepLink.swift in Sources */,
+				A5C10D8F2B861A70008E864D /* SegmentManager.swift in Sources */,
 				A59568992B616D9400ED4F90 /* PushLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

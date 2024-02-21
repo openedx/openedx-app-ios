@@ -13,8 +13,6 @@ import GoogleSignIn
 import FacebookCore
 import MSAL
 import Theme
-import Segment
-import SegmentFirebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var shared: AppDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }
-    
-    var analytics: Analytics?
 
     var window: UIWindow?
         
@@ -49,13 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             configureDeepLinkServices(launchOptions: launchOptions)
             if config.segment.enabled {
-                let configuration = Configuration(writeKey: config.segment.writeKey)
-                                .trackApplicationLifecycleEvents(true)
-                                .flushInterval(10)
-                analytics = Analytics(configuration: configuration)
-                if config.firebase.isAnalyticsSourceSegment {
-                    analytics?.add(plugin: FirebaseDestination())
-                }
+                configureSegment(config)
             }
         }
 
@@ -178,5 +168,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func configureDeepLinkServices(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         guard let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) else { return }
         deepLinkManager.configureDeepLinkService(launchOptions: launchOptions)
+    }
+    
+    // Segment
+    func configureSegment(_ config: ConfigProtocol) {
+        guard let segmentManager = Container.shared.resolve(SegmentManager.self) else { return }
+        segmentManager.setup(with: config)
     }
 }

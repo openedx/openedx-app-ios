@@ -175,6 +175,10 @@ class AppAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
+        
+        container.register(SegmentManager.self) { r in
+            SegmentManager()
+        }.inObjectScope(.container)
     }
 }
 // swiftlint:enable function_body_length
