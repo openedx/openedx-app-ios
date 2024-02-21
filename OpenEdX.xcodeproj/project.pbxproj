@@ -53,10 +53,10 @@
 		A51CDBE52B6D1E93009B6D4E /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBE42B6D1E93009B6D4E /* Segment */; };
 		A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */; };
 		A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */; };
+		A5462D9C2B864AE0003B96A5 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5462D9B2B864AE0003B96A5 /* BranchService.swift */; };
 		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
-		A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59585AE2B62A07100A35A20 /* BranchService.swift */; };
 		A59702292B83C87900CA064C /* FirebaseAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59702282B83C87900CA064C /* FirebaseAnalyticsManager.swift */; };
 		A5BD3E302B83B0F7006A8983 /* SegmentFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */; };
 		A5C10D8F2B861A70008E864D /* SegmentAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C10D8E2B861A70008E864D /* SegmentAnalyticsManager.swift */; };
@@ -135,10 +135,10 @@
 		A50066902B61467B0024680B /* BrazeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeProvider.swift; sourceTree = "<group>"; };
 		A50066922B614DCD0024680B /* FCMListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMListener.swift; sourceTree = "<group>"; };
 		A50066942B614DEF0024680B /* BrazeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeListener.swift; sourceTree = "<group>"; };
+		A5462D9B2B864AE0003B96A5 /* BranchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchService.swift; sourceTree = "<group>"; };
 		A59568942B61630500ED4F90 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
-		A59585AE2B62A07100A35A20 /* BranchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BranchService.swift; path = ../BranchService.swift; sourceTree = "<group>"; };
 		A59702282B83C87900CA064C /* FirebaseAnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAnalyticsManager.swift; sourceTree = "<group>"; };
 		A5C10D8E2B861A70008E864D /* SegmentAnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentAnalyticsManager.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
@@ -364,7 +364,7 @@
 		A5F46FD02B692B140003EEEF /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A59585AE2B62A07100A35A20 /* BranchService.swift */,
+				A5462D9B2B864AE0003B96A5 /* BranchService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -550,7 +550,6 @@
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
-				A59585AF2B62A07100A35A20 /* BranchService.swift in Sources */,
 				A50066912B61467B0024680B /* BrazeProvider.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
@@ -559,6 +558,7 @@
 				0770DE5028D0A707006D8A5D /* NetworkAssembly.swift in Sources */,
 				0293A2032A6FCA590090A336 /* CorePersistence.swift in Sources */,
 				0770DE1E28D084E8006D8A5D /* AppAssembly.swift in Sources */,
+				A5462D9C2B864AE0003B96A5 /* BranchService.swift in Sources */,
 				A50066932B614DCD0024680B /* FCMListener.swift in Sources */,
 				A59702292B83C87900CA064C /* FirebaseAnalyticsManager.swift in Sources */,
 				A500668D2B6143000024680B /* FCMProvider.swift in Sources */,

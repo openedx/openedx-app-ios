@@ -10,8 +10,6 @@ import Core
 import UIKit
 
 public protocol DeepLinkService {
-    func processNotification(with link: PushLink)
-    func processDeepLink(with params: [String: Any])
     func configureWith(launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
     func handledURLWith(app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool
 }
