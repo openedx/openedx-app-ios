@@ -15,6 +15,8 @@ class SegmentAnalyticsManager: AnalyticsService {
     
     // Init manager
     public init(config: ConfigProtocol) {
+        guard config.segment.enabled else { return }
+
         let configuration = Configuration(writeKey: config.segment.writeKey)
                         .trackApplicationLifecycleEvents(true)
                         .flushInterval(10)

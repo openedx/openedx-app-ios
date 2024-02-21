@@ -183,7 +183,9 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(FirebaseAnalyticsManager.self) { r in
-            FirebaseAnalyticsManager()
+            FirebaseAnalyticsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }.inObjectScope(.container)
     }
 }

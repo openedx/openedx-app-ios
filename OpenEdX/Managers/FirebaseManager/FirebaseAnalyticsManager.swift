@@ -11,7 +11,9 @@ import Core
 
 class FirebaseAnalyticsManager: AnalyticsService {
     // Init manager
-    init() {
+    public init(config: ConfigProtocol) {
+        guard config.firebase.enabled && config.firebase.isAnalyticsSourceFirebase else { return }
+
         FirebaseApp.configure()
     }
 
