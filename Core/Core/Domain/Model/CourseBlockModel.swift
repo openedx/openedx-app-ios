@@ -187,6 +187,7 @@ public struct CourseBlock: Hashable, Identifiable {
     public let studentUrl: String
     public let subtitles: [SubtitleUrl]?
     public let encodedVideo: CourseBlockEncodedVideo?
+    public let multiDevice: Bool?
 
     public var isDownloadable: Bool {
         encodedVideo?.isDownloadable ?? false
@@ -203,7 +204,8 @@ public struct CourseBlock: Hashable, Identifiable {
         displayName: String,
         studentUrl: String,
         subtitles: [SubtitleUrl]? = nil,
-        encodedVideo: CourseBlockEncodedVideo?
+        encodedVideo: CourseBlockEncodedVideo?,
+        multiDevice: Bool?
     ) {
         self.blockId = blockId
         self.id = id
@@ -216,6 +218,7 @@ public struct CourseBlock: Hashable, Identifiable {
         self.studentUrl = studentUrl
         self.subtitles = subtitles
         self.encodedVideo = encodedVideo
+        self.multiDevice = multiDevice
     }
 }
 

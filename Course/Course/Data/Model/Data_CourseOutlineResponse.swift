@@ -59,6 +59,7 @@ public extension DataLayer {
         public let descendants: [String]?
         public let allSources: [String]?
         public let userViewData: CourseDetailUserViewData?
+        public let multiDevice: Bool?
         
         public init(
             blockId: String,
@@ -70,7 +71,8 @@ public extension DataLayer {
             displayName: String,
             descendants: [String]?,
             allSources: [String]?,
-            userViewData: CourseDetailUserViewData?
+            userViewData: CourseDetailUserViewData?,
+            multiDevice: Bool?
         ) {
             self.blockId = blockId
             self.id = id
@@ -82,6 +84,7 @@ public extension DataLayer {
             self.descendants = descendants
             self.allSources = allSources
             self.userViewData = userViewData
+            self.multiDevice = multiDevice
         }
         
         public enum CodingKeys: String, CodingKey {
@@ -91,6 +94,7 @@ public extension DataLayer {
             case displayName = "display_name"
             case userViewData = "student_view_data"
             case allSources = "all_sources"
+            case multiDevice = "student_view_multi_device"
         }
     }
         
