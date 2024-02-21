@@ -28,6 +28,7 @@ public struct VideoQualityView: View {
                         ProgressBar(size: 40, lineWidth: 8)
                             .padding(.top, 200)
                             .padding(.horizontal)
+                            .accessibilityIdentifier("progressbar")
                     } else {
                         
                         ForEach(viewModel.quality, id: \.offset) { _, quality in
@@ -44,6 +45,7 @@ public struct VideoQualityView: View {
                                         .renderingMode(.template)
                                         .foregroundColor(.accentColor)
                                         .opacity(quality == viewModel.selectedQuality ? 1 : 0)
+                                        .accessibilityIdentifier("checkmar_image")
                                     
                                 }.foregroundColor(Theme.Colors.textPrimary)
                             })

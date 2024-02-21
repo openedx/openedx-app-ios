@@ -29,6 +29,7 @@ public struct SettingsView: View {
                         ProgressBar(size: 40, lineWidth: 8)
                             .padding(.top, 200)
                             .padding(.horizontal)
+                            .accessibilityIdentifier("progressbar")
                     } else {
                         // MARK: Wi-fi
                         HStack {
@@ -39,6 +40,7 @@ public struct SettingsView: View {
                             Toggle(isOn: $viewModel.wifiOnly, label: {})
                                 .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                                 .frame(width: 50)
+                                .accessibilityIdentifier("download_agreement_switch")
                         }.foregroundColor(Theme.Colors.textPrimary)
                         Divider()
                         
@@ -50,10 +52,12 @@ public struct SettingsView: View {
                                 SettingsCell(title: ProfileLocalization.Settings.videoQualityTitle,
                                              description: viewModel.selectedQuality.settingsDescription())
                             })
+                            .accessibilityIdentifier("video_stream_quality_button")
                             //                                Spacer()
                             Image(systemName: "chevron.right")
                                 .padding(.trailing, 12)
                                 .frame(width: 10)
+                                .accessibilityIdentifier("video_stream_quality_image")
                         }
                         Divider()
 
@@ -70,10 +74,12 @@ public struct SettingsView: View {
                                     description: viewModel.userSettings.downloadQuality.settingsDescription
                                 )
                             }
+                            .accessibilityIdentifier("video_download_quality_button")
                             //                                Spacer()
                             Image(systemName: "chevron.right")
                                 .padding(.trailing, 12)
                                 .frame(width: 10)
+                                .accessibilityIdentifier("video_download_quality_image")
                         }
                         Divider()
                     }
@@ -147,10 +153,12 @@ public struct SettingsCell: View {
         VStack(alignment: .leading) {
             Text(title)
                 .font(Theme.Fonts.titleMedium)
+                .accessibilityIdentifier("video_settings_text")
             if let description {
                 Text(description)
                     .font(Theme.Fonts.labelMedium)
                     .foregroundColor(Theme.Colors.textSecondary)
+                    .accessibilityIdentifier("video_settings_sub_text")
             }
         }.foregroundColor(Theme.Colors.textPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -28,6 +28,7 @@ public struct SnackBarView: View {
         HStack {
             Text(message)
                 .font(Theme.Fonts.titleSmall)
+                .accessibilityIdentifier("snackbar_text")
             Spacer()
             
             if let action = action {
@@ -35,6 +36,7 @@ public struct SnackBarView: View {
                     action()
                 }
                 .font(Theme.Fonts.titleSmall)
+                .accessibilityIdentifier("snackbar_button")
             }
             
         }.shadowCardStyle(bgColor: Theme.Colors.snackbarErrorColor,

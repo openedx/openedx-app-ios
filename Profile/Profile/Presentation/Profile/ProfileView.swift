@@ -101,17 +101,21 @@ public struct ProfileView: View {
                 ProgressBar(size: 40, lineWidth: 8)
                     .padding(.top, 200)
                     .padding(.horizontal)
+                    .accessibilityIdentifier("progressbar")
             } else {
                 UserAvatar(url: viewModel.userModel?.avatarUrl ?? "", image: $viewModel.updatedAvatar)
                     .padding(.top, 30)
+                    .accessibilityIdentifier("user_avatar_image")
                 Text(viewModel.userModel?.name ?? "")
                     .font(Theme.Fonts.headlineSmall)
                     .padding(.top, 20)
+                    .accessibilityIdentifier("user_name_text")
                 Text("@\(viewModel.userModel?.username ?? "")")
                     .font(Theme.Fonts.labelLarge)
                     .padding(.top, 4)
                     .foregroundColor(Theme.Colors.textSecondary)
                     .padding(.bottom, 10)
+                    .accessibilityIdentifier("user_username_text")
                 profileInfo
                 VStack(alignment: .leading, spacing: 14) {
                    settings
@@ -132,13 +136,16 @@ public struct ProfileView: View {
                 Text(ProfileLocalization.info)
                     .padding(.horizontal, 24)
                     .font(Theme.Fonts.labelLarge)
+                    .accessibilityIdentifier("profile_info_text")
 
                 VStack(alignment: .leading, spacing: 16) {
                     if viewModel.userModel?.yearOfBirth != 0 {
                         HStack {
                             Text(ProfileLocalization.Edit.Fields.yearOfBirth)
                                 .foregroundColor(Theme.Colors.textSecondary)
+                                .accessibilityIdentifier("yob_text")
                             Text(String(viewModel.userModel?.yearOfBirth ?? 0))
+                                .accessibilityIdentifier("yob_value_text")
                         }
                     }
                     if let bio = viewModel.userModel?.shortBiography, bio != "" {
@@ -147,6 +154,7 @@ public struct ProfileView: View {
                                 .foregroundColor(Theme.Colors.textSecondary)
                             + Text(bio)
                         }
+                        .accessibilityIdentifier("bio_text")
                     }
                 }
                 .accessibilityElement(children: .ignore)
@@ -173,6 +181,7 @@ public struct ProfileView: View {
         Text(ProfileLocalization.settings)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .accessibilityIdentifier("settings_text")
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 viewModel.trackProfileVideoSettingsClicked()
@@ -184,6 +193,7 @@ public struct ProfileView: View {
                     Image(systemName: "chevron.right")
                 }
             })
+            .accessibilityIdentifier("video_settings_button")
 
         }
         .accessibilityElement(children: .ignore)
@@ -224,6 +234,7 @@ public struct ProfileView: View {
             })
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(ProfileLocalization.logout)
+            .accessibilityIdentifier("logout_button")
         }
         .foregroundColor(Theme.Colors.alert)
         .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,

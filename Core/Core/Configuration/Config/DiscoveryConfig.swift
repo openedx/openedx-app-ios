@@ -38,9 +38,10 @@ public class DiscoveryConfig: NSObject {
     public let webview: DiscoveryWebviewConfig
     
     init(dictionary: [String: AnyObject]) {
-        type = (dictionary[DiscoveryKeys.discoveryType] as? String).flatMap {
-            DiscoveryConfigType(rawValue: $0)
-        } ?? .none
+//        type = (dictionary[DiscoveryKeys.discoveryType] as? String).flatMap {
+//            DiscoveryConfigType(rawValue: $0)
+//        } ?? .none
+        type = .native
         webview = DiscoveryWebviewConfig(dictionary: dictionary[DiscoveryKeys.webview] as? [String: AnyObject] ?? [:])
     }
     

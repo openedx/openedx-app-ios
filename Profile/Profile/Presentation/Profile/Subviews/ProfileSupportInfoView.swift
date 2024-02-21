@@ -22,6 +22,7 @@ struct ProfileSupportInfoView: View {
         Text(ProfileLocalization.supportInfo)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .accessibilityIdentifier("support_info_text")
         VStack(alignment: .leading, spacing: 24) {
             viewModel.contactSupport().map(supportInfo)
             viewModel.config.agreement.tosURL.map(terms)
@@ -30,6 +31,7 @@ struct ProfileSupportInfoView: View {
             viewModel.config.agreement.dataSellContentURL.map(dataSellContent)
             viewModel.config.faq.map(faq)
             version
+                .accessibilityIdentifier("version_info")
         }
         .cardStyle(
             bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -45,6 +47,7 @@ struct ProfileSupportInfoView: View {
             ),
             isEmailSupport: true
         )
+        .accessibilityIdentifier("contact_support")
     }
 
     private func terms(url: URL) -> some View {
@@ -54,6 +57,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.terms
             )
         )
+        .accessibilityIdentifier("tos")
     }
 
     private func privacy(url: URL) -> some View {
@@ -63,6 +67,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.privacy
             )
         )
+        .accessibilityIdentifier("privacy_policy")
     }
 
     private func cookiePolicy(url: URL) -> some View {
@@ -72,6 +77,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.cookiePolicy
             )
         )
+        .accessibilityIdentifier("cookies_policy")
     }
 
     private func dataSellContent(url: URL) -> some View {
@@ -81,6 +87,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.doNotSellInformation
             )
         )
+        .accessibilityIdentifier("dont_sell_data")
     }
 
     private func faq(url: URL) -> some View {
@@ -90,6 +97,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.faqTitle
             )
         )
+        .accessibilityIdentifier("view_faq")
     }
 
     @ViewBuilder

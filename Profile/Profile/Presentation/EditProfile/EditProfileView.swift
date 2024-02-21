@@ -37,6 +37,7 @@ public struct EditProfileView: View {
                     Text(viewModel.profileChanges.profileType.localizedValue.capitalized)
                         .font(Theme.Fonts.titleSmall)
                         .foregroundColor(Theme.Colors.textSecondary)
+                        .accessibilityIdentifier("profile_type_text")
                     Button(action: {
                         withAnimation {
                             showingBottomSheet.toggle()
@@ -52,17 +53,22 @@ public struct EditProfileView: View {
                                         .foregroundColor(Theme.Colors.white)
                                 }.offset(x: 36, y: 50)
                             )
-                    }).disabled(!viewModel.isEditable)
+                    })
+                    .disabled(!viewModel.isEditable)
+                    .accessibilityIdentifier("change_profile_image_button")
                     
                     Text(viewModel.userModel.name)
                         .font(Theme.Fonts.headlineSmall)
+                        .accessibilityIdentifier("username_text")
                     
                     Button(ProfileLocalization.switchTo + " " +
                            viewModel.profileChanges.profileType.switchToButtonTitle,
                            action: {
                         viewModel.switchProfile()
-                    }).padding(.vertical, 24)
-                        .font(Theme.Fonts.labelLarge)
+                    })
+                    .padding(.vertical, 24)
+                    .font(Theme.Fonts.labelLarge)
+                    .accessibilityIdentifier("switch_profile_button")
                     
                     Group {
                         PickerView(
@@ -79,6 +85,7 @@ public struct EditProfileView: View {
                                 
                                 Text(ProfileLocalization.Edit.Fields.aboutMe)
                                     .font(Theme.Fonts.titleMedium)
+                                    .accessibilityIdentifier("about_text")
                                 TextEditor(text: $viewModel.profileChanges.shortBiography)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 4)
@@ -95,6 +102,7 @@ public struct EditProfileView: View {
                                                 Theme.Colors.textInputStroke
                                             )
                                     )
+                                    .accessibilityIdentifier("short_bio_textarea")
                             }
                         }
                     }
@@ -122,6 +130,7 @@ public struct EditProfileView: View {
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.alert)
                     .padding(.top, 44)
+                    .accessibilityIdentifier("delete_account_button")
                     
                     Spacer(minLength: 84)
                 }.padding(.horizontal, 24)
@@ -197,6 +206,7 @@ public struct EditProfileView: View {
                 ProgressBar(size: 40, lineWidth: 8)
                     .padding(.top, 150)
                     .padding(.horizontal)
+                    .accessibilityIdentifier("progressbar")
             }
         }
         .navigationBarHidden(false)
@@ -228,7 +238,9 @@ public struct EditProfileView: View {
                             .font(Theme.Fonts.labelLarge)
                             .foregroundColor(Theme.Colors.accentColor)
                     }
-                }).opacity(viewModel.isChanged ? 1 : 0.3)
+                })
+                .opacity(viewModel.isChanged ? 1 : 0.3)
+                .accessibilityIdentifier("done_button")
             })
         }
         .background(

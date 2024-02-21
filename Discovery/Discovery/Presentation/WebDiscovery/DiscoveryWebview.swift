@@ -93,6 +93,7 @@ public struct DiscoveryWebview: View {
                     refreshCookies: {},
                     navigationDelegate: viewModel
                 )
+                .accessibilityIdentifier("discovery_webview")
                 
                 if isLoading || viewModel.showProgress {
                     HStack(alignment: .center) {
@@ -101,6 +102,7 @@ public struct DiscoveryWebview: View {
                             lineWidth: 8
                         )
                         .padding(.vertical, proxy.size.height / 2)
+                        .accessibilityIdentifier("progressbar")
                     }
                     .frame(width: proxy.size.width, height: proxy.size.height)
                 }
