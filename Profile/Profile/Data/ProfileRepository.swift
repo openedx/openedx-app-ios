@@ -71,8 +71,6 @@ public class ProfileRepository: ProfileRepositoryProtocol {
             ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: config.oAuthClientId)
         )
         storage.clear()
-        //await downloadManager.deleteAllFiles()
-        //coreDataHandler.clear()
     }
     
     public func getSpokenLanguages() -> [PickerFields.Option] {
