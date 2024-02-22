@@ -39,14 +39,14 @@ class AnalyticsManager: AuthorizationAnalytics,
         var analyticsServices: [AnalyticsService] = []
         // add Firebase Analytics Service
         if config.firebase.enabled && config.firebase.isAnalyticsSourceFirebase,
-           let firebaseManager = Container.shared.resolve(FirebaseAnalyticsManager.self) {
-            analyticsServices.append(firebaseManager)
+           let firebaseService = Container.shared.resolve(FirebaseAnalyticsService.self) {
+            analyticsServices.append(firebaseService)
         }
         
         // add Segment Analytics Service
         if config.segment.enabled,
-           let segmentManager = Container.shared.resolve(SegmentAnalyticsManager.self) {
-            analyticsServices.append(segmentManager)
+           let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
+            analyticsServices.append(segmentService)
         }
         return analyticsServices
     }

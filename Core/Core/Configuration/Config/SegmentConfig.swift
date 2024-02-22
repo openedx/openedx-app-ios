@@ -18,8 +18,8 @@ public final class SegmentConfig: NSObject {
     
     init(dictionary: [String: AnyObject]) {
         super.init()
-        enabled = dictionary[SegmentKeys.enabled] as? Bool == true
         writeKey = dictionary[SegmentKeys.writeKey] as? String ?? ""
+        enabled = dictionary[SegmentKeys.enabled] as? Bool == true && !writeKey.isEmpty
     }
 }
 

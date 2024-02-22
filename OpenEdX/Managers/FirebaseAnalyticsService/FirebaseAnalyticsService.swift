@@ -1,5 +1,5 @@
 //
-//  FirebaseAnalyticsManager.swift
+//  FirebaseAnalyticsService.swift
 //  OpenEdX
 //
 //  Created by Anton Yarmolenka on 19/02/2024.
@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 import Core
 
-class FirebaseAnalyticsManager: AnalyticsService {
+class FirebaseAnalyticsService: AnalyticsService {
     // Init manager
     public init(config: ConfigProtocol) {
         guard config.firebase.enabled && config.firebase.isAnalyticsSourceFirebase else { return }

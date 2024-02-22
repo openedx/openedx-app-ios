@@ -1,5 +1,5 @@
 //
-//  SegmentAnalyticsManager.swift
+//  SegmentAnalyticsService.swift
 //  OpenEdX
 //
 //  Created by Anton Yarmolenka on 21/02/2024.
@@ -10,7 +10,7 @@ import Core
 import Segment
 import SegmentFirebase
 
-class SegmentAnalyticsManager: AnalyticsService {
+class SegmentAnalyticsService: AnalyticsService {
     var analytics: Analytics?
     
     // Init manager
@@ -21,7 +21,7 @@ class SegmentAnalyticsManager: AnalyticsService {
                         .trackApplicationLifecycleEvents(true)
                         .flushInterval(10)
         analytics = Analytics(configuration: configuration)
-        if config.firebase.isAnalyticsSourceSegment {
+        if config.firebase.enabled && config.firebase.isAnalyticsSourceSegment {
             analytics?.add(plugin: FirebaseDestination())
         }
     }

@@ -176,14 +176,14 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(SegmentAnalyticsManager.self) { r in
-            SegmentAnalyticsManager(
+        container.register(SegmentAnalyticsService.self) { r in
+            SegmentAnalyticsService(
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
         
-        container.register(FirebaseAnalyticsManager.self) { r in
-            FirebaseAnalyticsManager(
+        container.register(FirebaseAnalyticsService.self) { r in
+            FirebaseAnalyticsService(
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)

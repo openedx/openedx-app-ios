@@ -11,8 +11,8 @@ import Swinject
 
 class BrazeProvider: PushNotificationsProvider {
     func didRegisterWithDeviceToken(deviceToken: Data) {
-        guard let segmentManager = Container.shared.resolve(SegmentAnalyticsManager.self) else { return }
-        segmentManager.analytics?.add(
+        guard let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) else { return }
+        segmentService.analytics?.add(
             plugin: BrazeDestination(
                 additionalConfiguration: { configuration in
                     configuration.logger.level = .debug
