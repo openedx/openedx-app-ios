@@ -239,11 +239,14 @@ public struct ProfileView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         let router = ProfileRouterMock()
-        let vm = ProfileViewModel(interactor: ProfileInteractor.mock,
-                                  router: router,
-                                  analytics: ProfileAnalyticsMock(),
-                                  config: ConfigMock(),
-                                  connectivity: Connectivity())
+        let vm = ProfileViewModel(
+            interactor: ProfileInteractor.mock,
+            downloadManager: DownloadManagerMock(),
+            router: router,
+            analytics: ProfileAnalyticsMock(),
+            config: ConfigMock(),
+            connectivity: Connectivity()
+        )
 
         ProfileView(viewModel: vm, settingsTapped: .constant(false))
             .preferredColorScheme(.light)

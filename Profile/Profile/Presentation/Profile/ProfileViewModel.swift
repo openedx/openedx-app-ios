@@ -40,16 +40,19 @@ public class ProfileViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     
     private let interactor: ProfileInteractorProtocol
+    private let downloadManager: DownloadManagerProtocol
     private let analytics: ProfileAnalytics
     
     public init(
         interactor: ProfileInteractorProtocol,
+        downloadManager: DownloadManagerProtocol,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         config: ConfigProtocol,
         connectivity: ConnectivityProtocol
     ) {
         self.interactor = interactor
+        self.downloadManager = downloadManager
         self.router = router
         self.analytics = analytics
         self.config = config
@@ -120,6 +123,7 @@ public class ProfileViewModel: ObservableObject {
     @MainActor
     func logOut() async {
         try? await interactor.logOut()
+        try? await downloadManager.cancelAllDownloading()
         router.showStartupScreen()
         analytics.userLogout(force: false)
     }

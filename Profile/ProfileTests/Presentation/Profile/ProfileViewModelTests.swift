@@ -92,6 +92,7 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -130,6 +131,7 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -167,6 +169,7 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -206,6 +209,7 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -231,6 +235,7 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -252,6 +257,7 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -269,7 +275,8 @@ final class ProfileViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
-            interactor: interactor,
+            interactor: interactor, 
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -287,7 +294,8 @@ final class ProfileViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
-            interactor: interactor,
+            interactor: interactor, 
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -305,7 +313,8 @@ final class ProfileViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
-            interactor: interactor,
+            interactor: interactor, 
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -323,7 +332,8 @@ final class ProfileViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
-            interactor: interactor,
+            interactor: interactor, 
+            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
