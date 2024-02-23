@@ -82,9 +82,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.isInternetAvaliable = connectivity.isInternetAvaliable
 
         super.init(manager: manager)
-
         addObservers()
-        addNotificationObserver()
     }
     
     @MainActor
@@ -128,11 +126,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     func getCourseDeadlineInfo(courseID: String, withProgress: Bool = true) async {
         isShowProgress = withProgress
         do {
-            courseDeadlineInfo = try await interactor.getCourseDeadlineInfo(courseID: courseID)
-            if courseDeadlineInfo?.datesBannerInfo == nil {
-                isShowProgress = false
-                errorMessage = CoreLocalization.Error.unknownError
-                return
+            let courseDeadlineInfo = try await interactor.getCourseDeadlineInfo(courseID: courseID)
+            withAnimation {
+                self.courseDeadlineInfo = courseDeadlineInfo
             }
             isShowProgress = false
         } catch let error {
@@ -473,32 +469,32 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 self.isInternetAvaliable = self.connectivity.isInternetAvaliable
         }
         .store(in: &cancellables)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleShiftDueDates(_:)),
+            name: .shiftCourseDates, object: nil
+        )
     }
     
     deinit {
-        let center = NotificationCenter.default
-        guard let shiftCourseDatesObserver = self.shiftCourseDatesObserver else { return }
-        center.removeObserver(shiftCourseDatesObserver)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
 extension CourseContainerViewModel {
-    func addNotificationObserver() {
-        let center = NotificationCenter.default
-        shiftCourseDatesObserver = center.addObserver(
-            forName: .shiftCourseDates,
-            object: nil,
-            queue: nil
-        ) { [weak self] notification in
-            if let courseID = notification.object as? String {
-                guard let strongSelf = self else {
-                    return
-                }
-                Task {
-                    await strongSelf.getCourseBlocks(courseID: courseID, withProgress: true)
-                    await strongSelf.getCourseDeadlineInfo(courseID: courseID, withProgress: true)
+    @objc private func handleShiftDueDates(_ notification: Notification) {
+        if let courseID = notification.object as? String {
+            Task {
+                await withTaskGroup(of: Void.self) { group in
+                    group.addTask {
+                        await self.getCourseBlocks(courseID: courseID, withProgress: true)
+                    }
+                    group.addTask {
+                        await self.getCourseDeadlineInfo(courseID: courseID, withProgress: true)
+                    }
                     DispatchQueue.main.async {
-                        strongSelf.dueDatesShifted = true
+                        self.dueDatesShifted = true
                     }
                 }
             }

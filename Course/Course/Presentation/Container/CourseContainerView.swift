@@ -70,8 +70,14 @@ public struct CourseContainerView: View {
     ) {
         self.viewModel = viewModel
         Task {
-            await viewModel.getCourseBlocks(courseID: courseID)
-            await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    await viewModel.getCourseBlocks(courseID: courseID)
+                }
+                group.addTask {
+                    await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                }
+            }
         }
         self.courseID = courseID
         self.title = title

@@ -43,7 +43,7 @@ public class CourseDatesViewModel: ObservableObject {
         self.cssInjector = cssInjector
         self.connectivity = connectivity
         self.courseID = courseID
-        addNotificationObserver()
+        addObservers()
     }
         
     var sortedStatuses: [CompletionStatus] {
@@ -114,27 +114,26 @@ public class CourseDatesViewModel: ObservableObject {
     }
     
     deinit {
-        let center = NotificationCenter.default
-        guard let shiftCourseDatesObserver = self.shiftCourseDatesObserver else { return }
-        center.removeObserver(shiftCourseDatesObserver)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
 extension CourseDatesViewModel {
-    func addNotificationObserver() {
-        let center = NotificationCenter.default
-        shiftCourseDatesObserver = center.addObserver(forName: .shiftCourseDates,
-                                               object: nil,
-                                               queue: nil) { [weak self] notification in
-            if let courseID = notification.object as? String {
-                guard let strongSelf = self else {
-                    return
-                }
-                Task {
-                    await strongSelf.getCourseDates(courseID: courseID)
-                    DispatchQueue.main.async {
-                        strongSelf.dueDatesShifted = true
-                    }
+    private func addObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleShiftDueDates(_:)),
+            name: .shiftCourseDates, object: nil
+        )
+    }
+    
+    @objc private func handleShiftDueDates(_ notification: Notification) {
+        if let courseID = notification.object as? String {
+            Task {
+                await self.getCourseDates(courseID: courseID)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.dueDatesShifted = true
                 }
             }
         }

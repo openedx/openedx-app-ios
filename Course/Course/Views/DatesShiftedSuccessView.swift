@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import Theme
 
-public struct SuccessViewWithButton: View {
+public struct DatesShiftedSuccessView: View {
     
     public static let height: CGFloat = 50
     
@@ -26,7 +26,7 @@ public struct SuccessViewWithButton: View {
                 Spacer()
                 VStack(alignment: .leading, spacing: 10) {
                     HStack(spacing: 10) {
-                        Text(CoreLocalization.CourseDates.toastSuccessMessage)
+                        Text(CourseLocalization.CourseDates.toastSuccessMessage)
                             .foregroundStyle(.white)
                         Button {
                             withAnimation {
@@ -39,7 +39,7 @@ public struct SuccessViewWithButton: View {
                         .tint(.white)
                     }
                     
-                    Button(CoreLocalization.CourseDates.viewAllDates,
+                    Button(CourseLocalization.CourseDates.viewAllDates,
                            action: {
                         Task {
                             await action()
@@ -72,6 +72,11 @@ public struct SuccessViewWithButton: View {
                 }
             }
         }
+        .onDisappear {
+            withAnimation {
+                dismiss = true
+            }
+        }
         .offset(y: dismiss ? 100 : 0)
         .opacity(dismiss ? 0 : 1)
         .transition(.move(edge: .bottom))
@@ -80,6 +85,6 @@ public struct SuccessViewWithButton: View {
 
 struct SuccessViewWithButton_Previews: PreviewProvider {
     static var previews: some View {
-        SuccessViewWithButton(action: {})
+        DatesShiftedSuccessView(action: {})
     }
 }

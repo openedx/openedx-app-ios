@@ -49,15 +49,21 @@ public struct CourseOutlineView: View {
                 VStack(alignment: .center) {
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-                        await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                        await withTaskGroup(of: Void.self) { group in
+                            group.addTask {
+                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                            }
+                            group.addTask {
+                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                            }
+                        }
                     }) {
                         VStack(alignment: .leading) {
                             if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
                                courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
                                !courseDeadlineInfo.hasEnded,
                                !isVideo {
-                                AdjustScheduleView(
+                                DatesStatusInfoView(
                                     datesBannerInfo: courseDeadlineInfo.datesBannerInfo,
                                     courseID: courseID,
                                     courseContainerViewModel: viewModel
@@ -146,8 +152,8 @@ public struct CourseOutlineView: View {
                 .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
                 .accessibilityAction {}
 
-                if viewModel.dueDatesShifted {
-                    SuccessViewWithButton {
+                if viewModel.dueDatesShifted && !isVideo {
+                    DatesShiftedSuccessView {
                          selection = dateTabIndex
                     }
                 }
@@ -156,8 +162,14 @@ public struct CourseOutlineView: View {
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
                     reloadAction: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-                        await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                        await withTaskGroup(of: Void.self) { group in
+                            group.addTask {
+                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                            }
+                            group.addTask {
+                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                            }
+                        }
                     }
                 )
                 
@@ -326,8 +338,14 @@ struct CourseOutlineView_Previews: PreviewProvider {
             enrollmentEnd: nil
         )
         Task {
-            await viewModel.getCourseBlocks(courseID: "courseId")
-            await viewModel.getCourseDeadlineInfo(courseID: "courseId")
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    await viewModel.getCourseBlocks(courseID: "courseId")
+                }
+                group.addTask {
+                    await viewModel.getCourseDeadlineInfo(courseID: "courseId")
+                }
+            }
         }
         
         return Group {

@@ -221,7 +221,7 @@ final class CourseDateViewModelTests: XCTestCase {
             learnerHasAccess: false,
             link: "www.example.com",
             linkText: nil,
-            title: CoreLocalization.CourseDates.today,
+            title: CourseLocalization.CourseDates.today,
             extraInfo: nil,
             firstComponentBlockID: "blockIDTest"
         )

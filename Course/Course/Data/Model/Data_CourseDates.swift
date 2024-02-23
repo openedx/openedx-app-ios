@@ -105,47 +105,39 @@ public extension DataLayer {
         var header: String {
             switch self {
             case .datesTabInfoBanner:
-                return CoreLocalization.CourseDates.ResetDate.TabInfoBanner.header
-                
+                CourseLocalization.CourseDates.ResetDate.TabInfoBanner.header
             case .upgradeToCompleteGradedBanner:
-                return CoreLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.header
-                
+                CourseLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.header
             case .upgradeToResetBanner:
-                return CoreLocalization.CourseDates.ResetDate.UpgradeToResetBanner.header
-                
+                CourseLocalization.CourseDates.ResetDate.UpgradeToResetBanner.header
             case .resetDatesBanner:
-                return CoreLocalization.CourseDates.ResetDate.ResetDateBanner.header
+                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.header
             }
         }
         
         var body: String {
             switch self {
             case .datesTabInfoBanner:
-                return CoreLocalization.CourseDates.ResetDate.TabInfoBanner.body
-                            
+                CourseLocalization.CourseDates.ResetDate.TabInfoBanner.body
             case .upgradeToCompleteGradedBanner:
-                return CoreLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.body
-                
+                CourseLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.body
             case .upgradeToResetBanner:
-                return CoreLocalization.CourseDates.ResetDate.UpgradeToResetBanner.body
-                
+                CourseLocalization.CourseDates.ResetDate.UpgradeToResetBanner.body
             case .resetDatesBanner:
-                return CoreLocalization.CourseDates.ResetDate.ResetDateBanner.body
+                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.body
             }
         }
         
-        var button: String {
+        var buttonTitle: String {
             switch self {
             case .upgradeToCompleteGradedBanner, .upgradeToResetBanner:
                 // Mobile payments are not implemented yet and to avoid breaking appstore guidelines,
                 // upgrade button is hidden, which leads user to payments
-                return ""
-                
+                ""
             case .resetDatesBanner:
-                return CoreLocalization.CourseDates.ResetDate.ResetDateBanner.button
-
+                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.button
             default:
-                return ""
+                ""
             }
         }
     }

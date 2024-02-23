@@ -97,38 +97,11 @@
 "REVIEW.BUTTON.RATE_US" = "Оцінити нас";
 "REVIEW.EMAIL.TITLE" = "Виберіть поштового клієнта:";
 
-"COURSE_DATES.TODAY" = "Today";
-"COURSE_DATES.COMPLETED" = "Completed";
-"COURSE_DATES.PAST_DUE" = "Past due";
-"COURSE_DATES.DUE_NEXT" = "Due next";
-"COURSE_DATES.UNRELEASED" = "Unreleased";
-"COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
-"COURSE_DATES.TOMORROW" = "Tomorrow";
-"COURSE_DATES.YESTERDAY" = "Yesterday";
-"COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
-"COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
-
-"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY" = "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.";
-"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON" = "Shift due dates";
-"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.HEADER" = "Missed some deadlines?";
-
-"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.BODY" = "We built a suggested schedule to help you stay on track. But don’t worry – it’s flexible so you can learn at your own pace. If you happen to fall behind, you’ll be able to adjust the dates to keep yourself on track.";
-"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.HEADER" = "";
-
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BODY" = "To complete graded assignments as part of this course, you can upgrade today.";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BUTTON" = "";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.HEADER" = "";
-
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BODY" = "You are auditing this course, which means that you are unable to participate in graded assignments. It looks like you missed some important deadlines based on our suggested schedule. To complete graded assignments as part of this course and shift the past due assignments into the future, you can upgrade today.";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BUTTON" = "";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.HEADER" = "";
-
-"COURSE_DATES.RESET_DATE.ERROR_MESSAGE" = "Your dates could not be shifted. Please try again.";
-"COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE" = "Your dates have been successfully shifted.";
-"COURSE_DATES.RESET_DATE.TITLE" = "Course Dates";
-
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 "AUTHORIZATION_FAILED" = "Authorization failed.";
 
 "SIGN_IN.LOG_IN_BTN" = "Увійти";
 "SIGN_IN.REGISTER_BTN" = "Реєстрація";
+
+"TOMORROW" = "Tomorrow";
+"YESTERDAY" = "Yesterday";

@@ -10,7 +10,7 @@ import SwiftUI
 import Core
 import Theme
 
-struct AdjustScheduleView: View {
+struct DatesStatusInfoView: View {
     let datesBannerInfo: DatesBannerInfo
     let courseID: String
     var courseDatesViewModel: CourseDatesViewModel?
@@ -20,7 +20,7 @@ struct AdjustScheduleView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             let header = datesBannerInfo.status?.header ?? ""
-            let button = datesBannerInfo.status?.button ?? ""
+            let button = datesBannerInfo.status?.buttonTitle ?? ""
             Spacer()
             if !header.isEmpty {
                 Text(header)
@@ -73,7 +73,7 @@ struct AdjustScheduleView_Previews: PreviewProvider {
             status: .resetDatesBanner
         )
         
-        AdjustScheduleView(
+        DatesStatusInfoView(
             datesBannerInfo: datesBannerInfo,
             courseID: "courseID"
         )
