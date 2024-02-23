@@ -132,6 +132,7 @@ public struct ProfileView: View {
                 Text(ProfileLocalization.info)
                     .padding(.horizontal, 24)
                     .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textSecondary)
 
                 VStack(alignment: .leading, spacing: 16) {
                     if viewModel.userModel?.yearOfBirth != 0 {
@@ -173,6 +174,7 @@ public struct ProfileView: View {
         Text(ProfileLocalization.settings)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.textSecondary)
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 viewModel.trackProfileVideoSettingsClicked()
