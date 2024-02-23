@@ -49,7 +49,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private let authInteractor: AuthInteractorProtocol
     private let analytics: CourseAnalytics
     private(set) var storage: CourseStorage
-    private var shiftCourseDatesObserver: NSObjectProtocol?
 
     public init(
         interactor: CourseInteractorProtocol,

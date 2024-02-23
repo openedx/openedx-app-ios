@@ -29,7 +29,6 @@ public class CourseDatesViewModel: ObservableObject {
     let router: CourseRouter
     let connectivity: ConnectivityProtocol
     let courseID: String
-    private var shiftCourseDatesObserver: NSObjectProtocol?
     
     public init(
         interactor: CourseInteractorProtocol,
