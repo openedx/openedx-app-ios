@@ -238,6 +238,9 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
 }
 
+// Mark - For testing and SwiftUI preview
+// swiftlint:disable all
+#if DEBUG
 class CourseRepositoryMock: CourseRepositoryProtocol {
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
         throw NoCachedDataError()
@@ -445,3 +448,5 @@ And there are various ways of describing it-- call it oral poetry or
         )
     }
 }
+#endif
+// swiftlint:enable all

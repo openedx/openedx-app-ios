@@ -83,8 +83,10 @@ public struct DatesShiftedSuccessView: View {
     }
 }
 
+#if DEBUG
 struct SuccessViewWithButton_Previews: PreviewProvider {
     static var previews: some View {
         DatesShiftedSuccessView(action: {})
     }
 }
+#endif
