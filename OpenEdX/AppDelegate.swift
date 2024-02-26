@@ -157,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
-        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self) 
+        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self)
         else {
             completionHandler(.newData)
             return

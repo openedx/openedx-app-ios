@@ -170,7 +170,8 @@ class AppAssembly: Assembly {
 
         container.register(DeepLinkManager.self) { r in
             DeepLinkManager(
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!, 
+                router: r.resolve(Router.self)!
             )
         }.inObjectScope(.container)
     }
