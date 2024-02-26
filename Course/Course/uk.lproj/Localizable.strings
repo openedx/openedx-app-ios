@@ -76,8 +76,6 @@
 "COURSE_DATES.DUE_NEXT" = "Due next";
 "COURSE_DATES.UNRELEASED" = "Unreleased";
 "COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
-"COURSE_DATES.TOMORROW" = "Tomorrow";
-"COURSE_DATES.YESTERDAY" = "Yesterday";
 "COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
 "COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
 "COURSE_DATES.TOAST_SUCCESS_MESSAGE" = "Your due dates have been successfully shifted to help you stay on track.";

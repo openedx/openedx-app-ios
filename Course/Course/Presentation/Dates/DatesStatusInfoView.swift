@@ -1,5 +1,5 @@
 //
-//  AdjustScheduleView.swift
+//  DatesStatusInfoView.swift
 //  Course
 //
 //  Created by Shafqat Muneer on 2/14/24.
@@ -63,7 +63,7 @@ struct DatesStatusInfoView: View {
 }
 
 #if DEBUG
-struct AdjustScheduleView_Previews: PreviewProvider {
+struct DatesStatusInfoView_Previews: PreviewProvider {
     static var previews: some View {
         let datesBannerInfo = DatesBannerInfo(
             missedDeadlines: true,

@@ -83,16 +83,12 @@ public enum CourseLocalization {
     public static let toastSuccessMessage = CourseLocalization.tr("Localizable", "COURSE_DATES.TOAST_SUCCESS_MESSAGE", fallback: "Your due dates have been successfully shifted to help you stay on track.")
     /// Today
     public static let today = CourseLocalization.tr("Localizable", "COURSE_DATES.TODAY", fallback: "Today")
-    /// Tomorrow
-    public static let tomorrow = CourseLocalization.tr("Localizable", "COURSE_DATES.TOMORROW", fallback: "Tomorrow")
     /// Unreleased
     public static let unreleased = CourseLocalization.tr("Localizable", "COURSE_DATES.UNRELEASED", fallback: "Unreleased")
     /// Verified Only
     public static let verifiedOnly = CourseLocalization.tr("Localizable", "COURSE_DATES.VERIFIED_ONLY", fallback: "Verified Only")
     /// View all dates
     public static let viewAllDates = CourseLocalization.tr("Localizable", "COURSE_DATES.VIEW_ALL_DATES", fallback: "View all dates")
-    /// Yesterday
-    public static let yesterday = CourseLocalization.tr("Localizable", "COURSE_DATES.YESTERDAY", fallback: "Yesterday")
     public enum ResetDate {
       /// Your dates could not be shifted. Please try again.
       public static let errorMessage = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.ERROR_MESSAGE", fallback: "Your dates could not be shifted. Please try again.")

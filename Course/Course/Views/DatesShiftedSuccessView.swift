@@ -1,5 +1,5 @@
 //
-//  SuccessViewWithButton.swift
+//  DatesShiftedSuccessView.swift
 //  Core
 //
 //  Created by Shafqat Muneer on 2/18/24.
@@ -84,7 +84,7 @@ public struct DatesShiftedSuccessView: View {
 }
 
 #if DEBUG
-struct SuccessViewWithButton_Previews: PreviewProvider {
+struct DatesShiftedSuccessView_Previews: PreviewProvider {
     static var previews: some View {
         DatesShiftedSuccessView(action: {})
     }
