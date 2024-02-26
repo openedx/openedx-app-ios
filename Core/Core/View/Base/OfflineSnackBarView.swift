@@ -47,7 +47,7 @@ public struct OfflineSnackBarView: View {
                 }.padding(.horizontal, 16)
                     .font(Theme.Fonts.titleSmall)
                     .frame(maxWidth: .infinity, maxHeight: OfflineSnackBarView.height)
-                    .background(Theme.Colors.warning.ignoresSafeArea())
+                    .background(Theme.Colors.snackbarWarningColor.ignoresSafeArea())
             }
         }
         .onAppear {

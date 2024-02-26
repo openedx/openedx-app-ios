@@ -42,7 +42,7 @@ public struct VideoQualityView: View {
                                     Spacer()
                                     CoreAssets.checkmark.swiftUIImage
                                         .renderingMode(.template)
-                                        .foregroundColor(.accentColor)
+                                        .foregroundColor(Theme.Colors.accentXColor)
                                         .opacity(quality == viewModel.selectedQuality ? 1 : 0)
                                     
                                 }.foregroundColor(Theme.Colors.textPrimary)

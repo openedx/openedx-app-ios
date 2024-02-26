@@ -124,7 +124,7 @@ public struct ParentCommentView: View {
                 })
             }
             .accentColor(comments.abuseFlagged
-                ? Theme.Colors.snackbarErrorColor
+                ? Theme.Colors.alert
                          : Theme.Colors.textSecondary)
                 .font(Theme.Fonts.labelLarge)
                 .padding(.top, 8)

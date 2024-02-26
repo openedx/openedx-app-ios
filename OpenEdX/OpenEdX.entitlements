@@ -8,5 +8,12 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:edx.app.link</string>
+		<string>applinks:edx-alternate.app.link</string>
+		<string>applinks:edx.test-app.link</string>
+		<string>applinks:edx-alternate.test-app.link</string>
+	</array>
 </dict>
 </plist>
