@@ -8,9 +8,6 @@
 import UIKit
 import Core
 import Swinject
-import FirebaseCore
-import FirebaseAnalytics
-import FirebaseCrashlytics
 import Profile
 import GoogleSignIn
 import FacebookCore
@@ -23,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var shared: AppDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }
-    
+
     var window: UIWindow?
         
     private var assembler: Assembler?
@@ -35,13 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         initDI()
-        
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
-            if let configuration = config.firebase.firebaseOptions {
-                FirebaseApp.configure(options: configuration)
-                Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-            }
+            
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
                     application,
@@ -130,8 +123,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard Date().timeIntervalSince1970 - lastForceLogoutTime > 5 else {
             return
         }
-        let analytics = Container.shared.resolve(AnalyticsManager.self)
-        analytics?.userLogout(force: true)
+        let analyticsManager = Container.shared.resolve(AnalyticsManager.self)
+        analyticsManager?.userLogout(force: true)
         
         lastForceLogoutTime = Date().timeIntervalSince1970
         

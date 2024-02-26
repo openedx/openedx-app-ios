@@ -60,6 +60,10 @@ class ConfigTests: XCTestCase {
         "BRANCH": [
             "ENABLED": true,
             "KEY": "testBranchKey"
+        ],
+        "SEGMENT_IO": [
+            "ENABLED": true,
+            "SEGMENT_IO_WRITE_KEY": "testSegmentKey"
         ]
     ]
     
@@ -135,5 +139,12 @@ class ConfigTests: XCTestCase {
 
         XCTAssertTrue(config.branch.enabled)
         XCTAssertEqual(config.branch.key, "testBranchKey")
+    }
+    
+    func testSegmentConfigInitialization() {
+        let config = Config(properties: properties)
+
+        XCTAssertTrue(config.segment.enabled)
+        XCTAssertEqual(config.segment.writeKey, "testSegmentKey")
     }
 }
