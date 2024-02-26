@@ -148,11 +148,8 @@ public extension View {
     
     func roundedBackground(
         _ color: Color = Theme.Colors.background,
-        strokeColor: Color = Theme.Colors.backgroundStroke,
-        ipadMaxHeight: CGFloat = .infinity,
-        maxIpadWidth: CGFloat = 420
+        strokeColor: Color = Theme.Colors.backgroundStroke
     ) -> some View {
-        var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
         return ZStack {
             RoundedCorners(tl: 24, tr: 24)
                 .offset(y: 1)
@@ -163,7 +160,7 @@ public extension View {
                 .foregroundColor(color)
             self
                 .offset(y: 2)
-                .frame(maxWidth: maxIpadWidth, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
     

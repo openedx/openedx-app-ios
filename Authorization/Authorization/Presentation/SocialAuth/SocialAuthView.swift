@@ -37,6 +37,7 @@ struct SocialAuthView: View {
         }
     }
 
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     // MARK: - Views
 
     var body: some View {
@@ -45,6 +46,7 @@ struct SocialAuthView: View {
             buttonsView
         }
         .padding(.bottom, 20)
+        .frame(maxWidth: .infinity)
     }
 
     private var headerView: some View {
@@ -55,6 +57,7 @@ struct SocialAuthView: View {
                 .accessibilityIdentifier("social_auth_title_text")
             Spacer()
         }
+        .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: 42)
     }
 
     private var buttonsView: some View {
