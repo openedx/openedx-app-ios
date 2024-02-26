@@ -17,7 +17,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var discussionTopics: [DiscussionTopic]?
     @Published var courseID: String = ""
-    private var title: String
+    let title: String
     
     var errorMessage: String? {
         didSet {

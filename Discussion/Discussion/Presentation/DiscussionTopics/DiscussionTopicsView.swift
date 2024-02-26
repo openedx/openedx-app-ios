@@ -150,7 +150,7 @@ public struct DiscussionTopicsView: View {
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
-        .navigationTitle(DiscussionLocalization.title)
+        .navigationTitle(viewModel.title)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

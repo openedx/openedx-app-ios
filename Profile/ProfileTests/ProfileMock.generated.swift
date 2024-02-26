@@ -1190,6 +1190,19 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		return __value
     }
 
+    open func addToDownloadQueue(blocks: [CourseBlock]) throws {
+        addInvocation(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
+		let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
+		perform?(`blocks`)
+		do {
+		    _ = try methodReturnValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
     open func getDownloadTasks() -> [DownloadDataTask] {
         addInvocation(.m_getDownloadTasks)
 		let perform = methodPerformValue(.m_getDownloadTasks) as? () -> Void
@@ -1257,6 +1270,19 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		}
     }
 
+    open func cancelAllDownloading() throws {
+        addInvocation(.m_cancelAllDownloading)
+		let perform = methodPerformValue(.m_cancelAllDownloading) as? () -> Void
+		perform?()
+		do {
+		    _ = try methodReturnValue(.m_cancelAllDownloading).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
     open func deleteFile(blocks: [CourseBlock]) {
         addInvocation(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
 		let perform = methodPerformValue(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
@@ -1282,12 +1308,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		return __value
     }
 
-    open func addToDownloadQueue(blocks: [CourseBlock]) throws {
-        addInvocation(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
-		perform?(`blocks`)
+    open func resumeDownloading() throws {
+        addInvocation(.m_resumeDownloading)
+		let perform = methodPerformValue(.m_resumeDownloading) as? () -> Void
+		perform?()
 		do {
-		    _ = try methodReturnValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
+		    _ = try methodReturnValue(.m_resumeDownloading).casted() as Void
 		} catch MockError.notStubed {
 			// do nothing
 		} catch {
@@ -1309,34 +1335,22 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		return __value
     }
 
-    open func resumeDownloading() throws {
-        addInvocation(.m_resumeDownloading)
-		let perform = methodPerformValue(.m_resumeDownloading) as? () -> Void
-		perform?()
-		do {
-		    _ = try methodReturnValue(.m_resumeDownloading).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
-    }
-
 
     fileprivate enum MethodType {
         case m_publisher
         case m_eventPublisher
+        case m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>)
         case m_getDownloadTasks
         case m_getDownloadTasksForCourse__courseId(Parameter<String>)
         case m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>, Parameter<[CourseBlock]>)
         case m_cancelDownloading__task_task(Parameter<DownloadDataTask>)
         case m_cancelDownloading__courseId_courseId(Parameter<String>)
+        case m_cancelAllDownloading
         case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
         case m_deleteAllFiles
         case m_fileUrl__for_blockId(Parameter<String>)
-        case m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>)
-        case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
         case m_resumeDownloading
+        case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
         case p_currentDownloadTask_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -1344,6 +1358,11 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case (.m_publisher, .m_publisher): return .match
 
             case (.m_eventPublisher, .m_eventPublisher): return .match
+
+            case (.m_addToDownloadQueue__blocks_blocks(let lhsBlocks), .m_addToDownloadQueue__blocks_blocks(let rhsBlocks)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_getDownloadTasks, .m_getDownloadTasks): return .match
 
@@ -1368,6 +1387,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
 				return Matcher.ComparisonResult(results)
 
+            case (.m_cancelAllDownloading, .m_cancelAllDownloading): return .match
+
             case (.m_deleteFile__blocks_blocks(let lhsBlocks), .m_deleteFile__blocks_blocks(let rhsBlocks)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
@@ -1380,17 +1401,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_addToDownloadQueue__blocks_blocks(let lhsBlocks), .m_addToDownloadQueue__blocks_blocks(let rhsBlocks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				return Matcher.ComparisonResult(results)
+            case (.m_resumeDownloading, .m_resumeDownloading): return .match
 
             case (.m_isLargeVideosSize__blocks_blocks(let lhsBlocks), .m_isLargeVideosSize__blocks_blocks(let rhsBlocks)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
 				return Matcher.ComparisonResult(results)
-
-            case (.m_resumeDownloading, .m_resumeDownloading): return .match
             case (.p_currentDownloadTask_get,.p_currentDownloadTask_get): return Matcher.ComparisonResult.match
             default: return .none
             }
@@ -1400,17 +1416,18 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             switch self {
             case .m_publisher: return 0
             case .m_eventPublisher: return 0
+            case let .m_addToDownloadQueue__blocks_blocks(p0): return p0.intValue
             case .m_getDownloadTasks: return 0
             case let .m_getDownloadTasksForCourse__courseId(p0): return p0.intValue
             case let .m_cancelDownloading__courseId_courseIdblocks_blocks(p0, p1): return p0.intValue + p1.intValue
             case let .m_cancelDownloading__task_task(p0): return p0.intValue
             case let .m_cancelDownloading__courseId_courseId(p0): return p0.intValue
+            case .m_cancelAllDownloading: return 0
             case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
             case .m_deleteAllFiles: return 0
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
-            case let .m_addToDownloadQueue__blocks_blocks(p0): return p0.intValue
-            case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
             case .m_resumeDownloading: return 0
+            case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
             case .p_currentDownloadTask_get: return 0
             }
         }
@@ -1418,17 +1435,18 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             switch self {
             case .m_publisher: return ".publisher()"
             case .m_eventPublisher: return ".eventPublisher()"
+            case .m_addToDownloadQueue__blocks_blocks: return ".addToDownloadQueue(blocks:)"
             case .m_getDownloadTasks: return ".getDownloadTasks()"
             case .m_getDownloadTasksForCourse__courseId: return ".getDownloadTasksForCourse(_:)"
             case .m_cancelDownloading__courseId_courseIdblocks_blocks: return ".cancelDownloading(courseId:blocks:)"
             case .m_cancelDownloading__task_task: return ".cancelDownloading(task:)"
             case .m_cancelDownloading__courseId_courseId: return ".cancelDownloading(courseId:)"
+            case .m_cancelAllDownloading: return ".cancelAllDownloading()"
             case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
             case .m_deleteAllFiles: return ".deleteAllFiles()"
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
-            case .m_addToDownloadQueue__blocks_blocks: return ".addToDownloadQueue(blocks:)"
-            case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
             case .m_resumeDownloading: return ".resumeDownloading()"
+            case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
             case .p_currentDownloadTask_get: return "[get] .currentDownloadTask"
             }
         }
@@ -1506,6 +1524,16 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
         public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`), products: willThrow.map({ StubProduct.throw($0) }))
         }
@@ -1536,12 +1564,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func cancelAllDownloading(willThrow: Error...) -> MethodStub {
+            return Given(method: .m_cancelAllDownloading, products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+        public static func cancelAllDownloading(willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_cancelAllDownloading, products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (Void).self)
 			willProduce(stubber)
 			return given
@@ -1563,17 +1591,18 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 
         public static func publisher() -> Verify { return Verify(method: .m_publisher)}
         public static func eventPublisher() -> Verify { return Verify(method: .m_eventPublisher)}
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocks(`blocks`))}
         public static func getDownloadTasks() -> Verify { return Verify(method: .m_getDownloadTasks)}
         public static func getDownloadTasksForCourse(_ courseId: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadTasksForCourse__courseId(`courseId`))}
         public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`))}
         public static func cancelDownloading(task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_cancelDownloading__task_task(`task`))}
         public static func cancelDownloading(courseId: Parameter<String>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseId(`courseId`))}
+        public static func cancelAllDownloading() -> Verify { return Verify(method: .m_cancelAllDownloading)}
         public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
         public static func deleteAllFiles() -> Verify { return Verify(method: .m_deleteAllFiles)}
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
-        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocks(`blocks`))}
-        public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
+        public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
         public static var currentDownloadTask: Verify { return Verify(method: .p_currentDownloadTask_get) }
     }
 
@@ -1586,6 +1615,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func eventPublisher(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_eventPublisher, performs: perform)
+        }
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
+            return Perform(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), performs: perform)
         }
         public static func getDownloadTasks(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_getDownloadTasks, performs: perform)
@@ -1602,6 +1634,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelDownloading(courseId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_cancelDownloading__courseId_courseId(`courseId`), performs: perform)
         }
+        public static func cancelAllDownloading(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_cancelAllDownloading, performs: perform)
+        }
         public static func deleteFile(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
             return Perform(method: .m_deleteFile__blocks_blocks(`blocks`), performs: perform)
         }
@@ -1611,14 +1646,11 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func fileUrl(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_fileUrl__for_blockId(`blockId`), performs: perform)
         }
-        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
-            return Perform(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), performs: perform)
+        public static func resumeDownloading(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_resumeDownloading, performs: perform)
         }
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
             return Perform(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), performs: perform)
-        }
-        public static func resumeDownloading(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_resumeDownloading, performs: perform)
         }
     }
 

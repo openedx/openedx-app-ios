@@ -89,7 +89,7 @@ public struct CourseContainerView: View {
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
-        .navigationTitle(titleBar())
+        .navigationTitle(title)
         .onChange(of: selection, perform: didSelect)
         .background(Theme.Colors.background)
     }
@@ -222,23 +222,6 @@ public struct CourseContainerView: View {
                 courseId: courseID,
                 courseName: title
             )
-        }
-    }
-
-    private func titleBar() -> String {
-        switch CourseTab(rawValue: selection) {
-        case .course:
-            return self.title
-        case .videos:
-            return self.title
-        case .dates:
-            return CourseLocalization.CourseContainer.dates
-        case .discussion:
-            return DiscussionLocalization.title
-        case .handounds:
-            return CourseLocalization.CourseContainer.handouts
-        default:
-            return ""
         }
     }
 }

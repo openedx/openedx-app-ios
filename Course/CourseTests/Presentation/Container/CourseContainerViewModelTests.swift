@@ -52,7 +52,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .problem,
             displayName: "",
             studentUrl: "",
-            encodedVideo: nil
+            encodedVideo: nil,
+            multiDevice: true
         )
         let vertical = CourseVertical(
             blockId: "",
@@ -362,7 +363,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
 
         )
 
@@ -412,7 +414,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -492,7 +496,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -608,7 +613,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -725,7 +731,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -835,7 +842,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -884,7 +892,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -958,7 +968,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -1007,7 +1018,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -1080,7 +1093,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
         let block2 = CourseBlock(
             blockId: "123",
@@ -1099,7 +1113,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -1148,7 +1163,9 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",

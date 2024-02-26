@@ -145,7 +145,7 @@ public struct WhatsNewView: View {
                         router.showMainOrWhatsNewScreen(sourceScreen: viewModel.sourceScreen)
                     }, label: {
                         Image(systemName: "xmark")
-                            .foregroundColor(Theme.Colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentXColor)
                     })
                     .accessibilityIdentifier("close_button")
                 })

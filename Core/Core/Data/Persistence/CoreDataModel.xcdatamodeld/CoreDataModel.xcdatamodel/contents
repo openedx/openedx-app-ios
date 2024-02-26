@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="22G91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CDDownloadData" representedClassName="CDDownloadData" syncable="YES" codeGenerationType="class">
+        <attribute name="blockId" optional="YES" attributeType="String"/>
         <attribute name="courseId" optional="YES" attributeType="String"/>
         <attribute name="displayName" optional="YES" attributeType="String"/>
         <attribute name="fileName" optional="YES" attributeType="String"/>
@@ -11,6 +12,7 @@
         <attribute name="state" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="userId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>

@@ -172,9 +172,9 @@ public struct CreateNewThreadView: View {
                                         }
                                     }
                                 }
-                            })
+                            },
+                                         isActive: postTitle != "" && postBody != "")
                             .padding(.top, 26)
-                            .saturation(!postTitle.isEmpty && !postBody.isEmpty ? 1 : 0)
                             Spacer()
                         }.padding(.horizontal, 24)
                             .frameLimit()

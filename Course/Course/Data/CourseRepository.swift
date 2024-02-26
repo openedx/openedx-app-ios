@@ -221,7 +221,8 @@ public class CourseRepository: CourseRepositoryProtocol {
                 mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
                 mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
                 hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
-            )
+            ),
+            multiDevice: block.multiDevice
         )
     }
     
@@ -428,7 +429,8 @@ And there are various ways of describing it-- call it oral poetry or
                 mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
                 mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
                 hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
-            )
+            ),
+            multiDevice: block.multiDevice
         )
     }
 
