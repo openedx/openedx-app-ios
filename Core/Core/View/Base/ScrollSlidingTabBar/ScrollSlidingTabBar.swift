@@ -33,23 +33,25 @@ public struct ScrollSlidingTabBar: View {
     }
     
     public var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView(.horizontal, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 0) {
-                    buttons()
-                    
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .fill(style.borderColor)
-                            .frame(height: style.borderHeight, alignment: .leading)
-                        indicatorContainer()
+        ZStack(alignment: .bottomLeading) {
+            Rectangle()
+                .fill(style.borderColor)
+                .frame(height: style.borderHeight, alignment: .leading)
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        buttons()
+                        
+                        ZStack(alignment: .leading) {
+                            indicatorContainer()
+                        }
                     }
+                    .coordinateSpace(name: containerSpace)
                 }
-                .coordinateSpace(name: containerSpace)
-            }
-            .onChange(of: selection) { newValue in
-                withAnimation {
-                    proxy.scrollTo(newValue, anchor: .center)
+                .onChange(of: selection) { newValue in
+                    withAnimation {
+                        proxy.scrollTo(newValue, anchor: .center)
+                    }
                 }
             }
         }
