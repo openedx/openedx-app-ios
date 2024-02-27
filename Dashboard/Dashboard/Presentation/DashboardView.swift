@@ -94,7 +94,12 @@ public struct DashboardView: View {
                             }
                         }
                     }
-                }.accessibilityAction {}
+                }
+                .accessibilityAction {}
+                .if(!viewModel.shouldStretch, transform: { view in
+                    view
+                        .frameLimit()
+                })
             }.padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
@@ -137,7 +142,8 @@ struct DashboardView_Previews: PreviewProvider {
         let vm = DashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock()
+            analytics: DashboardAnalyticsMock(),
+            shouldStretch: false
         )
         let router = DashboardRouterMock()
         

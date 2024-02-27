@@ -159,11 +159,12 @@ class ScreenAssembly: Assembly {
                 repository: r.resolve(DashboardRepositoryProtocol.self)!
             )
         }
-        container.register(DashboardViewModel.self) { r in
+        container.register(DashboardViewModel.self) { r, shouldStretch in
             DashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                shouldStretch: shouldStretch
             )
         }
         
@@ -250,7 +251,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
+        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, shouldStretch in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -264,7 +265,8 @@ class ScreenAssembly: Assembly {
                 courseStart: courseStart,
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
-                enrollmentEnd: enrollmentEnd
+                enrollmentEnd: enrollmentEnd,
+                shouldStretch: shouldStretch
             )
         }
         

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Swinject
 import Theme
 
 public enum LogistrationSourceScreen: Equatable {
@@ -26,6 +27,9 @@ public struct LogistrationBottomView: View {
     private let action: (LogistrationAction) -> Void
     
     @Environment(\.isHorizontal) private var isHorizontal
+    private var shouldStretch: Bool {
+        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
+    }
     
     public init(_ action: @escaping (LogistrationAction) -> Void) {
         self.action = action
@@ -37,6 +41,10 @@ public struct LogistrationBottomView: View {
                 StyledButton(CoreLocalization.SignIn.registerBtn) {
                     action(.register)
                 }
+                .if(!shouldStretch, transform: { button in
+                    button
+                        .frame(maxWidth: .infinity)
+                })
                 .accessibilityIdentifier("logistration_register_button")
                 
                 StyledButton(

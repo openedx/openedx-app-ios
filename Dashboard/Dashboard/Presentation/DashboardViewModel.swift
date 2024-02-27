@@ -27,16 +27,19 @@ public class DashboardViewModel: ObservableObject {
     }
     
     let connectivity: ConnectivityProtocol
+    let shouldStretch: Bool
     private let interactor: DashboardInteractorProtocol
     private let analytics: DashboardAnalytics
     private var onCourseEnrolledCancellable: AnyCancellable?
     
     public init(interactor: DashboardInteractorProtocol,
                 connectivity: ConnectivityProtocol,
-                analytics: DashboardAnalytics) {
+                analytics: DashboardAnalytics,
+                shouldStretch: Bool) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
+        self.shouldStretch = shouldStretch
         
         onCourseEnrolledCancellable = NotificationCenter.default
             .publisher(for: .onCourseEnrolled)

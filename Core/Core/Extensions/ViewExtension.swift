@@ -8,6 +8,7 @@
 import Foundation
 @_spi(Advanced) import SwiftUIIntrospect
 import SwiftUI
+import Swinject
 import Theme
 
 public extension View {
@@ -148,8 +149,12 @@ public extension View {
     
     func roundedBackground(
         _ color: Color = Theme.Colors.background,
-        strokeColor: Color = Theme.Colors.backgroundStroke
+        strokeColor: Color = Theme.Colors.backgroundStroke,
+        ipadMaxHeight: CGFloat = .infinity,
+        maxIpadWidth: CGFloat = 420
     ) -> some View {
+        var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+        let shouldStretch = Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
         return ZStack {
             RoundedCorners(tl: 24, tr: 24)
                 .offset(y: 1)
@@ -160,7 +165,10 @@ public extension View {
                 .foregroundColor(color)
             self
                 .offset(y: 2)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(
+                    maxWidth: shouldStretch ? .infinity : maxIpadWidth,
+                    maxHeight: idiom == .pad ? shouldStretch ? .infinity : ipadMaxHeight : .infinity
+                )
         }
     }
     

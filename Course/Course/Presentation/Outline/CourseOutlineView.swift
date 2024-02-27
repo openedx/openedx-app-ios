@@ -119,6 +119,9 @@ public struct CourseOutlineView: View {
                             Spacer(minLength: 84)
                         }
                     }
+                    .if(!viewModel.shouldStretch, transform: { view in
+                        view.frameLimit()
+                    })
                     .onRightSwipeGesture {
                         viewModel.router.back()
                     }
@@ -295,7 +298,8 @@ struct CourseOutlineView_Previews: PreviewProvider {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: Date(),
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            shouldStretch: false
         )
         Task {
             await viewModel.getCourseBlocks(courseID: "courseId")
