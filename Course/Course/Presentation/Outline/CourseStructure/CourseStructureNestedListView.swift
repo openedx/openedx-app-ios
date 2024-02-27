@@ -84,7 +84,7 @@ struct CourseStructureNestedListView: View {
                     if sequential.completion == 1 {
                         CoreAssets.finished.swiftUIImage
                             .renderingMode(.template)
-                            .foregroundColor(.accentColor)
+                            .foregroundColor(Theme.Colors.accentXColor)
                     } else {
                         sequential.type.image
                     }
