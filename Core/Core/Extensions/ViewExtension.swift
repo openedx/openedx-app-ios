@@ -263,6 +263,19 @@ public extension View {
     }
 }
 
+public extension View {
+    @ViewBuilder
+    func sheetNavigation(isSheet: Bool) -> some View {
+        if isSheet {
+            NavigationView {
+                self
+            }
+        } else {
+            self
+        }
+    }
+}
+
 private struct FirstAppear: ViewModifier {
     let action: () -> Void
     

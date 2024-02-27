@@ -22,6 +22,7 @@ struct ProfileSupportInfoView: View {
         Text(ProfileLocalization.supportInfo)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.textSecondary)
         VStack(alignment: .leading, spacing: 24) {
             viewModel.contactSupport().map(supportInfo)
             viewModel.config.agreement.tosURL.map(terms)
@@ -45,7 +46,6 @@ struct ProfileSupportInfoView: View {
             ),
             isEmailSupport: true
         )
-
     }
 
     private func terms(url: URL) -> some View {

@@ -127,7 +127,8 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DiscoveryAnalytics.self)!
+                analytics: r.resolve(DiscoveryAnalytics.self)!,
+                authInteractor: r.resolve(AuthInteractorProtocol.self)!
             )
         }
         
@@ -185,7 +186,8 @@ class ScreenAssembly: Assembly {
         }
         container.register(ProfileViewModel.self) { r in
             ProfileViewModel(
-                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!, 
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,

@@ -16,9 +16,6 @@ abstract_target "App" do
   target "Core" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
-    #Firebase
-    pod 'FirebaseAnalytics', '~> 10.11'
-    pod 'FirebaseCrashlytics', '~> 10.11'
     #Networking
     pod 'Alamofire', '~> 5.7'
     #Keychain

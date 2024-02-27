@@ -36,7 +36,7 @@ struct MainScreenView: View {
         UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondary)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondaryLight)
     }
         
     var body: some View {
@@ -127,8 +127,8 @@ struct MainScreenView: View {
                     Button(action: {
                         settingsTapped.toggle()
                     }, label: {
-                        CoreAssets.edit.swiftUIImage
-                            .foregroundColor(Theme.Colors.textPrimary)
+                        CoreAssets.edit.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.navigationBarTintColor)
                     })
                 } else {
                     VStack {}

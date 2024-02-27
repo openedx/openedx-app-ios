@@ -35,8 +35,10 @@ class AppAssembly: Assembly {
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
         
-        container.register(AnalyticsManager.self) { _ in
-            AnalyticsManager()
+        container.register(AnalyticsManager.self) { r in
+            AnalyticsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }
         
         container.register(AuthorizationAnalytics.self) { r in
@@ -160,6 +162,30 @@ class AppAssembly: Assembly {
         
         container.register(Validator.self) { _ in
             Validator()
+        }.inObjectScope(.container)
+        
+        container.register(PushNotificationsManager.self) { r in
+            PushNotificationsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+
+        container.register(DeepLinkManager.self) { r in
+            DeepLinkManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+        
+        container.register(SegmentAnalyticsService.self) { r in
+            SegmentAnalyticsService(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+        
+        container.register(FirebaseAnalyticsService.self) { r in
+            FirebaseAnalyticsService(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }.inObjectScope(.container)
     }
 }

@@ -8,17 +8,17 @@
 import Foundation
 import SwiftUI
 
-public class WebUnitViewModel: ObservableObject {
+public class WebUnitViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
     
-    let authInteractor: AuthInteractorProtocol
+    public let authInteractor: AuthInteractorProtocol
     let config: ConfigProtocol
     
-    @Published var updatingCookies: Bool = false
-    @Published var cookiesReady: Bool = false
-    @Published var showError: Bool = false
+    @Published public var updatingCookies: Bool = false
+    @Published public var cookiesReady: Bool = false
+    @Published public var showError: Bool = false
     private var retryCount = 1
     
-    var errorMessage: String? {
+    public var errorMessage: String? {
         didSet {
             withAnimation {
                 showError = errorMessage != nil
@@ -29,27 +29,5 @@ public class WebUnitViewModel: ObservableObject {
     public init(authInteractor: AuthInteractorProtocol, config: ConfigProtocol) {
         self.authInteractor = authInteractor
         self.config = config
-    }
-    
-    @MainActor
-    func updateCookies(force: Bool = false) async {
-        guard !updatingCookies else { return }
-        do {
-            updatingCookies = true
-            try await authInteractor.getCookies(force: force)
-            cookiesReady = true
-            updatingCookies = false
-            errorMessage = nil
-        } catch {
-            if error.isInternetError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else if retryCount > 0 {
-                retryCount -= 1
-                await updateCookies(force: force)
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
-            updatingCookies = false
-        }
     }
 }

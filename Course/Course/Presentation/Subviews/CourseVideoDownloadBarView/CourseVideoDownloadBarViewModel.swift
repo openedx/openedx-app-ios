@@ -134,7 +134,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                     }
                     self.courseViewModel.router.dismiss(animated: true)
                 },
-                type: .default(positiveAction: CoreLocalization.Alert.delete, image: CoreAssets.bgDelete.swiftUIImage)
+                type: .deleteVideo
             )
             return
         }
@@ -142,7 +142,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         if isOn {
             courseViewModel.router.presentAlert(
                 alertTitle: "Warning",
-                alertMessage: "\(CourseLocalization.Alert.stopDownloading) \"\(courseStructure.displayName)\"?",
+                alertMessage: "\(CourseLocalization.Alert.stopDownloading) \"\(courseStructure.displayName)\"",
                 positiveAction: CoreLocalization.Alert.accept,
                 onCloseTapped: { [weak self] in
                     self?.courseViewModel.router.dismiss(animated: true)
@@ -154,7 +154,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                     }
                     self.courseViewModel.router.dismiss(animated: true)
                 },
-                type: .default(positiveAction: CoreLocalization.Alert.accept, image: nil)
+                type: .deleteVideo
             )
             return
         }

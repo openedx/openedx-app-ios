@@ -30,7 +30,7 @@ class RouteController: UIViewController {
         super.viewDidLoad()
         
         if let user = appStorage.user, appStorage.accessToken != nil {
-            analytics.setUserID("\(user.id)")
+            analytics.identify(id: "\(user.id)", username: user.username ?? "", email: user.email ?? "")
             DispatchQueue.main.async {
                 self.showMainOrWhatsNewScreen()
             }

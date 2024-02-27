@@ -45,6 +45,21 @@
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		07D5DA4128D075AB00752FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3F28D075AB00752FD9 /* LaunchScreen.storyboard */; };
 		95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */; };
+		A500668B2B613ED10024680B /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668A2B613ED10024680B /* PushNotificationsManager.swift */; };
+		A500668D2B6143000024680B /* FCMProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668C2B6143000024680B /* FCMProvider.swift */; };
+		A50066912B61467B0024680B /* BrazeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066902B61467B0024680B /* BrazeProvider.swift */; };
+		A50066932B614DCD0024680B /* FCMListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066922B614DCD0024680B /* FCMListener.swift */; };
+		A50066952B614DEF0024680B /* BrazeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066942B614DEF0024680B /* BrazeListener.swift */; };
+		A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */; };
+		A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */ = {isa = PBXBuildFile; productRef = A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */; };
+		A5462D9C2B864AE0003B96A5 /* BranchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5462D9B2B864AE0003B96A5 /* BranchService.swift */; };
+		A5462D9F2B865713003B96A5 /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = A5462D9E2B865713003B96A5 /* Segment */; };
+		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
+		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
+		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
+		A59702292B83C87900CA064C /* FirebaseAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59702282B83C87900CA064C /* FirebaseAnalyticsService.swift */; };
+		A5BD3E302B83B0F7006A8983 /* SegmentFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */; };
+		A5C10D8F2B861A70008E864D /* SegmentAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C10D8E2B861A70008E864D /* SegmentAnalyticsService.swift */; };
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -115,6 +130,17 @@
 		6F54C19C823A769E18923FA8 /* Pods-App-OpenEdX.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugstage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugstage.xcconfig"; sourceTree = "<group>"; };
 		8284179FC05AEE2591573E20 /* Pods-App-OpenEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A24D6A8E1BC4DF46AD68904C /* Pods-App-OpenEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
+		A500668A2B613ED10024680B /* PushNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationsManager.swift; sourceTree = "<group>"; };
+		A500668C2B6143000024680B /* FCMProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMProvider.swift; sourceTree = "<group>"; };
+		A50066902B61467B0024680B /* BrazeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeProvider.swift; sourceTree = "<group>"; };
+		A50066922B614DCD0024680B /* FCMListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMListener.swift; sourceTree = "<group>"; };
+		A50066942B614DEF0024680B /* BrazeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeListener.swift; sourceTree = "<group>"; };
+		A5462D9B2B864AE0003B96A5 /* BranchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchService.swift; sourceTree = "<group>"; };
+		A59568942B61630500ED4F90 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
+		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
+		A59702282B83C87900CA064C /* FirebaseAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAnalyticsService.swift; sourceTree = "<group>"; };
+		A5C10D8E2B861A70008E864D /* SegmentAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentAnalyticsService.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,11 +158,15 @@
 				025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */,
 				0770DE4B28D0A462006D8A5D /* Authorization.framework in Frameworks */,
 				BA3042792B1F7147009B64B7 /* MSAL in Frameworks */,
+				A5462D9F2B865713003B96A5 /* Segment in Frameworks */,
 				072787B128D34D83002E9142 /* Discovery.framework in Frameworks */,
 				0218196428F734FA00202564 /* Discussion.framework in Frameworks */,
 				0219C67728F4347600D64452 /* Course.framework in Frameworks */,
 				027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */,
+				A5BD3E302B83B0F7006A8983 /* SegmentFirebase in Frameworks */,
 				95C140F3BDF778364986E83B /* Pods_App_OpenEdX.framework in Frameworks */,
+				A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */,
+				A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,8 +230,7 @@
 				07D5DA3428D075AA00752FD9 /* AppDelegate.swift */,
 				0770DE1628D080A1006D8A5D /* RouteController.swift */,
 				0770DE1F28D0858A006D8A5D /* Router.swift */,
-				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
-				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
+				A50066882B613E800024680B /* Managers */,
 				0293A2012A6FC9E30090A336 /* Data */,
 				0727878C28D347B2002E9142 /* View */,
 				0770DE1A28D084BC006D8A5D /* DI */,
@@ -248,6 +277,98 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		A50066872B613E4B0024680B /* PushNotificationsManager */ = {
+			isa = PBXGroup;
+			children = (
+				A500668A2B613ED10024680B /* PushNotificationsManager.swift */,
+				A50066962B614F0C0024680B /* Providers */,
+				A50066972B614F2B0024680B /* Listeners */,
+			);
+			path = PushNotificationsManager;
+			sourceTree = "<group>";
+		};
+		A50066882B613E800024680B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A59568932B6162E400ED4F90 /* DeepLinkManager */,
+				A50066872B613E4B0024680B /* PushNotificationsManager */,
+				A50066892B613E990024680B /* AnalyticsManager */,
+				A59702272B83C84800CA064C /* FirebaseAnalyticsService */,
+				A5C10D8D2B861A56008E864D /* SegmentAnalyticsService */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		A50066892B613E990024680B /* AnalyticsManager */ = {
+			isa = PBXGroup;
+			children = (
+				0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */,
+				02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */,
+			);
+			path = AnalyticsManager;
+			sourceTree = "<group>";
+		};
+		A50066962B614F0C0024680B /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				A500668C2B6143000024680B /* FCMProvider.swift */,
+				A50066902B61467B0024680B /* BrazeProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		A50066972B614F2B0024680B /* Listeners */ = {
+			isa = PBXGroup;
+			children = (
+				A50066922B614DCD0024680B /* FCMListener.swift */,
+				A50066942B614DEF0024680B /* BrazeListener.swift */,
+			);
+			path = Listeners;
+			sourceTree = "<group>";
+		};
+		A59568932B6162E400ED4F90 /* DeepLinkManager */ = {
+			isa = PBXGroup;
+			children = (
+				A59568942B61630500ED4F90 /* DeepLinkManager.swift */,
+				A5F46FD02B692B140003EEEF /* Services */,
+				A59585AD2B62677B00A35A20 /* Link */,
+			);
+			path = DeepLinkManager;
+			sourceTree = "<group>";
+		};
+		A59585AD2B62677B00A35A20 /* Link */ = {
+			isa = PBXGroup;
+			children = (
+				A59568962B61653700ED4F90 /* DeepLink.swift */,
+				A59568982B616D9400ED4F90 /* PushLink.swift */,
+			);
+			path = Link;
+			sourceTree = "<group>";
+		};
+		A59702272B83C84800CA064C /* FirebaseAnalyticsService */ = {
+			isa = PBXGroup;
+			children = (
+				A59702282B83C87900CA064C /* FirebaseAnalyticsService.swift */,
+			);
+			path = FirebaseAnalyticsService;
+			sourceTree = "<group>";
+		};
+		A5C10D8D2B861A56008E864D /* SegmentAnalyticsService */ = {
+			isa = PBXGroup;
+			children = (
+				A5C10D8E2B861A70008E864D /* SegmentAnalyticsService.swift */,
+			);
+			path = SegmentAnalyticsService;
+			sourceTree = "<group>";
+		};
+		A5F46FD02B692B140003EEEF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A5462D9B2B864AE0003B96A5 /* BranchService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -271,6 +392,10 @@
 			name = OpenEdX;
 			packageProductDependencies = (
 				BA3042782B1F7147009B64B7 /* MSAL */,
+				A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */,
+				A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */,
+				A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */,
+				A5462D9E2B865713003B96A5 /* Segment */,
 			);
 			productName = OpenEdX;
 			productReference = 07D5DA3128D075AA00752FD9 /* OpenEdX.app */;
@@ -303,6 +428,9 @@
 			mainGroup = 07D5DA2828D075AA00752FD9;
 			packageReferences = (
 				BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
+				A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
+				A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */,
+				A5462D9D2B865713003B96A5 /* XCRemoteSwiftPackageReference "analytics-swift" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
 			projectDirPath = "";
@@ -337,6 +465,11 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
 			);
 			name = FirebaseCrashlytics;
 			outputFileListPaths = (
@@ -345,7 +478,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "plistPath=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/GoogleService-Info.plist\"\n\ngoogleAppID=$(/usr/libexec/PlistBuddy -c \"Print :GOOGLE_APP_ID\" \"$plistPath\")\n\nif [ -z \"$googleAppID\" ]\nthen\n    echo \"GoogleAppID is empty. The FirebaseCrashlytics script will be skipped.\"\nelse\n    \"${PODS_ROOT}/FirebaseCrashlytics/run\" --app-id \"$googleAppID\" -p ios \"${DWARF_DSYM_FOLDER_PATH}\"\nfi\n";
+			shellScript = "plistPath=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/GoogleService-Info.plist\"\n\ngoogleAppID=$(/usr/libexec/PlistBuddy -c \"Print :GOOGLE_APP_ID\" \"$plistPath\")\n\nif [ -z \"$googleAppID\" ]\nthen\n    echo \"GoogleAppID is empty. The FirebaseCrashlytics script will be skipped.\"\nelse\n    \"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nfi\n";
 		};
 		0770DE2328D08647006D8A5D /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -413,9 +546,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A500668B2B613ED10024680B /* PushNotificationsManager.swift in Sources */,
 				0293A2052A6FCD430090A336 /* CoursePersistence.swift in Sources */,
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
+				A50066912B61467B0024680B /* BrazeProvider.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
 				02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */,
@@ -423,12 +558,21 @@
 				0770DE5028D0A707006D8A5D /* NetworkAssembly.swift in Sources */,
 				0293A2032A6FCA590090A336 /* CorePersistence.swift in Sources */,
 				0770DE1E28D084E8006D8A5D /* AppAssembly.swift in Sources */,
+				A5462D9C2B864AE0003B96A5 /* BranchService.swift in Sources */,
+				A50066932B614DCD0024680B /* FCMListener.swift in Sources */,
+				A59702292B83C87900CA064C /* FirebaseAnalyticsService.swift in Sources */,
+				A500668D2B6143000024680B /* FCMProvider.swift in Sources */,
 				025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */,
 				024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */,
 				0770DE2028D0858A006D8A5D /* Router.swift in Sources */,
 				0293A2092A6FCDE50090A336 /* DashboardPersistence.swift in Sources */,
 				0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */,
+				A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */,
+				A50066952B614DEF0024680B /* BrazeListener.swift in Sources */,
 				071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */,
+				A59568972B61653700ED4F90 /* DeepLink.swift in Sources */,
+				A5C10D8F2B861A70008E864D /* SegmentAnalyticsService.swift in Sources */,
+				A59568992B616D9400ED4F90 /* PushLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +683,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -627,6 +772,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -721,6 +867,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -809,6 +956,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -957,6 +1105,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -991,6 +1140,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1051,6 +1201,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/braze-inc/braze-segment-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+		A5462D9D2B865713003B96A5 /* XCRemoteSwiftPackageReference "analytics-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/segmentio/analytics-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.3;
+			};
+		};
+		A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/segment-integrations/analytics-swift-firebase";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.5;
+			};
+		};
 		BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
@@ -1062,6 +1236,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBraze;
+		};
+		A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */;
+			productName = SegmentBrazeUI;
+		};
+		A5462D9E2B865713003B96A5 /* Segment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5462D9D2B865713003B96A5 /* XCRemoteSwiftPackageReference "analytics-swift" */;
+			productName = Segment;
+		};
+		A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */;
+			productName = SegmentFirebase;
+		};
 		BA3042782B1F7147009B64B7 /* MSAL */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;

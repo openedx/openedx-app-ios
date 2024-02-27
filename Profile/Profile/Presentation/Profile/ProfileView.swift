@@ -132,6 +132,7 @@ public struct ProfileView: View {
                 Text(ProfileLocalization.info)
                     .padding(.horizontal, 24)
                     .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textSecondary)
 
                 VStack(alignment: .leading, spacing: 16) {
                     if viewModel.userModel?.yearOfBirth != 0 {
@@ -173,6 +174,7 @@ public struct ProfileView: View {
         Text(ProfileLocalization.settings)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.textSecondary)
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 viewModel.trackProfileVideoSettingsClicked()
@@ -237,11 +239,14 @@ public struct ProfileView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         let router = ProfileRouterMock()
-        let vm = ProfileViewModel(interactor: ProfileInteractor.mock,
-                                  router: router,
-                                  analytics: ProfileAnalyticsMock(),
-                                  config: ConfigMock(),
-                                  connectivity: Connectivity())
+        let vm = ProfileViewModel(
+            interactor: ProfileInteractor.mock,
+            downloadManager: DownloadManagerMock(),
+            router: router,
+            analytics: ProfileAnalyticsMock(),
+            config: ConfigMock(),
+            connectivity: Connectivity()
+        )
 
         ProfileView(viewModel: vm, settingsTapped: .constant(false))
             .preferredColorScheme(.light)
