@@ -38,11 +38,7 @@ struct MainScreenView: View {
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondary)
     }
-    
-    private var shouldStretch: Bool {
-        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
-    }
-    
+        
     var body: some View {
         TabView(selection: $selection) {
             let config = Container.shared.resolve(ConfigProtocol.self)
@@ -76,7 +72,7 @@ struct MainScreenView: View {
             
             ZStack {
                 DashboardView(
-                    viewModel: Container.shared.resolve(DashboardViewModel.self, argument: shouldStretch)!,
+                    viewModel: Container.shared.resolve(DashboardViewModel.self)!,
                     router: Container.shared.resolve(DashboardRouter.self)!
                 )
                 if updateAvaliable {

@@ -320,15 +320,13 @@ public class Router: AuthorizationRouter,
         enrollmentEnd: Date?,
         title: String
     ) {
-        let shouldStretch = Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
             arguments: isActive,
             courseStart,
             courseEnd,
             enrollmentStart,
-            enrollmentEnd,
-            shouldStretch
+            enrollmentEnd
         )!
         let screensView = CourseContainerView(
             viewModel: vm,

@@ -247,8 +247,7 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseStart: nil,
                 courseEnd: nil,
                 enrollmentStart: nil,
-                enrollmentEnd: nil,
-                shouldStretch: false
+                enrollmentEnd: nil
             ),
             courseID: "", title: "Title of Course")
     }

@@ -39,7 +39,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
-    let shouldStretch: Bool
 
     var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
@@ -62,8 +61,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
-        enrollmentEnd: Date?,
-        shouldStretch: Bool
+        enrollmentEnd: Date?
     ) {
         self.interactor = interactor
         self.authInteractor = authInteractor
@@ -79,7 +77,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.storage = storage
         self.userSettings = storage.userSettings
         self.isInternetAvaliable = connectivity.isInternetAvaliable
-        self.shouldStretch = shouldStretch
+
         super.init(manager: manager)
 
         addObservers()

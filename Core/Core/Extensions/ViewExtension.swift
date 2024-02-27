@@ -12,6 +12,9 @@ import Swinject
 import Theme
 
 public extension View {
+    var shouldStretch: Bool {
+        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
+    }
     
     func cardStyle(
         top: CGFloat? = 0,
@@ -93,7 +96,7 @@ public extension View {
     
     @ViewBuilder
     func frameLimit(sizePortrait: CGFloat = 560, sizeLandscape: CGFloat = 648) -> some View {
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.userInterfaceIdiom == .pad && !shouldStretch{
             HStack {
                 Spacer(minLength: 0)
                 self.frame(maxWidth: UIDevice.current.orientation.isPortrait ? sizePortrait : sizeLandscape)
@@ -154,7 +157,6 @@ public extension View {
         maxIpadWidth: CGFloat = 420
     ) -> some View {
         var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-        let shouldStretch = Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
         return ZStack {
             RoundedCorners(tl: 24, tr: 24)
                 .offset(y: 1)

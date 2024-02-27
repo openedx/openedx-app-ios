@@ -119,12 +119,10 @@ public struct CourseOutlineView: View {
                             Spacer(minLength: 84)
                         }
                     }
-                    .if(!viewModel.shouldStretch, transform: { view in
-                        view.frameLimit()
-                    })
-                    .onRightSwipeGesture {
-                        viewModel.router.back()
-                    }
+                    .frameLimit()
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
                 }
                 .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
                 .accessibilityAction {}
@@ -298,8 +296,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: Date(),
-            enrollmentEnd: nil,
-            shouldStretch: false
+            enrollmentEnd: nil
         )
         Task {
             await viewModel.getCourseBlocks(courseID: "courseId")

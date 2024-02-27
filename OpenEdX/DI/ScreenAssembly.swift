@@ -159,12 +159,11 @@ class ScreenAssembly: Assembly {
                 repository: r.resolve(DashboardRepositoryProtocol.self)!
             )
         }
-        container.register(DashboardViewModel.self) { r, shouldStretch in
+        container.register(DashboardViewModel.self) { r in
             DashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!,
-                shouldStretch: shouldStretch
+                analytics: r.resolve(DashboardAnalytics.self)!
             )
         }
         
@@ -251,7 +250,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, shouldStretch in
+        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -265,8 +264,7 @@ class ScreenAssembly: Assembly {
                 courseStart: courseStart,
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
-                enrollmentEnd: enrollmentEnd,
-                shouldStretch: shouldStretch
+                enrollmentEnd: enrollmentEnd
             )
         }
         
@@ -334,7 +332,7 @@ class ScreenAssembly: Assembly {
                 languages: languages,
                 playerStateSubject: playerStateSubject,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!, 
+                router: r.resolve(CourseRouter.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
