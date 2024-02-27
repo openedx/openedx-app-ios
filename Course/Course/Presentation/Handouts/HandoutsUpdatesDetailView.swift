@@ -27,10 +27,9 @@ public struct HandoutsUpdatesDetailView: View {
         router: CourseRouter,
         cssInjector: CSSInjector
     ) {
-        let handoutsView = handouts != nil && announcements == nil
         let noHandouts = handouts == nil && announcements == nil
         
-        if handoutsView || noHandouts {
+        if announcements == nil {
             self.title = CourseLocalization.HandoutsCellHandouts.title
         } else {
             self.title = CourseLocalization.HandoutsCellAnnouncements.title
