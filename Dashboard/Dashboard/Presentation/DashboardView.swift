@@ -94,9 +94,10 @@ public struct DashboardView: View {
                             }
                         }
                     }
-                }.accessibilityAction {}
-                .frameLimit()
-            }.padding(.top, 8)
+                }
+                .accessibilityAction {}
+            }
+            .padding(.top, 8)
             
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(connectivity: viewModel.connectivity,

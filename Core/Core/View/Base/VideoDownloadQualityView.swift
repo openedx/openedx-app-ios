@@ -82,7 +82,6 @@ public struct VideoDownloadQualityView: View {
                 )
                 .padding(.horizontal, 24)
             }
-            .frameLimit(sizePortrait: 420)
             .padding(.top, 8)
         }
         .navigationBarHidden(false)

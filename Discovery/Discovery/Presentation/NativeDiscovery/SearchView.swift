@@ -133,7 +133,7 @@ public struct SearchView: View {
                             }
                         }
                         Spacer(minLength: 40)
-                    }.frameLimit()
+                    }
                 }
             }
             // MARK: - Error Alert

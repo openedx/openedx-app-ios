@@ -147,7 +147,7 @@ public struct ResponsesView: View {
                             .onRightSwipeGesture {
                                 viewModel.router.back()
                             }
-                        }.frameLimit()
+                        }
                         
                         if !parentComment.closed {
                             FlexibleKeyboardInputView(

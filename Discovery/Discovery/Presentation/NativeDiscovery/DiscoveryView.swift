@@ -134,8 +134,8 @@ public struct DiscoveryView: View {
                             VStack {}.frame(height: 40)
                         }
                     }
-                    .frameLimit()
-                }.accessibilityAction {}
+                }
+                .accessibilityAction {}
                 
                 if !viewModel.userloggedIn {
                     LogistrationBottomView { buttonAction in

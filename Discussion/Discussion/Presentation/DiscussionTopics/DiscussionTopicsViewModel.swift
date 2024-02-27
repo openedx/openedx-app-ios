@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Swinject
 import Core
 
 public class DiscussionTopicsViewModel: ObservableObject {
@@ -31,7 +30,6 @@ public class DiscussionTopicsViewModel: ObservableObject {
     let router: DiscussionRouter
     let analytics: DiscussionAnalytics
     let config: ConfigProtocol
-    let shouldStretch: Bool
     
     public init(title: String,
                 interactor: DiscussionInteractorProtocol,
@@ -43,7 +41,6 @@ public class DiscussionTopicsViewModel: ObservableObject {
         self.router = router
         self.analytics = analytics
         self.config = config
-        shouldStretch = Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
     }
     
     func generateTopics(topics: Topics?) -> [DiscussionTopic] {

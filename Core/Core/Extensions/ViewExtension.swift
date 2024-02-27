@@ -8,14 +8,9 @@
 import Foundation
 @_spi(Advanced) import SwiftUIIntrospect
 import SwiftUI
-import Swinject
 import Theme
 
 public extension View {
-    var shouldStretch: Bool {
-        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
-    }
-    
     func cardStyle(
         top: CGFloat? = 0,
         bottom: CGFloat? = 0,
@@ -96,7 +91,7 @@ public extension View {
     
     @ViewBuilder
     func frameLimit(sizePortrait: CGFloat = 560, sizeLandscape: CGFloat = 648) -> some View {
-        if UIDevice.current.userInterfaceIdiom == .pad && !shouldStretch{
+        if UIDevice.current.userInterfaceIdiom == .pad {
             HStack {
                 Spacer(minLength: 0)
                 self.frame(maxWidth: UIDevice.current.orientation.isPortrait ? sizePortrait : sizeLandscape)

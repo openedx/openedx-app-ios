@@ -12,7 +12,6 @@ private enum Keys: String, RawStringExtractable {
     case courseTopTabBarEnabled = "COURSE_TOP_TAB_BAR_ENABLED"
     case courseBannerEnabled = "COURSE_BANNER_ENABLED"
     case courseUnitProgressEnabled = "COURSE_UNIT_PROGRESS_ENABLED"
-    case iPadStretchDesign = "IPAD_STRETCH"
 }
 
 public class UIComponentsConfig: NSObject {
@@ -20,14 +19,12 @@ public class UIComponentsConfig: NSObject {
     public var courseBannerEnabled: Bool
     public var courseUnitProgressEnabled: Bool
     public var courseTopTabBarEnabled: Bool
-    public var shouldStretchOniPad: Bool
 
     init(dictionary: [String: Any]) {
         courseNestedListEnabled = dictionary[Keys.courseNestedListEnabled] as? Bool ?? false
         courseBannerEnabled = dictionary[Keys.courseBannerEnabled] as? Bool ?? false
         courseUnitProgressEnabled = dictionary[Keys.courseUnitProgressEnabled] as? Bool ?? false
         courseTopTabBarEnabled = dictionary[Keys.courseTopTabBarEnabled] as? Bool ?? false
-        shouldStretchOniPad = dictionary[Keys.iPadStretchDesign] as? Bool ?? false
         super.init()
     }
 }

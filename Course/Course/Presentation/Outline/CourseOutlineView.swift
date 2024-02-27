@@ -119,10 +119,9 @@ public struct CourseOutlineView: View {
                             Spacer(minLength: 84)
                         }
                     }
-                    .frameLimit()
-                        .onRightSwipeGesture {
-                            viewModel.router.back()
-                        }
+                    .onRightSwipeGesture {
+                        viewModel.router.back()
+                    }
                 }
                 .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
                 .accessibilityAction {}

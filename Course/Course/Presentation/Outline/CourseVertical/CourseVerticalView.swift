@@ -140,11 +140,11 @@ public struct CourseVerticalView: View {
                         }
                     }
                     Spacer(minLength: 84)
-                }.accessibilityAction {}
-                .frameLimit()
-                    .onRightSwipeGesture {
-                        viewModel.router.back()
-                    }
+                }
+                .accessibilityAction {}
+                .onRightSwipeGesture {
+                    viewModel.router.back()
+                }
             }
             .padding(.top, 8)
             

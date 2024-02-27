@@ -130,7 +130,6 @@ public struct DeleteAccountView: View {
                 .frame(minHeight: 0,
                        maxHeight: .infinity,
                        alignment: .top)
-                .frameLimit(sizePortrait: 420)
             
                 .padding(.top, 8)
                 .navigationBarHidden(false)

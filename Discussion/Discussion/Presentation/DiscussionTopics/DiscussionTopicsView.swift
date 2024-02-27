@@ -33,11 +33,7 @@ public struct DiscussionTopicsView: View {
                     Text(DiscussionLocalization.Topics.search)
                         .foregroundColor(Theme.Colors.textSecondary)
                     Spacer()
-                }
-                .if(!viewModel.shouldStretch, transform: { view in
-                    view
-                        .frame(maxWidth: 532)
-                })
+                }                
                 .frame(minHeight: 48)
                 .background(
                     Theme.Shapes.textInputShape
@@ -133,10 +129,10 @@ public struct DiscussionTopicsView: View {
                                 }
                                 Spacer(minLength: 84)
                             }
-                        }.frameLimit()
-                            .onRightSwipeGesture {
-                                router.back()
-                            }
+                        }
+                        .onRightSwipeGesture {
+                            router.back()
+                        }
                         
                     }
                 }.frame(maxWidth: .infinity)

@@ -84,8 +84,8 @@ public struct SettingsView: View {
                     alignment: .topLeading
                 )
                 .padding(.horizontal, 24)
-            }.frameLimit(sizePortrait: 420)
-                .padding(.top, 8)
+            }
+            .padding(.top, 8)
             
             // MARK: - Error Alert
             if viewModel.showError {

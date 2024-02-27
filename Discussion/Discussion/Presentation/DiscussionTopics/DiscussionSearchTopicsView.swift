@@ -66,10 +66,6 @@ public struct DiscussionSearchTopicsView: View {
                 }
 //                .padding(.top, -7)
                 .frame(minHeight: 48)
-                .if(!viewModel.shouldStretch, transform: { view in
-                    view
-                        .frame(maxWidth: 532)
-                })
                 .background(
                     Theme.Shapes.textInputShape
                         .fill(viewModel.isSearchActive
@@ -127,7 +123,7 @@ public struct DiscussionSearchTopicsView: View {
                         }
                         .id(UUID())
                         Spacer(minLength: 40)
-                    }.frameLimit()
+                    }
                 }
             }
             // MARK: - Error Alert

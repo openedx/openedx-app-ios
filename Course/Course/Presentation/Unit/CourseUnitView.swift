@@ -184,7 +184,7 @@ public struct CourseUnitView: View {
                                     languages: block.subtitles ?? [],
                                     isOnScreen: index == viewModel.index
                                 )
-                                .frameLimit()
+
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
@@ -213,7 +213,7 @@ public struct CourseUnitView: View {
                                     isOnScreen: index == viewModel.index
                                 )
                                 .padding(.top, 5)
-                                .frameLimit()
+
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
@@ -270,7 +270,7 @@ public struct CourseUnitView: View {
                                             Color.clear
                                         }
                                     }
-                                }.frameLimit()
+                                }
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
@@ -425,7 +425,6 @@ public struct CourseUnitView: View {
             .padding(.bottom, isHorizontal ? 0 : 50)
             .padding(.top, isHorizontal ? 12 : 0)
         }
-        .frameLimit(sizePortrait: 420)
     }
 }
 

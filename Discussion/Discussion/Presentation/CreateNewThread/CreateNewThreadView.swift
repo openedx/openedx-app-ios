@@ -176,11 +176,11 @@ public struct CreateNewThreadView: View {
                                          isActive: postTitle != "" && postBody != "")
                             .padding(.top, 26)
                             Spacer()
-                        }.padding(.horizontal, 24)
-                            .frameLimit()
-                            .onRightSwipeGesture {
-                                viewModel.router.back()
-                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
                     }.scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 }
             }.padding(.top, 8)

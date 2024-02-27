@@ -90,7 +90,7 @@ public struct PostsView: View {
                                     )
                                 Divider().offset(y: -8)
                             }
-                            .frameLimit()
+
                             RefreshableScrollViewCompat(action: {
                                 viewModel.resetPosts()
                                 _ = await viewModel.getPosts(
@@ -189,12 +189,12 @@ public struct PostsView: View {
                                     }
                                 }
                             }
-                        }.accessibilityAction {}
-                        .frameLimit()
-                            .animation(nil)
-                            .onRightSwipeGesture {
-                                router.back()
-                            }
+                        }
+                        .accessibilityAction {}
+                        .animation(nil)
+                        .onRightSwipeGesture {
+                            router.back()
+                        }
                     }
                 }.frame(maxWidth: .infinity)
             }

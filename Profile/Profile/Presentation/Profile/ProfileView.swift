@@ -30,7 +30,6 @@ public struct ProfileView: View {
                 content: content
             )
             .accessibilityAction {}
-            .frameLimit(sizePortrait: 420)
             .padding(.top, 8)
             .onChange(of: settingsTapped, perform: { _ in
                 let userModel = viewModel.userModel ?? UserProfile()

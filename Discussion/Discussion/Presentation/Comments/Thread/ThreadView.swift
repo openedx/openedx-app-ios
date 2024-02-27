@@ -142,7 +142,6 @@ public struct ThreadView: View {
                                     Spacer(minLength: 84)
                                 }
                             }
-                            .frameLimit()
                             .onRightSwipeGesture {
                                 viewModel.router.back()
                                 onBackTapped()

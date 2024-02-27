@@ -135,10 +135,10 @@ public struct CourseDetailsView: View {
                                     }
                                 }
                             }
-                        }.frameLimit()
-                            .onRightSwipeGesture {
-                                viewModel.router.back()
-                            }
+                        }
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
                         Spacer(minLength: 84)
                     }
                 }

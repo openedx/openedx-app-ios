@@ -76,10 +76,10 @@ public struct UserProfileView: View {
                     }
                     Spacer()
                 }
-            }.frameLimit(sizePortrait: 420)
-                .padding(.top, 8)
-                .navigationBarHidden(false)
-                .navigationBarBackButtonHidden(false)
+            }
+            .padding(.top, 8)
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
             
             // MARK: - Error Alert
             if viewModel.showError {

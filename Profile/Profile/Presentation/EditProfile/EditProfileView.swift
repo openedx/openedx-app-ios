@@ -147,7 +147,7 @@ public struct EditProfileView: View {
                     }
                 }
                 .scrollAvoidKeyboard(dismissKeyboardByTap: true)
-                .frameLimit(sizePortrait: 420)
+                .frameLimit()
                 .ignoresSafeArea(edges: .bottom)
             // MARK: - Error Alert
             if viewModel.showError {
