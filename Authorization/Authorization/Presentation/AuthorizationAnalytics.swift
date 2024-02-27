@@ -30,7 +30,7 @@ public enum SocialAuthMethod: String {
 
 //sourcery: AutoMockable
 public protocol AuthorizationAnalytics {
-    func setUserID(_ id: String)
+    func identify(id: String, username: String, email: String)
     func userLogin(method: AuthMethod)
     func signUpClicked()
     func createAccountClicked()
@@ -41,7 +41,7 @@ public protocol AuthorizationAnalytics {
 
 #if DEBUG
 class AuthorizationAnalyticsMock: AuthorizationAnalytics {
-    public func setUserID(_ id: String) {}
+    func identify(id: String, username: String, email: String) {}
     public func userLogin(method: AuthMethod) {}
     public func signUpClicked() {}
     public func createAccountClicked() {}

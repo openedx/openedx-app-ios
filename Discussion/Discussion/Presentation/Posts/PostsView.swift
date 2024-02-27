@@ -66,7 +66,8 @@ public struct PostsView: View {
                                             viewModel.generateButtons(type: .filter)
                                             showingAlert = true
                                         }, label: {
-                                            CoreAssets.filter.swiftUIImage
+                                            CoreAssets.filter.swiftUIImage.renderingMode(.template)
+                                                .foregroundColor(Theme.Colors.accentXColor)
                                             Text(viewModel.filterTitle.localizedValue)
                                         })
                                         Spacer()
@@ -74,7 +75,8 @@ public struct PostsView: View {
                                             viewModel.generateButtons(type: .sort)
                                             showingAlert = true
                                         }, label: {
-                                            CoreAssets.sort.swiftUIImage
+                                            CoreAssets.sort.swiftUIImage.renderingMode(.template)
+                                                .foregroundColor(Theme.Colors.accentXColor)
                                             Text(viewModel.sortTitle.localizedValue)
                                         })
                                     }.foregroundColor(Theme.Colors.accentColor)
@@ -126,7 +128,7 @@ public struct PostsView: View {
                                                 .foregroundColor(Theme.Colors.white)
                                                 .background(
                                                     Circle()
-                                                        .foregroundColor(Theme.Colors.accentColor)
+                                                        .foregroundColor(Theme.Colors.accentButtonColor)
                                                 )
                                             })
                                         }
@@ -180,7 +182,7 @@ public struct PostsView: View {
                                                 isTransparent: true)
                                             .frame(width: 215)
                                             .padding(.top, 40)
-                                            .colorMultiply(.accentColor)
+                                            .colorMultiply(Theme.Colors.accentColor)
                                             
                                         }.padding(24)
                                             .padding(.top, 100)
@@ -308,7 +310,8 @@ public struct PostCell: View {
                     .font(Theme.Fonts.labelSmall)
                     .foregroundColor(Theme.Colors.textSecondary)
                 HStack {
-                    CoreAssets.responses.swiftUIImage
+                    CoreAssets.responses.swiftUIImage.renderingMode(.template)
+                        .foregroundColor(Theme.Colors.accentXColor)
                     Text("\(post.replies - 1)")
                     Text(DiscussionLocalization.responsesCount(post.replies - 1))
                         .font(Theme.Fonts.labelLarge)

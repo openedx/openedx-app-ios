@@ -48,7 +48,7 @@ public struct SignInView: View {
             }
             
             VStack(alignment: .center) {
-                ThemeAssets.appLogo.swiftUIImage
+                ThemeAssets.appLogoLight.swiftUIImage
                     .resizable()
                     .frame(maxWidth: 189, maxHeight: 54)
                     .padding(.top, isHorizontal ? 20 : 40)
@@ -213,8 +213,8 @@ public struct SignInView: View {
                 policy
             )
             Text(.init(text))
-                .tint(Theme.Colors.accentColor)
-                .foregroundStyle(Theme.Colors.textSecondary)
+                .tint(Theme.Colors.accentXColor)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
                 .padding(.bottom, 15)

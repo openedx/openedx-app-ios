@@ -22,7 +22,9 @@ struct ProfileSupportInfoView: View {
         Text(ProfileLocalization.supportInfo)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.textSecondary)
             .accessibilityIdentifier("support_info_text")
+        
         VStack(alignment: .leading, spacing: 24) {
             viewModel.contactSupport().map(supportInfo)
             viewModel.config.agreement.tosURL.map(terms)

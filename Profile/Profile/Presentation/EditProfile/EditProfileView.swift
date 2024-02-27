@@ -49,7 +49,7 @@ public struct EditProfileView: View {
                                 ZStack {
                                     Circle().frame(width: 36, height: 36)
                                         .foregroundColor(Theme.Colors.accentColor)
-                                    CoreAssets.addPhoto.swiftUIImage
+                                    CoreAssets.addPhoto.swiftUIImage.renderingMode(.template)
                                         .foregroundColor(Theme.Colors.white)
                                 }.offset(x: 36, y: 50)
                             )
@@ -233,10 +233,10 @@ public struct EditProfileView: View {
                 }, label: {
                     HStack(spacing: 2) {
                         CoreAssets.done.swiftUIImage.renderingMode(.template)
-                            .foregroundColor(Theme.Colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentXColor)
                         Text(CoreLocalization.done)
                             .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(Theme.Colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentXColor)
                     }
                 })
                 .opacity(viewModel.isChanged ? 1 : 0.3)

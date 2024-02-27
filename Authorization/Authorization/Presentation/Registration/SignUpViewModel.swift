@@ -131,7 +131,7 @@ public class SignUpViewModel: ObservableObject {
                 fields: validateFields,
                 isSocial: externalToken != nil
             )
-            analytics.setUserID("\(user.id)")
+            analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.registrationSuccess()
             isShowProgress = false
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
@@ -188,7 +188,7 @@ public class SignUpViewModel: ObservableObject {
         do {
             isShowProgress = true
             let user = try await interactor.login(externalToken: response.token, backend: backend)
-            analytics.setUserID("\(user.id)")
+            analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
             isShowProgress = false
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)

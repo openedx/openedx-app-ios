@@ -7,13 +7,18 @@
 
 import Foundation
 import Core
-import FirebaseAnalytics
 import Authorization
 import Discovery
 import Dashboard
 import Profile
 import Course
 import Discussion
+import Swinject
+
+protocol AnalyticsService {
+    func identify(id: String, username: String?, email: String?)
+    func logEvent(_ event: Event, parameters: [String: Any]?)
+}
 
 class AnalyticsManager: AuthorizationAnalytics,
                         MainScreenAnalytics,
@@ -23,8 +28,33 @@ class AnalyticsManager: AuthorizationAnalytics,
                         CourseAnalytics,
                         DiscussionAnalytics {
     
-    public func setUserID(_ id: String) {
-        Analytics.setUserID(id)
+    private var services: [AnalyticsService] = []
+    
+    // Init Analytics Manager
+    public init(config: ConfigProtocol) {
+        services = servicesFor(config: config)
+    }
+
+    private func servicesFor(config: ConfigProtocol) -> [AnalyticsService] {
+        var analyticsServices: [AnalyticsService] = []
+        // add Firebase Analytics Service
+        if config.firebase.enabled && config.firebase.isAnalyticsSourceFirebase,
+           let firebaseService = Container.shared.resolve(FirebaseAnalyticsService.self) {
+            analyticsServices.append(firebaseService)
+        }
+        
+        // add Segment Analytics Service
+        if config.segment.enabled,
+           let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
+            analyticsServices.append(segmentService)
+        }
+        return analyticsServices
+    }
+    
+    public func identify(id: String, username: String, email: String) {
+        for service in services {
+            service.identify(id: id, username: username, email: email)
+        }
     }
     
     public func userLogin(method: AuthMethod) {
@@ -309,7 +339,9 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     private func logEvent(_ event: Event, parameters: [String: Any]? = nil) {
-        Analytics.logEvent(event.rawValue, parameters: parameters)
+        for service in services {
+            service.logEvent(event, parameters: parameters)
+        }
     }
 }
 

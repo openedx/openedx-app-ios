@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Core
 
-enum DataKeys: String {
+enum DataKeys: String, RawStringExtractable {
     case title
     case body
     case aps
@@ -19,11 +20,11 @@ public class PushLink: DeepLink {
     let title: String?
     let body: String?
     
-    override init(dictionary: [String: Any]) {
-        let aps = dictionary[DataKeys.aps.rawValue] as? [String: Any]
-        let alert = aps?[DataKeys.alert.rawValue] as? [String: Any]
-        title = alert?[DataKeys.title.rawValue] as? String
-        body = alert?[DataKeys.body.rawValue] as? String
+    override init(dictionary: [AnyHashable: Any]) {
+        let aps = dictionary[DataKeys.aps] as? [String: Any]
+        let alert = aps?[DataKeys.alert] as? [String: Any]
+        title = alert?[DataKeys.title] as? String
+        body = alert?[DataKeys.body] as? String
 
         super.init(dictionary: dictionary)
     }

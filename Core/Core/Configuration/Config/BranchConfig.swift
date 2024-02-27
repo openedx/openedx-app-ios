@@ -18,8 +18,9 @@ public final class BranchConfig: NSObject {
     
     init(dictionary: [String: AnyObject]) {
         super.init()
-        enabled = dictionary[BranchKeys.enabled] as? Bool == true
         key = dictionary[BranchKeys.key] as? String
+        enabled = dictionary[BranchKeys.enabled] as? Bool ?? false && key?.isEmpty == false
+        
     }
 }
 
