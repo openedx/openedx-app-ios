@@ -45,10 +45,9 @@ public struct VideoQualityView: View {
                                         .renderingMode(.template)
                                         .foregroundColor(.accentColor)
                                         .opacity(quality == viewModel.selectedQuality ? 1 : 0)
-                                        .accessibilityIdentifier("checkmar_image")
-                                    
                                 }.foregroundColor(Theme.Colors.textPrimary)
                             })
+                            .accessibilityIdentifier("select_quality_button")
                             Divider()
                         }
                     }

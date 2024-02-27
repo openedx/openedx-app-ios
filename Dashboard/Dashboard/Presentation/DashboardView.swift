@@ -83,6 +83,7 @@ public struct DashboardView: View {
                                             title: course.name
                                         )
                                     }
+                                    .accessibilityIdentifier("course_item")
                                 }
                                 // MARK: - ProgressBar
                                 if viewModel.nextPage <= viewModel.totalPages {

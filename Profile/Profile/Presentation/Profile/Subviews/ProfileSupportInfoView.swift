@@ -45,9 +45,9 @@ struct ProfileSupportInfoView: View {
                 url: url,
                 title: ProfileLocalization.contact
             ),
-            isEmailSupport: true
+            isEmailSupport: true,
+            identifier: "contact_support"
         )
-        .accessibilityIdentifier("contact_support")
     }
 
     private func terms(url: URL) -> some View {
@@ -95,9 +95,9 @@ struct ProfileSupportInfoView: View {
             linkViewModel: .init(
                 url: url,
                 title: ProfileLocalization.faqTitle
-            )
+            ),
+            identifier: "view_faq"
         )
-        .accessibilityIdentifier("view_faq")
     }
 
     @ViewBuilder
@@ -125,7 +125,7 @@ struct ProfileSupportInfoView: View {
     }
 
     @ViewBuilder
-    private func button(linkViewModel: LinkViewModel, isEmailSupport: Bool = false) -> some View {
+    private func button(linkViewModel: LinkViewModel, isEmailSupport: Bool = false, identifier: String) -> some View {
         Button {
             guard UIApplication.shared.canOpenURL(linkViewModel.url) else {
                 viewModel.errorMessage = isEmailSupport ?
@@ -147,6 +147,7 @@ struct ProfileSupportInfoView: View {
         .foregroundColor(.primary)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(linkViewModel.title)
+        .accessibilityIdentifier(identifier)
         Rectangle()
             .frame(height: 1)
             .foregroundColor(Theme.Colors.textSecondary)
@@ -196,7 +197,9 @@ struct ProfileSupportInfoView: View {
                 }
 
             }
-        }).disabled(viewModel.versionState == .actual)
+        })
+        .disabled(viewModel.versionState == .actual)
+        .accessibilityIdentifier("version_button")
     }
 
 }

@@ -51,7 +51,7 @@ public struct VideoDownloadQualityView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     ForEach(viewModel.downloadQuality, id: \.self) { quality in
-                        Button (action: {
+                        Button(action: {
                             viewModel.selectedDownloadQuality = quality
                         }, label: {
                             HStack {
