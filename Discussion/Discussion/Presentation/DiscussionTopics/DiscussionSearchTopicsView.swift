@@ -66,7 +66,10 @@ public struct DiscussionSearchTopicsView: View {
                 }
 //                .padding(.top, -7)
                 .frame(minHeight: 48)
-                .frame(maxWidth: 532)
+                .if(!viewModel.shouldStretch, transform: { view in
+                    view
+                        .frame(maxWidth: 532)
+                })
                 .background(
                     Theme.Shapes.textInputShape
                         .fill(viewModel.isSearchActive

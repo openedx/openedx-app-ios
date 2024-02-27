@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Swinject
 import Core
 import Combine
 
@@ -38,6 +39,7 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
     }
     
     let router: DiscussionRouter
+    let shouldStretch: Bool
     private let interactor: DiscussionInteractorProtocol
     private let debounce: Debounce<S>
     
@@ -51,7 +53,8 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         self.interactor = interactor
         self.router = router
         self.debounce = debounce
-        
+        shouldStretch = Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
+
         cancellable = postStateSubject
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] state in

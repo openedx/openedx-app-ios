@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Swinject
 import Core
 import Theme
 
@@ -16,9 +15,6 @@ public struct DiscussionTopicsView: View {
     @StateObject private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
-    private var shouldStretch: Bool {
-        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
-    }
 
     public init(courseID: String, viewModel: DiscussionTopicsViewModel, router: DiscussionRouter) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
@@ -38,7 +34,7 @@ public struct DiscussionTopicsView: View {
                         .foregroundColor(Theme.Colors.textSecondary)
                     Spacer()
                 }
-                .if(!shouldStretch, transform: { view in
+                .if(!viewModel.shouldStretch, transform: { view in
                     view
                         .frame(maxWidth: 532)
                 })
