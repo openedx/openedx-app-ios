@@ -78,7 +78,7 @@ public struct EncodedVideoPlayer: View {
                                 })
                             .statusBarHidden(false)
                             .aspectRatio(16 / 9, contentMode: .fit)
-                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
+                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : reader.size.width)
                             .cornerRadius(12)
                             if isHorizontal {
                                 Spacer()
@@ -146,7 +146,7 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(), 
+                router: CourseRouterMock(),
                 appStorage: CoreStorageMock(),
                 connectivity: Connectivity()
             ),
