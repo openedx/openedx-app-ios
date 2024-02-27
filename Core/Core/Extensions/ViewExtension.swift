@@ -168,8 +168,8 @@ public extension View {
             self
                 .offset(y: 2)
                 .frame(
-                    maxWidth: shouldStretch ? .infinity : maxIpadWidth,
-                    maxHeight: idiom == .pad ? shouldStretch ? .infinity : ipadMaxHeight : .infinity
+                    maxWidth: maxIpadWidth,
+                    maxHeight: idiom == .pad ? ipadMaxHeight : .infinity
                 )
         }
     }
