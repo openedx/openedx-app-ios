@@ -54,7 +54,7 @@ public struct EncodedVideoPlayer: View {
     public var body: some View {
         ZStack {
             GeometryReader { reader in
-                VStack {
+                VStack(spacing: 10) {
                     HStack {
                         VStack {
                             PlayerViewController(
@@ -78,7 +78,7 @@ public struct EncodedVideoPlayer: View {
                                 })
                             .statusBarHidden(false)
                             .aspectRatio(16 / 9, contentMode: .fit)
-                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : reader.size.width)
+                            .frame(minWidth: playerWidth(for: reader.size))
                             .cornerRadius(12)
                             if isHorizontal {
                                 Spacer()
@@ -131,6 +131,18 @@ public struct EncodedVideoPlayer: View {
         pause = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.pause = false
+        }
+    }
+    
+    private func playerWidth(for size: CGSize) -> CGFloat {
+        if isHorizontal {
+            return size.width  * 0.6
+        } else {
+            //subtitles is a second half of screen, 10 - space between subtitles and player
+            let availableHeight = size.height / 2 - 10
+            let ratio: CGFloat = 16/9
+            let calculatedWidth = availableHeight * ratio
+            return min(calculatedWidth, size.width)
         }
     }
 }
