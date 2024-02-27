@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Swinject
 import Core
 import Theme
 
@@ -15,7 +16,10 @@ public struct DiscussionTopicsView: View {
     @StateObject private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
-    
+    private var shouldStretch: Bool {
+        Container.shared.resolve(ConfigProtocol.self)?.uiComponents.shouldStretchOniPad ?? false
+    }
+
     public init(courseID: String, viewModel: DiscussionTopicsViewModel, router: DiscussionRouter) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
@@ -34,7 +38,10 @@ public struct DiscussionTopicsView: View {
                         .foregroundColor(Theme.Colors.textSecondary)
                     Spacer()
                 }
-                .frame(maxWidth: 532)
+                .if(!shouldStretch, transform: { view in
+                    view
+                        .frame(maxWidth: 532)
+                })
                 .frame(minHeight: 48)
                 .background(
                     Theme.Shapes.textInputShape
