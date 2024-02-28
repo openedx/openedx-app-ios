@@ -8,11 +8,17 @@ import SwiftUI
 
 struct ReadabilityModifier: ViewModifier {
     @ScaledMetric private var unit: CGFloat = 20
+    var width: CGFloat?
 
     func body(content: Content) -> some View {
-        GeometryReader { geometryProxy in
+        if let width = width {
             content
-                .padding(.horizontal, padding(for: geometryProxy.size.width))
+                .padding(.horizontal, padding(for: width))
+        } else {
+            GeometryReader { geometryProxy in
+                content
+                    .padding(.horizontal, padding(for: geometryProxy.size.width))
+            }
         }
     }
 

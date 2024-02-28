@@ -41,96 +41,98 @@ public struct ResetPasswordView: View {
                              leftButtonAction: {
                    viewModel.router.back()
                }).padding(.leading, isHorizontal ? 48 : 0)
-                
-                ScrollView {
-                    VStack {
-                        if isRecovered {
-                            ZStack {
-                                VStack {
-                                    CoreAssets.checkEmail.swiftUIImage
-                                        .resizable()
-                                        .frame(width: 100, height: 100)
-                                        .padding(.bottom, 40)
-                                        .padding(.top, 100)
-                                        .accessibilityIdentifier("check_email_image")
-                                    
-                                    Text(AuthLocalization.Forgot.checkTitle)
-                                        .font(Theme.Fonts.titleLarge)
-                                        .multilineTextAlignment(.center)
+                GeometryReader { proxy in
+                    ScrollView {
+                        VStack {
+                            if isRecovered {
+                                ZStack {
+                                    VStack {
+                                        CoreAssets.checkEmail.swiftUIImage
+                                            .resizable()
+                                            .frame(width: 100, height: 100)
+                                            .padding(.bottom, 40)
+                                            .padding(.top, 100)
+                                            .accessibilityIdentifier("check_email_image")
+                                        
+                                        Text(AuthLocalization.Forgot.checkTitle)
+                                            .font(Theme.Fonts.titleLarge)
+                                            .multilineTextAlignment(.center)
+                                            .foregroundColor(Theme.Colors.textPrimary)
+                                            .padding(.bottom, 4)
+                                            .accessibilityIdentifier("recover_title_text")
+                                        Text(AuthLocalization.Forgot.checkDescription + email)
+                                            .font(Theme.Fonts.bodyMedium)
+                                            .multilineTextAlignment(.center)
+                                            .foregroundColor(Theme.Colors.textPrimary)
+                                            .padding(.bottom, 20)
+                                            .accessibilityIdentifier("recover_description_text")
+                                        StyledButton(CoreLocalization.SignIn.logInBtn) {
+                                            viewModel.router.backToRoot(animated: true)
+                                        }
+                                        .padding(.top, 30)
+                                        .frame(maxWidth: .infinity)
+                                        .accessibilityIdentifier("signin_button")
+                                    }
+                                }
+                                
+                            } else {
+                                VStack(alignment: .leading) {
+                                    Text(AuthLocalization.Forgot.title)
+                                        .font(Theme.Fonts.displaySmall)
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 4)
-                                        .accessibilityIdentifier("recover_title_text")
-                                    Text(AuthLocalization.Forgot.checkDescription + email)
-                                        .font(Theme.Fonts.bodyMedium)
-                                        .multilineTextAlignment(.center)
+                                        .accessibilityIdentifier("forgot_title_text")
+                                    Text(AuthLocalization.Forgot.description)
+                                        .font(Theme.Fonts.titleSmall)
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
-                                        .accessibilityIdentifier("recover_description_text")
-                                    StyledButton(CoreLocalization.SignIn.logInBtn) {
-                                        viewModel.router.backToRoot(animated: true)
-                                    }
-                                    .padding(.top, 30)
-                                    .frame(maxWidth: .infinity)
-                                    .accessibilityIdentifier("signin_button")
-                                }
-                            }
-                        
-                        } else {
-                            VStack(alignment: .leading) {
-                                Text(AuthLocalization.Forgot.title)
-                                    .font(Theme.Fonts.displaySmall)
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                                    .padding(.bottom, 4)
-                                    .accessibilityIdentifier("forgot_title_text")
-                                Text(AuthLocalization.Forgot.description)
-                                    .font(Theme.Fonts.titleSmall)
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                                    .padding(.bottom, 20)
-                                    .accessibilityIdentifier("forgot_description_text")
-                                Text(AuthLocalization.SignIn.email)
-                                    .font(Theme.Fonts.labelLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                                    .accessibilityIdentifier("email_text")
-                                TextField(AuthLocalization.SignIn.email, text: $email)
-                                    .keyboardType(.emailAddress)
-                                    .textContentType(.emailAddress)
-                                    .autocapitalization(.none)
-                                    .autocorrectionDisabled()
-                                    .padding(.all, 14)
-                                    .background(
-                                        Theme.Shapes.textInputShape
-                                            .fill(Theme.Colors.textInputBackground)
-                                    )
-                                    .overlay(
-                                        Theme.Shapes.textInputShape
-                                            .stroke(lineWidth: 1)
-                                            .fill(Theme.Colors.textInputStroke)
-                                    )
-                                    .accessibilityIdentifier("email_textfield")
-                                if viewModel.isShowProgress {
-                                    HStack(alignment: .center) {
-                                        ProgressBar(size: 40, lineWidth: 8)
-                                            .padding(20)
-                                            .accessibilityIdentifier("progressbar")
-                                    }.frame(maxWidth: .infinity)
-                                } else {
-                                    StyledButton(AuthLocalization.Forgot.request) {
-                                        Task {
-                                            await viewModel.resetPassword(email: email, isRecovered: $isRecovered)
+                                        .accessibilityIdentifier("forgot_description_text")
+                                    Text(AuthLocalization.SignIn.email)
+                                        .font(Theme.Fonts.labelLarge)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .accessibilityIdentifier("email_text")
+                                    TextField(AuthLocalization.SignIn.email, text: $email)
+                                        .keyboardType(.emailAddress)
+                                        .textContentType(.emailAddress)
+                                        .autocapitalization(.none)
+                                        .autocorrectionDisabled()
+                                        .padding(.all, 14)
+                                        .background(
+                                            Theme.Shapes.textInputShape
+                                                .fill(Theme.Colors.textInputBackground)
+                                        )
+                                        .overlay(
+                                            Theme.Shapes.textInputShape
+                                                .stroke(lineWidth: 1)
+                                                .fill(Theme.Colors.textInputStroke)
+                                        )
+                                        .accessibilityIdentifier("email_textfield")
+                                    if viewModel.isShowProgress {
+                                        HStack(alignment: .center) {
+                                            ProgressBar(size: 40, lineWidth: 8)
+                                                .padding(20)
+                                                .accessibilityIdentifier("progressbar")
+                                        }.frame(maxWidth: .infinity)
+                                    } else {
+                                        StyledButton(AuthLocalization.Forgot.request) {
+                                            Task {
+                                                await viewModel.resetPassword(email: email, isRecovered: $isRecovered)
+                                            }
                                         }
+                                        .padding(.top, 30)
+                                        .frame(maxWidth: .infinity)
+                                        .accessibilityIdentifier("reset_password_button")
                                     }
-                                    .padding(.top, 30)
-                                    .frame(maxWidth: .infinity)
-                                    .accessibilityIdentifier("reset_password_button")
                                 }
                             }
                         }
+                        .padding(.horizontal, 24)
+                        .padding(.top, 50)
+                        .frameLimit(width: proxy.size.width)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 50)
-                }.roundedBackground(Theme.Colors.background)
+                    .roundedBackground(Theme.Colors.background)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
-                
+                }
             }
             
             // MARK: - Alert

@@ -162,7 +162,7 @@ public struct SignUpView: View {
                             }
                             .padding(.horizontal, 24)
                             .padding(.top, 24)
-                            
+                            .frameLimit(width: proxy.size.width)
                         }
                         .roundedBackground(Theme.Colors.background)
                         .onRightSwipeGesture {

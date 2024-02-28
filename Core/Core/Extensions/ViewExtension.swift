@@ -89,8 +89,8 @@ public extension View {
             .padding(.horizontal, 48)
     }
     
-    func frameLimit() -> some View {
-        modifier(ReadabilityModifier())
+    func frameLimit(width: CGFloat? = nil) -> some View {
+        modifier(ReadabilityModifier(width: width))
     }
     
     @ViewBuilder
@@ -153,8 +153,7 @@ public extension View {
                 .offset(y: 2)
                 .foregroundColor(color)
             self
-                .offset(y: 2)
-                .frameLimit()
+                .offset(y: 2)                
         }
     }
     
