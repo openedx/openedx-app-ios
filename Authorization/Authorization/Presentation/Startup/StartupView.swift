@@ -109,6 +109,7 @@ public struct StartupView: View {
             .onDisappear {
                 searchQuery = ""
             }
+            .frameLimit()
         }
         .hideNavigationBar()
         .padding(.all, isHorizontal ? 1 : 0)

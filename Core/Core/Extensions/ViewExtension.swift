@@ -144,7 +144,6 @@ public extension View {
         ipadMaxHeight: CGFloat = .infinity,
         maxIpadWidth: CGFloat = 420
     ) -> some View {
-        var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
         return ZStack {
             RoundedCorners(tl: 24, tr: 24)
                 .offset(y: 1)
@@ -155,10 +154,7 @@ public extension View {
                 .foregroundColor(color)
             self
                 .offset(y: 2)
-                .frame(
-                    maxWidth: maxIpadWidth,
-                    maxHeight: idiom == .pad ? ipadMaxHeight : .infinity
-                )
+                .frameLimit()
         }
     }
     
