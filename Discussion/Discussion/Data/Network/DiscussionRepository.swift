@@ -17,6 +17,7 @@ public protocol DiscussionRepositoryProtocol {
                     page: Int) async throws -> ThreadLists
     func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists
     func getTopics(courseID: String) async throws -> Topics
+    func getTopic(courseID: String, topicID: String) async throws -> Topics
     func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
     func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
     func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination)
@@ -71,7 +72,14 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
             .mapResponse(DataLayer.TopicsResponse.self)
         return topics.domain
     }
-    
+
+    public func getTopic(courseID: String, topicID: String) async throws -> Topics {
+        let topic = try await api.requestData(DiscussionEndpoint
+            .getTopic(courseID: courseID, topicID: topicID))
+            .mapResponse(DataLayer.TopicsResponse.self)
+        return topic.domain
+    }
+
     public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
         let response = try await api.requestData(DiscussionEndpoint
             .getDiscussionComments(threadID: threadID, page: page))
@@ -328,7 +336,28 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
                 ]
         )
     }
-    
+
+    public func getTopic(
+        courseID: String,
+        topicID: String
+    ) async throws -> Topics {
+        Topics(
+            coursewareTopics:
+                [
+                    CoursewareTopics(id: "", name: "CourseWare Topics",
+                                     threadListURL: "",
+                                     children: [CoursewareTopics(id: "",
+                                                                 name: "Child topic",
+                                                                 threadListURL: "",
+                                                                 children: [])])
+                ],
+            nonCoursewareTopics:
+                [
+                    CoursewareTopics(id: "", name: "Non Courseware Topics", threadListURL: "", children: [])
+                ]
+        )
+    }
+
     public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
         (comments, Pagination(next: nil, previous: nil, count: 10, numPages: 1))
     }

@@ -172,8 +172,11 @@ class AppAssembly: Assembly {
 
         container.register(DeepLinkManager.self) { r in
             DeepLinkManager(
-                config: r.resolve(ConfigProtocol.self)!, 
-                router: r.resolve(Router.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                router: r.resolve(Router.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
+                discussionInteractor: r.resolve(DiscussionInteractorProtocol.self)!
             )
         }.inObjectScope(.container)
         

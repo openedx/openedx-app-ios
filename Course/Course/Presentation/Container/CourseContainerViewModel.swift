@@ -10,8 +10,51 @@ import SwiftUI
 import Core
 import Combine
 
+public enum CourseTab: Int, CaseIterable, Identifiable {
+    public var id: Int {
+        rawValue
+    }
+
+    case course
+    case videos
+    case discussion
+    case dates
+    case handounds
+
+    public var title: String {
+        switch self {
+        case .course:
+            return CourseLocalization.CourseContainer.course
+        case .videos:
+            return CourseLocalization.CourseContainer.videos
+        case .dates:
+            return CourseLocalization.CourseContainer.dates
+        case .discussion:
+            return CourseLocalization.CourseContainer.discussions
+        case .handounds:
+            return CourseLocalization.CourseContainer.handouts
+        }
+    }
+
+    public var image: Image {
+        switch self {
+        case .course:
+            return CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
+        case .videos:
+            return CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
+        case .dates:
+            return Image(systemName: "calendar").renderingMode(.template)
+        case .discussion:
+            return  CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
+        case .handounds:
+            return CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
+        }
+    }
+}
+
 public class CourseContainerViewModel: BaseCourseViewModel {
-    
+
+    @Published public var selection: Int = CourseTab.course.rawValue
     @Published private(set) var isShowProgress = false
     @Published var courseStructure: CourseStructure?
     @Published var courseVideosStructure: CourseStructure?
@@ -33,7 +76,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let router: CourseRouter
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
-    
+
     let isActive: Bool?
     let courseStart: Date?
     let courseEnd: Date?
@@ -187,7 +230,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     func trackSelectedTab(
-        selection: CourseContainerView.CourseTab,
+        selection: CourseTab,
         courseId: String,
         courseName: String
     ) {

@@ -18,19 +18,24 @@ import Dashboard
 import Profile
 import WhatsNew
 import Combine
- 
+
 public class Router: AuthorizationRouter,
                      WhatsNewRouter,
                      DiscoveryRouter,
                      ProfileRouter,
                      DashboardRouter,
                      CourseRouter,
-                     DiscussionRouter {
-    
+                     DiscussionRouter
+{
+
     public var container: Container
-    
+
     private let navigationController: UINavigationController
-    
+
+    private var topViewController: UIViewController? {
+        UIApplication.topViewController()
+    }
+
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
@@ -642,4 +647,96 @@ public class Router: AuthorizationRouter,
         let controller = UIHostingController(rootView: webBrowser)
         navigationController.pushViewController(controller, animated: true)
     }
+}
+
+extension Router: DeepLinkRouter {
+
+    // MARK: - DeepLinkRouter
+
+    public func showCourseDetail(
+        link: DeepLink,
+        courseDetails: CourseDetails,
+        completion: @escaping () -> Void
+    ) {
+        let isCourseOpened = hostCourseContainerView?.rootView.courseID == courseDetails.courseID
+
+        if !isCourseOpened {
+            showTabScreen(tab: .dashboard)
+
+            if courseDetails.isEnrolled {
+                showCourseScreens(
+                    courseID: courseDetails.courseID,
+                    isActive: nil,
+                    courseStart: courseDetails.courseStart,
+                    courseEnd: courseDetails.courseEnd,
+                    enrollmentStart: courseDetails.enrollmentStart,
+                    enrollmentEnd: courseDetails.enrollmentEnd,
+                    title: courseDetails.courseTitle
+                )
+            } else {
+                showCourseDetais(
+                    courseID: courseDetails.courseID,
+                    title: courseDetails.courseTitle
+                )
+            }
+
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1.5)) {
+            switch link.type {
+            case .courseVideos:
+                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
+            case .courseDates:
+                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
+            case .discussions, .discussionTopic:
+                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.discussion.rawValue
+            case .courseHandout:
+                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.handounds.rawValue
+            default:
+                break
+            }
+            completion()
+        }
+    }
+
+    public func showThreads(
+        link: DeepLink,
+        courseDetails: CourseDetails, topics: Topics
+    ) {
+        guard let topicID = link.topicID else {
+            return
+        }
+        let title = (topics.coursewareTopics.map {$0} + topics.nonCoursewareTopics.map {$0}).first?.name ?? ""
+        showThreads(
+            courseID: courseDetails.courseID,
+            topics: topics,
+            title: title,
+            type: .courseTopics(topicID: topicID)
+        )
+    }
+
+    public func showTabScreen(tab: MainTab) {
+        dismiss()
+        hostMainScreen?.rootView.viewModel.select(tab: tab)
+    }
+
+    public func dismiss() {
+        dismissPresentedViewController()
+        backToRoot(animated: true)
+    }
+
+    private var hostMainScreen: UIHostingController<MainScreenView>? {
+        navigationController.viewControllers.firstAs(UIHostingController<MainScreenView>.self)
+    }
+
+    private var hostCourseContainerView: UIHostingController<CourseContainerView>? {
+        navigationController.topViewController as? UIHostingController<CourseContainerView>
+    }
+
+    private func dismissPresentedViewController() {
+        if let presentedViewController = navigationController.presentedViewController {
+            presentedViewController.dismiss(animated: true)
+        }
+    }
+
 }

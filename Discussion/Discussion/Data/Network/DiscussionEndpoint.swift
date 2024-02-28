@@ -13,6 +13,7 @@ enum DiscussionEndpoint: EndPointType {
     case getCourseDiscussionInfo(courseID: String)
     case getThreads(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int)
     case getTopics(courseID: String)
+    case getTopic(courseID: String, topicID: String)
     case getDiscussionComments(threadID: String, page: Int)
     case getQuestionComments(threadID: String, page: Int)
     case getCommentResponses(commentID: String, page: Int)
@@ -33,6 +34,8 @@ enum DiscussionEndpoint: EndPointType {
         case .getThreads:
             return "/api/discussion/v1/threads/"
         case let .getTopics(courseID):
+            return "/api/discussion/v1/course_topics/\(courseID)"
+        case let .getTopic(courseID, _):
             return "/api/discussion/v1/course_topics/\(courseID)"
         case .getDiscussionComments:
             return "/api/discussion/v1/comments/"
@@ -68,7 +71,7 @@ enum DiscussionEndpoint: EndPointType {
             return .get
         case .getThreads:
             return .get
-        case .getTopics:
+        case .getTopics, .getTopic:
             return .get
         case .getDiscussionComments:
             return .get
@@ -102,6 +105,7 @@ enum DiscussionEndpoint: EndPointType {
         case .getCourseDiscussionInfo,
                 .getThreads,
                 .getTopics,
+                .getTopic,
                 .getDiscussionComments,
                 .getQuestionComments,
                 .getCommentResponses,
@@ -168,6 +172,11 @@ enum DiscussionEndpoint: EndPointType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getTopics:
             return .requestParameters(encoding: URLEncoding.queryString)
+        case let .getTopic(_, topicID):
+            let parameters: [String: Encodable] = [
+                "topic_id": topicID
+            ]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case let .getDiscussionComments(threadID, page):
             let parameters: [String: Encodable] = [
                 "thread_id": threadID,

@@ -36,6 +36,24 @@ extension DataLayer {
     }
 }
 
+extension DataLayer.CoursewareTopic {
+    var domain: CoursewareTopics {
+        CoursewareTopics(
+            id: id ?? "",
+            name: name ?? "",
+            threadListURL: name ?? "",
+            children: children.map {
+                CoursewareTopics(
+                    id: $0.id ?? "",
+                    name: $0.name ?? "",
+                    threadListURL: $0.name ?? "",
+                    children: []
+                )
+            })
+    }
+}
+
+
 extension DataLayer.TopicsResponse {
     var domain: Topics {
         let coursewareTopics = coursewareTopics.map {

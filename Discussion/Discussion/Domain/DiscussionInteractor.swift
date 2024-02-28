@@ -16,6 +16,7 @@ public protocol DiscussionInteractorProtocol {
                         filter: ThreadsFilter,
                         page: Int) async throws -> ThreadLists
     func getTopics(courseID: String) async throws -> Topics
+    func getTopic(courseID: String, topicID: String) async throws -> Topics
     func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists
     func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
     func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
@@ -53,7 +54,11 @@ public class DiscussionInteractor: DiscussionInteractorProtocol {
     public func getTopics(courseID: String) async throws -> Topics {
         return try await repository.getTopics(courseID: courseID)
     }
-    
+
+    public func getTopic(courseID: String, topicID: String) async throws -> Topics {
+        return try await repository.getTopic(courseID: courseID, topicID: topicID)
+    }
+
     public func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination) {
         return try await repository.getDiscussionComments(threadID: threadID, page: page)
     }

@@ -126,8 +126,8 @@
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
 		07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */; };
 		141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */; };
-		A51CDBE72B6D21F2009B6D4E /* SegmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51CDBE62B6D21F2009B6D4E /* SegmentConfig.swift */; };
 		142EDD6C2B831D1400F9F320 /* BranchSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 142EDD6B2B831D1400F9F320 /* BranchSDK */; };
+		A51CDBE72B6D21F2009B6D4E /* SegmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51CDBE62B6D21F2009B6D4E /* SegmentConfig.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A595689A2B6173DF00ED4F90 /* BranchConfig.swift */; };
 		A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */; };
@@ -144,6 +144,7 @@
 		BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */; };
 		BA8FA66E2AD59E7D00EA029A /* FacebookAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */; };
 		BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */; };
+		BA981BCE2B8F5C49005707C2 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */; };
 		BAAD62C62AFCF00B000E6103 /* CustomDisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */; };
 		BAD9CA2F2B289B3500DE790A /* ajaxHandler.js in Resources */ = {isa = PBXBuildFile; fileRef = BAD9CA2E2B289B3500DE790A /* ajaxHandler.js */; };
 		BAD9CA332B28A8F300DE790A /* AjaxProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */; };
@@ -321,6 +322,7 @@
 		BA8FA6692AD59B5500EA029A /* GoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthProvider.swift; sourceTree = "<group>"; };
 		BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthProvider.swift; sourceTree = "<group>"; };
 		BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAuthProvider.swift; sourceTree = "<group>"; };
+		BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureGroup.swift; sourceTree = "<group>"; };
 		BAD9CA2E2B289B3500DE790A /* ajaxHandler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ajaxHandler.js; sourceTree = "<group>"; };
 		BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjaxProvider.swift; sourceTree = "<group>"; };
@@ -456,6 +458,7 @@
 				BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */,
 				02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */,
 				E0D5861B2B2FF85B009B4BA7 /* RawStringExtactable.swift */,
+				BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1063,6 +1066,7 @@
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
 				02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
+				BA981BCE2B8F5C49005707C2 /* Sequence+Extensions.swift in Sources */,
 				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
 				027BD3B52909475900392132 /* KeyboardStateObserver.swift in Sources */,
