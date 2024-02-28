@@ -27,7 +27,7 @@ public struct DeleteAccountView: View {
                         ZStack {
                             CoreAssets.bgDelete.swiftUIImage
                             CoreAssets.deleteChar.swiftUIImage
-                                .foregroundColor(.accentColor)
+                                .foregroundColor(Theme.Colors.accentXColor)
                                 .offset(y: -31)
                             CoreAssets.deleteEyes.swiftUIImage
                                 .offset(x: -7, y: -27)

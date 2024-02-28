@@ -175,7 +175,7 @@ struct ProfileSupportInfoView: View {
                         HStack {
                             CoreAssets.checkmark.swiftUIImage
                                 .renderingMode(.template)
-                                .foregroundColor(.green)
+                                .foregroundColor(Theme.Colors.success)
                             Text(ProfileLocalization.Settings.upToDate)
                                 .font(Theme.Fonts.labelMedium)
                                 .foregroundStyle(Theme.Colors.textSecondary)
