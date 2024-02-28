@@ -28,6 +28,7 @@ public struct SnackBarView: View {
         HStack {
             Text(message)
                 .font(Theme.Fonts.titleSmall)
+                .foregroundColor(Theme.Colors.snackbarTextColor)
             Spacer()
             
             if let action = action {

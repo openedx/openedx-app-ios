@@ -64,7 +64,7 @@ public struct VideoDownloadQualityView: View {
                                 Spacer()
                                 CoreAssets.checkmark.swiftUIImage
                                     .renderingMode(.template)
-                                    .foregroundColor(.accentColor)
+                                    .foregroundColor(Theme.Colors.accentXColor)
                                     .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
                                     .accessibilityIdentifier("checkmark_image")
 
@@ -163,4 +163,3 @@ public extension DownloadQuality {
         }
     }
 }
-

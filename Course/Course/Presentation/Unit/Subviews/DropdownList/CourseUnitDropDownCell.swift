@@ -27,7 +27,7 @@ struct CourseUnitDropDownCell: View {
                             if vertical.completion == 1 {
                                 CoreAssets.finished.swiftUIImage
                                     .renderingMode(.template)
-                                    .foregroundColor(.accentColor)
+                                    .foregroundColor(Theme.Colors.accentXColor)
                             }
                         }
                         .frame(width: 25)
