@@ -89,15 +89,8 @@ public extension View {
             .padding(.horizontal, 48)
     }
     
-    @ViewBuilder
-    func frameLimit(sizePortrait: CGFloat = 560, sizeLandscape: CGFloat = 648) -> some View {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            HStack {
-                Spacer(minLength: 0)
-                self.frame(maxWidth: UIDevice.current.orientation.isPortrait ? sizePortrait : sizeLandscape)
-                Spacer(minLength: 0)
-            }
-        } else { self }
+    func frameLimit() -> some View {
+        modifier(ReadabilityModifier())
     }
     
     @ViewBuilder
