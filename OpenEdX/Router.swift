@@ -121,8 +121,11 @@ public class Router: AuthorizationRouter,
     }
     
     public func presentAppReview() {
-        let config = Container.shared.resolve(ConfigProtocol.self)!
-        let storage = Container.shared.resolve(CoreStorage.self)!
+        guard let config = Container.shared.resolve(ConfigProtocol.self),
+              let storage = Container.shared.resolve(CoreStorage.self),
+              let connectivity = Container.shared.resolve(ConnectivityProtocol.self),
+              connectivity.isInternetAvaliable
+        else { return }
         let vm = AppReviewViewModel(config: config, storage: storage)
         if vm.shouldShowRatingView() {
             presentView(
