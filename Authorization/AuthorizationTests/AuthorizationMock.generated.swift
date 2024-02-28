@@ -509,10 +509,10 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 
 
 
-    open func setUserID(_ id: String) {
-        addInvocation(.m_setUserID__id(Parameter<String>.value(`id`)))
-		let perform = methodPerformValue(.m_setUserID__id(Parameter<String>.value(`id`))) as? (String) -> Void
-		perform?(`id`)
+    open func identify(id: String, username: String, email: String) {
+        addInvocation(.m_identify__id_idusername_usernameemail_email(Parameter<String>.value(`id`), Parameter<String>.value(`username`), Parameter<String>.value(`email`)))
+		let perform = methodPerformValue(.m_identify__id_idusername_usernameemail_email(Parameter<String>.value(`id`), Parameter<String>.value(`username`), Parameter<String>.value(`email`))) as? (String, String, String) -> Void
+		perform?(`id`, `username`, `email`)
     }
 
     open func userLogin(method: AuthMethod) {
@@ -553,7 +553,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 
 
     fileprivate enum MethodType {
-        case m_setUserID__id(Parameter<String>)
+        case m_identify__id_idusername_usernameemail_email(Parameter<String>, Parameter<String>, Parameter<String>)
         case m_userLogin__method_method(Parameter<AuthMethod>)
         case m_signUpClicked
         case m_createAccountClicked
@@ -563,9 +563,11 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_setUserID__id(let lhsId), .m_setUserID__id(let rhsId)):
+            case (.m_identify__id_idusername_usernameemail_email(let lhsId, let lhsUsername, let lhsEmail), .m_identify__id_idusername_usernameemail_email(let rhsId, let rhsUsername, let rhsEmail)):
 				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher), lhsId, rhsId, "_ id"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher), lhsId, rhsId, "id"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUsername, rhs: rhsUsername, with: matcher), lhsUsername, rhsUsername, "username"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEmail, rhs: rhsEmail, with: matcher), lhsEmail, rhsEmail, "email"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_userLogin__method_method(let lhsMethod), .m_userLogin__method_method(let rhsMethod)):
@@ -591,7 +593,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 
         func intValue() -> Int {
             switch self {
-            case let .m_setUserID__id(p0): return p0.intValue
+            case let .m_identify__id_idusername_usernameemail_email(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_userLogin__method_method(p0): return p0.intValue
             case .m_signUpClicked: return 0
             case .m_createAccountClicked: return 0
@@ -602,7 +604,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
         }
         func assertionName() -> String {
             switch self {
-            case .m_setUserID__id: return ".setUserID(_:)"
+            case .m_identify__id_idusername_usernameemail_email: return ".identify(id:username:email:)"
             case .m_userLogin__method_method: return ".userLogin(method:)"
             case .m_signUpClicked: return ".signUpClicked()"
             case .m_createAccountClicked: return ".createAccountClicked()"
@@ -627,7 +629,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func setUserID(_ id: Parameter<String>) -> Verify { return Verify(method: .m_setUserID__id(`id`))}
+        public static func identify(id: Parameter<String>, username: Parameter<String>, email: Parameter<String>) -> Verify { return Verify(method: .m_identify__id_idusername_usernameemail_email(`id`, `username`, `email`))}
         public static func userLogin(method: Parameter<AuthMethod>) -> Verify { return Verify(method: .m_userLogin__method_method(`method`))}
         public static func signUpClicked() -> Verify { return Verify(method: .m_signUpClicked)}
         public static func createAccountClicked() -> Verify { return Verify(method: .m_createAccountClicked)}
@@ -640,8 +642,8 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func setUserID(_ id: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_setUserID__id(`id`), performs: perform)
+        public static func identify(id: Parameter<String>, username: Parameter<String>, email: Parameter<String>, perform: @escaping (String, String, String) -> Void) -> Perform {
+            return Perform(method: .m_identify__id_idusername_usernameemail_email(`id`, `username`, `email`), performs: perform)
         }
         public static func userLogin(method: Parameter<AuthMethod>, perform: @escaping (AuthMethod) -> Void) -> Perform {
             return Perform(method: .m_userLogin__method_method(`method`), performs: perform)

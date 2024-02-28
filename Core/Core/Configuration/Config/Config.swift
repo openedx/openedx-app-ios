@@ -27,6 +27,7 @@ public protocol ConfigProtocol {
     var discovery: DiscoveryConfig { get }
     var braze: BrazeConfig { get }
     var branch: BranchConfig { get }
+    var segment: SegmentConfig { get }
     var program: DiscoveryConfig { get }
     var URIScheme: String { get }
 }
