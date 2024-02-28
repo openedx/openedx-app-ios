@@ -21,9 +21,6 @@ class PlistManager:
 
     def get_info_plist_path(self):
         return os.getenv('INFOPLIST_PATH')
-
-    def get_entitlements_plist_path(self):
-        return os.getenv('CODE_SIGN_ENTITLEMENTS')
         
     def get_wrapper_name(self):
         return os.getenv('WRAPPER_NAME')
@@ -40,15 +37,6 @@ class PlistManager:
         
         if built_products_path and info_plist_path:
             return os.path.join(built_products_path, info_plist_path)
-        else:
-            return None
-
-    def get_entitlements_path(self):
-        built_products_path = self.get_built_products_path()
-        entitlements_plist_path = self.get_entitlements_path()
-        
-        if built_products_path and entitlements_plist_path:
-            return os.path.join(built_products_path, entitlements_plist_path)
         else:
             return None
             
@@ -204,7 +192,7 @@ class ConfigurationManager:
         else:
             print("Firebase config is empty. Skipping")
    
-    def add_branch_config(self, config, plist, entitlements):
+    def add_branch_config(self, config, plist):
         branch = config.get('BRANCH', {})
         enabled = branch.get('ENABLED')
         uriScheme = branch.get('URI_SCHEME')
@@ -226,12 +214,6 @@ class ConfigurationManager:
                 prefix+".test-app.link",
                 prefix+"-alternate.test-app.link"
                 ], plist)
-            self.add_custom_array("com.apple.developer.associated-domains", [
-                "applinks:"+prefix+".app.link",
-                "applinks:"+prefix+"-alternate.app.link",
-                "applinks:"+prefix+".test-app.link",
-                "applinks:"+prefix+"-alternate.test-app.link"
-                ], entitlements)
             self.add_url_scheme(scheme, plist, True)    
             
     def add_facebook_config(self, config, plist):
@@ -312,9 +294,6 @@ def get_current_config(configuration, scheme_mappings):
     return None
 
 def process_plist_files(configuration_manager, plist_manager, config):
-    entitlements_path = plist_manager.get_entitlements_plist_path()
-    entitlements_content = plist_manager.get_info_plist_contents(entitlements_path)
-    
     firebase_info_plist_path = plist_manager.get_firebase_config_path()
     info_plist_path = plist_manager.get_app_info_plist_path()
     info_plist_content = plist_manager.get_info_plist_contents(info_plist_path)
@@ -323,10 +302,9 @@ def process_plist_files(configuration_manager, plist_manager, config):
     configuration_manager.add_facebook_config(config, info_plist_content)
     configuration_manager.add_google_config(config, info_plist_content)
     configuration_manager.add_microsoft_config(config, info_plist_content)
-    configuration_manager.add_branch_config(config, info_plist_content, entitlements_content)
+    configuration_manager.add_branch_config(config, info_plist_content)
 
     configuration_manager.update_info_plist(info_plist_content, info_plist_path)
-    configuration_manager.update_info_plist(entitlements_content, entitlements_path)
 
     bundle_config_path = plist_manager.get_bundle_config_path()
     config_plist = plist_manager.yaml_to_plist()
