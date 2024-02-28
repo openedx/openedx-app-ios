@@ -499,6 +499,10 @@ extension CourseContainerViewModel {
             }
         }
     }
+    
+    func resetDueDatesShiftedFlag() {
+        dueDatesShifted = false
+    }
 }
 
 struct VerticalsDownloadState: Hashable {

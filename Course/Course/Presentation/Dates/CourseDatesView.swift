@@ -39,6 +39,11 @@ public struct CourseDatesView: View {
                         .padding(.top, 10)
                 }
             }
+            
+            if viewModel.dueDatesShifted {
+                DatesShiftedSuccessView(selectedTab: .dates, courseDatesViewModel: viewModel)
+            }
+            
             if viewModel.showError {
                 VStack {
                     Spacer()

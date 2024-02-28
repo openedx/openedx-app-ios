@@ -153,8 +153,8 @@ public struct CourseOutlineView: View {
                 .accessibilityAction {}
 
                 if viewModel.dueDatesShifted && !isVideo {
-                    DatesShiftedSuccessView {
-                         selection = dateTabIndex
+                    DatesShiftedSuccessView(selectedTab: .course, courseContainerViewModel: viewModel) {
+                        selection = dateTabIndex
                     }
                 }
                 

@@ -11,82 +11,103 @@ import Theme
 
 public struct DatesShiftedSuccessView: View {
     
-    public static let height: CGFloat = 50
-    
-    @State private var dismiss: Bool = false
-    private var action: () async -> Void
-    
-    public init(action: @escaping () async -> Void) {
-        self.action = action
+    enum Tab {
+        case course
+        case dates
     }
+
+    var selectedTab: Tab
+    var courseDatesViewModel: CourseDatesViewModel?
+    var courseContainerViewModel: CourseContainerViewModel?
+    var action: () async -> Void = {}
+
+    @State private var dismiss: Bool = false
     
     public var body: some View {
         ZStack {
             VStack {
                 Spacer()
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack(spacing: 10) {
-                        Text(CourseLocalization.CourseDates.toastSuccessMessage)
-                            .foregroundStyle(.white)
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack(alignment: .top) {
+                        Text(CourseLocalization.CourseDates.toastSuccessTitle)
+                            .foregroundStyle(Theme.Colors.textPrimary)
+                            .font(Theme.Fonts.titleMedium)
+                        Spacer()
                         Button {
                             withAnimation {
-                                dismiss = true
+                                dismissView()
                             }
                         } label: {
                             Image(systemName: "xmark")
+                                .resizable()
+                                .frame(width: 14.0, height: 14.0)
                         }
                         .padding(.all, 5)
-                        .tint(.white)
+                        .tint(Theme.Colors.textPrimary)
                     }
                     
-                    Button(CourseLocalization.CourseDates.viewAllDates,
-                           action: {
-                        Task {
-                            await action()
-                        }
-                        withAnimation {
-                            dismiss = true
-                        }
-                    })
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 5)
-                    .background(Theme.Colors.thisWeekTimelineColor)
-                    .foregroundStyle(.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 0)
-                            .stroke(Theme.Colors.datesSectionStroke, lineWidth: 1)
-                    )
+                    Text(CourseLocalization.CourseDates.toastSuccessMessage)
+                        .foregroundStyle(Theme.Colors.textPrimary)
+                        .font(Theme.Fonts.labelLarge)
+                    
+                    if selectedTab == .course {
+                        Button(CourseLocalization.CourseDates.viewAllDates,
+                               action: {
+                            Task {
+                                await action()
+                            }
+                            withAnimation {
+                                dismissView()
+                            }
+                        })
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 11)
+                        .background(Theme.Colors.datesSectionBackground)
+                        .foregroundStyle(Theme.Colors.secondaryButtonBorderColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Theme.Colors.secondaryButtonBorderColor, lineWidth: 1)
+                        )
+                    }
                 }
                 .font(Theme.Fonts.titleSmall)
                 .padding(.all, 16)
-                .background(Theme.Colors.thisWeekTimelineColor)
+                .background(Theme.Colors.datesSectionBackground)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
             .frame(maxWidth: .infinity)
-            .padding(.all, 8)
+            .padding(.all, 10)
+            .shadow(color: .black.opacity(0.25), radius: 5, y: 4)
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 withAnimation {
-                    dismiss = true
+                    dismissView()
                 }
             }
         }
         .onDisappear {
             withAnimation {
-                dismiss = true
+                dismissView()
             }
         }
         .offset(y: dismiss ? 100 : 0)
         .opacity(dismiss ? 0 : 1)
         .transition(.move(edge: .bottom))
     }
+    
+    private func dismissView() {
+        dismiss = true
+        courseDatesViewModel?.resetDueDatesShiftedFlag()
+        courseContainerViewModel?.resetDueDatesShiftedFlag()
+    }
 }
 
 #if DEBUG
 struct DatesShiftedSuccessView_Previews: PreviewProvider {
     static var previews: some View {
-        DatesShiftedSuccessView(action: {})
+        DatesShiftedSuccessView(selectedTab: .course)
     }
 }
 #endif

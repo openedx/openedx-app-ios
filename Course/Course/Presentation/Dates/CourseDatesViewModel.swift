@@ -137,4 +137,8 @@ extension CourseDatesViewModel {
             }
         }
     }
+    
+    func resetDueDatesShiftedFlag() {
+        dueDatesShifted = false
+    }
 }
