@@ -11,8 +11,8 @@ import Core
 struct SocialAuthView: View {
 
     // MARK: - Properties
-
     @StateObject var viewModel: SocialAuthViewModel
+    let iPadButtonWidth: CGFloat = 260
 
     init(
         authType: SocialAuthType = .signIn,
@@ -36,8 +36,17 @@ struct SocialAuthView: View {
             AuthLocalization.registerWith
         }
     }
+    
+    private var columns: [GridItem] {
+        if isPad {
+            return [GridItem(.fixed(iPadButtonWidth)), GridItem(.fixed(iPadButtonWidth))]
+        }
+        return [GridItem(.flexible())]
+    }
 
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    private var isPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
     // MARK: - Views
 
     var body: some View {
@@ -57,11 +66,11 @@ struct SocialAuthView: View {
                 .accessibilityIdentifier("social_auth_title_text")
             Spacer()
         }
-        .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: 42)
+        .frame(maxWidth: isPad ? iPadButtonWidth: .infinity, minHeight: 42)
     }
 
     private var buttonsView: some View {
-        Group {
+        LazyVGrid(columns: columns) {
             if viewModel.googleEnabled {
                 SocialAuthButton(
                     image: CoreAssets.iconGoogleWhite.swiftUIImage,
