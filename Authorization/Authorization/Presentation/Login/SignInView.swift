@@ -187,7 +187,6 @@ public struct SignInView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
-                        .accessibilityLabel("error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {

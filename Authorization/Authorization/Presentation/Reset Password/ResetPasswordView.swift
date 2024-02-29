@@ -157,7 +157,6 @@ public struct ResetPasswordView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
-                        .accessibilityIdentifier("show_error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {

@@ -31,11 +31,17 @@ public struct DeleteAccountView: View {
                                 .offset(y: -31)
                             CoreAssets.deleteEyes.swiftUIImage
                                 .offset(x: -7, y: -27)
+                                .accessibilityIdentifier("delete_account_image")
                         }.padding(.top, 50)
-                        Text(ProfileLocalization.DeleteAccount.areYouSure)
-                            .foregroundColor(Theme.Colors.navigationBarTintColor)
-                        + Text(ProfileLocalization.DeleteAccount.wantToDelete)
-                            .foregroundColor(Theme.Colors.alert)
+                        
+                        HStack {
+                            Text(ProfileLocalization.DeleteAccount.areYouSure)
+                                .foregroundColor(Theme.Colors.navigationBarTintColor)
+                            + Text(ProfileLocalization.DeleteAccount.wantToDelete)
+                                .foregroundColor(Theme.Colors.alert)
+                        }
+                        .accessibilityIdentifier("are_you_sure_text")
+
                     }.multilineTextAlignment(.center)
                         .font(Theme.Fonts.headlineSmall)
                     
@@ -44,6 +50,7 @@ public struct DeleteAccountView: View {
                         .font(Theme.Fonts.labelLarge)
                         .multilineTextAlignment(.center)
                         .padding(.top, 16)
+                        .accessibilityIdentifier("delete_account_description_text")
                     
                     // MARK: Password
                     Group {
@@ -52,12 +59,14 @@ public struct DeleteAccountView: View {
                             .font(Theme.Fonts.labelLarge)
                             .multilineTextAlignment(.leading)
                             .padding(.top, 16)
+                            .accessibilityIdentifier("password_text")
                         
                         HStack(spacing: 11) {
                             SecureField(ProfileLocalization.DeleteAccount.passwordDescription,
                                         text: $viewModel.password)
                             .font(Theme.Fonts.labelLarge)
                             .foregroundColor(Theme.Colors.textPrimary)
+                            .accessibilityIdentifier("password_textfield")
                         }
                         .padding(.horizontal, 14)
                         .frame(minHeight: 48)
@@ -80,6 +89,7 @@ public struct DeleteAccountView: View {
                         .padding(.top, 0)
                         .shake($viewModel.incorrectPassword,
                                onCompletion: { viewModel.incorrectPassword.toggle() })
+                        .accessibilityIdentifier("incorrect_password_text")
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
@@ -90,6 +100,7 @@ public struct DeleteAccountView: View {
                         ProgressBar(size: 40, lineWidth: 8)
                             .padding(.top, 20)
                             .padding(.horizontal)
+                            .accessibilityIdentifier("progressbar")
                     } else {
                         StyledButton(ProfileLocalization.DeleteAccount.comfirm, action: {
                             Task {
@@ -98,6 +109,7 @@ public struct DeleteAccountView: View {
                         }, color: Theme.Colors.accentColor,
                                      isActive: viewModel.password.count >= 2)
                         .padding(.top, 18)
+                        .accessibilityIdentifier("delete_account_button")
                     }
                     
                     // MARK: Back to profile
@@ -113,6 +125,8 @@ public struct DeleteAccountView: View {
                                 .foregroundColor(Theme.Colors.accentColor)
                         }
                     })
+                    .padding(.top, 35)
+                    .accessibilityIdentifier("back_button")
                     .frame(maxWidth: .infinity, minHeight: 42)
                     .background(
                         Theme.Shapes.buttonShape
