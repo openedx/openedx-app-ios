@@ -121,6 +121,28 @@ public extension DataLayer {
     }
 }
 
+public extension DataLayer.Comments {
+    var domain: UserComment {
+        UserComment(
+            authorName: author ?? DiscussionLocalization.anonymous,
+            authorAvatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
+            postDate: Date(iso8601: createdAt),
+            postTitle: "",
+            postBody: rawBody,
+            postBodyHtml: renderedBody,
+            postVisible: true,
+            voted: voted,
+            followed: false,
+            votesCount: voteCount,
+            responsesCount: childCount,
+            threadID: threadID,
+            commentID: id,
+            parentID: id,
+            abuseFlagged: abuseFlagged
+        )
+    }
+}
+
 public extension DataLayer.CommentsResponse {
     var domain: [UserComment] {
         self.comments.map { comment in

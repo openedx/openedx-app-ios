@@ -488,7 +488,13 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(controllers, animated: animated)
     }
     
-    public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
+    public func showThreads(
+        courseID: String,
+        topics: Topics,
+        title: String,
+        type: ThreadType,
+        animated: Bool
+    ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(PostsViewModel.self)!
         let view = PostsView(
@@ -501,20 +507,25 @@ public class Router: AuthorizationRouter,
             router: router
         )
         let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: animated)
     }
     
-    public func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>) {
+    public func showThread(
+        thread: UserThread,
+        postStateSubject: CurrentValueSubject<PostState?, Never>,
+        animated: Bool
+    ) {
         let viewModel = Container.shared.resolve(ThreadViewModel.self, argument: postStateSubject)!
         let view = ThreadView(thread: thread, viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: animated)
     }
     
     public func showComments(
         commentID: String,
         parentComment: Post,
-        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
+        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
+        animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(ResponsesViewModel.self, argument: threadStateSubject)!
@@ -525,7 +536,7 @@ public class Router: AuthorizationRouter,
             parentComment: parentComment
         )
         let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: animated)
     }
     
     public func createNewThread(
@@ -682,13 +693,13 @@ extension Router: DeepLinkRouter {
 
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1.5)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1)) {
             switch link.type {
             case .courseVideos:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
             case .courseDates:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
-            case .discussions, .discussionTopic:
+            case .discussions, .discussionTopic, .discussionPost, .discussionComment:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.discussion.rawValue
             case .courseHandout:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.handounds.rawValue
@@ -701,7 +712,8 @@ extension Router: DeepLinkRouter {
 
     public func showThreads(
         link: DeepLink,
-        courseDetails: CourseDetails, topics: Topics
+        courseDetails: CourseDetails,
+        topics: Topics
     ) {
         guard let topicID = link.topicID else {
             return
@@ -711,7 +723,30 @@ extension Router: DeepLinkRouter {
             courseID: courseDetails.courseID,
             topics: topics,
             title: title,
-            type: .courseTopics(topicID: topicID)
+            type: .courseTopics(topicID: topicID),
+            animated: false
+        )
+    }
+
+    public func showThread(
+        userThread: UserThread
+    ) {
+        showThread(
+            thread: userThread,
+            postStateSubject: .init(.none),
+            animated: false
+        )
+    }
+
+    public func showComment(
+        comment: UserComment,
+        parentComment: Post
+    ) {
+        showComments(
+            commentID: comment.commentID,
+            parentComment: parentComment,
+            threadStateSubject: .init(.none),
+            animated: false
         )
     }
 

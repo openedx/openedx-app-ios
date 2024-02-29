@@ -121,7 +121,8 @@ public struct ThreadView: View {
                                                 viewModel.router.showComments(
                                                     commentID: comment.commentID,
                                                     parentComment: comment,
-                                                    threadStateSubject: viewModel.threadStateSubject
+                                                    threadStateSubject: viewModel.threadStateSubject, 
+                                                    animated: true
                                                 )
                                             },
                                             onFetchMore: {

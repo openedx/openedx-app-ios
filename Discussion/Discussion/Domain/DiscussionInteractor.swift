@@ -18,9 +18,11 @@ public protocol DiscussionInteractorProtocol {
     func getTopics(courseID: String) async throws -> Topics
     func getTopic(courseID: String, topicID: String) async throws -> Topics
     func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists
+    func getThread(threadID: String) async throws -> UserThread
     func getDiscussionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
     func getQuestionComments(threadID: String, page: Int) async throws -> ([UserComment], Pagination)
     func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination)
+    func getResponse(responseID: String) async throws -> UserComment
     func addCommentTo(threadID: String, rawBody: String, parentID: String?) async throws -> Post
     func voteThread(voted: Bool, threadID: String) async throws
     func voteResponse(voted: Bool, responseID: String) async throws
@@ -46,7 +48,11 @@ public class DiscussionInteractor: DiscussionInteractorProtocol {
                                page: Int) async throws -> ThreadLists {
         return try await repository.getThreads(courseID: courseID, type: type, sort: sort, filter: filter, page: page)
     }
-    
+
+    public func getThread(threadID: String) async throws -> UserThread {
+        return try await repository.getThread(threadID: threadID)
+    }
+
     public func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists {
         return try await repository.searchThreads(courseID: courseID, searchText: searchText, pageNumber: pageNumber)
     }
@@ -70,7 +76,12 @@ public class DiscussionInteractor: DiscussionInteractorProtocol {
     public func getCommentResponses(commentID: String, page: Int) async throws -> ([UserComment], Pagination) {
         return try await repository.getCommentResponses(commentID: commentID, page: page)
     }
-    
+
+    // TODO: This Api should be updated with type GET, currently we are using this for deep linking on comment screen.
+    public func getResponse(responseID: String) async throws -> UserComment {
+        return try await repository.getResponse(responseID: responseID)
+    }
+
     public func addCommentTo(threadID: String, rawBody: String, parentID: String? = nil) async throws -> Post {
         return try await repository.addCommentTo(threadID: threadID,
                                                  rawBody: rawBody,
