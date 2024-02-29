@@ -39,7 +39,7 @@ enum CourseEndpoint: EndPointType {
             return url
         case .getCourseDates(let courseID):
             return "/api/course_home/v1/dates/\(courseID)"
-        case .getCourseDeadlineInfo(courseID: let courseID):
+        case .getCourseDeadlineInfo(let courseID):
             return "/api/course_experience/v1/course_deadlines_info/\(courseID)"
         case .courseDatesReset:
             return "/api/course_experience/v1/reset_course_deadlines"

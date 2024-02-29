@@ -79,9 +79,9 @@
 "COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
 "COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
 "COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
-"COURSE_DATES.TOAST_SUCCESS_TITLE" = "Due Dates Shifted";
+"COURSE_DATES.TOAST_SUCCESS_TITLE" = "Due dates shifted";
 "COURSE_DATES.TOAST_SUCCESS_MESSAGE" = "Your due dates have been successfully shifted to help you stay on track.";
-"COURSE_DATES.VIEW_ALL_DATES" = "View All Dates";
+"COURSE_DATES.VIEW_ALL_DATES" = "View all dates";
 
 "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY" = "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.";
 "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON" = "Shift due dates";

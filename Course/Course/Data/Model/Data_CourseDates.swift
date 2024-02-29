@@ -73,8 +73,6 @@ public extension DataLayer {
             return nil
         }
         
-        // Cases are defied according to this link
-        // https://2u-internal.atlassian.net/browse/LEARNER-7724?focusedCommentId=479226
         // Case 1
         private var showDatesTabBannerInfo: Bool {
             return !missedDeadlines

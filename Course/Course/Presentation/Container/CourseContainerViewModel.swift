@@ -86,52 +86,47 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     
     @MainActor
     func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
-        if let courseStart {
-            if courseStart < Date() {
-                isShowProgress = withProgress
-                do {
-                    if isInternetAvaliable {
-                        courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
-                        isShowProgress = false
-                        if let courseStructure {
-                            let continueWith = try await getResumeBlock(
-                                courseID: courseID,
-                                courseStructure: courseStructure
-                            )
-                            withAnimation {
-                                self.continueWith = continueWith
-                            }
-                        }
-                    } else {
-                        courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
-                    }
-                    courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
-                    await setDownloadsStates()
-                    isShowProgress = false
-                    
-                } catch let error {
-                    isShowProgress = false
-                    if error.isInternetError || error is NoCachedDataError {
-                        errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                    } else {
-                        errorMessage = CoreLocalization.Error.unknownError
+        guard let courseStart, courseStart < Date() else { return }
+        
+        isShowProgress = withProgress
+        do {
+            if isInternetAvaliable {
+                courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
+                isShowProgress = false
+                if let courseStructure {
+                    let continueWith = try await getResumeBlock(
+                        courseID: courseID,
+                        courseStructure: courseStructure
+                    )
+                    withAnimation {
+                        self.continueWith = continueWith
                     }
                 }
+            } else {
+                courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
+            }
+            courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
+            await setDownloadsStates()
+            isShowProgress = false
+            
+        } catch let error {
+            isShowProgress = false
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
             }
         }
     }
     
     @MainActor
     func getCourseDeadlineInfo(courseID: String, withProgress: Bool = true) async {
-        isShowProgress = withProgress
         do {
             let courseDeadlineInfo = try await interactor.getCourseDeadlineInfo(courseID: courseID)
             withAnimation {
                 self.courseDeadlineInfo = courseDeadlineInfo
             }
-            isShowProgress = false
         } catch let error {
-            isShowProgress = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
@@ -143,7 +138,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func shiftDueDates(courseID: String, withProgress: Bool = true) async {
         isShowProgress = withProgress
-        dueDatesShifted = false
         do {
             try await interactor.shiftDueDates(courseID: courseID)
             NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
@@ -471,7 +465,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(handleShiftDueDates(_:)),
+            selector: #selector(handleShiftDueDates),
             name: .shiftCourseDates, object: nil
         )
     }
@@ -492,8 +486,8 @@ extension CourseContainerViewModel {
                     group.addTask {
                         await self.getCourseDeadlineInfo(courseID: courseID, withProgress: true)
                     }
-                    DispatchQueue.main.async {
-                        self.dueDatesShifted = true
+                    await MainActor.run { [weak self] in
+                        self?.dueDatesShifted = true
                     }
                 }
             }

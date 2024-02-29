@@ -269,16 +269,12 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     }
     
     func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner {
-        do {
-            let courseDates = try
-            await getCourseDates(courseID: courseID)
-            return CourseDateBanner(
-                datesBannerInfo: courseDates.datesBannerInfo,
-                hasEnded: courseDates.hasEnded
-            )
-        } catch {
-            throw error
-        }
+        let courseDates = try
+        await getCourseDates(courseID: courseID)
+        return CourseDateBanner(
+            datesBannerInfo: courseDates.datesBannerInfo,
+            hasEnded: courseDates.hasEnded
+        )
     }
     
     func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {

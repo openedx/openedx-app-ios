@@ -97,7 +97,6 @@ public class CourseDatesViewModel: ObservableObject {
     @MainActor
     func shiftDueDates(courseID: String, withProgress: Bool = true) async {
         isShowProgress = withProgress
-        dueDatesShifted = false
         do {
             try await interactor.shiftDueDates(courseID: courseID)
             NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
@@ -121,7 +120,7 @@ extension CourseDatesViewModel {
     private func addObservers() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(handleShiftDueDates(_:)),
+            selector: #selector(handleShiftDueDates),
             name: .shiftCourseDates, object: nil
         )
     }
@@ -129,10 +128,9 @@ extension CourseDatesViewModel {
     @objc private func handleShiftDueDates(_ notification: Notification) {
         if let courseID = notification.object as? String {
             Task {
-                await self.getCourseDates(courseID: courseID)
-                DispatchQueue.main.async { [weak self] in
-                    guard let self else { return }
-                    self.dueDatesShifted = true
+                await getCourseDates(courseID: courseID)
+                await MainActor.run { [weak self] in
+                    self?.dueDatesShifted = true
                 }
             }
         }
