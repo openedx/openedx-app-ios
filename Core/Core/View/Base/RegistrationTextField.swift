@@ -42,6 +42,7 @@ public struct RegistrationTextField: View {
             }
             if isTextArea {
                 TextEditor(text: $config.text)
+                    .font(Theme.Fonts.bodyMedium)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                     .frame(height: 100)
@@ -87,6 +88,7 @@ public struct RegistrationTextField: View {
                         .accessibilityIdentifier("\(config.field.name)_textfield")
                 } else {
                     TextField(placeholder, text: $config.text)
+                        .font(Theme.Fonts.bodyMedium)
                         .keyboardType(keyboardType)
                         .textContentType(textContentType)
                         .autocapitalization(.none)

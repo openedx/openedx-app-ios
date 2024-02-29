@@ -65,6 +65,7 @@ public struct CreateNewThreadView: View {
                             Picker("", selection: $postType) {
                                 ForEach(postTypes, id: \.self) {
                                     Text($0.localizedValue.capitalized)
+                                        .font(Theme.Fonts.bodySmall)
                                 }
                             }.pickerStyle(.segmented)
                                 .frame(maxWidth: .infinity, maxHeight: 40)

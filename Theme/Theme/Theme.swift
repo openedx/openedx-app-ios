@@ -181,6 +181,16 @@ public struct Theme {
         public static let labelSmall: Font = .custom(fontsParser.fontName(for: .regular), size: 10)
     }
     
+    public struct UIFonts {
+        public static func labelSmall() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 10) else {
+                assert(false, "Could not find the required font")
+            }
+            
+            return font
+        }
+    }
+    
     public struct Shapes {
         public static var isRoundedCorners: Bool = true
         public static let screenBackgroundRadius = 24.0

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import Theme
 
 struct SocialAuthView: View {
 
@@ -51,7 +52,7 @@ struct SocialAuthView: View {
         HStack {
             Text("\(AuthLocalization.or) \(title.lowercased()):")
                 .padding(.vertical, 20)
-                .font(.system(size: 17, weight: .medium))
+                .font(Theme.Fonts.labelLarge)
                 .accessibilityIdentifier("social_auth_title_text")
             Spacer()
         }

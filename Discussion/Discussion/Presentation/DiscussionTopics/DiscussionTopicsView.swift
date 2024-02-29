@@ -32,6 +32,7 @@ public struct DiscussionTopicsView: View {
                         .padding(.top, 1)
                     Text(DiscussionLocalization.Topics.search)
                         .foregroundColor(Theme.Colors.textSecondary)
+                        .font(Theme.Fonts.bodyMedium)
                     Spacer()
                 }
                 .frame(maxWidth: 532)

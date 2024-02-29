@@ -37,6 +37,11 @@ struct MainScreenView: View {
         UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
         UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondaryLight)
+        
+        UITabBarItem.appearance().setTitleTextAttributes(
+            [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
+            for: .normal
+        )
     }
     
     var body: some View {

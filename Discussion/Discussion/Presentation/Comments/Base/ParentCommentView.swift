@@ -67,6 +67,7 @@ public struct ParentCommentView: View {
                         Text(comments.followed
                              ? DiscussionLocalization.Comment.unfollow
                              : DiscussionLocalization.Comment.follow)
+                        .font(Theme.Fonts.bodyMedium)
                     }).foregroundColor(comments.followed
                                        ? Theme.Colors.accentColor
                                        : Theme.Colors.textSecondary)

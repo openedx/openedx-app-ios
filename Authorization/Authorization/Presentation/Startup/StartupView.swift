@@ -66,6 +66,7 @@ public struct StartupView: View {
                             .autocorrectionDisabled()
                             .frame(minHeight: 50)
                             .submitLabel(.search)
+                            .font(Theme.Fonts.bodyMedium)
                             .accessibilityIdentifier("explore_courses_textfield")
                             
                         }.overlay(

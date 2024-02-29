@@ -52,6 +52,7 @@ public struct DiscussionSearchTopicsView: View {
                             self.focused = true
                         }
                     .foregroundColor(Theme.Colors.textPrimary)
+                    .font(Theme.Fonts.bodyMedium)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
                         Button(action: { viewModel.searchText.removeAll() }, label: {

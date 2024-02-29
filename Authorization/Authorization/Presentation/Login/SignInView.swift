@@ -75,6 +75,7 @@ public struct SignInView: View {
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .accessibilityIdentifier("username_text")
                             TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
+                                .font(Theme.Fonts.bodyMedium)
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
                                 .autocapitalization(.none)
@@ -97,6 +98,7 @@ public struct SignInView: View {
                                 .padding(.top, 18)
                                 .accessibilityIdentifier("password_text")
                             SecureField(AuthLocalization.SignIn.password, text: $password)
+                                .font(Theme.Fonts.bodyMedium)
                                 .padding(.all, 14)
                                 .background(
                                     Theme.Shapes.textInputShape
@@ -123,6 +125,7 @@ public struct SignInView: View {
                                     viewModel.trackForgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
                                 }
+                                .font(Theme.Fonts.bodyMedium)
                                 .foregroundColor(Theme.Colors.accentColor)
                                 .padding(.top, 0)
                                 .accessibilityIdentifier("forgot_password_button")

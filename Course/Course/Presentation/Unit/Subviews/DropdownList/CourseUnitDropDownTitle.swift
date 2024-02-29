@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theme
 
 struct CourseUnitDropDownTitle: View {
     var title: String
@@ -23,6 +24,7 @@ struct CourseUnitDropDownTitle: View {
                     Text(title)
                         .opacity(showDropdown ? 0.7 : 1.0)
                         .lineLimit(1)
+                        .font(Theme.Fonts.bodySmall)
                     if isAvailable {
                         Image(systemName: "chevron.down")
                             .dropdownArrowRotationAnimation(value: showDropdown)
