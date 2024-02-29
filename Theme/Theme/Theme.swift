@@ -189,6 +189,22 @@ public struct Theme {
             
             return font
         }
+        
+        public static func labelLarge() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 14) else {
+                assert(false, "Could not find the required font")
+            }
+            
+            return font
+        }
+        
+        public static func titleMedium() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .semiBold), size: 18) else {
+                assert(false, "Could not find the required font")
+            }
+            
+            return font
+        }
     }
     
     public struct Shapes {
