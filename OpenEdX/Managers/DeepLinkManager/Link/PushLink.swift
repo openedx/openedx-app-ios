@@ -24,10 +24,9 @@ public class PushLink: DeepLink {
     override init(dictionary: [AnyHashable: Any]) {
         let aps = dictionary[DataKeys.aps.rawValue] as? [String: Any]
         let alert = aps?[DataKeys.alert.rawValue] as? [String: Any]
-        let data = dictionary[DataKeys.ab.rawValue] as? [String: Any] ?? [:]
         title = alert?[DataKeys.title.rawValue] as? String
         body = alert?[DataKeys.body.rawValue] as? String
 
-        super.init(dictionary: data)
+        super.init(dictionary: dictionary)
     }
 }

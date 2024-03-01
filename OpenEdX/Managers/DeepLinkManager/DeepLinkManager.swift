@@ -13,16 +13,22 @@ import Discussion
 import SwiftUI
 import Theme
 
+// swiftlint:disable function_body_length
 //sourcery: AutoMockable
 public protocol DeepLinkRouter: BaseRouter {
     func showTabScreen(tab: MainTab)
+    func showDiscovery()
+    func showDiscoveryDetails(
+        link: DeepLink,
+        pathID: String
+    )
     func showCourseDetail(
         link: DeepLink,
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
     )
     func showThreads(
-        link: DeepLink,
+        topicID: String,
         courseDetails: CourseDetails,
         topics: Topics
     )
@@ -33,7 +39,12 @@ public protocol DeepLinkRouter: BaseRouter {
         comment: UserComment,
         parentComment: Post
     )
-    func dismiss()
+    func showProgram(
+        pathID: String
+    )
+    func showUserProfile(userName: String)
+    func showProgress()
+    func dismissProgress()
 }
 
 // Mark - For testing and SwiftUI preview
@@ -41,13 +52,18 @@ public protocol DeepLinkRouter: BaseRouter {
 public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
     public override init() {}
     public func showTabScreen(tab: MainTab) {}
+    public func showDiscovery() {}
+    public func showDiscoveryDetails(
+        link: DeepLink,
+        pathID: String
+    ) {}
     public func showCourseDetail(
         link: DeepLink,
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
     ) {}
     public func showThreads(
-        link: DeepLink,
+        topicID: String,
         courseDetails: CourseDetails,
         topics: Topics
     ) {}
@@ -58,7 +74,12 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
         comment: UserComment,
         parentComment: Post
     ) {}
-    public func dismiss() {}
+    public func showProgram(
+        pathID: String
+    ) {}
+    public func showUserProfile(userName: String) {}
+    public func showProgress() {}
+    public func dismissProgress() {}
 }
 #endif
 
@@ -145,7 +166,9 @@ public class DeepLinkManager {
         }
 
         if UIApplication.shared.applicationState == .active {
-            showNotificationAlert(link)
+            Task {
+                await showNotificationAlert(link)
+            }
             return
         }
 
@@ -157,7 +180,6 @@ public class DeepLinkManager {
     // This method process the deep link with response parameters
     func processDeepLink(with params: [AnyHashable: Any]?) {
         guard let params = params else { return }
-        debugLog(params, "processDeepLink")
         let deeplink = DeepLink(dictionary: params)
         if anyServiceEnabled && deeplink.type != .none {
             Task {
@@ -166,18 +188,7 @@ public class DeepLinkManager {
         }
     }
 
-    private func isDiscovery(type: DeepLinkType) -> Bool {
-        type == .discovery ||
-        type == .discoveryCourseDetail ||
-        type == .discoveryProgramDetail
-    }
-
-    private func isDiscussionThreads(type: DeepLinkType) -> Bool {
-        type == .discussionPost ||
-        type == .discussionTopic ||
-        type == .discussionComment
-    }
-
+    @MainActor
     private func showNotificationAlert(_ link: PushLink) {
         router.presentAlert(
             alertTitle: link.title ?? "",
@@ -190,13 +201,25 @@ public class DeepLinkManager {
                 guard let self else {
                     return
                 }
-                Task { @MainActor in
+                Task {
                     self.router.dismiss(animated: true)
                     await self.navigateToScreen(with: link.type, link: link)
                 }
             },
             type: .viewDeepLink
         )
+    }
+
+    private func isDiscovery(type: DeepLinkType) -> Bool {
+        type == .discovery ||
+        type == .discoveryCourseDetail ||
+        type == .discoveryProgramDetail
+    }
+
+    private func isDiscussionThreads(type: DeepLinkType) -> Bool {
+        type == .discussionPost ||
+        type == .discussionTopic ||
+        type == .discussionComment
     }
 
     @MainActor
@@ -226,14 +249,20 @@ public class DeepLinkManager {
             .discussionPost,
             .discussionComment:
             await showCourseScreen(with: type, link: link)
-        case .program:
+        case .program, .programDetail:
             guard config.program.enabled else { return }
-        case .programDetail:
-            guard config.program.enabled else { return }
+            if let pathID = link.pathID {
+                router.showProgram(pathID: pathID)
+                return
+            }
+            router.showTabScreen(tab: .programs)
         case .profile:
             router.showTabScreen(tab: .profile)
         case .userProfile:
-            break
+            guard let username = storage.user?.username else {
+                return
+            }
+            router.showUserProfile(userName: username)
         default:
             break
         }
@@ -242,11 +271,16 @@ public class DeepLinkManager {
     private func showDiscoveryScreen(with type: DeepLinkType, link: DeepLink) {
         switch type {
         case .discovery:
-            router.showTabScreen(tab: .discovery)
-        case .discoveryCourseDetail:
-            break
-        case .discoveryProgramDetail:
-            break
+            if userloggedIn {
+                router.showTabScreen(tab: .discovery)
+                return
+            }
+            router.showDiscovery()
+        case .discoveryCourseDetail, .discoveryProgramDetail:
+            guard let pathID = link.pathID ?? link.courseID else {
+                return
+            }
+            router.showDiscoveryDetails(link: link, pathID: pathID)
         default:
             break
         }
@@ -267,19 +301,22 @@ public class DeepLinkManager {
                 guard let self else {
                     return
                 }
-                if !self.isDiscussionThreads(type: type) { return }
-                showProgress()
+                if !self.isDiscussionThreads(type: type) {
+                    self.router.dismissProgress()
+                    return
+                }
+
                 Task {
                     do {
                         try await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
-                        self.router.dismiss(animated: false)
+                        self.router.dismissProgress()
                     } catch {
-                        self.router.dismiss(animated: false)
+                        self.router.dismissProgress()
                     }
                 }
             }
         } catch {
-            self.router.dismiss(animated: false)
+            self.router.dismissProgress()
         }
     }
 
@@ -299,7 +336,7 @@ public class DeepLinkManager {
                 topicID: topicID
             )
             router.showThreads(
-                link: link,
+                topicID: topicID,
                 courseDetails: courseDetails,
                 topics: topics
             )
@@ -315,7 +352,7 @@ public class DeepLinkManager {
             let userThread = try await discussionInteractor.getThread(threadID: threadID)
 
             router.showThreads(
-                link: link,
+                topicID: topicID,
                 courseDetails: courseDetails,
                 topics: topics
             )
@@ -347,7 +384,7 @@ public class DeepLinkManager {
             let parentComment = try await self.discussionInteractor.getResponse(responseID: parentID)
 
             router.showThreads(
-                link: link,
+                topicID: topicID,
                 courseDetails: courseDetails,
                 topics: topics
             )
@@ -365,45 +402,6 @@ public class DeepLinkManager {
             break
         }
     }
-
-    private func showProgress() {
-        router.presentView(transitionStyle: .crossDissolve) {
-            ZStack(alignment: .center) {
-                Color.black.opacity(0.8)
-                VStack(alignment: .center) {
-                    ProgressBar(size: 40, lineWidth: 8)
-                        .padding(.horizontal)
-                        .padding(.top, 50)
-                    Text("Waiting...")
-                        .font(Theme.Fonts.titleLarge)
-                        .padding(.top, 20)
-                        .padding(.bottom, 50)
-                }
-                .frame(maxWidth: 200)
-                .background(
-                    Theme.Shapes.cardShape
-                        .fill(Theme.Colors.cardViewBackground)
-                        .shadow(radius: 24)
-                        .fixedSize(horizontal: false, vertical: false)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(
-                            style: .init(
-                                lineWidth: 1,
-                                lineCap: .round,
-                                lineJoin: .round,
-                                miterLimit: 1
-                            )
-                        )
-                        .foregroundColor(Theme.Colors.backgroundStroke)
-                        .fixedSize(horizontal: false, vertical: false)
-                )
-            }
-            .ignoresSafeArea()
-        }
-    }
-
 }
 
 public enum DeepLinkError: Error {
@@ -420,3 +418,4 @@ extension DeepLinkError: LocalizedError {
         }
     }
 }
+// swiftlint:enable function_body_length

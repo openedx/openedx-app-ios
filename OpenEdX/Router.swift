@@ -664,6 +664,28 @@ extension Router: DeepLinkRouter {
 
     // MARK: - DeepLinkRouter
 
+    public func showDiscoveryDetails(
+        link: DeepLink,
+        pathID: String
+    ) {
+        showTabScreen(tab: .discovery)
+        switch link.type {
+        case .discoveryCourseDetail:
+            showWebDiscoveryDetails(
+                pathID: pathID,
+                discoveryType: .courseDetail(pathID),
+                sourceScreen: .discovery
+            )
+        case .discoveryProgramDetail:
+            showWebProgramDetails(
+                pathID: pathID,
+                viewType: .programDetail
+            )
+        default:
+            break
+        }
+    }
+
     public func showCourseDetail(
         link: DeepLink,
         courseDetails: CourseDetails,
@@ -693,6 +715,8 @@ extension Router: DeepLinkRouter {
 
         }
 
+        showProgress()
+
         DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1)) {
             switch link.type {
             case .courseVideos:
@@ -710,14 +734,21 @@ extension Router: DeepLinkRouter {
         }
     }
 
+    public func showProgram(
+        pathID: String
+    ) {
+        showTabScreen(tab: .programs)
+        showWebProgramDetails(
+            pathID: pathID,
+            viewType: .programDetail
+        )
+    }
+
     public func showThreads(
-        link: DeepLink,
+        topicID: String,
         courseDetails: CourseDetails,
         topics: Topics
     ) {
-        guard let topicID = link.topicID else {
-            return
-        }
         let title = (topics.coursewareTopics.map {$0} + topics.nonCoursewareTopics.map {$0}).first?.name ?? ""
         showThreads(
             courseID: courseDetails.courseID,
@@ -755,9 +786,13 @@ extension Router: DeepLinkRouter {
         hostMainScreen?.rootView.viewModel.select(tab: tab)
     }
 
-    public func dismiss() {
-        dismissPresentedViewController()
-        backToRoot(animated: true)
+    public func showDiscovery() {
+        dismiss()
+        showDiscoveryScreen(sourceScreen: .startup)
+    }
+
+    public func showUserProfile(userName: String) {
+        showUserDetails(username: userName)
     }
 
     private var hostMainScreen: UIHostingController<MainScreenView>? {
@@ -768,10 +803,32 @@ extension Router: DeepLinkRouter {
         navigationController.topViewController as? UIHostingController<CourseContainerView>
     }
 
+    private var hostDiscoveryWebview: UIHostingController<DiscoveryWebview>? {
+        navigationController.topViewController as? UIHostingController<DiscoveryWebview>
+    }
+
     private func dismissPresentedViewController() {
         if let presentedViewController = navigationController.presentedViewController {
             presentedViewController.dismiss(animated: true)
         }
+    }
+
+    public func showProgress() {
+        presentView(transitionStyle: .crossDissolve) {
+            FullScreenProgressView(title: "Waiting...")
+        }
+    }
+
+    public func dismissProgress() {
+        if let presentedViewController = navigationController
+            .presentedViewController as? UIHostingController<FullScreenProgressView> {
+            presentedViewController.dismiss(animated: true)
+        }
+    }
+
+    private func dismiss() {
+        dismissPresentedViewController()
+        backToRoot(animated: true)
     }
 
 }
