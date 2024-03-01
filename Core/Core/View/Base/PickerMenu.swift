@@ -88,7 +88,6 @@ public struct PickerMenu: View {
                             .font(Theme.Fonts.bodySmall)
                             .background(Theme.Colors.textInputStroke.cornerRadius(6))
                             .accessibilityIdentifier("picker_search_textfield")
-                            .foregroundColor(Theme.Colors.textPrimary)
                         Picker("", selection: $selectedItem) {
                             ForEach(filteredItems, id: \.self) { item in
                                 Text(item.value)

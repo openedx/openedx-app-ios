@@ -162,7 +162,7 @@ extension ScrollSlidingTabBar {
         public static let `default` = Style(
             font: Theme.Fonts.bodyLarge,
             selectedFont: Theme.Fonts.titleMedium,
-            activeAccentColor: Theme.Colors.accentColor,
+            activeAccentColor: Theme.Colors.accentXColor,
             inactiveAccentColor: Theme.Colors.textSecondary,
             indicatorHeight: 2,
             borderColor: .gray.opacity(0.2),

@@ -144,7 +144,7 @@ public struct ProfileView: View {
                     if viewModel.userModel?.yearOfBirth != 0 {
                         HStack {
                             Text(ProfileLocalization.Edit.Fields.yearOfBirth)
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .accessibilityIdentifier("yob_text")
                             Text(String(viewModel.userModel?.yearOfBirth ?? 0))
                                 .accessibilityIdentifier("yob_value_text")
@@ -153,7 +153,7 @@ public struct ProfileView: View {
                     if let bio = viewModel.userModel?.shortBiography, bio != "" {
                         HStack(alignment: .top) {
                             Text(ProfileLocalization.bio + " ")
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textPrimary)
                             + Text(bio)
                         }
                         .accessibilityIdentifier("bio_text")
