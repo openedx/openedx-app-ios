@@ -73,6 +73,7 @@ struct MainScreenView: View {
                     Text(CoreLocalization.Mainscreen.discovery)
                 }
                 .tag(MainTab.discovery)
+                .accessibilityIdentifier("discovery_tabitem")
             }
             
             ZStack {
@@ -89,6 +90,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
+            .accessibilityIdentifier("dashboard_tabitem")
             
             if config?.program.enabled ?? false {
                 ZStack {
@@ -99,6 +101,7 @@ struct MainScreenView: View {
                         )
                     } else if config?.program.type == .native {
                         Text(CoreLocalization.Mainscreen.inDeveloping)
+                            .accessibilityIdentifier("indevelopment_program_text")
                     }
                     
                     if updateAvaliable {
@@ -110,6 +113,7 @@ struct MainScreenView: View {
                     Text(CoreLocalization.Mainscreen.programs)
                 }
                 .tag(MainTab.programs)
+                .accessibilityIdentifier("programs_tabitem")
             }
             
             VStack {
@@ -122,6 +126,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
+            .accessibilityIdentifier("profile_tabitem")
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
@@ -135,6 +140,7 @@ struct MainScreenView: View {
                         CoreAssets.edit.swiftUIImage.renderingMode(.template)
                             .foregroundColor(Theme.Colors.navigationBarTintColor)
                     })
+                    .accessibilityIdentifier("edit_profile_button")
                 } else {
                     VStack {}
                 }

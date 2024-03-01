@@ -68,6 +68,7 @@ public struct ProgramWebviewView: View {
                     },
                     navigationDelegate: viewModel
                 )
+                .accessibilityIdentifier("program_webview")
                 
                 if isLoading || viewModel.showProgress || viewModel.updatingCookies {
                     HStack(alignment: .center) {
@@ -76,6 +77,7 @@ public struct ProgramWebviewView: View {
                             lineWidth: 8
                         )
                         .padding(.vertical, proxy.size.height / 2)
+                        .accessibilityIdentifier("progressbar")
                     }
                     .frame(width: proxy.size.width, height: proxy.size.height)
                 }

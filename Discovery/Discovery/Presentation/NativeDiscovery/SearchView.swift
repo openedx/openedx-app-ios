@@ -45,6 +45,7 @@ public struct SearchView: View {
                             : Theme.Colors.textPrimary
                         )
                         .accessibilityHidden(true)
+                        .accessibilityIdentifier("search_image")
                     
                     TextField(
                         !viewModel.isSearchActive
@@ -60,6 +61,7 @@ public struct SearchView: View {
                         }
                     .foregroundColor(Theme.Colors.textPrimary)
                     .font(Theme.Fonts.bodyLarge)
+                    .accessibilityIdentifier("search_textfields")
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
                         Button(action: { viewModel.searchText.removeAll() }, label: {
@@ -70,6 +72,7 @@ public struct SearchView: View {
                                 .padding(.horizontal)
                         })
                         .foregroundColor(Theme.Colors.styledButtonText)
+                        .accessibilityIdentifier("search_button")
                     }
                 }
                 .frame(minHeight: 48)
@@ -174,9 +177,11 @@ public struct SearchView: View {
             Text(DiscoveryLocalization.Search.title)
                 .font(Theme.Fonts.displaySmall)
                 .foregroundColor(Theme.Colors.textPrimary)
+                .accessibilityIdentifier("title_text")
             Text(searchDescription(viewModel: viewModel))
                 .font(Theme.Fonts.titleSmall)
                 .foregroundColor(Theme.Colors.textPrimary)
+                .accessibilityIdentifier("description_text")
         }.listRowBackground(Color.clear)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(DiscoveryLocalization.Search.title + searchDescription(viewModel: viewModel))

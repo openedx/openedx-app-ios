@@ -28,6 +28,7 @@ public struct OfflineSnackBarView: View {
                 Spacer()
                 HStack(spacing: 12) {
                     Text(CoreLocalization.NoInternet.offline)
+                        .accessibilityIdentifier("no_internet_text")
                     Spacer()
                     Button(CoreLocalization.NoInternet.dismiss,
                            action: {
@@ -35,6 +36,7 @@ public struct OfflineSnackBarView: View {
                             dismiss = true
                         }
                     })
+                    .accessibilityIdentifier("no_internet_dismiss_button")
                     Button(CoreLocalization.NoInternet.reload,
                            action: {
                         Task {
@@ -44,6 +46,7 @@ public struct OfflineSnackBarView: View {
                             dismiss = true
                         }
                     })
+                    .accessibilityIdentifier("no_internet_reload_button")
                 }.padding(.horizontal, 16)
                     .font(Theme.Fonts.titleSmall)
                     .frame(maxWidth: .infinity, maxHeight: OfflineSnackBarView.height)

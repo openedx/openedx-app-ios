@@ -76,12 +76,14 @@ struct ProfileBottomSheet: View {
                             .font(Theme.Fonts.titleLarge)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.vertical, 14)
+                            .accessibilityIdentifier("profile_bottom_sheet_title_text")
                         
                         button(title: ProfileLocalization.Edit.BottomSheet.select,
                                type: .gallery,
                                action: {
                             openGallery()
                         })
+                        .accessibilityIdentifier("select_picture_button")
                         
                         button(title: ProfileLocalization.Edit.BottomSheet.remove,
                                type: .remove,
@@ -89,6 +91,7 @@ struct ProfileBottomSheet: View {
                             removePhoto()
                         })
                         .padding(.top, 10)
+                        .accessibilityIdentifier("remove_picture_button")
                         
                         button(title: ProfileLocalization.Edit.BottomSheet.cancel,
                                type: .cancel,
@@ -96,7 +99,9 @@ struct ProfileBottomSheet: View {
                             withAnimation {
                                 showingBottomSheet = false
                             }
-                        }).padding(.top, 34)
+                        })
+                        .padding(.top, 34)
+                        .accessibilityIdentifier("cancel_button")
                     }.padding(.horizontal, 24)
                     
                 }

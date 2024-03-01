@@ -26,9 +26,11 @@ public struct DiscoveryView: View {
         Text(DiscoveryLocalization.Header.title1)
             .font(Theme.Fonts.displaySmall)
             .foregroundColor(Theme.Colors.textPrimary)
+            .accessibilityIdentifier("title_text")
         Text(DiscoveryLocalization.Header.title2)
             .font(Theme.Fonts.titleSmall)
             .foregroundColor(Theme.Colors.textPrimary)
+            .accessibilityIdentifier("subtitle_text")
     }.listRowBackground(Color.clear)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(DiscoveryLocalization.Header.title1 + DiscoveryLocalization.Header.title2)
@@ -57,8 +59,10 @@ public struct DiscoveryView: View {
                         .foregroundColor(Theme.Colors.textSecondary)
                         .padding(.leading, 16)
                         .padding(.top, 1)
+                        .accessibilityIdentifier("search_image")
                     Text(DiscoveryLocalization.search)
                         .foregroundColor(Theme.Colors.textSecondary)
+                        .accessibilityIdentifier("search_text")
                     Spacer()
                 }
                 .onTapGesture {

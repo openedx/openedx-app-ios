@@ -28,6 +28,7 @@ public struct VideoQualityView: View {
                         ProgressBar(size: 40, lineWidth: 8)
                             .padding(.top, 200)
                             .padding(.horizontal)
+                            .accessibilityIdentifier("progressbar")
                     } else {
                         
                         ForEach(viewModel.quality, id: \.offset) { _, quality in
@@ -44,9 +45,9 @@ public struct VideoQualityView: View {
                                         .renderingMode(.template)
                                         .foregroundColor(Theme.Colors.accentXColor)
                                         .opacity(quality == viewModel.selectedQuality ? 1 : 0)
-                                    
                                 }.foregroundColor(Theme.Colors.textPrimary)
                             })
+                            .accessibilityIdentifier("select_quality_button")
                             Divider()
                         }
                     }
