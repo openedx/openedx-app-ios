@@ -219,7 +219,7 @@ public struct SignInView: View {
             )
             Text(.init(text))
                 .tint(Theme.Colors.accentXColor)
-                .foregroundStyle(Theme.Colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.textSecondary)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
                 .padding(.bottom, 15)
