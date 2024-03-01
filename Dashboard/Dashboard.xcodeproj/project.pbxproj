@@ -24,6 +24,7 @@
 		02F6EF4328D9ECC500835477 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 02F6EF4528D9ECC500835477 /* Localizable.strings */; };
 		02F6EF4828D9ED8300835477 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF4728D9ED8300835477 /* Strings.swift */; };
 		214DA1AADABC7BF4FB8EA1D7 /* Pods_App_Dashboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B008B2F0762EF35CADE3DD4 /* Pods_App_Dashboard.framework */; };
+		97E7DF0B2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */; };
 		9AD4A6A1AAF97092CF457FE2 /* Pods_App_Dashboard_DashboardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22905947A936093AD23D4CF8 /* Pods_App_Dashboard_DashboardTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		65CD5AB152F3DEC88D48AE2D /* Pods-App-Dashboard.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard.debugdev.xcconfig"; sourceTree = "<group>"; };
 		6BA3D1943CAB859ECDC95C76 /* Pods-App-Dashboard.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard.releasedev.xcconfig"; sourceTree = "<group>"; };
 		89D6F05AC9854DBBAB091D9C /* Pods-App-Dashboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard.release.xcconfig"; path = "Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard.release.xcconfig"; sourceTree = "<group>"; };
+		97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseEnrollmentsMock.swift; sourceTree = "<group>"; };
 		BBABB135366FFB1DAEFA0D16 /* Pods-App-Dashboard-DashboardTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CCF4C665AD91B6B96F6A11DF /* Pods-App-Dashboard-DashboardTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugdev.xcconfig"; sourceTree = "<group>"; };
 		DE6CF4F983BBF52606807F9A /* Pods-App-Dashboard-DashboardTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugstage.xcconfig"; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			children = (
 				0208666929CC6D0F00BC05B2 /* Persistence */,
 				027DB33728D8D9E3002B6862 /* Network */,
+				97E7DF092B7A3E7200A2A09B /* Mock */,
 				027DB33C28D8DB5E002B6862 /* DashboardRepository.swift */,
 			);
 			path = Data;
@@ -234,6 +237,14 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		97E7DF092B7A3E7200A2A09B /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,6 +463,7 @@
 				02F3BFE129252FCB0051930C /* DashboardRouter.swift in Sources */,
 				027DB33928D8D9F6002B6862 /* DashboardEndpoint.swift in Sources */,
 				02F6EF4828D9ED8300835477 /* Strings.swift in Sources */,
+				97E7DF0B2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift in Sources */,
 				027DB34328D8E89B002B6862 /* DashboardInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

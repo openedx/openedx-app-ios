@@ -98,18 +98,10 @@
 "REVIEW.BUTTON.RATE_US" = "Rate Us";
 "REVIEW.EMAIL.TITLE" = "Select email client:";
 
-"COURSE_DATES.TODAY" = "Today";
-"COURSE_DATES.COMPLETED" = "Completed";
-"COURSE_DATES.PAST_DUE" = "Past due";
-"COURSE_DATES.DUE_NEXT" = "Due next";
-"COURSE_DATES.UNRELEASED" = "Unreleased";
-"COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
-"COURSE_DATES.TOMORROW" = "Tomorrow";
-"COURSE_DATES.YESTERDAY" = "Yesterday";
-"COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
-"COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
-
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 
 "SIGN_IN.LOG_IN_BTN" = "Sign in";
 "SIGN_IN.REGISTER_BTN" = "Register";
+
+"TOMORROW" = "Tomorrow";
+"YESTERDAY" = "Yesterday";
