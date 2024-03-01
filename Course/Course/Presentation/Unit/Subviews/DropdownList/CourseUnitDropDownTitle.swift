@@ -24,10 +24,12 @@ struct CourseUnitDropDownTitle: View {
                     Text(title)
                         .opacity(showDropdown ? 0.7 : 1.0)
                         .lineLimit(1)
-                        .font(Theme.Fonts.bodySmall)
+                        .font(Theme.Fonts.bodyMedium)
+                        .foregroundColor(Theme.Colors.textPrimary)
                     if isAvailable {
-                        Image(systemName: "chevron.down")
+                        Image(systemName: "chevron.down").renderingMode(.template)
                             .dropdownArrowRotationAnimation(value: showDropdown)
+                            .foregroundColor(Theme.Colors.textPrimary)
                     }
                 }
             }

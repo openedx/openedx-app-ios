@@ -31,6 +31,7 @@ public struct DiscussionSearchTopicsView: View {
                 .padding(.bottom, -7)
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.leading, 16)
                         .padding(.top, -1)
                         .foregroundColor(

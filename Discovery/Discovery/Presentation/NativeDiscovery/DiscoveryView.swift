@@ -54,6 +54,7 @@ public struct DiscoveryView: View {
                 // MARK: - Search fake field
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
+                        .foregroundColor(Theme.Colors.textSecondary)
                         .padding(.leading, 16)
                         .padding(.top, 1)
                     Text(DiscoveryLocalization.search)

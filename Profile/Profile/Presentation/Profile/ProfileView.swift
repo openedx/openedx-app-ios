@@ -106,6 +106,7 @@ public struct ProfileView: View {
                     .padding(.top, 30)
                 Text(viewModel.userModel?.name ?? "")
                     .font(Theme.Fonts.headlineSmall)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.top, 20)
                 Text("@\(viewModel.userModel?.username ?? "")")
                     .font(Theme.Fonts.labelLarge)

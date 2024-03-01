@@ -30,6 +30,7 @@ public struct CheckBoxView: View {
             )
             Text(text)
                 .font(font)
+                .foregroundColor(Theme.Colors.textPrimary)
         }
         .onTapGesture {
             withAnimation(.linear(duration: 0.1)) {

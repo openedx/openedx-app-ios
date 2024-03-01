@@ -105,6 +105,8 @@ struct ProfileSupportInfoView: View {
             HStack {
                 Text(viewModel.title)
                     .multilineTextAlignment(.leading)
+                    .font(Theme.Fonts.bodyMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
             }
@@ -133,6 +135,8 @@ struct ProfileSupportInfoView: View {
         } label: {
             HStack {
                 Text(linkViewModel.title)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(Theme.Fonts.bodyMedium)
                 Spacer()
                 Image(systemName: "chevron.right")
             }

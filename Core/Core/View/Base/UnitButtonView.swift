@@ -109,9 +109,9 @@ public struct UnitButtonView: View {
                             } else {
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .padding(.leading, 20)
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.trailing, 20)
                             }

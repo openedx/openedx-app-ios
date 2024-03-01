@@ -28,6 +28,7 @@ public struct DiscussionTopicsView: View {
                 // MARK: - Search fake field
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
+                        .foregroundColor(Theme.Colors.textSecondary)
                         .padding(.leading, 16)
                         .padding(.top, 1)
                     Text(DiscussionLocalization.Topics.search)
@@ -78,9 +79,11 @@ public struct DiscussionTopicsView: View {
                                             }, label: {
                                                 VStack {
                                                     Spacer(minLength: 0)
-                                                    CoreAssets.allPosts.swiftUIImage
+                                                    CoreAssets.allPosts.swiftUIImage.renderingMode(.template)
+                                                        .foregroundColor(Theme.Colors.textPrimary)
                                                     Text(allTopics.name)
                                                         .font(Theme.Fonts.titleSmall)
+                                                        .foregroundColor(Theme.Colors.textPrimary)
                                                     Spacer(minLength: 0)
                                                 }
                                                 .frame(maxWidth: .infinity)
@@ -94,9 +97,11 @@ public struct DiscussionTopicsView: View {
                                             }, label: {
                                                 VStack(alignment: .center) {
                                                     Spacer(minLength: 0)
-                                                    CoreAssets.followed.swiftUIImage
+                                                    CoreAssets.followed.swiftUIImage.renderingMode(.template)
+                                                        .foregroundColor(Theme.Colors.textPrimary)
                                                     Text(followed.name)
                                                         .font(Theme.Fonts.titleSmall)
+                                                        .foregroundColor(Theme.Colors.textPrimary)
                                                     Spacer(minLength: 0)
                                                 }
                                                 .frame(maxWidth: .infinity)

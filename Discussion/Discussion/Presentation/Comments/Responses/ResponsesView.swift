@@ -45,7 +45,7 @@ public struct ResponsesView: View {
                             viewModel.comments = []
                             _ = await viewModel.getComments(
                                 commentID: commentID,
-                                parentComment: parentComment, 
+                                parentComment: parentComment,
                                 page: 1
                             )
                         }) {
@@ -87,10 +87,12 @@ public struct ResponsesView: View {
                                         Text("\(viewModel.itemsCount)")
                                         Text(DiscussionLocalization.commentsCount(viewModel.itemsCount))
                                         Spacer()
-                                    }.padding(.top, 40)
-                                        .padding(.bottom, 14)
-                                        .padding(.leading, 24)
-                                        .font(Theme.Fonts.titleMedium)
+                                    }
+                                    .padding(.top, 40)
+                                    .padding(.bottom, 14)
+                                    .padding(.leading, 24)
+                                    .font(Theme.Fonts.titleMedium)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     ForEach(
                                         Array(comments.comments.enumerated()), id: \.offset
                                     ) { index, comment in

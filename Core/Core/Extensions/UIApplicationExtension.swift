@@ -59,6 +59,7 @@ extension UINavigationController {
                 .font: Theme.UIFonts.labelLarge()
             ],
             for: .normal)
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Theme.Colors.accentColor)
         
         UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = Theme.UIColors.accentColor
     }

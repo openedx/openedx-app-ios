@@ -80,6 +80,8 @@ public struct EditProfileView: View {
                                 Text(ProfileLocalization.Edit.Fields.aboutMe)
                                     .font(Theme.Fonts.titleMedium)
                                 TextEditor(text: $viewModel.profileChanges.shortBiography)
+                                    .font(Theme.Fonts.bodyMedium)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 4)
                                     .frame(height: 200)

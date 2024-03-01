@@ -55,6 +55,7 @@ public struct StartupView: View {
                             Image(systemName: "magnifyingglass")
                                 .padding(.leading, 16)
                                 .padding(.top, 1)
+                                .foregroundColor(Theme.Colors.textPrimary)
                             TextField(AuthLocalization.Startup.searchPlaceholder, text: $searchQuery, onCommit: {
                                 if searchQuery.isEmpty { return }
                                 viewModel.router.showDiscoveryScreen(
@@ -66,7 +67,8 @@ public struct StartupView: View {
                             .autocorrectionDisabled()
                             .frame(minHeight: 50)
                             .submitLabel(.search)
-                            .font(Theme.Fonts.bodyMedium)
+                            .font(Theme.Fonts.bodyLarge)
+                            .foregroundColor(Theme.Colors.textPrimary)
                             .accessibilityIdentifier("explore_courses_textfield")
                             
                         }.overlay(

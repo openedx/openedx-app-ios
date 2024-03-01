@@ -36,6 +36,7 @@ public struct SearchView: View {
                 
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.leading, 16)
                         .padding(.top, 1)
                         .foregroundColor(
@@ -58,6 +59,7 @@ public struct SearchView: View {
                             self.focused = true
                         }
                     .foregroundColor(Theme.Colors.textPrimary)
+                    .font(Theme.Fonts.bodyLarge)
                     Spacer()
                     if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
                         Button(action: { viewModel.searchText.removeAll() }, label: {

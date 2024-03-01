@@ -75,7 +75,8 @@ public struct SignInView: View {
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .accessibilityIdentifier("username_text")
                             TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
-                                .font(Theme.Fonts.bodyMedium)
+                                .font(Theme.Fonts.bodyLarge)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
                                 .autocapitalization(.none)
@@ -98,7 +99,8 @@ public struct SignInView: View {
                                 .padding(.top, 18)
                                 .accessibilityIdentifier("password_text")
                             SecureField(AuthLocalization.SignIn.password, text: $password)
-                                .font(Theme.Fonts.bodyMedium)
+                                .font(Theme.Fonts.bodyLarge)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.all, 14)
                                 .background(
                                     Theme.Shapes.textInputShape
@@ -219,7 +221,7 @@ public struct SignInView: View {
             )
             Text(.init(text))
                 .tint(Theme.Colors.accentXColor)
-                .foregroundStyle(Theme.Colors.textSecondary)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
                 .padding(.bottom, 15)
