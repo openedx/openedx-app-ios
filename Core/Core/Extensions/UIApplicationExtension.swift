@@ -55,7 +55,7 @@ extension UINavigationController {
         
         UISegmentedControl.appearance().setTitleTextAttributes(
             [
-                .foregroundColor: Theme.Colors.white.uiColor(),
+                .foregroundColor: Theme.Colors.primaryButtonTextColor.uiColor(),
                 .font: Theme.UIFonts.labelLarge()
             ],
             for: .normal)
