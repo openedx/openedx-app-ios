@@ -108,11 +108,11 @@ public struct SettingsCell: View {
     public var body: some View {
         VStack(alignment: .leading) {
             Text(title)
-                .font(Theme.Fonts.titleMedium)
+                .font(Theme.Fonts.labelLarge)
                 .accessibilityIdentifier("video_quality_title_text")
             if let description {
                 Text(description)
-                    .font(Theme.Fonts.labelMedium)
+                    .font(Theme.Fonts.labelSmall)
                     .foregroundColor(Theme.Colors.textSecondary)
                     .accessibilityIdentifier("video_quality_des_text")
             }

@@ -85,7 +85,7 @@ public struct CourseCellView: View {
                                 .resizable()
                                 .frame(width: 16, height: 16)
                                 .offset(x: 15)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(Theme.Colors.accentXColor)
                                 .accessibilityIdentifier("arrow_image")
                         }
                     }

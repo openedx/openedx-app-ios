@@ -149,6 +149,7 @@ public struct ProfileView: View {
                             Text(String(viewModel.userModel?.yearOfBirth ?? 0))
                                 .accessibilityIdentifier("yob_value_text")
                         }
+                        .font(Theme.Fonts.bodyLarge)
                     }
                     if let bio = viewModel.userModel?.shortBiography, bio != "" {
                         HStack(alignment: .top) {
@@ -193,6 +194,7 @@ public struct ProfileView: View {
             }, label: {
                 HStack {
                     Text(ProfileLocalization.settingsVideo)
+                        .font(Theme.Fonts.bodyLarge)
                     Spacer()
                     Image(systemName: "chevron.right")
                 }

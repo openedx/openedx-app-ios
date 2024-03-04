@@ -268,7 +268,7 @@ public struct AlertView: View {
                 }, label: {
                     ZStack {
                         Text(CoreLocalization.Alert.logout)
-                            .foregroundColor(Theme.Colors.white)
+                            .foregroundColor(Theme.Colors.primaryButtonTextColor)
                             .font(Theme.Fonts.labelLarge)
                             .frame(maxWidth: .infinity)
                             .padding(.horizontal, 16)
@@ -300,7 +300,7 @@ public struct AlertView: View {
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.leave)
-                                .foregroundColor(Theme.Colors.white)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)
@@ -359,7 +359,7 @@ public struct AlertView: View {
                     } label: {
                         ZStack {
                             Text(CoreLocalization.Alert.delete)
-                                .foregroundColor(Theme.Colors.white)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)

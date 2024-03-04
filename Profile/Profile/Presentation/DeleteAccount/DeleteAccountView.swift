@@ -107,6 +107,7 @@ public struct DeleteAccountView: View {
                                 try await viewModel.deleteAccount(password: viewModel.password)
                             }
                         }, color: Theme.Colors.accentColor,
+                                     textColor: Theme.Colors.primaryButtonTextColor,
                                      isActive: viewModel.password.count >= 2)
                         .padding(.top, 18)
                         .accessibilityIdentifier("delete_account_button")
