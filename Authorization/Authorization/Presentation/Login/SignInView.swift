@@ -127,7 +127,7 @@ public struct SignInView: View {
                                     viewModel.trackForgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
                                 }
-                                .font(Theme.Fonts.bodyMedium)
+                                .font(Theme.Fonts.titleMedium)
                                 .foregroundColor(Theme.Colors.accentXColor)
                                 .padding(.top, 0)
                                 .accessibilityIdentifier("forgot_password_button")
