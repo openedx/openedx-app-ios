@@ -47,6 +47,7 @@ public struct CourseDetailsView: View {
                             ProgressBar(size: 40, lineWidth: 8)
                                 .padding(.top, 200)
                                 .padding(.horizontal)
+                                .accessibilityIdentifier("progressbar")
                         }.frame(width: proxy.size.width)
                     } else {
                         RefreshableScrollViewCompat(action: {
@@ -131,6 +132,7 @@ public struct CourseDetailsView: View {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(.top, 20)
                                                 .frame(maxWidth: .infinity)
+                                                .accessibilityIdentifier("progressbar")
                                         }
                                     }
                                 }
@@ -233,12 +235,14 @@ private struct CourseStateView: View {
                 }
             })
             .padding(16)
+            .accessibilityIdentifier("enroll_button")
         case .enrollClose:
             Text(DiscoveryLocalization.Details.enrollmentDateIsOver)
                 .multilineTextAlignment(.center)
                 .font(Theme.Fonts.titleSmall)
                 .cardStyle()
                 .padding(.vertical, 24)
+                .accessibilityIdentifier("date_over_text")
         case .alreadyEnrolled:
             StyledButton(DiscoveryLocalization.Details.viewCourse, action: {
                 if !viewModel.userloggedIn {
@@ -264,6 +268,7 @@ private struct CourseStateView: View {
                 }
             })
             .padding(16)
+            .accessibilityIdentifier("view_course_button")
         }
     }
 }
@@ -277,6 +282,7 @@ private struct PlayButton: View {
                 .resizable()
                 .frame(width: 40, height: 40)
         })
+        .accessibilityIdentifier("play_button")
     }
 }
 
@@ -288,16 +294,19 @@ private struct CourseTitleView: View {
             Text(courseDetails.courseDescription ?? "")
                 .font(Theme.Fonts.labelSmall)
                 .padding(.horizontal, 26)
+                .accessibilityIdentifier("description_text")
             
             Text(courseDetails.courseTitle)
                 .font(Theme.Fonts.titleLarge)
                 .padding(.horizontal, 26)
+                .accessibilityIdentifier("title_text")
             
             Text(courseDetails.org)
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(Theme.Colors.accentColor)
                 .padding(.horizontal, 26)
                 .padding(.top, 10)
+                .accessibilityIdentifier("org_text")
         }
     }
 }
@@ -335,6 +344,7 @@ private struct CourseBannerView: View {
                             animate = true
                         }
                     }
+                    .accessibilityIdentifier("course_image")
                 if courseDetails.courseVideoURL != nil {
                     PlayButton(action: onPlayButtonTap)
                 }
@@ -350,6 +360,7 @@ private struct CourseBannerView: View {
                             animate = true
                         }
                     }
+                    .accessibilityIdentifier("course_image")
                 if courseDetails.courseVideoURL != nil {
                     PlayButton(action: onPlayButtonTap)
                 }

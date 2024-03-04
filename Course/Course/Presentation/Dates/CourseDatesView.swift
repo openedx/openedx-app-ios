@@ -35,10 +35,15 @@ public struct CourseDatesView: View {
                             .padding(.horizontal)
                     }
                 } else if let courseDates = viewModel.courseDates, !courseDates.courseDateBlocks.isEmpty {
-                    CourseDateListView(viewModel: viewModel, courseDates: courseDates)
+                    CourseDateListView(viewModel: viewModel, courseDates: courseDates, courseID: courseID)
                         .padding(.top, 10)
                 }
             }
+            
+            if viewModel.dueDatesShifted {
+                DatesShiftedSuccessView(selectedTab: .dates, courseDatesViewModel: viewModel)
+            }
+            
             if viewModel.showError {
                 VStack {
                     Spacer()
@@ -95,11 +100,21 @@ struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
     @State private var isExpanded = false
     var courseDates: CourseDates
+    let courseID: String
 
     var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
+                    if !courseDates.hasEnded {
+                        DatesStatusInfoView(
+                            datesBannerInfo: courseDates.datesBannerInfo,
+                            courseID: courseID,
+                            courseDatesViewModel: viewModel
+                        )
+                        .padding(.bottom, 16)
+                    }
+                    
                     ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
                         let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
                         if status == .completed {
@@ -165,8 +180,8 @@ struct CompletedBlocks: View {
                         if !isExpanded {
                             let totalCount = courseDateBlockDict.values.reduce(0) { $0 + $1.count }
                             let itemsHidden = totalCount == 1 ?
-                            CoreLocalization.CourseDates.itemHidden :
-                            CoreLocalization.CourseDates.itemsHidden
+                            CourseLocalization.CourseDates.itemHidden :
+                            CourseLocalization.CourseDates.itemsHidden
                             Text("\(totalCount) \(itemsHidden)")
                                 .font(Theme.Fonts.labelMedium)
                                 .foregroundColor(Theme.Colors.textPrimary)
@@ -321,11 +336,11 @@ struct StyleBlock: View {
 fileprivate extension BlockStatus {
     var title: String {
         switch self {
-        case .completed: return CoreLocalization.CourseDates.completed
-        case .pastDue: return CoreLocalization.CourseDates.pastDue
-        case .dueNext: return CoreLocalization.CourseDates.dueNext
-        case .unreleased: return CoreLocalization.CourseDates.unreleased
-        case .verifiedOnly: return CoreLocalization.CourseDates.verifiedOnly
+        case .completed: return CourseLocalization.CourseDates.completed
+        case .pastDue: return CourseLocalization.CourseDates.pastDue
+        case .dueNext: return CourseLocalization.CourseDates.dueNext
+        case .unreleased: return CourseLocalization.CourseDates.unreleased
+        case .verifiedOnly: return CourseLocalization.CourseDates.verifiedOnly
         default: return ""
         }
     }

@@ -57,6 +57,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published public var selection: Int = CourseTab.course.rawValue
     @Published private(set) var isShowProgress = false
     @Published var courseStructure: CourseStructure?
+    @Published var courseDeadlineInfo: CourseDateBanner?
     @Published var courseVideosStructure: CourseStructure?
     @Published var showError: Bool = false
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
@@ -64,6 +65,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
     @Published var isInternetAvaliable: Bool = true
+    @Published var dueDatesShifted: Bool = false
 
     var errorMessage: String? {
         didSet {
@@ -122,47 +124,77 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.isInternetAvaliable = connectivity.isInternetAvaliable
 
         super.init(manager: manager)
-
         addObservers()
     }
     
     @MainActor
     func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
-        if let courseStart {
-            if courseStart < Date() {
-                isShowProgress = withProgress
-                do {
-                    if isInternetAvaliable {
-                        courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
-                        isShowProgress = false
-                        if let courseStructure {
-                            let continueWith = try await getResumeBlock(
-                                courseID: courseID,
-                                courseStructure: courseStructure
-                            )
-                            withAnimation {
-                                self.continueWith = continueWith
-                            }
-                        }
-                    } else {
-                        courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
-                    }
-                    courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
-                    await setDownloadsStates()
-                    isShowProgress = false
-                    
-                } catch let error {
-                    isShowProgress = false
-                    if error.isInternetError || error is NoCachedDataError {
-                        errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                    } else {
-                        errorMessage = CoreLocalization.Error.unknownError
+        guard let courseStart, courseStart < Date() else { return }
+        
+        isShowProgress = withProgress
+        do {
+            if isInternetAvaliable {
+                courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
+                isShowProgress = false
+                if let courseStructure {
+                    let continueWith = try await getResumeBlock(
+                        courseID: courseID,
+                        courseStructure: courseStructure
+                    )
+                    withAnimation {
+                        self.continueWith = continueWith
                     }
                 }
+            } else {
+                courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
+            }
+            courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
+            await setDownloadsStates()
+            isShowProgress = false
+            
+        } catch let error {
+            isShowProgress = false
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+    }
+    
+    @MainActor
+    func getCourseDeadlineInfo(courseID: String, withProgress: Bool = true) async {
+        do {
+            let courseDeadlineInfo = try await interactor.getCourseDeadlineInfo(courseID: courseID)
+            withAnimation {
+                self.courseDeadlineInfo = courseDeadlineInfo
+            }
+        } catch let error {
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
             }
         }
     }
 
+    @MainActor
+    func shiftDueDates(courseID: String, withProgress: Bool = true) async {
+        isShowProgress = withProgress
+        do {
+            try await interactor.shiftDueDates(courseID: courseID)
+            NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
+            isShowProgress = false
+        } catch let error {
+            isShowProgress = false
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+    }
+    
     func update(downloadQuality: DownloadQuality) {
         storage.userSettings?.downloadQuality = downloadQuality
         userSettings = storage.userSettings
@@ -473,6 +505,40 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 self.isInternetAvaliable = self.connectivity.isInternetAvaliable
         }
         .store(in: &cancellables)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleShiftDueDates),
+            name: .shiftCourseDates, object: nil
+        )
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension CourseContainerViewModel {
+    @objc private func handleShiftDueDates(_ notification: Notification) {
+        if let courseID = notification.object as? String {
+            Task {
+                await withTaskGroup(of: Void.self) { group in
+                    group.addTask {
+                        await self.getCourseBlocks(courseID: courseID, withProgress: true)
+                    }
+                    group.addTask {
+                        await self.getCourseDeadlineInfo(courseID: courseID, withProgress: true)
+                    }
+                    await MainActor.run { [weak self] in
+                        self?.dueDatesShifted = true
+                    }
+                }
+            }
+        }
+    }
+    
+    func resetDueDatesShiftedFlag() {
+        dueDatesShifted = false
     }
 }
 

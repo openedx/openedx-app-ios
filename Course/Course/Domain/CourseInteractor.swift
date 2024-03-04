@@ -19,6 +19,8 @@ public protocol CourseInteractorProtocol {
     func resumeBlock(courseID: String) async throws -> ResumeBlock
     func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle]
     func getCourseDates(courseID: String) async throws -> CourseDates
+    func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner
+    func shiftDueDates(courseID: String) async throws
 }
 
 public class CourseInteractor: CourseInteractorProtocol {
@@ -63,6 +65,10 @@ public class CourseInteractor: CourseInteractorProtocol {
         return try await repository.blockCompletionRequest(courseID: courseID, blockID: blockID)
     }
     
+    public func shiftDueDates(courseID: String) async throws {
+        return try await repository.shiftDueDates(courseID: courseID)
+    }
+    
     public func getHandouts(courseID: String) async throws -> String? {
         return try await repository.getHandouts(courseID: courseID)
     }
@@ -82,6 +88,10 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getCourseDates(courseID: String) async throws -> CourseDates {
         return try await repository.getCourseDates(courseID: courseID)
+    }
+    
+    public func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner {
+        return try await repository.getCourseDeadlineInfo(courseID: courseID)
     }
     
     private func filterChapter(chapter: CourseChapter) -> CourseChapter {

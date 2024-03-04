@@ -14,9 +14,11 @@ public struct DashboardView: View {
         Text(DashboardLocalization.Header.courses)
             .font(Theme.Fonts.displaySmall)
             .foregroundColor(Theme.Colors.textPrimary)
+            .accessibilityIdentifier("courses_header_text")
         Text(DashboardLocalization.Header.welcomeBack)
             .font(Theme.Fonts.titleSmall)
             .foregroundColor(Theme.Colors.textPrimary)
+            .accessibilityIdentifier("courses_welcomeback_text")
     }.listRowBackground(Color.clear)
         .padding(.top, 24)
         .accessibilityElement(children: .ignore)
@@ -81,6 +83,7 @@ public struct DashboardView: View {
                                             title: course.name
                                         )
                                     }
+                                    .accessibilityIdentifier("course_item")
                                 }
                                 // MARK: - ProgressBar
                                 if viewModel.nextPage <= viewModel.totalPages {
@@ -158,13 +161,16 @@ struct EmptyPageIcon: View {
         VStack(alignment: .center, spacing: 0) {
             CoreAssets.dashboardEmptyPage.swiftUIImage
                 .padding(.bottom, 16)
+                .accessibilityIdentifier("empty_page_image")
             Text(DashboardLocalization.Empty.title)
                 .font(Theme.Fonts.titleMedium)
                 .foregroundColor(Theme.Colors.textPrimary)
                 .padding(.bottom, 8)
+                .accessibilityIdentifier("empty_page_title_text")
             Text(DashboardLocalization.Empty.subtitle)
                 .font(Theme.Fonts.bodySmall)
                 .foregroundColor(Theme.Colors.textSecondary)
+                .accessibilityIdentifier("empty_page_subtitle_text")
         }
         .padding(.top, 200)
     }

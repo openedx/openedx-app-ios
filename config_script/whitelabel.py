@@ -114,10 +114,12 @@ class WhitelabelApp:
                     for json_image in json_object["images"]:
                         if "appearances" in json_image:
                             # dark
-                            dark_image_name_original = json_image["filename"]
+                            if "filename" in json_image:
+                                dark_image_name_original = json_image["filename"]
                         else:
                             # light
-                            image_name_original = json_image["filename"]
+                            if "filename" in json_image:
+                                image_name_original = json_image["filename"]
                 has_dark = True if "dark_image_name" in image else False
                 image_name_import = image["image_name"] if "image_name" in image else ''
                 dark_image_name_import =  image["dark_image_name"] if "dark_image_name" in image else ''

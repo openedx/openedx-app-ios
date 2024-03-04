@@ -51,9 +51,9 @@ public struct VideoDownloadQualityView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     ForEach(viewModel.downloadQuality, id: \.self) { quality in
-                        Button {
+                        Button(action: {
                             viewModel.selectedDownloadQuality = quality
-                        } label: {
+                        }, label: {
                             HStack {
                                 SettingsCell(
                                     title: quality.title,
@@ -64,14 +64,14 @@ public struct VideoDownloadQualityView: View {
                                 Spacer()
                                 CoreAssets.checkmark.swiftUIImage
                                     .renderingMode(.template)
-                                    .foregroundColor(.accentColor)
+                                    .foregroundColor(Theme.Colors.accentXColor)
                                     .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
                                     .accessibilityIdentifier("checkmark_image")
-
+                                
                             }
                             .foregroundColor(Theme.Colors.textPrimary)
-                        }
-                        .accessibilityIdentifier("quality_button_cell")
+                        })
+                        .accessibilityIdentifier("select_quality_button")
                         Divider()
                     }
                 }
@@ -109,10 +109,12 @@ public struct SettingsCell: View {
         VStack(alignment: .leading) {
             Text(title)
                 .font(Theme.Fonts.titleMedium)
+                .accessibilityIdentifier("video_quality_title_text")
             if let description {
                 Text(description)
                     .font(Theme.Fonts.labelMedium)
                     .foregroundColor(Theme.Colors.textSecondary)
+                    .accessibilityIdentifier("video_quality_des_text")
             }
         }.foregroundColor(Theme.Colors.textPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -163,4 +165,3 @@ public extension DownloadQuality {
         }
     }
 }
-

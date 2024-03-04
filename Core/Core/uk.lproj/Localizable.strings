@@ -97,19 +97,11 @@
 "REVIEW.BUTTON.RATE_US" = "Оцінити нас";
 "REVIEW.EMAIL.TITLE" = "Виберіть поштового клієнта:";
 
-"COURSE_DATES.TODAY" = "Today";
-"COURSE_DATES.COMPLETED" = "Completed";
-"COURSE_DATES.PAST_DUE" = "Past due";
-"COURSE_DATES.DUE_NEXT" = "Due next";
-"COURSE_DATES.UNRELEASED" = "Unreleased";
-"COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
-"COURSE_DATES.TOMORROW" = "Tomorrow";
-"COURSE_DATES.YESTERDAY" = "Yesterday";
-"COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
-"COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
-
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 "AUTHORIZATION_FAILED" = "Authorization failed.";
 
 "SIGN_IN.LOG_IN_BTN" = "Увійти";
 "SIGN_IN.REGISTER_BTN" = "Реєстрація";
+
+"TOMORROW" = "Tomorrow";
+"YESTERDAY" = "Yesterday";

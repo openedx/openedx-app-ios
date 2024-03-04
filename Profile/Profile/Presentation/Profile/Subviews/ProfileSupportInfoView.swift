@@ -23,6 +23,8 @@ struct ProfileSupportInfoView: View {
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
             .foregroundColor(Theme.Colors.textSecondary)
+            .accessibilityIdentifier("support_info_text")
+        
         VStack(alignment: .leading, spacing: 24) {
             viewModel.contactSupport().map(supportInfo)
             viewModel.config.agreement.tosURL.map(terms)
@@ -31,6 +33,7 @@ struct ProfileSupportInfoView: View {
             viewModel.config.agreement.dataSellContentURL.map(dataSellContent)
             viewModel.config.faq.map(faq)
             version
+                .accessibilityIdentifier("version_info")
         }
         .cardStyle(
             bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -44,7 +47,8 @@ struct ProfileSupportInfoView: View {
                 url: url,
                 title: ProfileLocalization.contact
             ),
-            isEmailSupport: true
+            isEmailSupport: true,
+            identifier: "contact_support"
         )
     }
 
@@ -55,6 +59,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.terms
             )
         )
+        .accessibilityIdentifier("tos")
     }
 
     private func privacy(url: URL) -> some View {
@@ -64,6 +69,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.privacy
             )
         )
+        .accessibilityIdentifier("privacy_policy")
     }
 
     private func cookiePolicy(url: URL) -> some View {
@@ -73,6 +79,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.cookiePolicy
             )
         )
+        .accessibilityIdentifier("cookies_policy")
     }
 
     private func dataSellContent(url: URL) -> some View {
@@ -82,6 +89,7 @@ struct ProfileSupportInfoView: View {
                 title: ProfileLocalization.doNotSellInformation
             )
         )
+        .accessibilityIdentifier("dont_sell_data")
     }
 
     private func faq(url: URL) -> some View {
@@ -89,7 +97,8 @@ struct ProfileSupportInfoView: View {
             linkViewModel: .init(
                 url: url,
                 title: ProfileLocalization.faqTitle
-            )
+            ),
+            identifier: "view_faq"
         )
     }
 
@@ -118,7 +127,7 @@ struct ProfileSupportInfoView: View {
     }
 
     @ViewBuilder
-    private func button(linkViewModel: LinkViewModel, isEmailSupport: Bool = false) -> some View {
+    private func button(linkViewModel: LinkViewModel, isEmailSupport: Bool = false, identifier: String) -> some View {
         Button {
             guard UIApplication.shared.canOpenURL(linkViewModel.url) else {
                 viewModel.errorMessage = isEmailSupport ?
@@ -140,6 +149,7 @@ struct ProfileSupportInfoView: View {
         .foregroundColor(.primary)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(linkViewModel.title)
+        .accessibilityIdentifier(identifier)
         Rectangle()
             .frame(height: 1)
             .foregroundColor(Theme.Colors.textSecondary)
@@ -165,7 +175,7 @@ struct ProfileSupportInfoView: View {
                         HStack {
                             CoreAssets.checkmark.swiftUIImage
                                 .renderingMode(.template)
-                                .foregroundColor(.green)
+                                .foregroundColor(Theme.Colors.success)
                             Text(ProfileLocalization.Settings.upToDate)
                                 .font(Theme.Fonts.labelMedium)
                                 .foregroundStyle(Theme.Colors.textSecondary)
@@ -189,7 +199,9 @@ struct ProfileSupportInfoView: View {
                 }
 
             }
-        }).disabled(viewModel.versionState == .actual)
+        })
+        .disabled(viewModel.versionState == .actual)
+        .accessibilityIdentifier("version_button")
     }
 
 }
