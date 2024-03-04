@@ -10,79 +10,9 @@ import Core
 import UIKit
 import Discovery
 import Discussion
-import SwiftUI
-import Theme
 
 // swiftlint:disable function_body_length
 //sourcery: AutoMockable
-public protocol DeepLinkRouter: BaseRouter {
-    func showTabScreen(tab: MainTab)
-    func showDiscovery()
-    func showDiscoveryDetails(
-        link: DeepLink,
-        pathID: String
-    )
-    func showCourseDetail(
-        link: DeepLink,
-        courseDetails: CourseDetails,
-        completion: @escaping () -> Void
-    )
-    func showThreads(
-        topicID: String,
-        courseDetails: CourseDetails,
-        topics: Topics
-    )
-    func showThread(
-        userThread: UserThread
-    )
-    func showComment(
-        comment: UserComment,
-        parentComment: Post
-    )
-    func showProgram(
-        pathID: String
-    )
-    func showUserProfile(userName: String)
-    func showProgress()
-    func dismissProgress()
-}
-
-// Mark - For testing and SwiftUI preview
-#if DEBUG
-public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
-    public override init() {}
-    public func showTabScreen(tab: MainTab) {}
-    public func showDiscovery() {}
-    public func showDiscoveryDetails(
-        link: DeepLink,
-        pathID: String
-    ) {}
-    public func showCourseDetail(
-        link: DeepLink,
-        courseDetails: CourseDetails,
-        completion: @escaping () -> Void
-    ) {}
-    public func showThreads(
-        topicID: String,
-        courseDetails: CourseDetails,
-        topics: Topics
-    ) {}
-    public func showThread(
-        userThread: UserThread
-    ) {}
-    public func showComment(
-        comment: UserComment,
-        parentComment: Post
-    ) {}
-    public func showProgram(
-        pathID: String
-    ) {}
-    public func showUserProfile(userName: String) {}
-    public func showProgress() {}
-    public func dismissProgress() {}
-}
-#endif
-
 public protocol DeepLinkService {
     func configureWith(
         manager: DeepLinkManager,
@@ -417,8 +347,6 @@ extension DeepLinkError: LocalizedError {
         switch self {
         case .error(let text):
             return text
-        default:
-            break
         }
     }
 }
