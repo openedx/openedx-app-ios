@@ -326,7 +326,7 @@ def process_plist_files(configuration_manager, plist_manager, config):
     configuration_manager.add_branch_config(config, info_plist_content, entitlements_content)
 
     configuration_manager.update_info_plist(info_plist_content, info_plist_path)
-    configuration_manager.update_info_plist(entitlements_content, entitlements_path)
+#    configuration_manager.update_info_plist(entitlements_content, entitlements_path)
 
     bundle_config_path = plist_manager.get_bundle_config_path()
     config_plist = plist_manager.yaml_to_plist()

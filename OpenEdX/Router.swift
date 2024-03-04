@@ -145,7 +145,10 @@ public class Router: AuthorizationRouter,
         okTapped: @escaping () -> Void,
         type: AlertViewType
     ) {
-        presentView(transitionStyle: .crossDissolve, content: {
+        presentView(
+            transitionStyle: .crossDissolve,
+            animated: true
+        ) {
             AlertView(
                 alertTitle: alertTitle,
                 alertMessage: alertMessage,
@@ -154,7 +157,7 @@ public class Router: AuthorizationRouter,
                 okTapped: okTapped,
                 type: type
             )
-        })
+        }
     }
     
     public func presentAlert(
@@ -167,7 +170,10 @@ public class Router: AuthorizationRouter,
         okTapped: @escaping () -> Void,
         nextSectionTapped: @escaping () -> Void
     ) {
-        presentView(transitionStyle: .crossDissolve, content: {
+        presentView(
+            transitionStyle: .crossDissolve,
+            animated: true
+        ) {
             AlertView(
                 alertTitle: alertTitle,
                 alertMessage: alertMessage,
@@ -178,14 +184,14 @@ public class Router: AuthorizationRouter,
                 okTapped: okTapped,
                 nextSectionTapped: { nextSectionTapped() }
             )
-        })
+        }
     }
     
     public func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {
         present(transitionStyle: transitionStyle, view: view)
     }
     
-    public func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View) {
+    public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {
         let view = prepareToPresent(content(), transitionStyle: transitionStyle)
         navigationController.present(view, animated: true)
     }
@@ -715,8 +721,6 @@ extension Router: DeepLinkRouter {
 
         }
 
-        showProgress()
-
         DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1)) {
             switch link.type {
             case .courseVideos:
@@ -814,7 +818,10 @@ extension Router: DeepLinkRouter {
     }
 
     public func showProgress() {
-        presentView(transitionStyle: .crossDissolve) {
+        presentView(
+            transitionStyle: .crossDissolve,
+            animated: false
+        ) {
             FullScreenProgressView(title: "Waiting...")
         }
     }

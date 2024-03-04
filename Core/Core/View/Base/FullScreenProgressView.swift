@@ -24,7 +24,7 @@ public struct FullScreenProgressView: View {
                     .padding(.horizontal)
                     .padding(.top, 50)
                 Text(title)
-                    .font(Theme.Fonts.titleLarge)
+                    .font(Theme.Fonts.titleMedium)
                     .padding(.top, 20)
                     .padding(.bottom, 50)
             }

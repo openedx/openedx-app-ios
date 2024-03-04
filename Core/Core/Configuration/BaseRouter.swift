@@ -57,7 +57,7 @@ public protocol BaseRouter {
     
     func presentView(transitionStyle: UIModalTransitionStyle, view: any View)
     
-    func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View)
+    func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
 
 }
 
@@ -123,7 +123,7 @@ open class BaseRouterMock: BaseRouter {
 
     public func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {}
 
-    public func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View) {}
+    public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {}
     
 }
 #endif

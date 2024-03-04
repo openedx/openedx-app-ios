@@ -51,7 +51,18 @@ public struct PostsView: View {
         self.showTopMenu = true
         self.viewModel.courseID = courseID
     }
-    
+
+    public var topicID: String? {
+        if case .courseTopics(let topicID) = viewModel.type {
+            return topicID
+        }
+        return nil
+    }
+
+    public var type: ThreadType? {
+        viewModel.type
+    }
+
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body

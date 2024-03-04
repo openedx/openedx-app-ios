@@ -201,7 +201,10 @@ public struct ProfileView: View {
     private var logOutButton: some View {
         VStack {
             Button(action: {
-                viewModel.router.presentView(transitionStyle: .crossDissolve) {
+                viewModel.router.presentView(
+                    transitionStyle: .crossDissolve,
+                    animated: true
+                ) {
                     AlertView(
                         alertTitle: ProfileLocalization.LogoutAlert.title,
                         alertMessage: ProfileLocalization.LogoutAlert.text,

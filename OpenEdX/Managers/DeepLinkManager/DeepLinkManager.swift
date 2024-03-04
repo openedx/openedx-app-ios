@@ -297,15 +297,19 @@ public class DeepLinkManager {
                 courseID: courseID
             )
 
-            router.showCourseDetail(link: link, courseDetails: courseDetails) { [weak self] in
+            router.showCourseDetail(
+                link: link,
+                courseDetails: courseDetails
+            ) { [weak self] in
                 guard let self else {
                     return
                 }
+
                 if !self.isDiscussionThreads(type: type) {
-                    self.router.dismissProgress()
                     return
                 }
-
+                
+                self.router.showProgress()
                 Task {
                     do {
                         try await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
