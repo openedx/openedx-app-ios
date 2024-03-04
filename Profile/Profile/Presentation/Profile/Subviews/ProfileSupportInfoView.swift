@@ -114,7 +114,7 @@ struct ProfileSupportInfoView: View {
             HStack {
                 Text(viewModel.title)
                     .multilineTextAlignment(.leading)
-                    .font(Theme.Fonts.labelLarge)
+                    .font(Theme.Fonts.titleMedium)
                     .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -145,7 +145,7 @@ struct ProfileSupportInfoView: View {
             HStack {
                 Text(linkViewModel.title)
                     .foregroundColor(Theme.Colors.textPrimary)
-                    .font(Theme.Fonts.labelLarge)
+                    .font(Theme.Fonts.titleMedium)
                 Spacer()
                 Image(systemName: "chevron.right")
             }
@@ -173,7 +173,7 @@ struct ProfileSupportInfoView: View {
                                 .frame(width: 24, height: 24)
                         }
                         Text("\(ProfileLocalization.Settings.version) \(viewModel.currentVersion)")
-                            .font(Theme.Fonts.labelLarge)
+                            .font(Theme.Fonts.titleMedium)
                     }
                     switch viewModel.versionState {
                     case .actual:
