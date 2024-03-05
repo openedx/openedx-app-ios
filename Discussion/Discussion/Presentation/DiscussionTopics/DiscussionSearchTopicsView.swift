@@ -22,126 +22,133 @@ public struct DiscussionSearchTopicsView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            
-            // MARK: - Page name
-            VStack(alignment: .center) {
-                NavigationBar(title: DiscussionLocalization.search,
-                leftButtonAction: { viewModel.router.backWithFade() })
-                .padding(.bottom, -7)
-                HStack(spacing: 11) {
-                    Image(systemName: "magnifyingglass")
-                        .padding(.leading, 16)
-                        .padding(.top, -1)
-                        .foregroundColor(
-                            viewModel.isSearchActive
-                            ? Theme.Colors.accentColor
-                            : Theme.Colors.textPrimary
-                        )
-                    
-                    TextField(
-                        !viewModel.isSearchActive
-                        ? DiscussionLocalization.search
-                        : "",
-                        text: $viewModel.searchText,
-                        onEditingChanged: { editing in
-                            viewModel.isSearchActive = editing
-                        }
-                    ).focused($focused)
-                        .onAppear {
-                            self.focused = true
-                        }
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    Spacer()
-                    if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
-                        Button(action: { viewModel.searchText.removeAll() }, label: {
-                            CoreAssets.clearInput.swiftUIImage
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 24)
-                                .padding(.horizontal)
-                        })
-                        .foregroundColor(Theme.Colors.styledButtonText)
-                    }
-                }
-//                .padding(.top, -7)
-                .frame(minHeight: 48)
-                .background(
-                    Theme.Shapes.textInputShape
-                        .fill(viewModel.isSearchActive
-                              ? Theme.Colors.textInputBackground
-                              : Theme.Colors.textInputUnfocusedBackground)
-                )
-                .overlay(
-                    Theme.Shapes.textInputShape
-                        .stroke(lineWidth: 1)
-                        .fill(viewModel.isSearchActive
-                              ? Theme.Colors.accentColor
-                              : Theme.Colors.textInputUnfocusedStroke)
-                )
-                .padding(.horizontal, 24)
-                .padding(.bottom, 20)
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
                 
-                ZStack {
-                    ScrollView {
-                        HStack {
-                            searchHeader(viewModel: viewModel)
-                                .padding(.horizontal, 24)
-                                .padding(.bottom, 20)
-                                .offset(y: animated ? 0 : 50)
-                                .opacity(animated ? 1 : 0)
-                            Spacer()
-                        }.padding(.leading, 10)
+                // MARK: - Page name
+                VStack(alignment: .center) {
+                    NavigationBar(title: DiscussionLocalization.search,
+                                  leftButtonAction: { viewModel.router.backWithFade() })
+                    .padding(.bottom, -7)
+                    .frameLimit(width: proxy.size.width)
+                    HStack(spacing: 11) {
+                        Image(systemName: "magnifyingglass")
+                            .padding(.leading, 16)
+                            .padding(.top, -1)
+                            .foregroundColor(
+                                viewModel.isSearchActive
+                                ? Theme.Colors.accentColor
+                                : Theme.Colors.textPrimary
+                            )
                         
-                        LazyVStack {
-                            let searchResults = Array(viewModel.searchResults.enumerated())
-                            ForEach(searchResults, id: \.offset) { index, post in
-                                PostCell(post: post)
-                                    .padding(24)
-                                    .onAppear {
-                                        Task.detached(priority: .high) {
-                                            await viewModel.searchCourses(
-                                                index: index,
-                                                searchTerm: viewModel.searchText
-                                            )
+                        TextField(
+                            !viewModel.isSearchActive
+                            ? DiscussionLocalization.search
+                            : "",
+                            text: $viewModel.searchText,
+                            onEditingChanged: { editing in
+                                viewModel.isSearchActive = editing
+                            }
+                        ).focused($focused)
+                            .onAppear {
+                                self.focused = true
+                            }
+                            .foregroundColor(Theme.Colors.textPrimary)
+                        Spacer()
+                        if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
+                            Button(action: { viewModel.searchText.removeAll() }, label: {
+                                CoreAssets.clearInput.swiftUIImage
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 24)
+                                    .padding(.horizontal)
+                            })
+                            .foregroundColor(Theme.Colors.styledButtonText)
+                        }
+                    }
+                    //                .padding(.top, -7)
+                    .frame(minHeight: 48)
+                    .background(
+                        Theme.Shapes.textInputShape
+                            .fill(viewModel.isSearchActive
+                                  ? Theme.Colors.textInputBackground
+                                  : Theme.Colors.textInputUnfocusedBackground)
+                    )
+                    .overlay(
+                        Theme.Shapes.textInputShape
+                            .stroke(lineWidth: 1)
+                            .fill(viewModel.isSearchActive
+                                  ? Theme.Colors.accentColor
+                                  : Theme.Colors.textInputUnfocusedStroke)
+                    )
+                    .frameLimit(width: proxy.size.width)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 20)
+                    
+                    ZStack {
+                        ScrollView {
+                            Group {
+                                HStack {
+                                    searchHeader(viewModel: viewModel)
+                                        .padding(.horizontal, 24)
+                                        .padding(.bottom, 20)
+                                        .offset(y: animated ? 0 : 50)
+                                        .opacity(animated ? 1 : 0)
+                                    Spacer()
+                                }.padding(.leading, 10)
+                                
+                                LazyVStack {
+                                    let searchResults = Array(viewModel.searchResults.enumerated())
+                                    ForEach(searchResults, id: \.offset) { index, post in
+                                        PostCell(post: post)
+                                            .padding(24)
+                                            .onAppear {
+                                                Task.detached(priority: .high) {
+                                                    await viewModel.searchCourses(
+                                                        index: index,
+                                                        searchTerm: viewModel.searchText
+                                                    )
+                                                }
+                                            }
+                                        if viewModel.searchResults.last != post {
+                                            Divider().padding(.horizontal, 24)
                                         }
                                     }
-                                if viewModel.searchResults.last != post {
-                                    Divider().padding(.horizontal, 24)
+                                    Spacer(minLength: 84)
+                                    
+                                    // MARK: - ProgressBar
+                                    if viewModel.fetchInProgress {
+                                        VStack(alignment: .center) {
+                                            ProgressBar(size: 40, lineWidth: 8)
+                                                .padding(.top, 20)
+                                        }.frame(maxWidth: .infinity,
+                                                maxHeight: .infinity)
+                                    }
                                 }
+                                .id(UUID())
+                                Spacer(minLength: 40)
                             }
-                            Spacer(minLength: 84)
-                            
-                            // MARK: - ProgressBar
-                            if viewModel.fetchInProgress {
-                                VStack(alignment: .center) {
-                                    ProgressBar(size: 40, lineWidth: 8)
-                                        .padding(.top, 20)
-                                }.frame(maxWidth: .infinity,
-                                        maxHeight: .infinity)
-                            }
+                            .frameLimit(width: proxy.size.width)
                         }
-                        .id(UUID())
-                        Spacer(minLength: 40)
+                    }
+                }
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
                     }
                 }
             }
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
-                    }
-                }
-            }
-        }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarHidden(true)
+            
+            .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     withAnimation(.easeIn(duration: 0.3)) {
@@ -151,6 +158,7 @@ public struct DiscussionSearchTopicsView: View {
             }
             .background(Theme.Colors.background.ignoresSafeArea())
             .addTapToEndEditing(isForced: true)
+        }
     }
     
     private func searchHeader(viewModel: DiscussionSearchTopicsViewModel<RunLoop>) -> some View {

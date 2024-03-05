@@ -275,7 +275,8 @@ public struct CourseUnitView: View {
                                         }
                                     }
                                 }
-                                .frameLimit(width: reader.size.width)
+                                //No need iPad paddings there bacause they were added
+                                //to PostsView that placed inside DiscussionView
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
