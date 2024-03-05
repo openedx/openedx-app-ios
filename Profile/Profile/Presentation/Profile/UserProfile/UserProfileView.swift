@@ -77,11 +77,11 @@ public struct UserProfileView: View {
                         }
                         Spacer()
                     }
+                    .frameLimit(width: proxy.size.width)
                 }
                 .padding(.top, 8)
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)
-                .frameLimit(width: proxy.size.width)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
