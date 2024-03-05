@@ -32,104 +32,107 @@ public struct DashboardView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            
-            // MARK: - Page body
-            VStack(alignment: .center) {
-                RefreshableScrollViewCompat(action: {
-                    await viewModel.getMyCourses(page: 1, refresh: true)
-                }) {
-                    Group {
-                        if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
-                            EmptyPageIcon()
-                        } else {
-                            LazyVStack(spacing: 0) {
-                                HStack {
-                                    dashboardCourses
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                
+                // MARK: - Page body
+                VStack(alignment: .center) {
+                    RefreshableScrollViewCompat(action: {
+                        await viewModel.getMyCourses(page: 1, refresh: true)
+                    }) {
+                        Group {
+                            if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
+                                EmptyPageIcon()
+                            } else {
+                                LazyVStack(spacing: 0) {
+                                    HStack {
+                                        dashboardCourses
+                                            .padding(.horizontal, 20)
+                                            .padding(.bottom, 20)
+                                        Spacer()
+                                    }.padding(.leading, 10)
+                                    ForEach(Array(viewModel.courses.enumerated()),
+                                            id: \.offset) { index, course in
+                                        
+                                        CourseCellView(
+                                            model: course,
+                                            type: .dashboard,
+                                            index: index,
+                                            cellsCount: viewModel.courses.count
+                                        )
                                         .padding(.horizontal, 20)
-                                        .padding(.bottom, 20)
-                                    Spacer()
-                                }.padding(.leading, 10)
-                                ForEach(Array(viewModel.courses.enumerated()),
-                                        id: \.offset) { index, course in
-                                    
-                                    CourseCellView(
-                                        model: course,
-                                        type: .dashboard,
-                                        index: index,
-                                        cellsCount: viewModel.courses.count
-                                    )
-                                    .padding(.horizontal, 20)
-                                    .listRowBackground(Color.clear)
-                                    .onAppear {
-                                        Task {
-                                            await viewModel.getMyCoursesPagination(index: index)
+                                        .listRowBackground(Color.clear)
+                                        .onAppear {
+                                            Task {
+                                                await viewModel.getMyCoursesPagination(index: index)
+                                            }
+                                        }
+                                        .onTapGesture {
+                                            viewModel.trackDashboardCourseClicked(
+                                                courseID: course.courseID,
+                                                courseName: course.name
+                                            )
+                                            router.showCourseScreens(
+                                                courseID: course.courseID,
+                                                isActive: course.isActive,
+                                                courseStart: course.courseStart,
+                                                courseEnd: course.courseEnd,
+                                                enrollmentStart: course.enrollmentStart,
+                                                enrollmentEnd: course.enrollmentEnd,
+                                                title: course.name
+                                            )
                                         }
                                     }
-                                    .onTapGesture {
-                                        viewModel.trackDashboardCourseClicked(
-                                            courseID: course.courseID,
-                                            courseName: course.name
-                                        )
-                                        router.showCourseScreens(
-                                            courseID: course.courseID,
-                                            isActive: course.isActive,
-                                            courseStart: course.courseStart,
-                                            courseEnd: course.courseEnd,
-                                            enrollmentStart: course.enrollmentStart,
-                                            enrollmentEnd: course.enrollmentEnd,
-                                            title: course.name
-                                        )
+                                    // MARK: - ProgressBar
+                                    if viewModel.nextPage <= viewModel.totalPages {
+                                        VStack(alignment: .center) {
+                                            ProgressBar(size: 40, lineWidth: 8)
+                                                .padding(.top, 20)
+                                        }.frame(maxWidth: .infinity,
+                                                maxHeight: .infinity)
                                     }
+                                    VStack {}.frame(height: 40)
                                 }
-                                // MARK: - ProgressBar
-                                if viewModel.nextPage <= viewModel.totalPages {
-                                    VStack(alignment: .center) {
-                                        ProgressBar(size: 40, lineWidth: 8)
-                                            .padding(.top, 20)
-                                    }.frame(maxWidth: .infinity,
-                                            maxHeight: .infinity)
-                                }
-                                VStack {}.frame(height: 40)
                             }
+                        }
+                        .frameLimit(width: proxy.size.width)
+                    }
+                    .accessibilityAction {}
+                }
+                .padding(.top, 8)
+                
+                // MARK: - Offline mode SnackBar
+                OfflineSnackBarView(connectivity: viewModel.connectivity,
+                                    reloadAction: {
+                    await viewModel.getMyCourses(page: 1, refresh: true)
+                })
+                
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .padding(.bottom, viewModel.connectivity.isInternetAvaliable
+                             ? 0 : OfflineSnackBarView.height)
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
                         }
                     }
                 }
-                .accessibilityAction {}
             }
-            .padding(.top, 8)
-            
-            // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                reloadAction: {
-                await viewModel.getMyCourses(page: 1, refresh: true)
-            })
-            
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }
-                .padding(.bottom, viewModel.connectivity.isInternetAvaliable
-                         ? 0 : OfflineSnackBarView.height)
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
-                    }
+            .onFirstAppear {
+                Task {
+                    await viewModel.getMyCourses(page: 1)
                 }
             }
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
-        .onFirstAppear {
-            Task {
-                await viewModel.getMyCourses(page: 1)
-            }
-        }
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 
