@@ -67,6 +67,7 @@ public enum ThemeAssets {
   public static let textInputStroke = ColorAsset(name: "TextInputStroke")
   public static let textInputUnfocusedBackground = ColorAsset(name: "TextInputUnfocusedBackground")
   public static let textInputUnfocusedStroke = ColorAsset(name: "TextInputUnfocusedStroke")
+  public static let toggleSwitchColor = ColorAsset(name: "ToggleSwitchColor")
   public static let navigationBarTintColor = ColorAsset(name: "navigationBarTintColor")
   public static let warning = ColorAsset(name: "warning")
   public static let white = ColorAsset(name: "white")

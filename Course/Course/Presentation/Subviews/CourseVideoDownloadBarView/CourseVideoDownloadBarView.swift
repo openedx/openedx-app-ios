@@ -131,7 +131,7 @@ struct CourseVideoDownloadBarView: View {
 
     private var toggle: some View {
         Toggle("", isOn: .constant(viewModel.isOn))
-            .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
+            .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
             .padding(.trailing, 15)
             .onTapGesture {
                 if !viewModel.isInternetAvaliable {
