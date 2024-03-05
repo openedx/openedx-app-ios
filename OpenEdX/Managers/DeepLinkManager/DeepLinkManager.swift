@@ -120,6 +120,8 @@ public class DeepLinkManager {
 
     @MainActor
     private func showNotificationAlert(_ link: PushLink) {
+        router.dismissPresentedViewController()
+
         router.presentAlert(
             alertTitle: link.title ?? "",
             alertMessage: link.body ?? "",
@@ -157,7 +159,6 @@ public class DeepLinkManager {
         with type: DeepLinkType,
         link: DeepLink
     ) async {
-
         if isDiscovery(type: type) {
             showDiscoveryScreen(with: type, link: link)
             return

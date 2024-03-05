@@ -41,6 +41,7 @@ public protocol DeepLinkRouter: BaseRouter {
         pathID: String
     )
     func showUserProfile(userName: String)
+    func dismissPresentedViewController()
     func showProgress()
     func dismissProgress()
 }
@@ -187,6 +188,12 @@ extension Router: DeepLinkRouter {
         getNavigationController().present(controller, animated: true)
     }
 
+    public func dismissPresentedViewController() {
+        if let presentedViewController = getNavigationController().presentedViewController {
+            presentedViewController.dismiss(animated: true)
+        }
+    }
+
     private var hostMainScreen: UIHostingController<MainScreenView>? {
         getNavigationController().viewControllers.firstAs(UIHostingController<MainScreenView>.self)
     }
@@ -197,12 +204,6 @@ extension Router: DeepLinkRouter {
 
     private var hostDiscoveryWebview: UIHostingController<DiscoveryWebview>? {
         getNavigationController().topViewController as? UIHostingController<DiscoveryWebview>
-    }
-
-    private func dismissPresentedViewController() {
-        if let presentedViewController = getNavigationController().presentedViewController {
-            presentedViewController.dismiss(animated: true)
-        }
     }
 
     public func showProgress() {
@@ -223,7 +224,7 @@ extension Router: DeepLinkRouter {
 
     private func dismiss() {
         dismissPresentedViewController()
-        backToRoot(animated: true)
+        backToRoot(animated: false)
     }
 
 }
@@ -259,6 +260,7 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
         pathID: String
     ) {}
     public func showUserProfile(userName: String) {}
+    public func dismissPresentedViewController() {}
     public func showProgress() {}
     public func dismissProgress() {}
 }
