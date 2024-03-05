@@ -81,14 +81,16 @@ public struct PostsView: View {
                                                 Text(viewModel.sortTitle.localizedValue)
                                             })
                                         }.foregroundColor(Theme.Colors.accentColor)
-                                    } .font(Theme.Fonts.labelMedium)
-                                        .padding(.horizontal, 24)
-                                        .padding(.vertical, 12)
-                                        .shadow(color: Theme.Colors.shadowColor,
-                                                radius: 12, y: 4)
-                                        .background(
-                                            Theme.Colors.background
-                                        )
+                                    }
+                                    .font(Theme.Fonts.labelMedium)
+                                    .padding(.horizontal, 24)
+                                    .padding(.vertical, 12)
+                                    .shadow(color: Theme.Colors.shadowColor,
+                                            radius: 12, y: 4)
+                                    .background(
+                                        Theme.Colors.background
+                                    )
+                                    .frameLimit(width: proxy.size.width)
                                     Divider().offset(y: -8)
                                 }
                                 
