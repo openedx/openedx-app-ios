@@ -10,9 +10,17 @@ import WebKit
 public struct ReadabilityInjection: WebViewScriptInjectionProtocol, CSSInjectionProtocol {
     public var id: String = "ReadabilityInjection"
     public var script: String {
+        let uniqueId = UUID().uuidString.replacingOccurrences(of: "-", with: "")
         return """
             window.addEventListener("load", () => {
                 window.webkit.messageHandlers.readability.postMessage("");
+        
+                window.resizeObserver\(uniqueId) = new ResizeObserver((entries) => {
+                    window.webkit.messageHandlers.readability.postMessage("");
+                });
+
+                window.resizeObserver\(uniqueId).observe(document.body);
+
             });
             window.addEventListener("UIContentSizeCategory.didChangeNotification", () => {
                 window.webkit.messageHandlers.readability.postMessage("");
