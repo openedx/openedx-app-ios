@@ -194,7 +194,7 @@ extension ProfileBottomSheet {
         func textColor() -> Color {
             switch self {
             case .gallery:
-                return Theme.Colors.white
+                return Theme.Colors.primaryButtonTextColor
             case .remove:
                 return Theme.Colors.alert
             case .cancel:

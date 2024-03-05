@@ -48,9 +48,9 @@ public struct EditProfileView: View {
                             .overlay(
                                 ZStack {
                                     Circle().frame(width: 36, height: 36)
-                                        .foregroundColor(Theme.Colors.accentColor)
+                                        .foregroundColor(Theme.Colors.accentXColor)
                                     CoreAssets.addPhoto.swiftUIImage.renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.white)
+                                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 }.offset(x: 36, y: 50)
                             )
                     })
