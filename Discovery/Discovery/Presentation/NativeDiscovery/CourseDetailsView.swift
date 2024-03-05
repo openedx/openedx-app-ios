@@ -137,6 +137,7 @@ public struct CourseDetailsView: View {
                                     }
                                 }
                             }
+                            .frameLimit(width: proxy.size.width)
                         }
                         .onRightSwipeGesture {
                             viewModel.router.back()
