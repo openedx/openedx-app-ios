@@ -26,7 +26,7 @@ public struct StartupView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading) {
-                ThemeAssets.appLogo.swiftUIImage.renderingMode(.template)
+                ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 189, maxHeight: 89)
