@@ -20,64 +20,67 @@ public struct VideoQualityView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            // MARK: - Page Body
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    if viewModel.isShowProgress {
-                        ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.top, 200)
-                            .padding(.horizontal)
-                    } else {
-                        
-                        ForEach(viewModel.quality, id: \.offset) { _, quality in
-                            Button(action: {
-                                viewModel.selectedQuality = quality
-                            }, label: {
-                                HStack {
-                                    SettingsCell(
-                                        title: quality.title(),
-                                        description: quality.description()
-                                    )
-                                    Spacer()
-                                    CoreAssets.checkmark.swiftUIImage
-                                        .renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.accentXColor)
-                                        .opacity(quality == viewModel.selectedQuality ? 1 : 0)
-                                    
-                                }.foregroundColor(Theme.Colors.textPrimary)
-                            })
-                            Divider()
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                // MARK: - Page Body
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        if viewModel.isShowProgress {
+                            ProgressBar(size: 40, lineWidth: 8)
+                                .padding(.top, 200)
+                                .padding(.horizontal)
+                        } else {
+                            
+                            ForEach(viewModel.quality, id: \.offset) { _, quality in
+                                Button(action: {
+                                    viewModel.selectedQuality = quality
+                                }, label: {
+                                    HStack {
+                                        SettingsCell(
+                                            title: quality.title(),
+                                            description: quality.description()
+                                        )
+                                        Spacer()
+                                        CoreAssets.checkmark.swiftUIImage
+                                            .renderingMode(.template)
+                                            .foregroundColor(Theme.Colors.accentXColor)
+                                            .opacity(quality == viewModel.selectedQuality ? 1 : 0)
+                                        
+                                    }.foregroundColor(Theme.Colors.textPrimary)
+                                })
+                                Divider()
+                            }
+                        }
+                    }.frame(minWidth: 0,
+                            maxWidth: .infinity,
+                            alignment: .topLeading)
+                    .padding(.horizontal, 24)
+                    .frameLimit(width: proxy.size.width)
+                }
+                .padding(.top, 8)
+                
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
                         }
                     }
-                }.frame(minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading)
-                .padding(.horizontal, 24)
-            }
-            .padding(.top, 8)
-            
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
-                    }
                 }
             }
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
+            .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 

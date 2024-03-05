@@ -46,51 +46,54 @@ public struct VideoDownloadQualityView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            // MARK: - Page Body
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    ForEach(viewModel.downloadQuality, id: \.self) { quality in
-                        Button {
-                            viewModel.selectedDownloadQuality = quality
-                        } label: {
-                            HStack {
-                                SettingsCell(
-                                    title: quality.title,
-                                    description: quality.description
-                                )
-                                .accessibilityElement(children: .ignore)
-                                .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
-                                Spacer()
-                                CoreAssets.checkmark.swiftUIImage
-                                    .renderingMode(.template)
-                                    .foregroundColor(.accentColor)
-                                    .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
-                                    .accessibilityIdentifier("checkmark_image")
-
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                // MARK: - Page Body
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        ForEach(viewModel.downloadQuality, id: \.self) { quality in
+                            Button {
+                                viewModel.selectedDownloadQuality = quality
+                            } label: {
+                                HStack {
+                                    SettingsCell(
+                                        title: quality.title,
+                                        description: quality.description
+                                    )
+                                    .accessibilityElement(children: .ignore)
+                                    .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
+                                    Spacer()
+                                    CoreAssets.checkmark.swiftUIImage
+                                        .renderingMode(.template)
+                                        .foregroundColor(.accentColor)
+                                        .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
+                                        .accessibilityIdentifier("checkmark_image")
+                                    
+                                }
+                                .foregroundColor(Theme.Colors.textPrimary)
                             }
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .accessibilityIdentifier("quality_button_cell")
+                            Divider()
                         }
-                        .accessibilityIdentifier("quality_button_cell")
-                        Divider()
                     }
+                    .frame(
+                        minWidth: 0,
+                        maxWidth: .infinity,
+                        alignment: .topLeading
+                    )
+                    .padding(.horizontal, 24)
+                    .frameLimit(width: proxy.size.width)
                 }
-                .frame(
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    alignment: .topLeading
-                )
-                .padding(.horizontal, 24)
+                .padding(.top, 8)
             }
-            .padding(.top, 8)
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
+            .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 

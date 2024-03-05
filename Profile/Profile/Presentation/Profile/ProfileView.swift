@@ -21,71 +21,75 @@ public struct ProfileView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            // MARK: - Page Body
-            RefreshableScrollViewCompat(
-                action: {
-                    await viewModel.getMyProfile(withProgress: false)
-                },
-                content: content
-            )
-            .accessibilityAction {}
-            .padding(.top, 8)
-            .onChange(of: settingsTapped, perform: { _ in
-                let userModel = viewModel.userModel ?? UserProfile()
-                viewModel.trackProfileEditClicked()
-                viewModel.router.showEditProfile(
-                    userModel: userModel,
-                    avatar: viewModel.updatedAvatar,
-                    profileDidEdit: { updatedProfile, updatedImage in
-                        if let updatedProfile {
-                            self.viewModel.userModel = updatedProfile
-                        }
-                        if let updatedImage {
-                            self.viewModel.updatedAvatar = updatedImage
-                        }
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                // MARK: - Page Body
+                RefreshableScrollViewCompat(
+                    action: {
+                        await viewModel.getMyProfile(withProgress: false)
+                    },
+                    content: {
+                        content(for: proxy.size.width)
                     }
                 )
-            })
-            .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
-
-            // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(
-                connectivity: viewModel.connectivity,
-                reloadAction: {
-                    await viewModel.getMyProfile(withProgress: false)
-                }
-            )
-
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }
-                .padding(
-                    .bottom,
-                    viewModel.connectivity.isInternetAvaliable
-                    ? 0 : OfflineSnackBarView.height
+                .accessibilityAction {}
+                .padding(.top, 8)
+                .onChange(of: settingsTapped, perform: { _ in
+                    let userModel = viewModel.userModel ?? UserProfile()
+                    viewModel.trackProfileEditClicked()
+                    viewModel.router.showEditProfile(
+                        userModel: userModel,
+                        avatar: viewModel.updatedAvatar,
+                        profileDidEdit: { updatedProfile, updatedImage in
+                            if let updatedProfile {
+                                self.viewModel.userModel = updatedProfile
+                            }
+                            if let updatedImage {
+                                self.viewModel.updatedAvatar = updatedImage
+                            }
+                        }
+                    )
+                })
+                .navigationBarHidden(false)
+                .navigationBarBackButtonHidden(false)
+                
+                // MARK: - Offline mode SnackBar
+                OfflineSnackBarView(
+                    connectivity: viewModel.connectivity,
+                    reloadAction: {
+                        await viewModel.getMyProfile(withProgress: false)
+                    }
                 )
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
+                
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .padding(
+                        .bottom,
+                        viewModel.connectivity.isInternetAvaliable
+                        ? 0 : OfflineSnackBarView.height
+                    )
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
                     }
                 }
             }
-        }
-        .onFirstAppear {
-            Task {
-                await viewModel.getMyProfile()
+            .onFirstAppear {
+                Task {
+                    await viewModel.getMyProfile()
+                }
             }
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 
     private var progressBar: some View {
@@ -94,7 +98,7 @@ public struct ProfileView: View {
             .padding(.horizontal)
     }
 
-    private func content() -> some View {
+    private func content(for width: CGFloat) -> some View {
         VStack {
             if viewModel.isShowProgress {
                 ProgressBar(size: 40, lineWidth: 8)
@@ -120,6 +124,7 @@ public struct ProfileView: View {
                 Spacer()
             }
         }
+        .frameLimit(width: width)
     }
 
     // MARK: - Profile Info

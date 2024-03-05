@@ -31,18 +31,7 @@ public struct AccessibilityInjection: WebViewScriptInjectionProtocol, CSSInjecti
     }
     public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
     public var forMainFrameOnly: Bool = false
-    
-    private func css(for width: CGFloat) -> String {
-        let unitSize = UIFontMetrics(forTextStyle: .body).scaledValue(for: ReadabilityHelper.unitSize)
-        let padding = ReadabilityHelper.padding(containerWidth: width, unitWidth: unitSize)
-        return """
-            body {
-                padding-left: \(padding)px !important;
-                padding-right: \(padding)px !important;
-            }
-        """
-    }
-    
+        
     private func getScript() -> String {
         let percent = UIFontMetrics(forTextStyle: .body).scaledValue(for: UIFont.systemFontSize) / UIFont.systemFontSize
         return """

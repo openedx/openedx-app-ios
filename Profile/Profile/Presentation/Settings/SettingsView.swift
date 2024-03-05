@@ -20,94 +20,97 @@ public struct SettingsView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            
-            // MARK: - Page Body
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    if viewModel.isShowProgress {
-                        ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.top, 200)
-                            .padding(.horizontal)
-                    } else {
-                        // MARK: Wi-fi
-                        HStack {
-                            SettingsCell(
-                                title: ProfileLocalization.Settings.wifiTitle,
-                                description: ProfileLocalization.Settings.wifiDescription
-                            )
-                            Toggle(isOn: $viewModel.wifiOnly, label: {})
-                                .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
-                                .frame(width: 50)
-                        }.foregroundColor(Theme.Colors.textPrimary)
-                        Divider()
-                        
-                        // MARK: Streaming Quality
-                        HStack {
-                            Button(action: {
-                                viewModel.router.showVideoQualityView(viewModel: viewModel)
-                            }, label: {
-                                SettingsCell(title: ProfileLocalization.Settings.videoQualityTitle,
-                                             description: viewModel.selectedQuality.settingsDescription())
-                            })
-                            //                                Spacer()
-                            Image(systemName: "chevron.right")
-                                .padding(.trailing, 12)
-                                .frame(width: 10)
-                        }
-                        Divider()
-
-                        // MARK: Download Quality
-                        HStack {
-                            Button {
-                                viewModel.router.showVideoDownloadQualityView(
-                                    downloadQuality: viewModel.userSettings.downloadQuality,
-                                    didSelect: viewModel.update(downloadQuality:)
-                                )
-                            } label: {
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                
+                // MARK: - Page Body
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        if viewModel.isShowProgress {
+                            ProgressBar(size: 40, lineWidth: 8)
+                                .padding(.top, 200)
+                                .padding(.horizontal)
+                        } else {
+                            // MARK: Wi-fi
+                            HStack {
                                 SettingsCell(
-                                    title: CoreLocalization.Settings.videoDownloadQualityTitle,
-                                    description: viewModel.userSettings.downloadQuality.settingsDescription
+                                    title: ProfileLocalization.Settings.wifiTitle,
+                                    description: ProfileLocalization.Settings.wifiDescription
                                 )
+                                Toggle(isOn: $viewModel.wifiOnly, label: {})
+                                    .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
+                                    .frame(width: 50)
+                            }.foregroundColor(Theme.Colors.textPrimary)
+                            Divider()
+                            
+                            // MARK: Streaming Quality
+                            HStack {
+                                Button(action: {
+                                    viewModel.router.showVideoQualityView(viewModel: viewModel)
+                                }, label: {
+                                    SettingsCell(title: ProfileLocalization.Settings.videoQualityTitle,
+                                                 description: viewModel.selectedQuality.settingsDescription())
+                                })
+                                //                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .padding(.trailing, 12)
+                                    .frame(width: 10)
                             }
-                            //                                Spacer()
-                            Image(systemName: "chevron.right")
-                                .padding(.trailing, 12)
-                                .frame(width: 10)
+                            Divider()
+                            
+                            // MARK: Download Quality
+                            HStack {
+                                Button {
+                                    viewModel.router.showVideoDownloadQualityView(
+                                        downloadQuality: viewModel.userSettings.downloadQuality,
+                                        didSelect: viewModel.update(downloadQuality:)
+                                    )
+                                } label: {
+                                    SettingsCell(
+                                        title: CoreLocalization.Settings.videoDownloadQualityTitle,
+                                        description: viewModel.userSettings.downloadQuality.settingsDescription
+                                    )
+                                }
+                                //                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .padding(.trailing, 12)
+                                    .frame(width: 10)
+                            }
+                            Divider()
                         }
-                        Divider()
+                    }
+                    .frame(
+                        minWidth: 0,
+                        maxWidth: .infinity,
+                        alignment: .topLeading
+                    )
+                    .padding(.horizontal, 24)
+                    .frameLimit(width: proxy.size.width)
+                }
+                .padding(.top, 8)
+                
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
                     }
                 }
-                .frame(
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    alignment: .topLeading
-                )
-                .padding(.horizontal, 24)
             }
-            .padding(.top, 8)
-            
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
-                    }
-                }
-            }
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
+            .navigationTitle(ProfileLocalization.Settings.videoSettingsTitle)
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle(ProfileLocalization.Settings.videoSettingsTitle)
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 

@@ -35,9 +35,11 @@ public struct WebViewHtml: UIViewRepresentable {
         webView.applyInjections(injections, toHandler: context.coordinator)
 
         context.coordinator.webview = webView
+        #if DEBUG
         if #available(iOS 16.4, *) {
             webView.isInspectable = true
         }
+        #endif
         return webView
     }
 
