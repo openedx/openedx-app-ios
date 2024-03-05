@@ -11,6 +11,7 @@ import Theme
 import Discovery
 import Discussion
 import Course
+import Profile
 
 public protocol DeepLinkRouter: BaseRouter {
     func showTabScreen(tab: MainTab)
@@ -174,7 +175,16 @@ extension Router: DeepLinkRouter {
     }
 
     public func showUserProfile(userName: String) {
-        showUserDetails(username: userName)
+        dismissPresentedViewController()
+        
+        let interactor = container.resolve(ProfileInteractorProtocol.self)!
+        let vm = UserProfileViewModel(
+            interactor: interactor,
+            username: userName
+        )
+        let view = UserProfileView(viewModel: vm, isSheet: true)
+        let controller = UIHostingController(rootView: view)
+        getNavigationController().present(controller, animated: true)
     }
 
     private var hostMainScreen: UIHostingController<MainScreenView>? {
