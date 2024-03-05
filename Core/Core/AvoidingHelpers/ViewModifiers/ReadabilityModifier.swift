@@ -6,8 +6,23 @@
 //
 import SwiftUI
 
+public struct ReadabilityHelper {
+    static let unitSize: CGFloat = 20
+    
+    public static func padding(containerWidth: CGFloat, unitWidth: CGFloat) -> CGFloat {
+        let idealWidth = 70 * unitWidth / 2
+
+        guard containerWidth >= idealWidth else {
+            return 0
+        }
+
+        let padding = round((containerWidth - idealWidth) / 2)
+        return padding
+    }
+}
+
 struct ReadabilityModifier: ViewModifier {
-    @ScaledMetric private var unit: CGFloat = 20
+    @ScaledMetric(relativeTo: .body) private var unit: CGFloat = ReadabilityHelper.unitSize
     var width: CGFloat?
 
     func body(content: Content) -> some View {
@@ -23,13 +38,6 @@ struct ReadabilityModifier: ViewModifier {
     }
 
     private func padding(for width: CGFloat) -> CGFloat {
-        let idealWidth = 70 * unit / 2
-
-        guard width >= idealWidth else {
-            return 0
-        }
-
-        let padding = round((width - idealWidth) / 2)
-        return padding
+        return ReadabilityHelper.padding(containerWidth: width, unitWidth: unit)
     }
 }

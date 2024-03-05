@@ -5,10 +5,11 @@
 //  Created by  Stepanok Ivan on 07.10.2022.
 //
 
+import Combine
 import Foundation
-import WebKit
 import SwiftUI
 import Theme
+import WebKit
 
 public protocol WebViewNavigationDelegate: AnyObject {
     func webView(
@@ -52,13 +53,14 @@ public struct WebView: UIViewRepresentable {
     }
 
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+        var cancellables: [AnyCancellable] = []
         var parent: WebView
 
         init(_ parent: WebView) {
             self.parent = parent
             super.init()
 
-            addObserver()
+            addObservers()
         }
 
         public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
@@ -167,24 +169,33 @@ public struct WebView: UIViewRepresentable {
             return .allow
         }
         
-        private func addObserver() {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(reload),
-                name: .webviewReloadNotification,
-                object: nil
-            )
+        private func addObservers() {
+            cancellables.removeAll()
+            NotificationCenter.default.publisher(for: .webviewReloadNotification, object: nil)
+                .sink { [weak self] _ in
+                    self?.reload()
+                }
+                .store(in: &cancellables)
+
+            NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification, object: nil)
+                .sink { [weak self] _ in
+                    let script = """
+                    function sendSizeEvent() {
+                        const contentSizeEvent = new CustomEvent("UIContentSizeCategory.didChangeNotification", { bubbles: true });
+                        window.dispatchEvent(contentSizeEvent);
+                    }
+                    sendSizeEvent();
+                    """
+                    self?.webview?.evaluateJavaScript(script)
+                }
+                .store(in: &cancellables)
         }
-        
+
         fileprivate var webview: WKWebView?
         
         @objc private func reload() {
             parent.isLoading = true
             webview?.reload()
-        }
-        
-        deinit {
-            NotificationCenter.default.removeObserver(self)
         }
 
         public func userContentController(
@@ -237,7 +248,8 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        
+        // To add ability to change font size with webkitTextSizeAdjust need to set mode to mobile
+        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile
         for injection in viewModel.injections ?? [] {
             let script = WKUserScript(
                 source: injection.script,
