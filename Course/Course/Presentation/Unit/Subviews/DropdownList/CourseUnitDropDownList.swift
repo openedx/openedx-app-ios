@@ -36,7 +36,8 @@ struct CourseUnitDropDownList<Content>: View where Content: View {
         .background(Theme.Colors.background)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .frame(height: scrollViewHeight)
-        .shadow(radius: 4)
+        .shadow(color: Theme.Colors.textSecondary, radius: 4)
+
     }
 }
 
