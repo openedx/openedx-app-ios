@@ -36,6 +36,7 @@ public struct WebBrowser: View {
                             lineWidth: 8
                         )
                         .padding(20)
+                        .accessibilityIdentifier("progress_bar")
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -57,6 +58,7 @@ public struct WebBrowser: View {
                 isLoading: $isLoading,
                 refreshCookies: {}
             )
+            .accessibilityIdentifier("web_browser")
         }
         .padding(.top, proxy.safeAreaInsets.top)
         .padding(.bottom, proxy.safeAreaInsets.bottom)

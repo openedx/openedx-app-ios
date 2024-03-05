@@ -50,7 +50,8 @@ public struct SignInView: View {
             VStack(alignment: .center) {
                 ThemeAssets.appLogoLight.swiftUIImage
                     .resizable()
-                    .frame(maxWidth: 189, maxHeight: 54)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 189, maxHeight: 89)
                     .padding(.top, isHorizontal ? 20 : 40)
                     .padding(.bottom, isHorizontal ? 10 : 40)
                     .accessibilityIdentifier("logo_image")
@@ -188,7 +189,6 @@ public struct SignInView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
-                        .accessibilityLabel("error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {

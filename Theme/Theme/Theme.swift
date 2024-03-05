@@ -33,7 +33,8 @@ public struct Theme {
         public private(set) static var shadowColor = ThemeAssets.shadowColor.swiftUIColor
         public private(set) static var snackbarErrorColor = ThemeAssets.snackbarErrorColor.swiftUIColor
         public private(set) static var snackbarWarningColor = ThemeAssets.snackbarWarningColor.swiftUIColor
-        public private(set) static var snackbarInfoAlert = ThemeAssets.snackbarInfoAlert.swiftUIColor
+        public private(set) static var snackbarInfoColor = ThemeAssets.snackbarInfoColor.swiftUIColor
+        public private(set) static var snackbarTextColor = ThemeAssets.snackbarTextColor.swiftUIColor
         public private(set) static var styledButtonText = ThemeAssets.styledButtonText.swiftUIColor
         public private(set) static var textPrimary = ThemeAssets.textPrimary.swiftUIColor
         public private(set) static var textSecondary = ThemeAssets.textSecondary.swiftUIColor
@@ -54,6 +55,7 @@ public struct Theme {
         public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
         public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
         public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
+        public private(set) static var success = ThemeAssets.success.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -73,7 +75,8 @@ public struct Theme {
             upcomingTimelineColor: Color = ThemeAssets.upcomingTimelineColor.swiftUIColor,
             shadowColor: Color = ThemeAssets.shadowColor.swiftUIColor,
             snackbarErrorColor: Color = ThemeAssets.snackbarErrorColor.swiftUIColor,
-            snackbarInfoAlert: Color = ThemeAssets.snackbarInfoAlert.swiftUIColor,
+            snackbarInfoColor: Color = ThemeAssets.snackbarInfoColor.swiftUIColor,
+            snackbarTextColor: Color = ThemeAssets.snackbarTextColor.swiftUIColor,
             styledButtonText: Color = ThemeAssets.styledButtonText.swiftUIColor,
             textPrimary: Color = ThemeAssets.textPrimary.swiftUIColor,
             textSecondary: Color = ThemeAssets.textSecondary.swiftUIColor,
@@ -91,7 +94,8 @@ public struct Theme {
             datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor,
             navigationBarTintColor: Color = ThemeAssets.navigationBarTintColor.swiftUIColor,
             secondaryButtonBorderColor: Color = ThemeAssets.secondaryButtonBorderColor.swiftUIColor,
-            secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor
+            secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor,
+            success: Color = ThemeAssets.success.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
@@ -110,7 +114,8 @@ public struct Theme {
             self.upcomingTimelineColor = upcomingTimelineColor
             self.shadowColor = shadowColor
             self.snackbarErrorColor = snackbarErrorColor
-            self.snackbarInfoAlert = snackbarInfoAlert
+            self.snackbarInfoColor = snackbarInfoColor
+            self.snackbarTextColor = snackbarTextColor
             self.styledButtonText = styledButtonText
             self.textPrimary = textPrimary
             self.textSecondary = textSecondary
@@ -129,6 +134,7 @@ public struct Theme {
             self.navigationBarTintColor = navigationBarTintColor
             self.secondaryButtonBorderColor = secondaryButtonBorderColor
             self.secondaryButtonTextColor = secondaryButtonTextColor
+            self.success = success
         }
     }
     

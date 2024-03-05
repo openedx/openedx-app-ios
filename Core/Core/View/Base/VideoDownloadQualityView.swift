@@ -46,54 +46,52 @@ public struct VideoDownloadQualityView: View {
     }
 
     public var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .top) {
-                // MARK: - Page Body
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        ForEach(viewModel.downloadQuality, id: \.self) { quality in
-                            Button {
-                                viewModel.selectedDownloadQuality = quality
-                            } label: {
-                                HStack {
-                                    SettingsCell(
-                                        title: quality.title,
-                                        description: quality.description
-                                    )
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
-                                    Spacer()
-                                    CoreAssets.checkmark.swiftUIImage
-                                        .renderingMode(.template)
-                                        .foregroundColor(.accentColor)
-                                        .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
-                                        .accessibilityIdentifier("checkmark_image")
-                                    
-                                }
-                                .foregroundColor(Theme.Colors.textPrimary)
+        ZStack(alignment: .top) {
+            // MARK: - Page Body
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    ForEach(viewModel.downloadQuality, id: \.self) { quality in
+                        Button(action: {
+                            viewModel.selectedDownloadQuality = quality
+                        }, label: {
+                            HStack {
+                                SettingsCell(
+                                    title: quality.title,
+                                    description: quality.description
+                                )
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
+                                Spacer()
+                                CoreAssets.checkmark.swiftUIImage
+                                    .renderingMode(.template)
+                                    .foregroundColor(Theme.Colors.accentXColor)
+                                    .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
+                                    .accessibilityIdentifier("checkmark_image")
+                                
                             }
-                            .accessibilityIdentifier("quality_button_cell")
-                            Divider()
-                        }
+                            .foregroundColor(Theme.Colors.textPrimary)
+                        })
+                        .accessibilityIdentifier("select_quality_button")
+                        Divider()
                     }
-                    .frame(
-                        minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading
-                    )
-                    .padding(.horizontal, 24)
-                    .frameLimit(width: proxy.size.width)
                 }
-                .padding(.top, 8)
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    alignment: .topLeading
+                )
+                .padding(.horizontal, 24)
             }
-            .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
-            .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
-            .background(
-                Theme.Colors.background
-                    .ignoresSafeArea()
-            )
+            .frameLimit(sizePortrait: 420)
+            .padding(.top, 8)
         }
+        .navigationBarHidden(false)
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
+        .background(
+            Theme.Colors.background
+                .ignoresSafeArea()
+        )
     }
 }
 
@@ -111,10 +109,12 @@ public struct SettingsCell: View {
         VStack(alignment: .leading) {
             Text(title)
                 .font(Theme.Fonts.titleMedium)
+                .accessibilityIdentifier("video_quality_title_text")
             if let description {
                 Text(description)
                     .font(Theme.Fonts.labelMedium)
                     .foregroundColor(Theme.Colors.textSecondary)
+                    .accessibilityIdentifier("video_quality_des_text")
             }
         }.foregroundColor(Theme.Colors.textPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -165,4 +165,3 @@ public extension DownloadQuality {
         }
     }
 }
-

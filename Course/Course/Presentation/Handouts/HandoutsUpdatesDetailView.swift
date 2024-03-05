@@ -27,12 +27,15 @@ public struct HandoutsUpdatesDetailView: View {
         router: CourseRouter,
         cssInjector: CSSInjector
     ) {
-        if handouts != nil {
+        let noHandouts = handouts == nil && announcements == nil
+        
+        if announcements == nil {
             self.title = CourseLocalization.HandoutsCellHandouts.title
         } else {
             self.title = CourseLocalization.HandoutsCellAnnouncements.title
         }
-        self.handouts = handouts
+        
+        self.handouts = noHandouts ? CourseLocalization.Error.noHandouts : handouts
         self.announcements = announcements
         self.router = router
         self.cssInjector = cssInjector
