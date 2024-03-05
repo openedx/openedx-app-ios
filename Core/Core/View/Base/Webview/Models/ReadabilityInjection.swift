@@ -14,6 +14,13 @@ public struct ReadabilityInjection: WebViewScriptInjectionProtocol, CSSInjection
         return """
             window.addEventListener("load", () => {
                 window.webkit.messageHandlers.readability.postMessage("");
+        
+                window.resizeObserver\(uniqueId) = new ResizeObserver((entries) => {
+                    window.webkit.messageHandlers.readability.postMessage("");
+                });
+
+                window.resizeObserver\(uniqueId).observe(document.body);
+
             });
             window.addEventListener("UIContentSizeCategory.didChangeNotification", () => {
                 window.webkit.messageHandlers.readability.postMessage("");
@@ -35,12 +42,10 @@ public struct ReadabilityInjection: WebViewScriptInjectionProtocol, CSSInjection
     private func css(for width: CGFloat) -> String {
         let unitSize = UIFontMetrics(forTextStyle: .body).scaledValue(for: ReadabilityHelper.unitSize)
         let padding = ReadabilityHelper.padding(containerWidth: width, unitWidth: unitSize)
-        let bodyWidth = width - padding * 2
         return """
             body {
-                width: \(bodyWidth)px !important;
-                padding-left: calc((100vw - \(bodyWidth)px)/2) !important;
-                padding-right: calc((100vw - \(bodyWidth)px)/2) !important;
+                padding-left: \(padding)px !important;
+                padding-right: \(padding)px !important;
             }
         """
     }

@@ -74,7 +74,7 @@ public struct HandoutsUpdatesDetailView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             Theme.Colors.background
-                                       .ignoresSafeArea()
+                .ignoresSafeArea()
             GeometryReader { reader in
                 
                 // MARK: - Page Body
@@ -90,7 +90,7 @@ public struct HandoutsUpdatesDetailView: View {
                             screenWidth: .infinity
                         )
                         
-                        WebViewHtml(fixBrokenLinks(in: formattedHandouts))
+                        WebViewHtml(fixBrokenLinks(in: formattedHandouts), injections: [.accessibility, .readability])
                     } else if let announcements {
                         
                         // MARK: - Announcements
@@ -116,6 +116,7 @@ public struct HandoutsUpdatesDetailView: View {
                                     Divider()
                                 }
                             }
+                            .frameLimit(width: reader.size.width)
                         }.frame(height: reader.size.height - 60)
                     }
                 }.padding(.top, 8)
@@ -132,7 +133,7 @@ public struct HandoutsUpdatesDetailView: View {
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
-        .onChange(of: colorSchemeNative) { newValue in
+        .onChange(of: colorSchemeNative) { _ in
             guard UIApplication.shared.applicationState == .active else { return }
             updateColorScheme()
         }
