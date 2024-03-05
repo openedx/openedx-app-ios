@@ -172,9 +172,9 @@ public extension Date {
             case 2...6:
                 return timeAgoDisplay()
             case -1:
-                return CoreLocalization.CourseDates.tomorrow
+                return CoreLocalization.tomorrow
             case 1:
-                return CoreLocalization.CourseDates.yesterday
+                return CoreLocalization.yesterday
             default:
                 if day > 6 || day < -6 {
                     return dateFormatterString

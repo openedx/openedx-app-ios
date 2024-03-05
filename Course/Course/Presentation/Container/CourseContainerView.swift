@@ -70,7 +70,14 @@ public struct CourseContainerView: View {
     ) {
         self.viewModel = viewModel
         Task {
-            await viewModel.getCourseBlocks(courseID: courseID)
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    await viewModel.getCourseBlocks(courseID: courseID)
+                }
+                group.addTask {
+                    await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                }
+            }
         }
         self.courseID = courseID
         self.title = title
@@ -95,7 +102,9 @@ public struct CourseContainerView: View {
                     viewModel: viewModel,
                     title: title,
                     courseID: courseID,
-                    isVideo: false
+                    isVideo: false,
+                    selection: $selection,
+                    dateTabIndex: CourseTab.dates.rawValue
                 )
             } else {
                 VStack(spacing: 0) {
@@ -130,7 +139,9 @@ public struct CourseContainerView: View {
                         viewModel: viewModel,
                         title: title,
                         courseID: courseID,
-                        isVideo: false
+                        isVideo: false,
+                        selection: $selection,
+                        dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
                         tab.image
@@ -143,7 +154,9 @@ public struct CourseContainerView: View {
                         viewModel: viewModel,
                         title: title,
                         courseID: courseID,
-                        isVideo: true
+                        isVideo: true,
+                        selection: $selection,
+                        dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
                         tab.image

@@ -58,6 +58,98 @@ public extension DataLayer {
             case missedGatedContent = "missed_gated_content"
             case verifiedUpgradeLink = "verified_upgrade_link"
         }
+        
+        var status: BannerInfoStatus? {
+            if upgradeToCompleteGraded {
+                return .upgradeToCompleteGradedBanner
+            } else if upgradeToReset {
+                return .upgradeToResetBanner
+            } else if resetDates {
+                return .resetDatesBanner
+            } else if showDatesTabBannerInfo {
+                return .datesTabInfoBanner
+            }
+            
+            return nil
+        }
+        
+        // Case 1
+        private var showDatesTabBannerInfo: Bool {
+            return !missedDeadlines
+        }
+        
+        // Case 2
+        private var upgradeToCompleteGraded: Bool {
+            return contentTypeGatingEnabled && !missedDeadlines
+        }
+        
+        // Case 3
+        private var upgradeToReset: Bool {
+            return !upgradeToCompleteGraded && missedDeadlines && missedGatedContent
+        }
+        
+        // Case 4
+        private var resetDates: Bool {
+            return !upgradeToCompleteGraded && missedDeadlines && !missedGatedContent
+        }
+    }
+    
+    enum BannerInfoStatus {
+        case datesTabInfoBanner
+        case upgradeToCompleteGradedBanner
+        case upgradeToResetBanner
+        case resetDatesBanner
+            
+        var header: String {
+            switch self {
+            case .datesTabInfoBanner:
+                CourseLocalization.CourseDates.ResetDate.TabInfoBanner.header
+            case .upgradeToCompleteGradedBanner:
+                CourseLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.header
+            case .upgradeToResetBanner:
+                CourseLocalization.CourseDates.ResetDate.UpgradeToResetBanner.header
+            case .resetDatesBanner:
+                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.header
+            }
+        }
+        
+        var body: String {
+            switch self {
+            case .datesTabInfoBanner:
+                CourseLocalization.CourseDates.ResetDate.TabInfoBanner.body
+            case .upgradeToCompleteGradedBanner:
+                CourseLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.body
+            case .upgradeToResetBanner:
+                CourseLocalization.CourseDates.ResetDate.UpgradeToResetBanner.body
+            case .resetDatesBanner:
+                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.body
+            }
+        }
+        
+        var buttonTitle: String {
+            switch self {
+            case .upgradeToCompleteGradedBanner, .upgradeToResetBanner:
+                // Mobile payments are not implemented yet and to avoid breaking appstore guidelines,
+                // upgrade button is hidden, which leads user to payments
+                ""
+            case .resetDatesBanner:
+                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.button
+            default:
+                ""
+            }
+        }
+    }
+}
+
+public extension DataLayer {
+    struct CourseDateBanner: Codable {
+        let datesBannerInfo: DatesBannerInfo
+        let hasEnded: Bool
+        
+        enum CodingKeys: String, CodingKey {
+            case datesBannerInfo = "dates_banner_info"
+            case hasEnded = "has_ended"
+        }
     }
 }
 
@@ -68,7 +160,8 @@ public extension DataLayer.CourseDates {
                 missedDeadlines: datesBannerInfo?.missedDeadlines ?? false,
                 contentTypeGatingEnabled: datesBannerInfo?.contentTypeGatingEnabled ?? false,
                 missedGatedContent: datesBannerInfo?.missedGatedContent ?? false,
-                verifiedUpgradeLink: datesBannerInfo?.verifiedUpgradeLink),
+                verifiedUpgradeLink: datesBannerInfo?.verifiedUpgradeLink,
+                status: datesBannerInfo?.status),
             courseDateBlocks: courseDateBlocks.map { block in
                 CourseDateBlock(
                     assignmentType: block.assignmentType,
@@ -86,5 +179,19 @@ public extension DataLayer.CourseDates {
             hasEnded: hasEnded,
             learnerIsFullAccess: learnerIsFullAccess,
             userTimezone: userTimezone)
+    }
+}
+
+public extension DataLayer.CourseDateBanner {
+    var domain: CourseDateBanner {
+        return CourseDateBanner(
+            datesBannerInfo: DatesBannerInfo(
+                missedDeadlines: datesBannerInfo.missedDeadlines,
+                contentTypeGatingEnabled: datesBannerInfo.contentTypeGatingEnabled,
+                missedGatedContent: datesBannerInfo.missedGatedContent,
+                verifiedUpgradeLink: datesBannerInfo.verifiedUpgradeLink,
+                status: datesBannerInfo.status),
+            hasEnded: hasEnded
+        )
     }
 }
