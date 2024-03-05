@@ -98,20 +98,23 @@ public struct CourseContainerView: View {
                     isVideo: false
                 )
             } else {
-                VStack(spacing: 0) {
-                    if viewModel.config.uiComponents.courseTopTabBarEnabled {
-                        topTabBar
+                GeometryReader { proxy in
+                    VStack(spacing: 0) {
+                        if viewModel.config.uiComponents.courseTopTabBarEnabled {
+                            topTabBar(containerWidth: proxy.size.width)
+                        }
+                        tabs
                     }
-                    tabs
                 }
             }
         }
     }
 
-    private var topTabBar: some View {
+    private func topTabBar(containerWidth: CGFloat) -> some View {
         ScrollSlidingTabBar(
             selection: $selection,
-            tabs: CourseTab.allCases.map { $0.title }
+            tabs: CourseTab.allCases.map { $0.title },
+            containerWidth: containerWidth
         ) { newValue in
             isAnimatingForTap = true
             selection = newValue

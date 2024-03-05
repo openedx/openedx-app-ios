@@ -12,7 +12,7 @@ public struct ScrollSlidingTabBar: View {
 
     @Binding private var selection: Int
     @State private var buttonFrames: [Int: CGRect] = [:]
-    
+    private let containerWidth: CGFloat
     private let tabs: [String]
     private let style: Style
     private let onTap: ((Int) -> Void)?
@@ -25,11 +25,13 @@ public struct ScrollSlidingTabBar: View {
         selection: Binding<Int>,
         tabs: [String],
         style: Style = .default,
+        containerWidth: CGFloat,
         onTap: ((Int) -> Void)? = nil) {
         self._selection = selection
         self.tabs = tabs
         self.style = style
         self.onTap = onTap
+        self.containerWidth = containerWidth
     }
     
     public var body: some View {
@@ -54,6 +56,7 @@ public struct ScrollSlidingTabBar: View {
                     }
                 }
             }
+            .frameLimit(width: containerWidth)
         }
     }
     
@@ -184,7 +187,8 @@ private struct SlidingTabConsumerView: View {
         VStack(alignment: .leading) {
             ScrollSlidingTabBar(
                 selection: $selection,
-                tabs: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth"]
+                tabs: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth"],
+                containerWidth: 300
             )
             TabView(selection: $selection) {
                 HStack {

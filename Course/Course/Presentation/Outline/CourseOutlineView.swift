@@ -118,6 +118,7 @@ public struct CourseOutlineView: View {
                             }
                             Spacer(minLength: 84)
                         }
+                        .frameLimit(width: proxy.size.width)
                     }
                     .onRightSwipeGesture {
                         viewModel.router.back()
