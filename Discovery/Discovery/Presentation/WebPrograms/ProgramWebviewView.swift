@@ -21,8 +21,8 @@ public struct ProgramWebviewView: View {
     @ObservedObject private var viewModel: ProgramWebviewViewModel
     private var router: DiscoveryRouter
     private var viewType: ProgramViewType
-    private var pathID: String
-    
+    public var pathID: String
+
     private var URLString: String {
         switch viewType {
         case .program:

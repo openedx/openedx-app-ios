@@ -54,15 +54,22 @@ extension Router: DeepLinkRouter {
         link: DeepLink,
         pathID: String
     ) {
-        showTabScreen(tab: .discovery)
         switch link.type {
         case .discoveryCourseDetail:
+            if hostDiscoveryWebview?.rootView.pathID == pathID {
+                return
+            }
+            showTabScreen(tab: .discovery)
             showWebDiscoveryDetails(
                 pathID: pathID,
                 discoveryType: .courseDetail(pathID),
                 sourceScreen: .discovery
             )
         case .discoveryProgramDetail:
+            if hostProgramWebviewView?.rootView.pathID == pathID {
+                return
+            }
+            showTabScreen(tab: .discovery)
             showWebProgramDetails(
                 pathID: pathID,
                 viewType: .programDetail
@@ -121,6 +128,9 @@ extension Router: DeepLinkRouter {
     public func showProgram(
         pathID: String
     ) {
+        if hostProgramWebviewView?.rootView.pathID == pathID {
+            return
+        }
         showTabScreen(tab: .programs)
         showWebProgramDetails(
             pathID: pathID,
@@ -204,6 +214,10 @@ extension Router: DeepLinkRouter {
 
     private var hostDiscoveryWebview: UIHostingController<DiscoveryWebview>? {
         getNavigationController().topViewController as? UIHostingController<DiscoveryWebview>
+    }
+
+    private var hostProgramWebviewView: UIHostingController<ProgramWebviewView>? {
+        getNavigationController().topViewController as? UIHostingController<ProgramWebviewView>
     }
 
     public func showProgress() {
