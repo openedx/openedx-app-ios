@@ -108,7 +108,7 @@ extension Router: DeepLinkRouter {
         }
 
         switch link.type {
-        case .courseVideos, .courseDates, .discussions, .courseHandout:
+        case .courseVideos, .courseDates, .discussions, .courseHandout, .courseDashboard:
             self.popToCourseContainerView(animated: true)
         default:
             break
@@ -116,6 +116,8 @@ extension Router: DeepLinkRouter {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1)) {
             switch link.type {
+            case .courseDashboard:
+                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.course.rawValue
             case .courseVideos:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
             case .courseDates:
