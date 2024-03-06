@@ -77,7 +77,10 @@ public struct WebViewHtml: UIViewRepresentable {
 
         }
         
-        public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        public func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
             injections?.handle(message: message)
         }
         
