@@ -143,6 +143,13 @@ extension Router: DeepLinkRouter {
         courseDetails: CourseDetails,
         topics: Topics
     ) {
+        if let hostCourseContainerView = hostCourseContainerView {
+            getNavigationController().popToViewController(
+                hostCourseContainerView,
+                animated: false
+            )
+        }
+
         let title = (topics.coursewareTopics.map {$0} + topics.nonCoursewareTopics.map {$0}).first?.name ?? ""
         showThreads(
             courseID: courseDetails.courseID,
@@ -209,7 +216,8 @@ extension Router: DeepLinkRouter {
     }
 
     private var hostCourseContainerView: UIHostingController<CourseContainerView>? {
-        getNavigationController().topViewController as? UIHostingController<CourseContainerView>
+        getNavigationController().viewControllers.firstAs(UIHostingController<CourseContainerView>.self)
+        //getNavigationController().topViewController as? UIHostingController<CourseContainerView>
     }
 
     private var hostDiscoveryWebview: UIHostingController<DiscoveryWebview>? {
