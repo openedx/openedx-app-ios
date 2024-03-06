@@ -105,7 +105,13 @@ extension Router: DeepLinkRouter {
                     title: courseDetails.courseTitle
                 )
             }
+        }
 
+        switch link.type {
+        case .courseVideos, .courseDates, .discussions, .courseHandout:
+            self.popToCourseContainerView(animated: true)
+        default:
+            break
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1)) {
@@ -121,6 +127,7 @@ extension Router: DeepLinkRouter {
             default:
                 break
             }
+
             completion()
         }
     }
@@ -143,12 +150,7 @@ extension Router: DeepLinkRouter {
         courseDetails: CourseDetails,
         topics: Topics
     ) {
-        if let hostCourseContainerView = hostCourseContainerView {
-            getNavigationController().popToViewController(
-                hostCourseContainerView,
-                animated: false
-            )
-        }
+        popToCourseContainerView()
 
         let title = (topics.coursewareTopics.map {$0} + topics.nonCoursewareTopics.map {$0}).first?.name ?? ""
         showThreads(
@@ -209,6 +211,16 @@ extension Router: DeepLinkRouter {
         if let presentedViewController = getNavigationController().presentedViewController {
             presentedViewController.dismiss(animated: true)
         }
+    }
+
+    private func popToCourseContainerView(animated: Bool = false) {
+        guard let hostCourseContainerView = hostCourseContainerView else {
+            return
+        }
+        getNavigationController().popToViewController(
+            hostCourseContainerView,
+            animated: animated
+        )
     }
 
     private var hostMainScreen: UIHostingController<MainScreenView>? {
