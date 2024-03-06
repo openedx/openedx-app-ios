@@ -33,10 +33,13 @@ public protocol AuthorizationAnalytics {
     func identify(id: String, username: String, email: String)
     func userLogin(method: AuthMethod)
     func signUpClicked()
+    func signInClicked()
+    func userSignInClicked()
     func createAccountClicked()
     func registrationSuccess()
     func forgotPasswordClicked()
-    func resetPasswordClicked(success: Bool)
+    func resetPasswordClicked()
+    func resetPassword(success: Bool)
 }
 
 #if DEBUG
@@ -44,9 +47,12 @@ class AuthorizationAnalyticsMock: AuthorizationAnalytics {
     func identify(id: String, username: String, email: String) {}
     public func userLogin(method: AuthMethod) {}
     public func signUpClicked() {}
+    public func signInClicked() {}
+    public func userSignInClicked() {}
     public func createAccountClicked() {}
     public func registrationSuccess() {}
     public func forgotPasswordClicked() {}
-    public func resetPasswordClicked(success: Bool) {}
+    public func resetPasswordClicked() {}
+    public func resetPassword(success: Bool) {}
 }
 #endif

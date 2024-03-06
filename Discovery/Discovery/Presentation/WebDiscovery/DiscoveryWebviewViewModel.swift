@@ -135,14 +135,25 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         }
         
         if let url = request.url, outsideLink || capturedLink || externalLink, UIApplication.shared.canOpenURL(url) {
+            analytics.externalLinkOpen(url: url.absoluteString, screen: sourceScreen.value ?? "")
             router.presentAlert(
                 alertTitle: DiscoveryLocalization.Alert.leavingAppTitle,
                 alertMessage: DiscoveryLocalization.Alert.leavingAppMessage,
                 positiveAction: CoreLocalization.Webview.Alert.continue,
                 onCloseTapped: { [weak self] in
                     self?.router.dismiss(animated: true)
-                }, okTapped: {
+                    self?.analytics.externalLinkOpenAction(
+                        url: url.absoluteString,
+                        screen: self?.sourceScreen.value ?? "",
+                        action: "cancel"
+                    )
+                }, okTapped: { [weak self] in
                     UIApplication.shared.open(url, options: [:])
+                    self?.analytics.externalLinkOpenAction(
+                        url: url.absoluteString,
+                        screen: self?.sourceScreen.value ?? "",
+                        action: "continue"
+                    )
                 }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue, image: nil)
             )
             return true
@@ -176,6 +187,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
             
         case .programDetail:
             guard let pathID = programDetailPathId(from: url) else { return false }
+            analytics.discoveryEvent(event: .discoveryProgramInfo, biValue: .discoveryProgramInfo)
             router.showWebDiscoveryDetails(
                 pathID: pathID,
                 discoveryType: .programDetail(pathID),

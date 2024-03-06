@@ -27,26 +27,32 @@ public class DeleteAccountViewModel: ObservableObject {
     private let interactor: ProfileInteractorProtocol
     public let router: ProfileRouter
     public let connectivity: ConnectivityProtocol
+    let analytics: ProfileAnalytics
     
-    public init(interactor: ProfileInteractorProtocol, router: ProfileRouter, connectivity: ConnectivityProtocol) {
+    public init(interactor: ProfileInteractorProtocol, router: ProfileRouter, connectivity: ConnectivityProtocol, analytics: ProfileAnalytics) {
         self.interactor = interactor
         self.router = router
         self.connectivity = connectivity
+        self.analytics = analytics
     }
     
     @MainActor
     func deleteAccount(password: String) async throws {
         isShowProgress = true
+        analytics.profileUserDeleteAccountClicked()
         do {
             if try await interactor.deleteAccount(password: password) {
                 isShowProgress = false
                 router.showLoginScreen(sourceScreen: .default)
+                analytics.profileDeleteAccountSuccess(success: true)
             } else {
                 isShowProgress = false
                 incorrectPassword = true
+                analytics.profileDeleteAccountSuccess(success: false)
             }
         } catch {
             isShowProgress = false
+            analytics.profileDeleteAccountSuccess(success: false)
             if error.validationError?.statusCode == 403 {
                 incorrectPassword = true
             } else if let validationError = error.validationError,

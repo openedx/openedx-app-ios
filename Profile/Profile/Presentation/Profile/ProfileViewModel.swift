@@ -147,4 +147,8 @@ public class ProfileViewModel: ObservableObject {
     func trackProfileEditClicked() {
         analytics.profileEditClicked()
     }
+    
+    func trackLogoutClickedClicked() {
+        analytics.profileEvent(.userLogoutClicked, biValue: .userLogoutClicked)
+    }
 }

@@ -35,7 +35,7 @@ class SegmentAnalyticsService: AnalyticsService {
         analytics?.identify(userId: id, traits: traits)
     }
     
-    func logEvent(_ event: Event, parameters: [String: Any]?) {
+    func logEvent(_ event: AnalyticsEvent, parameters: [String: Any]?) {
         analytics?.track(
             name: event.rawValue,
             properties: parameters

@@ -66,7 +66,8 @@ public struct CourseOutlineView: View {
                                 DatesStatusInfoView(
                                     datesBannerInfo: courseDeadlineInfo.datesBannerInfo,
                                     courseID: courseID,
-                                    courseContainerViewModel: viewModel
+                                    courseContainerViewModel: viewModel,
+                                    screen: .courseDashbaord
                                 )
                                 .padding(.horizontal, 16)
                                 .padding(.top, 16)
@@ -208,7 +209,8 @@ public struct CourseOutlineView: View {
             viewModel.storage.userSettings.map {
                 VideoDownloadQualityContainerView(
                     downloadQuality: $0.downloadQuality,
-                    didSelect: viewModel.update(downloadQuality:)
+                    didSelect: viewModel.update(downloadQuality:),
+                    analytics: viewModel.coreAnalytics
                 )
             }
         }
@@ -247,7 +249,8 @@ public struct CourseOutlineView: View {
                     },
                     onTap: {
                         showingDownloads = true
-                    }
+                    },
+                    analytics: viewModel.analytics
                 )
                 viewModel.userSettings.map {
                     VideoDownloadQualityBarView(
@@ -290,7 +293,10 @@ public struct CourseOutlineView: View {
                             .multilineTextAlignment(.center)
                         StyledButton(
                             CourseLocalization.Outline.viewCertificate,
-                            action: { openCertificateView = true },
+                            action: {
+                                openCertificateView = true
+                                viewModel.trackViewCertificateClicked(courseID: courseID)
+                            },
                             isTransparent: true
                         )
                         .frame(width: 141)
@@ -335,7 +341,8 @@ struct CourseOutlineView_Previews: PreviewProvider {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: Date(),
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         Task {
             await withTaskGroup(of: Void.self) { group in

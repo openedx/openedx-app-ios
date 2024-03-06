@@ -135,7 +135,7 @@ public struct HandoutsUpdatesDetailView: View {
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
-        .onChange(of: colorSchemeNative) { newValue in
+        .onChange(of: colorSchemeNative) { _ in
             guard UIApplication.shared.applicationState == .active else { return }
             updateColorScheme()
         }

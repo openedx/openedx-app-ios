@@ -44,6 +44,7 @@ struct HandoutsView: View {
                                     announcements: nil,
                                     router: viewModel.router,
                                     cssInjector: viewModel.cssInjector)
+                                viewModel.analytics.trackCourseEvent(.courseHandouts, biValue: .courseHandouts, courseID: courseID)
                             })
                             Divider()
                             HandoutsItemCell(type: .announcements, onTapAction: {
@@ -53,6 +54,7 @@ struct HandoutsView: View {
                                         announcements: viewModel.updates,
                                         router: viewModel.router,
                                         cssInjector: viewModel.cssInjector)
+                                    viewModel.analytics.trackCourseEvent(.courseAnnouncement, biValue: .courseAnnouncement, courseID: courseID)
                                 }
                             })
                         }.padding(.horizontal, 32)
@@ -108,7 +110,8 @@ struct HandoutsView_Previews: PreviewProvider {
                                           router: CourseRouterMock(),
                                           cssInjector: CSSInjectorMock(),
                                           connectivity: Connectivity(),
-                                          courseID: "")
+                                          courseID: "",
+                                          analytics: CourseAnalyticsMock())
         HandoutsView(courseID: "",
                      viewModel: viewModel)
     }

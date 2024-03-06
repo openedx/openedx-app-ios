@@ -60,6 +60,8 @@ public extension DataLayer {
         }
         
         var status: BannerInfoStatus? {
+            return .resetDatesBanner
+            
             if upgradeToCompleteGraded {
                 return .upgradeToCompleteGradedBanner
             } else if upgradeToReset {
@@ -136,6 +138,19 @@ public extension DataLayer {
                 CourseLocalization.CourseDates.ResetDate.ResetDateBanner.button
             default:
                 ""
+            }
+        }
+        
+        var analyticsBannerType: String {
+            switch self {
+            case .datesTabInfoBanner:
+                "info"
+            case .upgradeToCompleteGradedBanner:
+                "upgrade_to_participate"
+            case .upgradeToResetBanner:
+                "upgrade_to_shift"
+            case .resetDatesBanner:
+                "shift_dates"
             }
         }
     }
