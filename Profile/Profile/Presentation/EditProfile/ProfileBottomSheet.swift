@@ -125,7 +125,8 @@ struct ProfileBottomSheet: View {
             HStack(alignment: .center) {
                 switch type {
                 case .gallery:
-                    CoreAssets.gallery.swiftUIImage
+                    CoreAssets.gallery.swiftUIImage.renderingMode(.template)
+                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
                 case .remove:
                     CoreAssets.removePhoto.swiftUIImage
                 case .cancel:

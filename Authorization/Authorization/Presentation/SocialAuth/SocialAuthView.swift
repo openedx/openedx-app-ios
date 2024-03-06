@@ -52,7 +52,7 @@ struct SocialAuthView: View {
         HStack {
             Text("\(AuthLocalization.or) \(title.lowercased()):")
                 .padding(.vertical, 20)
-                .font(Theme.Fonts.labelLarge)
+                .font(Theme.Fonts.bodyMedium)
                 .accessibilityIdentifier("social_auth_title_text")
             Spacer()
         }
