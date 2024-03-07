@@ -182,7 +182,7 @@ public class DeepLinkManager {
             await showCourseScreen(with: type, link: link)
         case .program, .programDetail:
             guard config.program.enabled else { return }
-            if let pathID = link.pathID {
+            if let pathID = link.pathID, !pathID.isEmpty {
                 router.showProgram(pathID: pathID)
                 return
             }
@@ -190,7 +190,7 @@ public class DeepLinkManager {
         case .profile:
             router.showTabScreen(tab: .profile)
         case .userProfile:
-            guard let username = storage.user?.username else {
+            guard let username = storage.user?.username, !username.isEmpty  else {
                 return
             }
             router.showUserProfile(userName: username)
@@ -208,7 +208,8 @@ public class DeepLinkManager {
             }
             router.showDiscovery()
         case .discoveryCourseDetail, .discoveryProgramDetail:
-            guard let pathID = link.pathID ?? link.courseID else {
+            guard let pathID = link.pathID ?? link.courseID, !pathID.isEmpty else {
+                router.showTabScreen(tab: .discovery)
                 return
             }
             router.showDiscoveryDetails(link: link, pathID: pathID)
@@ -219,7 +220,7 @@ public class DeepLinkManager {
 
     @MainActor
     private func showCourseScreen(with type: DeepLinkType, link: DeepLink) async {
-        guard let courseID = link.courseID else {
+        guard let courseID = link.courseID, !courseID.isEmpty else {
             return
         }
 
@@ -276,7 +277,7 @@ public class DeepLinkManager {
                 topics: topics
             )
         case .discussionPost:
-            guard let threadID = link.threadID, let topicID = link.topicID else {
+            guard let threadID = link.threadID, let topicID = link.topicID, !topicID.isEmpty else {
                 throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
             }
 
@@ -298,7 +299,11 @@ public class DeepLinkManager {
         case .discussionComment:
             guard let threadID = link.threadID,
                   let topicID = link.topicID,
-                  let commentID = link.commentID else {
+                  let commentID = link.commentID,
+                  !threadID.isEmpty,
+                  !topicID.isEmpty,
+                  !commentID.isEmpty
+            else {
                 throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
             }
 
