@@ -599,10 +599,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`transitionStyle`, `view`)
     }
 
-    open func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View) {
-        addInvocation(.m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<() -> any View>.any))
-		let perform = methodPerformValue(.m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<() -> any View>.any)) as? (UIModalTransitionStyle, () -> any View) -> Void
-		perform?(`transitionStyle`, `content`)
+    open func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {
+        addInvocation(.m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<Bool>.value(`animated`), Parameter<() -> any View>.any))
+		let perform = methodPerformValue(.m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<Bool>.value(`animated`), Parameter<() -> any View>.any)) as? (UIModalTransitionStyle, Bool, () -> any View) -> Void
+		perform?(`transitionStyle`, `animated`, `content`)
     }
 
 
@@ -622,7 +622,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
-        case m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>, Parameter<() -> any View>)
+        case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -707,9 +707,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsView, rhs: rhsView, with: matcher), lhsView, rhsView, "view"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_presentView__transitionStyle_transitionStylecontent_content(let lhsTransitionstyle, let lhsContent), .m_presentView__transitionStyle_transitionStylecontent_content(let rhsTransitionstyle, let rhsContent)):
+            case (.m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(let lhsTransitionstyle, let lhsAnimated, let lhsContent), .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(let rhsTransitionstyle, let rhsAnimated, let rhsContent)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTransitionstyle, rhs: rhsTransitionstyle, with: matcher), lhsTransitionstyle, rhsTransitionstyle, "transitionStyle"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsContent, rhs: rhsContent, with: matcher), lhsContent, rhsContent, "content"))
 				return Matcher.ComparisonResult(results)
             default: return .none
@@ -733,7 +734,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
-            case let .m_presentView__transitionStyle_transitionStylecontent_content(p0, p1): return p0.intValue + p1.intValue
+            case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             }
         }
         func assertionName() -> String {
@@ -753,7 +754,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
-            case .m_presentView__transitionStyle_transitionStylecontent_content: return ".presentView(transitionStyle:content:)"
+            case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
             }
         }
     }
@@ -787,7 +788,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
-        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStylecontent_content(`transitionStyle`, `content`))}
+        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
     }
 
     public struct Perform {
@@ -839,8 +840,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, perform: @escaping (UIModalTransitionStyle, any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`), performs: perform)
         }
-        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, () -> any View) -> Void) -> Perform {
-            return Perform(method: .m_presentView__transitionStyle_transitionStylecontent_content(`transitionStyle`, `content`), performs: perform)
+        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, Bool, () -> any View) -> Void) -> Perform {
+            return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
     }
 
@@ -1405,6 +1406,22 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 		return __value
     }
 
+    open func getTopic(courseID: String, topicID: String) throws -> Topics {
+        addInvocation(.m_getTopic__courseID_courseIDtopicID_topicID(Parameter<String>.value(`courseID`), Parameter<String>.value(`topicID`)))
+		let perform = methodPerformValue(.m_getTopic__courseID_courseIDtopicID_topicID(Parameter<String>.value(`courseID`), Parameter<String>.value(`topicID`))) as? (String, String) -> Void
+		perform?(`courseID`, `topicID`)
+		var __value: Topics
+		do {
+		    __value = try methodReturnValue(.m_getTopic__courseID_courseIDtopicID_topicID(Parameter<String>.value(`courseID`), Parameter<String>.value(`topicID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getTopic(courseID: String, topicID: String). Use given")
+			Failure("Stub return value not specified for getTopic(courseID: String, topicID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
     open func searchThreads(courseID: String, searchText: String, pageNumber: Int) throws -> ThreadLists {
         addInvocation(.m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(Parameter<String>.value(`courseID`), Parameter<String>.value(`searchText`), Parameter<Int>.value(`pageNumber`)))
 		let perform = methodPerformValue(.m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(Parameter<String>.value(`courseID`), Parameter<String>.value(`searchText`), Parameter<Int>.value(`pageNumber`))) as? (String, String, Int) -> Void
@@ -1415,6 +1432,22 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 		} catch MockError.notStubed {
 			onFatalFailure("Stub return value not specified for searchThreads(courseID: String, searchText: String, pageNumber: Int). Use given")
 			Failure("Stub return value not specified for searchThreads(courseID: String, searchText: String, pageNumber: Int). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+    open func getThread(threadID: String) throws -> UserThread {
+        addInvocation(.m_getThread__threadID_threadID(Parameter<String>.value(`threadID`)))
+		let perform = methodPerformValue(.m_getThread__threadID_threadID(Parameter<String>.value(`threadID`))) as? (String) -> Void
+		perform?(`threadID`)
+		var __value: UserThread
+		do {
+		    __value = try methodReturnValue(.m_getThread__threadID_threadID(Parameter<String>.value(`threadID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getThread(threadID: String). Use given")
+			Failure("Stub return value not specified for getThread(threadID: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -1463,6 +1496,22 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 		} catch MockError.notStubed {
 			onFatalFailure("Stub return value not specified for getCommentResponses(commentID: String, page: Int). Use given")
 			Failure("Stub return value not specified for getCommentResponses(commentID: String, page: Int). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+    open func getResponse(responseID: String) throws -> UserComment {
+        addInvocation(.m_getResponse__responseID_responseID(Parameter<String>.value(`responseID`)))
+		let perform = methodPerformValue(.m_getResponse__responseID_responseID(Parameter<String>.value(`responseID`))) as? (String) -> Void
+		perform?(`responseID`)
+		var __value: UserComment
+		do {
+		    __value = try methodReturnValue(.m_getResponse__responseID_responseID(Parameter<String>.value(`responseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getResponse(responseID: String). Use given")
+			Failure("Stub return value not specified for getResponse(responseID: String). Use given")
 		} catch {
 		    throw error
 		}
@@ -1580,10 +1629,13 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
     fileprivate enum MethodType {
         case m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>, Parameter<ThreadType>, Parameter<SortType>, Parameter<ThreadsFilter>, Parameter<Int>)
         case m_getTopics__courseID_courseID(Parameter<String>)
+        case m_getTopic__courseID_courseIDtopicID_topicID(Parameter<String>, Parameter<String>)
         case m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(Parameter<String>, Parameter<String>, Parameter<Int>)
+        case m_getThread__threadID_threadID(Parameter<String>)
         case m_getDiscussionComments__threadID_threadIDpage_page(Parameter<String>, Parameter<Int>)
         case m_getQuestionComments__threadID_threadIDpage_page(Parameter<String>, Parameter<Int>)
         case m_getCommentResponses__commentID_commentIDpage_page(Parameter<String>, Parameter<Int>)
+        case m_getResponse__responseID_responseID(Parameter<String>)
         case m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(Parameter<String>, Parameter<String>, Parameter<String?>)
         case m_voteThread__voted_votedthreadID_threadID(Parameter<Bool>, Parameter<String>)
         case m_voteResponse__voted_votedresponseID_responseID(Parameter<Bool>, Parameter<String>)
@@ -1609,11 +1661,22 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
 
+            case (.m_getTopic__courseID_courseIDtopicID_topicID(let lhsCourseid, let lhsTopicid), .m_getTopic__courseID_courseIDtopicID_topicID(let rhsCourseid, let rhsTopicid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTopicid, rhs: rhsTopicid, with: matcher), lhsTopicid, rhsTopicid, "topicID"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(let lhsCourseid, let lhsSearchtext, let lhsPagenumber), .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(let rhsCourseid, let rhsSearchtext, let rhsPagenumber)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSearchtext, rhs: rhsSearchtext, with: matcher), lhsSearchtext, rhsSearchtext, "searchText"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPagenumber, rhs: rhsPagenumber, with: matcher), lhsPagenumber, rhsPagenumber, "pageNumber"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getThread__threadID_threadID(let lhsThreadid), .m_getThread__threadID_threadID(let rhsThreadid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadid, rhs: rhsThreadid, with: matcher), lhsThreadid, rhsThreadid, "threadID"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_getDiscussionComments__threadID_threadIDpage_page(let lhsThreadid, let lhsPage), .m_getDiscussionComments__threadID_threadIDpage_page(let rhsThreadid, let rhsPage)):
@@ -1632,6 +1695,11 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCommentid, rhs: rhsCommentid, with: matcher), lhsCommentid, rhsCommentid, "commentID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPage, rhs: rhsPage, with: matcher), lhsPage, rhsPage, "page"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getResponse__responseID_responseID(let lhsResponseid), .m_getResponse__responseID_responseID(let rhsResponseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResponseid, rhs: rhsResponseid, with: matcher), lhsResponseid, rhsResponseid, "responseID"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(let lhsThreadid, let lhsRawbody, let lhsParentid), .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(let rhsThreadid, let rhsRawbody, let rhsParentid)):
@@ -1688,10 +1756,13 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
             switch self {
             case let .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_getTopics__courseID_courseID(p0): return p0.intValue
+            case let .m_getTopic__courseID_courseIDtopicID_topicID(p0, p1): return p0.intValue + p1.intValue
             case let .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_getThread__threadID_threadID(p0): return p0.intValue
             case let .m_getDiscussionComments__threadID_threadIDpage_page(p0, p1): return p0.intValue + p1.intValue
             case let .m_getQuestionComments__threadID_threadIDpage_page(p0, p1): return p0.intValue + p1.intValue
             case let .m_getCommentResponses__commentID_commentIDpage_page(p0, p1): return p0.intValue + p1.intValue
+            case let .m_getResponse__responseID_responseID(p0): return p0.intValue
             case let .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_voteThread__voted_votedthreadID_threadID(p0, p1): return p0.intValue + p1.intValue
             case let .m_voteResponse__voted_votedresponseID_responseID(p0, p1): return p0.intValue + p1.intValue
@@ -1706,10 +1777,13 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
             switch self {
             case .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page: return ".getThreadsList(courseID:type:sort:filter:page:)"
             case .m_getTopics__courseID_courseID: return ".getTopics(courseID:)"
+            case .m_getTopic__courseID_courseIDtopicID_topicID: return ".getTopic(courseID:topicID:)"
             case .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber: return ".searchThreads(courseID:searchText:pageNumber:)"
+            case .m_getThread__threadID_threadID: return ".getThread(threadID:)"
             case .m_getDiscussionComments__threadID_threadIDpage_page: return ".getDiscussionComments(threadID:page:)"
             case .m_getQuestionComments__threadID_threadIDpage_page: return ".getQuestionComments(threadID:page:)"
             case .m_getCommentResponses__commentID_commentIDpage_page: return ".getCommentResponses(commentID:page:)"
+            case .m_getResponse__responseID_responseID: return ".getResponse(responseID:)"
             case .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID: return ".addCommentTo(threadID:rawBody:parentID:)"
             case .m_voteThread__voted_votedthreadID_threadID: return ".voteThread(voted:threadID:)"
             case .m_voteResponse__voted_votedresponseID_responseID: return ".voteResponse(voted:responseID:)"
@@ -1737,8 +1811,14 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         public static func getTopics(courseID: Parameter<String>, willReturn: Topics...) -> MethodStub {
             return Given(method: .m_getTopics__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
+        public static func getTopic(courseID: Parameter<String>, topicID: Parameter<String>, willReturn: Topics...) -> MethodStub {
+            return Given(method: .m_getTopic__courseID_courseIDtopicID_topicID(`courseID`, `topicID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         public static func searchThreads(courseID: Parameter<String>, searchText: Parameter<String>, pageNumber: Parameter<Int>, willReturn: ThreadLists...) -> MethodStub {
             return Given(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getThread(threadID: Parameter<String>, willReturn: UserThread...) -> MethodStub {
+            return Given(method: .m_getThread__threadID_threadID(`threadID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Pagination)...) -> MethodStub {
             return Given(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1748,6 +1828,9 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         }
         public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>, willReturn: ([UserComment], Pagination)...) -> MethodStub {
             return Given(method: .m_getCommentResponses__commentID_commentIDpage_page(`commentID`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getResponse(responseID: Parameter<String>, willReturn: UserComment...) -> MethodStub {
+            return Given(method: .m_getResponse__responseID_responseID(`responseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func addCommentTo(threadID: Parameter<String>, rawBody: Parameter<String>, parentID: Parameter<String?>, willReturn: Post...) -> MethodStub {
             return Given(method: .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(`threadID`, `rawBody`, `parentID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1772,6 +1855,16 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 			willProduce(stubber)
 			return given
         }
+        public static func getTopic(courseID: Parameter<String>, topicID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getTopic__courseID_courseIDtopicID_topicID(`courseID`, `topicID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getTopic(courseID: Parameter<String>, topicID: Parameter<String>, willProduce: (StubberThrows<Topics>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getTopic__courseID_courseIDtopicID_topicID(`courseID`, `topicID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Topics).self)
+			willProduce(stubber)
+			return given
+        }
         public static func searchThreads(courseID: Parameter<String>, searchText: Parameter<String>, pageNumber: Parameter<Int>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`), products: willThrow.map({ StubProduct.throw($0) }))
         }
@@ -1779,6 +1872,16 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (ThreadLists).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getThread(threadID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getThread__threadID_threadID(`threadID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getThread(threadID: Parameter<String>, willProduce: (StubberThrows<UserThread>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getThread__threadID_threadID(`threadID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (UserThread).self)
 			willProduce(stubber)
 			return given
         }
@@ -1809,6 +1912,16 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getCommentResponses__commentID_commentIDpage_page(`commentID`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (([UserComment], Pagination)).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getResponse(responseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getResponse__responseID_responseID(`responseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getResponse(responseID: Parameter<String>, willProduce: (StubberThrows<UserComment>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getResponse__responseID_responseID(`responseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (UserComment).self)
 			willProduce(stubber)
 			return given
         }
@@ -1899,10 +2012,13 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
         public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`))}
         public static func getTopics(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getTopics__courseID_courseID(`courseID`))}
+        public static func getTopic(courseID: Parameter<String>, topicID: Parameter<String>) -> Verify { return Verify(method: .m_getTopic__courseID_courseIDtopicID_topicID(`courseID`, `topicID`))}
         public static func searchThreads(courseID: Parameter<String>, searchText: Parameter<String>, pageNumber: Parameter<Int>) -> Verify { return Verify(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`))}
+        public static func getThread(threadID: Parameter<String>) -> Verify { return Verify(method: .m_getThread__threadID_threadID(`threadID`))}
         public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`))}
         public static func getQuestionComments(threadID: Parameter<String>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getQuestionComments__threadID_threadIDpage_page(`threadID`, `page`))}
         public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getCommentResponses__commentID_commentIDpage_page(`commentID`, `page`))}
+        public static func getResponse(responseID: Parameter<String>) -> Verify { return Verify(method: .m_getResponse__responseID_responseID(`responseID`))}
         public static func addCommentTo(threadID: Parameter<String>, rawBody: Parameter<String>, parentID: Parameter<String?>) -> Verify { return Verify(method: .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(`threadID`, `rawBody`, `parentID`))}
         public static func voteThread(voted: Parameter<Bool>, threadID: Parameter<String>) -> Verify { return Verify(method: .m_voteThread__voted_votedthreadID_threadID(`voted`, `threadID`))}
         public static func voteResponse(voted: Parameter<Bool>, responseID: Parameter<String>) -> Verify { return Verify(method: .m_voteResponse__voted_votedresponseID_responseID(`voted`, `responseID`))}
@@ -1923,8 +2039,14 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         public static func getTopics(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getTopics__courseID_courseID(`courseID`), performs: perform)
         }
+        public static func getTopic(courseID: Parameter<String>, topicID: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_getTopic__courseID_courseIDtopicID_topicID(`courseID`, `topicID`), performs: perform)
+        }
         public static func searchThreads(courseID: Parameter<String>, searchText: Parameter<String>, pageNumber: Parameter<Int>, perform: @escaping (String, String, Int) -> Void) -> Perform {
             return Perform(method: .m_searchThreads__courseID_courseIDsearchText_searchTextpageNumber_pageNumber(`courseID`, `searchText`, `pageNumber`), performs: perform)
+        }
+        public static func getThread(threadID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getThread__threadID_threadID(`threadID`), performs: perform)
         }
         public static func getDiscussionComments(threadID: Parameter<String>, page: Parameter<Int>, perform: @escaping (String, Int) -> Void) -> Perform {
             return Perform(method: .m_getDiscussionComments__threadID_threadIDpage_page(`threadID`, `page`), performs: perform)
@@ -1934,6 +2056,9 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         }
         public static func getCommentResponses(commentID: Parameter<String>, page: Parameter<Int>, perform: @escaping (String, Int) -> Void) -> Perform {
             return Perform(method: .m_getCommentResponses__commentID_commentIDpage_page(`commentID`, `page`), performs: perform)
+        }
+        public static func getResponse(responseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getResponse__responseID_responseID(`responseID`), performs: perform)
         }
         public static func addCommentTo(threadID: Parameter<String>, rawBody: Parameter<String>, parentID: Parameter<String?>, perform: @escaping (String, String, String?) -> Void) -> Perform {
             return Perform(method: .m_addCommentTo__threadID_threadIDrawBody_rawBodyparentID_parentID(`threadID`, `rawBody`, `parentID`), performs: perform)
@@ -2084,16 +2209,16 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 		perform?(`username`)
     }
 
-    open func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
-        addInvocation(.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(Parameter<String>.value(`courseID`), Parameter<Topics>.value(`topics`), Parameter<String>.value(`title`), Parameter<ThreadType>.value(`type`)))
-		let perform = methodPerformValue(.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(Parameter<String>.value(`courseID`), Parameter<Topics>.value(`topics`), Parameter<String>.value(`title`), Parameter<ThreadType>.value(`type`))) as? (String, Topics, String, ThreadType) -> Void
-		perform?(`courseID`, `topics`, `title`, `type`)
+    open func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType, animated: Bool) {
+        addInvocation(.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(Parameter<String>.value(`courseID`), Parameter<Topics>.value(`topics`), Parameter<String>.value(`title`), Parameter<ThreadType>.value(`type`), Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(Parameter<String>.value(`courseID`), Parameter<Topics>.value(`topics`), Parameter<String>.value(`title`), Parameter<ThreadType>.value(`type`), Parameter<Bool>.value(`animated`))) as? (String, Topics, String, ThreadType, Bool) -> Void
+		perform?(`courseID`, `topics`, `title`, `type`, `animated`)
     }
 
-    open func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>) {
-        addInvocation(.m_showThread__thread_threadpostStateSubject_postStateSubject(Parameter<UserThread>.value(`thread`), Parameter<CurrentValueSubject<PostState?, Never>>.value(`postStateSubject`)))
-		let perform = methodPerformValue(.m_showThread__thread_threadpostStateSubject_postStateSubject(Parameter<UserThread>.value(`thread`), Parameter<CurrentValueSubject<PostState?, Never>>.value(`postStateSubject`))) as? (UserThread, CurrentValueSubject<PostState?, Never>) -> Void
-		perform?(`thread`, `postStateSubject`)
+    open func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>, animated: Bool) {
+        addInvocation(.m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(Parameter<UserThread>.value(`thread`), Parameter<CurrentValueSubject<PostState?, Never>>.value(`postStateSubject`), Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(Parameter<UserThread>.value(`thread`), Parameter<CurrentValueSubject<PostState?, Never>>.value(`postStateSubject`), Parameter<Bool>.value(`animated`))) as? (UserThread, CurrentValueSubject<PostState?, Never>, Bool) -> Void
+		perform?(`thread`, `postStateSubject`, `animated`)
     }
 
     open func showDiscussionsSearch(courseID: String) {
@@ -2102,10 +2227,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 		perform?(`courseID`)
     }
 
-    open func showComments(commentID: String, parentComment: Post, threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>) {
-        addInvocation(.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`)))
-		let perform = methodPerformValue(.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`))) as? (String, Post, CurrentValueSubject<ThreadPostState?, Never>) -> Void
-		perform?(`commentID`, `parentComment`, `threadStateSubject`)
+    open func showComments(commentID: String, parentComment: Post, threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>, animated: Bool) {
+        addInvocation(.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`), Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`), Parameter<Bool>.value(`animated`))) as? (String, Post, CurrentValueSubject<ThreadPostState?, Never>, Bool) -> Void
+		perform?(`commentID`, `parentComment`, `threadStateSubject`, `animated`)
     }
 
     open func createNewThread(courseID: String, selectedTopic: String, onPostCreated: @escaping () -> Void) {
@@ -2204,19 +2329,19 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 		perform?(`transitionStyle`, `view`)
     }
 
-    open func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View) {
-        addInvocation(.m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<() -> any View>.any))
-		let perform = methodPerformValue(.m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<() -> any View>.any)) as? (UIModalTransitionStyle, () -> any View) -> Void
-		perform?(`transitionStyle`, `content`)
+    open func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {
+        addInvocation(.m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<Bool>.value(`animated`), Parameter<() -> any View>.any))
+		let perform = methodPerformValue(.m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>.value(`transitionStyle`), Parameter<Bool>.value(`animated`), Parameter<() -> any View>.any)) as? (UIModalTransitionStyle, Bool, () -> any View) -> Void
+		perform?(`transitionStyle`, `animated`, `content`)
     }
 
 
     fileprivate enum MethodType {
         case m_showUserDetails__username_username(Parameter<String>)
-        case m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(Parameter<String>, Parameter<Topics>, Parameter<String>, Parameter<ThreadType>)
-        case m_showThread__thread_threadpostStateSubject_postStateSubject(Parameter<UserThread>, Parameter<CurrentValueSubject<PostState?, Never>>)
+        case m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(Parameter<String>, Parameter<Topics>, Parameter<String>, Parameter<ThreadType>, Parameter<Bool>)
+        case m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(Parameter<UserThread>, Parameter<CurrentValueSubject<PostState?, Never>>, Parameter<Bool>)
         case m_showDiscussionsSearch__courseID_courseID(Parameter<String>)
-        case m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(Parameter<String>, Parameter<Post>, Parameter<CurrentValueSubject<ThreadPostState?, Never>>)
+        case m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(Parameter<String>, Parameter<Post>, Parameter<CurrentValueSubject<ThreadPostState?, Never>>, Parameter<Bool>)
         case m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(Parameter<String>, Parameter<String>, Parameter<() -> Void>)
         case m_backToRoot__animated_animated(Parameter<Bool>)
         case m_back__animated_animated(Parameter<Bool>)
@@ -2233,7 +2358,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_view(Parameter<UIModalTransitionStyle>, Parameter<any View>)
-        case m_presentView__transitionStyle_transitionStylecontent_content(Parameter<UIModalTransitionStyle>, Parameter<() -> any View>)
+        case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -2242,18 +2367,20 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUsername, rhs: rhsUsername, with: matcher), lhsUsername, rhsUsername, "username"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(let lhsCourseid, let lhsTopics, let lhsTitle, let lhsType), .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(let rhsCourseid, let rhsTopics, let rhsTitle, let rhsType)):
+            case (.m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(let lhsCourseid, let lhsTopics, let lhsTitle, let lhsType, let lhsAnimated), .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(let rhsCourseid, let rhsTopics, let rhsTitle, let rhsType, let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTopics, rhs: rhsTopics, with: matcher), lhsTopics, rhsTopics, "topics"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTitle, rhs: rhsTitle, with: matcher), lhsTitle, rhsTitle, "title"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showThread__thread_threadpostStateSubject_postStateSubject(let lhsThread, let lhsPoststatesubject), .m_showThread__thread_threadpostStateSubject_postStateSubject(let rhsThread, let rhsPoststatesubject)):
+            case (.m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(let lhsThread, let lhsPoststatesubject, let lhsAnimated), .m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(let rhsThread, let rhsPoststatesubject, let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThread, rhs: rhsThread, with: matcher), lhsThread, rhsThread, "thread"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPoststatesubject, rhs: rhsPoststatesubject, with: matcher), lhsPoststatesubject, rhsPoststatesubject, "postStateSubject"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showDiscussionsSearch__courseID_courseID(let lhsCourseid), .m_showDiscussionsSearch__courseID_courseID(let rhsCourseid)):
@@ -2261,11 +2388,12 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(let lhsCommentid, let lhsParentcomment, let lhsThreadstatesubject), .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(let rhsCommentid, let rhsParentcomment, let rhsThreadstatesubject)):
+            case (.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(let lhsCommentid, let lhsParentcomment, let lhsThreadstatesubject, let lhsAnimated), .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(let rhsCommentid, let rhsParentcomment, let rhsThreadstatesubject, let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCommentid, rhs: rhsCommentid, with: matcher), lhsCommentid, rhsCommentid, "commentID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParentcomment, rhs: rhsParentcomment, with: matcher), lhsParentcomment, rhsParentcomment, "parentComment"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadstatesubject, rhs: rhsThreadstatesubject, with: matcher), lhsThreadstatesubject, rhsThreadstatesubject, "threadStateSubject"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(let lhsCourseid, let lhsSelectedtopic, let lhsOnpostcreated), .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(let rhsCourseid, let rhsSelectedtopic, let rhsOnpostcreated)):
@@ -2356,9 +2484,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsView, rhs: rhsView, with: matcher), lhsView, rhsView, "view"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_presentView__transitionStyle_transitionStylecontent_content(let lhsTransitionstyle, let lhsContent), .m_presentView__transitionStyle_transitionStylecontent_content(let rhsTransitionstyle, let rhsContent)):
+            case (.m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(let lhsTransitionstyle, let lhsAnimated, let lhsContent), .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(let rhsTransitionstyle, let rhsAnimated, let rhsContent)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTransitionstyle, rhs: rhsTransitionstyle, with: matcher), lhsTransitionstyle, rhsTransitionstyle, "transitionStyle"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsContent, rhs: rhsContent, with: matcher), lhsContent, rhsContent, "content"))
 				return Matcher.ComparisonResult(results)
             default: return .none
@@ -2368,10 +2497,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_showUserDetails__username_username(p0): return p0.intValue
-            case let .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
-            case let .m_showThread__thread_threadpostStateSubject_postStateSubject(p0, p1): return p0.intValue + p1.intValue
+            case let .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
+            case let .m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_showDiscussionsSearch__courseID_courseID(p0): return p0.intValue
-            case let .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_backToRoot__animated_animated(p0): return p0.intValue
             case let .m_back__animated_animated(p0): return p0.intValue
@@ -2388,16 +2517,16 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_view(p0, p1): return p0.intValue + p1.intValue
-            case let .m_presentView__transitionStyle_transitionStylecontent_content(p0, p1): return p0.intValue + p1.intValue
+            case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_showUserDetails__username_username: return ".showUserDetails(username:)"
-            case .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type: return ".showThreads(courseID:topics:title:type:)"
-            case .m_showThread__thread_threadpostStateSubject_postStateSubject: return ".showThread(thread:postStateSubject:)"
+            case .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated: return ".showThreads(courseID:topics:title:type:animated:)"
+            case .m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated: return ".showThread(thread:postStateSubject:animated:)"
             case .m_showDiscussionsSearch__courseID_courseID: return ".showDiscussionsSearch(courseID:)"
-            case .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject: return ".showComments(commentID:parentComment:threadStateSubject:)"
+            case .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated: return ".showComments(commentID:parentComment:threadStateSubject:animated:)"
             case .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated: return ".createNewThread(courseID:selectedTopic:onPostCreated:)"
             case .m_backToRoot__animated_animated: return ".backToRoot(animated:)"
             case .m_back__animated_animated: return ".back(animated:)"
@@ -2414,7 +2543,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_view: return ".presentView(transitionStyle:view:)"
-            case .m_presentView__transitionStyle_transitionStylecontent_content: return ".presentView(transitionStyle:content:)"
+            case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
             }
         }
     }
@@ -2434,10 +2563,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         fileprivate var method: MethodType
 
         public static func showUserDetails(username: Parameter<String>) -> Verify { return Verify(method: .m_showUserDetails__username_username(`username`))}
-        public static func showThreads(courseID: Parameter<String>, topics: Parameter<Topics>, title: Parameter<String>, type: Parameter<ThreadType>) -> Verify { return Verify(method: .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(`courseID`, `topics`, `title`, `type`))}
-        public static func showThread(thread: Parameter<UserThread>, postStateSubject: Parameter<CurrentValueSubject<PostState?, Never>>) -> Verify { return Verify(method: .m_showThread__thread_threadpostStateSubject_postStateSubject(`thread`, `postStateSubject`))}
+        public static func showThreads(courseID: Parameter<String>, topics: Parameter<Topics>, title: Parameter<String>, type: Parameter<ThreadType>, animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(`courseID`, `topics`, `title`, `type`, `animated`))}
+        public static func showThread(thread: Parameter<UserThread>, postStateSubject: Parameter<CurrentValueSubject<PostState?, Never>>, animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(`thread`, `postStateSubject`, `animated`))}
         public static func showDiscussionsSearch(courseID: Parameter<String>) -> Verify { return Verify(method: .m_showDiscussionsSearch__courseID_courseID(`courseID`))}
-        public static func showComments(commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>) -> Verify { return Verify(method: .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(`commentID`, `parentComment`, `threadStateSubject`))}
+        public static func showComments(commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>, animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(`commentID`, `parentComment`, `threadStateSubject`, `animated`))}
         public static func createNewThread(courseID: Parameter<String>, selectedTopic: Parameter<String>, onPostCreated: Parameter<() -> Void>) -> Verify { return Verify(method: .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(`courseID`, `selectedTopic`, `onPostCreated`))}
         public static func backToRoot(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_backToRoot__animated_animated(`animated`))}
         public static func back(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_back__animated_animated(`animated`))}
@@ -2454,7 +2583,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`))}
-        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStylecontent_content(`transitionStyle`, `content`))}
+        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
     }
 
     public struct Perform {
@@ -2464,17 +2593,17 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func showUserDetails(username: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_showUserDetails__username_username(`username`), performs: perform)
         }
-        public static func showThreads(courseID: Parameter<String>, topics: Parameter<Topics>, title: Parameter<String>, type: Parameter<ThreadType>, perform: @escaping (String, Topics, String, ThreadType) -> Void) -> Perform {
-            return Perform(method: .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_type(`courseID`, `topics`, `title`, `type`), performs: perform)
+        public static func showThreads(courseID: Parameter<String>, topics: Parameter<Topics>, title: Parameter<String>, type: Parameter<ThreadType>, animated: Parameter<Bool>, perform: @escaping (String, Topics, String, ThreadType, Bool) -> Void) -> Perform {
+            return Perform(method: .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeanimated_animated(`courseID`, `topics`, `title`, `type`, `animated`), performs: perform)
         }
-        public static func showThread(thread: Parameter<UserThread>, postStateSubject: Parameter<CurrentValueSubject<PostState?, Never>>, perform: @escaping (UserThread, CurrentValueSubject<PostState?, Never>) -> Void) -> Perform {
-            return Perform(method: .m_showThread__thread_threadpostStateSubject_postStateSubject(`thread`, `postStateSubject`), performs: perform)
+        public static func showThread(thread: Parameter<UserThread>, postStateSubject: Parameter<CurrentValueSubject<PostState?, Never>>, animated: Parameter<Bool>, perform: @escaping (UserThread, CurrentValueSubject<PostState?, Never>, Bool) -> Void) -> Perform {
+            return Perform(method: .m_showThread__thread_threadpostStateSubject_postStateSubjectanimated_animated(`thread`, `postStateSubject`, `animated`), performs: perform)
         }
         public static func showDiscussionsSearch(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_showDiscussionsSearch__courseID_courseID(`courseID`), performs: perform)
         }
-        public static func showComments(commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>, perform: @escaping (String, Post, CurrentValueSubject<ThreadPostState?, Never>) -> Void) -> Perform {
-            return Perform(method: .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubject(`commentID`, `parentComment`, `threadStateSubject`), performs: perform)
+        public static func showComments(commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>, animated: Parameter<Bool>, perform: @escaping (String, Post, CurrentValueSubject<ThreadPostState?, Never>, Bool) -> Void) -> Perform {
+            return Perform(method: .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectanimated_animated(`commentID`, `parentComment`, `threadStateSubject`, `animated`), performs: perform)
         }
         public static func createNewThread(courseID: Parameter<String>, selectedTopic: Parameter<String>, onPostCreated: Parameter<() -> Void>, perform: @escaping (String, String, @escaping () -> Void) -> Void) -> Perform {
             return Perform(method: .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(`courseID`, `selectedTopic`, `onPostCreated`), performs: perform)
@@ -2524,8 +2653,8 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, perform: @escaping (UIModalTransitionStyle, any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleview_view(`transitionStyle`, `view`), performs: perform)
         }
-        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, () -> any View) -> Void) -> Perform {
-            return Perform(method: .m_presentView__transitionStyle_transitionStylecontent_content(`transitionStyle`, `content`), performs: perform)
+        public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, Bool, () -> any View) -> Void) -> Perform {
+            return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
     }
 
