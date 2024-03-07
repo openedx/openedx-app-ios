@@ -263,12 +263,8 @@ public class DeepLinkManager {
                 if self.isDiscussionThreads(type: type) {
                     self.router.showProgress()
                     Task {
-                        do {
-                            try await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
-                            self.router.dismissProgress()
-                        } catch {
-                            self.router.dismissProgress()
-                        }
+                        await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
+                        self.router.dismissProgress()
                     }
                     return
                 }
@@ -302,84 +298,82 @@ public class DeepLinkManager {
     private func showCourseDiscussion(
         link: DeepLink,
         courseDetails: CourseDetails
-    ) async throws {
+    ) async {
         switch link.type {
         case .discussionTopic:
-            guard let topicID = link.topicID, !topicID.isEmpty else {
-                throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
+            guard let topicID = link.topicID, 
+                  !topicID.isEmpty else {
+                return
             }
 
-            let topics = try await discussionInteractor.getTopic(
+            guard let topics = try? await discussionInteractor.getTopic(
                 courseID: courseDetails.courseID,
                 topicID: topicID
-            )
+            ) else {
+                return
+            }
+
             router.showThreads(
                 topicID: topicID,
                 courseDetails: courseDetails,
                 topics: topics
             )
         case .discussionPost:
-            guard let threadID = link.threadID, let topicID = link.topicID, !topicID.isEmpty else {
-                throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
-            }
 
-            let topics = try await discussionInteractor.getTopic(
+            if let topicID = link.topicID,
+               !topicID.isEmpty,
+                let topics = try? await discussionInteractor.getTopic(
                 courseID: courseDetails.courseID,
                 topicID: topicID
-            )
-            let userThread = try await discussionInteractor.getThread(threadID: threadID)
+            ) {
+                router.showThreads(
+                    topicID: topicID,
+                    courseDetails: courseDetails,
+                    topics: topics
+                )
+            }
 
-            router.showThreads(
-                topicID: topicID,
-                courseDetails: courseDetails,
-                topics: topics
-            )
+            if let threadID = link.threadID,
+                !threadID.isEmpty,
+                let userThread = try? await discussionInteractor.getThread(threadID: threadID) {
+                router.showThread(
+                    userThread: userThread
+                )
+            }
 
-            router.showThread(
-                userThread: userThread
-            )
         case .discussionComment:
-            guard let threadID = link.threadID,
-                  let topicID = link.topicID,
-                  let commentID = link.commentID,
-                  !threadID.isEmpty,
-                  !topicID.isEmpty,
-                  !commentID.isEmpty
-            else {
-                throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
-            }
-
-            let topics = try await self.discussionInteractor.getTopic(
+            if let topicID = link.topicID,
+               !topicID.isEmpty,
+                let topics = try? await discussionInteractor.getTopic(
                 courseID: courseDetails.courseID,
                 topicID: topicID
-            )
-            let userThread = try await self.discussionInteractor.getThread(
-                threadID: threadID
-            )
-
-            let comment = try await self.discussionInteractor.getResponse(responseID: commentID)
-
-            guard  let parentID = comment.parentID else {
-                throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
+            ) {
+                router.showThreads(
+                    topicID: topicID,
+                    courseDetails: courseDetails,
+                    topics: topics
+                )
             }
 
-            let parentComment = try await self.discussionInteractor.getResponse(responseID: parentID)
+            if let threadID = link.threadID,
+                !threadID.isEmpty,
+                let userThread = try? await discussionInteractor.getThread(threadID: threadID) {
+                router.showThread(
+                    userThread: userThread
+                )
+            }
 
-            router.showThreads(
-                topicID: topicID,
-                courseDetails: courseDetails,
-                topics: topics
-            )
-
-            router.showThread(
-                userThread: userThread
-            )
-
-            router.showComment(
-                comment: comment,
-                parentComment: parentComment.post
-            )
-
+            if let commentID = link.commentID,
+               !commentID.isEmpty,
+               let comment = try? await self.discussionInteractor.getResponse(responseID: commentID),
+               let parentID = comment.parentID,
+               !parentID.isEmpty,
+               let parentComment = try? await self.discussionInteractor.getResponse(responseID: parentID) {
+                router.showComment(
+                    comment: comment,
+                    parentComment: parentComment.post
+                )
+            }
         default:
             break
         }
