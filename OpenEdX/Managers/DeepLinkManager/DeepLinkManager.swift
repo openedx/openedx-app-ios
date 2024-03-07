@@ -10,6 +10,7 @@ import Core
 import UIKit
 import Discovery
 import Discussion
+import Course
 
 // swiftlint:disable function_body_length
 //sourcery: AutoMockable
@@ -34,6 +35,7 @@ public class DeepLinkManager {
     private let router: DeepLinkRouter
     private let discoveryInteractor: DiscoveryInteractorProtocol
     private let discussionInteractor: DiscussionInteractorProtocol
+    private let courseInteractor: CourseInteractorProtocol
 
     var userloggedIn: Bool {
        return !(storage.user?.username?.isEmpty ?? true)
@@ -44,13 +46,15 @@ public class DeepLinkManager {
         router: DeepLinkRouter,
         storage: CoreStorage,
         discoveryInteractor: DiscoveryInteractorProtocol,
-        discussionInteractor: DiscussionInteractorProtocol
+        discussionInteractor: DiscussionInteractorProtocol,
+        courseInteractor: CourseInteractorProtocol
     ) {
         self.config = config
         self.router = router
         self.storage = storage
         self.discoveryInteractor = discoveryInteractor
         self.discussionInteractor = discussionInteractor
+        self.courseInteractor = courseInteractor
 
         services = servicesFor(config: config)
     }
@@ -154,6 +158,11 @@ public class DeepLinkManager {
         type == .discussionComment
     }
 
+    private func isHandout(type: DeepLinkType) -> Bool {
+        type == .courseHandout ||
+        type == .courseAnnouncement
+    }
+
     @MainActor
     private func navigateToScreen(
         with type: DeepLinkType,
@@ -176,6 +185,7 @@ public class DeepLinkManager {
             .discussions,
             .courseDates,
             .courseHandout,
+            .courseAnnouncement,
             .discussionTopic,
             .discussionPost,
             .discussionComment:
@@ -237,22 +247,54 @@ public class DeepLinkManager {
                     return
                 }
 
-                if !self.isDiscussionThreads(type: type) {
+                if self.isHandout(type: type) {
+                    self.router.showProgress()
+                    Task {
+                        do {
+                            try await self.showHandout(link: link, courseDetails: courseDetails)
+                            self.router.dismissProgress()
+                        } catch {
+                            self.router.dismissProgress()
+                        }
+                    }
                     return
                 }
-                
-                self.router.showProgress()
-                Task {
-                    do {
-                        try await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
-                        self.router.dismissProgress()
-                    } catch {
-                        self.router.dismissProgress()
+
+                if self.isDiscussionThreads(type: type) {
+                    self.router.showProgress()
+                    Task {
+                        do {
+                            try await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
+                            self.router.dismissProgress()
+                        } catch {
+                            self.router.dismissProgress()
+                        }
                     }
+                    return
                 }
             }
         } catch {
             self.router.dismissProgress()
+        }
+    }
+
+    @MainActor
+    private func showHandout(
+        link: DeepLink,
+        courseDetails: CourseDetails
+    ) async throws {
+        switch link.type {
+        case .courseAnnouncement:
+            let updates = try await courseInteractor.getUpdates(courseID: courseDetails.courseID)
+            if updates.isEmpty {
+                throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
+            }
+            router.showAnnouncement(courseDetails: courseDetails, updates: updates)
+        case .courseHandout:
+            let handouts = try await courseInteractor.getHandouts(courseID: courseDetails.courseID)
+            router.showHandout(courseDetails: courseDetails, handouts: handouts)
+        default:
+            break
         }
     }
 
@@ -263,7 +305,7 @@ public class DeepLinkManager {
     ) async throws {
         switch link.type {
         case .discussionTopic:
-            guard let topicID = link.topicID else {
+            guard let topicID = link.topicID, !topicID.isEmpty else {
                 throw DeepLinkError.error(text: CoreLocalization.Error.unknownError)
             }
 

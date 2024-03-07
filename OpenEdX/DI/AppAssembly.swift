@@ -176,7 +176,8 @@ class AppAssembly: Assembly {
                 router: r.resolve(Router.self)!,
                 storage: r.resolve(CoreStorage.self)!,
                 discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
-                discussionInteractor: r.resolve(DiscussionInteractorProtocol.self)!
+                discussionInteractor: r.resolve(DiscussionInteractorProtocol.self)!,
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!
             )
         }.inObjectScope(.container)
         

@@ -25,6 +25,14 @@ public protocol DeepLinkRouter: BaseRouter {
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
     )
+    func showAnnouncement(
+        courseDetails: CourseDetails,
+        updates: [CourseUpdate]
+    )
+    func showHandout(
+        courseDetails: CourseDetails,
+        handouts: String?
+    )
     func showThreads(
         topicID: String,
         courseDetails: CourseDetails,
@@ -108,8 +116,13 @@ extension Router: DeepLinkRouter {
         }
 
         switch link.type {
-        case .courseVideos, .courseDates, .discussions, .courseHandout, .courseDashboard:
-            self.popToCourseContainerView(animated: true)
+        case .courseVideos,
+            .courseDates,
+            .discussions,
+            .courseHandout,
+            .courseAnnouncement,
+            .courseDashboard:
+            popToCourseContainerView(animated: false)
         default:
             break
         }
@@ -124,7 +137,7 @@ extension Router: DeepLinkRouter {
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
             case .discussions, .discussionTopic, .discussionPost, .discussionComment:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.discussion.rawValue
-            case .courseHandout:
+            case .courseHandout, .courseAnnouncement:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.handounds.rawValue
             default:
                 break
@@ -132,6 +145,38 @@ extension Router: DeepLinkRouter {
 
             completion()
         }
+    }
+
+    public func showAnnouncement(
+        courseDetails: CourseDetails,
+        updates: [CourseUpdate]
+    ) {
+        guard let cssInjector = container.resolve(CSSInjector.self) else {
+            return
+        }
+
+        showHandoutsUpdatesView(
+            handouts: nil,
+            announcements: updates,
+            router: self,
+            cssInjector: cssInjector
+        )
+    }
+
+    public func showHandout(
+        courseDetails: CourseDetails,
+        handouts: String?
+    ) {
+        guard let cssInjector = container.resolve(CSSInjector.self) else {
+            return
+        }
+
+        showHandoutsUpdatesView(
+            handouts: handouts,
+            announcements: nil,
+            router: self,
+            cssInjector: cssInjector
+        )
     }
 
     public func showProgram(
@@ -231,7 +276,10 @@ extension Router: DeepLinkRouter {
 
     private var hostCourseContainerView: UIHostingController<CourseContainerView>? {
         getNavigationController().viewControllers.firstAs(UIHostingController<CourseContainerView>.self)
-        //getNavigationController().topViewController as? UIHostingController<CourseContainerView>
+    }
+
+    private var hostHandoutsUpdatesDetailView: UIHostingController<HandoutsUpdatesDetailView>? {
+        getNavigationController().topViewController as? UIHostingController<HandoutsUpdatesDetailView>
     }
 
     private var hostDiscoveryWebview: UIHostingController<DiscoveryWebview>? {
@@ -279,6 +327,14 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
         link: DeepLink,
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
+    ) {}
+    public func showAnnouncement(
+        courseDetails: CourseDetails,
+        updates: [CourseUpdate]
+    ) {}
+    public func showHandout(
+        courseDetails: CourseDetails,
+        handouts: String?
     ) {}
     public func showThreads(
         topicID: String,

@@ -10,6 +10,7 @@ import Theme
 
 public struct FullScreenProgressView: View {
 
+    @Environment(\.dismiss) private var dismiss
     private let title: String
 
     public init(title: String) {
@@ -19,6 +20,9 @@ public struct FullScreenProgressView: View {
     public var body: some View {
         ZStack(alignment: .center) {
             Color.black.opacity(0.8)
+                .onTapGesture {
+                    dismiss()
+                }
             VStack(alignment: .center) {
                 ProgressBar(size: 40, lineWidth: 8)
                     .padding(.horizontal)
