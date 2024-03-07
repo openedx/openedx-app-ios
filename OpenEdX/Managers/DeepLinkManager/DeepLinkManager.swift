@@ -301,7 +301,7 @@ public class DeepLinkManager {
     ) async {
         switch link.type {
         case .discussionTopic:
-            guard let topicID = link.topicID, 
+            guard let topicID = link.topicID,
                   !topicID.isEmpty else {
                 return
             }
