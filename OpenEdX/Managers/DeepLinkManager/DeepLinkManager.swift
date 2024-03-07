@@ -270,7 +270,7 @@ public class DeepLinkManager {
                 }
             }
         } catch {
-            self.router.dismissProgress()
+            router.dismissProgress()
         }
     }
 

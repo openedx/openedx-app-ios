@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Sequence {
-    public func firstAs<T>(_ type: T.Type = T.self) -> T? {
+    func firstAs<T>(_ type: T.Type = T.self) -> T? {
         first { $0 is T } as? T
     }
 }

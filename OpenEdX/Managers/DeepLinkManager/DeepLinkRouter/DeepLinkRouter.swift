@@ -254,6 +254,24 @@ extension Router: DeepLinkRouter {
         getNavigationController().present(controller, animated: true)
     }
 
+    public func showProgress() {
+        presentView(
+            transitionStyle: .crossDissolve,
+            animated: false
+        ) {
+            FullScreenProgressView(
+                title: CoreLocalization.Alert.waiting
+            )
+        }
+    }
+
+    public func dismissProgress() {
+        if let presentedViewController = getNavigationController()
+            .presentedViewController as? UIHostingController<FullScreenProgressView> {
+            presentedViewController.dismiss(animated: true)
+        }
+    }
+
     public func dismissPresentedViewController() {
         if let presentedViewController = getNavigationController().presentedViewController {
             presentedViewController.dismiss(animated: true)
@@ -288,22 +306,6 @@ extension Router: DeepLinkRouter {
 
     private var hostProgramWebviewView: UIHostingController<ProgramWebviewView>? {
         getNavigationController().topViewController as? UIHostingController<ProgramWebviewView>
-    }
-
-    public func showProgress() {
-        presentView(
-            transitionStyle: .crossDissolve,
-            animated: false
-        ) {
-            FullScreenProgressView(title: "Waiting...")
-        }
-    }
-
-    public func dismissProgress() {
-        if let presentedViewController = getNavigationController()
-            .presentedViewController as? UIHostingController<FullScreenProgressView> {
-            presentedViewController.dismiss(animated: true)
-        }
     }
 
     private func dismiss() {
