@@ -27,4 +27,4 @@ If your platform version is older than December 2023, please follow the instruct
 ## License
 The code in this repository is licensed under the Apache-2.0 license unless otherwise noted.
 
-Please see [LICENSE](https://github.com/raccoongang/educationx-app-ios/blob/main/LICENSE) file for details.
+Please see [LICENSE](https://github.com/openedx/openedx-app-ios/blob/main/LICENSE) file for details.
