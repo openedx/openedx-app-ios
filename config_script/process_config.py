@@ -197,6 +197,8 @@ class ConfigurationManager:
         enabled = branch.get('ENABLED')
         uriScheme = branch.get('URI_SCHEME')
         prefix = branch.get('DEEPLINK_PREFIX')
+        key = branch.get('KEY')
+        testKey = branch.get('KEY_TEST')
         
         if not prefix:
             prefix = "edx"
@@ -207,7 +209,19 @@ class ConfigurationManager:
             else:
                 bundle_identifier = self.plist_manager.get_bundle_identifier()
                 scheme = [bundle_identifier]
-            
+                
+                if key:
+                    branch_key = {
+                        'live': key
+                    }
+
+                    if testKey:
+                        branch_key['test'] = testKey
+                    else:
+                        branch_key['test'] = key
+
+                    plist['branch_key'] = branch_key
+                
             self.add_custom_array("branch_universal_link_domains", [
                 prefix+".app.link",
                 prefix+"-alternate.app.link",

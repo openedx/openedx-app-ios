@@ -17,15 +17,12 @@ class BranchService: DeepLinkService {
         config: ConfigProtocol,
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) {
-        guard let key = config.branch.key, config.branch.enabled else { return }
-        Branch.setBranchKey(key)
+        guard config.branch.enabled && config.branch.key != nil else { return }
         
-        if Branch.branchKey() != nil {
-            Branch.getInstance().initSession(launchOptions: launchOptions) { params, error in
-                guard let params = params, error == nil else { return }
-             
-                manager.processDeepLink(with: params)
-            }
+        Branch.getInstance().initSession(launchOptions: launchOptions) { params, error in
+            guard let params = params, error == nil else { return }
+            
+            manager.processDeepLink(with: params)
         }
     }
     
