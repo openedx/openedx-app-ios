@@ -98,8 +98,9 @@ public struct CommentCell: View {
                             Text(url.absoluteString)
                             .multilineTextAlignment(.leading)
                         }
-                    }.foregroundColor(Theme.Colors.accentColor)
-                        .font(Theme.Fonts.bodyMedium)
+                    }
+                    .foregroundColor(Theme.Colors.accentColor)
+                    .font(Theme.Fonts.bodyMedium)
                 }
             }
             
@@ -132,8 +133,9 @@ public struct CommentCell: View {
                             Image(systemName: "message.fill")
                             Text("\(comment.responsesCount)")
                             Text(DiscussionLocalization.commentsCount(comment.responsesCount))
-                        }.foregroundColor(Theme.Colors.textSecondary)
-                            .font(Theme.Fonts.labelLarge)
+                        }
+                        .foregroundColor(Theme.Colors.textSecondary)
+                        .font(Theme.Fonts.labelLarge)
                 }
             }.foregroundColor(Theme.Colors.accentColor)
                 .font(Theme.Fonts.labelMedium)

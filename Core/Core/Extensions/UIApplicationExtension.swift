@@ -48,8 +48,20 @@ extension UINavigationController {
         navigationBar.backIndicatorImage = image.withTintColor(Theme.UIColors.accentXColor)
         navigationBar.backItem?.backButtonTitle = " "
         navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.UIColors.accentXColor)
-        navigationBar.titleTextAttributes = [.foregroundColor: Theme.UIColors.navigationBarTintColor]
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = Theme.UIColors.accentColor
+        navigationBar.titleTextAttributes = [
+            .foregroundColor: Theme.UIColors.navigationBarTintColor,
+            .font: Theme.UIFonts.titleMedium()
+        ]
+        
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [
+                .foregroundColor: Theme.Colors.primaryButtonTextColor.uiColor(),
+                .font: Theme.UIFonts.labelLarge()
+            ],
+            for: .normal)
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Theme.Colors.accentXColor)
+        
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = Theme.UIColors.accentXColor
     }
 }
 

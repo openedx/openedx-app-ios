@@ -115,7 +115,7 @@ public class CSSInjector {
         <style>
         a {
             text-decoration: none;
-            color: \(Theme.Colors.accentColor.uiColor().cgColor.hexString ?? "");
+            color: \(Theme.UIColors.accentXColor.cgColor.hexString ?? "");
         }
         @font-face {
         font-family: "San Francisco";

@@ -42,7 +42,7 @@ public struct ThreadView: View {
                                 if let comments = viewModel.postComments {
                                     ParentCommentView(
                                         comments: comments,
-                                        isThread: true, 
+                                        isThread: true,
                                         onAvatarTap: { username in
                                             viewModel.router.showUserDetails(username: username)
                                         },
@@ -86,10 +86,12 @@ public struct ThreadView: View {
                                         Text("\(viewModel.itemsCount)")
                                         Text(DiscussionLocalization.responsesCount(viewModel.itemsCount))
                                         Spacer()
-                                    }.padding(.top, 40)
-                                        .padding(.bottom, 14)
-                                        .padding(.leading, 24)
-                                        .font(Theme.Fonts.titleMedium)
+                                    }
+                                    .padding(.top, 40)
+                                    .padding(.bottom, 14)
+                                    .padding(.leading, 24)
+                                    .font(Theme.Fonts.titleMedium)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     
                                     ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
                                         CommentCell(

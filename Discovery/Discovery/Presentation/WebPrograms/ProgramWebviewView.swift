@@ -58,7 +58,8 @@ public struct ProgramWebviewView: View {
                 WebView(
                     viewModel: .init(
                         url: URLString,
-                        baseURL: ""
+                        baseURL: "",
+                        injections: [.colorInversionCss]
                     ),
                     isLoading: $isLoading,
                     refreshCookies: {

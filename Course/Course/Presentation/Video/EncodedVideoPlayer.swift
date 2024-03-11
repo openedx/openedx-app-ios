@@ -80,6 +80,9 @@ public struct EncodedVideoPlayer: View {
                             .aspectRatio(16 / 9, contentMode: .fit)
                             .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
                             .cornerRadius(12)
+                            .onAppear {
+                                viewModel.controller.player?.play()
+                            }
                             if isHorizontal {
                                 Spacer()
                             }

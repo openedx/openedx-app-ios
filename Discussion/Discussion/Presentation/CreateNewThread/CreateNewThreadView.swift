@@ -37,8 +37,6 @@ public struct CreateNewThreadView: View {
         Task {
             await viewModel.getTopics(courseID: courseID)
         }
-        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Theme.Colors.accentColor)
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: Theme.Colors.white.uiColor()], for: .selected)
     }
     
     public var body: some View {
@@ -65,6 +63,7 @@ public struct CreateNewThreadView: View {
                             Picker("", selection: $postType) {
                                 ForEach(postTypes, id: \.self) {
                                     Text($0.localizedValue.capitalized)
+                                        .font(Theme.Fonts.bodySmall)
                                 }
                             }.pickerStyle(.segmented)
                                 .frame(maxWidth: .infinity, maxHeight: 40)
@@ -72,6 +71,7 @@ public struct CreateNewThreadView: View {
                             // MARK: Topic picker
                             Group {
                                 Text(DiscussionLocalization.CreateThread.topic)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .font(Theme.Fonts.titleSmall)
                                     .padding(.top, 16)
                                 
@@ -88,6 +88,7 @@ public struct CreateNewThreadView: View {
                                         Text(viewModel.allTopics.first(where: {
                                             $0.id == viewModel.selectedTopic })?.name ?? "")
                                         .font(Theme.Fonts.labelLarge)
+                                        .foregroundColor(Theme.Colors.textPrimary)
                                         .frame(height: 40, alignment: .leading)
                                         Spacer()
                                         Image(systemName: "chevron.down")
@@ -108,10 +109,12 @@ public struct CreateNewThreadView: View {
                             Group {
                                 Text(DiscussionLocalization.CreateThread.title)
                                     .font(Theme.Fonts.titleSmall)
-                                + Text(" *").foregroundColor(.red)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                + Text(" *").foregroundColor(Theme.Colors.alert)
                             }.padding(.top, 16)
                             TextField("", text: $postTitle)
-                                .font(Theme.Fonts.labelLarge)
+                                .font(Theme.Fonts.bodyLarge)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(14)
                                 .frame(height: 40)
                                 .background(
@@ -129,10 +132,12 @@ public struct CreateNewThreadView: View {
                             Group {
                                 Text("\(postType.localizedValue.capitalized)")
                                     .font(Theme.Fonts.titleSmall)
-                                + Text(" *").foregroundColor(.red)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                + Text(" *").foregroundColor(Theme.Colors.alert)
                             }.padding(.top, 16)
                             TextEditor(text: $postBody)
-                                .font(Theme.Fonts.labelLarge)
+                                .font(Theme.Fonts.bodyMedium)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 10)
                                 .frame(height: 200)

@@ -26,9 +26,14 @@ struct MainScreenView: View {
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
-        UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
+        UITabBar.appearance().barTintColor = UIColor(Theme.Colors.tabbarColor)
+        UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.tabbarColor)
         UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondaryLight)
+        
+        UITabBarItem.appearance().setTitleTextAttributes(
+            [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
+            for: .normal
+        )
     }
     
     var body: some View {
@@ -162,8 +167,7 @@ struct MainScreenView: View {
                 await viewModel.prefetchDataForOffline()
             }
         }
-        .accentColor(Theme.Colors.accentColor)
-
+        .accentColor(Theme.Colors.accentXColor)
     }
     
     private func titleBar() -> String {

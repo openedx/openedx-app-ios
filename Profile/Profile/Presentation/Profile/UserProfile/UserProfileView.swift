@@ -54,6 +54,7 @@ public struct UserProfileView: View {
                                 Text(ProfileLocalization.info)
                                     .padding(.horizontal, 24)
                                     .font(Theme.Fonts.labelLarge)
+                                    .foregroundColor(Theme.Colors.textSecondary)
                                 
                                 VStack(alignment: .leading, spacing: 16) {
                                     if viewModel.userModel?.yearOfBirth != 0 {

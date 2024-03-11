@@ -107,6 +107,7 @@ public struct DeleteAccountView: View {
                                 try await viewModel.deleteAccount(password: viewModel.password)
                             }
                         }, color: Theme.Colors.accentColor,
+                                     textColor: Theme.Colors.primaryButtonTextColor,
                                      isActive: viewModel.password.count >= 2)
                         .padding(.top, 18)
                         .accessibilityIdentifier("delete_account_button")
@@ -119,18 +120,18 @@ public struct DeleteAccountView: View {
                         HStack(spacing: 9) {
                             CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
                                 .rotationEffect(Angle(degrees: 180))
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                             Text(ProfileLocalization.DeleteAccount.backToProfile)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                         }
                     })
-                    .padding(.top, 35)
+                    .padding(.top, 5)
                     .accessibilityIdentifier("back_button")
                     .frame(maxWidth: .infinity, minHeight: 42)
                     .background(
                         Theme.Shapes.buttonShape
-                            .fill(Theme.Colors.white)
+                            .fill(.clear)
                     )
                     .overlay(
                         Theme.Shapes.buttonShape

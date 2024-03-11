@@ -68,6 +68,8 @@ public struct AppReviewView: View {
                         
                     case .feedback:
                         TextEditor(text: $viewModel.feedback)
+                            .font(Theme.Fonts.bodyMedium)
+                            .foregroundColor(Theme.Colors.textPrimary)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 4)
                             .hideScrollContentBackground()

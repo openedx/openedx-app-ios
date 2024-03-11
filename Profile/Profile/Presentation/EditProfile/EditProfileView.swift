@@ -48,9 +48,9 @@ public struct EditProfileView: View {
                             .overlay(
                                 ZStack {
                                     Circle().frame(width: 36, height: 36)
-                                        .foregroundColor(Theme.Colors.accentColor)
+                                        .foregroundColor(Theme.Colors.accentXColor)
                                     CoreAssets.addPhoto.swiftUIImage.renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.white)
+                                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 }.offset(x: 36, y: 50)
                             )
                     })
@@ -87,6 +87,8 @@ public struct EditProfileView: View {
                                     .font(Theme.Fonts.titleMedium)
                                     .accessibilityIdentifier("about_text")
                                 TextEditor(text: $viewModel.profileChanges.shortBiography)
+                                    .font(Theme.Fonts.bodyMedium)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 4)
                                     .frame(height: 200)
