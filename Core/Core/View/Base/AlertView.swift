@@ -218,8 +218,6 @@ public struct AlertView: View {
         }
     }
 
-
-
     private var buttons: some View {
         HStack {
             switch type {
@@ -358,7 +356,7 @@ public struct AlertView: View {
                 )
             case .viewDeepLink:
                 configure(
-                    primaryButtonTitle: "View",
+                    primaryButtonTitle: CoreLocalization.view,
                     secondaryButtonTitle: CoreLocalization.Alert.cancel
                 )
             }

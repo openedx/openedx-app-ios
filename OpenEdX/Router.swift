@@ -19,14 +19,14 @@ import Profile
 import WhatsNew
 import Combine
 
+// swiftlint:disable file_length type_body_length
 public class Router: AuthorizationRouter,
                      WhatsNewRouter,
                      DiscoveryRouter,
                      ProfileRouter,
                      DashboardRouter,
                      CourseRouter,
-                     DiscussionRouter
-{
+                     DiscussionRouter {
 
     public var container: Container
 
@@ -668,3 +668,4 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
 }
+// swiftlint:enable file_length type_body_length

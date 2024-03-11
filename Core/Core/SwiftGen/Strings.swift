@@ -16,6 +16,8 @@ public enum CoreLocalization {
   public static let socialSignCanceled = CoreLocalization.tr("Localizable", "SOCIAL_SIGN_CANCELED", fallback: "The user canceled the sign-in flow.")
   /// Tomorrow
   public static let tomorrow = CoreLocalization.tr("Localizable", "TOMORROW", fallback: "Tomorrow")
+  /// View
+  public static let view = CoreLocalization.tr("Localizable", "VIEW ", fallback: "View")
   /// Yesterday
   public static let yesterday = CoreLocalization.tr("Localizable", "YESTERDAY", fallback: "Yesterday")
   public enum Alert {

@@ -53,7 +53,6 @@ extension DataLayer.CoursewareTopic {
     }
 }
 
-
 extension DataLayer.TopicsResponse {
     var domain: Topics {
         let coursewareTopics = coursewareTopics.map {

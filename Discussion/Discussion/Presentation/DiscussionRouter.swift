@@ -40,7 +40,11 @@ public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
     
     public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType, animated: Bool) {}
     
-    public func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>, animated: Bool) {}
+    public func showThread(
+        thread: UserThread,
+        postStateSubject: CurrentValueSubject<PostState?, Never>,
+        animated: Bool
+    ) {}
 
     public func showDiscussionsSearch(courseID: String) {}
     
