@@ -2185,7 +2185,7 @@
 			repositoryURL = "https://github.com/BranchMetrics/ios-branch-sdk-spm";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.2.0;
+				minimumVersion = 2.2.0;
 			};
 		};
 		BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
