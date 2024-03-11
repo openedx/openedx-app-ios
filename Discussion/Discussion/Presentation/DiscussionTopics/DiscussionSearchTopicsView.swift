@@ -132,7 +132,7 @@ public struct DiscussionSearchTopicsView: View {
                             .frameLimit(width: proxy.size.width)
 
                             Spacer(minLength: 40)
-                        }                        
+                        }
                     }
                 }
                 // MARK: - Error Alert
