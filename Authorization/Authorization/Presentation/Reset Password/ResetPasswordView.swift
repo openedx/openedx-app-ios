@@ -130,6 +130,7 @@ public struct ResetPasswordView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 50)
+                    .frameLimit(width: proxy.size.width)
                 }.roundedBackground(Theme.Colors.background)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 
