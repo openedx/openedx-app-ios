@@ -29,15 +29,6 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array/>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIColorName</key>
-		<string>SplashBackground</string>
-		<key>UIImageName</key>
-		<string>appLogo</string>
-		<key>UIImageRespectsSafeAreaInsets</key>
-		<true/>
-	</dict>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>
