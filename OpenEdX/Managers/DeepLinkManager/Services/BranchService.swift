@@ -23,7 +23,7 @@ class BranchService: DeepLinkService {
         if Branch.branchKey() != nil {
             Branch.getInstance().initSession(launchOptions: launchOptions) { params, error in
                 guard let params = params, error == nil else { return }
-             
+                
                 manager.processDeepLink(with: params)
             }
         }
