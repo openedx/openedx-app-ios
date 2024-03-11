@@ -40,7 +40,7 @@ public struct CreateNewThreadView: View {
     }
     
     public var body: some View {
-        GeometryReader {
+        GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack(alignment: .center) {
                     

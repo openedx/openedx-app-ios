@@ -30,7 +30,7 @@ public struct DiscussionSearchTopicsView: View {
                     NavigationBar(title: DiscussionLocalization.search,
                                   leftButtonAction: { viewModel.router.backWithFade() })
                     .padding(.bottom, -7)
-                    .frameLimit(width: proxy.size.width)
+
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(Theme.Colors.textPrimary)
@@ -70,7 +70,6 @@ public struct DiscussionSearchTopicsView: View {
                     }
                     //                .padding(.top, -7)
                     .frame(minHeight: 48)
-                    .frame(maxWidth: 532)
                     .background(
                         Theme.Shapes.textInputShape
                             .fill(viewModel.isSearchActive
@@ -97,7 +96,9 @@ public struct DiscussionSearchTopicsView: View {
                                     .offset(y: animated ? 0 : 50)
                                     .opacity(animated ? 1 : 0)
                                 Spacer()
-                            }.padding(.leading, 10)
+                            }
+                            .padding(.leading, 10)
+                            .frameLimit(width: proxy.size.width)
                             
                             LazyVStack {
                                 let searchResults = Array(viewModel.searchResults.enumerated())
@@ -128,8 +129,9 @@ public struct DiscussionSearchTopicsView: View {
                                 }
                             }
                             .id(UUID())
-                            Spacer(minLength: 40)
                             .frameLimit(width: proxy.size.width)
+
+                            Spacer(minLength: 40)
                         }                        
                     }
                 }

@@ -143,16 +143,15 @@ public struct DeleteAccountView: View {
                         .padding(.top, 35)
                     }
                     .frameLimit(width: proxy.size.width)
-                }.padding(.horizontal, 24)
-                    .frame(minHeight: 0,
-                           maxHeight: .infinity,
-                           alignment: .top)
-                    .frameLimit(sizePortrait: 420)
-                
-                    .padding(.top, 8)
-                    .navigationBarHidden(false)
-                    .navigationBarBackButtonHidden(false)
-                    .navigationTitle(ProfileLocalization.DeleteAccount.title)
+                }
+                .padding(.horizontal, 24)
+                .frame(minHeight: 0,
+                       maxHeight: .infinity,
+                       alignment: .top)
+                .padding(.top, 8)
+                .navigationBarHidden(false)
+                .navigationBarBackButtonHidden(false)
+                .navigationTitle(ProfileLocalization.DeleteAccount.title)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {

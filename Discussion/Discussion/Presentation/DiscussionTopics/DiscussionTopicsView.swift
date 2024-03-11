@@ -37,7 +37,6 @@ public struct DiscussionTopicsView: View {
                             .font(Theme.Fonts.bodyMedium)
                         Spacer()
                     }
-                    .frame(maxWidth: 532)
                     .frame(minHeight: 48)
                     .background(
                         Theme.Shapes.textInputShape
