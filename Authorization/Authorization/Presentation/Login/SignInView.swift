@@ -48,7 +48,7 @@ public struct SignInView: View {
             }
             
             VStack(alignment: .center) {
-                ThemeAssets.appLogoLight.swiftUIImage
+                ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 189, maxHeight: 89)
@@ -75,6 +75,8 @@ public struct SignInView: View {
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .accessibilityIdentifier("username_text")
                             TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
+                                .font(Theme.Fonts.bodyLarge)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .keyboardType(.emailAddress)
                                 .textContentType(.emailAddress)
                                 .autocapitalization(.none)
@@ -97,6 +99,8 @@ public struct SignInView: View {
                                 .padding(.top, 18)
                                 .accessibilityIdentifier("password_text")
                             SecureField(AuthLocalization.SignIn.password, text: $password)
+                                .font(Theme.Fonts.bodyLarge)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.all, 14)
                                 .background(
                                     Theme.Shapes.textInputShape
@@ -123,7 +127,8 @@ public struct SignInView: View {
                                     viewModel.trackForgotPasswordClicked()
                                     viewModel.router.showForgotPasswordScreen()
                                 }
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .font(Theme.Fonts.bodyLarge)
+                                .foregroundColor(Theme.Colors.accentXColor)
                                 .padding(.top, 0)
                                 .accessibilityIdentifier("forgot_password_button")
                             }

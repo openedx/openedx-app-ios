@@ -56,6 +56,9 @@ public struct Theme {
         public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
         public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
         public private(set) static var success = ThemeAssets.success.swiftUIColor
+        public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
+        public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
+        public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -95,7 +98,10 @@ public struct Theme {
             navigationBarTintColor: Color = ThemeAssets.navigationBarTintColor.swiftUIColor,
             secondaryButtonBorderColor: Color = ThemeAssets.secondaryButtonBorderColor.swiftUIColor,
             secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor,
-            success: Color = ThemeAssets.success.swiftUIColor
+            success: Color = ThemeAssets.success.swiftUIColor,
+            tabbarColor: Color = ThemeAssets.tabbarColor.swiftUIColor,
+            primaryButtonTextColor: Color = ThemeAssets.primaryButtonTextColor.swiftUIColor,
+            toggleSwitchColor: Color = ThemeAssets.toggleSwitchColor.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
@@ -135,6 +141,9 @@ public struct Theme {
             self.secondaryButtonBorderColor = secondaryButtonBorderColor
             self.secondaryButtonTextColor = secondaryButtonTextColor
             self.success = success
+            self.tabbarColor = tabbarColor
+            self.primaryButtonTextColor = primaryButtonTextColor
+            self.toggleSwitchColor = toggleSwitchColor
         }
     }
     
@@ -179,6 +188,32 @@ public struct Theme {
         public static let labelLarge: Font = .custom(fontsParser.fontName(for: .medium), size: 14)
         public static let labelMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 12)
         public static let labelSmall: Font = .custom(fontsParser.fontName(for: .regular), size: 10)
+    }
+    
+    public struct UIFonts {
+        public static func labelSmall() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 10) else {
+                assert(false, "Could not find the required font")
+            }
+            
+            return font
+        }
+        
+        public static func labelLarge() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 14) else {
+                assert(false, "Could not find the required font")
+            }
+            
+            return font
+        }
+        
+        public static func titleMedium() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .semiBold), size: 18) else {
+                assert(false, "Could not find the required font")
+            }
+            
+            return font
+        }
     }
     
     public struct Shapes {

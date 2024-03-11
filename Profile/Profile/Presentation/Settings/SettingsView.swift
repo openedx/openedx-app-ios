@@ -38,7 +38,7 @@ public struct SettingsView: View {
                                 description: ProfileLocalization.Settings.wifiDescription
                             )
                             Toggle(isOn: $viewModel.wifiOnly, label: {})
-                                .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
+                                .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
                                 .frame(width: 50)
                                 .accessibilityIdentifier("download_agreement_switch")
                         }.foregroundColor(Theme.Colors.textPrimary)
@@ -156,7 +156,7 @@ public struct SettingsCell: View {
                 .accessibilityIdentifier("video_settings_text")
             if let description {
                 Text(description)
-                    .font(Theme.Fonts.labelMedium)
+                    .font(Theme.Fonts.bodySmall)
                     .foregroundColor(Theme.Colors.textSecondary)
                     .accessibilityIdentifier("video_settings_sub_text")
             }

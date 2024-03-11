@@ -134,12 +134,14 @@ public struct AlertView: View {
         case .logOut:
             HStack {
                 Spacer(minLength: 100)
-                CoreAssets.logOut.swiftUIImage
+                CoreAssets.logOut.swiftUIImage.renderingMode(.template)
                     .padding(.top, isHorizontal ? 20 : 54)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Spacer(minLength: 100)
             }
             Text(alertMessage)
                 .font(Theme.Fonts.titleLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .padding(.vertical, isHorizontal ? 6 : 40)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
@@ -147,17 +149,21 @@ public struct AlertView: View {
         case .leaveProfile, .deleteVideo:
             VStack(spacing: 20) {
                 if type == .deleteVideo {
-                    CoreAssets.warning.swiftUIImage
+                    CoreAssets.warning.swiftUIImage.renderingMode(.template)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.top, isHorizontal ? 20 : 54)
                 } else {
-                    CoreAssets.leaveProfile.swiftUIImage
+                    CoreAssets.leaveProfile.swiftUIImage.renderingMode(.template)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.top, isHorizontal ? 20 : 54)
                 }
                 Text(alertTitle)
                     .font(Theme.Fonts.titleLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.horizontal, 40)
                 Text(alertMessage)
                     .font(Theme.Fonts.bodyMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
 
@@ -174,10 +180,12 @@ public struct AlertView: View {
                     }
                     Text(alertTitle)
                         .font(Theme.Fonts.titleLarge)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.horizontal, 40)
                         .padding(.top, 10)
                     Text(alertMessage)
                         .font(Theme.Fonts.bodyMedium)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
                         .frame(maxWidth: 250)
@@ -260,7 +268,7 @@ public struct AlertView: View {
                 }, label: {
                     ZStack {
                         Text(CoreLocalization.Alert.logout)
-                            .foregroundColor(Theme.Colors.white)
+                            .foregroundColor(Theme.Colors.primaryButtonTextColor)
                             .font(Theme.Fonts.labelLarge)
                             .frame(maxWidth: .infinity)
                             .padding(.horizontal, 16)
@@ -292,7 +300,7 @@ public struct AlertView: View {
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.leave)
-                                .foregroundColor(Theme.Colors.white)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)
@@ -351,7 +359,7 @@ public struct AlertView: View {
                     } label: {
                         ZStack {
                             Text(CoreLocalization.Alert.delete)
-                                .foregroundColor(Theme.Colors.white)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)

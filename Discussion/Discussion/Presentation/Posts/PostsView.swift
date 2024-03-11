@@ -293,6 +293,7 @@ public struct PostCell: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
                     post.type.getImage()
+                        .foregroundColor(Theme.Colors.accentColor)
                     Text(post.type.localizedValue.capitalized)
                     Spacer()
                     if post.unreadCommentCount - 1 > 0 {
