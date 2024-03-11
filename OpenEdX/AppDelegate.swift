@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = RouteController()
         window?.makeKeyAndVisible()
+        window?.tintColor = Theme.UIColors.accentColor
         
         NotificationCenter.default.addObserver(
             self,

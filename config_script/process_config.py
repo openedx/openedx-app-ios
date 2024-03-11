@@ -207,7 +207,7 @@ class ConfigurationManager:
             else:
                 bundle_identifier = self.plist_manager.get_bundle_identifier()
                 scheme = [bundle_identifier]
-            
+                
             self.add_custom_array("branch_universal_link_domains", [
                 prefix+".app.link",
                 prefix+"-alternate.app.link",

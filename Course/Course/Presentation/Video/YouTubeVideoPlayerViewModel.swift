@@ -39,7 +39,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
 
         let videoID = url.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
         let configuration = YouTubePlayer.Configuration(configure: {
-            $0.autoPlay = false
+            $0.autoPlay = true
             $0.playInline = true
             $0.showFullscreenButton = true
             $0.allowsPictureInPictureMediaPlayback = false

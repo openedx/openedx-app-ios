@@ -111,6 +111,7 @@ public struct ProfileView: View {
                     .accessibilityIdentifier("user_avatar_image")
                 Text(viewModel.userModel?.name ?? "")
                     .font(Theme.Fonts.headlineSmall)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.top, 20)
                     .accessibilityIdentifier("user_name_text")
                 Text("@\(viewModel.userModel?.username ?? "")")
@@ -150,13 +151,15 @@ public struct ProfileView: View {
                                 .foregroundColor(Theme.Colors.textSecondary)
                                 .accessibilityIdentifier("yob_text")
                             Text(String(viewModel.userModel?.yearOfBirth ?? 0))
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .accessibilityIdentifier("yob_value_text")
                         }
+                        .font(Theme.Fonts.titleMedium)
                     }
                     if let bio = viewModel.userModel?.shortBiography, bio != "" {
                         HStack(alignment: .top) {
                             Text(ProfileLocalization.bio + " ")
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textPrimary)
                             + Text(bio)
                         }
                         .accessibilityIdentifier("bio_text")
@@ -196,6 +199,7 @@ public struct ProfileView: View {
             }, label: {
                 HStack {
                     Text(ProfileLocalization.settingsVideo)
+                        .font(Theme.Fonts.titleMedium)
                     Spacer()
                     Image(systemName: "chevron.right")
                 }

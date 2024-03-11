@@ -114,7 +114,7 @@ public struct SettingsCell: View {
                 .accessibilityIdentifier("video_quality_title_text")
             if let description {
                 Text(description)
-                    .font(Theme.Fonts.labelMedium)
+                    .font(Theme.Fonts.bodySmall)
                     .foregroundColor(Theme.Colors.textSecondary)
                     .accessibilityIdentifier("video_quality_des_text")
             }

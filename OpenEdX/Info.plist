@@ -8,6 +8,8 @@
 	<false/>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>
+	<key>FirebaseCrashlyticsCollectionEnabled</key>
+	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -28,8 +30,6 @@
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-	<key>FirebaseCrashlyticsCollectionEnabled</key>
 	<true/>
 </dict>
 </plist>

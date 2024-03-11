@@ -19,88 +19,86 @@ public struct UserProfileView: View {
     }
     
     public var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .top) {
-                Theme.Colors.background
-                    .ignoresSafeArea()
-                // MARK: - Page Body
-                RefreshableScrollViewCompat(action: {
-                    await viewModel.getUserProfile(withProgress: false)
-                }) {
-                    VStack {
-                        if viewModel.isShowProgress {
-                            ProgressBar(size: 40, lineWidth: 8)
-                                .padding(.top, 200)
-                                .padding(.horizontal)
-                        } else {
-                            ProfileAvatar(url: viewModel.userModel?.avatarUrl ?? "")
-                            if let name = viewModel.userModel?.name, name != "" {
-                                Text(name)
-                                    .font(Theme.Fonts.headlineSmall)
-                                    .padding(.top, 20)
-                            }
-                            Text("@\(viewModel.userModel?.username ?? "")")
-                                .font(Theme.Fonts.labelLarge)
-                                .padding(.top, 4)
-                                .foregroundColor(Theme.Colors.textSecondary)
-                                .padding(.bottom, 10)
-                            
-                            // MARK: - Profile Info
-                            if viewModel.userModel?.yearOfBirth != 0 || viewModel.userModel?.shortBiography != "" {
-                                VStack(alignment: .leading, spacing: 14) {
-                                    Text(ProfileLocalization.info)
-                                        .padding(.horizontal, 24)
-                                        .font(Theme.Fonts.labelLarge)
-                                    
-                                    VStack(alignment: .leading, spacing: 16) {
-                                        if viewModel.userModel?.yearOfBirth != 0 {
-                                            HStack {
-                                                Text(ProfileLocalization.Edit.Fields.yearOfBirth)
-                                                    .foregroundColor(Theme.Colors.textSecondary)
-                                                Text(String(viewModel.userModel?.yearOfBirth ?? 0))
-                                            }
-                                        }
-                                        if let bio = viewModel.userModel?.shortBiography, bio != "" {
-                                            HStack(alignment: .top) {
-                                                Text(ProfileLocalization.bio + " ")
-                                                    .foregroundColor(Theme.Colors.textSecondary)
-                                                + Text(bio)
-                                            }
+        ZStack(alignment: .top) {
+            Theme.Colors.background
+                .ignoresSafeArea()
+            // MARK: - Page Body
+            RefreshableScrollViewCompat(action: {
+                await viewModel.getUserProfile(withProgress: false)
+            }) {
+                VStack {
+                    if viewModel.isShowProgress {
+                        ProgressBar(size: 40, lineWidth: 8)
+                            .padding(.top, 200)
+                            .padding(.horizontal)
+                    } else {
+                        ProfileAvatar(url: viewModel.userModel?.avatarUrl ?? "")
+                        if let name = viewModel.userModel?.name, name != "" {
+                            Text(name)
+                                .font(Theme.Fonts.headlineSmall)
+                                .padding(.top, 20)
+                        }
+                        Text("@\(viewModel.userModel?.username ?? "")")
+                            .font(Theme.Fonts.labelLarge)
+                            .padding(.top, 4)
+                            .foregroundColor(Theme.Colors.textSecondary)
+                            .padding(.bottom, 10)
+                        
+                        // MARK: - Profile Info
+                        if viewModel.userModel?.yearOfBirth != 0 || viewModel.userModel?.shortBiography != "" {
+                            VStack(alignment: .leading, spacing: 14) {
+                                Text(ProfileLocalization.info)
+                                    .padding(.horizontal, 24)
+                                    .font(Theme.Fonts.labelLarge)
+                                    .foregroundColor(Theme.Colors.textSecondary)
+                                
+                                VStack(alignment: .leading, spacing: 16) {
+                                    if viewModel.userModel?.yearOfBirth != 0 {
+                                        HStack {
+                                            Text(ProfileLocalization.Edit.Fields.yearOfBirth)
+                                                .foregroundColor(Theme.Colors.textSecondary)
+                                            Text(String(viewModel.userModel?.yearOfBirth ?? 0))
                                         }
                                     }
-                                    .cardStyle(
-                                        bgColor: Theme.Colors.textInputUnfocusedBackground,
-                                        strokeColor: .clear
-                                    )
-                                }.padding(.bottom, 16)
-                            }
+                                    if let bio = viewModel.userModel?.shortBiography, bio != "" {
+                                        HStack(alignment: .top) {
+                                            Text(ProfileLocalization.bio + " ")
+                                                .foregroundColor(Theme.Colors.textSecondary)
+                                            + Text(bio)
+                                        }
+                                    }
+                                }
+                                .cardStyle(
+                                    bgColor: Theme.Colors.textInputUnfocusedBackground,
+                                    strokeColor: .clear
+                                )
+                            }.padding(.bottom, 16)
                         }
-                        Spacer()
                     }
-                    .frameLimit(width: proxy.size.width)
+                    Spacer()
                 }
+            }.frameLimit(sizePortrait: 420)
                 .padding(.top, 8)
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)
-                
-                // MARK: - Error Alert
-                if viewModel.showError {
-                    VStack {
-                        Spacer()
-                        SnackBarView(message: viewModel.errorMessage)
-                    }
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
-                        }
+            
+            // MARK: - Error Alert
+            if viewModel.showError {
+                VStack {
+                    Spacer()
+                    SnackBarView(message: viewModel.errorMessage)
+                }
+                .transition(.move(edge: .bottom))
+                .onAppear {
+                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                        viewModel.errorMessage = nil
                     }
                 }
             }
-            .onFirstAppear {
-                Task {
-                    await viewModel.getUserProfile()
-                }
+        }
+        .onFirstAppear {
+            Task {
+                await viewModel.getUserProfile()
             }
         }
     }

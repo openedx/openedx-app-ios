@@ -54,7 +54,11 @@ public struct WebBrowser: View {
                 leftButtonAction: { presentationMode.wrappedValue.dismiss() }
             )
             WebView(
-                viewModel: .init(url: url, baseURL: "", injections: [.readability, .accessibility]),
+                viewModel: .init(
+                    url: url,
+                    baseURL: "",
+                    injections: [.colorInversionCss, .readability, .accessibility]
+                ),
                 isLoading: $isLoading,
                 refreshCookies: {}
             )

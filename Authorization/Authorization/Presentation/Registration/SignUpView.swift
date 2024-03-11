@@ -111,6 +111,7 @@ public struct SignUpView: View {
                                         Text(disclosureGroupOpen
                                              ? AuthLocalization.SignUp.hideFields
                                              : AuthLocalization.SignUp.showFields)
+                                        .font(Theme.Fonts.labelLarge)
                                     }
                                     .accessibilityLabel("optional_fields_text")
                                     .padding(.top, 10)
