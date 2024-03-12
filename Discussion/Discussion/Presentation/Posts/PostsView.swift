@@ -14,7 +14,8 @@ public struct PostsView: View {
     
     @ObservedObject private var viewModel: PostsViewModel
     @State private var isShowProgress: Bool = true
-    @State private var showingAlert = false
+    @State private var showFilterSheet = false
+    @State private var showSortSheet = false
     private let router: DiscussionRouter
     private let title: String
     private let currentBlockID: String
@@ -63,23 +64,9 @@ public struct PostsView: View {
                                 VStack {
                                     HStack {
                                         Group {
-                                            Button(action: {
-                                                viewModel.generateButtons(type: .filter)
-                                                showingAlert = true
-                                            }, label: {
-                                                CoreAssets.filter.swiftUIImage.renderingMode(.template)
-                                                    .foregroundColor(Theme.Colors.accentXColor)
-                                                Text(viewModel.filterTitle.localizedValue)
-                                            })
+                                            filterButton
                                             Spacer()
-                                            Button(action: {
-                                                viewModel.generateButtons(type: .sort)
-                                                showingAlert = true
-                                            }, label: {
-                                                CoreAssets.sort.swiftUIImage.renderingMode(.template)
-                                                    .foregroundColor(Theme.Colors.accentXColor)
-                                                Text(viewModel.sortTitle.localizedValue)
-                                            })
+                                            sortButton
                                         }.foregroundColor(Theme.Colors.accentColor)
                                     }
                                     .font(Theme.Fonts.labelMedium)
@@ -197,7 +184,6 @@ public struct PostsView: View {
                                 }
                             }
                             .accessibilityAction {}
-                            .animation(nil)
                             .onRightSwipeGesture {
                                 router.back()
                             }
@@ -228,11 +214,49 @@ public struct PostsView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
-            // MARK: - Action Sheet
-            .actionSheet(isPresented: $showingAlert, content: {
-                ActionSheet(title: Text(DiscussionLocalization.Posts.Alert.makeSelection), buttons: viewModel.filterButtons)
-            })
         }
+    }
+    
+    private var filterButton: some View {
+        Button(action: {
+            showFilterSheet = true
+        }, label: {
+            CoreAssets.filter.swiftUIImage.renderingMode(.template)
+                .foregroundColor(Theme.Colors.accentXColor)
+            Text(viewModel.filterTitle.localizedValue)
+        })
+        .confirmationDialog("",
+                            isPresented: $showFilterSheet,
+                            actions: {
+            ForEach(viewModel.filterInfos) { info in
+                Button(action: {
+                    viewModel.filter(by: info)
+                }, label: {
+                    Text(info.localizedValue)
+                })
+            }
+        })
+    }
+    
+    private var sortButton: some View {
+        Button(action: {
+            showSortSheet = true
+        }, label: {
+            CoreAssets.sort.swiftUIImage.renderingMode(.template)
+                .foregroundColor(Theme.Colors.accentXColor)
+            Text(viewModel.sortTitle.localizedValue)
+        })
+        .confirmationDialog("",
+                            isPresented: $showSortSheet,
+                            actions: {
+            ForEach(viewModel.sortInfos) { info in
+                Button(action: {
+                    viewModel.sort(by: info)
+                }, label: {
+                    Text(info.localizedValue)
+                })
+            }
+        })
     }
     
     @MainActor
