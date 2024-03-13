@@ -82,6 +82,8 @@
 		02F6EF3B28D9B8EC00835477 /* CourseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */; };
 		02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF4928D9F0A700835477 /* DateExtension.swift */; };
 		02F98A7F28F81EE900DE94C0 /* Container+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F98A7E28F81EE900DE94C0 /* Container+App.swift */; };
+		06041B222BA1DB720092F85B /* String+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06041B212BA1DB720092F85B /* String+JSON.swift */; };
+		06041B242BA1DB9A0092F85B /* Dictionary+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06041B232BA1DB9A0092F85B /* Dictionary+JSON.swift */; };
 		0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */; };
 		064987932B4D69FF0071642A /* DragAndDropCssInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0649878A2B4D69FE0071642A /* DragAndDropCssInjection.swift */; };
 		064987942B4D69FF0071642A /* WebviewInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0649878B2B4D69FE0071642A /* WebviewInjection.swift */; };
@@ -252,6 +254,8 @@
 		02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCellView.swift; sourceTree = "<group>"; };
 		02F6EF4928D9F0A700835477 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		02F98A7E28F81EE900DE94C0 /* Container+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Container+App.swift"; sourceTree = "<group>"; };
+		06041B212BA1DB720092F85B /* String+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+JSON.swift"; sourceTree = "<group>"; };
+		06041B232BA1DB9A0092F85B /* Dictionary+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON.swift"; sourceTree = "<group>"; };
 		0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIComponentsConfig.swift; sourceTree = "<group>"; };
 		0649878A2B4D69FE0071642A /* DragAndDropCssInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragAndDropCssInjection.swift; sourceTree = "<group>"; };
 		0649878B2B4D69FE0071642A /* WebviewInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebviewInjection.swift; sourceTree = "<group>"; };
@@ -456,6 +460,8 @@
 				BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */,
 				02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */,
 				E0D5861B2B2FF85B009B4BA7 /* RawStringExtactable.swift */,
+				06041B212BA1DB720092F85B /* String+JSON.swift */,
+				06041B232BA1DB9A0092F85B /* Dictionary+JSON.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1071,6 +1077,7 @@
 				07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */,
 				023A4DD4299E66BD006C0E48 /* OfflineSnackBarView.swift in Sources */,
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
+				06041B242BA1DB9A0092F85B /* Dictionary+JSON.swift in Sources */,
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */,
 				A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */,
@@ -1111,6 +1118,7 @@
 				BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */,
 				02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */,
 				02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */,
+				06041B222BA1DB720092F85B /* String+JSON.swift in Sources */,
 				027BD3AD2909475000392132 /* KeyboardScroller.swift in Sources */,
 				070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */,
 				024D723529C8BB1A006D36ED /* NavigationBar.swift in Sources */,
