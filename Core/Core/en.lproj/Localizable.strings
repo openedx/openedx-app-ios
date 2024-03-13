@@ -52,7 +52,6 @@
 "ALERT.LEAVE" = "Leave";
 "ALERT.KEEP_EDITING" = "Keep editing";
 "ALERT.DELETE" = "DELETE";
-"ALERT.WAITING" = "Waiting...";
 
 "NO_INTERNET.OFFLINE" = "Offline";
 "NO_INTERNET.DISMISS" = "Dismiss";

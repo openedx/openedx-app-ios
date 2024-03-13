@@ -14,13 +14,13 @@ public enum AlertViewType: Equatable {
     case logOut
     case leaveProfile
     case deleteVideo
-    case viewDeepLink
+    case deepLink
 
     var contentPadding: CGFloat {
         switch self {
         case .`default`:
             return 16
-        case .action, .logOut, .leaveProfile, .deleteVideo, .viewDeepLink:
+        case .action, .logOut, .leaveProfile, .deleteVideo, .deepLink:
             return 36
         }
     }
@@ -147,13 +147,10 @@ public struct AlertView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
                 .frame(maxWidth: 250)
-        case .leaveProfile, .deleteVideo, .viewDeepLink:
+        case .leaveProfile, .deleteVideo, .deepLink:
             VStack(spacing: 20) {
                 switch type {
-                case .deleteVideo:
-                    CoreAssets.warning.swiftUIImage
-                        .padding(.top, isHorizontal ? 20 : 54)
-                case .viewDeepLink:
+                case .deleteVideo, .deepLink:
                     CoreAssets.warning.swiftUIImage
                         .padding(.top, isHorizontal ? 20 : 54)
                 default:
@@ -360,7 +357,7 @@ public struct AlertView: View {
                     primaryButtonTitle: CoreLocalization.Alert.delete,
                     secondaryButtonTitle: CoreLocalization.Alert.cancel
                 )
-            case .viewDeepLink:
+            case .deepLink:
                 configure(
                     primaryButtonTitle: CoreLocalization.view,
                     secondaryButtonTitle: CoreLocalization.Alert.cancel

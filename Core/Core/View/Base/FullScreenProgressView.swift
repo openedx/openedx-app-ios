@@ -11,11 +11,8 @@ import Theme
 public struct FullScreenProgressView: View {
 
     @Environment(\.dismiss) private var dismiss
-    private let title: String
 
-    public init(title: String) {
-        self.title = title
-    }
+    public init() {}
 
     public var body: some View {
         ZStack(alignment: .center) {
@@ -26,13 +23,9 @@ public struct FullScreenProgressView: View {
             VStack(alignment: .center) {
                 ProgressBar(size: 40, lineWidth: 8)
                     .padding(.horizontal)
-                    .padding(.top, 50)
-                Text(title)
-                    .font(Theme.Fonts.titleMedium)
-                    .padding(.top, 20)
-                    .padding(.bottom, 50)
+                    .padding(.vertical, 50)
             }
-            .frame(maxWidth: 200)
+            .frame(maxWidth: 140)
             .background(
                 Theme.Shapes.cardShape
                     .fill(Theme.Colors.cardViewBackground)

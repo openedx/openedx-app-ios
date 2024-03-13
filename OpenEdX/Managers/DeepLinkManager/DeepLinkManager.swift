@@ -11,8 +11,9 @@ import UIKit
 import Discovery
 import Discussion
 import Course
+import Profile
 
-// swiftlint:disable function_body_length
+// swiftlint:disable function_body_length type_body_length
 //sourcery: AutoMockable
 public protocol DeepLinkService {
     func configureWith(
@@ -36,6 +37,7 @@ public class DeepLinkManager {
     private let discoveryInteractor: DiscoveryInteractorProtocol
     private let discussionInteractor: DiscussionInteractorProtocol
     private let courseInteractor: CourseInteractorProtocol
+    private let profileInteractor: ProfileInteractorProtocol
 
     var userloggedIn: Bool {
        return !(storage.user?.username?.isEmpty ?? true)
@@ -47,7 +49,8 @@ public class DeepLinkManager {
         storage: CoreStorage,
         discoveryInteractor: DiscoveryInteractorProtocol,
         discussionInteractor: DiscussionInteractorProtocol,
-        courseInteractor: CourseInteractorProtocol
+        courseInteractor: CourseInteractorProtocol,
+        profileInteractor: ProfileInteractorProtocol
     ) {
         self.config = config
         self.router = router
@@ -55,6 +58,7 @@ public class DeepLinkManager {
         self.discoveryInteractor = discoveryInteractor
         self.discussionInteractor = discussionInteractor
         self.courseInteractor = courseInteractor
+        self.profileInteractor = profileInteractor
 
         services = servicesFor(config: config)
     }
@@ -99,15 +103,14 @@ public class DeepLinkManager {
             return
         }
 
-        if UIApplication.shared.applicationState == .active {
-            Task {
-                await showNotificationAlert(link)
-            }
-            return
-        }
+        let isAppActive = UIApplication.shared.applicationState == .active
 
         Task {
-            await navigateToScreen(with: link.type, link: link)
+            if isAppActive {
+                await showNotificationAlert(link)
+            } else {
+                await navigateToScreen(with: link.type, link: link)
+            }
         }
     }
     
@@ -142,7 +145,7 @@ public class DeepLinkManager {
                     await self.navigateToScreen(with: link.type, link: link)
                 }
             },
-            type: .viewDeepLink
+            type: .deepLink
         )
     }
 
@@ -200,10 +203,7 @@ public class DeepLinkManager {
         case .profile:
             router.showTabScreen(tab: .profile)
         case .userProfile:
-            guard let username = storage.user?.username, !username.isEmpty  else {
-                return
-            }
-            router.showUserProfile(userName: username)
+            await showEditProfile()
         default:
             break
         }
@@ -378,6 +378,14 @@ public class DeepLinkManager {
             break
         }
     }
+
+    @MainActor
+    private func showEditProfile() async {
+        guard let userProfile = try? await profileInteractor.getMyProfile() else {
+            return
+        }
+        router.showUserProfile(userProfile: userProfile)
+    }
 }
 
 public enum DeepLinkError: Error {
@@ -392,4 +400,4 @@ extension DeepLinkError: LocalizedError {
         }
     }
 }
-// swiftlint:enable function_body_length
+// swiftlint:enable function_body_length type_body_length

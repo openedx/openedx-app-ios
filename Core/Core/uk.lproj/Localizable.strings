@@ -50,7 +50,6 @@
 "ALERT.LOGOUT" = "Вийти";
 "ALERT.LEAVE" = "Покинути";
 "ALERT.KEEP_EDITING" = "Залишитись";
-"ALERT.WAITING" = "Waiting...";
 
 "NO_INTERNET.OFFLINE" = "Офлайн режим";
 "NO_INTERNET.DISMISS" = "Сховати";

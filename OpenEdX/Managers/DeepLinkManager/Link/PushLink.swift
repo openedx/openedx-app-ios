@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-enum DataKeys: String, RawStringExtractable {
+enum DataKeys: String {
     case title
     case body
     case aps

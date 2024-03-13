@@ -87,6 +87,11 @@ public struct ProfileView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { _ in
+            Task {
+                await viewModel.getMyProfile()
+            }
+        }
     }
 
     private var progressBar: some View {

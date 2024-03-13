@@ -48,7 +48,7 @@ public protocol DeepLinkRouter: BaseRouter {
     func showProgram(
         pathID: String
     )
-    func showUserProfile(userName: String)
+    func showUserProfile(userProfile: UserProfile)
     func dismissPresentedViewController()
     func showProgress()
     func dismissProgress()
@@ -241,17 +241,15 @@ extension Router: DeepLinkRouter {
         showDiscoveryScreen(sourceScreen: .startup)
     }
 
-    public func showUserProfile(userName: String) {
-        dismissPresentedViewController()
-        
-        let interactor = container.resolve(ProfileInteractorProtocol.self)!
-        let vm = UserProfileViewModel(
-            interactor: interactor,
-            username: userName
-        )
-        let view = UserProfileView(viewModel: vm, isSheet: true)
-        let controller = UIHostingController(rootView: view)
-        getNavigationController().present(controller, animated: true)
+    public func showUserProfile(userProfile: UserProfile) {
+        showTabScreen(tab: .profile)
+        showEditProfile(userModel: userProfile, avatar: nil) { _, _ in
+            NotificationCenter.default.post(
+                name: .profileUpdated,
+                object: nil
+            )
+        }
+
     }
 
     public func showProgress() {
@@ -259,9 +257,7 @@ extension Router: DeepLinkRouter {
             transitionStyle: .crossDissolve,
             animated: false
         ) {
-            FullScreenProgressView(
-                title: CoreLocalization.Alert.waiting
-            )
+            FullScreenProgressView()
         }
     }
 
@@ -353,7 +349,7 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
     public func showProgram(
         pathID: String
     ) {}
-    public func showUserProfile(userName: String) {}
+    public func showUserProfile(userProfile: UserProfile) {}
     public func dismissPresentedViewController() {}
     public func showProgress() {}
     public func dismissProgress() {}

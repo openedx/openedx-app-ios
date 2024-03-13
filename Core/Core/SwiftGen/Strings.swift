@@ -33,8 +33,6 @@ public enum CoreLocalization {
     public static let leave = CoreLocalization.tr("Localizable", "ALERT.LEAVE", fallback: "Leave")
     /// Log out
     public static let logout = CoreLocalization.tr("Localizable", "ALERT.LOGOUT", fallback: "Log out")
-    /// Waiting...
-    public static let waiting = CoreLocalization.tr("Localizable", "ALERT.WAITING", fallback: "Waiting...")
   }
   public enum Courseware {
     /// Back to outline

@@ -574,7 +574,7 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showEditProfile(
+    public func  showEditProfile(
         userModel: Core.UserProfile,
         avatar: UIImage?,
         profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
