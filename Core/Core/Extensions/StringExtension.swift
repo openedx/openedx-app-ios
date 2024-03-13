@@ -55,4 +55,31 @@ public extension String {
         }
         return urls
     }
+
+    func decodedHTMLEntities() -> String {
+        guard let regex = try? NSRegularExpression(pattern: "&#([0-9]+);", options: []) else {
+            return self
+        }
+
+        let range = NSRange(location: 0, length: count)
+        let matches = regex.matches(in: self, options: [], range: range)
+        
+        var decodedString = self
+        for match in matches {
+            guard match.numberOfRanges > 1,
+                  let range = Range(match.range(at: 1), in: self),
+                  let codePoint = Int(self[range]),
+                  let unicodeScalar = UnicodeScalar(codePoint) else {
+                continue
+            }
+            
+            let replacement = String(unicodeScalar)
+            guard let totalRange = Range(match.range, in: self) else {
+                continue
+            }
+            decodedString = decodedString.replacingOccurrences(of: self[totalRange], with: replacement)
+        }
+        
+        return decodedString
+    }
 }
