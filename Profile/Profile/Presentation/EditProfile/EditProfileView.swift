@@ -52,7 +52,6 @@ public struct EditProfileView: View {
                                 }.offset(x: 36, y: 50)
                             )
                     })
-                    .disabled(!viewModel.isEditable)
                     .accessibilityIdentifier("change_profile_image_button")
                     
                     Text(viewModel.userModel.name)
