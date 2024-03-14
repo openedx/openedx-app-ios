@@ -23,7 +23,7 @@ final class MainScreenViewModel: ObservableObject {
     let profileInteractor: ProfileInteractorProtocol
     var sourceScreen: LogistrationSourceScreen
 
-    @Published var selection: MainTab = .discovery
+    @Published var selection: MainTab = .dashboard
 
     init(analytics: MainScreenAnalytics,
          config: ConfigProtocol,
