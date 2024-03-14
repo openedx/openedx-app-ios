@@ -61,6 +61,7 @@ public struct StyledButton: View {
                         .tracking(isTransparent ? 0 : 1.3)
                         .foregroundColor(textColor)
                         .font(Theme.Fonts.labelLarge)
+                        .opacity(isActive ? 1.0 : 0.3)
                     if let icon = iconImage,
                         iconPosition == .right {
                         icon
@@ -82,6 +83,7 @@ public struct StyledButton: View {
             Theme.Shapes.buttonShape
                 .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                 .foregroundColor(isTransparent ? Theme.Colors.white : borderColor)
+                .opacity(isActive ? 1.0 : 0.3)
         
         )
         .accessibilityElement(children: .ignore)
