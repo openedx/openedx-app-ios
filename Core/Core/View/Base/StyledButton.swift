@@ -48,28 +48,26 @@ public struct StyledButton: View {
     
     public var body: some View {
         Button(action: action) {
-            VStack {
-                HStack {
-                    Spacer()
-                    if let icon = iconImage,
-                        iconPosition == .left {
-                        icon
-                            .renderingMode(.template)
-                            .foregroundStyle(textColor)
-                    }
-                    Text(title)
-                        .tracking(isTransparent ? 0 : 1.3)
-                        .foregroundColor(textColor)
-                        .font(Theme.Fonts.labelLarge)
-                        .opacity(isActive ? 1.0 : 0.3)
-                    if let icon = iconImage,
-                        iconPosition == .right {
-                        icon
-                            .renderingMode(.template)
-                            .foregroundStyle(textColor)
-                    }
-                    Spacer()
+            HStack {
+                Spacer()
+                if let icon = iconImage,
+                    iconPosition == .left {
+                    icon
+                        .renderingMode(.template)
+                        .foregroundStyle(textColor)
                 }
+                Text(title)
+                    .tracking(isTransparent ? 0 : 1.3)
+                    .foregroundColor(textColor)
+                    .font(Theme.Fonts.labelLarge)
+                    .opacity(isActive ? 1.0 : 0.6)
+                if let icon = iconImage,
+                    iconPosition == .right {
+                    icon
+                        .renderingMode(.template)
+                        .foregroundStyle(textColor)
+                }
+                Spacer()
             }
         }
         .disabled(!isActive)
@@ -83,7 +81,7 @@ public struct StyledButton: View {
             Theme.Shapes.buttonShape
                 .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                 .foregroundColor(isTransparent ? Theme.Colors.white : borderColor)
-                .opacity(isActive ? 1.0 : 0.3)
+                .opacity(isActive ? 1.0 : 0.6)
         
         )
         .accessibilityElement(children: .ignore)
@@ -101,7 +99,8 @@ struct StyledButton_Previews: PreviewProvider {
                 action: {},
                 iconImage: CoreAssets.arrowLeft.swiftUIImage,
                 iconPosition: .left,
-                isActive: true)
+                isActive: true
+            )
         }
         .padding(20)
     }
