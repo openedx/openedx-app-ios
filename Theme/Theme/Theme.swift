@@ -194,6 +194,7 @@ public struct Theme {
         public static func labelSmall() -> UIFont {
             guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 10) else {
                 assert(false, "Could not find the required font")
+                return UIFont.systemFont(ofSize: 10)
             }
             
             return font
@@ -202,6 +203,7 @@ public struct Theme {
         public static func labelLarge() -> UIFont {
             guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 14) else {
                 assert(false, "Could not find the required font")
+                return UIFont.systemFont(ofSize: 14)
             }
             
             return font
@@ -210,6 +212,7 @@ public struct Theme {
         public static func titleMedium() -> UIFont {
             guard let font = UIFont(name: fontsParser.fontName(for: .semiBold), size: 18) else {
                 assert(false, "Could not find the required font")
+                return UIFont.systemFont(ofSize: 18)
             }
             
             return font

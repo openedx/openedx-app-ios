@@ -17,20 +17,12 @@ import Theme
 
 struct MainScreenView: View {
     
-    @State private var selection: MainTab = .discovery
     @State private var settingsTapped: Bool = false
     @State private var disableAllTabs: Bool = false
     @State private var updateAvaliable: Bool = false
     
-    enum MainTab {
-        case discovery
-        case dashboard
-        case programs
-        case profile
-    }
-    
-    @ObservedObject private var viewModel: MainScreenViewModel
- 
+    @ObservedObject private(set) var viewModel: MainScreenViewModel
+
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
@@ -45,7 +37,7 @@ struct MainScreenView: View {
     }
         
     var body: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $viewModel.selection) {
             let config = Container.shared.resolve(ConfigProtocol.self)
             if config?.discovery.enabled ?? false {
                 ZStack {
@@ -133,7 +125,7 @@ struct MainScreenView: View {
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
-                if selection == .profile {
+                if viewModel.selection == .profile {
                     Button(action: {
                         settingsTapped.toggle()
                     }, label: {
@@ -147,18 +139,18 @@ struct MainScreenView: View {
             })
         }
         .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
-            selection = .profile
+            viewModel.selection = .profile
             disableAllTabs = true
         }
         .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
             updateAvaliable = true
         }
-        .onChange(of: selection) { _ in
+        .onChange(of: viewModel.selection) { _ in
             if disableAllTabs {
-                selection = .profile
+                viewModel.selection = .profile
             }
         }
-        .onChange(of: selection, perform: { selection in
+        .onChange(of: viewModel.selection, perform: { selection in
             switch selection {
             case .discovery:
                 viewModel.trackMainDiscoveryTabClicked()
@@ -179,7 +171,7 @@ struct MainScreenView: View {
     }
     
     private func titleBar() -> String {
-        switch selection {
+        switch viewModel.selection {
         case .discovery:
             return DiscoveryLocalization.title
         case .dashboard:

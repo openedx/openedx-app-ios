@@ -45,3 +45,27 @@ public struct UserComment: Hashable {
         self.abuseFlagged = abuseFlagged
     }
 }
+
+public extension UserComment {
+    var post: Post {
+        Post(
+            authorName: authorName,
+            authorAvatar: authorAvatar,
+            postDate: postDate,
+            postTitle: postTitle,
+            postBodyHtml: postBodyHtml,
+            postBody: postBody,
+            postVisible: postVisible,
+            voted: voted,
+            followed: followed,
+            votesCount: votesCount,
+            responsesCount: responsesCount,
+            comments: [],
+            threadID: threadID,
+            commentID: commentID,
+            parentID: parentID,
+            abuseFlagged: abuseFlagged,
+            closed: false
+        )
+    }
+}

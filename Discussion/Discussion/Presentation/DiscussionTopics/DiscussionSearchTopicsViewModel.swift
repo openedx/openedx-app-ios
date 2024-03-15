@@ -159,7 +159,11 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         for thread in threads {
             result.append(thread.discussionPost(action: { [weak self] in
                 guard let self else { return }
-                self.router.showThread(thread: thread, postStateSubject: self.postStateSubject)
+                self.router.showThread(
+                    thread: thread,
+                    postStateSubject: self.postStateSubject,
+                    animated: true
+                )
             }))
         }
         return result

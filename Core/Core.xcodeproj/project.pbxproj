@@ -147,6 +147,8 @@
 		BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */; };
 		BA8FA66E2AD59E7D00EA029A /* FacebookAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */; };
 		BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */; };
+		BA981BCE2B8F5C49005707C2 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */; };
+		BA981BD02B91ED50005707C2 /* FullScreenProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA981BCF2B91ED50005707C2 /* FullScreenProgressView.swift */; };
 		BAAD62C62AFCF00B000E6103 /* CustomDisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */; };
 		BAD9CA2F2B289B3500DE790A /* ajaxHandler.js in Resources */ = {isa = PBXBuildFile; fileRef = BAD9CA2E2B289B3500DE790A /* ajaxHandler.js */; };
 		BAD9CA332B28A8F300DE790A /* AjaxProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */; };
@@ -327,6 +329,8 @@
 		BA8FA6692AD59B5500EA029A /* GoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthProvider.swift; sourceTree = "<group>"; };
 		BA8FA66D2AD59E7D00EA029A /* FacebookAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthProvider.swift; sourceTree = "<group>"; };
 		BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAuthProvider.swift; sourceTree = "<group>"; };
+		BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
+		BA981BCF2B91ED50005707C2 /* FullScreenProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenProgressView.swift; sourceTree = "<group>"; };
 		BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureGroup.swift; sourceTree = "<group>"; };
 		BAD9CA2E2B289B3500DE790A /* ajaxHandler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ajaxHandler.js; sourceTree = "<group>"; };
 		BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjaxProvider.swift; sourceTree = "<group>"; };
@@ -463,6 +467,7 @@
 				BADB3F5A2AD6EC56004D5CFA /* ResultExtension.swift */,
 				02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */,
 				E0D5861B2B2FF85B009B4BA7 /* RawStringExtactable.swift */,
+				BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -710,6 +715,7 @@
 				BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */,
 				BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */,
 				02E93F862AEBAED4006C4750 /* AppReview */,
+				BA981BCF2B91ED50005707C2 /* FullScreenProgressView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1040,6 +1046,7 @@
 				BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */,
 				027BD3B32909475900392132 /* Publishers+KeyboardState.swift in Sources */,
 				0727877D28D25212002E9142 /* ProgressBar.swift in Sources */,
+				BA981BD02B91ED50005707C2 /* FullScreenProgressView.swift in Sources */,
 				0236961F28F9A2F600EEF206 /* AuthEndpoint.swift in Sources */,
 				02B3E3B32930198600A50475 /* AVPlayerViewControllerExtension.swift in Sources */,
 				BAD9CA332B28A8F300DE790A /* AjaxProvider.swift in Sources */,
@@ -1075,6 +1082,7 @@
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
 				02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */,
 				0770DE5F28D0B22C006D8A5D /* Strings.swift in Sources */,
+				BA981BCE2B8F5C49005707C2 /* Sequence+Extensions.swift in Sources */,
 				02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
 				027BD3B52909475900392132 /* KeyboardStateObserver.swift in Sources */,

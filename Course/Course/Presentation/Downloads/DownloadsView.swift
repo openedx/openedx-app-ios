@@ -39,7 +39,9 @@ public struct DownloadsView: View {
 
     public var body: some View {
         content
-            .sheetNavigation(isSheet: isSheet)
+            .sheetNavigation(isSheet: isSheet) {
+                dismiss()
+            }
     }
 
     private var content: some View {
@@ -53,20 +55,6 @@ public struct DownloadsView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(CourseLocalization.Download.downloads)
-        .if(isSheet) { view in
-            view
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .foregroundColor(Theme.Colors.accentColor)
-                        }
-                        .accessibilityIdentifier("close_button")
-                    }
-                }
-        }
         .padding(.top, 1)
     }
 

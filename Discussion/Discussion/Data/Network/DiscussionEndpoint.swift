@@ -12,10 +12,13 @@ import Alamofire
 enum DiscussionEndpoint: EndPointType {
     case getCourseDiscussionInfo(courseID: String)
     case getThreads(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int)
+    case getThread(threadID: String)
     case getTopics(courseID: String)
+    case getTopic(courseID: String, topicID: String)
     case getDiscussionComments(threadID: String, page: Int)
     case getQuestionComments(threadID: String, page: Int)
     case getCommentResponses(commentID: String, page: Int)
+    case getResponse(responseID: String)
     case addCommentTo(threadID: String, rawBody: String, parentID: String? = nil)
     case voteThread(voted: Bool, threadID: String)
     case voteResponse(voted: Bool, responseID: String)
@@ -32,7 +35,11 @@ enum DiscussionEndpoint: EndPointType {
             return "/api/discussion/v1/courses/\(courseID)"
         case .getThreads:
             return "/api/discussion/v1/threads/"
+        case let .getThread(threadID):
+            return "/api/discussion/v1/threads/\(threadID)/"
         case let .getTopics(courseID):
+            return "/api/discussion/v1/course_topics/\(courseID)"
+        case let .getTopic(courseID, _):
             return "/api/discussion/v1/course_topics/\(courseID)"
         case .getDiscussionComments:
             return "/api/discussion/v1/comments/"
@@ -40,6 +47,8 @@ enum DiscussionEndpoint: EndPointType {
             return "/api/discussion/v1/comments/"
         case let .getCommentResponses(commentID, _):
             return "/api/discussion/v1/comments/\(commentID)"
+        case let .getResponse(responseID):
+            return "/api/discussion/v1/comments/\(responseID)/"
         case .addCommentTo:
             return "/api/discussion/v1/comments/"
         case let .voteThread(_, threadID):
@@ -66,9 +75,9 @@ enum DiscussionEndpoint: EndPointType {
         switch self {
         case .getCourseDiscussionInfo:
             return .get
-        case .getThreads:
+        case .getThreads, .getThread:
             return .get
-        case .getTopics:
+        case .getTopics, .getTopic:
             return .get
         case .getDiscussionComments:
             return .get
@@ -76,6 +85,8 @@ enum DiscussionEndpoint: EndPointType {
             return .get
         case .getCommentResponses:
             return .get
+        case .getResponse:
+            return .patch
         case .addCommentTo:
             return .post
         case .voteThread:
@@ -101,7 +112,9 @@ enum DiscussionEndpoint: EndPointType {
         switch self {
         case .getCourseDiscussionInfo,
                 .getThreads,
+                .getThread,
                 .getTopics,
+                .getTopic,
                 .getDiscussionComments,
                 .getQuestionComments,
                 .getCommentResponses,
@@ -109,7 +122,13 @@ enum DiscussionEndpoint: EndPointType {
                 .createNewThread,
                 .searchThreads:
             return nil
-        case .voteThread, .voteResponse, .flagThread, .flagComment, .followThread, .readBody:
+        case .voteThread,
+                .voteResponse,
+                .flagThread,
+                .flagComment,
+                .followThread,
+                .readBody,
+                .getResponse:
             return ["Content-Type": "application/merge-patch+json"]
         }
     }
@@ -166,8 +185,15 @@ enum DiscussionEndpoint: EndPointType {
                 parameters["order_by"] = "vote_count"
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getThread:
+            return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
         case .getTopics:
             return .requestParameters(encoding: URLEncoding.queryString)
+        case let .getTopic(_, topicID):
+            let parameters: [String: Encodable] = [
+                "topic_id": topicID
+            ]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case let .getDiscussionComments(threadID, page):
             let parameters: [String: Encodable] = [
                 "thread_id": threadID,
@@ -189,6 +215,8 @@ enum DiscussionEndpoint: EndPointType {
                 "page": page
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .getResponse:
+            return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
         case let .addCommentTo(threadID, rawBody, parentID):
             var parameters: [String: Encodable] = [
                 "thread_id": threadID,

@@ -29,7 +29,8 @@ public struct ProfileView: View {
                         await viewModel.getMyProfile(withProgress: false)
                     },
                     content: {
-                        content(for: proxy.size.width)
+                        content
+                            .frameLimit(width: proxy.size.width)
                     }
                 )
                 .accessibilityAction {}
@@ -89,6 +90,11 @@ public struct ProfileView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
+            .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { _ in
+                Task {
+                    await viewModel.getMyProfile()
+                }
+            }
         }
     }
 
@@ -98,7 +104,7 @@ public struct ProfileView: View {
             .padding(.horizontal)
     }
 
-    private func content(for width: CGFloat) -> some View {
+    private var content: some View {
         VStack {
             if viewModel.isShowProgress {
                 ProgressBar(size: 40, lineWidth: 8)
@@ -129,7 +135,6 @@ public struct ProfileView: View {
                 Spacer()
             }
         }
-        .frameLimit(width: width)
     }
 
     // MARK: - Profile Info
@@ -220,7 +225,10 @@ public struct ProfileView: View {
     private var logOutButton: some View {
         VStack {
             Button(action: {
-                viewModel.router.presentView(transitionStyle: .crossDissolve) {
+                viewModel.router.presentView(
+                    transitionStyle: .crossDissolve,
+                    animated: true
+                ) {
                     AlertView(
                         alertTitle: ProfileLocalization.LogoutAlert.title,
                         alertMessage: ProfileLocalization.LogoutAlert.text,

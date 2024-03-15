@@ -41,6 +41,10 @@ struct ProfileBottomSheet: View {
     
     @Environment (\.isHorizontal) private var isHorizontal
     
+    private var maxWidth: CGFloat {
+        idiom == .pad || (idiom == .phone && isHorizontal) ? 330 : .infinity
+    }
+    
     init(
         showingBottomSheet: Binding<Bool>,
         openGallery: @escaping () -> Void,
@@ -52,74 +56,84 @@ struct ProfileBottomSheet: View {
     }
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            if showingBottomSheet {
-                Color.black.opacity(0.5)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        withAnimation {
-                            showingBottomSheet = false
-                        }
-                    }
-            }
-            VStack {
-                VStack {
-                    VStack(alignment: .center, spacing: 4) {
-                        HStack(alignment: .center) {
-                            RoundedRectangle(cornerRadius: 2, style: .circular)
-                                .foregroundColor(Theme.Colors.textSecondary)
-                                .frame(width: 31, height: 4)
-                                .padding(.top, 4)
-                        }.frame(maxWidth: .infinity)
-                        
-                        Text(ProfileLocalization.Edit.BottomSheet.title)
-                            .font(Theme.Fonts.titleLarge)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.vertical, 14)
-                            .accessibilityIdentifier("profile_bottom_sheet_title_text")
-                        
-                        button(title: ProfileLocalization.Edit.BottomSheet.select,
-                               type: .gallery,
-                               action: {
-                            openGallery()
-                        })
-                        .accessibilityIdentifier("select_picture_button")
-                        
-                        button(title: ProfileLocalization.Edit.BottomSheet.remove,
-                               type: .remove,
-                               action: {
-                            removePhoto()
-                        })
-                        .padding(.top, 10)
-                        .accessibilityIdentifier("remove_picture_button")
-                        
-                        button(title: ProfileLocalization.Edit.BottomSheet.cancel,
-                               type: .cancel,
-                               action: {
+        GeometryReader { proxy in
+            ZStack(alignment: .bottom) {
+                if showingBottomSheet {
+                    background
+                        .onTapGesture {
                             withAnimation {
                                 showingBottomSheet = false
                             }
-                        })
-                        .padding(.top, 34)
-                        .accessibilityIdentifier("cancel_button")
-                    }.padding(.horizontal, 24)
-                    
+                        }
                 }
-                .frame(minWidth: 0,
-                         maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
-                         ? 330
-                         : .infinity,
-                       maxHeight: 290, alignment: .topLeading)
-                    .background(Theme.Colors.cardViewBackground)
-                    .cornerRadius(8)
-                    .padding(.horizontal, 22)
+                content
+                .offset(y: showingBottomSheet ? yPosition : proxy.size.height)
+                .gesture(dragGesture)
             }
-            .offset(y: showingBottomSheet ? yPosition : 700)
-            .gesture(dragGesture)
-        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        }
     }
     
-    @ViewBuilder
+    private var background: some View {
+        Color.black
+            .opacity(0.5)
+            .ignoresSafeArea()
+    }
+    
+    private var content: some View {
+        VStack {
+            VStack {
+                VStack(alignment: .center, spacing: 4) {
+                    HStack(alignment: .center) {
+                        RoundedRectangle(cornerRadius: 2, style: .circular)
+                            .foregroundColor(Theme.Colors.textSecondary)
+                            .frame(width: 31, height: 4)
+                            .padding(.top, 4)
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    Text(ProfileLocalization.Edit.BottomSheet.title)
+                        .font(Theme.Fonts.titleLarge)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, 14)
+                        .accessibilityIdentifier("profile_bottom_sheet_title_text")
+                    
+                    button(title: ProfileLocalization.Edit.BottomSheet.select,
+                           type: .gallery,
+                           action: {
+                        openGallery()
+                    })
+                    .accessibilityIdentifier("select_picture_button")
+                    
+                    button(title: ProfileLocalization.Edit.BottomSheet.remove,
+                           type: .remove,
+                           action: {
+                        removePhoto()
+                    })
+                    .padding(.top, 10)
+                    .accessibilityIdentifier("remove_picture_button")
+                    
+                    button(title: ProfileLocalization.Edit.BottomSheet.cancel,
+                           type: .cancel,
+                           action: {
+                        withAnimation {
+                            showingBottomSheet = false
+                        }
+                    })
+                    .padding(.top, 34)
+                    .accessibilityIdentifier("cancel_button")
+                }
+                .padding(.horizontal, 24)
+            }
+            .frame(minWidth: 0,
+                   maxWidth: maxWidth,
+                   maxHeight: 290, alignment: .topLeading)
+            .background(Theme.Colors.cardViewBackground)
+            .cornerRadius(8)
+            .padding(.horizontal, 22)
+        }
+    }
+
     private func button(title: String, type: ButtonType, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(alignment: .center) {

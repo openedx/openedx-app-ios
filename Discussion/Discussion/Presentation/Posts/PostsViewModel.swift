@@ -138,7 +138,11 @@ public class PostsViewModel: ObservableObject {
                     guard let self, let actualThread = self.threads.threads
                         .first(where: {$0.id  == thread.id }) else { return }
                     
-                    self.router.showThread(thread: actualThread, postStateSubject: self.postStateSubject)
+                    self.router.showThread(
+                        thread: actualThread,
+                        postStateSubject: self.postStateSubject,
+                        animated: true
+                    )
                 }))
             }
         }
