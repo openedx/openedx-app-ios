@@ -13,54 +13,10 @@ import Theme
 
 public struct CourseContainerView: View {
     
-    enum CourseTab: Int, CaseIterable, Identifiable {
-        var id: Int {
-            rawValue
-        }
-
-        case course
-        case videos
-        case discussion
-        case dates
-        case handounds
-
-        var title: String {
-            switch self {
-            case .course:
-                return CourseLocalization.CourseContainer.course
-            case .videos:
-                return CourseLocalization.CourseContainer.videos
-            case .dates:
-                return CourseLocalization.CourseContainer.dates
-            case .discussion:
-                return CourseLocalization.CourseContainer.discussions
-            case .handounds:
-                return CourseLocalization.CourseContainer.handouts
-            }
-        }
-
-        var image: Image {
-            switch self {
-            case .course:
-                return CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
-            case .videos:
-                return CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
-            case .dates:
-                return Image(systemName: "calendar").renderingMode(.template)
-            case .discussion:
-                return  CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
-            case .handounds:
-                return CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
-            }
-        }
-
-    }
-    
     @ObservedObject
-    private var viewModel: CourseContainerViewModel
-    @State private var selection: Int = CourseTab.course.rawValue
+    public var viewModel: CourseContainerViewModel
     @State private var isAnimatingForTap: Bool = false
-    private var courseID: String
+    public var courseID: String
     private var title: String
     
     public init(
@@ -90,7 +46,7 @@ public struct CourseContainerView: View {
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
-        .onChange(of: selection, perform: didSelect)
+        .onChange(of: viewModel.selection, perform: didSelect)
         .background(Theme.Colors.background)
     }
 
@@ -103,7 +59,7 @@ public struct CourseContainerView: View {
                     title: title,
                     courseID: courseID,
                     isVideo: false,
-                    selection: $selection,
+                    selection: $viewModel.selection,
                     dateTabIndex: CourseTab.dates.rawValue
                 )
             } else {
@@ -119,11 +75,11 @@ public struct CourseContainerView: View {
 
     private var topTabBar: some View {
         ScrollSlidingTabBar(
-            selection: $selection,
+            selection: $viewModel.selection,
             tabs: CourseTab.allCases.map { $0.title }
         ) { newValue in
             isAnimatingForTap = true
-            selection = newValue
+            viewModel.selection = newValue
             DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(300))) {
                 isAnimatingForTap = false
             }
@@ -131,7 +87,7 @@ public struct CourseContainerView: View {
     }
 
     private var tabs: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $viewModel.selection) {
             ForEach(CourseTab.allCases) { tab in
                 switch tab {
                 case .course:
@@ -140,7 +96,7 @@ public struct CourseContainerView: View {
                         title: title,
                         courseID: courseID,
                         isVideo: false,
-                        selection: $selection,
+                        selection: $viewModel.selection,
                         dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
@@ -155,7 +111,7 @@ public struct CourseContainerView: View {
                         title: title,
                         courseID: courseID,
                         isVideo: true,
-                        selection: $selection,
+                        selection: $viewModel.selection,
                         dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
@@ -206,7 +162,7 @@ public struct CourseContainerView: View {
         .if(viewModel.config.uiComponents.courseTopTabBarEnabled) { view in
             view
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .animation(.default, value: selection)
+                .animation(.default, value: viewModel.selection)
         }
         .onFirstAppear {
             Task {

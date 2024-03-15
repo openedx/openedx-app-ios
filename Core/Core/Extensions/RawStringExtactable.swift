@@ -21,7 +21,7 @@ extension Dictionary: DictionaryExtractionExtension {}
 
 public extension DictionaryExtractionExtension where Self.Key == String {
     
-    subscript(key :RawStringExtractable) -> Value? {
+    subscript(key: RawStringExtractable) -> Value? {
         return self[key.rawValue]
     }
 }

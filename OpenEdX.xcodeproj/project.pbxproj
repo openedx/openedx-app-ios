@@ -61,6 +61,7 @@
 		A5BD3E302B83B0F7006A8983 /* SegmentFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */; };
 		A5C10D8F2B861A70008E864D /* SegmentAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C10D8E2B861A70008E864D /* SegmentAnalyticsService.swift */; };
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
+		BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7468752B96201D00793145 /* DeepLinkRouter.swift */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -142,6 +143,7 @@
 		A59702282B83C87900CA064C /* FirebaseAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAnalyticsService.swift; sourceTree = "<group>"; };
 		A5C10D8E2B861A70008E864D /* SegmentAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentAnalyticsService.swift; sourceTree = "<group>"; };
 		A89AD827F52CF6A6B903606E /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
+		BA7468752B96201D00793145 /* DeepLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkRouter.swift; sourceTree = "<group>"; };
 		BB08ACD2CCA33D6DDDDD31B4 /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F138C15C3A2515F8F94DAA8B /* Pods_App_OpenEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_OpenEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -332,6 +334,7 @@
 				A59568942B61630500ED4F90 /* DeepLinkManager.swift */,
 				A5F46FD02B692B140003EEEF /* Services */,
 				A59585AD2B62677B00A35A20 /* Link */,
+				BA7468742B96200500793145 /* DeepLinkRouter */,
 			);
 			path = DeepLinkManager;
 			sourceTree = "<group>";
@@ -367,6 +370,14 @@
 				A5462D9B2B864AE0003B96A5 /* BranchService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		BA7468742B96200500793145 /* DeepLinkRouter */ = {
+			isa = PBXGroup;
+			children = (
+				BA7468752B96201D00793145 /* DeepLinkRouter.swift */,
+			);
+			path = DeepLinkRouter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -554,6 +565,7 @@
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
 				02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */,
+				BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */,
 				0727878E28D347C7002E9142 /* MainScreenView.swift in Sources */,
 				0770DE5028D0A707006D8A5D /* NetworkAssembly.swift in Sources */,
 				0293A2032A6FCA590090A336 /* CorePersistence.swift in Sources */,

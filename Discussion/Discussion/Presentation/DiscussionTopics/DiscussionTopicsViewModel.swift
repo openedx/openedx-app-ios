@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Core
 
+// swiftlint:disable function_body_length
 public class DiscussionTopicsViewModel: ObservableObject {
     
     @Published var topics: Topics?
@@ -54,7 +55,9 @@ public class DiscussionTopicsViewModel: ObservableObject {
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
                         title: DiscussionLocalization.Topics.allPosts,
-                        type: .allPosts)
+                        type: .allPosts,
+                        animated: true
+                    )
                 },
                 style: .basic
             ),
@@ -66,7 +69,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
                         title: DiscussionLocalization.Topics.postImFollowing,
-                        type: .followingPosts
+                        type: .followingPosts,
+                        animated: true
                     )
                 },
                 style: .followed)
@@ -87,8 +91,10 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                 courseID: self.courseID,
                                 topics: topics,
                                 title: t.name,
-                                type: .nonCourseTopics)
-                            
+                                type: .nonCourseTopics,
+                                animated: true
+                            )
+
                         },
                         style: .basic)
                 )
@@ -107,7 +113,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                     courseID: self.courseID,
                                     topics: topics,
                                     title: t.name,
-                                    type: .nonCourseTopics
+                                    type: .nonCourseTopics,
+                                    animated: true
                                 )
                             },
                             style: .subTopic)
@@ -136,7 +143,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                     courseID: self.courseID,
                                     topics: topics,
                                     title: child.name,
-                                    type: .courseTopics(topicID: child.id)
+                                    type: .courseTopics(topicID: child.id),
+                                    animated: true
                                 )
                             },
                             style: .subTopic)
@@ -165,3 +173,4 @@ public class DiscussionTopicsViewModel: ObservableObject {
         }
     }
 }
+// swiftlint:enable function_body_length
