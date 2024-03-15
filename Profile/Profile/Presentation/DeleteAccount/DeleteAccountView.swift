@@ -102,44 +102,35 @@ public struct DeleteAccountView: View {
                             .padding(.horizontal)
                             .accessibilityIdentifier("progressbar")
                     } else {
-                        StyledButton(ProfileLocalization.DeleteAccount.comfirm, action: {
-                            Task {
-                                try await viewModel.deleteAccount(password: viewModel.password)
-                            }
-                        }, color: Theme.Colors.accentColor,
-                                     textColor: Theme.Colors.primaryButtonTextColor,
-                                     isActive: viewModel.password.count >= 2)
+                        StyledButton(
+                            ProfileLocalization.DeleteAccount.comfirm,
+                            action: {
+                                Task {
+                                    try await viewModel.deleteAccount(password: viewModel.password)
+                                }
+                            },
+                            color: .clear,
+                            textColor: Theme.Colors.alert,
+                            borderColor: Theme.Colors.alert,
+                            isActive: viewModel.password.count >= 2
+                        )
                         .padding(.top, 18)
                         .accessibilityIdentifier("delete_account_button")
                     }
                     
                     // MARK: Back to profile
-                    Button(action: {
-                        viewModel.router.back()
-                    }, label: {
-                        HStack(spacing: 9) {
-                            CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
-                                .rotationEffect(Angle(degrees: 180))
-                                .foregroundColor(Theme.Colors.secondaryButtonTextColor)
-                            Text(ProfileLocalization.DeleteAccount.backToProfile)
-                                .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.secondaryButtonTextColor)
-                        }
-                    })
-                    .padding(.top, 5)
-                    .accessibilityIdentifier("back_button")
-                    .frame(maxWidth: .infinity, minHeight: 42)
-                    .background(
-                        Theme.Shapes.buttonShape
-                            .fill(.clear)
-                    )
-                    .overlay(
-                        Theme.Shapes.buttonShape
-                            .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                            .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
-                    
+                    StyledButton(
+                        ProfileLocalization.DeleteAccount.backToProfile,
+                        action: {
+                            viewModel.router.back()
+                        },
+                        color: Theme.Colors.accentColor,
+                        textColor: Theme.Colors.primaryButtonTextColor,
+                        iconImage: CoreAssets.arrowLeft.swiftUIImage,
+                        iconPosition: .left
                     )
                     .padding(.top, 35)
+                    .accessibilityIdentifier("back_button")
                 }
             }.padding(.horizontal, 24)
                 .frame(minHeight: 0,
