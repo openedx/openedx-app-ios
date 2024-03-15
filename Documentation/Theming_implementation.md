@@ -97,14 +97,15 @@ font:
         bold: 'FontName-Bold'
 ```
 
-### What's New
-The `whitelabel.yaml` configuration may contain the path to a What's New json file, and an existing json file in the project will be replaced with this json file. 
+### Files
+We can override any file(s) in the project folder(s). To do this, the `whitelabel.yaml` configuration must contain the path to the file to be imported, and the existing file in the project will be replaced with this file. 
 
 For this function, the configuration must contain the following parameters:
 ```yaml
-whatsnew:
-      whatsnew_import_file_path: 'path/to/importing/whats_new.json' # path to what's new json file what should be imported to project
-      project_whatsnew_file_path: 'path/to/json/file/in/project/whats_new.json' # path to existing json-file in project
+files:
+    file_name:
+        import_file_path: 'path/to/importing/file_name.any' # path to file what should be imported to project folder
+        project_file_path: 'path/to/json/file/in/project/file_name.any' # path to existing file in project
 ```
 
 

@@ -12,10 +12,14 @@ import Theme
 
 public struct UserProfileView: View {
     
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject private var viewModel: UserProfileViewModel
-    
-    public init(viewModel: UserProfileViewModel) {
+
+    public var isSheet: Bool
+
+    public init(viewModel: UserProfileViewModel, isSheet: Bool = false) {
         self.viewModel = viewModel
+        self.isSheet = isSheet
     }
     
     public var body: some View {
@@ -104,6 +108,10 @@ public struct UserProfileView: View {
                 }
             }
         }
+        .sheetNavigation(isSheet: isSheet) {
+            dismiss()
+        }
+
     }
 }
 

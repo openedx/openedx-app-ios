@@ -14,12 +14,13 @@ public enum AlertViewType: Equatable {
     case logOut
     case leaveProfile
     case deleteVideo
+    case deepLink
 
     var contentPadding: CGFloat {
         switch self {
         case .`default`:
             return 16
-        case .action, .logOut, .leaveProfile, .deleteVideo:
+        case .action, .logOut, .leaveProfile, .deleteVideo, .deepLink:
             return 36
         }
     }
@@ -146,15 +147,14 @@ public struct AlertView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
                 .frame(maxWidth: 250)
-        case .leaveProfile, .deleteVideo:
+        case .leaveProfile, .deleteVideo, .deepLink:
             VStack(spacing: 20) {
-                if type == .deleteVideo {
-                    CoreAssets.warning.swiftUIImage.renderingMode(.template)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                switch type {
+                case .deleteVideo, .deepLink:
+                    CoreAssets.warning.swiftUIImage
                         .padding(.top, isHorizontal ? 20 : 54)
-                } else {
-                    CoreAssets.leaveProfile.swiftUIImage.renderingMode(.template)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                default:
+                    CoreAssets.leaveProfile.swiftUIImage
                         .padding(.top, isHorizontal ? 20 : 54)
                 }
                 Text(alertTitle)
@@ -353,68 +353,83 @@ public struct AlertView: View {
                 }
                 .padding(.trailing, isHorizontal ? 20 : 0)
             case .deleteVideo:
-                VStack(spacing: 0) {
-                    Button {
-                        okTapped()
-                    } label: {
-                        ZStack {
-                            Text(CoreLocalization.Alert.delete)
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
-                                .font(Theme.Fonts.labelLarge)
-                                .frame(maxWidth: .infinity)
-                                .padding(.horizontal, 16)
-                        }
-                        .frame(maxWidth: 215, minHeight: 48)
-                    }
-                    .background(
-                        Theme.Shapes.buttonShape
-                            .fill(Theme.Colors.accentColor)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(style: .init(
-                                lineWidth: 1,
-                                lineCap: .round,
-                                lineJoin: .round,
-                                miterLimit: 1
-                            ))
-                            .foregroundColor(.clear)
-                    )
-                    .frame(maxWidth: 215)
-                    .padding(.bottom, isHorizontal ? 10 : 24)
-                    Button(action: {
-                        onCloseTapped()
-                    }, label: {
-                        ZStack {
-                            Text(CoreLocalization.Alert.cancel)
-                                .foregroundColor(Theme.Colors.secondaryButtonTextColor)
-                                .font(Theme.Fonts.labelLarge)
-                                .frame(maxWidth: .infinity)
-                                .padding(.horizontal, 16)
-                        }
-                        .frame(maxWidth: 215, minHeight: 48)
-                    })
-                    .background(
-                        Theme.Shapes.buttonShape
-                            .fill(.clear)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(style: .init(
-                                lineWidth: 1,
-                                lineCap: .round,
-                                lineJoin: .round,
-                                miterLimit: 1
-                            ))
-                            .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
-                    )
-                    .frame(maxWidth: 215)
-                }
-                .padding(.trailing, isHorizontal ? 20 : 0)
+                configure(
+                    primaryButtonTitle: CoreLocalization.Alert.delete,
+                    secondaryButtonTitle: CoreLocalization.Alert.cancel
+                )
+            case .deepLink:
+                configure(
+                    primaryButtonTitle: CoreLocalization.view,
+                    secondaryButtonTitle: CoreLocalization.Alert.cancel
+                )
             }
         }
         .padding(.top, 16)
         .padding(.bottom, isHorizontal ? 16 : type.contentPadding)
+    }
+
+    private func configure(
+        primaryButtonTitle: String,
+        secondaryButtonTitle: String
+    ) -> some View {
+        VStack(spacing: 0) {
+            Button {
+                okTapped()
+            } label: {
+                ZStack {
+                    Text(primaryButtonTitle)
+                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                        .font(Theme.Fonts.labelLarge)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 16)
+                }
+                .frame(maxWidth: 215, minHeight: 48)
+            }
+            .background(
+                Theme.Shapes.buttonShape
+                    .fill(Theme.Colors.accentColor)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(style: .init(
+                        lineWidth: 1,
+                        lineCap: .round,
+                        lineJoin: .round,
+                        miterLimit: 1
+                    ))
+                    .foregroundColor(.clear)
+            )
+            .frame(maxWidth: 215)
+            .padding(.bottom, isHorizontal ? 10 : 24)
+            Button(action: {
+                onCloseTapped()
+            }, label: {
+                ZStack {
+                    Text(secondaryButtonTitle)
+                        .foregroundColor(Theme.Colors.secondaryButtonTextColor)
+                        .font(Theme.Fonts.labelLarge)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 16)
+                }
+                .frame(maxWidth: 215, minHeight: 48)
+            })
+            .background(
+                Theme.Shapes.buttonShape
+                    .fill(.clear)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(style: .init(
+                        lineWidth: 1,
+                        lineCap: .round,
+                        lineJoin: .round,
+                        miterLimit: 1
+                    ))
+                    .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
+            )
+            .frame(maxWidth: 215)
+        }
+        .padding(.trailing, isHorizontal ? 20 : 0)
     }
 }
 

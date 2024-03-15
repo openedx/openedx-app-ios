@@ -9,13 +9,22 @@ import Foundation
 import Core
 import Profile
 
-class MainScreenViewModel: ObservableObject {
-    
+public enum MainTab {
+    case discovery
+    case dashboard
+    case programs
+    case profile
+}
+
+final class MainScreenViewModel: ObservableObject {
+
     private let analytics: MainScreenAnalytics
     let config: ConfigProtocol
     let profileInteractor: ProfileInteractorProtocol
     var sourceScreen: LogistrationSourceScreen
-    
+
+    @Published var selection: MainTab = .dashboard
+
     init(analytics: MainScreenAnalytics,
          config: ConfigProtocol,
          profileInteractor: ProfileInteractorProtocol,
@@ -26,7 +35,11 @@ class MainScreenViewModel: ObservableObject {
         self.profileInteractor = profileInteractor
         self.sourceScreen = sourceScreen
     }
-    
+
+    public func select(tab: MainTab) {
+        selection = tab
+    }
+
     func trackMainDiscoveryTabClicked() {
         analytics.mainDiscoveryTabClicked()
     }
@@ -39,7 +52,7 @@ class MainScreenViewModel: ObservableObject {
     func trackMainProfileTabClicked() {
         analytics.mainProfileTabClicked()
     }
-    
+
     @MainActor
     func prefetchDataForOffline() async {
         if profileInteractor.getMyProfileOffline() == nil {

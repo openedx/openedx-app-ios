@@ -248,10 +248,24 @@ public extension View {
 
 public extension View {
     @ViewBuilder
-    func sheetNavigation(isSheet: Bool) -> some View {
+    func sheetNavigation(isSheet: Bool, onDismiss: (() -> Void)? = nil) -> some View {
         if isSheet {
             NavigationView {
                 self
+                    .if(onDismiss != nil) { view in
+                        view
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarTrailing) {
+                                    Button {
+                                        onDismiss?()
+                                    } label: {
+                                        Image(systemName: "xmark")
+                                            .foregroundColor(Theme.Colors.accentColor)
+                                    }
+                                    .accessibilityIdentifier("close_button")
+                                }
+                            }
+                    }
             }
         } else {
             self
