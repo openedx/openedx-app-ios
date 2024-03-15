@@ -16,4 +16,5 @@ public extension Notification.Name {
     static let webviewReloadNotification = Notification.Name("webviewReloadNotification")
     static let onBlockCompletion = Notification.Name.init("onBlockCompletion")
     static let shiftCourseDates = Notification.Name("shiftCourseDates")
+    static let profileUpdated = Notification.Name("profileUpdated")
 }

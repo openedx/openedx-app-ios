@@ -112,3 +112,31 @@ public extension DataLayer.ThreadListsResponse {
         return ThreadLists(threads: threadsReady)
     }
 }
+
+public extension DataLayer.ThreadList {
+    var userThread: UserThread {
+        UserThread(
+            id: id,
+            author: author ?? DiscussionLocalization.anonymous,
+            authorLabel: authorLabel ?? "",
+            createdAt: Date(iso8601: createdAt),
+            updatedAt: Date(iso8601: updatedAt),
+            rawBody: rawBody,
+            renderedBody: renderedBody,
+            voted: voted,
+            voteCount: voteCount,
+            courseID: courseID,
+            type: type,
+            title: title,
+            pinned: pinned,
+            closed: closed,
+            following: following,
+            commentCount: commentCount,
+            avatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
+            unreadCommentCount: unreadCommentCount,
+            abuseFlagged: abuseFlagged,
+            hasEndorsed: hasEndorsed,
+            numPages: 0
+        )
+    }
+}

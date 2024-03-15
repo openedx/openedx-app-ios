@@ -18,7 +18,8 @@ import Dashboard
 import Profile
 import WhatsNew
 import Combine
- 
+
+// swiftlint:disable file_length type_body_length
 public class Router: AuthorizationRouter,
                      WhatsNewRouter,
                      DiscoveryRouter,
@@ -26,16 +27,20 @@ public class Router: AuthorizationRouter,
                      DashboardRouter,
                      CourseRouter,
                      DiscussionRouter {
-    
+
     public var container: Container
-    
+
     private let navigationController: UINavigationController
-    
+
+    func getNavigationController() -> UINavigationController {
+        navigationController
+    }
+
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
     }
-    
+
     public func backToRoot(animated: Bool) {
         navigationController.popToRootViewController(animated: animated)
     }
@@ -143,7 +148,10 @@ public class Router: AuthorizationRouter,
         okTapped: @escaping () -> Void,
         type: AlertViewType
     ) {
-        presentView(transitionStyle: .crossDissolve, content: {
+        presentView(
+            transitionStyle: .crossDissolve,
+            animated: true
+        ) {
             AlertView(
                 alertTitle: alertTitle,
                 alertMessage: alertMessage,
@@ -152,7 +160,7 @@ public class Router: AuthorizationRouter,
                 okTapped: okTapped,
                 type: type
             )
-        })
+        }
     }
     
     public func presentAlert(
@@ -165,7 +173,10 @@ public class Router: AuthorizationRouter,
         okTapped: @escaping () -> Void,
         nextSectionTapped: @escaping () -> Void
     ) {
-        presentView(transitionStyle: .crossDissolve, content: {
+        presentView(
+            transitionStyle: .crossDissolve,
+            animated: true
+        ) {
             AlertView(
                 alertTitle: alertTitle,
                 alertMessage: alertMessage,
@@ -176,14 +187,14 @@ public class Router: AuthorizationRouter,
                 okTapped: okTapped,
                 nextSectionTapped: { nextSectionTapped() }
             )
-        })
+        }
     }
     
     public func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {
         present(transitionStyle: transitionStyle, view: view)
     }
     
-    public func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View) {
+    public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {
         let view = prepareToPresent(content(), transitionStyle: transitionStyle)
         navigationController.present(view, animated: true)
     }
@@ -486,7 +497,13 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(controllers, animated: animated)
     }
     
-    public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType) {
+    public func showThreads(
+        courseID: String,
+        topics: Topics,
+        title: String,
+        type: ThreadType,
+        animated: Bool
+    ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(PostsViewModel.self)!
         let view = PostsView(
@@ -499,20 +516,25 @@ public class Router: AuthorizationRouter,
             router: router
         )
         let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: animated)
     }
     
-    public func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>) {
+    public func showThread(
+        thread: UserThread,
+        postStateSubject: CurrentValueSubject<PostState?, Never>,
+        animated: Bool
+    ) {
         let viewModel = Container.shared.resolve(ThreadViewModel.self, argument: postStateSubject)!
         let view = ThreadView(thread: thread, viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: animated)
     }
     
     public func showComments(
         commentID: String,
         parentComment: Post,
-        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
+        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
+        animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(ResponsesViewModel.self, argument: threadStateSubject)!
@@ -523,7 +545,7 @@ public class Router: AuthorizationRouter,
             parentComment: parentComment
         )
         let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: animated)
     }
     
     public func createNewThread(
@@ -552,7 +574,7 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showEditProfile(
+    public func  showEditProfile(
         userModel: Core.UserProfile,
         avatar: UIImage?,
         profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
@@ -646,3 +668,4 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
 }
+// swiftlint:enable file_length type_body_length

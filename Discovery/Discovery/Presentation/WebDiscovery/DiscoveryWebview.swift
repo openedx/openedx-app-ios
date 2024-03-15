@@ -23,7 +23,7 @@ public struct DiscoveryWebview: View {
     @ObservedObject private var viewModel: DiscoveryWebviewViewModel
     private var router: DiscoveryRouter
     private var discoveryType: DiscoveryWebviewType
-    private var pathID: String
+    public var pathID: String
     
     private var URLString: String {
         switch discoveryType {

@@ -11,11 +11,9 @@ import Theme
 
 public struct EditProfileView: View {
     
-    @ObservedObject private var viewModel: EditProfileViewModel
+    @ObservedObject public var viewModel: EditProfileViewModel
     @State private var showingImagePicker = false
     @State private var showingBottomSheet = false
-    private var oldAvatar: UIImage?
-    private var profileDidEdit: ((UserProfile?, UIImage?)) -> Void
     
     public init(
         viewModel: EditProfileViewModel,
@@ -23,9 +21,9 @@ public struct EditProfileView: View {
         profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
     ) {
         self.viewModel = viewModel
-        self.profileDidEdit = profileDidEdit
+        self.viewModel.profileDidEdit = profileDidEdit
         self.viewModel.inputImage = avatar
-        self.oldAvatar = avatar
+        self.viewModel.oldAvatar = avatar
         self.viewModel.loadLocationsAndSpokenLanguages()
     }
     
@@ -54,7 +52,6 @@ public struct EditProfileView: View {
                                 }.offset(x: 36, y: 50)
                             )
                     })
-                    .disabled(!viewModel.isEditable)
                     .accessibilityIdentifier("change_profile_image_button")
                     
                     Text(viewModel.userModel.name)
@@ -151,11 +148,6 @@ public struct EditProfileView: View {
                 })
                 .onRightSwipeGesture {
                     viewModel.backButtonTapped()
-                    if viewModel.profileChanges.isAvatarSaved {
-                        self.profileDidEdit((viewModel.editedProfile, viewModel.inputImage))
-                    } else {
-                        self.profileDidEdit((viewModel.editedProfile, oldAvatar))
-                    }
                 }
                 .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 .frameLimit(sizePortrait: 420)
@@ -249,13 +241,6 @@ public struct EditProfileView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
-        .onDisappear {
-            if viewModel.profileChanges.isAvatarSaved {
-                self.profileDidEdit((viewModel.editedProfile, viewModel.inputImage))
-            } else {
-                self.profileDidEdit((viewModel.editedProfile, oldAvatar))
-            }
-        }
     }
 }
 

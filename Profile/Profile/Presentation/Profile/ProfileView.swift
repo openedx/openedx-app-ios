@@ -87,6 +87,11 @@ public struct ProfileView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { _ in
+            Task {
+                await viewModel.getMyProfile()
+            }
+        }
     }
 
     private var progressBar: some View {
@@ -216,7 +221,10 @@ public struct ProfileView: View {
     private var logOutButton: some View {
         VStack {
             Button(action: {
-                viewModel.router.presentView(transitionStyle: .crossDissolve) {
+                viewModel.router.presentView(
+                    transitionStyle: .crossDissolve,
+                    animated: true
+                ) {
                     AlertView(
                         alertTitle: ProfileLocalization.LogoutAlert.title,
                         alertMessage: ProfileLocalization.LogoutAlert.text,

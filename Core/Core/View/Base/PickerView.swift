@@ -33,7 +33,10 @@ public struct PickerView: View {
                             Animation.easeInOut(duration: 0.3)
                         ) {
                             let pickerItems = config.field.options.map { PickerItem(key: $0.value, value: $0.name) }
-                            router.presentView(transitionStyle: .crossDissolve) {
+                            router.presentView(
+                                transitionStyle: .crossDissolve,
+                                animated: true
+                            ) {
                                 PickerMenu(items: pickerItems,
                                            titleText: config.field.label,
                                            router: router,

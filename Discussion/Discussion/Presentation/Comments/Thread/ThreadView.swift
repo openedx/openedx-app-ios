@@ -12,7 +12,7 @@ import Theme
 public struct ThreadView: View {
     
     private var title: String
-    private let thread: UserThread
+    public let thread: UserThread
     private var onBackTapped: (() -> Void) = {}
     
     @ObservedObject private var viewModel: ThreadViewModel
@@ -123,7 +123,8 @@ public struct ThreadView: View {
                                                 viewModel.router.showComments(
                                                     commentID: comment.commentID,
                                                     parentComment: comment,
-                                                    threadStateSubject: viewModel.threadStateSubject
+                                                    threadStateSubject: viewModel.threadStateSubject, 
+                                                    animated: true
                                                 )
                                             },
                                             onFetchMore: {

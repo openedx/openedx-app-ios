@@ -17,8 +17,8 @@ public struct HandoutsUpdatesDetailView: View {
     
     private var router: CourseRouter
     private let cssInjector: CSSInjector
-    private var handouts: String?
-    private var announcements: [CourseUpdate]?
+    public var handouts: String?
+    public var announcements: [CourseUpdate]?
     private let title: String
     
     public init(
