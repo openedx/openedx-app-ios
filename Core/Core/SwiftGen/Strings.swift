@@ -23,6 +23,10 @@ public enum CoreLocalization {
   public enum Alert {
     /// ACCEPT
     public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "ACCEPT")
+    /// Add
+    public static let add = CoreLocalization.tr("Localizable", "ALERT.ADD", fallback: "Add")
+    /// Remove course calendar
+    public static let calendarShiftPromptRemoveCourseCalendar = CoreLocalization.tr("Localizable", "ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR", fallback: "Remove course calendar")
     /// CANCEL
     public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "CANCEL")
     /// DELETE
@@ -33,6 +37,8 @@ public enum CoreLocalization {
     public static let leave = CoreLocalization.tr("Localizable", "ALERT.LEAVE", fallback: "Leave")
     /// Log out
     public static let logout = CoreLocalization.tr("Localizable", "ALERT.LOGOUT", fallback: "Log out")
+    /// Remove
+    public static let remove = CoreLocalization.tr("Localizable", "ALERT.REMOVE", fallback: "Remove")
   }
   public enum Courseware {
     /// Back to outline

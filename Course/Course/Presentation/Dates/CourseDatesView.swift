@@ -41,7 +41,53 @@ public struct CourseDatesView: View {
             }
             
             if viewModel.dueDatesShifted {
-                DatesShiftedSuccessView(selectedTab: .dates, courseDatesViewModel: viewModel)
+                DatesSuccessView(title: CourseLocalization.CourseDates.toastSuccessTitle,
+                                 message: CourseLocalization.CourseDates.toastSuccessMessage,
+                                 selectedTab: .dates,
+                                 courseDatesViewModel: viewModel
+                )
+            }
+            
+            if viewModel.calendarEventsAdded {
+                DatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsAdded,
+                    selectedTab: .dates
+                ) {
+                    Task {
+                        await MainActor.run {
+                            viewModel.calendarEventsAdded = false
+                        }
+                    }
+                }
+            }
+            
+            if viewModel.calendarEventsRemoved {
+                DatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsRemoved,
+                    selectedTab: .dates
+                ) {
+                    Task {
+                        await MainActor.run {
+                            viewModel.calendarEventsRemoved = false
+                        }
+                    }
+                }
+            }
+            
+            if viewModel.calendarEventsUpdated {
+                DatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsUpdated,
+                    selectedTab: .dates
+                ) {
+                    Task {
+                        await MainActor.run {
+                            viewModel.calendarEventsUpdated = false
+                        }
+                    }
+                }
             }
             
             if viewModel.showError {
@@ -107,6 +153,9 @@ struct CourseDateListView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     if !courseDates.hasEnded {
+                        CalendarSyncView(courseID: courseID, viewModel: viewModel)
+                            .padding(.bottom, 16)
+                        
                         DatesStatusInfoView(
                             datesBannerInfo: courseDates.datesBannerInfo,
                             courseID: courseID,
@@ -333,6 +382,43 @@ struct StyleBlock: View {
     }
 }
 
+struct CalendarSyncView: View {
+    let courseID: String
+    @ObservedObject var viewModel: CourseDatesViewModel
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Spacer()
+            HStack {
+                CoreAssets.syncToCalendar.swiftUIImage
+                Toggle(
+                    CourseLocalization.CourseDates.syncToCalendar,
+                    isOn: $viewModel.isOn)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(Theme.Fonts.titleMedium)
+                .foregroundColor(Theme.Colors.textPrimary)
+                .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentButtonColor))
+                .onTapGesture {
+                    viewModel.calendarState = !viewModel.isOn
+                }
+            }
+            .padding(.horizontal, 16)
+            
+            Text(CourseLocalization.CourseDates.syncToCalendarMessage)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+                .padding(.horizontal, 16)
+            Spacer()
+        }
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+        )
+        .background(Theme.Colors.datesSectionBackground)
+    }
+}
+
 fileprivate extension BlockStatus {
     var title: String {
         switch self {
@@ -393,7 +479,9 @@ struct CourseDatesView_Previews: PreviewProvider {
             router: CourseRouterMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity(),
-            courseID: "")
+            config: ConfigMock(),
+            courseID: "",
+            courseName: "")
         
         CourseDatesView(
             courseID: "",

@@ -17,6 +17,7 @@ final class CourseDateViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
+        let config = ConfigMock()
         
         let courseDates = CourseDates(
             datesBannerInfo:
@@ -38,7 +39,9 @@ final class CourseDateViewModelTests: XCTestCase {
             router: router,
             cssInjector: cssInjector,
             connectivity: connectivity,
-            courseID: "1")
+            config: config,
+            courseID: "1",
+            courseName: "a")
         
         await viewModel.getCourseDates(courseID: "1")
         
@@ -55,6 +58,7 @@ final class CourseDateViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
+        let config = ConfigMock()
         
         Given(interactor, .getCourseDates(courseID: .any, willThrow: NSError()))
         
@@ -63,7 +67,9 @@ final class CourseDateViewModelTests: XCTestCase {
             router: router,
             cssInjector: cssInjector,
             connectivity: connectivity,
-            courseID: "1")
+            config: config,
+            courseID: "1",
+            courseName: "a")
         
         await viewModel.getCourseDates(courseID: "1")
         
@@ -78,6 +84,7 @@ final class CourseDateViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
+        let config = ConfigMock()
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -88,7 +95,9 @@ final class CourseDateViewModelTests: XCTestCase {
             router: router,
             cssInjector: cssInjector,
             connectivity: connectivity,
-            courseID: "1")
+            config: config,
+            courseID: "1",
+            courseName: "a")
         
         await viewModel.getCourseDates(courseID: "1")
         

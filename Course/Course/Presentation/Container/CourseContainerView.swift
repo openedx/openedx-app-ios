@@ -124,7 +124,7 @@ public struct CourseContainerView: View {
                     CourseDatesView(
                         courseID: courseID,
                         viewModel: Container.shared.resolve(CourseDatesViewModel.self,
-                                                            argument: courseID)!
+                                                            arguments: courseID, title)!
                     )
                     .tabItem {
                         tab.image

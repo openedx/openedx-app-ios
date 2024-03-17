@@ -39,6 +39,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Block 1",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: true
             )
@@ -55,6 +56,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .problem,
                 displayName: "Block 1",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: false
             )
@@ -70,6 +72,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .discussion,
                 displayName: "Block 1",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: true
             )
@@ -85,6 +88,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Block 1",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: false
             )
@@ -100,6 +104,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "Block 1",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: true
             )

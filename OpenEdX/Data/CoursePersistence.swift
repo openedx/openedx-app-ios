@@ -113,6 +113,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 graded: $0.graded,
                 completion: $0.completion,
                 studentUrl: $0.studentUrl ?? "",
+                webUrl: $0.webUrl ?? "",
                 type: $0.type ?? "",
                 displayName: $0.displayName ?? "",
                 descendants: $0.descendants,

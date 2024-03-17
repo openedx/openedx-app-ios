@@ -55,6 +55,13 @@ public struct CourseDates {
         
         return statusDatesBlocks
     }
+    
+    var dateBlocks: [Date: [CourseDateBlock]] {
+        return courseDateBlocks.reduce(into: [:]) { result, block in
+            let date = block.date
+            result[date, default: []].append(block)
+        }
+    }
 }
 
 extension Date {
@@ -279,4 +286,18 @@ public enum CompletionStatus: String {
     case thisWeek = "This Week"
     case nextWeek = "Next Week"
     case upcoming = "Upcoming"
+}
+
+extension Array {
+    mutating func modifyForEach(_ body: (_ element: inout Element) -> Void) {
+        for index in indices {
+            modifyElement(atIndex: index) { body(&$0) }
+        }
+    }
+
+    mutating func modifyElement(atIndex index: Index, _ modifyElement: (_ element: inout Element) -> Void) {
+        var element = self[index]
+        modifyElement(&element)
+        self[index] = element
+    }
 }
