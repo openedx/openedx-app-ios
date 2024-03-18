@@ -217,7 +217,7 @@ public class Router: AuthorizationRouter,
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
         
-        authAnalytics.signUpClicked()
+        authAnalytics.registerClicked()
     }
 
     public func showForgotPasswordScreen() {

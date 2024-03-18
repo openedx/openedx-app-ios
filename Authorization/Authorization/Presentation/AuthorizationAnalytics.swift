@@ -14,7 +14,7 @@ public enum AuthMethod: Equatable {
     public var analyticsValue: String {
         switch self {
         case .password:
-            "Password"
+            "password"
         case .socailAuth(let socialAuthMethod):
             socialAuthMethod.rawValue
         }
@@ -22,21 +22,21 @@ public enum AuthMethod: Equatable {
 }
 
 public enum SocialAuthMethod: String {
-    case facebook = "Facebook"
-    case google = "Google"
-    case microsoft = "Microsoft"
-    case apple = "Apple"
+    case facebook = "facebook"
+    case google = "google"
+    case microsoft = "microsoft"
+    case apple = "apple"
 }
 
 //sourcery: AutoMockable
 public protocol AuthorizationAnalytics {
     func identify(id: String, username: String, email: String)
     func userLogin(method: AuthMethod)
-    func signUpClicked()
+    func registerClicked()
     func signInClicked()
     func userSignInClicked()
     func createAccountClicked()
-    func registrationSuccess()
+    func registrationSuccess(method: String)
     func forgotPasswordClicked()
     func resetPasswordClicked()
     func resetPassword(success: Bool)
@@ -46,11 +46,11 @@ public protocol AuthorizationAnalytics {
 class AuthorizationAnalyticsMock: AuthorizationAnalytics {
     func identify(id: String, username: String, email: String) {}
     public func userLogin(method: AuthMethod) {}
-    public func signUpClicked() {}
+    public func registerClicked() {}
     public func signInClicked() {}
     public func userSignInClicked() {}
     public func createAccountClicked() {}
-    public func registrationSuccess() {}
+    public func registrationSuccess(method: String) {}
     public func forgotPasswordClicked() {}
     public func resetPasswordClicked() {}
     public func resetPassword(success: Bool) {}

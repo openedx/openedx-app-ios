@@ -90,8 +90,8 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.userLogin, parameters: [EventParamKey.method: method.analyticsValue])
     }
     
-    public func signUpClicked() {
-        logEvent(.signUpClicked)
+    public func registerClicked() {
+        trackEvent(.registerClicked, biValue: .registerClicked)
     }
     
     public func signInClicked() {
@@ -103,15 +103,19 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     public func createAccountClicked() {
-        logEvent(.createAccountClicked)
+        trackEvent(.createAccountClicked, biValue: .createAccountClicked)
     }
     
-    public func registrationSuccess() {
-        logEvent(.registrationSuccess)
+    public func registrationSuccess(method: String) {
+        let parameters = [
+            EventParamKey.method: method,
+            EventParamKey.name: EventBIValue.registrationSuccess.rawValue
+        ]
+        logEvent(.registrationSuccess, parameters: parameters)
     }
     
     public func forgotPasswordClicked() {
-        logEvent(.forgotPasswordClicked)
+        trackEvent(.forgotPasswordClicked, biValue: .forgotPasswordClicked)
     }
     
     public func resetPasswordClicked() {
@@ -129,37 +133,39 @@ class AnalyticsManager: AuthorizationAnalytics,
     // MARK: MainScreenAnalytics
     
     public func mainDiscoveryTabClicked() {
-        logEvent(.mainDiscoveryTabClicked)
+        trackEvent(.mainDiscoveryTabClicked, biValue: .mainDiscoveryTabClicked)
     }
     
     public func mainDashboardTabClicked() {
-        logEvent(.mainDashboardTabClicked)
+        trackEvent(.mainDashboardTabClicked, biValue: .mainDashboardTabClicked)
     }
     
     public func mainProgramsTabClicked() {
-        logEvent(.mainProgramsTabClicked)
+        trackEvent(.mainProgramsTabClicked, biValue: .mainProgramsTabClicked)
     }
     
     public func mainProfileTabClicked() {
-        logEvent(.mainProfileTabClicked)
+        trackEvent(.mainProfileTabClicked, biValue: .mainProfileTabClicked)
     }
     
     // MARK: Discovery
     
     public func discoverySearchBarClicked() {
-        logEvent(.discoverySearchBarClicked)
+        trackEvent(.discoverySearchBarClicked, biValue: .discoverySearchBarClicked)
     }
     
     public func discoveryCoursesSearch(label: String, coursesCount: Int) {
-        logEvent(.discoveryCoursesSearch,
-                 parameters: [EventParamKey.label: label,
-                              EventParamKey.coursesCount: coursesCount])
+        let parameters: [String: Any] = [EventParamKey.label: label,
+                          EventParamKey.coursesCount: coursesCount,
+                          EventParamKey.name: EventBIValue.discoveryCoursesSearch.rawValue]
+        logEvent(.discoveryCoursesSearch, parameters: parameters)
     }
     
     public func discoveryCourseClicked(courseID: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseID,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.discoveryCourseClicked.rawValue
         ]
         logEvent(.discoveryCourseClicked, parameters: parameters)
     }
@@ -169,7 +175,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func dashboardCourseClicked(courseID: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseID,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.dashboardCourseClicked.rawValue
         ]
         logEvent(.dashboardCourseClicked, parameters: parameters)
     }
@@ -177,7 +184,12 @@ class AnalyticsManager: AuthorizationAnalytics,
     // MARK: Profile
     
     public func profileEditClicked() {
-        logEvent(.profileEditClicked)
+        let parameters = [
+            EventParamKey.name: EventBIValue.profileEditClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        
+        logEvent(.profileEditClicked, parameters: parameters)
     }
     
     public func profileSwitch(action: String) {
@@ -199,15 +211,27 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     public func profileEditDoneClicked() {
-        logEvent(.profileEditDoneClicked)
+        let parameters = [
+            EventParamKey.name: EventBIValue.profileEditDoneClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        logEvent(.profileEditDoneClicked, parameters: parameters)
     }
     
     public func profileDeleteAccountClicked() {
+        let parameters = [
+            EventParamKey.name: EventBIValue.profileDeleteAccountClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
         logEvent(.profileDeleteAccountClicked)
     }
     
     public func profileVideoSettingsClicked() {
-        logEvent(.profileVideoSettingsClicked)
+        let parameters = [
+            EventParamKey.name: EventBIValue.profileVideoSettingsClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        logEvent(.profileVideoSettingsClicked, parameters: parameters)
     }
     
     public func profileUserDeleteAccountClicked() {
@@ -255,18 +279,58 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     public func privacyPolicyClicked() {
-        logEvent(.privacyPolicyClicked)
+        let parameters = [
+            EventParamKey.name: EventBIValue.privacyPolicyClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        logEvent(.privacyPolicyClicked, parameters: parameters)
     }
     
     public func cookiePolicyClicked() {
+        let parameters = [
+            EventParamKey.name: EventBIValue.cookiePolicyClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
         logEvent(.cookiePolicyClicked)
     }
     
     public func emailSupportClicked() {
-        logEvent(.emailSupportClicked)
+        let parameters = [
+            EventParamKey.name: EventBIValue.emailSupportClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        logEvent(.emailSupportClicked, parameters: parameters)
+    }
+    
+    public func faqClicked() {
+        let parameters = [
+            EventParamKey.name: EventBIValue.faqClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        logEvent(.faqClicked, parameters: parameters)
+    }
+    
+    public func tosClicked() {
+        let parameters = [
+            EventParamKey.name: EventBIValue.tosClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        logEvent(.tosClicked, parameters: parameters)
+    }
+    
+    public func dataSellClicked() {
+        let parameters = [
+            EventParamKey.name: EventBIValue.dataSellClicked.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
+        logEvent(.dataSellClicked, parameters: parameters)
     }
     
     public func userLogout(force: Bool) {
+        let parameters = [
+            EventParamKey.name: EventBIValue.userLogout.rawValue,
+            EventParamKey.category: EventCategory.profile
+        ]
         logEvent(.userLogout, parameters: [EventParamKey.force: force])
     }
     
@@ -275,7 +339,9 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func courseEnrollClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.conversion: courseId,
+            EventParamKey.category: EventCategory.discovery
         ]
         logEvent(.courseEnrollClicked, parameters: parameters)
     }
@@ -283,7 +349,9 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func courseEnrollSuccess(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.conversion: courseId,
+            EventParamKey.category: EventCategory.discovery
         ]
         logEvent(.courseEnrollSuccess, parameters: parameters)
     }
@@ -321,7 +389,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func viewCourseClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.category: EventCategory.discovery
         ]
         logEvent(.viewCourseClicked, parameters: parameters)
     }
@@ -330,9 +399,10 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
-            EventParamKey.blockID: blockId
+            EventParamKey.blockID: blockId,
+            EventParamKey.name: EventBIValue.resumeCourseClicked.rawValue
         ]
-        logEvent(.resumeCourseTapped, parameters: parameters)
+        logEvent(.resumeCourseClicked, parameters: parameters)
     }
     
     public func sequentialClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
@@ -340,7 +410,8 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
             EventParamKey.blockID: blockId,
-            EventParamKey.blockName: blockName
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.sequentialClicked.rawValue
         ]
         logEvent(.sequentialClicked, parameters: parameters)
     }
@@ -349,8 +420,8 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
-            EventParamKey.blockID: blockId,
-            EventParamKey.blockName: blockName
+            EventParamKey.unitID: blockId,
+            EventParamKey.unitName: blockName
         ]
         logEvent(.verticalClicked, parameters: parameters)
     }
@@ -360,7 +431,8 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
             EventParamKey.blockID: blockId,
-            EventParamKey.blockName: blockName
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.nextBlockClicked.rawValue
         ]
         logEvent(.nextBlockClicked, parameters: parameters)
     }
@@ -370,7 +442,8 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
             EventParamKey.blockID: blockId,
-            EventParamKey.blockName: blockName
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.prevBlockClicked.rawValue
         ]
         logEvent(.prevBlockClicked, parameters: parameters)
     }
@@ -380,7 +453,8 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
             EventParamKey.blockID: blockId,
-            EventParamKey.blockName: blockName
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.finishVerticalClicked.rawValue
         ]
         logEvent(.finishVerticalClicked, parameters: parameters)
     }
@@ -395,7 +469,8 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
             EventParamKey.blockID: blockId,
-            EventParamKey.blockName: blockName
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.finishVerticalNextSectionClicked.rawValue
         ]
         logEvent(.finishVerticalNextSectionClicked, parameters: parameters)
     }
@@ -403,7 +478,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func finishVerticalBackToOutlineClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.finishVerticalBackToOutlineClicked.rawValue
         ]
         logEvent(.finishVerticalBackToOutlineClicked, parameters: parameters)
     }
@@ -411,7 +487,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func courseOutlineCourseTabClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineCourseTabClicked.rawValue
         ]
         logEvent(.courseOutlineCourseTabClicked, parameters: parameters)
     }
@@ -419,7 +496,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func courseOutlineVideosTabClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineVideosTabClicked.rawValue
         ]
         logEvent(.courseOutlineVideosTabClicked, parameters: parameters)
     }
@@ -427,7 +505,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func courseOutlineDatesTabClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineDatesTabClicked.rawValue
         ]
         logEvent(.courseOutlineDatesTabClicked, parameters: parameters)
     }
@@ -435,7 +514,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func courseOutlineDiscussionTabClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineDiscussionTabClicked.rawValue
         ]
         logEvent(.courseOutlineDiscussionTabClicked, parameters: parameters)
     }
@@ -443,7 +523,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func courseOutlineHandoutsTabClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineHandoutsTabClicked.rawValue
         ]
         logEvent(.courseOutlineHandoutsTabClicked, parameters: parameters)
     }
@@ -561,7 +642,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func discussionAllPostsClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.discussionAllPostsClicked.rawValue
         ]
         logEvent(.discussionAllPostsClicked, parameters: parameters)
     }
@@ -569,7 +651,8 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func discussionFollowingClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
-            EventParamKey.courseName: courseName
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.discussionFollowingClicked.rawValue
         ]
         logEvent(.discussionFollowingClicked, parameters: parameters)
     }
@@ -579,14 +662,20 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
             EventParamKey.topicID: topicId,
-            EventParamKey.topicName: topicName
+            EventParamKey.topicName: topicName,
+            EventParamKey.name: EventBIValue.discussionTopicClicked.rawValue
         ]
         logEvent(.discussionTopicClicked, parameters: parameters)
     }
     
     // MARK: app review
     
-    public func appreview(_ event: AnalyticsEvent, biValue: EventBIValue, action: String? = nil, rating: Int? = 0) {
+    public func appreview(
+        _ event: AnalyticsEvent,
+        biValue: EventBIValue,
+        action: String? = nil,
+        rating: Int? = 0
+    ) {
         var parameters: [String: Any] = [
             EventParamKey.category: EventCategory.appreviews,
             EventParamKey.name: biValue.rawValue,

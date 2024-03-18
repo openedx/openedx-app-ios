@@ -44,7 +44,11 @@ struct HandoutsView: View {
                                     announcements: nil,
                                     router: viewModel.router,
                                     cssInjector: viewModel.cssInjector)
-                                viewModel.analytics.trackCourseEvent(.courseHandouts, biValue: .courseHandouts, courseID: courseID)
+                                viewModel.analytics.trackCourseEvent(
+                                    .courseHandouts,
+                                    biValue: .courseHandouts,
+                                    courseID: courseID
+                                )
                             })
                             Divider()
                             HandoutsItemCell(type: .announcements, onTapAction: {
@@ -54,7 +58,11 @@ struct HandoutsView: View {
                                         announcements: viewModel.updates,
                                         router: viewModel.router,
                                         cssInjector: viewModel.cssInjector)
-                                    viewModel.analytics.trackCourseEvent(.courseAnnouncement, biValue: .courseAnnouncement, courseID: courseID)
+                                    viewModel.analytics.trackCourseEvent(
+                                        .courseAnnouncement,
+                                        biValue: .courseAnnouncement,
+                                        courseID: courseID
+                                    )
                                 }
                             })
                         }.padding(.horizontal, 32)

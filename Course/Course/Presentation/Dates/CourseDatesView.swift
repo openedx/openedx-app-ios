@@ -324,8 +324,7 @@ struct StyleBlock: View {
                         await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
                     }
                     viewModel.logdateComponentTapped(block: block, supported: true)
-                }
-                else {
+                } else {
                     viewModel.logdateComponentTapped(block: block, supported: false)
                 }
             }

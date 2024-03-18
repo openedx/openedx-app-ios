@@ -18,6 +18,9 @@ public protocol ProfileAnalytics {
     func privacyPolicyClicked()
     func cookiePolicyClicked()
     func emailSupportClicked()
+    func faqClicked()
+    func tosClicked()
+    func dataSellClicked()
     func userLogout(force: Bool)
     func profileWifiToggle(action: String)
     func profileUserDeleteAccountClicked()
@@ -35,6 +38,9 @@ class ProfileAnalyticsMock: ProfileAnalytics {
     public func privacyPolicyClicked() {}
     public func cookiePolicyClicked() {}
     public func emailSupportClicked() {}
+    public func faqClicked() {}
+    public func tosClicked() {}
+    public func dataSellClicked() {}
     public func userLogout(force: Bool) {}
     public func profileWifiToggle(action: String) {}
     public func profileUserDeleteAccountClicked() {}

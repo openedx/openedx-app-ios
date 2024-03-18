@@ -140,6 +140,18 @@ public class ProfileViewModel: ObservableObject {
         analytics.cookiePolicyClicked()
     }
     
+    func trackTOSClicked() {
+        analytics.tosClicked()
+    }
+    
+    func trackFAQClicked() {
+        analytics.faqClicked()
+    }
+    
+    func trackDataSellClicked() {
+        analytics.dataSellClicker()
+    }
+    
     func trackPrivacyPolicyClicked() {
         analytics.privacyPolicyClicked()
     }

@@ -63,7 +63,7 @@ public protocol CourseAnalytics {
 
 #if DEBUG
 class CourseAnalyticsMock: CourseAnalytics {
-    public func resumeCourseTapped(courseId: String, courseName: String, blockId: String) {}
+    public func resumeCourseClicked(courseId: String, courseName: String, blockId: String) {}
     public func sequentialClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func verticalClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func nextBlockClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}

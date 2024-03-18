@@ -54,6 +54,7 @@ public class SignUpViewModel: ObservableObject {
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
+    var authMethod: AuthMethod = .password
 
     public init(
         interactor: AuthInteractorProtocol,
@@ -121,7 +122,7 @@ public class SignUpViewModel: ObservableObject {
     private var backend: String?
 
     @MainActor
-    func registerUser() async {
+    func registerUser(authMetod: AuthMethod) async {
         do {
             let validateFields = configureFields()
             let errors = try await interactor.validateRegistrationFields(fields: validateFields)
@@ -132,7 +133,7 @@ public class SignUpViewModel: ObservableObject {
                 isSocial: externalToken != nil
             )
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
-            analytics.registrationSuccess()
+            analytics.registrationSuccess(method: authMetod.analyticsValue)
             isShowProgress = false
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
             
@@ -198,7 +199,8 @@ public class SignUpViewModel: ObservableObject {
             self.backend = backend
             thirdPartyAuthSuccess = true
             isShowProgress = false
-            await registerUser()
+            self.authMethod = authMethod
+            await registerUser(authMetod: authMethod)
         }
     }
 
