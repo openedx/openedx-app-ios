@@ -122,7 +122,7 @@ public class SignUpViewModel: ObservableObject {
     private var backend: String?
 
     @MainActor
-    func registerUser(authMetod: AuthMethod) async {
+    func registerUser(authMetod: AuthMethod = .password) async {
         do {
             let validateFields = configureFields()
             let errors = try await interactor.validateRegistrationFields(fields: validateFields)

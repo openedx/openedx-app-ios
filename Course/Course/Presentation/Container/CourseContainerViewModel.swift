@@ -348,7 +348,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         )
     }
     
-    func trackResumeCourseTapped(blockId: String) {
+    func trackResumeCourseClicked(blockId: String) {
         guard let course = courseStructure else { return }
         analytics.resumeCourseClicked(
             courseId: course.id,

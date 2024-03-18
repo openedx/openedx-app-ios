@@ -97,7 +97,7 @@ public struct CourseOutlineView: View {
                                         }
                                     }
                                     
-                                    viewModel.trackResumeCourseTapped(
+                                    viewModel.trackResumeCourseClicked(
                                         blockId: continueBlock?.id ?? ""
                                     )
                                     

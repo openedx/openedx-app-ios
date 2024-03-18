@@ -1433,9 +1433,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
 
 
-    open func resumeCourseTapped(courseId: String, courseName: String, blockId: String) {
-        addInvocation(.m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`)))
-		let perform = methodPerformValue(.m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`))) as? (String, String, String) -> Void
+    open func resumeCourseClicked(courseId: String, courseName: String, blockId: String) {
+        addInvocation(.m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`)))
+		let perform = methodPerformValue(.m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`))) as? (String, String, String) -> Void
 		perform?(`courseId`, `courseName`, `blockId`)
     }
 
@@ -1555,7 +1555,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
 
     fileprivate enum MethodType {
-        case m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>, Parameter<String>, Parameter<String>)
+        case m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(Parameter<String>, Parameter<String>, Parameter<String>)
         case m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
         case m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
         case m_nextBlockClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
@@ -1578,7 +1578,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(let lhsCourseid, let lhsCoursename, let lhsBlockid), .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(let rhsCourseid, let rhsCoursename, let rhsBlockid)):
+            case (.m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(let lhsCourseid, let lhsCoursename, let lhsBlockid), .m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(let rhsCourseid, let rhsCoursename, let rhsBlockid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
@@ -1729,7 +1729,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 
         func intValue() -> Int {
             switch self {
-            case let .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_nextBlockClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
@@ -1753,7 +1753,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         }
         func assertionName() -> String {
             switch self {
-            case .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId: return ".resumeCourseTapped(courseId:courseName:blockId:)"
+            case .m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId: return ".resumeCourseClicked(courseId:courseName:blockId:)"
             case .m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".sequentialClicked(courseId:courseName:blockId:blockName:)"
             case .m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".verticalClicked(courseId:courseName:blockId:blockName:)"
             case .m_nextBlockClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".nextBlockClicked(courseId:courseName:blockId:blockName:)"
@@ -1791,7 +1791,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func resumeCourseTapped(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>) -> Verify { return Verify(method: .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(`courseId`, `courseName`, `blockId`))}
+        public static func resumeCourseClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>) -> Verify { return Verify(method: .m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(`courseId`, `courseName`, `blockId`))}
         public static func sequentialClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
         public static func verticalClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_verticalClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
         public static func nextBlockClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_nextBlockClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
@@ -1817,8 +1817,8 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func resumeCourseTapped(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, perform: @escaping (String, String, String) -> Void) -> Perform {
-            return Perform(method: .m_resumeCourseTapped__courseId_courseIdcourseName_courseNameblockId_blockId(`courseId`, `courseName`, `blockId`), performs: perform)
+        public static func resumeCourseClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, perform: @escaping (String, String, String) -> Void) -> Perform {
+            return Perform(method: .m_resumeCourseClicked__courseId_courseIdcourseName_courseNameblockId_blockId(`courseId`, `courseName`, `blockId`), performs: perform)
         }
         public static func sequentialClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>, perform: @escaping (String, String, String, String) -> Void) -> Perform {
             return Perform(method: .m_sequentialClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`), performs: perform)
