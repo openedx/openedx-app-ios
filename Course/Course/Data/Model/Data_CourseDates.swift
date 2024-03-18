@@ -60,8 +60,6 @@ public extension DataLayer {
         }
         
         var status: BannerInfoStatus? {
-            return .resetDatesBanner
-            
             if upgradeToCompleteGraded {
                 return .upgradeToCompleteGradedBanner
             } else if upgradeToReset {
