@@ -83,7 +83,7 @@ public struct FlexibleKeyboardInputView: View {
                                 VStack {
                                     CoreAssets.send.swiftUIImage
                                         .renderingMode(.template)
-                                        .foregroundStyle(Theme.Colors.accentColor)
+                                        .foregroundStyle(Theme.Colors.accentXColor)
                                         .opacity(canSend ? 1 : 0.5)
                                 }
                                 .frame(width: 36, height: 36)
