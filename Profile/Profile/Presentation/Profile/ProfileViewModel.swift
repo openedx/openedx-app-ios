@@ -149,7 +149,7 @@ public class ProfileViewModel: ObservableObject {
     }
     
     func trackDataSellClicked() {
-        analytics.dataSellClicker()
+        analytics.dataSellClicked()
     }
     
     func trackPrivacyPolicyClicked() {

@@ -10,7 +10,7 @@ import Core
 
 //sourcery: AutoMockable
 public protocol CourseAnalytics {
-    func resumeCourseTapped(courseId: String, courseName: String, blockId: String)
+    func resumeCourseClicked(courseId: String, courseName: String, blockId: String)
     func sequentialClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func verticalClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func nextBlockClicked(courseId: String, courseName: String, blockId: String, blockName: String)

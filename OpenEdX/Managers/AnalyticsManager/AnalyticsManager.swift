@@ -395,7 +395,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.viewCourseClicked, parameters: parameters)
     }
     
-    public func resumeCourseTapped(courseId: String, courseName: String, blockId: String) {
+    public func resumeCourseClicked(courseId: String, courseName: String, blockId: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,

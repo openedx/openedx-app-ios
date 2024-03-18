@@ -350,7 +350,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     
     func trackResumeCourseTapped(blockId: String) {
         guard let course = courseStructure else { return }
-        analytics.resumeCourseTapped(
+        analytics.resumeCourseClicked(
             courseId: course.id,
             courseName: course.displayName,
             blockId: blockId
