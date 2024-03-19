@@ -261,21 +261,25 @@ public extension View {
     func sheetNavigation(isSheet: Bool, onDismiss: (() -> Void)? = nil) -> some View {
         if isSheet {
             NavigationView {
-                self
-                    .if(onDismiss != nil) { view in
-                        view
-                            .toolbar {
-                                ToolbarItem(placement: .navigationBarTrailing) {
-                                    Button {
-                                        onDismiss?()
-                                    } label: {
-                                        Image(systemName: "xmark")
-                                            .foregroundColor(Theme.Colors.accentColor)
+                ZStack {
+                    Theme.Colors.background
+                        .ignoresSafeArea()
+                    self
+                        .if(onDismiss != nil) { view in
+                            view
+                                .toolbar {
+                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        Button {
+                                            onDismiss?()
+                                        } label: {
+                                            Image(systemName: "xmark")
+                                                .foregroundColor(Theme.Colors.accentColor)
+                                        }
+                                        .accessibilityIdentifier("close_button")
                                     }
-                                    .accessibilityIdentifier("close_button")
                                 }
-                            }
-                    }
+                        }
+                }
             }
         } else {
             self
