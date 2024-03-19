@@ -32,8 +32,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
-	<string>edX would like to use your calendar list to subscribe to your personalized edX calendar for this course.</string>
+	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>edX would like to use your calendar list to subscribe to your personalized edX calendar for this course.</string>
+	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
 </dict>
 </plist>

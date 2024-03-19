@@ -32,7 +32,23 @@ final class CourseDateViewModelTests: XCTestCase {
             learnerIsFullAccess: false,
             userTimezone: nil)
         
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: [],
+            media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
+                                                                small: "",
+                                                                large: "")),
+            certificate: nil
+        )
+        
         Given(interactor, .getCourseDates(courseID: .any, willReturn: courseDates))
+        Given(interactor, .getLoadedCourseBlocks(courseID: .any, willReturn: courseStructure))
         
         let viewModel = CourseDatesViewModel(
             interactor: interactor,
