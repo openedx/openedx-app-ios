@@ -11,7 +11,7 @@
 #
 
 # Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+update_fastlane
 
 before_all do
   xcversion(version: "~> 15.0.0")
@@ -34,7 +34,7 @@ end
 lane :unit_tests do
   run_tests(
     workspace: "OpenEdX.xcworkspace",
-    device: "iPhone 14",
+    device: "iPhone 15",
     scheme: "OpenEdXDev"
   )
 end
