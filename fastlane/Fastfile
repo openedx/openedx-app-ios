@@ -11,10 +11,13 @@
 #
 
 # Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+update_fastlane
 
 before_all do
-  xcversion(version: "~> 15.0.0")
+  xcodes(
+    version: '15.2',
+    select_for_current_build_only: true,
+  )
 
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "180"
   ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "180"
@@ -34,7 +37,7 @@ end
 lane :unit_tests do
   run_tests(
     workspace: "OpenEdX.xcworkspace",
-    device: "iPhone 14",
+    device: "iPhone 15",
     scheme: "OpenEdXDev"
   )
 end
