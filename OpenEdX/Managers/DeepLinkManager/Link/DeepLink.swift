@@ -50,13 +50,13 @@ public class DeepLink {
     var type: DeepLinkType
     
     init(dictionary: [AnyHashable: Any]) {
-        courseID = dictionary[DeepLinkKeys.courseID] as? String
-        screenName = dictionary[DeepLinkKeys.screenName] as? String
-        pathID = dictionary[DeepLinkKeys.pathID] as? String
-        topicID = dictionary[DeepLinkKeys.topicID] as? String
-        threadID = dictionary[DeepLinkKeys.threadID] as? String
-        commentID = dictionary[DeepLinkKeys.commentID] as? String
-        componentID = dictionary[DeepLinkKeys.componentID] as? String
+        courseID = dictionary[DeepLinkKeys.courseID.rawValue] as? String
+        screenName = dictionary[DeepLinkKeys.screenName.rawValue] as? String
+        pathID = dictionary[DeepLinkKeys.pathID.rawValue] as? String
+        topicID = dictionary[DeepLinkKeys.topicID.rawValue] as? String
+        threadID = dictionary[DeepLinkKeys.threadID.rawValue] as? String
+        commentID = dictionary[DeepLinkKeys.commentID.rawValue] as? String
+        componentID = dictionary[DeepLinkKeys.componentID.rawValue] as? String
         type = DeepLinkType(rawValue: screenName ?? DeepLinkType.none.rawValue) ?? .none
     }
 }

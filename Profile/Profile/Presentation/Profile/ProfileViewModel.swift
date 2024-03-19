@@ -96,7 +96,7 @@ public class ProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    func getMyProfile(withProgress: Bool = true) async {
+    public func getMyProfile(withProgress: Bool = true) async {
         do {
             let userModel = interactor.getMyProfileOffline()
             if userModel == nil && connectivity.isInternetAvaliable {
@@ -127,7 +127,7 @@ public class ProfileViewModel: ObservableObject {
         router.showStartupScreen()
         analytics.userLogout(force: false)
     }
-    
+
     func trackProfileVideoSettingsClicked() {
         analytics.profileVideoSettingsClicked()
     }
