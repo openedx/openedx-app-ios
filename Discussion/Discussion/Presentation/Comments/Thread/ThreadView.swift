@@ -81,7 +81,7 @@ public struct ThreadView: View {
                                             }
                                         }
                                     )
-                                    
+
                                     HStack {
                                         Text("\(viewModel.itemsCount)")
                                         Text(DiscussionLocalization.responsesCount(viewModel.itemsCount))
@@ -92,7 +92,7 @@ public struct ThreadView: View {
                                     .padding(.leading, 24)
                                     .font(Theme.Fonts.titleMedium)
                                     .foregroundColor(Theme.Colors.textPrimary)
-                                    
+
                                     ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
                                         CommentCell(
                                             comment: comment,
@@ -123,7 +123,8 @@ public struct ThreadView: View {
                                                 viewModel.router.showComments(
                                                     commentID: comment.commentID,
                                                     parentComment: comment,
-                                                    threadStateSubject: viewModel.threadStateSubject, 
+                                                    threadStateSubject: viewModel.threadStateSubject,
+                                                    isBlackedOut: viewModel.isBlackedOut,
                                                     animated: true
                                                 )
                                             },
@@ -152,7 +153,7 @@ public struct ThreadView: View {
                                 viewModel.sendUpdateUnreadState()
                             }
                         }
-                        if !thread.closed {
+                        if !(thread.closed  || viewModel.isBlackedOut) {
                             FlexibleKeyboardInputView(
                                 hint: DiscussionLocalization.Thread.addResponse,
                                 sendText: { commentText in

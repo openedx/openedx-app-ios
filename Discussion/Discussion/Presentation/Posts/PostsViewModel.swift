@@ -61,6 +61,8 @@ public class PostsViewModel: ObservableObject {
     @Published var filterButtons: [ActionSheet.Button] = []
     
     public var courseID: String?
+    var isBlackedOut: Bool = false
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -161,6 +163,7 @@ public class PostsViewModel: ObservableObject {
                     self.router.showThread(
                         thread: actualThread,
                         postStateSubject: self.postStateSubject,
+                        isBlackedOut: self.isBlackedOut,
                         animated: true
                     )
                 }))

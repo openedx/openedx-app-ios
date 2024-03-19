@@ -20,7 +20,7 @@ public struct PostsView: View {
     private let currentBlockID: String
     private let courseID: String
     private var showTopMenu: Bool
-    
+
     public init(
         courseID: String,
         currentBlockID: String,
@@ -29,7 +29,8 @@ public struct PostsView: View {
         type: ThreadType,
         viewModel: PostsViewModel,
         router: DiscussionRouter,
-        showTopMenu: Bool = true
+        showTopMenu: Bool = true,
+        isBlackedOut: Bool = false
     ) {
         self.courseID = courseID
         self.title = title
@@ -37,18 +38,25 @@ public struct PostsView: View {
         self.router = router
         self.showTopMenu = showTopMenu
         self.viewModel = viewModel
+        self.viewModel.isBlackedOut = isBlackedOut
         self.viewModel.courseID = courseID
         self.viewModel.topics = topics
         viewModel.type = type
     }
     
-    public init(courseID: String, router: DiscussionRouter, viewModel: PostsViewModel) {
+    public init(
+        courseID: String,
+        router: DiscussionRouter,
+        viewModel: PostsViewModel,
+        isBlackedOut: Bool = false
+    ) {
         self.courseID = courseID
         self.title = ""
         self.currentBlockID = ""
         self.router = router
         self.viewModel = viewModel
         self.showTopMenu = true
+        self.viewModel.isBlackedOut = isBlackedOut
         self.viewModel.courseID = courseID
     }
 
@@ -119,29 +127,31 @@ public struct PostsView: View {
                                                 .font(Theme.Fonts.titleLarge)
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                             Spacer()
-                                            Button(action: {
-                                                router.createNewThread(
-                                                    courseID: courseID,
-                                                    selectedTopic: currentBlockID,
-                                                    onPostCreated: {
-                                                        reloadPage(onSuccess: {
-                                                            withAnimation {
-                                                                scroll.scrollTo(1)
-                                                            }
+                                            if !viewModel.isBlackedOut {
+                                                Button(action: {
+                                                    router.createNewThread(
+                                                        courseID: courseID,
+                                                        selectedTopic: currentBlockID,
+                                                        onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
                                                         })
-                                                    })
-                                            }, label: {
-                                                VStack {
-                                                    CoreAssets.addComment.swiftUIImage
-                                                        .font(Theme.Fonts.labelLarge)
-                                                        .padding(6)
-                                                }
-                                                .foregroundColor(Theme.Colors.white)
-                                                .background(
-                                                    Circle()
-                                                        .foregroundColor(Theme.Colors.accentButtonColor)
-                                                )
-                                            })
+                                                }, label: {
+                                                    VStack {
+                                                        CoreAssets.addComment.swiftUIImage
+                                                            .font(Theme.Fonts.labelLarge)
+                                                            .padding(6)
+                                                    }
+                                                    .foregroundColor(Theme.Colors.white)
+                                                    .background(
+                                                        Circle()
+                                                            .foregroundColor(Theme.Colors.accentButtonColor)
+                                                    )
+                                                })
+                                            }
                                         }
                                         .padding(.horizontal, 24)
                                         

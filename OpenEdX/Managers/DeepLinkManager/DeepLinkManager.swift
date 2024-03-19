@@ -263,7 +263,16 @@ public class DeepLinkManager {
                 if self.isDiscussionThreads(type: type) {
                     self.router.showProgress()
                     Task {
-                        await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
+                        guard let discussionInfo = try? await self.discussionInteractor.getCourseDiscussionInfo(
+                            courseID: courseDetails.courseID
+                        ) else {
+                            return
+                        }
+                        await self.showCourseDiscussion(
+                            link: link,
+                            courseDetails: courseDetails,
+                            isBlackedOut: discussionInfo.isBlackedOut()
+                        )
                         self.router.dismissProgress()
                     }
                     return
@@ -297,7 +306,8 @@ public class DeepLinkManager {
     @MainActor
     private func showCourseDiscussion(
         link: DeepLink,
-        courseDetails: CourseDetails
+        courseDetails: CourseDetails,
+        isBlackedOut: Bool
     ) async {
         switch link.type {
         case .discussionTopic:
@@ -316,7 +326,8 @@ public class DeepLinkManager {
             router.showThreads(
                 topicID: topicID,
                 courseDetails: courseDetails,
-                topics: topics
+                topics: topics,
+                isBlackedOut: isBlackedOut
             )
         case .discussionPost:
 
@@ -329,7 +340,8 @@ public class DeepLinkManager {
                 router.showThreads(
                     topicID: topicID,
                     courseDetails: courseDetails,
-                    topics: topics
+                    topics: topics,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -337,7 +349,8 @@ public class DeepLinkManager {
                 !threadID.isEmpty,
                 let userThread = try? await discussionInteractor.getThread(threadID: threadID) {
                 router.showThread(
-                    userThread: userThread
+                    userThread: userThread,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -351,7 +364,8 @@ public class DeepLinkManager {
                 router.showThreads(
                     topicID: topicID,
                     courseDetails: courseDetails,
-                    topics: topics
+                    topics: topics,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -359,7 +373,8 @@ public class DeepLinkManager {
                 !threadID.isEmpty,
                 let userThread = try? await discussionInteractor.getThread(threadID: threadID) {
                 router.showThread(
-                    userThread: userThread
+                    userThread: userThread,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -371,7 +386,8 @@ public class DeepLinkManager {
                let parentComment = try? await self.discussionInteractor.getResponse(responseID: parentID) {
                 router.showComment(
                     comment: comment,
-                    parentComment: parentComment.post
+                    parentComment: parentComment.post,
+                    isBlackedOut: isBlackedOut
                 )
             }
         default:

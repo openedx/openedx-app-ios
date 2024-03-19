@@ -19,11 +19,14 @@ public struct ResponsesView: View {
     
     @ObservedObject private var viewModel: ResponsesViewModel
     @State private var isShowProgress: Bool = true
-    
-    public init(commentID: String,
-                viewModel: ResponsesViewModel,
-                router: DiscussionRouter,
-                parentComment: Post) {
+
+    public init(
+        commentID: String,
+        viewModel: ResponsesViewModel,
+        router: DiscussionRouter,
+        parentComment: Post,
+        isBlackedOut: Bool
+    ) {
         self.commentID = commentID
         self.parentComment = parentComment
         self.title = DiscussionLocalization.Response.commentsResponses
@@ -33,6 +36,7 @@ public struct ResponsesView: View {
             await viewModel.getComments(commentID: commentID, parentComment: parentComment, page: 1)
         }
         viewModel.addCommentsIsVisible = false
+        self.viewModel.isBlackedOut = isBlackedOut
     }
     
     public var body: some View {
@@ -53,7 +57,8 @@ public struct ResponsesView: View {
                                 if let comments = viewModel.postComments {
                                     ParentCommentView(
                                         comments: comments,
-                                        isThread: false, onAvatarTap: { username in
+                                        isThread: false,
+                                        onAvatarTap: { username in
                                             viewModel.router.showUserDetails(username: username)
                                         },
                                         onLikeTap: {
@@ -151,7 +156,7 @@ public struct ResponsesView: View {
                             }
                         }.frameLimit()
                         
-                        if !parentComment.closed {
+                        if !(parentComment.closed || viewModel.isBlackedOut) {
                             FlexibleKeyboardInputView(
                                 hint: DiscussionLocalization.Response.addComment,
                                 sendText: { commentText in
@@ -246,7 +251,8 @@ struct ResponsesView_Previews: PreviewProvider {
             commentID: "",
             viewModel: viewModel,
             router: router,
-            parentComment: post
+            parentComment: post, 
+            isBlackedOut: false
         )
         .loadFonts()
         .preferredColorScheme(.light)
@@ -256,7 +262,8 @@ struct ResponsesView_Previews: PreviewProvider {
             commentID: "",
             viewModel: viewModel,
             router: router,
-            parentComment: post
+            parentComment: post, 
+            isBlackedOut: false
         )
         .loadFonts()
         .preferredColorScheme(.dark)

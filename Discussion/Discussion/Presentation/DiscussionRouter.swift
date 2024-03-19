@@ -14,9 +14,21 @@ public protocol DiscussionRouter: BaseRouter {
     
     func showUserDetails(username: String)
     
-    func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType, animated: Bool)
+    func showThreads(
+        courseID: String,
+        topics: Topics,
+        title: String,
+        type: ThreadType,
+        isBlackedOut: Bool,
+        animated: Bool
+    )
 
-    func showThread(thread: UserThread, postStateSubject: CurrentValueSubject<PostState?, Never>, animated: Bool)
+    func showThread(
+        thread: UserThread,
+        postStateSubject: CurrentValueSubject<PostState?, Never>,
+        isBlackedOut: Bool,
+        animated: Bool
+    )
 
     func showDiscussionsSearch(courseID: String)
     
@@ -24,6 +36,7 @@ public protocol DiscussionRouter: BaseRouter {
         commentID: String,
         parentComment: Post,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
+        isBlackedOut: Bool,
         animated: Bool
     )
     
@@ -38,11 +51,19 @@ public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
     
     public func showUserDetails(username: String) {}
     
-    public func showThreads(courseID: String, topics: Topics, title: String, type: ThreadType, animated: Bool) {}
+    public func showThreads(
+        courseID: String,
+        topics: Topics,
+        title: String,
+        type: ThreadType,
+        isBlackedOut: Bool,
+        animated: Bool
+    ) {}
     
     public func showThread(
         thread: UserThread,
         postStateSubject: CurrentValueSubject<PostState?, Never>,
+        isBlackedOut: Bool,
         animated: Bool
     ) {}
 
@@ -52,6 +73,7 @@ public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
         commentID: String,
         parentComment: Post,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
+        isBlackedOut: Bool,
         animated: Bool
     ) {}
 

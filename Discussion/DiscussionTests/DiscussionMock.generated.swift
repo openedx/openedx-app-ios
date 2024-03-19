@@ -1374,6 +1374,12 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
 
 
+    open func getCourseDiscussionInfo(courseID: String) {
+        addInvocation(.m_getCourseDiscussionInfo__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getCourseDiscussionInfo__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+    }
+
     open func getThreadsList(courseID: String, type: ThreadType, sort: SortType, filter: ThreadsFilter, page: Int) throws -> ThreadLists {
         addInvocation(.m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<SortType>.value(`sort`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`)))
 		let perform = methodPerformValue(.m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>.value(`courseID`), Parameter<ThreadType>.value(`type`), Parameter<SortType>.value(`sort`), Parameter<ThreadsFilter>.value(`filter`), Parameter<Int>.value(`page`))) as? (String, ThreadType, SortType, ThreadsFilter, Int) -> Void
@@ -1627,6 +1633,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
 
     fileprivate enum MethodType {
+        case m_getCourseDiscussionInfo__courseID_courseID(Parameter<String>)
         case m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(Parameter<String>, Parameter<ThreadType>, Parameter<SortType>, Parameter<ThreadsFilter>, Parameter<Int>)
         case m_getTopics__courseID_courseID(Parameter<String>)
         case m_getTopic__courseID_courseIDtopicID_topicID(Parameter<String>, Parameter<String>)
@@ -1647,6 +1654,11 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
+            case (.m_getCourseDiscussionInfo__courseID_courseID(let lhsCourseid), .m_getCourseDiscussionInfo__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(let lhsCourseid, let lhsType, let lhsSort, let lhsFilter, let lhsPage), .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(let rhsCourseid, let rhsType, let rhsSort, let rhsFilter, let rhsPage)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
@@ -1754,6 +1766,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
 
         func intValue() -> Int {
             switch self {
+            case let .m_getCourseDiscussionInfo__courseID_courseID(p0): return p0.intValue
             case let .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_getTopics__courseID_courseID(p0): return p0.intValue
             case let .m_getTopic__courseID_courseIDtopicID_topicID(p0, p1): return p0.intValue + p1.intValue
@@ -1775,6 +1788,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         }
         func assertionName() -> String {
             switch self {
+            case .m_getCourseDiscussionInfo__courseID_courseID: return ".getCourseDiscussionInfo(courseID:)"
             case .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page: return ".getThreadsList(courseID:type:sort:filter:page:)"
             case .m_getTopics__courseID_courseID: return ".getTopics(courseID:)"
             case .m_getTopic__courseID_courseIDtopicID_topicID: return ".getTopic(courseID:topicID:)"
@@ -2010,6 +2024,7 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
     public struct Verify {
         fileprivate var method: MethodType
 
+        public static func getCourseDiscussionInfo(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseDiscussionInfo__courseID_courseID(`courseID`))}
         public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`))}
         public static func getTopics(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getTopics__courseID_courseID(`courseID`))}
         public static func getTopic(courseID: Parameter<String>, topicID: Parameter<String>) -> Verify { return Verify(method: .m_getTopic__courseID_courseIDtopicID_topicID(`courseID`, `topicID`))}
@@ -2033,6 +2048,9 @@ open class DiscussionInteractorProtocolMock: DiscussionInteractorProtocol, Mock 
         fileprivate var method: MethodType
         var performs: Any
 
+        public static func getCourseDiscussionInfo(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseDiscussionInfo__courseID_courseID(`courseID`), performs: perform)
+        }
         public static func getThreadsList(courseID: Parameter<String>, type: Parameter<ThreadType>, sort: Parameter<SortType>, filter: Parameter<ThreadsFilter>, page: Parameter<Int>, perform: @escaping (String, ThreadType, SortType, ThreadsFilter, Int) -> Void) -> Perform {
             return Perform(method: .m_getThreadsList__courseID_courseIDtype_typesort_sortfilter_filterpage_page(`courseID`, `type`, `sort`, `filter`, `page`), performs: perform)
         }

@@ -31,31 +31,38 @@ public class DiscussionTopicsViewModel: ObservableObject {
     let router: DiscussionRouter
     let analytics: DiscussionAnalytics
     let config: ConfigProtocol
-    
-    public init(title: String,
-                interactor: DiscussionInteractorProtocol,
-                router: DiscussionRouter,
-                analytics: DiscussionAnalytics,
-                config: ConfigProtocol) {
+
+    private(set) var isBlackedOut: Bool = false
+
+    public init(
+        title: String,
+        interactor: DiscussionInteractorProtocol,
+        router: DiscussionRouter,
+        analytics: DiscussionAnalytics,
+        config: ConfigProtocol
+    ) {
         self.title = title
         self.interactor = interactor
         self.router = router
         self.analytics = analytics
         self.config = config
     }
-    
+
     func generateTopics(topics: Topics?) -> [DiscussionTopic] {
         var result = [
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.allPosts,
                 action: {
-                    self.analytics.discussionAllPostsClicked(courseId: self.courseID,
-                                                                    courseName: self.title)
+                    self.analytics.discussionAllPostsClicked(
+                        courseId: self.courseID,
+                        courseName: self.title
+                    )
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
                         title: DiscussionLocalization.Topics.allPosts,
                         type: .allPosts,
+                        isBlackedOut: self.isBlackedOut,
                         animated: true
                     )
                 },
@@ -63,13 +70,16 @@ public class DiscussionTopicsViewModel: ObservableObject {
             ),
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.postImFollowing, action: {
-                    self.analytics.discussionFollowingClicked(courseId: self.courseID,
-                                                                     courseName: self.title)
+                    self.analytics.discussionFollowingClicked(
+                        courseId: self.courseID,
+                        courseName: self.title
+                    )
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
                         title: DiscussionLocalization.Topics.postImFollowing,
                         type: .followingPosts,
+                        isBlackedOut: self.isBlackedOut,
                         animated: true
                     )
                 },
@@ -92,6 +102,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                 topics: topics,
                                 title: t.name,
                                 type: .nonCourseTopics,
+                                isBlackedOut: self.isBlackedOut,
                                 animated: true
                             )
 
@@ -114,6 +125,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                     topics: topics,
                                     title: t.name,
                                     type: .nonCourseTopics,
+                                    isBlackedOut: self.isBlackedOut,
                                     animated: true
                                 )
                             },
@@ -144,6 +156,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                     topics: topics,
                                     title: child.name,
                                     type: .courseTopics(topicID: child.id),
+                                    isBlackedOut: self.isBlackedOut,
                                     animated: true
                                 )
                             },
@@ -154,12 +167,15 @@ public class DiscussionTopicsViewModel: ObservableObject {
         }
         return result
     }
-    
+
     @MainActor
     public func getTopics(courseID: String, withProgress: Bool = true) async {
         self.courseID = courseID
         isShowProgress = withProgress
         do {
+            let discussionInfo = try await interactor.getCourseDiscussionInfo(courseID: courseID)
+            isBlackedOut = discussionInfo.isBlackedOut()
+             
             topics = try await interactor.getTopics(courseID: courseID)
             discussionTopics = generateTopics(topics: topics)
             isShowProgress = false
