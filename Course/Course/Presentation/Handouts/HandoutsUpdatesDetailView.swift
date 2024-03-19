@@ -155,7 +155,7 @@ public struct HandoutsUpdatesDetailView: View {
                 margin-bottom: 3px !important;
                 background-color: \(UIColor.opaqueSeparator.cgColor.hexString ?? "") !important;
                 width: 100%;
-                height: 0.3px;
+                height: 0.5px;
             ">
             </div>
         """
