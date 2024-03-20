@@ -29,7 +29,12 @@ public class DeleteAccountViewModel: ObservableObject {
     public let connectivity: ConnectivityProtocol
     let analytics: ProfileAnalytics
     
-    public init(interactor: ProfileInteractorProtocol, router: ProfileRouter, connectivity: ConnectivityProtocol, analytics: ProfileAnalytics) {
+    public init(
+        interactor: ProfileInteractorProtocol,
+        router: ProfileRouter,
+        connectivity: ConnectivityProtocol,
+        analytics: ProfileAnalytics
+    ) {
         self.interactor = interactor
         self.router = router
         self.connectivity = connectivity
