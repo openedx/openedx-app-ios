@@ -67,7 +67,7 @@ struct SocialAuthView: View {
                 .accessibilityIdentifier("social_auth_title_text")
             Spacer()
         }
-        .frame(maxWidth: isPad ? iPadButtonWidth: .infinity, minHeight: 42)
+        .frame(maxWidth: .infinity, minHeight: 42)
     }
 
     private var buttonsView: some View {
