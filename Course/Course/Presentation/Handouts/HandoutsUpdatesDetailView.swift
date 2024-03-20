@@ -90,10 +90,10 @@ public struct HandoutsUpdatesDetailView: View {
                             screenWidth: .infinity
                         )
                         
-                        WebViewHtml(fixBrokenLinks(in: formattedHandouts))
+                        WebViewHtml(fixBrokenLinks(in: formattedHandouts), injections: [.accessibility, .readability])
                     } else if let html = announcemetsHtml() {
                         // MARK: - Announcements
-                        WebViewHtml(fixBrokenLinks(in: html))
+                        WebViewHtml(fixBrokenLinks(in: html), injections: [.accessibility, .readability])
                     }
                 }
                 .padding(.top, 8)
