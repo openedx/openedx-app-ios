@@ -112,9 +112,6 @@ public extension DataLayer {
         public let courseImage: String
         public let courseAbout: String
         public let courseSharingUtmParameters: CourseSharingUtmParameters
-        public let courseUpdates: String
-        public let courseHandouts: String
-        public let discussionURL: String
         public let videoOutline: String?
         public let isSelfPaced: Bool
 
@@ -134,9 +131,6 @@ public extension DataLayer {
             case courseImage = "course_image"
             case courseAbout = "course_about"
             case courseSharingUtmParameters = "course_sharing_utm_parameters"
-            case courseUpdates = "course_updates"
-            case courseHandouts = "course_handouts"
-            case discussionURL = "discussion_url"
             case videoOutline = "video_outline"
             case isSelfPaced = "is_self_paced"
         }
@@ -157,9 +151,6 @@ public extension DataLayer {
             courseImage: String,
             courseAbout: String,
             courseSharingUtmParameters: CourseSharingUtmParameters,
-            courseUpdates: String,
-            courseHandouts: String,
-            discussionURL: String,
             videoOutline: String?,
             isSelfPaced: Bool
         ) {
@@ -178,9 +169,6 @@ public extension DataLayer {
             self.courseImage = courseImage
             self.courseAbout = courseAbout
             self.courseSharingUtmParameters = courseSharingUtmParameters
-            self.courseUpdates = courseUpdates
-            self.courseHandouts = courseHandouts
-            self.discussionURL = discussionURL
             self.videoOutline = videoOutline
             self.isSelfPaced = isSelfPaced
         }
