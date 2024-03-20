@@ -102,7 +102,6 @@ public extension DataLayer {
         public let number: String
         public let org: String
         public let start: String?
-        public let startDisplay: String
         public let startType: StartType
         public let end: String?
         public let dynamicUpgradeDeadline: String?
@@ -121,7 +120,6 @@ public extension DataLayer {
             case number
             case org
             case start
-            case startDisplay = "start_display"
             case startType = "start_type"
             case end
             case dynamicUpgradeDeadline = "dynamic_upgrade_deadline"
@@ -141,7 +139,6 @@ public extension DataLayer {
             number: String,
             org: String,
             start: String?,
-            startDisplay: String,
             startType: StartType,
             end: String?,
             dynamicUpgradeDeadline: String?,
@@ -159,7 +156,6 @@ public extension DataLayer {
             self.number = number
             self.org = org
             self.start = start
-            self.startDisplay = startDisplay
             self.startType = startType
             self.end = end
             self.dynamicUpgradeDeadline = dynamicUpgradeDeadline
