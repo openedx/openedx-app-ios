@@ -23,6 +23,7 @@
 "ERROR.AUTHORIZATION_FAILED" = "Authorization failed.";
 
 "COURSEWARE.COURSE_CONTENT" = "Course content";
+"COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE" = "This interactive component isn't yet available on mobile.";
 "COURSEWARE.COURSE_UNITS" = "Course units";
 "COURSEWARE.NEXT" = "Next";
 "COURSEWARE.PREVIOUS" = "Prev";
@@ -109,3 +110,5 @@
 
 "TOMORROW" = "Tomorrow";
 "YESTERDAY" = "Yesterday";
+
+"OPEN_IN_BROWSER"="View in Safari";

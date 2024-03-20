@@ -11,11 +11,11 @@ import Theme
 import Core
 import BranchSDK
 
-enum DeepLinkType: String {
+enum CalendarDeepLinkType: String {
     case courseComponent = "course_component"
 }
 
-private enum DeepLinkKeys: String, RawStringExtractable {
+private enum CalendarDeepLinkKeys: String, RawStringExtractable {
     case courseID = "course_id"
     case screenName = "screen_name"
     case componentID = "component_id"
@@ -107,7 +107,8 @@ class CalendarManager: NSObject {
                         courseID: courseID,
                         title: calendarName,
                         isOn: true,
-                        modalPresented: false)
+                        modalPresented: false
+                    )
                     addOrUpdateCalendarEntry(courseCalendar: courseCalendar)
                     return true
                 }
@@ -255,12 +256,12 @@ class CalendarManager: NSObject {
     private func generateDeeplink(componentBlockID: String) -> String? {
         guard !componentBlockID.isEmpty else { return nil }
         let branchUniversalObject = BranchUniversalObject(
-            canonicalIdentifier: "\(DeepLinkType.courseComponent.rawValue)/\(componentBlockID)"
+            canonicalIdentifier: "\(CalendarDeepLinkType.courseComponent.rawValue)/\(componentBlockID)"
         )
         let dictionary: NSMutableDictionary = [
-            DeepLinkKeys.screenName.rawValue: DeepLinkType.courseComponent.rawValue,
-            DeepLinkKeys.courseID.rawValue: courseID,
-            DeepLinkKeys.componentID.rawValue: componentBlockID
+            CalendarDeepLinkKeys.screenName.rawValue: CalendarDeepLinkType.courseComponent.rawValue,
+            CalendarDeepLinkKeys.courseID.rawValue: courseID,
+            CalendarDeepLinkKeys.componentID.rawValue: componentBlockID
         ]
         let metadata = BranchContentMetadata()
         metadata.customMetadata = dictionary

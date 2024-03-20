@@ -12,6 +12,8 @@ import Foundation
 public enum CoreLocalization {
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
+  /// View in Safari
+  public static let openInBrowser = CoreLocalization.tr("Localizable", "OPEN_IN_BROWSER", fallback: "View in Safari")
   /// The user canceled the sign-in flow.
   public static let socialSignCanceled = CoreLocalization.tr("Localizable", "SOCIAL_SIGN_CANCELED", fallback: "The user canceled the sign-in flow.")
   /// Tomorrow
@@ -47,6 +49,8 @@ public enum CoreLocalization {
     public static let `continue` = CoreLocalization.tr("Localizable", "COURSEWARE.CONTINUE", fallback: "Continue")
     /// Course content
     public static let courseContent = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT", fallback: "Course content")
+    /// This interactive component isn't yet available on mobile.
+    public static let courseContentNotAvailable = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE", fallback: "This interactive component isn't yet available on mobile.")
     /// Course units
     public static let courseUnits = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_UNITS", fallback: "Course units")
     /// Finish

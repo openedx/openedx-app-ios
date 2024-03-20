@@ -117,12 +117,13 @@ public class CourseDatesViewModel: ObservableObject {
         }
     }
     
-    func showCourseDetails(componentID: String) async {
+    func showCourseDetails(componentID: String, blockLink: String) async {
         do {
             let courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
             router.showCourseComponent(
                 componentID: componentID,
-                courseStructure: courseStructure
+                courseStructure: courseStructure,
+                blockLink: blockLink
             )
         } catch _ {
             errorMessage = CourseLocalization.Error.componentNotFount
@@ -203,7 +204,7 @@ extension CourseDatesViewModel {
     }
     
     @MainActor
-    func addCourseEvents(trackAnalytics: Bool = true, completion: ((Bool) -> ())? = nil) {
+    func addCourseEvents(trackAnalytics: Bool = true, completion: ((Bool) -> Void)? = nil) {
         guard let dateBlocks = courseDates?.dateBlocks else { return }
         showCalendarSyncProgressView()
         calendar.addEventsToCalendar(for: dateBlocks) { [weak self] calendarEventsAdded in
@@ -218,7 +219,7 @@ extension CourseDatesViewModel {
         }
     }
     
-    func removeCourseCalendar(trackAnalytics: Bool = true, completion: ((Bool) -> ())? = nil) {
+    func removeCourseCalendar(trackAnalytics: Bool = true, completion: ((Bool) -> Void)? = nil) {
         calendar.removeCalendar { [weak self] success in
             guard let self else { return }
             self.isOn = !success

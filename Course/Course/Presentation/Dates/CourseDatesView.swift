@@ -41,10 +41,11 @@ public struct CourseDatesView: View {
             }
             
             if viewModel.dueDatesShifted {
-                DatesSuccessView(title: CourseLocalization.CourseDates.toastSuccessTitle,
-                                 message: CourseLocalization.CourseDates.toastSuccessMessage,
-                                 selectedTab: .dates,
-                                 courseDatesViewModel: viewModel
+                DatesSuccessView(
+                    title: CourseLocalization.CourseDates.toastSuccessTitle,
+                    message: CourseLocalization.CourseDates.toastSuccessMessage,
+                    selectedTab: .dates,
+                    courseDatesViewModel: viewModel
                 )
             }
             
@@ -369,7 +370,10 @@ struct StyleBlock: View {
             .onTapGesture {
                 if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                     Task {
-                        await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                        await viewModel.showCourseDetails(
+                            componentID: block.firstComponentBlockID,
+                            blockLink: block.link
+                        )
                     }
                 }
             }
@@ -393,7 +397,8 @@ struct CalendarSyncView: View {
                 CoreAssets.syncToCalendar.swiftUIImage
                 Toggle(
                     CourseLocalization.CourseDates.syncToCalendar,
-                    isOn: $viewModel.isOn)
+                    isOn: $viewModel.isOn
+                )
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(Theme.Fonts.titleMedium)
                 .foregroundColor(Theme.Colors.textPrimary)

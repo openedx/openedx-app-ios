@@ -405,31 +405,69 @@ public class Router: AuthorizationRouter,
     
     public func showCourseComponent(
         componentID: String,
-        courseStructure: CourseStructure) {
+        courseStructure: CourseStructure,
+        blockLink: String) {
+            var courseBlock: CourseBlock?
+            var courseName: String?
+            var chapterPosition: Int?
+            var sequentialPosition: Int?
+            var verticalPosition: Int?
+            
             courseStructure.childs.enumerated().forEach { chapterIndex, chapter in
                 chapter.childs.enumerated().forEach { sequentialIndex, sequential in
                     sequential.childs.enumerated().forEach { verticalIndex, vertical in
                         vertical.childs.forEach { block in
                             if block.id == componentID {
-                                DispatchQueue.main.async { [weak self] in
-                                    guard let self else { return }
-                                    self.showCourseUnit(
-                                        courseName: courseStructure.displayName,
-                                        blockId: block.blockId,
-                                        courseID: courseStructure.id,
-                                        sectionName: sequential.displayName,
-                                        verticalIndex: verticalIndex,
-                                        chapters: courseStructure.childs,
-                                        chapterIndex: chapterIndex,
-                                        sequentialIndex: sequentialIndex)
-                                }
+                                courseBlock = block
+                                courseName = sequential.displayName
+                                chapterPosition = chapterIndex
+                                sequentialPosition = sequentialIndex
+                                verticalPosition = verticalIndex
                                 return
                             }
                         }
                     }
                 }
             }
+            
+            if let block = courseBlock {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.showCourseUnit(
+                        courseName: courseStructure.displayName,
+                        blockId: block.blockId,
+                        courseID: courseStructure.id,
+                        sectionName: courseName ?? "",
+                        verticalIndex: verticalPosition ?? 0,
+                        chapters: courseStructure.childs,
+                        chapterIndex: chapterPosition ?? 0,
+                        sequentialIndex: sequentialPosition ?? 0)
+                }
+            } else if !blockLink.isEmpty, let blockURL = URL(string: blockLink) {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.openBlockInBrowser(blockURL: blockURL)
+                }
+            }
         }
+    
+    private func openBlockInBrowser(blockURL: URL) {
+        presentAlert(
+            alertTitle: "",
+            alertMessage: CoreLocalization.Courseware.courseContentNotAvailable,
+            positiveAction: CoreLocalization.openInBrowser,
+            onCloseTapped: {
+                self.dismiss(animated: true)
+            },
+            okTapped: {
+                self.dismiss(animated: true)
+                if UIApplication.shared.canOpenURL(blockURL) {
+                    UIApplication.shared.open(blockURL, options: [:], completionHandler: nil)
+                }
+            },
+            type: .default(positiveAction: CoreLocalization.openInBrowser, image: nil)
+        )
+    }
 
     public func showDownloads(
         downloads: [DownloadDataTask],

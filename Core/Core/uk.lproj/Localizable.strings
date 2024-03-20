@@ -22,6 +22,7 @@
 "ERROR.WIFI" = "Завантажувати файли можна лише через Wi-Fi. Ви можете змінити це в налаштуваннях.";
 
 "COURSEWARE.COURSE_CONTENT" = "Зміст курсу";
+"COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE" = "This interactive component isn't yet available on mobile.";
 "COURSEWARE.COURSE_UNITS" = "Модулі";
 "COURSEWARE.NEXT" = "Далі";
 "COURSEWARE.PREVIOUS" = "Назад";
@@ -108,3 +109,5 @@
 
 "TOMORROW" = "Tomorrow";
 "YESTERDAY" = "Yesterday";
+
+"OPEN_IN_BROWSER"="View in Safari";
