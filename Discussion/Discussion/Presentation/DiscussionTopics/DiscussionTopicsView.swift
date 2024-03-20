@@ -26,6 +26,10 @@ public struct DiscussionTopicsView: View {
         ZStack(alignment: .center) {
             VStack(alignment: .center) {
                 // MARK: - Search fake field
+                if viewModel.isBlackedOut {
+                    bannerDiscussionsDisabled
+                }
+
                 HStack(spacing: 11) {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(Theme.Colors.textSecondary)
@@ -161,6 +165,20 @@ public struct DiscussionTopicsView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+    }
+
+    private var bannerDiscussionsDisabled: some View {
+        HStack {
+            Spacer()
+            Text(DiscussionLocalization.Banner.discussionsIsDisabled)
+                .font(Theme.Fonts.titleSmall)
+                .foregroundStyle(.black)
+                .multilineTextAlignment(.center)
+                .padding(.vertical, 10)
+            Spacer()
+        }
+        .background(Theme.Colors.warning)
+        .padding(.bottom, 10)
     }
 }
 

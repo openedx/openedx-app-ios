@@ -39,6 +39,10 @@ public enum DiscussionLocalization {
   public static func votesCount(_ p1: Int) -> String {
     return DiscussionLocalization.tr("Localizable", "votes_count", p1, fallback: "Plural format key: \"%#@votes@\"")
   }
+  public enum Banner {
+    /// Posting in discussions is disabled by the course team
+    public static let discussionsIsDisabled = DiscussionLocalization.tr("Localizable", "BANNER.DISCUSSIONS_IS_DISABLED", fallback: "Posting in discussions is disabled by the course team")
+  }
   public enum Comment {
     /// Follow
     public static let follow = DiscussionLocalization.tr("Localizable", "COMMENT.FOLLOW", fallback: "Follow")

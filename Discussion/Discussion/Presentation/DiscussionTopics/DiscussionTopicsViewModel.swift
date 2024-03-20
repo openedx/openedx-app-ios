@@ -17,6 +17,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var discussionTopics: [DiscussionTopic]?
     @Published var courseID: String = ""
+    @Published  private(set) var isBlackedOut: Bool = false
     let title: String
     
     var errorMessage: String? {
@@ -31,8 +32,6 @@ public class DiscussionTopicsViewModel: ObservableObject {
     let router: DiscussionRouter
     let analytics: DiscussionAnalytics
     let config: ConfigProtocol
-
-    private(set) var isBlackedOut: Bool = false
 
     public init(
         title: String,
