@@ -96,8 +96,7 @@ public struct HandoutsUpdatesDetailView: View {
                         WebViewHtml(fixBrokenLinks(in: html), injections: [.accessibility, .readability])
                     }
                 }
-                .padding(.top, 8)
-                .padding(.horizontal, 32)
+                .padding(.top, 8)                
                 .frame(
                     maxHeight: .infinity,
                     alignment: .topLeading)
