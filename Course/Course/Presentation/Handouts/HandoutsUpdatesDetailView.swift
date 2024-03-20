@@ -97,7 +97,6 @@ public struct HandoutsUpdatesDetailView: View {
                     }
                 }
                 .padding(.top, 8)
-                .padding(.horizontal, 32)
                 .frame(
                     maxHeight: .infinity,
                     alignment: .topLeading)
