@@ -55,6 +55,7 @@ public struct WebView: UIViewRepresentable {
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
         var cancellables: [AnyCancellable] = []
         var parent: WebView
+        var url: URL?
 
         init(_ parent: WebView) {
             self.parent = parent
@@ -243,16 +244,18 @@ public struct WebView: UIViewRepresentable {
         webView.applyInjections(viewModel.injections, toHandler: context.coordinator)
         
         webView.customUserAgent = userAgent
+        context.coordinator.url = nil
         
         return webView
     }
 
     public func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<WebView>) {
         if let url = URL(string: viewModel.url) {
-            if webview.url?.absoluteString != url.absoluteString {
+            if context.coordinator.url?.absoluteString != url.absoluteString {
                 DispatchQueue.main.async {
                     isLoading = true
                 }
+                context.coordinator.url = url
                 let request = URLRequest(url: url)
                 webview.load(request)
             }
