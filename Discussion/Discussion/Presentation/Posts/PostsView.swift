@@ -13,7 +13,6 @@ import Theme
 public struct PostsView: View {
     
     @ObservedObject private var viewModel: PostsViewModel
-    @State private var isShowProgress: Bool = true
     @State private var showingAlert = false
     private let router: DiscussionRouter
     private let title: String

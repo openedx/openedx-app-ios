@@ -34,9 +34,6 @@ public struct CreateNewThreadView: View {
         self.onPostCreated = onPostCreated
         self.courseID = courseID
         viewModel.selectedTopic = selectedTopic
-        Task {
-            await viewModel.getTopics(courseID: courseID)
-        }
     }
     
     public var body: some View {
@@ -197,6 +194,9 @@ public struct CreateNewThreadView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .task {
+            await viewModel.getTopics(courseID: courseID)
+        }
     }
 }
 
