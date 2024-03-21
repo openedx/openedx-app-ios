@@ -126,6 +126,7 @@ public struct EncodedVideoPlayer: View {
             }
         }
         .padding(.horizontal, 8)
+        .statusBarHidden(false)
         .onDisappear {
             viewModel.controller.player?.allowsExternalPlayback = false
         }
