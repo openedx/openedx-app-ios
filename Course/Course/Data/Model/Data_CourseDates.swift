@@ -138,6 +138,19 @@ public extension DataLayer {
                 ""
             }
         }
+        
+        var analyticsBannerType: String {
+            switch self {
+            case .datesTabInfoBanner:
+                "info"
+            case .upgradeToCompleteGradedBanner:
+                "upgrade_to_participate"
+            case .upgradeToResetBanner:
+                "upgrade_to_shift"
+            case .resetDatesBanner:
+                "shift_dates"
+            }
+        }
     }
 }
 

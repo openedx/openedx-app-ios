@@ -1114,6 +1114,281 @@ open class ConnectivityProtocolMock: ConnectivityProtocol, Mock {
     }
 }
 
+// MARK: - CoreAnalytics
+
+open class CoreAnalyticsMock: CoreAnalytics, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func trackEvent(_ event: AnalyticsEvent, parameters: [String: Any]?) {
+        addInvocation(.m_trackEvent__eventparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<[String: Any]?>.value(`parameters`)))
+		let perform = methodPerformValue(.m_trackEvent__eventparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<[String: Any]?>.value(`parameters`))) as? (AnalyticsEvent, [String: Any]?) -> Void
+		perform?(`event`, `parameters`)
+    }
+
+    open func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?) {
+        addInvocation(.m_trackEvent__eventbiValue_biValueparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<[String: Any]?>.value(`parameters`)))
+		let perform = methodPerformValue(.m_trackEvent__eventbiValue_biValueparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<[String: Any]?>.value(`parameters`))) as? (AnalyticsEvent, EventBIValue, [String: Any]?) -> Void
+		perform?(`event`, `biValue`, `parameters`)
+    }
+
+    open func appreview(_ event: AnalyticsEvent, biValue: EventBIValue, action: String?, rating: Int?) {
+        addInvocation(.m_appreview__eventbiValue_biValueaction_actionrating_rating(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<String?>.value(`action`), Parameter<Int?>.value(`rating`)))
+		let perform = methodPerformValue(.m_appreview__eventbiValue_biValueaction_actionrating_rating(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<String?>.value(`action`), Parameter<Int?>.value(`rating`))) as? (AnalyticsEvent, EventBIValue, String?, Int?) -> Void
+		perform?(`event`, `biValue`, `action`, `rating`)
+    }
+
+    open func videoQualityChanged(_ event: AnalyticsEvent, bivalue: EventBIValue, value: String, oldValue: String) {
+        addInvocation(.m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`bivalue`), Parameter<String>.value(`value`), Parameter<String>.value(`oldValue`)))
+		let perform = methodPerformValue(.m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`bivalue`), Parameter<String>.value(`value`), Parameter<String>.value(`oldValue`))) as? (AnalyticsEvent, EventBIValue, String, String) -> Void
+		perform?(`event`, `bivalue`, `value`, `oldValue`)
+    }
+
+    open func trackEvent(_ event: AnalyticsEvent) {
+        addInvocation(.m_trackEvent__event(Parameter<AnalyticsEvent>.value(`event`)))
+		let perform = methodPerformValue(.m_trackEvent__event(Parameter<AnalyticsEvent>.value(`event`))) as? (AnalyticsEvent) -> Void
+		perform?(`event`)
+    }
+
+    open func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
+        addInvocation(.m_trackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`)))
+		let perform = methodPerformValue(.m_trackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`))) as? (AnalyticsEvent, EventBIValue) -> Void
+		perform?(`event`, `biValue`)
+    }
+
+
+    fileprivate enum MethodType {
+        case m_trackEvent__eventparameters_parameters(Parameter<AnalyticsEvent>, Parameter<[String: Any]?>)
+        case m_trackEvent__eventbiValue_biValueparameters_parameters(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<[String: Any]?>)
+        case m_appreview__eventbiValue_biValueaction_actionrating_rating(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String?>, Parameter<Int?>)
+        case m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String>, Parameter<String>)
+        case m_trackEvent__event(Parameter<AnalyticsEvent>)
+        case m_trackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_trackEvent__eventparameters_parameters(let lhsEvent, let lhsParameters), .m_trackEvent__eventparameters_parameters(let rhsEvent, let rhsParameters)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameters, rhs: rhsParameters, with: matcher), lhsParameters, rhsParameters, "parameters"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_trackEvent__eventbiValue_biValueparameters_parameters(let lhsEvent, let lhsBivalue, let lhsParameters), .m_trackEvent__eventbiValue_biValueparameters_parameters(let rhsEvent, let rhsBivalue, let rhsParameters)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameters, rhs: rhsParameters, with: matcher), lhsParameters, rhsParameters, "parameters"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_appreview__eventbiValue_biValueaction_actionrating_rating(let lhsEvent, let lhsBivalue, let lhsAction, let lhsRating), .m_appreview__eventbiValue_biValueaction_actionrating_rating(let rhsEvent, let rhsBivalue, let rhsAction, let rhsRating)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsRating, rhs: rhsRating, with: matcher), lhsRating, rhsRating, "rating"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(let lhsEvent, let lhsBivalue, let lhsValue, let lhsOldvalue), .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(let rhsEvent, let rhsBivalue, let rhsValue, let rhsOldvalue)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "bivalue"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsValue, rhs: rhsValue, with: matcher), lhsValue, rhsValue, "value"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOldvalue, rhs: rhsOldvalue, with: matcher), lhsOldvalue, rhsOldvalue, "oldValue"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_trackEvent__event(let lhsEvent), .m_trackEvent__event(let rhsEvent)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_trackEvent__eventbiValue_biValue(let lhsEvent, let lhsBivalue), .m_trackEvent__eventbiValue_biValue(let rhsEvent, let rhsBivalue)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_trackEvent__eventparameters_parameters(p0, p1): return p0.intValue + p1.intValue
+            case let .m_trackEvent__eventbiValue_biValueparameters_parameters(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_appreview__eventbiValue_biValueaction_actionrating_rating(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_trackEvent__event(p0): return p0.intValue
+            case let .m_trackEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_trackEvent__eventparameters_parameters: return ".trackEvent(_:parameters:)"
+            case .m_trackEvent__eventbiValue_biValueparameters_parameters: return ".trackEvent(_:biValue:parameters:)"
+            case .m_appreview__eventbiValue_biValueaction_actionrating_rating: return ".appreview(_:biValue:action:rating:)"
+            case .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue: return ".videoQualityChanged(_:bivalue:value:oldValue:)"
+            case .m_trackEvent__event: return ".trackEvent(_:)"
+            case .m_trackEvent__eventbiValue_biValue: return ".trackEvent(_:biValue:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>, parameters: Parameter<[String: Any]?>) -> Verify { return Verify(method: .m_trackEvent__eventparameters_parameters(`event`, `parameters`))}
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, parameters: Parameter<[String: Any]?>) -> Verify { return Verify(method: .m_trackEvent__eventbiValue_biValueparameters_parameters(`event`, `biValue`, `parameters`))}
+        public static func appreview(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, action: Parameter<String?>, rating: Parameter<Int?>) -> Verify { return Verify(method: .m_appreview__eventbiValue_biValueaction_actionrating_rating(`event`, `biValue`, `action`, `rating`))}
+        public static func videoQualityChanged(_ event: Parameter<AnalyticsEvent>, bivalue: Parameter<EventBIValue>, value: Parameter<String>, oldValue: Parameter<String>) -> Verify { return Verify(method: .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(`event`, `bivalue`, `value`, `oldValue`))}
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>) -> Verify { return Verify(method: .m_trackEvent__event(`event`))}
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_trackEvent__eventbiValue_biValue(`event`, `biValue`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>, parameters: Parameter<[String: Any]?>, perform: @escaping (AnalyticsEvent, [String: Any]?) -> Void) -> Perform {
+            return Perform(method: .m_trackEvent__eventparameters_parameters(`event`, `parameters`), performs: perform)
+        }
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, parameters: Parameter<[String: Any]?>, perform: @escaping (AnalyticsEvent, EventBIValue, [String: Any]?) -> Void) -> Perform {
+            return Perform(method: .m_trackEvent__eventbiValue_biValueparameters_parameters(`event`, `biValue`, `parameters`), performs: perform)
+        }
+        public static func appreview(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, action: Parameter<String?>, rating: Parameter<Int?>, perform: @escaping (AnalyticsEvent, EventBIValue, String?, Int?) -> Void) -> Perform {
+            return Perform(method: .m_appreview__eventbiValue_biValueaction_actionrating_rating(`event`, `biValue`, `action`, `rating`), performs: perform)
+        }
+        public static func videoQualityChanged(_ event: Parameter<AnalyticsEvent>, bivalue: Parameter<EventBIValue>, value: Parameter<String>, oldValue: Parameter<String>, perform: @escaping (AnalyticsEvent, EventBIValue, String, String) -> Void) -> Perform {
+            return Perform(method: .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(`event`, `bivalue`, `value`, `oldValue`), performs: perform)
+        }
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>, perform: @escaping (AnalyticsEvent) -> Void) -> Perform {
+            return Perform(method: .m_trackEvent__event(`event`), performs: perform)
+        }
+        public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
+            return Perform(method: .m_trackEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - DownloadManagerProtocol
 
 open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
@@ -1778,6 +2053,12 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
 		perform?()
     }
 
+    open func profileSwitch(action: String) {
+        addInvocation(.m_profileSwitch__action_action(Parameter<String>.value(`action`)))
+		let perform = methodPerformValue(.m_profileSwitch__action_action(Parameter<String>.value(`action`))) as? (String) -> Void
+		perform?(`action`)
+    }
+
     open func profileEditDoneClicked() {
         addInvocation(.m_profileEditDoneClicked)
 		let perform = methodPerformValue(.m_profileEditDoneClicked) as? () -> Void
@@ -1814,26 +2095,81 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
 		perform?()
     }
 
+    open func faqClicked() {
+        addInvocation(.m_faqClicked)
+		let perform = methodPerformValue(.m_faqClicked) as? () -> Void
+		perform?()
+    }
+
+    open func tosClicked() {
+        addInvocation(.m_tosClicked)
+		let perform = methodPerformValue(.m_tosClicked) as? () -> Void
+		perform?()
+    }
+
+    open func dataSellClicked() {
+        addInvocation(.m_dataSellClicked)
+		let perform = methodPerformValue(.m_dataSellClicked) as? () -> Void
+		perform?()
+    }
+
     open func userLogout(force: Bool) {
         addInvocation(.m_userLogout__force_force(Parameter<Bool>.value(`force`)))
 		let perform = methodPerformValue(.m_userLogout__force_force(Parameter<Bool>.value(`force`))) as? (Bool) -> Void
 		perform?(`force`)
     }
 
+    open func profileWifiToggle(action: String) {
+        addInvocation(.m_profileWifiToggle__action_action(Parameter<String>.value(`action`)))
+		let perform = methodPerformValue(.m_profileWifiToggle__action_action(Parameter<String>.value(`action`))) as? (String) -> Void
+		perform?(`action`)
+    }
+
+    open func profileUserDeleteAccountClicked() {
+        addInvocation(.m_profileUserDeleteAccountClicked)
+		let perform = methodPerformValue(.m_profileUserDeleteAccountClicked) as? () -> Void
+		perform?()
+    }
+
+    open func profileDeleteAccountSuccess(success: Bool) {
+        addInvocation(.m_profileDeleteAccountSuccess__success_success(Parameter<Bool>.value(`success`)))
+		let perform = methodPerformValue(.m_profileDeleteAccountSuccess__success_success(Parameter<Bool>.value(`success`))) as? (Bool) -> Void
+		perform?(`success`)
+    }
+
+    open func profileEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
+        addInvocation(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`)))
+		let perform = methodPerformValue(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`))) as? (AnalyticsEvent, EventBIValue) -> Void
+		perform?(`event`, `biValue`)
+    }
+
 
     fileprivate enum MethodType {
         case m_profileEditClicked
+        case m_profileSwitch__action_action(Parameter<String>)
         case m_profileEditDoneClicked
         case m_profileDeleteAccountClicked
         case m_profileVideoSettingsClicked
         case m_privacyPolicyClicked
         case m_cookiePolicyClicked
         case m_emailSupportClicked
+        case m_faqClicked
+        case m_tosClicked
+        case m_dataSellClicked
         case m_userLogout__force_force(Parameter<Bool>)
+        case m_profileWifiToggle__action_action(Parameter<String>)
+        case m_profileUserDeleteAccountClicked
+        case m_profileDeleteAccountSuccess__success_success(Parameter<Bool>)
+        case m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
             case (.m_profileEditClicked, .m_profileEditClicked): return .match
+
+            case (.m_profileSwitch__action_action(let lhsAction), .m_profileSwitch__action_action(let rhsAction)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_profileEditDoneClicked, .m_profileEditDoneClicked): return .match
 
@@ -1847,9 +2183,33 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
 
             case (.m_emailSupportClicked, .m_emailSupportClicked): return .match
 
+            case (.m_faqClicked, .m_faqClicked): return .match
+
+            case (.m_tosClicked, .m_tosClicked): return .match
+
+            case (.m_dataSellClicked, .m_dataSellClicked): return .match
+
             case (.m_userLogout__force_force(let lhsForce), .m_userLogout__force_force(let rhsForce)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsForce, rhs: rhsForce, with: matcher), lhsForce, rhsForce, "force"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_profileWifiToggle__action_action(let lhsAction), .m_profileWifiToggle__action_action(let rhsAction)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_profileUserDeleteAccountClicked, .m_profileUserDeleteAccountClicked): return .match
+
+            case (.m_profileDeleteAccountSuccess__success_success(let lhsSuccess), .m_profileDeleteAccountSuccess__success_success(let rhsSuccess)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSuccess, rhs: rhsSuccess, with: matcher), lhsSuccess, rhsSuccess, "success"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_profileEvent__eventbiValue_biValue(let lhsEvent, let lhsBivalue), .m_profileEvent__eventbiValue_biValue(let rhsEvent, let rhsBivalue)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
 				return Matcher.ComparisonResult(results)
             default: return .none
             }
@@ -1858,25 +2218,41 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         func intValue() -> Int {
             switch self {
             case .m_profileEditClicked: return 0
+            case let .m_profileSwitch__action_action(p0): return p0.intValue
             case .m_profileEditDoneClicked: return 0
             case .m_profileDeleteAccountClicked: return 0
             case .m_profileVideoSettingsClicked: return 0
             case .m_privacyPolicyClicked: return 0
             case .m_cookiePolicyClicked: return 0
             case .m_emailSupportClicked: return 0
+            case .m_faqClicked: return 0
+            case .m_tosClicked: return 0
+            case .m_dataSellClicked: return 0
             case let .m_userLogout__force_force(p0): return p0.intValue
+            case let .m_profileWifiToggle__action_action(p0): return p0.intValue
+            case .m_profileUserDeleteAccountClicked: return 0
+            case let .m_profileDeleteAccountSuccess__success_success(p0): return p0.intValue
+            case let .m_profileEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_profileEditClicked: return ".profileEditClicked()"
+            case .m_profileSwitch__action_action: return ".profileSwitch(action:)"
             case .m_profileEditDoneClicked: return ".profileEditDoneClicked()"
             case .m_profileDeleteAccountClicked: return ".profileDeleteAccountClicked()"
             case .m_profileVideoSettingsClicked: return ".profileVideoSettingsClicked()"
             case .m_privacyPolicyClicked: return ".privacyPolicyClicked()"
             case .m_cookiePolicyClicked: return ".cookiePolicyClicked()"
             case .m_emailSupportClicked: return ".emailSupportClicked()"
+            case .m_faqClicked: return ".faqClicked()"
+            case .m_tosClicked: return ".tosClicked()"
+            case .m_dataSellClicked: return ".dataSellClicked()"
             case .m_userLogout__force_force: return ".userLogout(force:)"
+            case .m_profileWifiToggle__action_action: return ".profileWifiToggle(action:)"
+            case .m_profileUserDeleteAccountClicked: return ".profileUserDeleteAccountClicked()"
+            case .m_profileDeleteAccountSuccess__success_success: return ".profileDeleteAccountSuccess(success:)"
+            case .m_profileEvent__eventbiValue_biValue: return ".profileEvent(_:biValue:)"
             }
         }
     }
@@ -1896,13 +2272,21 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         fileprivate var method: MethodType
 
         public static func profileEditClicked() -> Verify { return Verify(method: .m_profileEditClicked)}
+        public static func profileSwitch(action: Parameter<String>) -> Verify { return Verify(method: .m_profileSwitch__action_action(`action`))}
         public static func profileEditDoneClicked() -> Verify { return Verify(method: .m_profileEditDoneClicked)}
         public static func profileDeleteAccountClicked() -> Verify { return Verify(method: .m_profileDeleteAccountClicked)}
         public static func profileVideoSettingsClicked() -> Verify { return Verify(method: .m_profileVideoSettingsClicked)}
         public static func privacyPolicyClicked() -> Verify { return Verify(method: .m_privacyPolicyClicked)}
         public static func cookiePolicyClicked() -> Verify { return Verify(method: .m_cookiePolicyClicked)}
         public static func emailSupportClicked() -> Verify { return Verify(method: .m_emailSupportClicked)}
+        public static func faqClicked() -> Verify { return Verify(method: .m_faqClicked)}
+        public static func tosClicked() -> Verify { return Verify(method: .m_tosClicked)}
+        public static func dataSellClicked() -> Verify { return Verify(method: .m_dataSellClicked)}
         public static func userLogout(force: Parameter<Bool>) -> Verify { return Verify(method: .m_userLogout__force_force(`force`))}
+        public static func profileWifiToggle(action: Parameter<String>) -> Verify { return Verify(method: .m_profileWifiToggle__action_action(`action`))}
+        public static func profileUserDeleteAccountClicked() -> Verify { return Verify(method: .m_profileUserDeleteAccountClicked)}
+        public static func profileDeleteAccountSuccess(success: Parameter<Bool>) -> Verify { return Verify(method: .m_profileDeleteAccountSuccess__success_success(`success`))}
+        public static func profileEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_profileEvent__eventbiValue_biValue(`event`, `biValue`))}
     }
 
     public struct Perform {
@@ -1911,6 +2295,9 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
 
         public static func profileEditClicked(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_profileEditClicked, performs: perform)
+        }
+        public static func profileSwitch(action: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_profileSwitch__action_action(`action`), performs: perform)
         }
         public static func profileEditDoneClicked(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_profileEditDoneClicked, performs: perform)
@@ -1930,8 +2317,29 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         public static func emailSupportClicked(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_emailSupportClicked, performs: perform)
         }
+        public static func faqClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_faqClicked, performs: perform)
+        }
+        public static func tosClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_tosClicked, performs: perform)
+        }
+        public static func dataSellClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_dataSellClicked, performs: perform)
+        }
         public static func userLogout(force: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
             return Perform(method: .m_userLogout__force_force(`force`), performs: perform)
+        }
+        public static func profileWifiToggle(action: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_profileWifiToggle__action_action(`action`), performs: perform)
+        }
+        public static func profileUserDeleteAccountClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_profileUserDeleteAccountClicked, performs: perform)
+        }
+        public static func profileDeleteAccountSuccess(success: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_profileDeleteAccountSuccess__success_success(`success`), performs: perform)
+        }
+        public static func profileEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
+            return Perform(method: .m_profileEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
         }
     }
 
@@ -2642,10 +3050,10 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 		perform?(`viewModel`)
     }
 
-    open func showVideoDownloadQualityView(downloadQuality: DownloadQuality, didSelect: ((DownloadQuality) -> Void)?) {
-        addInvocation(.m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(Parameter<DownloadQuality>.value(`downloadQuality`), Parameter<((DownloadQuality) -> Void)?>.value(`didSelect`)))
-		let perform = methodPerformValue(.m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(Parameter<DownloadQuality>.value(`downloadQuality`), Parameter<((DownloadQuality) -> Void)?>.value(`didSelect`))) as? (DownloadQuality, ((DownloadQuality) -> Void)?) -> Void
-		perform?(`downloadQuality`, `didSelect`)
+    open func showVideoDownloadQualityView(downloadQuality: DownloadQuality, didSelect: ((DownloadQuality) -> Void)?, analytics: CoreAnalytics) {
+        addInvocation(.m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(Parameter<DownloadQuality>.value(`downloadQuality`), Parameter<((DownloadQuality) -> Void)?>.value(`didSelect`), Parameter<CoreAnalytics>.value(`analytics`)))
+		let perform = methodPerformValue(.m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(Parameter<DownloadQuality>.value(`downloadQuality`), Parameter<((DownloadQuality) -> Void)?>.value(`didSelect`), Parameter<CoreAnalytics>.value(`analytics`))) as? (DownloadQuality, ((DownloadQuality) -> Void)?, CoreAnalytics) -> Void
+		perform?(`downloadQuality`, `didSelect`, `analytics`)
     }
 
     open func showDeleteProfileView() {
@@ -2755,7 +3163,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         case m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(Parameter<Core.UserProfile>, Parameter<UIImage?>, Parameter<((UserProfile?, UIImage?)) -> Void>)
         case m_showSettings
         case m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>)
-        case m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(Parameter<DownloadQuality>, Parameter<((DownloadQuality) -> Void)?>)
+        case m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(Parameter<DownloadQuality>, Parameter<((DownloadQuality) -> Void)?>, Parameter<CoreAnalytics>)
         case m_showDeleteProfileView
         case m_backToRoot__animated_animated(Parameter<Bool>)
         case m_back__animated_animated(Parameter<Bool>)
@@ -2790,10 +3198,11 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsViewmodel, rhs: rhsViewmodel, with: matcher), lhsViewmodel, rhsViewmodel, "viewModel"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(let lhsDownloadquality, let lhsDidselect), .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(let rhsDownloadquality, let rhsDidselect)):
+            case (.m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(let lhsDownloadquality, let lhsDidselect, let lhsAnalytics), .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(let rhsDownloadquality, let rhsDidselect, let rhsAnalytics)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDownloadquality, rhs: rhsDownloadquality, with: matcher), lhsDownloadquality, rhsDownloadquality, "downloadQuality"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDidselect, rhs: rhsDidselect, with: matcher), lhsDidselect, rhsDidselect, "didSelect"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnalytics, rhs: rhsAnalytics, with: matcher), lhsAnalytics, rhsAnalytics, "analytics"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showDeleteProfileView, .m_showDeleteProfileView): return .match
@@ -2894,7 +3303,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             case let .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case .m_showSettings: return 0
             case let .m_showVideoQualityView__viewModel_viewModel(p0): return p0.intValue
-            case let .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(p0, p1): return p0.intValue + p1.intValue
+            case let .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case .m_showDeleteProfileView: return 0
             case let .m_backToRoot__animated_animated(p0): return p0.intValue
             case let .m_back__animated_animated(p0): return p0.intValue
@@ -2919,7 +3328,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             case .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit: return ".showEditProfile(userModel:avatar:profileDidEdit:)"
             case .m_showSettings: return ".showSettings()"
             case .m_showVideoQualityView__viewModel_viewModel: return ".showVideoQualityView(viewModel:)"
-            case .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect: return ".showVideoDownloadQualityView(downloadQuality:didSelect:)"
+            case .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics: return ".showVideoDownloadQualityView(downloadQuality:didSelect:analytics:)"
             case .m_showDeleteProfileView: return ".showDeleteProfileView()"
             case .m_backToRoot__animated_animated: return ".backToRoot(animated:)"
             case .m_back__animated_animated: return ".back(animated:)"
@@ -2958,7 +3367,7 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         public static func showEditProfile(userModel: Parameter<Core.UserProfile>, avatar: Parameter<UIImage?>, profileDidEdit: Parameter<((UserProfile?, UIImage?)) -> Void>) -> Verify { return Verify(method: .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(`userModel`, `avatar`, `profileDidEdit`))}
         public static func showSettings() -> Verify { return Verify(method: .m_showSettings)}
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>) -> Verify { return Verify(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`))}
-        public static func showVideoDownloadQualityView(downloadQuality: Parameter<DownloadQuality>, didSelect: Parameter<((DownloadQuality) -> Void)?>) -> Verify { return Verify(method: .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(`downloadQuality`, `didSelect`))}
+        public static func showVideoDownloadQualityView(downloadQuality: Parameter<DownloadQuality>, didSelect: Parameter<((DownloadQuality) -> Void)?>, analytics: Parameter<CoreAnalytics>) -> Verify { return Verify(method: .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(`downloadQuality`, `didSelect`, `analytics`))}
         public static func showDeleteProfileView() -> Verify { return Verify(method: .m_showDeleteProfileView)}
         public static func backToRoot(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_backToRoot__animated_animated(`animated`))}
         public static func back(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_back__animated_animated(`animated`))}
@@ -2991,8 +3400,8 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>, perform: @escaping (SettingsViewModel) -> Void) -> Perform {
             return Perform(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`), performs: perform)
         }
-        public static func showVideoDownloadQualityView(downloadQuality: Parameter<DownloadQuality>, didSelect: Parameter<((DownloadQuality) -> Void)?>, perform: @escaping (DownloadQuality, ((DownloadQuality) -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelect(`downloadQuality`, `didSelect`), performs: perform)
+        public static func showVideoDownloadQualityView(downloadQuality: Parameter<DownloadQuality>, didSelect: Parameter<((DownloadQuality) -> Void)?>, analytics: Parameter<CoreAnalytics>, perform: @escaping (DownloadQuality, ((DownloadQuality) -> Void)?, CoreAnalytics) -> Void) -> Perform {
+            return Perform(method: .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(`downloadQuality`, `didSelect`, `analytics`), performs: perform)
         }
         public static func showDeleteProfileView(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showDeleteProfileView, performs: perform)

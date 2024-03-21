@@ -26,6 +26,10 @@ class RouteController: UIViewController {
         diContainer.resolve(AuthorizationAnalytics.self)!
     }()
     
+    private lazy var coreAnalytics: CoreAnalytics = {
+        diContainer.resolve(CoreAnalytics.self)!
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,6 +43,8 @@ class RouteController: UIViewController {
                 self.showStartupScreen()
             }
         }
+        
+        coreAnalytics.trackEvent(.launch, biValue: .launch)
     }
     
     private func showStartupScreen() {
@@ -62,10 +68,15 @@ class RouteController: UIViewController {
     }
     
     private func showMainOrWhatsNewScreen() {
-        var storage = Container.shared.resolve(WhatsNewStorage.self)!
-        let config = Container.shared.resolve(ConfigProtocol.self)!
+        guard var storage = Container.shared.resolve(WhatsNewStorage.self),
+              let config = Container.shared.resolve(ConfigProtocol.self),
+              let analytics = Container.shared.resolve(WhatsNewAnalytics.self)
+        else {
+            assert(false, "unable to resolve basic dependencies to start app")
+            return
+        }
 
-        let viewModel = WhatsNewViewModel(storage: storage)
+        let viewModel = WhatsNewViewModel(storage: storage, analytics: analytics)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
 
         if shouldShowWhatsNew && config.features.whatNewEnabled {

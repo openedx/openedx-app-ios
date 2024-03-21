@@ -45,7 +45,8 @@ class ScreenAssembly: Assembly {
         // MARK: Startup screen
         container.register(StartupViewModel.self) { r in
             StartupViewModel(
-                router: r.resolve(AuthorizationRouter.self)!
+                router: r.resolve(AuthorizationRouter.self)!,
+                analytics: r.resolve(CoreAnalytics.self)!
             )
         }
         
@@ -207,7 +208,8 @@ class ScreenAssembly: Assembly {
         container.register(SettingsViewModel.self) { r in
             SettingsViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
-                router: r.resolve(ProfileRouter.self)!
+                router: r.resolve(ProfileRouter.self)!,
+                analytics: r.resolve(CoreAnalytics.self)!
             )
         }
         
@@ -215,7 +217,8 @@ class ScreenAssembly: Assembly {
             DeleteAccountViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(ProfileAnalytics.self)!
             )
         }
         
@@ -266,7 +269,8 @@ class ScreenAssembly: Assembly {
                 courseStart: courseStart,
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
-                enrollmentEnd: enrollmentEnd
+                enrollmentEnd: enrollmentEnd,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!
             )
         }
         
@@ -346,7 +350,8 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(CourseRouter.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                courseID: courseID
+                courseID: courseID,
+                analytics: r.resolve(CourseAnalytics.self)!
             )
         }
         
@@ -356,7 +361,9 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(CourseRouter.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                courseID: courseID)
+                courseID: courseID,
+                analytics: r.resolve(CourseAnalytics.self)!
+            )
         }
         
         // MARK: Discussion

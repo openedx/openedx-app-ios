@@ -33,7 +33,7 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
                    courseID: courseID,
                    languages: languages,
                    interactor: interactor,
-                   router: router, 
+                   router: router,
                    appStorage: appStorage,
                    connectivity: connectivity)
         
