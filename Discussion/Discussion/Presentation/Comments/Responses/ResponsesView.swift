@@ -89,7 +89,7 @@ public struct ResponsesView: View {
                                             Text(DiscussionLocalization.commentsCount(viewModel.itemsCount))
                                             Spacer()
                                         }
-                                        .padding(.top, 40)
+                                        .padding(.top, 20)
                                         .padding(.bottom, 14)
                                         .padding(.leading, 24)
                                         .font(Theme.Fonts.titleMedium)
@@ -150,8 +150,8 @@ public struct ResponsesView: View {
                                 .onRightSwipeGesture {
                                     viewModel.router.back()
                                 }
-                                .frameLimit(width: proxy.size.width)
                             }
+                            .frameLimit(width: proxy.size.width)
                             
                             if !parentComment.closed {
                                 FlexibleKeyboardInputView(

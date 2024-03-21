@@ -202,7 +202,8 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseStart: nil,
                 courseEnd: nil,
                 enrollmentStart: nil,
-                enrollmentEnd: nil
+                enrollmentEnd: nil,
+                coreAnalytics: CoreAnalyticsMock()
             ),
             courseID: "", title: "Title of Course")
     }

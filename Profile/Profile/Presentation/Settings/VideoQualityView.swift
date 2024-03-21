@@ -34,6 +34,12 @@ public struct VideoQualityView: View {
                             
                             ForEach(viewModel.quality, id: \.offset) { _, quality in
                                 Button(action: {
+                                    viewModel.analytics.videoQualityChanged(
+                                        .videoStreamQualityChanged,
+                                        bivalue: .videoStreamQualityChanged,
+                                        value: quality.value ?? "",
+                                        oldValue: viewModel.selectedQuality.value ?? ""
+                                    )
                                     viewModel.selectedQuality = quality
                                 }, label: {
                                     HStack {
@@ -89,8 +95,11 @@ public struct VideoQualityView: View {
 struct VideoQualityView_Previews: PreviewProvider {
     static var previews: some View {
         let router = ProfileRouterMock()
-        let vm = SettingsViewModel(interactor: ProfileInteractor.mock,
-                                   router: router)
+        let vm = SettingsViewModel(
+            interactor: ProfileInteractor.mock,
+            router: router,
+            analytics: CoreAnalyticsMock()
+        )
         
         VideoQualityView(viewModel: vm)
             .preferredColorScheme(.light)

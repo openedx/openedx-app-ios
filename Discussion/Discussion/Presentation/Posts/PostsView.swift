@@ -91,7 +91,7 @@ public struct PostsView: View {
                                     .frameLimit(width: proxy.size.width)
                                     Divider().offset(y: -8)
                                 }
-                                
+
                                 RefreshableScrollViewCompat(action: {
                                     viewModel.resetPosts()
                                     _ = await viewModel.getPosts(
@@ -136,7 +136,9 @@ public struct PostsView: View {
                                             .padding(.horizontal, 24)
                                             
                                             ForEach(posts, id: \.offset) { index, post in
-                                                PostCell(post: post).padding(24)
+                                                PostCell(post: post)
+                                                    .padding(.horizontal, 24)
+                                                    .padding(.vertical, 10)
                                                     .id(UUID())
                                                     .onAppear {
                                                         Task {

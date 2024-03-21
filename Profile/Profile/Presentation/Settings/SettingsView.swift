@@ -67,7 +67,8 @@ public struct SettingsView: View {
                                 Button {
                                     viewModel.router.showVideoDownloadQualityView(
                                         downloadQuality: viewModel.userSettings.downloadQuality,
-                                        didSelect: viewModel.update(downloadQuality:)
+                                        didSelect: viewModel.update(downloadQuality:),
+                                        analytics: viewModel.analytics
                                     )
                                 } label: {
                                     SettingsCell(
@@ -126,7 +127,8 @@ struct SettingsView_Previews: PreviewProvider {
         let router = ProfileRouterMock()
         let vm = SettingsViewModel(
             interactor: ProfileInteractor.mock,
-            router: router
+            router: router,
+            analytics: CoreAnalyticsMock()
         )
         
         SettingsView(viewModel: vm)

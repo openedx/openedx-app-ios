@@ -111,7 +111,8 @@ struct CourseDateListView: View {
                             DatesStatusInfoView(
                                 datesBannerInfo: courseDates.datesBannerInfo,
                                 courseID: courseID,
-                                courseDatesViewModel: viewModel
+                                courseDatesViewModel: viewModel,
+                                screen: .courseDates
                             )
                             .padding(.bottom, 16)
                         }
@@ -325,6 +326,9 @@ struct StyleBlock: View {
                     Task {
                         await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
                     }
+                    viewModel.logdateComponentTapped(block: block, supported: true)
+                } else {
+                    viewModel.logdateComponentTapped(block: block, supported: false)
                 }
             }
     }
@@ -396,7 +400,8 @@ struct CourseDatesView_Previews: PreviewProvider {
             router: CourseRouterMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity(),
-            courseID: "")
+            courseID: "",
+            analytics: CourseAnalyticsMock())
         
         CourseDatesView(
             courseID: "",

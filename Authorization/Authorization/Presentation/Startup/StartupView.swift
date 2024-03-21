@@ -129,7 +129,8 @@ public struct StartupView: View {
 struct StartupView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = StartupViewModel(
-            router: AuthorizationRouterMock()
+            router: AuthorizationRouterMock(),
+            analytics: CoreAnalyticsMock()
         )
         
         StartupView(viewModel: vm)
