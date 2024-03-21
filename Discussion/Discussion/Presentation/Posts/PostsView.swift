@@ -21,6 +21,9 @@ public struct PostsView: View {
     private let currentBlockID: String
     private let courseID: String
     private var showTopMenu: Bool
+    private var isPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
     
     public init(
         courseID: String,
@@ -240,7 +243,7 @@ public struct PostsView: View {
         })
         .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
                             isPresented: $showFilterSheet,
-                            titleVisibility: .visible,
+                            titleVisibility: isPad ? .automatic : .visible,
                             actions: {
             ForEach(viewModel.filterInfos) { info in
                 Button(action: {
@@ -262,7 +265,7 @@ public struct PostsView: View {
         })
         .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
                             isPresented: $showSortSheet,
-                            titleVisibility: .visible,
+                            titleVisibility: isPad ? .automatic : .visible,
                             actions: {
             ForEach(viewModel.sortInfos) { info in
                 Button(action: {
