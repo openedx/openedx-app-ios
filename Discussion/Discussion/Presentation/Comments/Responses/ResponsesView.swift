@@ -88,7 +88,7 @@ public struct ResponsesView: View {
                                         Text(DiscussionLocalization.commentsCount(viewModel.itemsCount))
                                         Spacer()
                                     }
-                                    .padding(.top, 40)
+                                    .padding(.top, 20)
                                     .padding(.bottom, 14)
                                     .padding(.leading, 24)
                                     .font(Theme.Fonts.titleMedium)

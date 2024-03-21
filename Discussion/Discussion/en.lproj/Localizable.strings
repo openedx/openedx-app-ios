@@ -12,6 +12,7 @@
 "TOPICS.ALL_POSTS" = "All Posts";
 "TOPICS.POST_IM_FOLLOWING" = "Posts I'm following";
 "TOPICS.MAIN_CATEGORIES" = "Main categories";
+"TOPICS.UNNAMED" = "Unnamed subcategory";
 
 "POSTS.SORT.RECENT_ACTIVITY" = "Recent Activity";
 "POSTS.SORT.MOST_ACTIVITY" = "Most Activity";

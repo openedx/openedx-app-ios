@@ -87,8 +87,7 @@ public struct ThreadView: View {
                                         Text(DiscussionLocalization.responsesCount(viewModel.itemsCount))
                                         Spacer()
                                     }
-                                    .padding(.top, 40)
-                                    .padding(.bottom, 14)
+                                    .padding(.top, 20)
                                     .padding(.leading, 24)
                                     .font(Theme.Fonts.titleMedium)
                                     .foregroundColor(Theme.Colors.textPrimary)
@@ -99,7 +98,8 @@ public struct ThreadView: View {
                                             addCommentAvailable: true,
                                             onAvatarTap: { username in
                                                 viewModel.router.showUserDetails(username: username)
-                                            }, onLikeTap: {
+                                            },
+                                            onLikeTap: {
                                                 Task {
                                                     await viewModel.vote(
                                                         id: comment.commentID,
@@ -123,7 +123,7 @@ public struct ThreadView: View {
                                                 viewModel.router.showComments(
                                                     commentID: comment.commentID,
                                                     parentComment: comment,
-                                                    threadStateSubject: viewModel.threadStateSubject, 
+                                                    threadStateSubject: viewModel.threadStateSubject,
                                                     animated: true
                                                 )
                                             },
