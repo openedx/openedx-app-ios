@@ -238,7 +238,7 @@ public struct PostsView: View {
                 .foregroundColor(Theme.Colors.accentXColor)
             Text(viewModel.filterTitle.localizedValue)
         })
-        .confirmationDialog("",
+        .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
                             isPresented: $showFilterSheet,
                             actions: {
             ForEach(viewModel.filterInfos) { info in
@@ -259,7 +259,7 @@ public struct PostsView: View {
                 .foregroundColor(Theme.Colors.accentXColor)
             Text(viewModel.sortTitle.localizedValue)
         })
-        .confirmationDialog("",
+        .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
                             isPresented: $showSortSheet,
                             actions: {
             ForEach(viewModel.sortInfos) { info in
