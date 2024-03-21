@@ -234,47 +234,64 @@ public struct PostsView: View {
     }
     
     private var filterButton: some View {
-        Button(action: {
-            showFilterSheet = true
-        }, label: {
-            CoreAssets.filter.swiftUIImage.renderingMode(.template)
-                .foregroundColor(Theme.Colors.accentXColor)
-            Text(viewModel.filterTitle.localizedValue)
-        })
-        .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
-                            isPresented: $showFilterSheet,
-                            titleVisibility: isPad ? .automatic : .visible,
-                            actions: {
-            ForEach(viewModel.filterInfos) { info in
-                Button(action: {
-                    viewModel.filter(by: info)
-                }, label: {
-                    Text(info.localizedValue)
-                })
+        Button(
+            action: {
+                showFilterSheet = true
+            }, 
+            label: {
+                CoreAssets.filter.swiftUIImage
+                    .renderingMode(.template)
+                    .foregroundColor(Theme.Colors.accentXColor)
+                Text(viewModel.filterTitle.localizedValue)
             }
-        })
+        )
+        .confirmationDialog(
+            DiscussionLocalization.Posts.Alert.makeSelection,
+            isPresented: $showFilterSheet,
+            titleVisibility: isPad ? .automatic : .visible,
+            actions: {
+                ForEach(viewModel.filterInfos) { info in
+                    Button(
+                        action: {
+                            viewModel.filter(by: info)
+                        }, 
+                        label: {
+                            Text(info.localizedValue)
+                        }
+                    )
+                }
+            }
+        )
     }
     
     private var sortButton: some View {
-        Button(action: {
-            showSortSheet = true
-        }, label: {
-            CoreAssets.sort.swiftUIImage.renderingMode(.template)
-                .foregroundColor(Theme.Colors.accentXColor)
-            Text(viewModel.sortTitle.localizedValue)
-        })
-        .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
-                            isPresented: $showSortSheet,
-                            titleVisibility: isPad ? .automatic : .visible,
-                            actions: {
-            ForEach(viewModel.sortInfos) { info in
-                Button(action: {
-                    viewModel.sort(by: info)
-                }, label: {
-                    Text(info.localizedValue)
-                })
+        Button(
+            action: {
+                showSortSheet = true
+            }, 
+            label: {
+                CoreAssets.sort.swiftUIImage.renderingMode(.template)
+                    .foregroundColor(Theme.Colors.accentXColor)
+                Text(viewModel.sortTitle.localizedValue)
             }
-        })
+        )
+        .confirmationDialog(
+            DiscussionLocalization.Posts.Alert.makeSelection,
+            isPresented: $showSortSheet,
+            titleVisibility: isPad ? .automatic : .visible,
+            actions: {
+                ForEach(viewModel.sortInfos) { info in
+                    Button(
+                        action: {
+                            viewModel.sort(by: info)
+                        }, 
+                        label: {
+                            Text(info.localizedValue)
+                        }
+                    )
+                }
+            }
+        )
     }
     
     @MainActor
