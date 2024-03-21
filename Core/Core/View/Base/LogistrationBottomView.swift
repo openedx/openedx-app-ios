@@ -41,7 +41,6 @@ public struct LogistrationBottomView: View {
                 StyledButton(CoreLocalization.SignIn.registerBtn) {
                     action(.register)
                 }
-                .frame(maxWidth: .infinity)
                 .accessibilityIdentifier("logistration_register_button")
                 
                 StyledButton(

@@ -97,6 +97,7 @@ public struct FlexibleKeyboardInputView: View {
                     }
                     .padding(.leading, 6)
                     .padding(.trailing, 14)
+                    .frameLimit()
                 }.frame(maxWidth: .infinity, maxHeight: commentSize + 16)
                     .background(
                         Theme.Colors.commentCellBackground
