@@ -240,6 +240,7 @@ public struct PostsView: View {
         })
         .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
                             isPresented: $showFilterSheet,
+                            titleVisibility: .visible,
                             actions: {
             ForEach(viewModel.filterInfos) { info in
                 Button(action: {
@@ -261,6 +262,7 @@ public struct PostsView: View {
         })
         .confirmationDialog(DiscussionLocalization.Posts.Alert.makeSelection,
                             isPresented: $showSortSheet,
+                            titleVisibility: .visible,
                             actions: {
             ForEach(viewModel.sortInfos) { info in
                 Button(action: {
