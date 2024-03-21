@@ -240,11 +240,7 @@ public struct CourseUnitView: View {
                     case .unknown(let url):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                             if viewModel.connectivity.isInternetAvaliable {
-                                ScrollView(showsIndicators: false) {
                                     UnknownView(url: url, viewModel: viewModel)
-                                    Spacer()
-                                        .frame(minHeight: 100)
-                                }
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
@@ -555,7 +551,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity(), 
+            connectivity: Connectivity(),
             storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         ), sectionName: "")
@@ -570,15 +566,20 @@ struct NoInternetView: View {
     
     var body: some View {
         VStack(spacing: 28) {
-            Image(systemName: "wifi").resizable()
+            Spacer()
+            CoreAssets.noWifi.swiftUIImage
+                .renderingMode(.template)
+                .foregroundStyle(Color.primary)
                 .scaledToFit()
-                .frame(width: 100)
-            Text(CourseLocalization.Error.noInternet)
+            Text(CoreLocalization.Error.Internet.noInternetTitle)
+                            .font(Theme.Fonts.titleLarge)
+                            .foregroundColor(Theme.Colors.textPrimary)
+            Text(CoreLocalization.Error.Internet.noInternetDescription)
+                .font(Theme.Fonts.bodyLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-            UnitButtonView(type: .reload, action: {
-                playerStateSubject.send(VideoPlayerState.kill)
-            }).frame(width: 100)
+                .padding(.horizontal, 50)
+            Spacer()
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

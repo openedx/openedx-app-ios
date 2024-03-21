@@ -45,10 +45,10 @@ public enum CoreLocalization {
     public static let courseUnits = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_UNITS", fallback: "Course units")
     /// Finish
     public static let finish = CoreLocalization.tr("Localizable", "COURSEWARE.FINISH", fallback: "Finish")
-    /// Good Work!
-    public static let goodWork = CoreLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good Work!")
-    /// “ is finished.
-    public static let isFinished = CoreLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“ is finished.")
+    /// Good job!
+    public static let goodWork = CoreLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good job!")
+    /// “.
+    public static let isFinished = CoreLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“.")
     /// Next
     public static let next = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Next section
@@ -63,8 +63,8 @@ public enum CoreLocalization {
     public static let resume = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME", fallback: "Resume")
     /// Resume with:
     public static let resumeWith = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
-    /// Section “
-    public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
+    /// You've completed “
+    public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
   public enum Date {
     /// Ended
@@ -107,6 +107,12 @@ public enum CoreLocalization {
     public static let userNotActive = CoreLocalization.tr("Localizable", "ERROR.USER_NOT_ACTIVE", fallback: "User account is not activated. Please activate your account first.")
     /// You can only download files over Wi-Fi. You can change this in the settings.
     public static let wifi = CoreLocalization.tr("Localizable", "ERROR.WIFI", fallback: "You can only download files over Wi-Fi. You can change this in the settings.")
+    public enum Internet {
+      /// Please connect to the internet to view this content.
+      public static let noInternetDescription = CoreLocalization.tr("Localizable", "ERROR.INTERNET.NO_INTERNET_DESCRIPTION", fallback: "Please connect to the internet to view this content.")
+      /// No internet connection
+      public static let noInternetTitle = CoreLocalization.tr("Localizable", "ERROR.INTERNET.NO_INTERNET_TITLE", fallback: "No internet connection")
+    }
   }
   public enum Mainscreen {
     /// Dashboard

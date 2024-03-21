@@ -105,6 +105,8 @@ public enum CoreAssets {
   public static let readdleSpark = ImageAsset(name: "readdle-spark")
   public static let ymail = ImageAsset(name: "ymail")
   public static let noCourseImage = ImageAsset(name: "noCourseImage")
+  public static let noWifi = ImageAsset(name: "noWifi")
+  public static let noWifiMini = ImageAsset(name: "noWifiMini")
   public static let notAvaliable = ImageAsset(name: "notAvaliable")
   public static let playVideo = ImageAsset(name: "playVideo")
   public static let star = ImageAsset(name: "star")

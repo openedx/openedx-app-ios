@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Discovery
 
@@ -34,3 +34,4 @@
 "DETAILS.VIEW_COURSE" = "Переглянути курс";
 "DETAILS.ENROLL_NOW" = "Зареєструватися";
 "DETAILS.ENROLLMENT_DATE_IS_OVER" = "Ви не можете зареєструватися на цей курс, оскільки дата реєстрації закінчилася.";
+"DETAILS.ENROLLMENT_NO_INTERNET" = "Щоб зареєструватися на цьому курсі, переконайтеся, що ви підключені до Інтернету.";

@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Core
 
@@ -20,6 +20,9 @@
 "ERROR.USER_NOT_ACTIVE" = "Обліковий запис користувача не активовано. Будь ласка, спочатку активуйте свій обліковий запис.";
 "ERROR.UNKNOWN_ERROR" = "Щось пішло не так";
 "ERROR.WIFI" = "Завантажувати файли можна лише через Wi-Fi. Ви можете змінити це в налаштуваннях.";
+
+"ERROR.INTERNET.NO_INTERNET_TITLE" = "Немає підключення до Інтернету";
+"ERROR.INTERNET.NO_INTERNET_DESCRIPTION" = "Будь ласка, підключіться до Інтернету, щоб переглянути цей вміст.";
 
 "COURSEWARE.COURSE_CONTENT" = "Зміст курсу";
 "COURSEWARE.COURSE_UNITS" = "Модулі";
