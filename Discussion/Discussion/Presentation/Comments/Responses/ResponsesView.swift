@@ -150,8 +150,8 @@ public struct ResponsesView: View {
                                 .onRightSwipeGesture {
                                     viewModel.router.back()
                                 }
+                                .frameLimit(width: proxy.size.width)
                             }
-                            .frameLimit(width: proxy.size.width)
                             
                             if !parentComment.closed {
                                 FlexibleKeyboardInputView(
