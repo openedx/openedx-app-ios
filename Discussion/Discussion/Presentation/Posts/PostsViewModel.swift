@@ -10,16 +10,6 @@ import SwiftUI
 import Combine
 import Core
 
-public struct ThreadFilterInfo {
-    var title: String
-    var type: ThreadType
-}
-
-public struct SortTypeInfo {
-    var title: String
-    var type: SortType
-}
-
 public class PostsViewModel: ObservableObject {
     
     public var nextPage = 1
@@ -36,17 +26,21 @@ public class PostsViewModel: ObservableObject {
     @Published var filteredPosts: [DiscussionPost] = []
     @Published var filterTitle: ThreadsFilter = .allThreads {
         willSet {
-            resetPosts()
-            Task {
-                _ = await getPosts(pageNumber: 1)
+            if courseID != nil {
+                resetPosts()
+                Task {
+                    _ = await getPosts(pageNumber: 1)
+                }
             }
         }
     }
     @Published var sortTitle: SortType = .recentActivity {
         willSet {
-            resetPosts()
-            Task {
-                _ = await getPosts(pageNumber: 1)
+            if courseID != nil {
+                resetPosts()
+                Task {
+                    _ = await getPosts(pageNumber: 1)
+                }
             }
         }
     }
@@ -55,7 +49,7 @@ public class PostsViewModel: ObservableObject {
         [
             .allThreads,
             .unread,
-            .unanswered            
+            .unanswered
         ]
     }
     
