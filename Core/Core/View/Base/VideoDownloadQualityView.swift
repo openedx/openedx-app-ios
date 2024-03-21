@@ -13,7 +13,7 @@ public final class VideoDownloadQualityViewModel: ObservableObject {
 
     var didSelect: ((DownloadQuality) -> Void)?
     let downloadQuality = DownloadQuality.allCases
-
+    
     @Published var selectedDownloadQuality: DownloadQuality {
         willSet {
             if newValue != selectedDownloadQuality {
@@ -32,10 +32,12 @@ public struct VideoDownloadQualityView: View {
 
     @StateObject
     private var viewModel: VideoDownloadQualityViewModel
+    private var analytics: CoreAnalytics
 
     public init(
         downloadQuality: DownloadQuality,
-        didSelect: ((DownloadQuality) -> Void)?
+        didSelect: ((DownloadQuality) -> Void)?,
+        analytics: CoreAnalytics
     ) {
         self._viewModel = StateObject(
             wrappedValue: .init(
@@ -43,6 +45,7 @@ public struct VideoDownloadQualityView: View {
                 didSelect: didSelect
             )
         )
+        self.analytics = analytics
     }
 
     public var body: some View {
@@ -52,6 +55,13 @@ public struct VideoDownloadQualityView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     ForEach(viewModel.downloadQuality, id: \.self) { quality in
                         Button(action: {
+                            analytics.videoQualityChanged(
+                                .videoDownloadQualityChanged,
+                                bivalue: .videoDownloadQualityChanged,
+                                value: quality.value ?? "",
+                                oldValue: viewModel.selectedDownloadQuality.value ?? ""
+                            )
+                            
                             viewModel.selectedDownloadQuality = quality
                         }, label: {
                             HStack {
@@ -127,11 +137,11 @@ public extension DownloadQuality {
         switch self {
         case .auto:
             return CoreLocalization.Settings.downloadQualityAutoTitle
-        case .low_360:
+        case .low:
             return CoreLocalization.Settings.downloadQuality360Title
-        case .medium_540:
+        case .medium:
             return CoreLocalization.Settings.downloadQuality540Title
-        case .high_720:
+        case .high:
             return CoreLocalization.Settings.downloadQuality720Title
         }
     }
@@ -140,11 +150,11 @@ public extension DownloadQuality {
         switch self {
         case .auto:
             return CoreLocalization.Settings.downloadQualityAutoDescription
-        case .low_360:
+        case .low:
             return CoreLocalization.Settings.downloadQuality360Description
-        case .medium_540:
+        case .medium:
             return nil
-        case .high_720:
+        case .high:
             return CoreLocalization.Settings.downloadQuality720Description
         }
     }
@@ -154,12 +164,12 @@ public extension DownloadQuality {
         case .auto:
             return CoreLocalization.Settings.downloadQualityAutoTitle + " ("
             + CoreLocalization.Settings.downloadQualityAutoDescription + ")"
-        case .low_360:
+        case .low:
             return CoreLocalization.Settings.downloadQuality360Title + " ("
             + CoreLocalization.Settings.downloadQuality360Description + ")"
-        case .medium_540:
+        case .medium:
             return CoreLocalization.Settings.downloadQuality540Title
-        case .high_720:
+        case .high:
             return CoreLocalization.Settings.downloadQuality720Title + " ("
             + CoreLocalization.Settings.downloadQuality720Description + ")"
         }

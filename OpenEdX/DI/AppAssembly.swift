@@ -69,6 +69,14 @@ class AppAssembly: Assembly {
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
+        container.register(CoreAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(WhatsNewAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConnectivityProtocol.self) { _ in
             Connectivity()
         }

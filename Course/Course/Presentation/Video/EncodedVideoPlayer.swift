@@ -73,6 +73,7 @@ public struct EncodedVideoPlayer: View {
                                     if progress == 1 {
                                         viewModel.router.presentAppReview()
                                     }
+                                    
                                 }, seconds: { seconds in
                                     currentTime = seconds
                                 })

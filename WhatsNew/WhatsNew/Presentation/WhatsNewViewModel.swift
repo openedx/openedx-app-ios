@@ -14,10 +14,16 @@ public class WhatsNewViewModel: ObservableObject {
     @Published var newItems: [WhatsNewPage] = []
     private let storage: WhatsNewStorage
     var sourceScreen: LogistrationSourceScreen
+    let analytics: WhatsNewAnalytics
     
-    public init(storage: WhatsNewStorage, sourceScreen: LogistrationSourceScreen = .default) {
+    public init(
+        storage: WhatsNewStorage,
+        sourceScreen: LogistrationSourceScreen = .default,
+        analytics: WhatsNewAnalytics
+    ) {
         self.storage = storage
         self.sourceScreen = sourceScreen
+        self.analytics = analytics
         newItems = loadWhatsNew()
     }
     
@@ -71,5 +77,22 @@ public class WhatsNewViewModel: ObservableObject {
             print("Error decoding WhatsNew.json: \(error)")
             return nil
         }
+    }
+    
+    private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    
+    func logWhatsNewPopup() {
+        analytics.whatsnewPopup()
+    }
+    
+    func logWhatsNewDone() {
+        let total = newItems.count
+        analytics.whatsnewDone(totalScreens: total)
+    }
+    
+    func logWhatsNewClose() {
+        let total = newItems.count
+        
+        analytics.whatsnewClose(totalScreens: total, currentScreen: index + 1)
     }
 }

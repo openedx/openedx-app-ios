@@ -75,7 +75,7 @@ public class SignInViewModel: ObservableObject {
             errorMessage = AuthLocalization.Error.invalidPasswordLenght
             return
         }
-        
+        analytics.userSignInClicked()
         isShowProgress = true
         do {
             let user = try await interactor.login(username: username, password: password)
