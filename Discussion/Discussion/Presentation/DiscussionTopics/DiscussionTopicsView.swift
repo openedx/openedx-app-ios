@@ -51,7 +51,7 @@ public struct DiscussionTopicsView: View {
                     viewModel.router.showDiscussionsSearch(courseID: courseID)
                 }
                 .padding(.horizontal, 24)
-                .padding(.bottom, 20)
+                .padding(.top, 10)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(DiscussionLocalization.Topics.search)
                 
@@ -68,7 +68,7 @@ public struct DiscussionTopicsView: View {
                                             .font(Theme.Fonts.titleMedium)
                                             .foregroundColor(Theme.Colors.textSecondary)
                                             .padding(.horizontal, 24)
-                                            .padding(.top, 40)
+                                            .padding(.top, 10)
                                         Spacer()
                                     }
                                     HStack(spacing: 8) {
@@ -109,7 +109,7 @@ public struct DiscussionTopicsView: View {
                                                 .padding(.leading, -20)
                                             
                                         }
-                                    }.padding(.bottom, 26)
+                                    }.padding(.bottom, 16)
                                     ForEach(Array(topics.enumerated()), id: \.offset) { _, topic in
                                         if topic.name != DiscussionLocalization.Topics.allPosts
                                             && topic.name != DiscussionLocalization.Topics.postImFollowing {
@@ -120,13 +120,13 @@ public struct DiscussionTopicsView: View {
                                                         .font(Theme.Fonts.titleMedium)
                                                         .foregroundColor(Theme.Colors.textSecondary)
                                                     Spacer()
-                                                }.padding(.top, 32)
+                                                }.padding(.top, 12)
                                                     .padding(.bottom, 8)
                                                     .padding(.horizontal, 24)
                                             } else {
                                                 VStack {
                                                     TopicCell(topic: topic)
-                                                        .padding(.vertical, 24)
+                                                        .padding(.vertical, 10)
                                                     Divider()
                                                 }.padding(.horizontal, 24)
                                             }
@@ -210,6 +210,7 @@ public struct TopicCell: View {
                 Text(topic.name)
                     .font(Theme.Fonts.titleMedium)
                     .foregroundColor(Theme.Colors.textPrimary)
+                    .multilineTextAlignment(.leading)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .foregroundColor(Theme.Colors.accentColor)

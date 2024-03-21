@@ -50,14 +50,15 @@ public class ResetPasswordViewModel: ObservableObject {
             return
         }
         isShowProgress = true
+        analytics.resetPasswordClicked()
         do {
             _ = try await interactor.resetPassword(email: email).responseText.hideHtmlTagsAndUrls()
             isRecovered.wrappedValue.toggle()
-            analytics.resetPasswordClicked(success: true)
+            analytics.resetPassword(success: true)
             isShowProgress = false
         } catch {
             isShowProgress = false
-            analytics.resetPasswordClicked(success: false)
+            analytics.resetPassword(success: false)
             if let validationError = error.validationError,
                let value = validationError.data?["value"] as? String {
                 errorMessage = value

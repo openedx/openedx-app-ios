@@ -73,10 +73,10 @@ public struct EncodedVideoPlayer: View {
                                     if progress == 1 {
                                         viewModel.router.presentAppReview()
                                     }
+                                    
                                 }, seconds: { seconds in
                                     currentTime = seconds
                                 })
-                            .statusBarHidden(false)
                             .aspectRatio(16 / 9, contentMode: .fit)
                             .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
                             .cornerRadius(12)
@@ -124,10 +124,14 @@ public struct EncodedVideoPlayer: View {
                     }
                 }
             }
-        }.padding(.horizontal, isHorizontal ? 0 : 8)
-            .onDisappear {
-                viewModel.controller.player?.allowsExternalPlayback = false
-            }
+        }
+        .padding(.horizontal, isHorizontal ? 0 : 8)
+        .onDisappear {
+            viewModel.controller.player?.allowsExternalPlayback = false
+        }
+        .onAppear {
+            viewModel.controller.setNeedsStatusBarAppearanceUpdate()
+        }
     }
     
     private func pauseScrolling() {

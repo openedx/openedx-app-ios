@@ -90,7 +90,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
-    private let analytics: CourseAnalytics
+    let analytics: CourseAnalytics
+    let coreAnalytics: CoreAnalytics
     private(set) var storage: CourseStorage
 
     public init(
@@ -106,7 +107,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
-        enrollmentEnd: Date?
+        enrollmentEnd: Date?,
+        coreAnalytics: CoreAnalytics
     ) {
         self.interactor = interactor
         self.authInteractor = authInteractor
@@ -122,6 +124,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.storage = storage
         self.userSettings = storage.userSettings
         self.isInternetAvaliable = connectivity.isInternetAvaliable
+        self.coreAnalytics = coreAnalytics
 
         super.init(manager: manager)
         addObservers()
@@ -179,14 +182,32 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     @MainActor
-    func shiftDueDates(courseID: String, withProgress: Bool = true) async {
+    func shiftDueDates(courseID: String, withProgress: Bool = true, screen: DatesStatusInfoScreen, type: String) async {
         isShowProgress = withProgress
         do {
             try await interactor.shiftDueDates(courseID: courseID)
             NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
             isShowProgress = false
+            
+            analytics.plsSuccessEvent(
+                .plsShiftDatesSuccess,
+                bivalue: .plsShiftDatesSuccess,
+                courseID: courseID,
+                screenName: screen.rawValue,
+                type: type,
+                success: true
+            )
+            
         } catch let error {
             isShowProgress = false
+            analytics.plsSuccessEvent(
+                .plsShiftDatesSuccess,
+                bivalue: .plsShiftDatesSuccess,
+                courseID: courseID,
+                screenName: screen.rawValue,
+                type: type,
+                success: false
+            )
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
@@ -227,6 +248,22 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         if state == .available, isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return
         }
+        
+        if state == .available {
+            analytics.bulkDownloadVideosSubsection(
+                courseID: courseStructure?.id ?? "",
+                sectionID: chapter.id,
+                subSectionID: sequential.id,
+                videos: blocks.count
+            )
+        } else if state == .finished {
+            analytics.bulkDeleteVideosSubsection(
+                courseID: courseStructure?.id ?? "",
+                subSectionID: sequential.id,
+                videos: blocks.count
+            )
+        }
+        
 
         await download(state: state, blocks: blocks)
     }
@@ -292,6 +329,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             blockName: vertical.displayName
         )
     }
+    
+    func trackViewCertificateClicked(courseID: String) {
+        analytics.trackCourseEvent(
+            .courseViewCertificateClicked,
+            biValue: .courseViewCertificateClicked,
+            courseID: courseID
+        )
+    }
 
     func trackSequentialClicked(_ sequential: CourseSequential) {
         guard let course = courseStructure else { return }
@@ -303,9 +348,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         )
     }
     
-    func trackResumeCourseTapped(blockId: String) {
+    func trackResumeCourseClicked(blockId: String) {
         guard let course = courseStructure else { return }
-        analytics.resumeCourseTapped(
+        analytics.resumeCourseClicked(
             courseId: course.id,
             courseName: course.displayName,
             blockId: blockId

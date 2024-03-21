@@ -145,7 +145,9 @@ public struct PostsView: View {
                                         .padding(.horizontal, 24)
                                         
                                         ForEach(posts, id: \.offset) { index, post in
-                                            PostCell(post: post).padding(24)
+                                            PostCell(post: post)
+                                                .padding(.horizontal, 24)
+                                                .padding(.vertical, 10)
                                                 .id(UUID())
                                                 .onAppear {
                                                     Task {

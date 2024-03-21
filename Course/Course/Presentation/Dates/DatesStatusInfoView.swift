@@ -10,11 +10,18 @@ import SwiftUI
 import Core
 import Theme
 
+public enum DatesStatusInfoScreen: String {
+    case courseDashbaord = "course_dashbaord"
+    case courseDates = "course_dates"
+}
+
 struct DatesStatusInfoView: View {
     let datesBannerInfo: DatesBannerInfo
     let courseID: String
     var courseDatesViewModel: CourseDatesViewModel?
     var courseContainerViewModel: CourseContainerViewModel?
+    var screen: DatesStatusInfoScreen
+    
     @State private var isLoading = false
 
     var body: some View {
@@ -40,11 +47,26 @@ struct DatesStatusInfoView: View {
                 UnitButtonView(type: .custom(button)) {
                     guard !isLoading else { return }
                     isLoading = true
+                    courseDatesViewModel?.trackPLSEvent(
+                        .plsShiftDatesClicked,
+                        bivalue: .plsShiftDatesClicked,
+                        courseID: courseID,
+                        screenName: screen.rawValue,
+                        type: datesBannerInfo.status?.analyticsBannerType ?? ""
+                    )
                     Task {
                         if courseDatesViewModel != nil {
-                            await courseDatesViewModel?.shiftDueDates(courseID: courseID)
+                            await courseDatesViewModel?.shiftDueDates(
+                                courseID: courseID,
+                                screen: screen,
+                                type: datesBannerInfo.status?.analyticsBannerType ?? ""
+                            )
                         } else if courseContainerViewModel != nil {
-                            await courseContainerViewModel?.shiftDueDates(courseID: courseID)
+                            await courseContainerViewModel?.shiftDueDates(
+                                courseID: courseID,
+                                screen: screen,
+                                type: datesBannerInfo.status?.analyticsBannerType ?? ""
+                            )
                         }
                          isLoading = false
                     }
@@ -59,6 +81,15 @@ struct DatesStatusInfoView: View {
                 .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
         )
         .background(Theme.Colors.datesSectionBackground)
+        .onFirstAppear {
+            courseDatesViewModel?.trackPLSEvent(
+                .plsBannerViewed,
+                bivalue: .plsBannerViewed,
+                courseID: courseID,
+                screenName: screen.rawValue,
+                type: datesBannerInfo.status?.analyticsBannerType ?? ""
+            )
+        }
     }
 }
 
@@ -75,7 +106,8 @@ struct DatesStatusInfoView_Previews: PreviewProvider {
         
         DatesStatusInfoView(
             datesBannerInfo: datesBannerInfo,
-            courseID: "courseID"
+            courseID: "courseID",
+            screen: .courseDashbaord
         )
     }
 }

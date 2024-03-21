@@ -221,6 +221,7 @@ public struct ProfileView: View {
     private var logOutButton: some View {
         VStack {
             Button(action: {
+                viewModel.trackLogoutClickedClicked()
                 viewModel.router.presentView(
                     transitionStyle: .crossDissolve,
                     animated: true

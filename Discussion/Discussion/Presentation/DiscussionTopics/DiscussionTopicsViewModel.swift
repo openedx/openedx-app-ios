@@ -62,7 +62,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
                 style: .basic
             ),
             DiscussionTopic(
-                name: DiscussionLocalization.Topics.postImFollowing, action: {
+                name: DiscussionLocalization.Topics.postImFollowing, 
+                action: {
                     self.analytics.discussionFollowingClicked(courseId: self.courseID,
                                                                      courseName: self.title)
                     self.router.showThreads(
