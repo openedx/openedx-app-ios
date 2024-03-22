@@ -147,60 +147,64 @@ struct CourseDateListView: View {
     let courseID: String
 
     var body: some View {
-        VStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    if !courseDates.hasEnded {
-                        CalendarSyncView(courseID: courseID, viewModel: viewModel)
-                            .padding(.bottom, 16)
-                        
-                        DatesStatusInfoView(
-                            datesBannerInfo: courseDates.datesBannerInfo,
-                            courseID: courseID,
-                            courseDatesViewModel: viewModel
-                        )
-                        .padding(.bottom, 16)
-                    }
-                    
-                    ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
-                        let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
-                        if status == .completed {
-                            CompletedBlocks(
-                                isExpanded: $isExpanded,
-                                courseDateBlockDict: courseDateBlockDict,
-                                viewModel: viewModel
+        GeometryReader { proxy in
+            VStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        if !courseDates.hasEnded {
+                            CalendarSyncView(courseID: courseID, viewModel: viewModel)
+                                .padding(.bottom, 16)
+                            
+                            DatesStatusInfoView(
+                                datesBannerInfo: courseDates.datesBannerInfo,
+                                courseID: courseID,
+                                courseDatesViewModel: viewModel,
+                                screen: .courseDates
                             )
-                        } else {
-                            Text(status.rawValue)
-                                .font(Theme.Fonts.titleSmall)
-                                .padding(.top, 10)
-                                .padding(.bottom, 10)
-                            HStack {
-                                TimeLineView(status: status)
-                                    .padding(.bottom, 15)
-                                VStack(alignment: .leading) {
-                                    ForEach(courseDateBlockDict.keys.sorted(), id: \.self) { date in
-                                        let blocks = courseDateBlockDict[date]!
-                                        let block = blocks[0]
-                                        Text(block.formattedDate)
-                                            .font(Theme.Fonts.labelMedium)
-                                            .foregroundStyle(Theme.Colors.textPrimary)
-                                        BlockStatusView(
-                                            viewModel: viewModel,
-                                            block: block,
-                                            blocks: blocks
-                                        )
+                            .padding(.bottom, 16)
+                        }
+                        
+                        ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
+                            let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
+                            if status == .completed {
+                                CompletedBlocks(
+                                    isExpanded: $isExpanded,
+                                    courseDateBlockDict: courseDateBlockDict,
+                                    viewModel: viewModel
+                                )
+                            } else {
+                                Text(status.rawValue)
+                                    .font(Theme.Fonts.titleSmall)
+                                    .padding(.top, 10)
+                                    .padding(.bottom, 10)
+                                HStack {
+                                    TimeLineView(status: status)
+                                        .padding(.bottom, 15)
+                                    VStack(alignment: .leading) {
+                                        ForEach(courseDateBlockDict.keys.sorted(), id: \.self) { date in
+                                            let blocks = courseDateBlockDict[date]!
+                                            let block = blocks[0]
+                                            Text(block.formattedDate)
+                                                .font(Theme.Fonts.labelMedium)
+                                                .foregroundStyle(Theme.Colors.textPrimary)
+                                            BlockStatusView(
+                                                viewModel: viewModel,
+                                                block: block,
+                                                blocks: blocks
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 5)
+                    .frameLimit(width: proxy.size.width)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 5)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
@@ -372,6 +376,9 @@ struct StyleBlock: View {
                             blockLink: block.link
                         )
                     }
+                    viewModel.logdateComponentTapped(block: block, supported: true)
+                } else {
+                    viewModel.logdateComponentTapped(block: block, supported: false)
                 }
             }
     }
@@ -481,7 +488,9 @@ struct CourseDatesView_Previews: PreviewProvider {
             connectivity: Connectivity(),
             config: ConfigMock(),
             courseID: "",
-            courseName: "")
+            courseName: "",
+            analytics: CourseAnalyticsMock()
+        )
         
         CourseDatesView(
             courseID: "",

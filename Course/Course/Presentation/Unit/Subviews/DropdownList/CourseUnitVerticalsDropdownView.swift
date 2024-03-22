@@ -47,6 +47,7 @@ struct CourseUnitVerticalsDropdownView: View {
             })
             .offset(y: offsetY)
             .padding(.horizontal, 20)
+            .frameLimit()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .transition(.opacity)

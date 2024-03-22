@@ -11,6 +11,7 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="multiDevice" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="studentUrl" optional="YES" attributeType="String"/>
+        <attribute name="transcripts" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="webUrl" optional="YES" attributeType="String"/>
         <relationship name="desktopMP4" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseBlockVideo"/>

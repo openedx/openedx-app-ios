@@ -267,15 +267,15 @@ public struct CourseBlockEncodedVideo {
             [mobileLow, mobileHigh, desktopMP4, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
-        case .high_720:
+        case .high:
             [desktopMP4, mobileHigh, mobileLow, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
-        case .medium_540:
+        case .medium:
             [mobileHigh, mobileLow, desktopMP4, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
-        case .low_360:
+        case .low:
             [mobileLow, mobileHigh, desktopMP4, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }

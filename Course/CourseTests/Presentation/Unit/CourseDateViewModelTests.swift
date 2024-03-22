@@ -57,7 +57,9 @@ final class CourseDateViewModelTests: XCTestCase {
             connectivity: connectivity,
             config: config,
             courseID: "1",
-            courseName: "a")
+            courseName: "a",
+            analytics: CourseAnalyticsMock()
+        )
         
         await viewModel.getCourseDates(courseID: "1")
         
@@ -85,7 +87,9 @@ final class CourseDateViewModelTests: XCTestCase {
             connectivity: connectivity,
             config: config,
             courseID: "1",
-            courseName: "a")
+            courseName: "a",
+            analytics: CourseAnalyticsMock()
+        )
         
         await viewModel.getCourseDates(courseID: "1")
         
@@ -113,7 +117,9 @@ final class CourseDateViewModelTests: XCTestCase {
             connectivity: connectivity,
             config: config,
             courseID: "1",
-            courseName: "a")
+            courseName: "a",
+            analytics: CourseAnalyticsMock()
+        )
         
         await viewModel.getCourseDates(courseID: "1")
         

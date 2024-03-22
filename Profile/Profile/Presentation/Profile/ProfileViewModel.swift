@@ -140,11 +140,27 @@ public class ProfileViewModel: ObservableObject {
         analytics.cookiePolicyClicked()
     }
     
+    func trackTOSClicked() {
+        analytics.tosClicked()
+    }
+    
+    func trackFAQClicked() {
+        analytics.faqClicked()
+    }
+    
+    func trackDataSellClicked() {
+        analytics.dataSellClicked()
+    }
+    
     func trackPrivacyPolicyClicked() {
         analytics.privacyPolicyClicked()
     }
     
     func trackProfileEditClicked() {
         analytics.profileEditClicked()
+    }
+    
+    func trackLogoutClickedClicked() {
+        analytics.profileEvent(.userLogoutClicked, biValue: .userLogoutClicked)
     }
 }

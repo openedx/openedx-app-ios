@@ -113,6 +113,7 @@ public struct StartupView: View {
             .onDisappear {
                 searchQuery = ""
             }
+            .frameLimit()
         }
         .hideNavigationBar()
         .padding(.all, isHorizontal ? 1 : 0)
@@ -128,7 +129,8 @@ public struct StartupView: View {
 struct StartupView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = StartupViewModel(
-            router: AuthorizationRouterMock()
+            router: AuthorizationRouterMock(),
+            analytics: CoreAnalyticsMock()
         )
         
         StartupView(viewModel: vm)

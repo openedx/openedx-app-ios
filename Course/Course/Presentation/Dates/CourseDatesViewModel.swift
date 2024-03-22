@@ -63,6 +63,7 @@ public class CourseDatesViewModel: ObservableObject {
     let courseID: String
     let courseName: String
     var courseStructure: CourseStructure?
+    let analytics: CourseAnalytics
     
     public init(
         interactor: CourseInteractorProtocol,
@@ -71,7 +72,8 @@ public class CourseDatesViewModel: ObservableObject {
         connectivity: ConnectivityProtocol,
         config: ConfigProtocol,
         courseID: String,
-        courseName: String
+        courseName: String,
+        analytics: CourseAnalytics
     ) {
         self.interactor = interactor
         self.router = router
@@ -80,6 +82,7 @@ public class CourseDatesViewModel: ObservableObject {
         self.config = config
         self.courseID = courseID
         self.courseName = courseName
+        self.analytics = analytics
         addObservers()
     }
         
@@ -146,13 +149,29 @@ public class CourseDatesViewModel: ObservableObject {
     }
     
     @MainActor
-    func shiftDueDates(courseID: String, withProgress: Bool = true) async {
+    func shiftDueDates(courseID: String, withProgress: Bool = true, screen: DatesStatusInfoScreen, type: String) async {
         isShowProgress = withProgress
         do {
             try await interactor.shiftDueDates(courseID: courseID)
             NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
             isShowProgress = false
+            trackPLSuccessEvent(
+                .plsShiftDatesSuccess,
+                bivalue: .plsShiftDatesSuccess,
+                courseID: courseID,
+                screenName: screen.rawValue,
+                type: type,
+                success: true
+            )
         } catch let error {
+            trackPLSuccessEvent(
+                .plsShiftDatesSuccess,
+                bivalue: .plsShiftDatesSuccess,
+                courseID: courseID,
+                screenName: screen.rawValue,
+                type: type,
+                success: false
+            )
             isShowProgress = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -395,6 +414,49 @@ extension CourseDatesViewModel {
                 positiveAction: CourseLocalization.CourseDates.openSettings,
                 image: CoreAssets.syncToCalendar.swiftUIImage
             )
+        )
+    }
+    
+    func logdateComponentTapped(block: CourseDateBlock, supported: Bool) {
+        analytics.datesComponentTapped(
+            courseId: courseID,
+            blockId: block.firstComponentBlockID,
+            link: block.link,
+            supported: supported
+        )
+    }
+    
+    func trackPLSEvent(
+        _ event: AnalyticsEvent,
+        bivalue: EventBIValue,
+        courseID: String,
+        screenName: String,
+        type: String
+    ) {
+        analytics.plsEvent(
+            event,
+            bivalue: bivalue,
+            courseID: courseID,
+            screenName: screenName,
+            type: type
+        )
+    }
+    
+    private func trackPLSuccessEvent(
+        _ event: AnalyticsEvent,
+        bivalue: EventBIValue,
+        courseID: String,
+        screenName: String,
+        type: String,
+        success: Bool
+    ) {
+        analytics.plsSuccessEvent(
+            event,
+            bivalue: bivalue,
+            courseID: courseID,
+            screenName: screenName,
+            type: type,
+            success: success
         )
     }
 }
