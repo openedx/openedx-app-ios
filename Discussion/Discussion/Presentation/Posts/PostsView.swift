@@ -63,34 +63,37 @@ public struct PostsView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            // MARK: - Page Body
-            ScrollViewReader { scroll in
-                VStack {
-                    ZStack(alignment: .top) {
-                        VStack {
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                // MARK: - Page Body
+                ScrollViewReader { scroll in
+                    VStack {
+                        ZStack(alignment: .top) {
                             VStack {
-                                HStack {
-                                    Group {
-                                        Button(action: {
-                                            viewModel.generateButtons(type: .filter)
-                                            showingAlert = true
-                                        }, label: {
-                                            CoreAssets.filter.swiftUIImage.renderingMode(.template)
-                                                .foregroundColor(Theme.Colors.accentXColor)
-                                            Text(viewModel.filterTitle.localizedValue)
-                                        })
-                                        Spacer()
-                                        Button(action: {
-                                            viewModel.generateButtons(type: .sort)
-                                            showingAlert = true
-                                        }, label: {
-                                            CoreAssets.sort.swiftUIImage.renderingMode(.template)
-                                                .foregroundColor(Theme.Colors.accentXColor)
-                                            Text(viewModel.sortTitle.localizedValue)
-                                        })
-                                    }.foregroundColor(Theme.Colors.accentColor)
-                                } .font(Theme.Fonts.labelMedium)
+                                VStack {
+                                    HStack {
+                                        Group {
+                                            Button(action: {
+                                                viewModel.generateButtons(type: .filter)
+                                                showingAlert = true
+                                            }, label: {
+                                                CoreAssets.filter.swiftUIImage.renderingMode(.template)
+                                                    .foregroundColor(Theme.Colors.accentXColor)
+                                                Text(viewModel.filterTitle.localizedValue)
+                                            })
+                                            Spacer()
+                                            Button(action: {
+                                                viewModel.generateButtons(type: .sort)
+                                                showingAlert = true
+                                            }, label: {
+                                                CoreAssets.sort.swiftUIImage.renderingMode(.template)
+                                                    .foregroundColor(Theme.Colors.accentXColor)
+                                                Text(viewModel.sortTitle.localizedValue)
+                                            })
+                                        }
+                                        .foregroundColor(Theme.Colors.accentColor)
+                                    }
+                                    .font(Theme.Fonts.labelMedium)
                                     .padding(.horizontal, 24)
                                     .padding(.vertical, 12)
                                     .shadow(color: Theme.Colors.shadowColor,
@@ -98,146 +101,151 @@ public struct PostsView: View {
                                     .background(
                                         Theme.Colors.background
                                     )
-                                Divider().offset(y: -8)
-                            }
-                            .frameLimit()
-                            RefreshableScrollViewCompat(action: {
-                                viewModel.resetPosts()
-                                _ = await viewModel.getPosts(
-                                    pageNumber: 1,
-                                    withProgress: false
-                                )
-                            }) {
-                                let posts = Array(viewModel.filteredPosts.enumerated())
-                                if posts.count >= 1 {
-                                    LazyVStack {
-                                        VStack {}.frame(height: 1)
-                                            .id(1)
-                                        HStack(alignment: .center) {
-                                            Text(title)
-                                                .font(Theme.Fonts.titleLarge)
-                                                .foregroundColor(Theme.Colors.textPrimary)
-                                            Spacer()
-                                            Button(action: {
-                                                router.createNewThread(
-                                                    courseID: courseID,
-                                                    selectedTopic: currentBlockID,
-                                                    onPostCreated: {
-                                                        reloadPage(onSuccess: {
-                                                            withAnimation {
-                                                                scroll.scrollTo(1)
-                                                            }
+                                    .frameLimit(width: proxy.size.width)
+                                    Divider().offset(y: -8)
+                                }
+
+                                RefreshableScrollViewCompat(action: {
+                                    viewModel.resetPosts()
+                                    _ = await viewModel.getPosts(
+                                        pageNumber: 1,
+                                        withProgress: false
+                                    )
+                                }) {
+                                    let posts = Array(viewModel.filteredPosts.enumerated())
+                                    if posts.count >= 1 {
+                                        LazyVStack {
+                                            VStack {}.frame(height: 1)
+                                                .id(1)
+                                            HStack(alignment: .center) {
+                                                Text(title)
+                                                    .font(Theme.Fonts.titleLarge)
+                                                    .foregroundColor(Theme.Colors.textPrimary)
+                                                Spacer()
+                                                Button(action: {
+                                                    router.createNewThread(
+                                                        courseID: courseID,
+                                                        selectedTopic: currentBlockID,
+                                                        onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
                                                         })
-                                                    })
-                                            }, label: {
-                                                VStack {
-                                                    CoreAssets.addComment.swiftUIImage
-                                                        .font(Theme.Fonts.labelLarge)
-                                                        .padding(6)
-                                                }
-                                                .foregroundColor(Theme.Colors.white)
-                                                .background(
-                                                    Circle()
-                                                        .foregroundColor(Theme.Colors.accentButtonColor)
-                                                )
-                                            })
-                                        }
-                                        .padding(.horizontal, 24)
-                                        
-                                        ForEach(posts, id: \.offset) { index, post in
-                                            PostCell(post: post)
-                                                .padding(.horizontal, 24)
-                                                .padding(.vertical, 10)
-                                                .id(UUID())
-                                                .onAppear {
-                                                    Task {
-                                                        await viewModel.getPostsPagination(
-                                                            index: index
-                                                        )
+                                                }, label: {
+                                                    VStack {
+                                                        CoreAssets.addComment.swiftUIImage
+                                                            .font(Theme.Fonts.labelLarge)
+                                                            .padding(6)
                                                     }
-                                                }
-                                            if posts.last?.element != post {
-                                                Divider().padding(.horizontal, 24)
+                                                    .foregroundColor(Theme.Colors.white)
+                                                    .background(
+                                                        Circle()
+                                                            .foregroundColor(Theme.Colors.accentButtonColor)
+                                                    )
+                                                })
                                             }
-                                        }
-                                        Spacer(minLength: 84)
-                                    }
-                                } else {
-                                    if !viewModel.fetchInProgress {
-                                        VStack(spacing: 0) {
-                                            CoreAssets.discussionIcon.swiftUIImage
-                                                .renderingMode(.template)
-                                                .foregroundColor(Theme.Colors.textPrimary)
-                                            Text(DiscussionLocalization.Posts.NoDiscussion.title)
-                                                .font(Theme.Fonts.titleLarge)
-                                                .multilineTextAlignment(.center)
-                                                .frame(maxWidth: .infinity)
-                                                .padding(.top, 40)
-                                            Text(DiscussionLocalization.Posts.NoDiscussion.description)
-                                                .font(Theme.Fonts.bodyLarge)
-                                                .multilineTextAlignment(.center)
-                                                .frame(maxWidth: .infinity)
-                                                .padding(.top, 12)
-                                            StyledButton(
-                                                DiscussionLocalization.Posts.NoDiscussion.createbutton,
-                                                action: {
-                                                    router.createNewThread(courseID: courseID,
-                                                                           selectedTopic: currentBlockID,
-                                                                           onPostCreated: {
-                                                        reloadPage(onSuccess: {
-                                                            withAnimation {
-                                                                scroll.scrollTo(1)
-                                                            }
-                                                        })
-                                                    })
-                                                },
-                                                isTransparent: true)
-                                            .frame(width: 215)
-                                            .padding(.top, 40)
-                                            .colorMultiply(Theme.Colors.accentColor)
+                                            .padding(.horizontal, 24)
                                             
-                                        }.padding(24)
+                                            ForEach(posts, id: \.offset) { index, post in
+                                                PostCell(post: post)
+                                                    .padding(.horizontal, 24)
+                                                    .padding(.vertical, 10)
+                                                    .id(UUID())
+                                                    .onAppear {
+                                                        Task {
+                                                            await viewModel.getPostsPagination(
+                                                                index: index
+                                                            )
+                                                        }
+                                                    }
+                                                if posts.last?.element != post {
+                                                    Divider().padding(.horizontal, 24)
+                                                }
+                                            }
+                                            Spacer(minLength: 84)
+                                        }
+                                        .frameLimit(width: proxy.size.width)
+                                    } else {
+                                        if !viewModel.fetchInProgress {
+                                            VStack(spacing: 0) {
+                                                CoreAssets.discussionIcon.swiftUIImage
+                                                    .renderingMode(.template)
+                                                    .foregroundColor(Theme.Colors.textPrimary)
+                                                Text(DiscussionLocalization.Posts.NoDiscussion.title)
+                                                    .font(Theme.Fonts.titleLarge)
+                                                    .multilineTextAlignment(.center)
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding(.top, 40)
+                                                Text(DiscussionLocalization.Posts.NoDiscussion.description)
+                                                    .font(Theme.Fonts.bodyLarge)
+                                                    .multilineTextAlignment(.center)
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding(.top, 12)
+                                                StyledButton(
+                                                    DiscussionLocalization.Posts.NoDiscussion.createbutton,
+                                                    action: {
+                                                        router.createNewThread(courseID: courseID,
+                                                                               selectedTopic: currentBlockID,
+                                                                               onPostCreated: {
+                                                            reloadPage(onSuccess: {
+                                                                withAnimation {
+                                                                    scroll.scrollTo(1)
+                                                                }
+                                                            })
+                                                        })
+                                                    },
+                                                    isTransparent: true)
+                                                .frame(width: 215)
+                                                .padding(.top, 40)
+                                                .colorMultiply(Theme.Colors.accentColor)
+                                                
+                                            }
+                                            .padding(24)
                                             .padding(.top, 100)
+                                            .frameLimit(width: proxy.size.width)
+                                        }
                                     }
                                 }
                             }
-                        }.accessibilityAction {}
-                        .frameLimit()
+                            .accessibilityAction {}
                             .animation(nil)
                             .onRightSwipeGesture {
                                 router.back()
                             }
-                    }
-                }.frame(maxWidth: .infinity)
+                        }
+                    }.frame(maxWidth: .infinity)
+                }
+                .padding(.top, 8)
+                if viewModel.isShowProgress {
+                    VStack(alignment: .center) {
+                        ProgressBar(size: 40, lineWidth: 8)
+                            .padding(.horizontal)
+                    }.frame(maxWidth: .infinity,
+                            maxHeight: .infinity)
+                }
             }
-            .padding(.top, 8)
-            if viewModel.isShowProgress {
-                VStack(alignment: .center) {
-                    ProgressBar(size: 40, lineWidth: 8)
-                        .padding(.horizontal)
-                }.frame(maxWidth: .infinity,
-                        maxHeight: .infinity)
+            .onFirstAppear {
+                Task {
+                    await viewModel.getPosts(
+                        pageNumber: 1,
+                        withProgress: true
+                    )
+                }
             }
+            .navigationBarHidden(!showTopMenu)
+            .navigationBarBackButtonHidden(!showTopMenu)
+            .navigationTitle(title)
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
+            // MARK: - Action Sheet
+            .actionSheet(isPresented: $showingAlert, content: {
+                ActionSheet(title: Text(DiscussionLocalization.Posts.Alert.makeSelection), buttons: viewModel.filterButtons)
+            })
         }
-        .onFirstAppear {
-            Task {
-                await viewModel.getPosts(
-                    pageNumber: 1,
-                    withProgress: true
-                )
-            }
-        }
-        .navigationBarHidden(!showTopMenu)
-        .navigationBarBackButtonHidden(!showTopMenu)
-        .navigationTitle(title)
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
-        // MARK: - Action Sheet
-        .actionSheet(isPresented: $showingAlert, content: {
-            ActionSheet(title: Text(DiscussionLocalization.Posts.Alert.makeSelection), buttons: viewModel.filterButtons)
-        })
     }
     
     @MainActor

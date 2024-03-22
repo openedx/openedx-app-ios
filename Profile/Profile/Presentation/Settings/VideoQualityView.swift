@@ -20,71 +20,74 @@ public struct VideoQualityView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            // MARK: - Page Body
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    if viewModel.isShowProgress {
-                        ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.top, 200)
-                            .padding(.horizontal)
-                            .accessibilityIdentifier("progressbar")
-                    } else {
-                        
-                        ForEach(viewModel.quality, id: \.offset) { _, quality in
-                            Button(action: {
-                                viewModel.analytics.videoQualityChanged(
-                                    .videoStreamQualityChanged,
-                                    bivalue: .videoStreamQualityChanged,
-                                    value: quality.value ?? "",
-                                    oldValue: viewModel.selectedQuality.value ?? ""
-                                )
-                                viewModel.selectedQuality = quality
-                            }, label: {
-                                HStack {
-                                    SettingsCell(
-                                        title: quality.title(),
-                                        description: quality.description()
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                // MARK: - Page Body
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        if viewModel.isShowProgress {
+                            ProgressBar(size: 40, lineWidth: 8)
+                                .padding(.top, 200)
+                                .padding(.horizontal)
+                                .accessibilityIdentifier("progressbar")
+                        } else {
+                            
+                            ForEach(viewModel.quality, id: \.offset) { _, quality in
+                                Button(action: {
+                                    viewModel.analytics.videoQualityChanged(
+                                        .videoStreamQualityChanged,
+                                        bivalue: .videoStreamQualityChanged,
+                                        value: quality.value ?? "",
+                                        oldValue: viewModel.selectedQuality.value ?? ""
                                     )
-                                    Spacer()
-                                    CoreAssets.checkmark.swiftUIImage
-                                        .renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.accentXColor)
-                                        .opacity(quality == viewModel.selectedQuality ? 1 : 0)
-                                }.foregroundColor(Theme.Colors.textPrimary)
-                            })
-                            .accessibilityIdentifier("select_quality_button")
-                            Divider()
+                                    viewModel.selectedQuality = quality
+                                }, label: {
+                                    HStack {
+                                        SettingsCell(
+                                            title: quality.title(),
+                                            description: quality.description()
+                                        )
+                                        Spacer()
+                                        CoreAssets.checkmark.swiftUIImage
+                                            .renderingMode(.template)
+                                            .foregroundColor(Theme.Colors.accentXColor)
+                                            .opacity(quality == viewModel.selectedQuality ? 1 : 0)
+                                    }.foregroundColor(Theme.Colors.textPrimary)
+                                })
+                                .accessibilityIdentifier("select_quality_button")
+                                Divider()
+                            }
                         }
-                    }
-                }.frame(minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading)
-                .padding(.horizontal, 24)
-            }.frameLimit(sizePortrait: 420)
-                .padding(.top, 8)
-            
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
+                    }.frame(minWidth: 0,
+                            maxWidth: .infinity,
+                            alignment: .topLeading)
+                    .padding(.horizontal, 24)
+                    .frameLimit(width: proxy.size.width)
                 }
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
+                .padding(.top, 8)
+                
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
                     }
                 }
             }
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(false)
+            .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 

@@ -51,7 +51,7 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         self.interactor = interactor
         self.router = router
         self.debounce = debounce
-        
+
         cancellable = postStateSubject
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] state in
