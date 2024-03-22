@@ -237,7 +237,7 @@ public struct PostsView: View {
         Button(
             action: {
                 showFilterSheet = true
-            }, 
+            },
             label: {
                 CoreAssets.filter.swiftUIImage
                     .renderingMode(.template)
@@ -254,7 +254,7 @@ public struct PostsView: View {
                     Button(
                         action: {
                             viewModel.filter(by: info)
-                        }, 
+                        },
                         label: {
                             Text(info.localizedValue)
                         }
@@ -268,7 +268,7 @@ public struct PostsView: View {
         Button(
             action: {
                 showSortSheet = true
-            }, 
+            },
             label: {
                 CoreAssets.sort.swiftUIImage.renderingMode(.template)
                     .foregroundColor(Theme.Colors.accentXColor)
@@ -284,7 +284,7 @@ public struct PostsView: View {
                     Button(
                         action: {
                             viewModel.sort(by: info)
-                        }, 
+                        },
                         label: {
                             Text(info.localizedValue)
                         }
