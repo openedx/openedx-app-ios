@@ -12,6 +12,8 @@ import Foundation
 public enum CoreLocalization {
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
+  /// Register
+  public static let register = CoreLocalization.tr("Localizable", "REGISTER", fallback: "Register")
   /// The user canceled the sign-in flow.
   public static let socialSignCanceled = CoreLocalization.tr("Localizable", "SOCIAL_SIGN_CANCELED", fallback: "The user canceled the sign-in flow.")
   /// Tomorrow
@@ -192,8 +194,6 @@ public enum CoreLocalization {
   public enum SignIn {
     /// Sign in
     public static let logInBtn = CoreLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
-    /// Register
-    public static let registerBtn = CoreLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
   }
   public enum View {
     public enum Snackbar {
