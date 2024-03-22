@@ -52,7 +52,10 @@ public struct DiscussionTopicsView: View {
                         .fill(Theme.Colors.textInputUnfocusedStroke)
                 )
                 .onTapGesture {
-                    viewModel.router.showDiscussionsSearch(courseID: courseID)
+                    viewModel.router.showDiscussionsSearch(
+                        courseID: courseID,
+                        isBlackedOut: viewModel.isBlackedOut
+                    )
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 20)

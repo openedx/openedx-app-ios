@@ -30,7 +30,7 @@ public struct PostsView: View {
         viewModel: PostsViewModel,
         router: DiscussionRouter,
         showTopMenu: Bool = true,
-        isBlackedOut: Bool = false
+        isBlackedOut: Bool? = nil
     ) {
         self.courseID = courseID
         self.title = title
@@ -127,7 +127,7 @@ public struct PostsView: View {
                                                 .font(Theme.Fonts.titleLarge)
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                             Spacer()
-                                            if !viewModel.isBlackedOut {
+                                            if !(viewModel.isBlackedOut ?? false) {
                                                 Button(action: {
                                                     router.createNewThread(
                                                         courseID: courseID,

@@ -298,8 +298,9 @@ public class Router: AuthorizationRouter,
         }
     }
     
-    public func showDiscussionsSearch(courseID: String) {
+    public func showDiscussionsSearch(courseID: String, isBlackedOut: Bool) {
         let viewModel = Container.shared.resolve(DiscussionSearchTopicsViewModel<RunLoop>.self, argument: courseID)!
+
         let view = DiscussionSearchTopicsView(viewModel: viewModel)
         
         let controller = UIHostingController(rootView: view)

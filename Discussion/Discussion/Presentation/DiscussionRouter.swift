@@ -30,8 +30,8 @@ public protocol DiscussionRouter: BaseRouter {
         animated: Bool
     )
 
-    func showDiscussionsSearch(courseID: String)
-    
+    func showDiscussionsSearch(courseID: String, isBlackedOut: Bool)
+
     func showComments(
         commentID: String,
         parentComment: Post,
@@ -67,7 +67,7 @@ public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
         animated: Bool
     ) {}
 
-    public func showDiscussionsSearch(courseID: String) {}
+    public func showDiscussionsSearch(courseID: String, isBlackedOut: Bool) {}
     
     public func showComments(
         commentID: String,

@@ -61,8 +61,8 @@ public class PostsViewModel: ObservableObject {
     @Published var filterButtons: [ActionSheet.Button] = []
     
     public var courseID: String?
-    var isBlackedOut: Bool = false
-    
+    @Published var isBlackedOut: Bool?
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -163,7 +163,7 @@ public class PostsViewModel: ObservableObject {
                     self.router.showThread(
                         thread: actualThread,
                         postStateSubject: self.postStateSubject,
-                        isBlackedOut: self.isBlackedOut,
+                        isBlackedOut: self.isBlackedOut ?? false,
                         animated: true
                     )
                 }))
@@ -189,6 +189,11 @@ public class PostsViewModel: ObservableObject {
         fetchInProgress = true
         isShowProgress = withProgress
         do {
+            if let courseID, isBlackedOut == nil {
+                let discussionInfo = try await interactor.getCourseDiscussionInfo(courseID: courseID)
+                isBlackedOut = discussionInfo.isBlackedOut()
+            }
+
             if pageNumber == 1 {
                 threads.threads = try await getThreadsList(type: type, page: pageNumber)
                 if threads.threads.indices.contains(0) {
