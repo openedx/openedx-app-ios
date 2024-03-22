@@ -190,8 +190,8 @@ public class Router: AuthorizationRouter,
         }
     }
     
-    public func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {
-        present(transitionStyle: transitionStyle, view: view)
+    public func presentView(transitionStyle: UIModalTransitionStyle, view: any View, completion: (() -> Void)? = nil) {
+        present(transitionStyle: transitionStyle, view: view, completion: completion)
     }
     
     public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {
@@ -652,11 +652,14 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
 
-    private func present<ToPresent: View>(transitionStyle: UIModalTransitionStyle, view: ToPresent) {
+    private func present<ToPresent: View>(
+        transitionStyle: UIModalTransitionStyle,
+        view: ToPresent,
+        completion: (() -> Void)? = nil) {
         navigationController.present(
             prepareToPresent(view, transitionStyle: transitionStyle),
             animated: true,
-            completion: {}
+            completion: completion
         )
     }
     

@@ -96,10 +96,9 @@ class CalendarManager: NSObject {
     var syncOn: Bool {
         get {
             if let calendarEntry = calendarEntry,
-               let localCalendar = localCalendar {
-                if calendarEntry.identifier == localCalendar.calendarIdentifier {
-                    return calendarEntry.isOn
-                }
+               let localCalendar = localCalendar,
+               calendarEntry.identifier == localCalendar.calendarIdentifier {
+                return calendarEntry.isOn
             } else {
                 if let localCalendar = localCalendar {
                     let courseCalendar = CourseCalendar(

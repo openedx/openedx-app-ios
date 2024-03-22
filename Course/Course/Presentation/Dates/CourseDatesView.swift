@@ -40,55 +40,29 @@ public struct CourseDatesView: View {
                 }
             }
             
-            if viewModel.dueDatesShifted {
-                DatesSuccessView(
-                    title: CourseLocalization.CourseDates.toastSuccessTitle,
-                    message: CourseLocalization.CourseDates.toastSuccessMessage,
-                    selectedTab: .dates,
-                    courseDatesViewModel: viewModel
+            switch viewModel.eventState {
+            case .addedCalendar:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsAdded
                 )
-            }
-            
-            if viewModel.calendarEventsAdded {
-                DatesSuccessView(
+            case .removedCalendar:
+                showDatesSuccessView(
                     title: CourseLocalization.CourseDates.calendarEvents,
-                    message: CourseLocalization.CourseDates.calendarEventsAdded,
-                    selectedTab: .dates
-                ) {
-                    Task {
-                        await MainActor.run {
-                            viewModel.calendarEventsAdded = false
-                        }
-                    }
-                }
-            }
-            
-            if viewModel.calendarEventsRemoved {
-                DatesSuccessView(
+                    message: CourseLocalization.CourseDates.calendarEventsRemoved
+                )
+            case .updatedCalendar:
+                showDatesSuccessView(
                     title: CourseLocalization.CourseDates.calendarEvents,
-                    message: CourseLocalization.CourseDates.calendarEventsRemoved,
-                    selectedTab: .dates
-                ) {
-                    Task {
-                        await MainActor.run {
-                            viewModel.calendarEventsRemoved = false
-                        }
-                    }
-                }
-            }
-            
-            if viewModel.calendarEventsUpdated {
-                DatesSuccessView(
-                    title: CourseLocalization.CourseDates.calendarEvents,
-                    message: CourseLocalization.CourseDates.calendarEventsUpdated,
-                    selectedTab: .dates
-                ) {
-                    Task {
-                        await MainActor.run {
-                            viewModel.calendarEventsUpdated = false
-                        }
-                    }
-                }
+                    message: CourseLocalization.CourseDates.calendarEventsUpdated
+                )
+            case .shiftedDueDates:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.toastSuccessTitle,
+                    message: CourseLocalization.CourseDates.toastSuccessMessage
+                )
+            default:
+                EmptyView()
             }
             
             if viewModel.showError {
@@ -114,6 +88,29 @@ public struct CourseDatesView: View {
                 .ignoresSafeArea()
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    private func showDatesSuccessView(title: String, message: String) -> some View {
+        if viewModel.eventState == .shiftedDueDates {
+            return DatesSuccessView(
+                title: title,
+                message: message,
+                selectedTab: .dates,
+                courseDatesViewModel: viewModel
+            )
+        } else {
+            return DatesSuccessView(
+                title: title,
+                message: message,
+                selectedTab: .dates
+            ) {
+                Task {
+                    await MainActor.run {
+                        viewModel.eventState = CourseDatesViewModel.EventState.none
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -395,17 +392,15 @@ struct CalendarSyncView: View {
             Spacer()
             HStack {
                 CoreAssets.syncToCalendar.swiftUIImage
-                Toggle(
-                    CourseLocalization.CourseDates.syncToCalendar,
-                    isOn: $viewModel.isOn
-                )
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Theme.Fonts.titleMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentButtonColor))
-                .onTapGesture {
-                    viewModel.calendarState = !viewModel.isOn
-                }
+                Text(CourseLocalization.CourseDates.syncToCalendar)
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                Toggle("", isOn: .constant(viewModel.isOn))
+                    .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentButtonColor))
+                    .padding(.trailing, 0)
+                    .onTapGesture {
+                        viewModel.calendarState = !viewModel.isOn
+                    }
             }
             .padding(.horizontal, 16)
             

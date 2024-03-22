@@ -11,14 +11,19 @@ import SwiftUI
 
 public class CourseDatesViewModel: ObservableObject {
     
+    enum EventState {
+        case addedCalendar
+        case removedCalendar
+        case updatedCalendar
+        case shiftedDueDates
+        case none
+    }
+    
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published var courseDates: CourseDates?
-    @Published var dueDatesShifted: Bool = false
     @Published var isOn: Bool = false
-    @Published var calendarEventsAdded: Bool = false
-    @Published var calendarEventsRemoved: Bool = false
-    @Published var calendarEventsUpdated: Bool = false
+    @Published var eventState: EventState?
     
     lazy var calendar: CalendarManager = {
         return CalendarManager(
@@ -176,14 +181,15 @@ extension CourseDatesViewModel {
             Task {
                 await getCourseDates(courseID: courseID)
                 await MainActor.run { [weak self] in
-                    self?.dueDatesShifted = true
+                    guard let self else { return }
+                    eventState = .shiftedDueDates
                 }
             }
         }
     }
     
     func resetDueDatesShiftedFlag() {
-        dueDatesShifted = false
+        eventState = CourseDatesViewModel.EventState.none
     }
 }
 
@@ -206,16 +212,18 @@ extension CourseDatesViewModel {
     @MainActor
     func addCourseEvents(trackAnalytics: Bool = true, completion: ((Bool) -> Void)? = nil) {
         guard let dateBlocks = courseDates?.dateBlocks else { return }
-        showCalendarSyncProgressView()
-        calendar.addEventsToCalendar(for: dateBlocks) { [weak self] calendarEventsAdded in
+        showCalendarSyncProgressView { [weak self] in
             guard let self else { return }
-            self.isOn = calendarEventsAdded
-            if calendarEventsAdded {
-                self.calendar.syncOn = calendarEventsAdded
-                self.router.dismiss(animated: false)
-                self.showEventsAddedSuccessAlert()
+            calendar.addEventsToCalendar(for: dateBlocks) { [weak self] calendarEventsAdded in
+                guard let self else { return }
+                self.isOn = calendarEventsAdded
+                if calendarEventsAdded {
+                    self.calendar.syncOn = calendarEventsAdded
+                    self.router.dismiss(animated: false)
+                    self.showEventsAddedSuccessAlert()
+                }
+                completion?(calendarEventsAdded)
             }
-            completion?(calendarEventsAdded)
         }
     }
     
@@ -235,12 +243,14 @@ extension CourseDatesViewModel {
                 courseName
             ),
             positiveAction: CoreLocalization.Alert.accept,
-            onCloseTapped: {
+            onCloseTapped: { [weak self] in
+                guard let self else { return }
                 self.router.dismiss(animated: true)
                 self.isOn = false
                 self.calendar.syncOn = false
             },
-            okTapped: {
+            okTapped: { [weak self] in
+                guard let self else { return }
                 self.router.dismiss(animated: true)
                 Task {
                     await self.addCourseEvents()
@@ -258,14 +268,16 @@ extension CourseDatesViewModel {
                 courseName
             ),
             positiveAction: CoreLocalization.Alert.accept,
-            onCloseTapped: {
+            onCloseTapped: { [weak self] in
+                guard let self else { return }
                 self.router.dismiss(animated: true)
             },
-            okTapped: {
+            okTapped: { [weak self] in
+                guard let self else { return }
                 self.router.dismiss(animated: true)
-                self.removeCourseCalendar { [weak self] success in
+                self.removeCourseCalendar { [weak self] _ in
                     guard let self else { return }
-                    calendarEventsRemoved = true
+                    eventState = .removedCalendar
                 }
                 
             },
@@ -275,7 +287,7 @@ extension CourseDatesViewModel {
     
     private func showEventsAddedSuccessAlert() {
         if calendar.isModalPresented {
-            calendarEventsAdded = true
+            eventState = .addedCalendar
             return
         }
         calendar.isModalPresented = true
@@ -285,12 +297,14 @@ extension CourseDatesViewModel {
                 calendar.calendarName
             ),
             positiveAction: CourseLocalization.CourseDates.calendarViewEvents,
-            onCloseTapped: {
+            onCloseTapped: { [weak self] in
+                guard let self else { return }
                 self.router.dismiss(animated: true)
                 self.isOn = true
                 self.calendar.syncOn = true
             },
-            okTapped: {
+            okTapped: { [weak self] in
+                guard let self else { return }
                 self.router.dismiss(animated: true)
                 if let url = URL(string: "calshow://"), UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -300,10 +314,13 @@ extension CourseDatesViewModel {
         )
     }
     
-    func showCalendarSyncProgressView() {
+    func showCalendarSyncProgressView(completion: @escaping (() -> Void)) {
         router.presentView(
             transitionStyle: .crossDissolve,
-            view: CalendarSyncProgressView(title: CourseLocalization.CourseDates.calendarSyncMessage)
+            view: CalendarSyncProgressView(
+                title: CourseLocalization.CourseDates.calendarSyncMessage
+            ),
+            completion: completion
         )
     }
     
@@ -322,18 +339,19 @@ extension CourseDatesViewModel {
             alertTitle: CourseLocalization.CourseDates.calendarOutOfDate,
             alertMessage: CourseLocalization.CourseDates.calendarShiftMessage,
             positiveAction: CourseLocalization.CourseDates.calendarShiftPromptUpdateNow,
-            onCloseTapped: {
+            onCloseTapped: { [weak self] in
+                guard let self else { return }
                 // Remove course calendar
                 self.router.dismiss(animated: true)
                 self.removeCourseCalendar { [weak self] _ in
                     guard let self else { return }
-                    calendarEventsRemoved = true
+                    eventState = .removedCalendar
                 }
             },
-            okTapped: {
+            okTapped: { [weak self] in
+                guard let self else { return }
                 // Update Calendar Now
                 self.router.dismiss(animated: true)
-                self.showCalendarSyncProgressView()
                 self.removeCourseCalendar(trackAnalytics: false) { success in
                     self.isOn = !success
                     self.calendar.syncOn = false
@@ -342,7 +360,7 @@ extension CourseDatesViewModel {
                         self.isOn = calendarEventsAdded
                         if calendarEventsAdded {
                             self.calendar.syncOn = calendarEventsAdded
-                            self.calendarEventsUpdated = true
+                            eventState = .updatedCalendar
                         }
                     }
                 }
@@ -360,11 +378,13 @@ extension CourseDatesViewModel {
             alertTitle: CourseLocalization.CourseDates.settings,
             alertMessage: CourseLocalization.CourseDates.calendarPermissionNotDetermined(config.platformName),
             positiveAction: CourseLocalization.CourseDates.openSettings,
-            onCloseTapped: {
+            onCloseTapped: { [weak self] in
+                guard let self else { return }
                 self.isOn = false
                 self.router.dismiss(animated: true)
             },
-            okTapped: {
+            okTapped: { [weak self] in
+                guard let self else { return }
                 self.isOn = false
                 if UIApplication.shared.canOpenURL(settingsURL) {
                     UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
