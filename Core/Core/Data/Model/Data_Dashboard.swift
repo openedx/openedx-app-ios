@@ -102,7 +102,6 @@ public extension DataLayer {
         public let number: String
         public let org: String
         public let start: String?
-        public let startDisplay: String
         public let startType: StartType
         public let end: String?
         public let dynamicUpgradeDeadline: String?
@@ -112,9 +111,6 @@ public extension DataLayer {
         public let courseImage: String
         public let courseAbout: String
         public let courseSharingUtmParameters: CourseSharingUtmParameters
-        public let courseUpdates: String
-        public let courseHandouts: String
-        public let discussionURL: String
         public let videoOutline: String?
         public let isSelfPaced: Bool
 
@@ -124,7 +120,6 @@ public extension DataLayer {
             case number
             case org
             case start
-            case startDisplay = "start_display"
             case startType = "start_type"
             case end
             case dynamicUpgradeDeadline = "dynamic_upgrade_deadline"
@@ -134,9 +129,6 @@ public extension DataLayer {
             case courseImage = "course_image"
             case courseAbout = "course_about"
             case courseSharingUtmParameters = "course_sharing_utm_parameters"
-            case courseUpdates = "course_updates"
-            case courseHandouts = "course_handouts"
-            case discussionURL = "discussion_url"
             case videoOutline = "video_outline"
             case isSelfPaced = "is_self_paced"
         }
@@ -147,7 +139,6 @@ public extension DataLayer {
             number: String,
             org: String,
             start: String?,
-            startDisplay: String,
             startType: StartType,
             end: String?,
             dynamicUpgradeDeadline: String?,
@@ -157,9 +148,6 @@ public extension DataLayer {
             courseImage: String,
             courseAbout: String,
             courseSharingUtmParameters: CourseSharingUtmParameters,
-            courseUpdates: String,
-            courseHandouts: String,
-            discussionURL: String,
             videoOutline: String?,
             isSelfPaced: Bool
         ) {
@@ -168,7 +156,6 @@ public extension DataLayer {
             self.number = number
             self.org = org
             self.start = start
-            self.startDisplay = startDisplay
             self.startType = startType
             self.end = end
             self.dynamicUpgradeDeadline = dynamicUpgradeDeadline
@@ -178,9 +165,6 @@ public extension DataLayer {
             self.courseImage = courseImage
             self.courseAbout = courseAbout
             self.courseSharingUtmParameters = courseSharingUtmParameters
-            self.courseUpdates = courseUpdates
-            self.courseHandouts = courseHandouts
-            self.discussionURL = discussionURL
             self.videoOutline = videoOutline
             self.isSelfPaced = isSelfPaced
         }
