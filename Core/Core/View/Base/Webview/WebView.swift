@@ -228,6 +228,21 @@ public struct WebView: UIViewRepresentable {
         
         context.coordinator.webview = webView
         
+        webView.customUserAgent = {
+            if let info = Bundle.main.infoDictionary {
+                let executable: AnyObject = info[kCFBundleExecutableKey as String] as AnyObject? ?? "Unknown" as AnyObject
+                let bundle: AnyObject = info[kCFBundleIdentifierKey as String] as AnyObject? ?? "Unknown" as AnyObject
+                let version: AnyObject = info["CFBundleShortVersionString"] as AnyObject? ?? "Unknown" as AnyObject
+                let os: AnyObject = ProcessInfo.processInfo.operatingSystemVersionString as AnyObject
+                var mutableUserAgent = NSMutableString(string: "\(executable)/\(bundle) (\(version); OS \(os))") as CFMutableString
+                let transform = NSString(string: "Any-Latin; Latin-ASCII; [:^ASCII:] Remove") as CFString
+                if CFStringTransform(mutableUserAgent, nil, transform, false) == true {
+                    return mutableUserAgent as String
+                }
+            }
+            return "Alamofire"
+        }()
+        
         webView.scrollView.bounces = false
         webView.scrollView.alwaysBounceHorizontal = false
         webView.scrollView.showsHorizontalScrollIndicator = false
