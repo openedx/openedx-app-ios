@@ -91,6 +91,8 @@ public enum DiscussionLocalization {
       public static let unread = DiscussionLocalization.tr("Localizable", "POSTS.FILTER.UNREAD", fallback: "Unread")
     }
     public enum NoDiscussion {
+      /// Add a post
+      public static let addPost = DiscussionLocalization.tr("Localizable", "POSTS.NO_DISCUSSION.ADD_POST", fallback: "Add a post")
       /// Create discussion
       public static let createbutton = DiscussionLocalization.tr("Localizable", "POSTS.NO_DISCUSSION.CREATEBUTTON", fallback: "Create discussion")
       /// Click the button below to create your first discussion.

@@ -182,29 +182,35 @@ public struct PostsView: View {
                                                 .multilineTextAlignment(.center)
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.top, 40)
-                                            Text(DiscussionLocalization.Posts.NoDiscussion.description)
-                                                .font(Theme.Fonts.bodyLarge)
-                                                .multilineTextAlignment(.center)
-                                                .frame(maxWidth: .infinity)
-                                                .padding(.top, 12)
-                                            StyledButton(
-                                                DiscussionLocalization.Posts.NoDiscussion.createbutton,
-                                                action: {
-                                                    router.createNewThread(courseID: courseID,
-                                                                           selectedTopic: currentBlockID,
-                                                                           onPostCreated: {
-                                                        reloadPage(onSuccess: {
-                                                            withAnimation {
-                                                                scroll.scrollTo(1)
+                                            if !(viewModel.isBlackedOut ?? false) {
+                                                Text(DiscussionLocalization.Posts.NoDiscussion.description)
+                                                    .font(Theme.Fonts.bodyLarge)
+                                                    .multilineTextAlignment(.center)
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding(.top, 12)
+                                                StyledButton(
+                                                    DiscussionLocalization.Posts.NoDiscussion.addPost,
+                                                    action: {
+                                                        router.createNewThread(
+                                                            courseID: courseID,
+                                                            selectedTopic: currentBlockID,
+                                                            onPostCreated: {
+                                                                reloadPage(
+                                                                    onSuccess: {
+                                                                        withAnimation {
+                                                                            scroll.scrollTo(1)
+                                                                        }
+                                                                    }
+                                                                )
                                                             }
-                                                        })
-                                                    })
-                                                },
-                                                isTransparent: true)
-                                            .frame(width: 215)
-                                            .padding(.top, 40)
-                                            .colorMultiply(Theme.Colors.accentColor)
-                                            
+                                                        )
+                                                    },
+                                                    isTransparent: true
+                                                )
+                                                .frame(width: 215)
+                                                .padding(.top, 40)
+                                                .colorMultiply(Theme.Colors.accentColor)
+                                            }
                                         }.padding(24)
                                             .padding(.top, 100)
                                     }
