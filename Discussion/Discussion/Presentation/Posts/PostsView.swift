@@ -13,7 +13,6 @@ import Theme
 public struct PostsView: View {
     
     @ObservedObject private var viewModel: PostsViewModel
-    @State private var isShowProgress: Bool = true
     @State private var showFilterSheet = false
     @State private var showSortSheet = false
     private let router: DiscussionRouter
