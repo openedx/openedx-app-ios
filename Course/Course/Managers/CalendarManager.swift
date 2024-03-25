@@ -99,18 +99,16 @@ class CalendarManager: NSObject {
                let localCalendar = localCalendar,
                calendarEntry.identifier == localCalendar.calendarIdentifier {
                 return calendarEntry.isOn
-            } else {
-                if let localCalendar = localCalendar {
-                    let courseCalendar = CourseCalendar(
-                        identifier: localCalendar.calendarIdentifier,
-                        courseID: courseID,
-                        title: calendarName,
-                        isOn: true,
-                        modalPresented: false
-                    )
-                    addOrUpdateCalendarEntry(courseCalendar: courseCalendar)
-                    return true
-                }
+            } else if let localCalendar = localCalendar {
+                let courseCalendar = CourseCalendar(
+                    identifier: localCalendar.calendarIdentifier,
+                    courseID: courseID,
+                    title: calendarName,
+                    isOn: true,
+                    modalPresented: false
+                )
+                addOrUpdateCalendarEntry(courseCalendar: courseCalendar)
+                return true
             }
             return false
         }

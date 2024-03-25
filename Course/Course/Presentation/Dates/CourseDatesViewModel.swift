@@ -200,8 +200,7 @@ extension CourseDatesViewModel {
             Task {
                 await getCourseDates(courseID: courseID)
                 await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    eventState = .shiftedDueDates
+                    self?.eventState = .shiftedDueDates
                 }
             }
         }
@@ -232,14 +231,12 @@ extension CourseDatesViewModel {
     func addCourseEvents(trackAnalytics: Bool = true, completion: ((Bool) -> Void)? = nil) {
         guard let dateBlocks = courseDates?.dateBlocks else { return }
         showCalendarSyncProgressView { [weak self] in
-            guard let self else { return }
-            calendar.addEventsToCalendar(for: dateBlocks) { [weak self] calendarEventsAdded in
-                guard let self else { return }
-                self.isOn = calendarEventsAdded
+            self?.calendar.addEventsToCalendar(for: dateBlocks) { [weak self] calendarEventsAdded in
+                self?.isOn = calendarEventsAdded
                 if calendarEventsAdded {
-                    self.calendar.syncOn = calendarEventsAdded
-                    self.router.dismiss(animated: false)
-                    self.showEventsAddedSuccessAlert()
+                    self?.calendar.syncOn = calendarEventsAdded
+                    self?.router.dismiss(animated: false)
+                    self?.showEventsAddedSuccessAlert()
                 }
                 completion?(calendarEventsAdded)
             }
@@ -263,16 +260,14 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CoreLocalization.Alert.accept,
             onCloseTapped: { [weak self] in
-                guard let self else { return }
-                self.router.dismiss(animated: true)
-                self.isOn = false
-                self.calendar.syncOn = false
+                self?.router.dismiss(animated: true)
+                self?.isOn = false
+                self?.calendar.syncOn = false
             },
             okTapped: { [weak self] in
-                guard let self else { return }
-                self.router.dismiss(animated: true)
-                Task {
-                    await self.addCourseEvents()
+                self?.router.dismiss(animated: true)
+                Task { [weak self] in
+                    await self?.addCourseEvents()
                 }
             },
             type: .addCalendar
@@ -288,15 +283,12 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CoreLocalization.Alert.accept,
             onCloseTapped: { [weak self] in
-                guard let self else { return }
-                self.router.dismiss(animated: true)
+                self?.router.dismiss(animated: true)
             },
             okTapped: { [weak self] in
-                guard let self else { return }
-                self.router.dismiss(animated: true)
-                self.removeCourseCalendar { [weak self] _ in
-                    guard let self else { return }
-                    eventState = .removedCalendar
+                self?.router.dismiss(animated: true)
+                self?.removeCourseCalendar { [weak self] _ in
+                    self?.eventState = .removedCalendar
                 }
                 
             },
@@ -317,14 +309,12 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CourseLocalization.CourseDates.calendarViewEvents,
             onCloseTapped: { [weak self] in
-                guard let self else { return }
-                self.router.dismiss(animated: true)
-                self.isOn = true
-                self.calendar.syncOn = true
+                self?.router.dismiss(animated: true)
+                self?.isOn = true
+                self?.calendar.syncOn = true
             },
             okTapped: { [weak self] in
-                guard let self else { return }
-                self.router.dismiss(animated: true)
+                self?.router.dismiss(animated: true)
                 if let url = URL(string: "calshow://"), UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 }
@@ -359,27 +349,23 @@ extension CourseDatesViewModel {
             alertMessage: CourseLocalization.CourseDates.calendarShiftMessage,
             positiveAction: CourseLocalization.CourseDates.calendarShiftPromptUpdateNow,
             onCloseTapped: { [weak self] in
-                guard let self else { return }
                 // Remove course calendar
-                self.router.dismiss(animated: true)
-                self.removeCourseCalendar { [weak self] _ in
-                    guard let self else { return }
-                    eventState = .removedCalendar
+                self?.router.dismiss(animated: true)
+                self?.removeCourseCalendar { [weak self] _ in
+                    self?.eventState = .removedCalendar
                 }
             },
             okTapped: { [weak self] in
-                guard let self else { return }
                 // Update Calendar Now
-                self.router.dismiss(animated: true)
-                self.removeCourseCalendar(trackAnalytics: false) { success in
-                    self.isOn = !success
-                    self.calendar.syncOn = false
-                    self.addCourseEvents(trackAnalytics: false) { [weak self] calendarEventsAdded in
-                        guard let self else { return }
-                        self.isOn = calendarEventsAdded
+                self?.router.dismiss(animated: true)
+                self?.removeCourseCalendar(trackAnalytics: false) { success in
+                    self?.isOn = !success
+                    self?.calendar.syncOn = false
+                    self?.addCourseEvents(trackAnalytics: false) { [weak self] calendarEventsAdded in
+                        self?.isOn = calendarEventsAdded
                         if calendarEventsAdded {
-                            self.calendar.syncOn = calendarEventsAdded
-                            eventState = .updatedCalendar
+                            self?.calendar.syncOn = calendarEventsAdded
+                            self?.eventState = .updatedCalendar
                         }
                     }
                 }
@@ -398,17 +384,15 @@ extension CourseDatesViewModel {
             alertMessage: CourseLocalization.CourseDates.calendarPermissionNotDetermined(config.platformName),
             positiveAction: CourseLocalization.CourseDates.openSettings,
             onCloseTapped: { [weak self] in
-                guard let self else { return }
-                self.isOn = false
-                self.router.dismiss(animated: true)
+                self?.isOn = false
+                self?.router.dismiss(animated: true)
             },
             okTapped: { [weak self] in
-                guard let self else { return }
-                self.isOn = false
+                self?.isOn = false
                 if UIApplication.shared.canOpenURL(settingsURL) {
                     UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
                 }
-                self.router.dismiss(animated: true)
+                self?.router.dismiss(animated: true)
             },
             type: .default(
                 positiveAction: CourseLocalization.CourseDates.openSettings,
