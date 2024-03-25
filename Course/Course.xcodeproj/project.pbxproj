@@ -54,6 +54,7 @@
 		02F98A8128F8224200DE94C0 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F98A8028F8224200DE94C0 /* Discussion.framework */; };
 		02FFAD0D29E4347300140E46 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */; };
 		060E8BCA2B5FD68C0080C952 /* UnitStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060E8BC92B5FD68C0080C952 /* UnitStack.swift */; };
+		065275352BB1B39C0093BCCA /* PlayerViewControllerHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065275342BB1B39C0093BCCA /* PlayerViewControllerHolder.swift */; };
 		068DDA5F2B1E198700FF8CCB /* CourseUnitDropDownList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068DDA5B2B1E198700FF8CCB /* CourseUnitDropDownList.swift */; };
 		068DDA602B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068DDA5C2B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift */; };
 		068DDA612B1E198700FF8CCB /* CourseUnitDropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068DDA5D2B1E198700FF8CCB /* CourseUnitDropDownCell.swift */; };
@@ -148,6 +149,7 @@
 		02F98A8028F8224200DE94C0 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
 		060E8BC92B5FD68C0080C952 /* UnitStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitStack.swift; sourceTree = "<group>"; };
+		065275342BB1B39C0093BCCA /* PlayerViewControllerHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewControllerHolder.swift; sourceTree = "<group>"; };
 		068DDA5B2B1E198700FF8CCB /* CourseUnitDropDownList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseUnitDropDownList.swift; sourceTree = "<group>"; };
 		068DDA5C2B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseUnitVerticalsDropdownView.swift; sourceTree = "<group>"; };
 		068DDA5D2B1E198700FF8CCB /* CourseUnitDropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseUnitDropDownCell.swift; sourceTree = "<group>"; };
@@ -440,6 +442,7 @@
 		070019AA28F6F79E00D5FC78 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				065275342BB1B39C0093BCCA /* PlayerViewControllerHolder.swift */,
 				02F066E729DC71750073E13B /* SubtittlesView.swift */,
 				0766DFCB299AA7A600EBEF6A /* YouTubeVideoPlayer.swift */,
 				022F8E152A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift */,
@@ -816,6 +819,7 @@
 				022C64E029ADEA9B000F532B /* Data_UpdatesResponse.swift in Sources */,
 				02454CA02A2618E70043052A /* YouTubeView.swift in Sources */,
 				02454CA22A26190A0043052A /* EncodedVideoView.swift in Sources */,
+				065275352BB1B39C0093BCCA /* PlayerViewControllerHolder.swift in Sources */,
 				068DDA612B1E198700FF8CCB /* CourseUnitDropDownCell.swift in Sources */,
 				BAC0E0DE2B32F0F3006B68A9 /* DownloadsViewModel.swift in Sources */,
 				02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */,

@@ -119,6 +119,10 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
+        container.register(DeepLinkRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConfigProtocol.self) { _ in
             Config()
         }.inObjectScope(.container)
@@ -191,6 +195,14 @@ class AppAssembly: Assembly {
         container.register(FirebaseAnalyticsService.self) { r in
             FirebaseAnalyticsService(
                 config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+        
+        container.register(PipManagerProtocol.self) { r in
+            PipManager(
+                router: r.resolve(Router.self)!,
+                discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!
             )
         }.inObjectScope(.container)
     }

@@ -142,7 +142,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     private func selectLesson() -> Int {
         guard verticals[verticalIndex].childs.count > 0 else { return 0 }
-        let index = verticals[verticalIndex].childs.firstIndex(where: { $0.id == lessonID }) ?? 0
+        let index = verticals[verticalIndex].childs.firstIndex(where: { $0.id.contains(lessonID) }) ?? 0
         nextTitles()
         return index
     }

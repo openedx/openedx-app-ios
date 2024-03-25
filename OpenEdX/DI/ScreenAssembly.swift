@@ -327,16 +327,19 @@ class ScreenAssembly: Assembly {
         container.register(
             EncodedVideoPlayerViewModel.self
         ) { r, url, blockID, courseID, languages, playerStateSubject in
-            EncodedVideoPlayerViewModel(
+            let router: Router = r.resolve(Router.self)!
+            return EncodedVideoPlayerViewModel(
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
                 languages: languages,
                 playerStateSubject: playerStateSubject,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!, 
+                router: r.resolve(CourseRouter.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                pipManager: r.resolve(PipManagerProtocol.self)!,
+                isVideoTab: router.isVideoTab
             )
         }
         

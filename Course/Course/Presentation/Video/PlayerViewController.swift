@@ -5,6 +5,8 @@
 //  Created by Vladimir Chekyrta on 13.02.2023.
 //
 
+import Combine
+import Core
 import SwiftUI
 import _AVKit_SwiftUI
 
@@ -12,27 +14,34 @@ struct PlayerViewController: UIViewControllerRepresentable {
     
     var videoURL: URL?
     var videoResolution: CGSize
-    var controller: AVPlayerViewController
+    var playerHolder: PlayerViewControllerHolder
     var progress: ((Float) -> Void)
     var seconds: ((Double) -> Void)
     
     init(
         videoURL: URL?,
-        controller: AVPlayerViewController,
+        playerHolder: PlayerViewControllerHolder,
         bitrate: CGSize,
         progress: @escaping ((Float) -> Void),
         seconds: @escaping ((Double) -> Void)
     ) {
         self.videoURL = videoURL
-        self.controller = controller
+        self.playerHolder = playerHolder
         self.videoResolution = bitrate
         self.progress = progress
         self.seconds = seconds
     }
     
     func makeUIViewController(context: Context) -> AVPlayerViewController {
+        if playerHolder.isPipModeActive {
+            return playerHolder.playerController
+        }
+        
+        print("ALARM create new player")
+        let controller = playerHolder.playerController
         controller.modalPresentationStyle = .fullScreen
         controller.allowsPictureInPicturePlayback = true
+        controller.canStartPictureInPictureAutomaticallyFromInline = true
         let player = AVPlayer()
         controller.player = player
         context.coordinator.setPlayer(player) { progress, seconds in
@@ -51,7 +60,8 @@ struct PlayerViewController: UIViewControllerRepresentable {
     
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
         let asset = playerController.player?.currentItem?.asset as? AVURLAsset
-        if asset?.url.absoluteString != videoURL?.absoluteString {
+        if asset?.url.absoluteString != videoURL?.absoluteString && !playerHolder.isPipModeActive {
+            print("ALARM replace player")
             let player = context.coordinator.player(from: playerController)
             player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
             player?.currentItem?.preferredMaximumResolution = videoResolution
@@ -74,6 +84,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
     class Coordinator {
         var currentPlayer: AVPlayer?
         var observer: Any?
+        var cancellations: [AnyCancellable] = []
         
         func player(from playerController: AVPlayerViewController) -> AVPlayer? {
             var player = playerController.player
@@ -86,6 +97,8 @@ struct PlayerViewController: UIViewControllerRepresentable {
         }
         
         func setPlayer(_ player: AVPlayer?, currentProgress: @escaping ((Float, Double) -> Void)) {
+            guard let player = player else { return }
+            cancellations.removeAll()
             if let observer = observer {
                 currentPlayer?.removeTimeObserver(observer)
                 currentPlayer?.pause()
@@ -96,7 +109,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
                 preferredTimescale: CMTimeScale(NSEC_PER_SEC)
             )
             
-            observer = player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) {[weak player] time in
+            observer = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) {[weak player] time in
                 var progress: Float = .zero
                 let currentSeconds = CMTimeGetSeconds(time)
                 guard let duration = player?.currentItem?.duration else { return }
@@ -105,6 +118,13 @@ struct PlayerViewController: UIViewControllerRepresentable {
                 currentProgress(progress, currentSeconds)
             }
             
+            player.publisher(for: \.rate)
+                .sink { rate in
+                    guard rate > 0 else { return }
+                    
+                }
+                .store(in: &cancellations)
+                        
             currentPlayer = player
             
         }

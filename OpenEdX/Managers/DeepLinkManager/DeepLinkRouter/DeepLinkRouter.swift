@@ -58,6 +58,10 @@ extension Router: DeepLinkRouter {
 
     // MARK: - DeepLinkRouter
 
+    public var isVideoTab: Bool {
+        self.hostCourseContainerView?.rootView.viewModel.selection == CourseTab.videos.rawValue
+    }
+    
     public func showDiscoveryDetails(
         link: DeepLink,
         pathID: String
