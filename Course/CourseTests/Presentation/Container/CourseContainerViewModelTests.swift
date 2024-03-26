@@ -53,6 +53,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .problem,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: nil,
             multiDevice: true
         )
@@ -362,6 +363,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -496,6 +498,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -614,6 +617,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -733,6 +737,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -845,6 +850,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -972,6 +978,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -1098,6 +1105,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -1118,6 +1126,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,

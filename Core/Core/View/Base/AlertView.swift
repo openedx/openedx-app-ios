@@ -15,12 +15,16 @@ public enum AlertViewType: Equatable {
     case leaveProfile
     case deleteVideo
     case deepLink
+    case addCalendar
+    case removeCalendar
+    case updateCalendar
+    case calendarAdded
 
     var contentPadding: CGFloat {
         switch self {
-        case .`default`:
+        case .`default`, .calendarAdded:
             return 16
-        case .action, .logOut, .leaveProfile, .deleteVideo, .deepLink:
+        case .action, .logOut, .leaveProfile, .deleteVideo, .deepLink, .addCalendar, .removeCalendar, .updateCalendar:
             return 36
         }
     }
@@ -31,6 +35,7 @@ public struct AlertView: View {
     private var alertTitle: String
     private var alertMessage: String
     private var nextSectionName: String?
+    private var positiveAction: String
     private var onCloseTapped: (() -> Void) = {}
     private var okTapped: (() -> Void) = {}
     private var nextSectionTapped: (() -> Void) = {}
@@ -48,6 +53,7 @@ public struct AlertView: View {
     ) {
         self.alertTitle = alertTitle
         self.alertMessage = alertMessage
+        self.positiveAction = positiveAction
         self.onCloseTapped = onCloseTapped
         self.okTapped = okTapped
         self.type = type
@@ -69,6 +75,7 @@ public struct AlertView: View {
         self.nextSectionName = nextSectionName
         self.okTapped = okTapped
         self.nextSectionTapped = nextSectionTapped
+        self.positiveAction = ""
         type = .action(mainAction, image)
     }
 
@@ -147,11 +154,17 @@ public struct AlertView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
                 .frame(maxWidth: 250)
-        case .leaveProfile, .deleteVideo, .deepLink:
+        case .leaveProfile, .deleteVideo, .deepLink, .addCalendar, .removeCalendar, .updateCalendar:
             VStack(spacing: 20) {
                 switch type {
                 case .deleteVideo, .deepLink:
                     CoreAssets.warning.swiftUIImage
+                        .padding(.top, isHorizontal ? 20 : 54)
+                case .addCalendar, .removeCalendar, .updateCalendar:
+                    CoreAssets.syncToCalendar.swiftUIImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50, height: 50)
                         .padding(.top, isHorizontal ? 20 : 54)
                 default:
                     CoreAssets.leaveProfile.swiftUIImage
@@ -362,6 +375,32 @@ public struct AlertView: View {
                     primaryButtonTitle: CoreLocalization.view,
                     secondaryButtonTitle: CoreLocalization.Alert.cancel
                 )
+            case .addCalendar:
+                configure(
+                    primaryButtonTitle: CoreLocalization.Alert.add,
+                    secondaryButtonTitle: CoreLocalization.Alert.cancel
+                )
+            case .removeCalendar:
+                configure(
+                    primaryButtonTitle: CoreLocalization.Alert.remove,
+                    secondaryButtonTitle: CoreLocalization.Alert.cancel
+                )
+            case .updateCalendar:
+                configure(
+                    primaryButtonTitle: positiveAction,
+                    secondaryButtonTitle: CoreLocalization.Alert.calendarShiftPromptRemoveCourseCalendar
+                )
+            case .calendarAdded:
+                HStack {
+                    StyledButton(positiveAction, action: { okTapped() })
+                        .frame(maxWidth: 135)
+                    StyledButton(CoreLocalization.done, action: { onCloseTapped() })
+                        .frame(maxWidth: 135)
+                        .saturation(0)
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .padding(.bottom, 10)
             }
         }
         .padding(.top, 16)

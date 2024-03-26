@@ -40,6 +40,7 @@ public class CreateNewThreadViewModel: ObservableObject {
     
     @MainActor
     public func getTopics(courseID: String) async {
+        guard allTopics.isEmpty else { return }
         isShowProgress = true
         do {
             topics = try await interactor.getTopics(courseID: courseID)

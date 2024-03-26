@@ -14,17 +14,36 @@ public enum ThreadType {
     case courseTopics(topicID: String)
 }
 
-public enum ThreadsFilter {
+public enum ThreadsFilter: Identifiable {
+    public var id: String {
+        localizedValue
+    }
+    
     case allThreads
     case unread
     case unanswered
+
+    var localizedValue: String {
+        switch self {
+        case .allThreads:
+            return DiscussionLocalization.Posts.Filter.allPosts
+        case .unread:
+            return DiscussionLocalization.Posts.Filter.unread
+        case .unanswered:
+            return DiscussionLocalization.Posts.Filter.unanswered
+        }
+    }
 }
 
-public enum SortType {
+public enum SortType: Identifiable {
+    public var id: String {
+        localizedValue
+    }
+    
     case recentActivity
     case mostActivity
     case mostVotes
-    
+
     var localizedValue: String {
         switch self {
         case .recentActivity:

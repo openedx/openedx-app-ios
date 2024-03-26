@@ -355,13 +355,15 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(CourseDatesViewModel.self) { r, courseID in
+        container.register(CourseDatesViewModel.self) { r, courseID, courseName in
             CourseDatesViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
                 courseID: courseID,
+                courseName: courseName,
                 analytics: r.resolve(CourseAnalytics.self)!
             )
         }

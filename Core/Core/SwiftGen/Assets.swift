@@ -34,6 +34,7 @@ public enum CoreAssets {
   public static let lockIcon = ImageAsset(name: "lock_icon")
   public static let lockWithWatchIcon = ImageAsset(name: "lock_with_watch_icon")
   public static let schoolCapIcon = ImageAsset(name: "school_cap_icon")
+  public static let syncToCalendar = ImageAsset(name: "sync_to_calendar")
   public static let bookCircle = ImageAsset(name: "book.circle")
   public static let bubbleLeftCircle = ImageAsset(name: "bubble.left.circle")
   public static let docCircle = ImageAsset(name: "doc.circle")

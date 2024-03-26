@@ -50,9 +50,7 @@ public struct ProgressBar: View {
                 .animation(animation, value: isAnimating)
         }
         .onAppear {
-            withAnimation {
-                isAnimating = true
-            }
+            isAnimating = true
         }
     }
 }

@@ -14,6 +14,8 @@ public enum CoreLocalization {
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
   /// Register
   public static let register = CoreLocalization.tr("Localizable", "REGISTER", fallback: "Register")
+  /// View in Safari
+  public static let openInBrowser = CoreLocalization.tr("Localizable", "OPEN_IN_BROWSER", fallback: "View in Safari")
   /// The user canceled the sign-in flow.
   public static let socialSignCanceled = CoreLocalization.tr("Localizable", "SOCIAL_SIGN_CANCELED", fallback: "The user canceled the sign-in flow.")
   /// Tomorrow
@@ -25,6 +27,10 @@ public enum CoreLocalization {
   public enum Alert {
     /// ACCEPT
     public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "ACCEPT")
+    /// Add
+    public static let add = CoreLocalization.tr("Localizable", "ALERT.ADD", fallback: "Add")
+    /// Remove course calendar
+    public static let calendarShiftPromptRemoveCourseCalendar = CoreLocalization.tr("Localizable", "ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR", fallback: "Remove course calendar")
     /// CANCEL
     public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "CANCEL")
     /// DELETE
@@ -35,6 +41,8 @@ public enum CoreLocalization {
     public static let leave = CoreLocalization.tr("Localizable", "ALERT.LEAVE", fallback: "Leave")
     /// Log out
     public static let logout = CoreLocalization.tr("Localizable", "ALERT.LOGOUT", fallback: "Log out")
+    /// Remove
+    public static let remove = CoreLocalization.tr("Localizable", "ALERT.REMOVE", fallback: "Remove")
   }
   public enum Courseware {
     /// Back to outline
@@ -43,6 +51,8 @@ public enum CoreLocalization {
     public static let `continue` = CoreLocalization.tr("Localizable", "COURSEWARE.CONTINUE", fallback: "Continue")
     /// Course content
     public static let courseContent = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT", fallback: "Course content")
+    /// This interactive component isn't yet available on mobile.
+    public static let courseContentNotAvailable = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE", fallback: "This interactive component isn't yet available on mobile.")
     /// Course units
     public static let courseUnits = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_UNITS", fallback: "Course units")
     /// Finish
