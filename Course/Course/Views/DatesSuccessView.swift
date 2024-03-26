@@ -21,8 +21,8 @@ public struct DatesSuccessView: View {
     var selectedTab: Tab
     var courseDatesViewModel: CourseDatesViewModel?
     var courseContainerViewModel: CourseContainerViewModel?
-    var action: () async -> Void = {}
-    var dismissAction: () async -> Void = {}
+    var action: () -> Void = {}
+    var dismissAction: () -> Void = {}
 
     @State private var dismiss: Bool = false
     
@@ -94,9 +94,7 @@ public struct DatesSuccessView: View {
                     if selectedTab == .course {
                         Button(CourseLocalization.CourseDates.viewAllDates,
                                action: {
-                            Task {
-                                await action()
-                            }
+                            action()
                             withAnimation {
                                 dismissView()
                             }
@@ -140,11 +138,9 @@ public struct DatesSuccessView: View {
     
     private func dismissView() {
         dismiss = true
-        courseDatesViewModel?.resetDueDatesShiftedFlag()
+        courseDatesViewModel?.resetEventState()
         courseContainerViewModel?.resetDueDatesShiftedFlag()
-        Task {
-            await dismissAction()
-        }
+        dismissAction()
     }
 }
 

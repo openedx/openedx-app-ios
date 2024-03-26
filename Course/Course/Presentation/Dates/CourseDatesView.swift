@@ -104,11 +104,7 @@ public struct CourseDatesView: View {
                 message: message,
                 selectedTab: .dates
             ) {
-                Task {
-                    await MainActor.run {
-                        viewModel.eventState = CourseDatesViewModel.EventState.none
-                    }
-                }
+                viewModel.resetEventState()
             }
         }
     }

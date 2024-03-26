@@ -206,8 +206,8 @@ extension CourseDatesViewModel {
         }
     }
     
-    func resetDueDatesShiftedFlag() {
-        eventState = CourseDatesViewModel.EventState.none
+    func resetEventState() {
+        eventState = EventState.none
     }
 }
 
