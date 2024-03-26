@@ -13,12 +13,16 @@ import Theme
 public struct PostsView: View {
     
     @ObservedObject private var viewModel: PostsViewModel
-    @State private var showingAlert = false
+    @State private var showFilterSheet = false
+    @State private var showSortSheet = false
     private let router: DiscussionRouter
     private let title: String
     private let currentBlockID: String
     private let courseID: String
     private var showTopMenu: Bool
+    private var isPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
     
     public init(
         courseID: String,
@@ -73,25 +77,10 @@ public struct PostsView: View {
                                 VStack {
                                     HStack {
                                         Group {
-                                            Button(action: {
-                                                viewModel.generateButtons(type: .filter)
-                                                showingAlert = true
-                                            }, label: {
-                                                CoreAssets.filter.swiftUIImage.renderingMode(.template)
-                                                    .foregroundColor(Theme.Colors.accentXColor)
-                                                Text(viewModel.filterTitle.localizedValue)
-                                            })
+                                            filterButton
                                             Spacer()
-                                            Button(action: {
-                                                viewModel.generateButtons(type: .sort)
-                                                showingAlert = true
-                                            }, label: {
-                                                CoreAssets.sort.swiftUIImage.renderingMode(.template)
-                                                    .foregroundColor(Theme.Colors.accentXColor)
-                                                Text(viewModel.sortTitle.localizedValue)
-                                            })
-                                        }
-                                        .foregroundColor(Theme.Colors.accentColor)
+                                            sortButton
+                                        }.foregroundColor(Theme.Colors.accentColor)
                                     }
                                     .font(Theme.Fonts.labelMedium)
                                     .padding(.horizontal, 24)
@@ -210,7 +199,6 @@ public struct PostsView: View {
                                 }
                             }
                             .accessibilityAction {}
-                            .animation(nil)
                             .onRightSwipeGesture {
                                 router.back()
                             }
@@ -241,11 +229,68 @@ public struct PostsView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
-            // MARK: - Action Sheet
-            .actionSheet(isPresented: $showingAlert, content: {
-                ActionSheet(title: Text(DiscussionLocalization.Posts.Alert.makeSelection), buttons: viewModel.filterButtons)
-            })
         }
+    }
+    
+    private var filterButton: some View {
+        Button(
+            action: {
+                showFilterSheet = true
+            },
+            label: {
+                CoreAssets.filter.swiftUIImage
+                    .renderingMode(.template)
+                    .foregroundColor(Theme.Colors.accentXColor)
+                Text(viewModel.filterTitle.localizedValue)
+            }
+        )
+        .confirmationDialog(
+            DiscussionLocalization.Posts.Alert.makeSelection,
+            isPresented: $showFilterSheet,
+            titleVisibility: isPad ? .automatic : .visible,
+            actions: {
+                ForEach(viewModel.filterInfos) { info in
+                    Button(
+                        action: {
+                            viewModel.filter(by: info)
+                        },
+                        label: {
+                            Text(info.localizedValue)
+                        }
+                    )
+                }
+            }
+        )
+    }
+    
+    private var sortButton: some View {
+        Button(
+            action: {
+                showSortSheet = true
+            },
+            label: {
+                CoreAssets.sort.swiftUIImage.renderingMode(.template)
+                    .foregroundColor(Theme.Colors.accentXColor)
+                Text(viewModel.sortTitle.localizedValue)
+            }
+        )
+        .confirmationDialog(
+            DiscussionLocalization.Posts.Alert.makeSelection,
+            isPresented: $showSortSheet,
+            titleVisibility: isPad ? .automatic : .visible,
+            actions: {
+                ForEach(viewModel.sortInfos) { info in
+                    Button(
+                        action: {
+                            viewModel.sort(by: info)
+                        },
+                        label: {
+                            Text(info.localizedValue)
+                        }
+                    )
+                }
+            }
+        )
     }
     
     @MainActor
