@@ -13,6 +13,7 @@
 "TOPICS.ALL_POSTS" = "Всі пости";
 "TOPICS.POST_IM_FOLLOWING" = "Улюблені пости";
 "TOPICS.MAIN_CATEGORIES" = "Основні категорії";
+"TOPICS.UNNAMED" = "Unnamed subcategory";
 
 "POSTS.SORT.RECENT_ACTIVITY" = "Остання активність";
 "POSTS.SORT.MOST_ACTIVITY" = "Найактивниші";

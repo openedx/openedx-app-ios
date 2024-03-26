@@ -57,7 +57,7 @@ public struct WebBrowser: View {
                 viewModel: .init(
                     url: url,
                     baseURL: "",
-                    injections: [.colorInversionCss]
+                    injections: [.colorInversionCss, .readability, .accessibility]
                 ),
                 isLoading: $isLoading,
                 refreshCookies: {}

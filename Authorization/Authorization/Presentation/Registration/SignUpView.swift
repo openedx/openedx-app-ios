@@ -139,7 +139,7 @@ public struct SignUpView: View {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         viewModel.thirdPartyAuthSuccess = false
                                         Task {
-                                            await viewModel.registerUser()
+                                            await viewModel.registerUser(authMetod: viewModel.authMethod)
                                         }
                                         viewModel.trackCreateAccountClicked()
                                     }
@@ -163,7 +163,7 @@ public struct SignUpView: View {
                             }
                             .padding(.horizontal, 24)
                             .padding(.top, 24)
-                            
+                            .frameLimit(width: proxy.size.width)
                         }
                         .roundedBackground(Theme.Colors.background)
                         .onRightSwipeGesture {

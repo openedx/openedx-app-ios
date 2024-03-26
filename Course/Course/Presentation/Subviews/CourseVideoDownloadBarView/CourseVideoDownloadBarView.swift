@@ -22,12 +22,14 @@ struct CourseVideoDownloadBarView: View {
         courseStructure: CourseStructure,
         courseViewModel: CourseContainerViewModel,
         onNotInternetAvaliable: (() -> Void)?,
-        onTap: (() -> Void)? = nil
+        onTap: (() -> Void)? = nil,
+        analytics: CourseAnalytics
     ) {
         self._viewModel = .init(
             wrappedValue: .init(
                 courseStructure: courseStructure,
-                courseViewModel: courseViewModel
+                courseViewModel: courseViewModel,
+                analytics: analytics
             )
         )
         self.onNotInternetAvaliable = onNotInternetAvaliable
