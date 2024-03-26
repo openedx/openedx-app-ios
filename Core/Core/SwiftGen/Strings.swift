@@ -12,10 +12,10 @@ import Foundation
 public enum CoreLocalization {
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
-  /// Register
-  public static let register = CoreLocalization.tr("Localizable", "REGISTER", fallback: "Register")
   /// View in Safari
   public static let openInBrowser = CoreLocalization.tr("Localizable", "OPEN_IN_BROWSER", fallback: "View in Safari")
+  /// Register
+  public static let register = CoreLocalization.tr("Localizable", "REGISTER", fallback: "Register")
   /// The user canceled the sign-in flow.
   public static let socialSignCanceled = CoreLocalization.tr("Localizable", "SOCIAL_SIGN_CANCELED", fallback: "The user canceled the sign-in flow.")
   /// Tomorrow
