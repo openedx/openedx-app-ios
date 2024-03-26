@@ -168,7 +168,7 @@ public struct CourseUnitView: View {
             ForEach(data, id: \.offset) { index, block in
                 VStack(spacing: 0) {
                     if isDropdownActive {
-                        dropdown(block: block)
+                        videoTitle(block: block, width: reader.size.width)
                     }
                     switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
                         // MARK: YouTube
@@ -184,7 +184,8 @@ public struct CourseUnitView: View {
                                     languages: block.subtitles ?? [],
                                     isOnScreen: index == viewModel.index
                                 )
-                                .frameLimit()
+                                .frameLimit(width: reader.size.width)
+
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
@@ -213,7 +214,8 @@ public struct CourseUnitView: View {
                                     isOnScreen: index == viewModel.index
                                 )
                                 .padding(.top, 5)
-                                .frameLimit()
+                                .frameLimit(width: reader.size.width)
+
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
@@ -230,6 +232,7 @@ public struct CourseUnitView: View {
                                     injections: injections,
                                     roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
                                 )
+                                // not need to add frame limit there because we did that with injection
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
@@ -240,7 +243,10 @@ public struct CourseUnitView: View {
                     case .unknown(let url):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                             if viewModel.connectivity.isInternetAvaliable {
-                                    UnknownView(url: url, viewModel: viewModel)
+                                UnknownView(url: url, viewModel: viewModel)
+                                    .frameLimit(width: reader.size.width)
+                                Spacer()
+                                    .frame(minHeight: 100)
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
@@ -266,7 +272,9 @@ public struct CourseUnitView: View {
                                             Color.clear
                                         }
                                     }
-                                }.frameLimit()
+                                }
+                                //No need iPad paddings there bacause they were added
+                                //to PostsView that placed inside DiscussionView
                             } else {
                                 NoInternetView(playerStateSubject: playerStateSubject)
                             }
@@ -316,7 +324,7 @@ public struct CourseUnitView: View {
         return CGPoint(x: x, y: y)
     }
     
-    private func dropdown(block: CourseBlock) -> some View {
+    private func videoTitle(block: CourseBlock, width: CGFloat) -> some View {
         HStack {
             if block.type == .video {
                 let title = block.displayName
@@ -329,6 +337,7 @@ public struct CourseUnitView: View {
                 Spacer()
             }
         }
+        .frameLimit(width: width)
     }
 
     // MARK: - Course Navigation
@@ -421,7 +430,6 @@ public struct CourseUnitView: View {
             .padding(.bottom, isHorizontal ? 0 : 50)
             .padding(.top, isHorizontal ? 12 : 0)
         }
-        .frameLimit(sizePortrait: 420)
     }
 }
 

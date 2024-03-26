@@ -78,33 +78,15 @@ public struct HandoutsUpdatesDetailView: View {
         ZStack(alignment: .top) {
             Theme.Colors.background
                 .ignoresSafeArea()
-                // MARK: - Page Body
-                VStack(alignment: .leading) {
-                    // MARK: - Handouts
-                    if let handouts {
-                        let formattedHandouts = cssInjector.injectCSS(
-                            colorScheme: colorScheme,
-                            html: handouts,
-                            type: .discovery,
-                            fontSize: idiom == .pad ? 100 : 300,
-                            screenWidth: .infinity
-                        )
-                        
-                        WebViewHtml(fixBrokenLinks(in: formattedHandouts))
-                    } else if let html = announcemetsHtml() {
-                        // MARK: - Announcements
-                        WebViewHtml(fixBrokenLinks(in: html))
-                    }
-                }
+            // MARK: - Page Body
+            WebViewHtml(html(), injections: [.accessibility, .readability])
                 .padding(.top, 8)
-                .padding(.horizontal, 32)
                 .frame(
                     maxHeight: .infinity,
                     alignment: .topLeading)
                 .onRightSwipeGesture {
                     router.back()
                 }
-                Spacer(minLength: 84)
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
@@ -113,6 +95,24 @@ public struct HandoutsUpdatesDetailView: View {
             guard UIApplication.shared.applicationState == .active else { return }
             updateColorScheme()
         }
+    }
+    
+    func html() -> String {
+        var html: String = ""
+        if let handouts {
+            // MARK: - Handouts
+            html = cssInjector.injectCSS(
+                colorScheme: colorScheme,
+                html: handouts,
+                type: .discovery,
+                fontSize: idiom == .pad ? 100 : 300,
+                screenWidth: .infinity
+            )
+        } else if let announcemetsHtml = announcemetsHtml() {
+            // MARK: - Announcements
+            html = announcemetsHtml
+        }
+        return fixBrokenLinks(in: html)
     }
     
     func fontsCSS(for fontFamily: String) -> String? {

@@ -11,7 +11,6 @@ import SwiftUI
 import Theme
 
 public extension View {
-    
     func cardStyle(
         top: CGFloat? = 0,
         bottom: CGFloat? = 0,
@@ -91,15 +90,8 @@ public extension View {
             .padding(.horizontal, 48)
     }
     
-    @ViewBuilder
-    func frameLimit(sizePortrait: CGFloat = 560, sizeLandscape: CGFloat = 648) -> some View {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            HStack {
-                Spacer(minLength: 0)
-                self.frame(maxWidth: UIDevice.current.orientation.isPortrait ? sizePortrait : sizeLandscape)
-                Spacer(minLength: 0)
-            }
-        } else { self }
+    func frameLimit(width: CGFloat? = nil) -> some View {
+        modifier(ReadabilityModifier(width: width))
     }
     
     @ViewBuilder
@@ -153,7 +145,6 @@ public extension View {
         ipadMaxHeight: CGFloat = .infinity,
         maxIpadWidth: CGFloat = 420
     ) -> some View {
-        var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
         return ZStack {
             RoundedCorners(tl: 24, tr: 24)
                 .offset(y: 1)
@@ -163,8 +154,7 @@ public extension View {
                 .offset(y: 2)
                 .foregroundColor(color)
             self
-                .offset(y: 2)
-                .frame(maxWidth: maxIpadWidth, maxHeight: idiom == .pad ? ipadMaxHeight : .infinity)
+                .offset(y: 2)                
         }
     }
     

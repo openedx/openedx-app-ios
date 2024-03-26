@@ -24,11 +24,13 @@ final class HandoutsViewModelTests: XCTestCase {
         Given(interactor, .getHandouts(courseID: .any, willReturn: "Result"))
         Given(interactor, .getUpdates(courseID: .any, willReturn: courseUpdate))
         
-        let viewModel = HandoutsViewModel(interactor: interactor,
-                                          router: router,
-                                          cssInjector: CSSInjectorMock(),
-                                          connectivity: connectivity,
-                                          courseID: "123")
+        let viewModel = HandoutsViewModel(
+            interactor: interactor,
+            router: router,
+            cssInjector: CSSInjectorMock(),
+            connectivity: connectivity,
+            courseID: "123",
+            analytics: CourseAnalyticsMock())
         
         await viewModel.getHandouts(courseID: "")
         
@@ -50,11 +52,13 @@ final class HandoutsViewModelTests: XCTestCase {
         Given(interactor, .getHandouts(courseID: .any, willThrow: noInternetError))
         Given(interactor, .getUpdates(courseID: .any, willThrow: noInternetError))
         
-        let viewModel = HandoutsViewModel(interactor: interactor,
-                                          router: router,
-                                          cssInjector: CSSInjectorMock(),
-                                          connectivity: connectivity,
-                                          courseID: "123")
+        let viewModel = HandoutsViewModel(
+            interactor: interactor,
+            router: router,
+            cssInjector: CSSInjectorMock(),
+            connectivity: connectivity,
+            courseID: "123",
+            analytics: CourseAnalyticsMock())
                 
         await viewModel.getHandouts(courseID: "")
         
@@ -74,11 +78,13 @@ final class HandoutsViewModelTests: XCTestCase {
         Given(interactor, .getHandouts(courseID: .any, willThrow: NSError()))
         Given(interactor, .getUpdates(courseID: .any, willThrow: NSError()))
         
-        let viewModel = HandoutsViewModel(interactor: interactor,
-                                          router: router,
-                                          cssInjector: CSSInjectorMock(),
-                                          connectivity: connectivity,
-                                          courseID: "123")
+        let viewModel = HandoutsViewModel(
+            interactor: interactor,
+            router: router,
+            cssInjector: CSSInjectorMock(),
+            connectivity: connectivity,
+            courseID: "123",
+            analytics: CourseAnalyticsMock())
         
         await viewModel.getHandouts(courseID: "")
         
@@ -99,11 +105,13 @@ final class HandoutsViewModelTests: XCTestCase {
         
         Given(interactor, .getUpdates(courseID: .any, willReturn: courseUpdate))
         
-        let viewModel = HandoutsViewModel(interactor: interactor,
-                                          router: router,
-                                          cssInjector: CSSInjectorMock(),
-                                          connectivity: connectivity,
-                                          courseID: "123")
+        let viewModel = HandoutsViewModel(
+            interactor: interactor,
+            router: router,
+            cssInjector: CSSInjectorMock(),
+            connectivity: connectivity,
+            courseID: "123",
+            analytics: CourseAnalyticsMock())
         
         await viewModel.getUpdates(courseID: "")
         
@@ -120,11 +128,13 @@ final class HandoutsViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
         
-        let viewModel = HandoutsViewModel(interactor: interactor,
-                                          router: router,
-                                          cssInjector: CSSInjectorMock(),
-                                          connectivity: connectivity,
-                                          courseID: "123")
+        let viewModel = HandoutsViewModel(
+            interactor: interactor,
+            router: router,
+            cssInjector: CSSInjectorMock(),
+            connectivity: connectivity,
+            courseID: "123",
+            analytics: CourseAnalyticsMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -145,11 +155,13 @@ final class HandoutsViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
         
-        let viewModel = HandoutsViewModel(interactor: interactor,
-                                          router: router,
-                                          cssInjector: CSSInjectorMock(),
-                                          connectivity: connectivity,
-                                          courseID: "123")
+        let viewModel = HandoutsViewModel(
+            interactor: interactor,
+            router: router,
+            cssInjector: CSSInjectorMock(),
+            connectivity: connectivity,
+            courseID: "123",
+            analytics: CourseAnalyticsMock())
         
         
         Given(interactor, .getUpdates(courseID: .any, willThrow: NSError()))

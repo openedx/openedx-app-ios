@@ -35,7 +35,7 @@ struct MainScreenView: View {
             for: .normal
         )
     }
-    
+        
     var body: some View {
         TabView(selection: $viewModel.selection) {
             let config = Container.shared.resolve(ConfigProtocol.self)

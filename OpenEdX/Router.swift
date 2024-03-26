@@ -69,12 +69,13 @@ public class Router: AuthorizationRouter,
         let config = Container.shared.resolve(ConfigProtocol.self)!
         let persistence = Container.shared.resolve(CorePersistenceProtocol.self)!
         let coreStorage = Container.shared.resolve(CoreStorage.self)!
+        let analytics = Container.shared.resolve(WhatsNewAnalytics.self)!
 
         if let userId = coreStorage.user?.id {
             persistence.set(userId: userId)
         }
 
-        let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen)
+        let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen, analytics: analytics)
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
@@ -101,11 +102,15 @@ public class Router: AuthorizationRouter,
         guard let viewModel = Container.shared.resolve(
             SignInViewModel.self,
             argument: sourceScreen
+        ), let authAnalytics = Container.shared.resolve(
+            AuthorizationAnalytics.self
         ) else { return }
         
         let view = SignInView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
+        
+        authAnalytics.signInClicked()
     }
     
     public func showStartupScreen() {
@@ -129,10 +134,11 @@ public class Router: AuthorizationRouter,
         guard let config = Container.shared.resolve(ConfigProtocol.self),
               let storage = Container.shared.resolve(CoreStorage.self),
               let connectivity = Container.shared.resolve(ConnectivityProtocol.self),
+              let analytics = Container.shared.resolve(CoreAnalytics.self),
               connectivity.isInternetAvaliable
         else { return }
-        let vm = AppReviewViewModel(config: config, storage: storage)
-        if vm.shouldShowRatingView() {
+        let vm = AppReviewViewModel(config: config, storage: storage, analytics: analytics)
+        if true {
             presentView(
                 transitionStyle: .crossDissolve,
                 view: AppReviewView(viewModel: vm)
@@ -211,7 +217,7 @@ public class Router: AuthorizationRouter,
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
         
-        authAnalytics.signUpClicked()
+        authAnalytics.registerClicked()
     }
 
     public func showForgotPasswordScreen() {
@@ -604,11 +610,13 @@ public class Router: AuthorizationRouter,
 
     public func showVideoDownloadQualityView(
         downloadQuality: DownloadQuality,
-        didSelect: ((DownloadQuality) -> Void)?
+        didSelect: ((DownloadQuality) -> Void)?,
+        analytics: CoreAnalytics
     ) {
         let view = VideoDownloadQualityView(
             downloadQuality: downloadQuality,
-            didSelect: didSelect
+            didSelect: didSelect,
+            analytics: analytics
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
