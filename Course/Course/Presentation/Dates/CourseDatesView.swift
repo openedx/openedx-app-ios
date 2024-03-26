@@ -40,8 +40,29 @@ public struct CourseDatesView: View {
                 }
             }
             
-            if viewModel.dueDatesShifted {
-                DatesShiftedSuccessView(selectedTab: .dates, courseDatesViewModel: viewModel)
+            switch viewModel.eventState {
+            case .addedCalendar:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsAdded
+                )
+            case .removedCalendar:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsRemoved
+                )
+            case .updatedCalendar:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsUpdated
+                )
+            case .shiftedDueDates:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.toastSuccessTitle,
+                    message: CourseLocalization.CourseDates.toastSuccessMessage
+                )
+            default:
+                EmptyView()
             }
             
             if viewModel.showError {
@@ -67,6 +88,25 @@ public struct CourseDatesView: View {
                 .ignoresSafeArea()
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    private func showDatesSuccessView(title: String, message: String) -> some View {
+        if viewModel.eventState == .shiftedDueDates {
+            return DatesSuccessView(
+                title: title,
+                message: message,
+                selectedTab: .dates,
+                courseDatesViewModel: viewModel
+            )
+        } else {
+            return DatesSuccessView(
+                title: title,
+                message: message,
+                selectedTab: .dates
+            ) {
+                viewModel.resetEventState()
+            }
+        }
     }
 }
 
@@ -108,6 +148,9 @@ struct CourseDateListView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         if !courseDates.hasEnded {
+                            CalendarSyncView(courseID: courseID, viewModel: viewModel)
+                                .padding(.bottom, 16)
+                            
                             DatesStatusInfoView(
                                 datesBannerInfo: courseDates.datesBannerInfo,
                                 courseID: courseID,
@@ -324,7 +367,10 @@ struct StyleBlock: View {
             .onTapGesture {
                 if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                     Task {
-                        await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                        await viewModel.showCourseDetails(
+                            componentID: block.firstComponentBlockID,
+                            blockLink: block.link
+                        )
                     }
                     viewModel.logdateComponentTapped(block: block, supported: true)
                 } else {
@@ -337,6 +383,42 @@ struct StyleBlock: View {
         var attributedString = AttributedString(block.title)
         attributedString.font = Theme.Fonts.titleSmall
         return attributedString
+    }
+}
+
+struct CalendarSyncView: View {
+    let courseID: String
+    @ObservedObject var viewModel: CourseDatesViewModel
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Spacer()
+            HStack {
+                CoreAssets.syncToCalendar.swiftUIImage
+                Text(CourseLocalization.CourseDates.syncToCalendar)
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                Toggle("", isOn: .constant(viewModel.isOn))
+                    .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentButtonColor))
+                    .padding(.trailing, 0)
+                    .onTapGesture {
+                        viewModel.calendarState = !viewModel.isOn
+                    }
+            }
+            .padding(.horizontal, 16)
+            
+            Text(CourseLocalization.CourseDates.syncToCalendarMessage)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+                .padding(.horizontal, 16)
+            Spacer()
+        }
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+        )
+        .background(Theme.Colors.datesSectionBackground)
     }
 }
 
@@ -400,8 +482,11 @@ struct CourseDatesView_Previews: PreviewProvider {
             router: CourseRouterMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity(),
+            config: ConfigMock(),
             courseID: "",
-            analytics: CourseAnalyticsMock())
+            courseName: "",
+            analytics: CourseAnalyticsMock()
+        )
         
         CourseDatesView(
             courseID: "",

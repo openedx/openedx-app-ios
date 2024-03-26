@@ -54,6 +54,7 @@ public extension DataLayer {
         public let graded: Bool
         public let completion: Double?
         public let studentUrl: String
+        public let webUrl: String
         public let type: String
         public let displayName: String
         public let descendants: [String]?
@@ -67,6 +68,7 @@ public extension DataLayer {
             graded: Bool,
             completion: Double?,
             studentUrl: String,
+            webUrl: String,
             type: String,
             displayName: String,
             descendants: [String]?,
@@ -79,6 +81,7 @@ public extension DataLayer {
             self.graded = graded
             self.completion = completion
             self.studentUrl = studentUrl
+            self.webUrl = webUrl
             self.type = type
             self.displayName = displayName
             self.descendants = descendants
@@ -91,6 +94,7 @@ public extension DataLayer {
             case id, type, descendants, graded, completion
             case blockId = "block_id"
             case studentUrl = "student_view_url"
+            case webUrl = "lms_web_url"
             case displayName = "display_name"
             case userViewData = "student_view_data"
             case allSources = "all_sources"

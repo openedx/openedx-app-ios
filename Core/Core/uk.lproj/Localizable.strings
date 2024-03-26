@@ -22,6 +22,7 @@
 "ERROR.WIFI" = "Завантажувати файли можна лише через Wi-Fi. Ви можете змінити це в налаштуваннях.";
 
 "COURSEWARE.COURSE_CONTENT" = "Зміст курсу";
+"COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE" = "This interactive component isn't yet available on mobile.";
 "COURSEWARE.COURSE_UNITS" = "Модулі";
 "COURSEWARE.NEXT" = "Далі";
 "COURSEWARE.PREVIOUS" = "Назад";
@@ -50,6 +51,9 @@
 "ALERT.LOGOUT" = "Вийти";
 "ALERT.LEAVE" = "Покинути";
 "ALERT.KEEP_EDITING" = "Залишитись";
+"ALERT.ADD" = "Add";
+"ALERT.REMOVE" = "Remove";
+"ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR"="Remove course calendar";
 
 "NO_INTERNET.OFFLINE" = "Офлайн режим";
 "NO_INTERNET.DISMISS" = "Сховати";
@@ -105,3 +109,5 @@
 
 "TOMORROW" = "Tomorrow";
 "YESTERDAY" = "Yesterday";
+
+"OPEN_IN_BROWSER"="View in Safari";

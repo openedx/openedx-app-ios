@@ -213,6 +213,7 @@ public class CourseRepository: CourseRepositoryProtocol {
             type: BlockType(rawValue: block.type) ?? .unknown,
             displayName: block.displayName,
             studentUrl: block.studentUrl,
+            webUrl: block.webUrl,
             subtitles: subtitles,
             encodedVideo: .init(
                 fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
@@ -420,6 +421,7 @@ And there are various ways of describing it-- call it oral poetry or
             type: BlockType(rawValue: block.type) ?? .unknown,
             displayName: block.displayName,
             studentUrl: block.studentUrl,
+            webUrl: block.webUrl,
             subtitles: subtitles,
             encodedVideo: .init(
                 fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
