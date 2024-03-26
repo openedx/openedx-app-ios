@@ -15,6 +15,7 @@ struct UnknownView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            Spacer()
             CoreAssets.notAvaliable.swiftUIImage
             Text(CourseLocalization.NotAvaliable.title)
                 .font(Theme.Fonts.titleLarge)
@@ -33,6 +34,7 @@ struct UnknownView: View {
             })
             .frame(width: 215)
             .padding(.top, 40)
+            Spacer()
         }
         .padding(24)
     }

@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Course
 
@@ -7,7 +7,7 @@
 */
 
 "OUTLINE.CONGRATULATIONS" = "Congratulations!";
-"OUTLINE.PASSED_THE_COURSE" = "You've passed the course";
+"OUTLINE.PASSED_THE_COURSE" = "You’ve completed the course";
 "OUTLINE.VIEW_CERTIFICATE" = "View certificate";
 "OUTLINE.CERTIFICATE" = "Certificate";
 "OUTLINE.COURSE_VIDEOS" = "Course videos";
@@ -18,10 +18,10 @@
 "COURSEWARE.NEXT" = "Next";
 "COURSEWARE.PREVIOUS" = "Prev";
 "COURSEWARE.FINISH" = "Finish";
-"COURSEWARE.GOOD_WORK" = "Good Work!";
+"COURSEWARE.GOOD_WORK" = "Good job!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";
-"COURSEWARE.SECTION" = "Section “";
-"COURSEWARE.IS_FINISHED" = "“ is finished.";
+"COURSEWARE.SECTION" = "You've completed “";
+"COURSEWARE.IS_FINISHED" = "“.";
 "COURSEWARE.CONTINUE" = "Continue";
 "COURSEWARE.RESUME_WITH" = "Resume with:";
 
@@ -40,7 +40,7 @@
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
 "COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSIONS" =  "Discussions";
-"COURSE_CONTAINER.HANDOUTS" =  "Handouts";
+"COURSE_CONTAINER.HANDOUTS" =  "More";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
 
 "HANDOUTS_CELL_HANDOUTS.TITLE" = "Handouts";
@@ -48,7 +48,7 @@
 "HANDOUTS_CELL_HANDOUTS.DESCRIPTION" = "Find important course information";
 "HANDOUTS_CELL_ANNOUNCEMENTS.DESCRIPTION" = "Keep up with the latest news";
 
-"NOT_AVALIABLE.TITLE" = "This interactive component isn’t yet available";
+"NOT_AVALIABLE.TITLE" = "This interactive component isn't available on mobile";
 "NOT_AVALIABLE.DESCRIPTION" = "Explore other parts of this course or view this on web.";
 "NOT_AVALIABLE.BUTTON" = "Open in browser";
 

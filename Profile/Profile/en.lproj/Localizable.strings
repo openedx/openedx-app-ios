@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Profile
 
@@ -32,8 +32,8 @@
 "DELETE_ALERT.TITLE" = "Warning!";
 "DELETE_ALERT.TEXT" = "Do you really want to delete your account?";
 
-"UNSAVED_DATA_ALERT.TITLE" = "Leave profile?";
-"UNSAVED_DATA_ALERT.TEXT" = "Changes you have made may not be saved.";
+"UNSAVED_DATA_ALERT.TITLE" = "Leave without saving?";
+"UNSAVED_DATA_ALERT.TEXT" = "Changes you have made will be discarded.";
 
 "EDIT.TOO_YONG_USER" = "You must be over 13 years old to have a profile with full access to information.";
 "EDIT.LIMITED_PROFILE_DESCRIPTION" = "A limited profile only shares your username and profile photo.";
@@ -52,7 +52,7 @@
 "DELETE_ACCOUNT.TITLE" = "Delete account";
 "DELETE_ACCOUNT.ARE_YOU_SURE" = "Are you sure you want to ";
 "DELETE_ACCOUNT.WANT_TO_DELETE" = "delete your account?";
-"DELETE_ACCOUNT.DESCRIPTION" = "To confirm this action you need to enter your account password.";
+"DELETE_ACCOUNT.DESCRIPTION" = "To confirm this action, please enter your account password.";
 "DELETE_ACCOUNT.PASSWORD" = "Password";
 "DELETE_ACCOUNT.PASSWORD_DESCRIPTION" = "Enter password";
 "DELETE_ACCOUNT.COMFIRM" = "Yes, delete account";

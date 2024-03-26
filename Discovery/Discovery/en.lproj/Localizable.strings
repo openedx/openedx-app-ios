@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Discovery
 
@@ -34,3 +34,4 @@
 "DETAILS.VIEW_COURSE" = "View course";
 "DETAILS.ENROLL_NOW" = "Enroll now";
 "DETAILS.ENROLLMENT_DATE_IS_OVER" = "You cannot enroll in this course because the enrollment date is over.";
+"DETAILS.ENROLLMENT_NO_INTERNET" = "To enroll in this course, please make sure you are connected to the internet.";

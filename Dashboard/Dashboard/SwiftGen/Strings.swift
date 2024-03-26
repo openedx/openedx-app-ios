@@ -18,8 +18,6 @@ public enum DashboardLocalization {
   public enum Empty {
     /// You are not enrolled in any courses yet.
     public static let subtitle = DashboardLocalization.tr("Localizable", "EMPTY.SUBTITLE", fallback: "You are not enrolled in any courses yet.")
-    /// It's empty
-    public static let title = DashboardLocalization.tr("Localizable", "EMPTY.TITLE", fallback: "It's empty")
   }
   public enum Header {
     /// Courses

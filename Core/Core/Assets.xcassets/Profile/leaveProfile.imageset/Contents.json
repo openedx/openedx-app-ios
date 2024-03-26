@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Frame 273-2.svg",
+      "filename" : "leaveProfileLight.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Frame 273.svg",
+      "filename" : "leaveProfileDark.svg",
       "idiom" : "universal"
     }
   ],

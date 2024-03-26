@@ -56,8 +56,8 @@ public enum ProfileLocalization {
     public static let backToProfile = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.BACK_TO_PROFILE", fallback: "Back to profile")
     /// Yes, delete account
     public static let comfirm = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.COMFIRM", fallback: "Yes, delete account")
-    /// To confirm this action you need to enter your account password.
-    public static let description = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.DESCRIPTION", fallback: "To confirm this action you need to enter your account password.")
+    /// To confirm this action, please enter your account password.
+    public static let description = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.DESCRIPTION", fallback: "To confirm this action, please enter your account password.")
     /// The password is incorrect. Please try again.
     public static let incorrectPassword = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.INCORRECT_PASSWORD", fallback: "The password is incorrect. Please try again.")
     /// Password
@@ -148,10 +148,10 @@ public enum ProfileLocalization {
     public static let wifiTitle = ProfileLocalization.tr("Localizable", "SETTINGS.WIFI_TITLE", fallback: "Wi-fi only download")
   }
   public enum UnsavedDataAlert {
-    /// Changes you have made may not be saved.
-    public static let text = ProfileLocalization.tr("Localizable", "UNSAVED_DATA_ALERT.TEXT", fallback: "Changes you have made may not be saved.")
-    /// Leave profile?
-    public static let title = ProfileLocalization.tr("Localizable", "UNSAVED_DATA_ALERT.TITLE", fallback: "Leave profile?")
+    /// Changes you have made will be discarded.
+    public static let text = ProfileLocalization.tr("Localizable", "UNSAVED_DATA_ALERT.TEXT", fallback: "Changes you have made will be discarded.")
+    /// Leave without saving?
+    public static let title = ProfileLocalization.tr("Localizable", "UNSAVED_DATA_ALERT.TITLE", fallback: "Leave without saving?")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
