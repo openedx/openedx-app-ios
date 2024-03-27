@@ -90,6 +90,8 @@ public struct CreateNewThreadView: View {
                                             .frame(height: 40, alignment: .leading)
                                             Spacer()
                                             Image(systemName: "chevron.down")
+                                                .renderingMode(.template)
+                                                .foregroundColor(Theme.Colors.textInputTextColor)
                                         }.padding(.horizontal, 14)
                                             .accentColor(Theme.Colors.textPrimary)
                                             .background(Theme.Shapes.textInputShape
