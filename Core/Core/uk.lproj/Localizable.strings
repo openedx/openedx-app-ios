@@ -31,8 +31,7 @@
 "COURSEWARE.FINISH" = "Завершити";
 "COURSEWARE.GOOD_WORK" = "Гарна робота!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Повернутись до модуля";
-"COURSEWARE.SECTION" = "Секція “";
-"COURSEWARE.IS_FINISHED" = "“ завершена.";
+"COURSEWARE.SECTION_COMPLETED" = "Ви завершили “%@”.";
 "COURSEWARE.CONTINUE" = "Продовжити";
 "COURSEWARE.RESUME" = "Resume";
 "COURSEWARE.RESUME_WITH" = "Продовжити далі:";

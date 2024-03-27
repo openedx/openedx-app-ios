@@ -44,6 +44,7 @@ public struct Theme {
         public private(set) static var textInputUnfocusedBackground = ThemeAssets.textInputUnfocusedBackground.swiftUIColor
         public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
+        public private(set) static var warningText = ThemeAssets.warningText.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
         public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
         public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor

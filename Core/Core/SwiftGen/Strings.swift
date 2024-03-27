@@ -47,8 +47,6 @@ public enum CoreLocalization {
     public static let finish = CoreLocalization.tr("Localizable", "COURSEWARE.FINISH", fallback: "Finish")
     /// Good job!
     public static let goodWork = CoreLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good job!")
-    /// “.
-    public static let isFinished = CoreLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“.")
     /// Next
     public static let next = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Next section
@@ -63,8 +61,10 @@ public enum CoreLocalization {
     public static let resume = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME", fallback: "Resume")
     /// Resume with:
     public static let resumeWith = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
-    /// You've completed “
-    public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
+    /// You've completed “%@”.
+    public static func sectionCompleted(_ p1: Any) -> String {
+      return CoreLocalization.tr("Localizable", "COURSEWARE.SECTION_COMPLETED", String(describing: p1), fallback: "You've completed “%@”.")
+    }
   }
   public enum Date {
     /// Ended

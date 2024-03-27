@@ -32,8 +32,7 @@
 "COURSEWARE.FINISH" = "Finish";
 "COURSEWARE.GOOD_WORK" = "Good job!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";
-"COURSEWARE.SECTION" = "You've completed “";
-"COURSEWARE.IS_FINISHED" = "“.";
+"COURSEWARE.SECTION_COMPLETED" = "You've completed “%@”.";
 "COURSEWARE.CONTINUE" = "Continue";
 "COURSEWARE.RESUME" = "Resume";
 "COURSEWARE.RESUME_WITH" = "Resume with:";

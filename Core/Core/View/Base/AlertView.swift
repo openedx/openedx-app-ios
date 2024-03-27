@@ -268,12 +268,12 @@ public struct AlertView: View {
                 }, label: {
                     ZStack {
                         Text(CoreLocalization.Alert.logout)
-                            .foregroundColor(.black)
+                            .foregroundColor(Theme.Colors.warningText)
                             .font(Theme.Fonts.labelLarge)
                             .frame(maxWidth: .infinity)
                             .padding(.horizontal, 16)
                         Image(systemName: "rectangle.portrait.and.arrow.right")
-                            .foregroundColor(.black)
+                            .foregroundColor(Theme.Colors.warningText)
                             .frame(minWidth: 190, minHeight: 48, alignment: .trailing)
                     }
                     .frame(maxWidth: 215, minHeight: 48)

@@ -190,7 +190,7 @@ public struct CourseUnitView: View {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                             
                         } else {
@@ -220,7 +220,7 @@ public struct CourseUnitView: View {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         }
                         // MARK: Web
@@ -234,7 +234,7 @@ public struct CourseUnitView: View {
                                 )
                                 // not need to add frame limit there because we did that with injection
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         } else {
                             EmptyView()
@@ -248,7 +248,7 @@ public struct CourseUnitView: View {
                                 Spacer()
                                     .frame(minHeight: 100)
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         } else {
                             EmptyView()
@@ -276,7 +276,7 @@ public struct CourseUnitView: View {
                                 //No need iPad paddings there bacause they were added
                                 //to PostsView that placed inside DiscussionView
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         } else {
                             EmptyView()
@@ -569,9 +569,7 @@ struct CourseUnitView_Previews: PreviewProvider {
 #endif
 
 struct NoInternetView: View {
-    
-    let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    
+        
     var body: some View {
         VStack(spacing: 28) {
             Spacer()

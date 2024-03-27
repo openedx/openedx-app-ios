@@ -161,19 +161,6 @@ public struct EditProfileView: View {
                         Spacer()
                         SnackBarView(message: viewModel.errorMessage)
                     }
-                }
-            }
-            // MARK: - Alert
-            if viewModel.showAlert {
-                VStack(alignment: .center) {
-                    Spacer()
-                    HStack(alignment: .top, spacing: 6) {
-                        CoreAssets.alarm.swiftUIImage.renderingMode(.template)
-                        Text(viewModel.alertMessage ?? "")
-                            .font(Theme.Fonts.labelLarge)
-                    }.shadowCardStyle(bgColor: Theme.Colors.warning,
-                                      textColor: .black)
-                    
                     .transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
@@ -181,66 +168,84 @@ public struct EditProfileView: View {
                         }
                     }
                 }
-            }
-            ProfileBottomSheet(
-                showingBottomSheet: $showingBottomSheet,
-                openGallery: {
-                    showingImagePicker = true
-                    withAnimation {
-                        showingBottomSheet = false
-                    }
-                },
-                removePhoto: {
-                    viewModel.inputImage = CoreAssets.noAvatar.image
-                    viewModel.profileChanges.isAvatarDeleted = true
-                    showingBottomSheet = false
-                })
-            
-            if viewModel.isShowProgress {
-                ProgressBar(size: 40, lineWidth: 8)
-                    .padding(.top, 150)
-                    .padding(.horizontal)
-                    .accessibilityIdentifier("progressbar")
-            }
-        }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle(ProfileLocalization.editProfile)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading, content: {
-                Button(action: {
-                    viewModel.backButtonTapped()
-                }, label: {
-                    CoreAssets.arrowLeft.swiftUIImage
-                        .renderingMode(.template)
-                        .foregroundColor(Theme.Colors.accentColor)
-                })
-            })
-            ToolbarItem(placement: .navigationBarTrailing, content: {
-                Button(action: {
-                    if viewModel.isChanged {
-                        Task {
-                            viewModel.trackProfileEditDoneClicked()
-                            await viewModel.saveProfileUpdates()
+                // MARK: - Alert
+                if viewModel.showAlert {
+                    VStack(alignment: .center) {
+                        Spacer()
+                        HStack(alignment: .top, spacing: 6) {
+                            CoreAssets.alarm.swiftUIImage.renderingMode(.template)
+                            Text(viewModel.alertMessage ?? "")
+                                .font(Theme.Fonts.labelLarge)
+                        }.shadowCardStyle(bgColor: Theme.Colors.warning,
+                                          textColor: .black)
+                        .transition(.move(edge: .bottom))
+                        .onAppear {
+                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                                viewModel.alertMessage = nil
+                            }
                         }
                     }
-                }, label: {
-                    HStack(spacing: 2) {
-                        CoreAssets.done.swiftUIImage.renderingMode(.template)
-                            .foregroundColor(Theme.Colors.accentXColor)
-                        Text(CoreLocalization.done)
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(Theme.Colors.accentXColor)
-                    }
+                }
+                ProfileBottomSheet(
+                    showingBottomSheet: $showingBottomSheet,
+                    openGallery: {
+                        showingImagePicker = true
+                        withAnimation {
+                            showingBottomSheet = false
+                        }
+                    },
+                    removePhoto: {
+                        viewModel.inputImage = CoreAssets.noAvatar.image
+                        viewModel.profileChanges.isAvatarDeleted = true
+                        showingBottomSheet = false
+                    })
+                
+                if viewModel.isShowProgress {
+                    ProgressBar(size: 40, lineWidth: 8)
+                        .padding(.top, 150)
+                        .padding(.horizontal)
+                        .accessibilityIdentifier("progressbar")
+                }
+            }
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(true)
+            .navigationTitle(ProfileLocalization.editProfile)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading, content: {
+                    Button(action: {
+                        viewModel.backButtonTapped()
+                    }, label: {
+                        CoreAssets.arrowLeft.swiftUIImage
+                            .renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
+                    })
                 })
-                .opacity(viewModel.isChanged ? 1 : 0.3)
-                .accessibilityIdentifier("done_button")
-            })
+                ToolbarItem(placement: .navigationBarTrailing, content: {
+                    Button(action: {
+                        if viewModel.isChanged {
+                            Task {
+                                viewModel.trackProfileEditDoneClicked()
+                                await viewModel.saveProfileUpdates()
+                            }
+                        }
+                    }, label: {
+                        HStack(spacing: 2) {
+                            CoreAssets.done.swiftUIImage.renderingMode(.template)
+                                .foregroundColor(Theme.Colors.accentXColor)
+                            Text(CoreLocalization.done)
+                                .font(Theme.Fonts.labelLarge)
+                                .foregroundColor(Theme.Colors.accentXColor)
+                        }
+                    })
+                    .opacity(viewModel.isChanged ? 1 : 0.3)
+                    .accessibilityIdentifier("done_button")
+                })
+            }
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 

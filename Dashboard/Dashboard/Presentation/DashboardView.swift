@@ -43,7 +43,6 @@ public struct DashboardView: View {
                         await viewModel.getMyCourses(page: 1, refresh: true)
                     }) {
                         Group {
-                            
                             LazyVStack(spacing: 0) {
                                 HStack {
                                     dashboardCourses
