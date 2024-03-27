@@ -164,6 +164,8 @@ public class EditProfileViewModel: ObservableObject {
         } else {
             profileChanges.profileType.toggle()
         }
+        
+        analytics.profileSwitch(action: profileChanges.profileType.value ?? "")
     }
     
     func checkProfileType() {

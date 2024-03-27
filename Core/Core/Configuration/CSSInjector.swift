@@ -95,9 +95,17 @@ public class CSSInjector {
         var maxWidth: String
         switch type {
         case .discovery:
-            maxWidth = "max-width: \(screenWidth)px;"
+            if screenWidth == .infinity {
+                maxWidth = "max-width: 100%;"
+            } else {
+                maxWidth = "max-width: \(screenWidth)px;"
+            }
         case .comment:
-            maxWidth = "width: \(screenWidth / 1.3)px;"
+            if screenWidth == .infinity {
+                maxWidth = "width: 100%;"
+            } else {
+                maxWidth = "width: \(screenWidth / 1.3)px;"
+            }
         }
         
         func currentColor() -> String {

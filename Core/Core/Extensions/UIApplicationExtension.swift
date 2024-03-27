@@ -54,10 +54,18 @@ extension UINavigationController {
         
         UISegmentedControl.appearance().setTitleTextAttributes(
             [
+                .foregroundColor: Theme.Colors.textPrimary.uiColor(),
+                .font: Theme.UIFonts.labelLarge()
+            ],
+            for: .normal
+        )
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [
                 .foregroundColor: Theme.Colors.primaryButtonTextColor.uiColor(),
                 .font: Theme.UIFonts.labelLarge()
             ],
-            for: .normal)
+            for: .selected
+        )
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Theme.Colors.accentXColor)
         
         UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = Theme.UIColors.accentXColor

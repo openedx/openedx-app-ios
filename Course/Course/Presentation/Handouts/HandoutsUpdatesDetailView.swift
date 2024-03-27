@@ -17,8 +17,8 @@ public struct HandoutsUpdatesDetailView: View {
     
     private var router: CourseRouter
     private let cssInjector: CSSInjector
-    public var handouts: String?
-    public var announcements: [CourseUpdate]?
+    private var handouts: String?
+    private var announcements: [CourseUpdate]?
     private let title: String
     
     public init(
@@ -77,68 +77,127 @@ public struct HandoutsUpdatesDetailView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             Theme.Colors.background
-                                       .ignoresSafeArea()
-            GeometryReader { reader in
-                
-                // MARK: - Page Body
-                VStack(alignment: .leading) {
-                    
-                    // MARK: - Handouts
-                    if let handouts {
-                        let formattedHandouts = cssInjector.injectCSS(
-                            colorScheme: colorScheme,
-                            html: handouts,
-                            type: .discovery,
-                            fontSize: idiom == .pad ? 100 : 300,
-                            screenWidth: .infinity
-                        )
-                        
-                        WebViewHtml(fixBrokenLinks(in: formattedHandouts))
-                    } else if let announcements {
-                        
-                        // MARK: - Announcements
-                        ScrollView {
-                            ForEach(Array(announcements.enumerated()), id: \.offset) { index, ann in
-                                
-                                Text(ann.date)
-                                    .font(Theme.Fonts.labelSmall)
-                                let formattedAnnouncements = cssInjector.injectCSS(
-                                    colorScheme: colorScheme,
-                                    html: ann.content,
-                                    type: .discovery,
-                                    screenWidth: reader.size.width
-                                )
-                                HStack {
-                                    HTMLFormattedText(formattedAnnouncements)
-                                    Spacer()
-                                }
-                                
-                                .id(UUID())
-                                
-                                if index != announcements.count - 1 {
-                                    Divider()
-                                }
-                            }
-                        }.frame(height: reader.size.height - 60)
-                    }
-                }.padding(.top, 8)
-                    .padding(.horizontal, 32)
-                    .frame(
-                        maxHeight: .infinity,
-                        alignment: .topLeading)
-                    .onRightSwipeGesture {
-                        router.back()
-                    }
-                Spacer(minLength: 84)
-            }
+                .ignoresSafeArea()
+            // MARK: - Page Body
+            WebViewHtml(html(), injections: [.accessibility, .readability])
+                .padding(.top, 8)
+                .frame(
+                    maxHeight: .infinity,
+                    alignment: .topLeading)
+                .onRightSwipeGesture {
+                    router.back()
+                }
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
-        .onChange(of: colorSchemeNative) { newValue in
+        .onChange(of: colorSchemeNative) { _ in
             guard UIApplication.shared.applicationState == .active else { return }
             updateColorScheme()
         }
+    }
+    
+    func html() -> String {
+        var html: String = ""
+        if let handouts {
+            // MARK: - Handouts
+            html = cssInjector.injectCSS(
+                colorScheme: colorScheme,
+                html: handouts,
+                type: .discovery,
+                fontSize: idiom == .pad ? 100 : 300,
+                screenWidth: .infinity
+            )
+        } else if let announcemetsHtml = announcemetsHtml() {
+            // MARK: - Announcements
+            html = announcemetsHtml
+        }
+        return fixBrokenLinks(in: html)
+    }
+    
+    func fontsCSS(for fontFamily: String) -> String? {
+        if let path = Bundle(for: ThemeBundle.self).path(forResource: "fonts_file", ofType: "ttf"),
+            let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) {
+            let fontCSS = """
+            @font-face {
+                font-family: \(fontFamily);
+                src: url(data:font/truetype;charset=utf-8;base64,\(data.base64EncodedString())) format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+            """
+            return "<style>\(fontCSS)</style>"
+        }
+        return nil
+    }
+    
+    func titleHTML(fontFamily: String, fontSize: CGFloat, title: String) -> String {
+        """
+            <center>
+                <p style = "
+                    font-family: \(fontFamily) !important;
+                    color: inherit !important;
+                    font-weight: normal !important;
+                    font-size: \(fontSize)px !important;
+                    padding: 0 !important;
+                    margin-top: 0px !important;
+                ">
+                    \(title)
+                </p>
+            </center>
+        """
+    }
+    
+    func dividerHTML() -> String {
+        """
+            <div style="
+                margin-top: 3px !important;
+                margin-bottom: 3px !important;
+                background-color: \(UIColor.opaqueSeparator.cgColor.hexString ?? "") !important;
+                width: 100%;
+                height: 0.5px;
+            ">
+            </div>
+        """
+    }
+    
+    func announcemetsHtml() -> String? {
+        guard let announcements = announcements else {return nil}
+        var html: String = ""
+        let font = Theme.UIFonts.labelSmall()
+        let fontFamily = font.familyName
+        let fontSize = font.pointSize
+        
+        if let fontsCSS = fontsCSS(for: fontFamily) {
+            html.append(fontsCSS)
+        }
+
+        for (index, ann) in announcements.enumerated() {
+            let titleHTML = titleHTML(fontFamily: fontFamily, fontSize: fontSize, title: ann.date)
+            html.append("<div>\(titleHTML)\n\(ann.content)</div>")
+            
+            if index != announcements.count - 1 {
+                html.append(dividerHTML())
+            }
+        }
+        let formattedAnnouncements = cssInjector.injectCSS(
+            colorScheme: colorScheme,
+            html: html,
+            type: .discovery,
+            fontSize: 100,
+            screenWidth: .infinity
+        )
+
+        return """
+        <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+            </head>
+            <body>
+                \(formattedAnnouncements)
+            </body>
+        </html>
+        """
     }
 }
 

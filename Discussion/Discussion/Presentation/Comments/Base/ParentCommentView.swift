@@ -73,7 +73,7 @@ public struct ParentCommentView: View {
                                        ? Theme.Colors.accentColor
                                        : Theme.Colors.textSecondaryLight)
                 }
-            }.padding(.top, 31)
+            }.padding(.top, 15)
             Text(comments.postTitle)
                 .font(Theme.Fonts.titleLarge)
                 .foregroundColor(Theme.Colors.textPrimary)
@@ -133,7 +133,6 @@ public struct ParentCommentView: View {
                 ? Theme.Colors.alert
                          : Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelLarge)
-                .padding(.top, 8)
         }
         .padding(.horizontal, 24)
         if isThread {

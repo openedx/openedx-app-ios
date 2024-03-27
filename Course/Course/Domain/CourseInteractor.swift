@@ -187,7 +187,7 @@ public class CourseInteractor: CourseInteractorProtocol {
                 let subtitle = Subtitle(id: id,
                                         fromTo: DateInterval(start: Date(subtitleTime: startTime),
                                                              end: Date(subtitleTime: endTime)),
-                                        text: text)
+                                        text: text.decodedHTMLEntities())
                 subtitles.append(subtitle)
             }
         }

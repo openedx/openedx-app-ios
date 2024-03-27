@@ -53,10 +53,12 @@ public class SettingsViewModel: ObservableObject {
 
     private let interactor: ProfileInteractorProtocol
     let router: ProfileRouter
+    let analytics: CoreAnalytics
     
-    public init(interactor: ProfileInteractorProtocol, router: ProfileRouter) {
+    public init(interactor: ProfileInteractorProtocol, router: ProfileRouter, analytics: CoreAnalytics) {
         self.interactor = interactor
         self.router = router
+        self.analytics = analytics
         
         let userSettings = interactor.getSettings()
         self.userSettings = userSettings

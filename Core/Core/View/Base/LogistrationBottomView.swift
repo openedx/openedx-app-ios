@@ -15,6 +15,10 @@ public enum LogistrationSourceScreen: Equatable {
     case discovery
     case courseDetail(String, String)
     case programDetails(String)
+    
+    public var value: String? {
+        return String(describing: self).components(separatedBy: "(").first
+    }
 }
 
 public enum LogistrationAction {
@@ -37,7 +41,6 @@ public struct LogistrationBottomView: View {
                 StyledButton(CoreLocalization.SignIn.registerBtn) {
                     action(.register)
                 }
-                .frame(maxWidth: .infinity)
                 .accessibilityIdentifier("logistration_register_button")
                 
                 StyledButton(

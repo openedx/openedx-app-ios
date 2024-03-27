@@ -142,6 +142,8 @@ public enum DiscussionLocalization {
     public static let postImFollowing = DiscussionLocalization.tr("Localizable", "TOPICS.POST_IM_FOLLOWING", fallback: "Posts I'm following")
     /// Search all posts
     public static let search = DiscussionLocalization.tr("Localizable", "TOPICS.SEARCH", fallback: "Search all posts")
+    /// Unnamed subcategory
+    public static let unnamed = DiscussionLocalization.tr("Localizable", "TOPICS.UNNAMED", fallback: "Unnamed subcategory")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

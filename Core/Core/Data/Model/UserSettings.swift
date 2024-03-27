@@ -28,11 +28,20 @@ public enum StreamingQuality: Codable {
     case low
     case medium
     case high
+    
+    public var value: String? {
+        return String(describing: self).components(separatedBy: "(").first
+    }
 }
 
 public enum DownloadQuality: Codable, CaseIterable {
     case auto
-    case low_360
-    case medium_540
-    case high_720
+    case low
+    case medium
+    case high
+    
+    public var value: String? {
+        return String(describing: self).components(separatedBy: "(").first
+    }
+    
 }
