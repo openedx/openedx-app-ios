@@ -184,7 +184,7 @@ public struct PostsView: View {
                                                         .frame(maxWidth: .infinity)
                                                         .padding(.top, 12)
                                                     StyledButton(
-                                                        DiscussionLocalization.Posts.NoDiscussion.createbutton,
+                                                        DiscussionLocalization.Posts.NoDiscussion.addPost,
                                                         action: {
                                                             router.createNewThread(courseID: courseID,
                                                                                    selectedTopic: currentBlockID,
