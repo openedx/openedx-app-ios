@@ -35,7 +35,9 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
             CoursewareTopics(id: "66", name: "66", threadListURL: "66", children: [])
         ])
     ])
-    
+
+    let discussionInfo = DiscussionInfo(discussionID: "1", blackouts: [])
+
     func testGetTopicsSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
@@ -46,13 +48,15 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
                                                   router: router,
                                                   analytics: analytics,
                                                   config: config)
-        
+
         Given(interactor, .getTopics(courseID: .any, willReturn: topics))
-        
+        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
+
         await viewModel.getTopics(courseID: "1")
-        
+
         Verify(interactor, .getTopics(courseID: .any))
-        
+        Verify(interactor, .getCourseDiscussionInfo(courseID: .any))
+
         XCTAssertNotNil(viewModel.topics)
         XCTAssertNotNil(viewModel.discussionTopics)
         XCTAssertFalse(viewModel.showError)
@@ -70,15 +74,17 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
                                                   router: router,
                                                   analytics: analytics,
                                                   config: config)
-        
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
         Given(interactor, .getTopics(courseID: .any, willThrow: noInternetError))
-        
+        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
+
         await viewModel.getTopics(courseID: "1")
         
+        Verify(interactor, .getCourseDiscussionInfo(courseID: .any))
         Verify(interactor, .getTopics(courseID: .any))
-        
+
         XCTAssertNil(viewModel.topics)
         XCTAssertNil(viewModel.discussionTopics)
         XCTAssertTrue(viewModel.showError)
@@ -98,11 +104,13 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
                                                   config: config)
         
         Given(interactor, .getTopics(courseID: .any, willThrow: NSError()))
-        
+        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
+
         await viewModel.getTopics(courseID: "1")
         
+        Verify(interactor, .getCourseDiscussionInfo(courseID: .any))
         Verify(interactor, .getTopics(courseID: .any))
-        
+
         XCTAssertNil(viewModel.topics)
         XCTAssertNil(viewModel.discussionTopics)
         XCTAssertTrue(viewModel.showError)

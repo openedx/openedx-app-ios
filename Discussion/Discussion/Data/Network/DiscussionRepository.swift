@@ -10,6 +10,7 @@ import Core
 import Combine
 
 public protocol DiscussionRepositoryProtocol {
+    func getCourseDiscussionInfo(courseID: String) async throws -> DiscussionInfo
     func getThreads(courseID: String,
                     type: ThreadType,
                     sort: SortType,
@@ -49,7 +50,14 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         self.config = config
         self.router = router
     }
-    
+
+    public func getCourseDiscussionInfo(courseID: String) async throws -> DiscussionInfo {
+        let discussionInfo = try await api.requestData(DiscussionEndpoint
+            .getCourseDiscussionInfo(courseID: courseID))
+            .mapResponse(DataLayer.DiscussionInfo.self)
+        return discussionInfo.domain
+    }
+
     public func getThreads(courseID: String,
                            type: ThreadType,
                            sort: SortType,
@@ -205,7 +213,11 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
 #if DEBUG
 // swiftlint:disable all
 public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
-    
+
+    public func getCourseDiscussionInfo(courseID: String) async throws -> DiscussionInfo {
+        DiscussionInfo(discussionID: nil, blackouts: [])
+    }
+
     public func getThread(threadID: String) async throws -> UserThread {
         UserThread(
             id: "",

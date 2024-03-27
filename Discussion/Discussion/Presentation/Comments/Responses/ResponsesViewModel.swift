@@ -13,9 +13,10 @@ import Combine
 public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
     
     @Published var scrollTrigger: Bool = false
-    
     private let threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
-    
+
+    public var isBlackedOut: Bool = false
+
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,

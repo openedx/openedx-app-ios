@@ -58,6 +58,8 @@
 		0766DFCA299AA3D400EBEF6A /* Data_CreatedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFC9299AA3D400EBEF6A /* Data_CreatedComment.swift */; };
 		7527943BE0D66C33B167A41A /* Pods_App_Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7A0375EDDEB8948165EAD /* Pods_App_Discussion.framework */; };
 		9FC0EF907C0334E383C300C4 /* Pods_App_Discussion_DiscussionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */; };
+		BA3C45672BA9E13000672C96 /* Data_DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */; };
+		BA3C45692BA9E18D00672C96 /* DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +137,8 @@
 		ACA8EF2DEDDB7695162C381A /* Pods-App-Discussion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debug.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debug.xcconfig"; sourceTree = "<group>"; };
 		ACDA8EE733B97BCD8689A0B4 /* Pods-App-Discussion.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugstage.xcconfig"; sourceTree = "<group>"; };
 		B472516A5A79E87C40766D93 /* Pods-App-Discussion-DiscussionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_DiscussionInfo.swift; sourceTree = "<group>"; };
+		BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionInfo.swift; sourceTree = "<group>"; };
 		BBF5EC7249109D6718A229CF /* Pods-App-Discussion.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugdev.xcconfig"; sourceTree = "<group>"; };
 		C214357310D8AC9185B38ABA /* Pods-App-Discussion-DiscussionTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discussion_DiscussionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -256,6 +260,7 @@
 				02F3BFE82926A57C0051930C /* Data_ThreadResponse.swift */,
 				02F3BFEA2926A5B50051930C /* Data_CommentsResponse.swift */,
 				0766DFC9299AA3D400EBEF6A /* Data_CreatedComment.swift */,
+				BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -318,6 +323,7 @@
 				0766DFC1299AA2A500EBEF6A /* DiscussionTopic.swift */,
 				0766DFC3299AA2C200EBEF6A /* Post.swift */,
 				0766DFC5299AA30500EBEF6A /* ThreadType.swift */,
+				BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -689,6 +695,8 @@
 				02F28A6028FF23F300AFDE1B /* ThreadViewModel.swift in Sources */,
 				0766DFBE299AA18A00EBEF6A /* DiscussionPost.swift in Sources */,
 				02F3BFED2926A6270051930C /* UserComment.swift in Sources */,
+				BA3C45672BA9E13000672C96 /* Data_DiscussionInfo.swift in Sources */,
+				BA3C45692BA9E18D00672C96 /* DiscussionInfo.swift in Sources */,
 				0282DA5F28F893CA003C3F07 /* PostsView.swift in Sources */,
 				0766DFC0299AA1CD00EBEF6A /* DiscussionNewThread.swift in Sources */,
 			);

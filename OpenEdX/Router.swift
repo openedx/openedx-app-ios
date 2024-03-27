@@ -304,8 +304,9 @@ public class Router: AuthorizationRouter,
         }
     }
     
-    public func showDiscussionsSearch(courseID: String) {
+    public func showDiscussionsSearch(courseID: String, isBlackedOut: Bool) {
         let viewModel = Container.shared.resolve(DiscussionSearchTopicsViewModel<RunLoop>.self, argument: courseID)!
+
         let view = DiscussionSearchTopicsView(viewModel: viewModel)
         
         let controller = UIHostingController(rootView: view)
@@ -546,6 +547,7 @@ public class Router: AuthorizationRouter,
         topics: Topics,
         title: String,
         type: ThreadType,
+        isBlackedOut: Bool,
         animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
@@ -557,7 +559,8 @@ public class Router: AuthorizationRouter,
             title: title,
             type: type,
             viewModel: viewModel,
-            router: router
+            router: router,
+            isBlackedOut: isBlackedOut
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: animated)
@@ -566,9 +569,11 @@ public class Router: AuthorizationRouter,
     public func showThread(
         thread: UserThread,
         postStateSubject: CurrentValueSubject<PostState?, Never>,
+        isBlackedOut: Bool,
         animated: Bool
     ) {
         let viewModel = Container.shared.resolve(ThreadViewModel.self, argument: postStateSubject)!
+        viewModel.isBlackedOut = isBlackedOut
         let view = ThreadView(thread: thread, viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: animated)
@@ -578,15 +583,18 @@ public class Router: AuthorizationRouter,
         commentID: String,
         parentComment: Post,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
+        isBlackedOut: Bool,
         animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(ResponsesViewModel.self, argument: threadStateSubject)!
+        viewModel.isBlackedOut = isBlackedOut
         let view = ResponsesView(
             commentID: commentID,
             viewModel: viewModel,
             router: router,
-            parentComment: parentComment
+            parentComment: parentComment,
+            isBlackedOut: isBlackedOut
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: animated)

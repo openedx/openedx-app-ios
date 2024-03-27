@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 public extension Date {
     init(iso8601: String) {
         let formats = ["yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"]
@@ -192,5 +193,15 @@ public extension Date {
         let selfYear = Calendar.current.component(.year, from: self)
         let runningYear = Calendar.current.component(.year, from: Date())
         return selfYear == runningYear
+    }
+}
+
+public extension Date {
+    func isEarlierThanOrEqualTo(date: Date) -> Bool {
+        timeIntervalSince1970 <= date.timeIntervalSince1970
+    }
+
+    func isLaterThanOrEqualTo(date: Date) -> Bool {
+        timeIntervalSince1970 >= date.timeIntervalSince1970
     }
 }

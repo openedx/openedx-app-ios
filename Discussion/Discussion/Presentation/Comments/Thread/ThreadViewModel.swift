@@ -15,9 +15,10 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     
     internal let threadStateSubject = CurrentValueSubject<ThreadPostState?, Never>(nil)
     private var cancellable: AnyCancellable?
-    
     private let postStateSubject: CurrentValueSubject<PostState?, Never>
-    
+
+    public var isBlackedOut: Bool = false
+
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
