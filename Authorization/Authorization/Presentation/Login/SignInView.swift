@@ -65,27 +65,25 @@ public struct SignInView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
                                     .accessibilityIdentifier("signin_text")
-                                Text(AuthLocalization.SignIn.welcomeBack)
-                                    .font(Theme.Fonts.titleSmall)
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                                    .padding(.bottom, 20)
-                                    .accessibilityIdentifier("welcome_back_text")
                                 
                                 Text(AuthLocalization.SignIn.emailOrUsername)
                                     .font(Theme.Fonts.labelLarge)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .accessibilityIdentifier("username_text")
-                                TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
+                                TextField("", text: $email)
                                     .font(Theme.Fonts.bodyLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
                                     .keyboardType(.emailAddress)
                                     .textContentType(.emailAddress)
                                     .autocapitalization(.none)
                                     .autocorrectionDisabled()
                                     .padding(.all, 14)
                                     .background(
-                                        Theme.Shapes.textInputShape
-                                            .fill(Theme.Colors.textInputBackground)
+                                        Theme.InputFieldBackground(
+                                            placeHolder: AuthLocalization.SignIn.emailOrUsername,
+                                            text: email,
+                                            padding: 15
+                                        )
                                     )
                                     .overlay(
                                         Theme.Shapes.textInputShape
@@ -99,13 +97,16 @@ public struct SignInView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.top, 18)
                                     .accessibilityIdentifier("password_text")
-                                SecureField(AuthLocalization.SignIn.password, text: $password)
+                                SecureField("", text: $password)
                                     .font(Theme.Fonts.bodyLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
                                     .padding(.all, 14)
                                     .background(
-                                        Theme.Shapes.textInputShape
-                                            .fill(Theme.Colors.textInputBackground)
+                                        Theme.InputFieldBackground(
+                                            placeHolder: AuthLocalization.SignIn.password,
+                                            text: password,
+                                            padding: 15
+                                        )
                                     )
                                     .overlay(
                                         Theme.Shapes.textInputShape
@@ -115,7 +116,7 @@ public struct SignInView: View {
                                     .accessibilityIdentifier("password_textfield")
                                 HStack {
                                     if !viewModel.config.features.startupScreenEnabled {
-                                        Button(CoreLocalization.SignIn.registerBtn) {
+                                        Button(CoreLocalization.register) {
                                             viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
                                         }
                                         .foregroundColor(Theme.Colors.accentColor)
@@ -129,7 +130,7 @@ public struct SignInView: View {
                                         viewModel.router.showForgotPasswordScreen()
                                     }
                                     .font(Theme.Fonts.bodyLarge)
-                                    .foregroundColor(Theme.Colors.accentXColor)
+                                    .foregroundColor(Theme.Colors.infoColor)
                                     .padding(.top, 0)
                                     .accessibilityIdentifier("forgot_password_button")
                                 }
@@ -222,7 +223,7 @@ public struct SignInView: View {
                 policy
             )
             Text(.init(text))
-                .tint(Theme.Colors.accentXColor)
+                .tint(Theme.Colors.infoColor)
                 .foregroundStyle(Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)

@@ -86,7 +86,7 @@ public struct EditProfileView: View {
                                         .accessibilityIdentifier("about_text")
                                     TextEditor(text: $viewModel.profileChanges.shortBiography)
                                         .font(Theme.Fonts.bodyMedium)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 4)
                                         .frame(height: 200)

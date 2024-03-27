@@ -86,10 +86,12 @@ public struct CreateNewThreadView: View {
                                             Text(viewModel.allTopics.first(where: {
                                                 $0.id == viewModel.selectedTopic })?.name ?? "")
                                             .font(Theme.Fonts.labelLarge)
-                                            .foregroundColor(Theme.Colors.textPrimary)
+                                            .foregroundColor(Theme.Colors.textInputTextColor)
                                             .frame(height: 40, alignment: .leading)
                                             Spacer()
                                             Image(systemName: "chevron.down")
+                                                .renderingMode(.template)
+                                                .foregroundColor(Theme.Colors.textInputTextColor)
                                         }.padding(.horizontal, 14)
                                             .accentColor(Theme.Colors.textPrimary)
                                             .background(Theme.Shapes.textInputShape
@@ -112,7 +114,7 @@ public struct CreateNewThreadView: View {
                                 }.padding(.top, 16)
                                 TextField("", text: $postTitle)
                                     .font(Theme.Fonts.bodyLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
                                     .padding(14)
                                     .frame(height: 40)
                                     .background(
@@ -135,7 +137,7 @@ public struct CreateNewThreadView: View {
                                 }.padding(.top, 16)
                                 TextEditor(text: $postBody)
                                     .font(Theme.Fonts.bodyMedium)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 10)
                                     .frame(height: 200)

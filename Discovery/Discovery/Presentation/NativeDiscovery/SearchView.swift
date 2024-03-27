@@ -60,7 +60,7 @@ public struct SearchView: View {
                             .onAppear {
                                 self.focused = true
                             }
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .font(Theme.Fonts.bodyLarge)
                             .accessibilityIdentifier("search_textfields")
                         Spacer()

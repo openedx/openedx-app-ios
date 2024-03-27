@@ -29,18 +29,18 @@ public struct DiscussionTopicsView: View {
                     // MARK: - Search fake field
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .padding(.leading, 16)
                             .padding(.top, 1)
                         Text(DiscussionLocalization.Topics.search)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .font(Theme.Fonts.bodyMedium)
                         Spacer()
                     }
                     .frame(minHeight: 48)
                     .background(
                         Theme.Shapes.textInputShape
-                            .fill(Theme.Colors.textInputUnfocusedBackground)
+                            .fill(Theme.Colors.textInputBackground)
                     )
                     .overlay(
                         Theme.Shapes.textInputShape

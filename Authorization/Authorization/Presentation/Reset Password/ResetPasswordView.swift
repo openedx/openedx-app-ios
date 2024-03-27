@@ -92,17 +92,20 @@ public struct ResetPasswordView: View {
                                         .font(Theme.Fonts.labelLarge)
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .accessibilityIdentifier("email_text")
-                                    TextField(AuthLocalization.SignIn.email, text: $email)
+                                    TextField("", text: $email)
                                         .font(Theme.Fonts.bodyLarge)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .keyboardType(.emailAddress)
                                         .textContentType(.emailAddress)
                                         .autocapitalization(.none)
                                         .autocorrectionDisabled()
                                         .padding(.all, 14)
                                         .background(
-                                            Theme.Shapes.textInputShape
-                                                .fill(Theme.Colors.textInputBackground)
+                                            Theme.InputFieldBackground(
+                                                placeHolder: AuthLocalization.SignIn.email,
+                                                text: email,
+                                                padding: 15
+                                            )
                                         )
                                         .overlay(
                                             Theme.Shapes.textInputShape

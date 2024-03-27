@@ -20,7 +20,7 @@ struct LessonLineProgressView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             Theme.Colors.background
-            HStack(spacing: 3) {
+            HStack(spacing: 8) {
                 let vertical = viewModel.verticals[viewModel.verticalIndex]
                 let data = Array(vertical.childs.enumerated())
                 ForEach(data, id: \.offset) { index, item in

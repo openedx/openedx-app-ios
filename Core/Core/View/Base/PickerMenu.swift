@@ -83,10 +83,20 @@ public struct PickerMenu: View {
                             .foregroundColor(Theme.Colors.textPrimary)
                             .accessibilityIdentifier("picker_title_text")
                             .font(Theme.Fonts.bodyMedium)
-                        TextField(CoreLocalization.Picker.search, text: $search)
+                        TextField("", text: $search)
                             .padding(.all, 8)
                             .font(Theme.Fonts.bodySmall)
-                            .background(Theme.Colors.textInputStroke.cornerRadius(6))
+                            .overlay(
+                                Theme.Shapes.textInputShape
+                                    .stroke(lineWidth: 1)
+                                    .fill(Theme.Colors.textInputStroke)
+                            )
+                            .background(
+                                Theme.InputFieldBackground(
+                                    placeHolder: CoreLocalization.Picker.search,
+                                    text: search
+                                )
+                            )
                             .accessibilityIdentifier("picker_search_textfield")
                         Picker("", selection: $selectedItem) {
                             ForEach(filteredItems, id: \.self) { item in
@@ -104,7 +114,7 @@ public struct PickerMenu: View {
                            : .infinity)
 
                     .padding()
-                    .background(Theme.Colors.textInputBackground.cornerRadius(16))
+                    .background(Theme.Colors.background.cornerRadius(16))
                     .padding(.horizontal, 16)
                     .onChange(of: search, perform: { _ in
                         if let first = filteredItems.first {
@@ -124,7 +134,7 @@ public struct PickerMenu: View {
                                    ? ipadPickerWidth
                                    : .infinity)
                             .padding()
-                            .background(Theme.Colors.textInputBackground.cornerRadius(16))
+                            .background(Theme.Colors.background.cornerRadius(16))
                             .padding(.horizontal, 16)
                     }
                     .padding(.bottom, 4)
