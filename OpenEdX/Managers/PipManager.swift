@@ -14,14 +14,17 @@ public class PipManager: PipManagerProtocol {
     let discoveryInteractor: DiscoveryInteractorProtocol
     let courseInteractor: CourseInteractorProtocol
     let router: Router
+    let isNestedListEnabled: Bool
     public init(
         router: Router,
         discoveryInteractor: DiscoveryInteractorProtocol,
-        courseInteractor: CourseInteractorProtocol
+        courseInteractor: CourseInteractorProtocol,
+        isNestedListEnabled: Bool
     ) {
         self.discoveryInteractor = discoveryInteractor
         self.courseInteractor = courseInteractor
         self.router = router
+        self.isNestedListEnabled = isNestedListEnabled
     }
     
     public func holder(
@@ -86,11 +89,43 @@ public class PipManager: PipManagerProtocol {
             viewControllers.append(try await containerController(for: holder))
         }
         
+        if !isNestedListEnabled && holder.selectedCourseTab != CourseTab.dates.rawValue {
+            viewControllers.append(try await courseVerticalController(for: holder))
+        }
+        
         viewControllers.append(try await courseUnitController(for: holder))
         
         router.getNavigationController().setViewControllers(viewControllers, animated: true)
     }
 
+    @MainActor
+    private func courseVerticalController(
+        for holder: PlayerViewControllerHolder
+    ) async throws -> UIHostingController<CourseVerticalView> {
+        var courseStructure = try await courseInteractor.getLoadedCourseBlocks(courseID: holder.courseID)
+        if holder.selectedCourseTab == CourseTab.videos.rawValue {
+            courseStructure = courseInteractor.getCourseVideoBlocks(fullStructure: courseStructure)
+        }
+        for (chapterIndex, chapter) in courseStructure.childs.enumerated() {
+            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
+                for (verticalIndex, vertical) in sequential.childs.enumerated() {
+                    for block in vertical.childs where block.id == holder.blockID {
+                        return router.getVerticalController(
+                            courseID: holder.courseID,
+                            courseName: courseStructure.displayName,
+                            title: courseStructure.childs[chapterIndex].childs[sequentialIndex].displayName,
+                            chapters: courseStructure.childs,
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex
+                        )
+                    }
+                }
+            }
+        }
+       
+        throw PipManagerError.cantCreateCourseVerticalView
+    }
+    
     @MainActor
     private func courseUnitController(
         for holder: PlayerViewControllerHolder
@@ -160,5 +195,6 @@ public class PipManager: PipManagerProtocol {
 extension PipManager {
     enum PipManagerError: Error {
         case cantCreateCourseUnitView
+        case cantCreateCourseVerticalView
     }
 }

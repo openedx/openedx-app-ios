@@ -202,7 +202,8 @@ class AppAssembly: Assembly {
             PipManager(
                 router: r.resolve(Router.self)!,
                 discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
-                courseInteractor: r.resolve(CourseInteractorProtocol.self)!
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                isNestedListEnabled: r.resolve(ConfigProtocol.self)?.uiComponents.courseNestedListEnabled ?? false
             )
         }.inObjectScope(.container)
     }
