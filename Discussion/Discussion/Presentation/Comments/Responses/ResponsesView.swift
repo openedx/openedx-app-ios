@@ -157,22 +157,22 @@ public struct ResponsesView: View {
                                 .frameLimit(width: proxy.size.width)
                             }
                             
-                            if !(parentComment.closed || viewModel.isBlackedOut) {
-                                FlexibleKeyboardInputView(
-                                    hint: DiscussionLocalization.Response.addComment,
-                                    sendText: { commentText in
-                                        if let threadID = viewModel.postComments?.threadID {
-                                            Task {
-                                                await viewModel.postComment(
-                                                    threadID: threadID,
-                                                    rawBody: commentText,
-                                                    parentID: commentID
-                                                )
-                                            }
+                            FlexibleKeyboardInputView(
+                                hint: DiscussionLocalization.Response.addComment,
+                                sendText: { commentText in
+                                    if let threadID = viewModel.postComments?.threadID {
+                                        Task {
+                                            await viewModel.postComment(
+                                                threadID: threadID,
+                                                rawBody: commentText,
+                                                parentID: commentID
+                                            )
                                         }
                                     }
-                                ).ignoresSafeArea(.all, edges: .horizontal)
-                            }
+                                }
+                            )
+                            .ignoresSafeArea(.all, edges: .horizontal)
+                            .disabled(parentComment.closed || viewModel.isBlackedOut)
                         }
                     }
                     .onReceive(viewModel.addPostSubject, perform: { newComment in

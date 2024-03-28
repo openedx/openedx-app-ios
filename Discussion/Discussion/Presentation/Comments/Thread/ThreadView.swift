@@ -154,22 +154,22 @@ public struct ThreadView: View {
                                 }
                                 .frameLimit(width: proxy.size.width)
                             }
-                            if !(thread.closed  || viewModel.isBlackedOut) {
-                                FlexibleKeyboardInputView(
-                                    hint: DiscussionLocalization.Thread.addResponse,
-                                    sendText: { commentText in
-                                        if let threadID = viewModel.postComments?.threadID {
-                                            Task {
-                                                await viewModel.postComment(
-                                                    threadID: threadID,
-                                                    rawBody: commentText,
-                                                    parentID: viewModel.postComments?.parentID
-                                                )
-                                            }
+                            FlexibleKeyboardInputView(
+                                hint: DiscussionLocalization.Thread.addResponse,
+                                sendText: { commentText in
+                                    if let threadID = viewModel.postComments?.threadID {
+                                        Task {
+                                            await viewModel.postComment(
+                                                threadID: threadID,
+                                                rawBody: commentText,
+                                                parentID: viewModel.postComments?.parentID
+                                            )
                                         }
                                     }
-                                ).ignoresSafeArea(.all, edges: .horizontal)
-                            }
+                                }
+                            )
+                            .ignoresSafeArea(.all, edges: .horizontal)
+                            .disabled(thread.closed  || viewModel.isBlackedOut)
                         }
                         .onReceive(viewModel.addPostSubject, perform: { newComment in
                             guard let newComment else { return }
