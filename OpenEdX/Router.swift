@@ -513,8 +513,7 @@ public class Router: AuthorizationRouter,
             chapterIndex: chapterIndex,
             sequentialIndex: sequentialIndex
         )
-        
-        
+
         let config = Container.shared.resolve(ConfigProtocol.self)
         let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
         

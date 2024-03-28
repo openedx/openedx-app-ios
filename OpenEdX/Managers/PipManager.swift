@@ -5,13 +5,9 @@
 //  Created by Vadim Kuznetsov on 20.03.24.
 //
 
-import Combine
 import Course
 import Discovery
-import Foundation
 import SwiftUI
-import Swinject
-import Core
 
 public class PipManager: PipManagerProtocol {
     var controllerHolder: PlayerViewControllerHolder?
@@ -77,7 +73,7 @@ public class PipManager: PipManagerProtocol {
     }
     
     @MainActor
-    func navigate(to holder: PlayerViewControllerHolder) async throws {
+    private func navigate(to holder: PlayerViewControllerHolder) async throws {
         let currentControllers = router.getNavigationController().viewControllers
         guard let mainController = currentControllers.first as? UIHostingController<MainScreenView> else {
             return
@@ -99,8 +95,9 @@ public class PipManager: PipManagerProtocol {
         
         router.getNavigationController().setViewControllers(viewControllers, animated: true)
     }
-    
-    @MainActor func courseUnitController(
+
+    @MainActor
+    private func courseUnitController(
         for holder: PlayerViewControllerHolder
     ) async throws -> UIHostingController<CourseUnitView> {
 
@@ -111,7 +108,7 @@ public class PipManager: PipManagerProtocol {
         for (chapterIndex, chapter) in courseStructure.childs.enumerated() {
             for (sequentialIndex, sequential) in chapter.childs.enumerated() {
                 for (verticalIndex, vertical) in sequential.childs.enumerated() {
-                    for (_, block) in vertical.childs.enumerated() where block.id == holder.blockID {
+                    for block in vertical.childs where block.id == holder.blockID {
                         return router.getUnitController(
                             courseName: courseStructure.displayName,
                             blockId: block.blockId,
@@ -130,7 +127,7 @@ public class PipManager: PipManagerProtocol {
     }
     
     @MainActor
-    func containerController(
+    private func containerController(
         for holder: PlayerViewControllerHolder
     ) async throws -> UIHostingController<CourseContainerView> {
         let courseDetails = try await getCourseDetails(for: holder)
@@ -148,7 +145,7 @@ public class PipManager: PipManagerProtocol {
         return controller
     }
     
-    func getCourseDetails(for holder: PlayerViewControllerHolder) async throws -> CourseDetails {
+    private func getCourseDetails(for holder: PlayerViewControllerHolder) async throws -> CourseDetails {
         if let value = try? await discoveryInteractor.getLoadedCourseDetails(
             courseID: holder.courseID
         ) {
@@ -167,32 +164,6 @@ public class PipManager: PipManagerProtocol {
 
 extension PipManager {
     enum PipManagerError: Error {
-        case cantGetCourseDetails
         case cantCreateCourseUnitView
-    }
-}
-
-extension UIViewController {
-    public var mostTopController: UIViewController? {
-        topController(from: self)
-    }
-
-    private func topController(from controller: UIViewController?) -> UIViewController? {
-        if let navigationController = controller as? UINavigationController {
-            return topController(from: navigationController.visibleViewController)
-        } else if let tabBarController = controller as? UITabBarController {
-            return topController(from: tabBarController.selectedViewController)
-        } else if let splitController = controller as? UISplitViewController {
-            return topController(from: splitController.viewControllers.last)
-        } else {
-            if let presentedController = controller?.presentedViewController {
-                return topController(from: presentedController)
-            } else {
-                if let child = controller?.children.last {
-                    return topController(from: child)
-                }
-                return controller
-            }
-        }
     }
 }
