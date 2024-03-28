@@ -63,38 +63,26 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         Container.shared.resolve(PipManagerProtocol.self)?.set(holder: self)
     }
 
-//    func playerViewControllerDidStartPictureInPicture(_ playerViewController: AVPlayerViewController) {
-//
-//    }
-
     public func playerViewController(
         _ playerViewController: AVPlayerViewController,
         failedToStartPictureInPictureWithError error: any Error
     ) {
         isPipModeActive = false
         Container.shared.resolve(PipManagerProtocol.self)?.remove(holder: self)
-        print("ALARM failed to start \(error)")
     }
     
     public func playerViewControllerDidStopPictureInPicture(_ playerViewController: AVPlayerViewController) {
         isPipModeActive = false
         Container.shared.resolve(PipManagerProtocol.self)?.remove(holder: self)
-        print("ALARM did stop picture in picture")
     }
-    
-//    func playerViewControllerDidStopPictureInPicture(_ playerViewController: AVPlayerViewController) {
-//
-//    }
+
     public func playerViewControllerRestoreUserInterfaceForPictureInPictureStop(
         _ playerViewController: AVPlayerViewController
     ) async -> Bool {
-        print("ALARM restore controller")
         do {
             try await Container.shared.resolve(PipManagerProtocol.self)?.restore(holder: self)
-            print("ALARM restore completed")
             return true
         } catch {
-            print("ALARM restore failed")
             return false
         }
     }

@@ -37,7 +37,6 @@ struct PlayerViewController: UIViewControllerRepresentable {
             return playerHolder.playerController
         }
         
-        print("ALARM create new player")
         let controller = playerHolder.playerController
         controller.modalPresentationStyle = .fullScreen
         controller.allowsPictureInPicturePlayback = true
@@ -61,7 +60,6 @@ struct PlayerViewController: UIViewControllerRepresentable {
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
         let asset = playerController.player?.currentItem?.asset as? AVURLAsset
         if asset?.url.absoluteString != videoURL?.absoluteString && !playerHolder.isPipModeActive {
-            print("ALARM replace player")
             let player = context.coordinator.player(from: playerController)
             player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
             player?.currentItem?.preferredMaximumResolution = videoResolution

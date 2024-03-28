@@ -41,10 +41,8 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
             courseID: courseID,
             selectedCourseTab: selectedCourseTab
         ) {
-            print("ALARM restore holder")
             controllerHolder = holder
         } else {
-            print("ALARM create holder")
             let holder = PlayerViewControllerHolder(
                 url: url,
                 blockID: blockID,

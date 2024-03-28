@@ -35,7 +35,6 @@ public class PipManager: PipManagerProtocol {
         courseID: String,
         selectedCourseTab: Int
     ) -> PlayerViewControllerHolder? {
-        print("ALARM navigationStack: \(router.getNavigationController().children)")
         if controllerHolder?.blockID == blockID,
            controllerHolder?.courseID == courseID,
            controllerHolder?.selectedCourseTab == selectedCourseTab {
