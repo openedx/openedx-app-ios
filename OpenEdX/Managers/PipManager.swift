@@ -120,7 +120,7 @@ public class PipManager: PipManagerProtocol {
                             verticalIndex: verticalIndex,
                             chapters: courseStructure.childs,
                             chapterIndex: chapterIndex,
-                            sequentialIndex: verticalIndex
+                            sequentialIndex: sequentialIndex
                         )
                     }
                 }

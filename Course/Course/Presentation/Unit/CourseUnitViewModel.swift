@@ -61,7 +61,7 @@ public class CourseUnitViewModel: ObservableObject {
         case previous
     }
 
-    struct VerticalData {
+    struct VerticalData: Equatable {
         var chapterIndex: Int
         var sequentialIndex: Int
         var verticalIndex: Int
@@ -220,12 +220,16 @@ public class CourseUnitViewModel: ObservableObject {
     // MARK: Navigation to next vertical
     var nextData: VerticalData? {
         nextData(
-            from: VerticalData(
-                chapterIndex: chapterIndex,
-                sequentialIndex: sequentialIndex,
-                verticalIndex: verticalIndex,
-                blockIndex: 0
-            )
+            from: currentData
+        )
+    }
+    
+    var currentData: VerticalData {
+        VerticalData(
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex,
+            verticalIndex: verticalIndex,
+            blockIndex: index
         )
     }
     
@@ -301,7 +305,7 @@ public class CourseUnitViewModel: ObservableObject {
     }
     
     func route(to data: VerticalData?, animated: Bool = false) {
-        guard let data = data else { return }
+        guard let data = data, data != currentData else { return }
         if let vertical = vertical(for: data),
                   let block = blockFor(index: data.blockIndex, in: vertical) {
             router.replaceCourseUnit(
