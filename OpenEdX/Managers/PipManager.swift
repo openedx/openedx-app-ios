@@ -73,8 +73,7 @@ public class PipManager: PipManagerProtocol {
                 return
             }
         }
-        
-        
+        // else create navigation stack and push new stack to root navigation controller
         try await navigate(to: holder)
     }
     
@@ -114,22 +113,15 @@ public class PipManager: PipManagerProtocol {
             for (sequentialIndex, sequential) in chapter.childs.enumerated() {
                 for (verticalIndex, vertical) in sequential.childs.enumerated() {
                     for (_, block) in vertical.childs.enumerated() where block.id == holder.blockID {
-                        let viewModel = Container.shared.resolve(
-                            CourseUnitViewModel.self,
-                            arguments: block.blockId,
-                            courseStructure.id,
-                            courseStructure.displayName,
-                            courseStructure.childs,
-                            chapterIndex,
-                            sequentialIndex,
-                            verticalIndex
-                        )!
-                        
-                        let config = Container.shared.resolve(ConfigProtocol.self)
-                        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
-                        
-                        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
-                        return UIHostingController(rootView: view)
+                        return router.getUnitController(
+                            courseName: courseStructure.displayName,
+                            blockId: block.blockId,
+                            courseID: courseStructure.id,
+                            verticalIndex: verticalIndex,
+                            chapters: courseStructure.childs,
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: verticalIndex
+                        )
                     }
                 }
             }
@@ -144,22 +136,15 @@ public class PipManager: PipManagerProtocol {
     ) async throws -> UIHostingController<CourseContainerView> {
         let courseDetails = try await getCourseDetails(for: holder)
         let isActive: Bool? = nil
-
-        let vm = Container.shared.resolve(
-            CourseContainerViewModel.self,
-            arguments: isActive,
-            courseDetails.courseStart,
-            courseDetails.courseEnd,
-            courseDetails.enrollmentStart,
-            courseDetails.enrollmentEnd
-        )!
-        let screensView = CourseContainerView(
-            viewModel: vm,
+        let controller = getCourseScreensController(
             courseID: courseDetails.courseID,
+            isActive: isActive,
+            courseStart: courseDetails.courseStart,
+            courseEnd: courseDetails.courseEnd,
+            enrollmentStart: courseDetails.enrollmentStart,
+            enrollmentEnd: courseDetails.enrollmentEnd,
             title: courseDetails.courseTitle
         )
-        
-        let controller = UIHostingController(rootView: screensView)
         controller.rootView.viewModel.selection = holder.selectedCourseTab
         return controller
     }

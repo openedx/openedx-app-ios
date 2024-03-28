@@ -302,12 +302,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     func route(to data: VerticalData?, animated: Bool = false) {
         guard let data = data else { return }
-        if data.verticalIndex == verticalIndex,
-            let block = blockFor(index: data.blockIndex, in: verticals[verticalIndex]) {
-            // if we are on same vertical now
-            lessonID = block.blockId
-            loadIndex()
-        } else if let vertical = vertical(for: data),
+        if let vertical = vertical(for: data),
                   let block = blockFor(index: data.blockIndex, in: vertical) {
             router.replaceCourseUnit(
                 courseName: courseName,

@@ -340,6 +340,27 @@ public class Router: AuthorizationRouter,
         enrollmentEnd: Date?,
         title: String
     ) {
+        let controller = getCourseScreensController(
+            courseID: courseID,
+            isActive: isActive,
+            courseStart: courseStart,
+            courseEnd: courseEnd,
+            enrollmentStart: enrollmentStart,
+            enrollmentEnd: enrollmentEnd,
+            title: title
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getCourseScreensController(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
             arguments: isActive,
@@ -354,8 +375,7 @@ public class Router: AuthorizationRouter,
             title: title
         )
         
-        let controller = UIHostingController(rootView: screensView)
-        navigationController.pushViewController(controller, animated: true)
+        return UIHostingController(rootView: screensView)
     }
     
     public func showHandoutsUpdatesView(
@@ -383,6 +403,27 @@ public class Router: AuthorizationRouter,
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
+        let controller = getUnitController(
+            courseName: courseName,
+            blockId: blockId,
+            courseID: courseID,
+            verticalIndex: verticalIndex,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getUnitController(
+        courseName: String,
+        blockId: String,
+        courseID: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) -> UIHostingController<CourseUnitView> {
         let viewModel = Container.shared.resolve(
             CourseUnitViewModel.self,
             arguments: blockId,
@@ -398,8 +439,7 @@ public class Router: AuthorizationRouter,
         let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
 
         let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
-        let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        return UIHostingController(rootView: view)
     }
     
     public func showCourseComponent(
@@ -463,24 +503,21 @@ public class Router: AuthorizationRouter,
             viewModel: vmVertical
         )
         let controllerVertical = UIHostingController(rootView: viewVertical)
+
+        let controllerUnit = getUnitController(
+            courseName: courseName,
+            blockId: blockId,
+            courseID: courseID,
+            verticalIndex: verticalIndex,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
         
-        let viewModel = Container.shared.resolve(
-            CourseUnitViewModel.self,
-            arguments: blockId,
-            courseID,
-            courseName,
-            chapters,
-            chapterIndex,
-            sequentialIndex,
-            verticalIndex
-        )!
-
+        
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
         let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
-
-        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
-        let controllerUnit = UIHostingController(rootView: view)
+        
         var controllers = navigationController.viewControllers
 
         if isCourseNestedListEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
