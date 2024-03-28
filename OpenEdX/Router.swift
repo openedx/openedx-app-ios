@@ -314,6 +314,25 @@ public class Router: AuthorizationRouter,
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
+        let controller = getVerticalController(
+            courseID: courseID,
+            courseName: courseName,
+            title: title,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getVerticalController(
+        courseID: String,
+        courseName: String,
+        title: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) -> UIHostingController<CourseVerticalView> {
         let viewModel = Container.shared.resolve(
             CourseVerticalViewModel.self,
             arguments: chapters,
@@ -327,8 +346,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             viewModel: viewModel
         )
-        let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        return UIHostingController(rootView: view)
     }
     
     public func showCourseScreens(
@@ -488,21 +506,6 @@ public class Router: AuthorizationRouter,
         sequentialIndex: Int,
         animated: Bool
     ) {
-        
-        let vmVertical = Container.shared.resolve(
-            CourseVerticalViewModel.self,
-            arguments: chapters,
-            chapterIndex,
-            sequentialIndex
-        )!
-        
-        let viewVertical = CourseVerticalView(
-            title: chapters[chapterIndex].childs[sequentialIndex].displayName,
-            courseName: courseName,
-            courseID: courseID,
-            viewModel: vmVertical
-        )
-        let controllerVertical = UIHostingController(rootView: viewVertical)
 
         let controllerUnit = getUnitController(
             courseName: courseName,
@@ -523,6 +526,15 @@ public class Router: AuthorizationRouter,
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {
+            let controllerVertical = getVerticalController(
+                courseID: courseID,
+                courseName: courseName,
+                title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex
+            )
+
             controllers.removeLast(2)
             controllers.append(contentsOf: [controllerVertical, controllerUnit])
         }
