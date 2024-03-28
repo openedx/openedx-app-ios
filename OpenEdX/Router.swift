@@ -378,7 +378,6 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -398,7 +397,7 @@ public class Router: AuthorizationRouter,
         let config = Container.shared.resolve(ConfigProtocol.self)
         let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
 
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
+        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -417,7 +416,6 @@ public class Router: AuthorizationRouter,
                                         courseName: courseStructure.displayName,
                                         blockId: block.blockId,
                                         courseID: courseStructure.id,
-                                        sectionName: sequential.displayName,
                                         verticalIndex: verticalIndex,
                                         chapters: courseStructure.childs,
                                         chapterIndex: chapterIndex,
@@ -444,7 +442,6 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -480,13 +477,13 @@ public class Router: AuthorizationRouter,
 
         let config = Container.shared.resolve(ConfigProtocol.self)
         let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
+        let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
 
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
+        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
         let controllerUnit = UIHostingController(rootView: view)
         var controllers = navigationController.viewControllers
 
-        if let config = container.resolve(ConfigProtocol.self),
-            config.uiComponents.courseNestedListEnabled {
+        if isCourseNestedListEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {

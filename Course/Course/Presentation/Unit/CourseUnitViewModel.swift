@@ -31,7 +31,8 @@ public enum LessonType: Equatable {
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
-            if block.encodedVideo?.youtubeVideoUrl != nil, let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
+            if block.encodedVideo?.youtubeVideoUrl != nil,
+                let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else if let youtubeVideoUrl = block.encodedVideo?.youtubeVideoUrl {
                 return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockID: block.id)
@@ -64,6 +65,7 @@ public class CourseUnitViewModel: ObservableObject {
         var chapterIndex: Int
         var sequentialIndex: Int
         var verticalIndex: Int
+        var blockIndex: Int
     }
 
     var verticals: [CourseVertical]
@@ -95,7 +97,7 @@ public class CourseUnitViewModel: ObservableObject {
     let chapterIndex: Int
     let sequentialIndex: Int
 
-    var streamingQuality: StreamingQuality  {
+    var streamingQuality: StreamingQuality {
         storage.userSettings?.streamingQuality ?? .auto
     }
 
@@ -221,7 +223,8 @@ public class CourseUnitViewModel: ObservableObject {
             from: VerticalData(
                 chapterIndex: chapterIndex,
                 sequentialIndex: sequentialIndex,
-                verticalIndex: verticalIndex
+                verticalIndex: verticalIndex,
+                blockIndex: 0
             )
         )
     }
@@ -271,6 +274,7 @@ public class CourseUnitViewModel: ObservableObject {
         }
 
         if let vertical = vertical(for: resultData), vertical.childs.count > 0 {
+            resultData.blockIndex = 0
             return resultData
         } else {
             return nextData(from: resultData)
@@ -291,20 +295,58 @@ public class CourseUnitViewModel: ObservableObject {
         )
     }
 
-    func route(to vertical: CourseVertical) {
-        if let index = verticals.firstIndex(where: { $0.id == vertical.id }),
-            let block = vertical.childs.first {
+    func blockFor(index: Int, in vertical: CourseVertical) -> CourseBlock? {
+        guard index >= 0 && index < vertical.childs.count else { return nil }
+        return vertical.childs[index]
+    }
+    
+    func route(to data: VerticalData?, animated: Bool = false) {
+        guard let data = data else { return }
+        if data.verticalIndex == verticalIndex,
+            let block = blockFor(index: data.blockIndex, in: verticals[verticalIndex]) {
+            // if we are on same vertical now
+            lessonID = block.blockId
+            loadIndex()
+        } else if let vertical = vertical(for: data),
+                  let block = blockFor(index: data.blockIndex, in: vertical) {
             router.replaceCourseUnit(
                 courseName: courseName,
                 blockId: block.id,
                 courseID: courseID,
-                sectionName: block.displayName,
-                verticalIndex: index,
+                verticalIndex: data.verticalIndex,
                 chapters: chapters,
-                chapterIndex: chapterIndex,
-                sequentialIndex: sequentialIndex,
-                animated: false
+                chapterIndex: data.chapterIndex,
+                sequentialIndex: data.sequentialIndex,
+                animated: animated
             )
         }
+    }
+    
+    public func route(to blockId: String?) {
+        guard let data = dataFor(blockId: blockId) else { return }
+        route(to: data, animated: true)
+    }
+    
+    func dataFor(blockId: String?) -> VerticalData? {
+        guard let blockId = blockId else { return nil }
+        for (chapterIndex, chapter) in chapters.enumerated() {
+            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
+                for (verticalIndex, vertical) in sequential.childs.enumerated() {
+                    for (blockIndex, block) in vertical.childs.enumerated() where block.id.contains(blockId) {
+                        return VerticalData(
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex,
+                            verticalIndex: verticalIndex,
+                            blockIndex: blockIndex
+                        )
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    public var currentCourseId: String {
+        courseID
     }
 }

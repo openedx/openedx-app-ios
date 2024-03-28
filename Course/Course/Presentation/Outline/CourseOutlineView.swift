@@ -105,7 +105,6 @@ public struct CourseOutlineView: View {
                                             courseName: course.displayName,
                                             blockId: continueBlock?.id ?? "",
                                             courseID: course.id,
-                                            sectionName: continueUnit.displayName,
                                             verticalIndex: continueWith.verticalIndex,
                                             chapters: course.childs,
                                             chapterIndex: continueWith.chapterIndex,

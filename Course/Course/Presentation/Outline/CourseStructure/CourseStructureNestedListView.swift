@@ -224,7 +224,6 @@ struct CourseStructureNestedListView: View {
             courseName: viewModel.courseStructure?.displayName ?? "",
             blockId: block.id,
             courseID: viewModel.courseStructure?.id ?? "",
-            sectionName: block.displayName,
             verticalIndex: 0,
             chapters: course.childs,
             chapterIndex: chapterIndex,

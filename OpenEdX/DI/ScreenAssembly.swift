@@ -339,7 +339,7 @@ class ScreenAssembly: Assembly {
                 appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 pipManager: r.resolve(PipManagerProtocol.self)!,
-                isVideoTab: router.isVideoTab
+                selectedCourseTab: router.currentCourseTabSelection
             )
         }
         

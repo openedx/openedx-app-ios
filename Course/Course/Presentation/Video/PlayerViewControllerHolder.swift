@@ -10,11 +10,10 @@ import Combine
 import Swinject
 
 public protocol PipManagerProtocol {
-    func holder(for url: URL?, blockID: String, courseID: String, isVideoTab: Bool) -> PlayerViewControllerHolder?
+    func holder(for url: URL?, blockID: String, courseID: String, selectedCourseTab: Int) -> PlayerViewControllerHolder?
     func set(holder: PlayerViewControllerHolder)
     func remove(holder: PlayerViewControllerHolder)
     func restore(holder: PlayerViewControllerHolder) async throws
-    func appearancePublisher(for holder: PlayerViewControllerHolder) -> AnyPublisher<Void, Never>?
 }
 
 #if DEBUG
@@ -24,16 +23,13 @@ public class PipManagerProtocolMock: PipManagerProtocol {
         for url: URL?,
         blockID: String,
         courseID: String,
-        isVideoTab: Bool
+        selectedCourseTab: Int
     ) -> PlayerViewControllerHolder? {
         return nil
     }
     public func set(holder: PlayerViewControllerHolder) {}
     public func remove(holder: PlayerViewControllerHolder) {}
     public func restore(holder: PlayerViewControllerHolder) async throws {}
-    public func appearancePublisher(for holder: PlayerViewControllerHolder) -> AnyPublisher<Void, Never>? {
-        return nil
-    }
 }
 #endif
 
@@ -41,7 +37,7 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
     public let url: URL?
     public let blockID: String
     public let courseID: String
-    public let isVideoTab: Bool
+    public let selectedCourseTab: Int
     public var isPipModeActive: Bool = false
 
     public lazy var playerController: AVPlayerViewController = {
@@ -54,24 +50,27 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         url: URL?,
         blockID: String,
         courseID: String,
-        isVideoTab: Bool
+        selectedCourseTab: Int
     ) {
         self.url = url
         self.blockID = blockID
         self.courseID = courseID
-        self.isVideoTab = isVideoTab
+        self.selectedCourseTab = selectedCourseTab
     }
-    
+
     public func playerViewControllerWillStartPictureInPicture(_ playerViewController: AVPlayerViewController) {
         isPipModeActive = true
         Container.shared.resolve(PipManagerProtocol.self)?.set(holder: self)
     }
-    
+
 //    func playerViewControllerDidStartPictureInPicture(_ playerViewController: AVPlayerViewController) {
 //
 //    }
-    
-    public func playerViewController(_ playerViewController: AVPlayerViewController, failedToStartPictureInPictureWithError error: any Error) {
+
+    public func playerViewController(
+        _ playerViewController: AVPlayerViewController,
+        failedToStartPictureInPictureWithError error: any Error
+    ) {
         isPipModeActive = false
         Container.shared.resolve(PipManagerProtocol.self)?.remove(holder: self)
         print("ALARM failed to start \(error)")
@@ -86,7 +85,9 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
 //    func playerViewControllerDidStopPictureInPicture(_ playerViewController: AVPlayerViewController) {
 //
 //    }
-    public func playerViewControllerRestoreUserInterfaceForPictureInPictureStop(_ playerViewController: AVPlayerViewController) async -> Bool {
+    public func playerViewControllerRestoreUserInterfaceForPictureInPictureStop(
+        _ playerViewController: AVPlayerViewController
+    ) async -> Bool {
         print("ALARM restore controller")
         do {
             try await Container.shared.resolve(PipManagerProtocol.self)?.restore(holder: self)
@@ -98,11 +99,13 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         }
     }
     
-    static func == (lhs: PlayerViewControllerHolder, rhs: PlayerViewControllerHolder) -> Bool {
-        lhs.url?.absoluteString == rhs.url?.absoluteString &&
-        lhs.courseID == rhs.courseID &&
-        lhs.blockID == rhs.blockID &&
-        lhs.isVideoTab == rhs.isVideoTab
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? PlayerViewControllerHolder else {
+            return false
+        }
+        return url?.absoluteString == object.url?.absoluteString &&
+        courseID == object.courseID &&
+        blockID == object.blockID &&
+        selectedCourseTab == object.selectedCourseTab
     }
 }
-

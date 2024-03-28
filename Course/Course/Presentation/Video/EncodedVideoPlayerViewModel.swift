@@ -31,7 +31,7 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         appStorage: CoreStorage,
         connectivity: ConnectivityProtocol,
         pipManager: PipManagerProtocol,
-        isVideoTab: Bool
+        selectedCourseTab: Int
     ) {
         self.url = url
         
@@ -39,7 +39,7 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
             for: url,
             blockID: blockID,
             courseID: courseID,
-            isVideoTab: isVideoTab
+            selectedCourseTab: selectedCourseTab
         ) {
             print("ALARM restore holder")
             controllerHolder = holder
@@ -49,7 +49,7 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
-                isVideoTab: isVideoTab
+                selectedCourseTab: selectedCourseTab
             )
             controllerHolder = holder
         }

@@ -153,7 +153,7 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 appStorage: CoreStorageMock(),
                 connectivity: Connectivity(),
                 pipManager: PipManagerProtocolMock(),
-                isVideoTab: false
+                selectedCourseTab: 0
             ),
             isOnScreen: true
         )
