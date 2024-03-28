@@ -11,7 +11,6 @@ import SwiftUI
 
 public class PipManager: PipManagerProtocol {
     var controllerHolder: PlayerViewControllerHolder?
-    private var restorationTask: Task<Void, Never>?
     let discoveryInteractor: DiscoveryInteractorProtocol
     let courseInteractor: CourseInteractorProtocol
     let router: Router
@@ -42,15 +41,11 @@ public class PipManager: PipManagerProtocol {
     
     public func set(holder: PlayerViewControllerHolder) {
         controllerHolder = holder
-        restorationTask?.cancel()
-        restorationTask = nil
     }
     
     public func remove(holder: PlayerViewControllerHolder) {
         if controllerHolder == holder {
             controllerHolder = nil
-            restorationTask?.cancel()
-            restorationTask = nil
         }
     }
     
