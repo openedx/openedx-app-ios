@@ -54,7 +54,7 @@ public struct PickerView: View {
                     })
                     .accessibilityIdentifier("\(config.field.name)_picker_button")
                 }.padding(.all, 14)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textInputTextColor)
                     .background(
                         Theme.Shapes.textInputShape
                             .fill(Theme.Colors.textInputBackground)

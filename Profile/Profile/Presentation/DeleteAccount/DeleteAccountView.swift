@@ -39,7 +39,7 @@ public struct DeleteAccountView: View {
                                 Text(ProfileLocalization.DeleteAccount.areYouSure)
                                     .foregroundColor(Theme.Colors.navigationBarTintColor)
                                 + Text(ProfileLocalization.DeleteAccount.wantToDelete)
-                                    .foregroundColor(Theme.Colors.alert)
+                                    .foregroundColor(Theme.Colors.irreversibleAlert)
                             }
                             .accessibilityIdentifier("are_you_sure_text")
                             
@@ -63,18 +63,21 @@ public struct DeleteAccountView: View {
                                 .accessibilityIdentifier("password_text")
                             
                             HStack(spacing: 11) {
-                                SecureField(ProfileLocalization.DeleteAccount.passwordDescription,
+                                SecureField("",
                                             text: $viewModel.password)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.textPrimary)
+                                .foregroundColor(Theme.Colors.textInputTextColor)
                                 .accessibilityIdentifier("password_textfield")
                             }
                             .padding(.horizontal, 14)
                             .frame(minHeight: 48)
                             .frame(maxWidth: .infinity)
                             .background(
-                                Theme.Shapes.textInputShape
-                                    .fill(Theme.Colors.textInputBackground)
+                                Theme.InputFieldBackground(
+                                    placeHolder: ProfileLocalization.DeleteAccount.passwordDescription,
+                                    text: viewModel.password,
+                                    padding: 15
+                                )
                             )
                             .overlay(
                                 Theme.Shapes.textInputShape
@@ -84,7 +87,7 @@ public struct DeleteAccountView: View {
                             Text(viewModel.incorrectPassword
                                  ? ProfileLocalization.DeleteAccount.incorrectPassword
                                  : " ")
-                            .foregroundColor(Theme.Colors.alert)
+                            .foregroundColor(Theme.Colors.irreversibleAlert)
                             .font(Theme.Fonts.labelLarge)
                             .multilineTextAlignment(.leading)
                             .padding(.top, 0)
@@ -111,8 +114,8 @@ public struct DeleteAccountView: View {
                                     }
                                 },
                                 color: .clear,
-                                textColor: Theme.Colors.alert,
-                                borderColor: Theme.Colors.alert,
+                                textColor: Theme.Colors.irreversibleAlert,
+                                borderColor: Theme.Colors.irreversibleAlert,
                                 isActive: viewModel.password.count >= 2
                             )
                             .padding(.top, 18)

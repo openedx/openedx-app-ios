@@ -40,7 +40,7 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        Text(CoreLocalization.SignIn.registerBtn)
+                        Text(CoreLocalization.register)
                             .titleSettings(color: Theme.Colors.loginNavigationText)
                             .accessibilityIdentifier("register_text")
                     }
@@ -63,7 +63,7 @@ public struct SignUpView: View {
                         ScrollView {
                             VStack(alignment: .leading) {
                                 
-                                Text(AuthLocalization.SignUp.title)
+                                Text(CoreLocalization.register)
                                     .font(Theme.Fonts.displaySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
@@ -73,7 +73,7 @@ public struct SignUpView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
                                     .accessibilityIdentifier("signup_subtitle_text")
-
+                                
                                 if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)

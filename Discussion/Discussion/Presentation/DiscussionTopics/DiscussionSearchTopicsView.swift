@@ -33,19 +33,14 @@ public struct DiscussionSearchTopicsView: View {
 
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .padding(.leading, 16)
                             .padding(.top, -1)
                             .foregroundColor(
-                                viewModel.isSearchActive
-                                ? Theme.Colors.accentColor
-                                : Theme.Colors.textPrimary
+                                Theme.Colors.textInputTextColor
                             )
                         
-                        TextField(
-                            !viewModel.isSearchActive
-                            ? DiscussionLocalization.search
-                            : "",
+                        TextField("",
                             text: $viewModel.searchText,
                             onEditingChanged: { editing in
                                 viewModel.isSearchActive = editing
@@ -54,7 +49,7 @@ public struct DiscussionSearchTopicsView: View {
                             .onAppear {
                                 self.focused = true
                             }
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .font(Theme.Fonts.bodyMedium)
                         Spacer()
                         if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -68,19 +63,21 @@ public struct DiscussionSearchTopicsView: View {
                             .foregroundColor(Theme.Colors.styledButtonText)
                         }
                     }
-                    //                .padding(.top, -7)
                     .frame(minHeight: 48)
                     .background(
-                        Theme.Shapes.textInputShape
-                            .fill(viewModel.isSearchActive
-                                  ? Theme.Colors.textInputBackground
-                                  : Theme.Colors.textInputUnfocusedBackground)
+                        Theme.InputFieldBackground(
+                            placeHolder: !viewModel.isSearchActive
+                            ? DiscussionLocalization.search
+                            : "",
+                            text: viewModel.searchText,
+                            padding: 48
+                        )
                     )
                     .overlay(
                         Theme.Shapes.textInputShape
                             .stroke(lineWidth: 1)
                             .fill(viewModel.isSearchActive
-                                  ? Theme.Colors.accentColor
+                                  ? Theme.Colors.textInputTextColor
                                   : Theme.Colors.textInputUnfocusedStroke)
                     )
                     .frameLimit(width: proxy.size.width)

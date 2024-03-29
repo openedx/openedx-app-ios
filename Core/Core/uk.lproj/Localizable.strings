@@ -107,7 +107,7 @@
 "AUTHORIZATION_FAILED" = "Authorization failed.";
 
 "SIGN_IN.LOG_IN_BTN" = "Увійти";
-"SIGN_IN.REGISTER_BTN" = "Реєстрація";
+"REGISTER" = "Реєстрація";
 
 "TOMORROW" = "Tomorrow";
 "YESTERDAY" = "Yesterday";
