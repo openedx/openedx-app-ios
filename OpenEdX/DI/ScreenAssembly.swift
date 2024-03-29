@@ -320,7 +320,8 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                pipManager: r.resolve(PipManagerProtocol.self)!
             )
         }
         

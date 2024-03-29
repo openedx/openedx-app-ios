@@ -53,7 +53,7 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
             blockID: blockID,
             courseID: courseID,
             selectedCourseTab: selectedCourseTab
-        ) 
+        )
         return holder == nil && pipManager.isPipActive
     }
 

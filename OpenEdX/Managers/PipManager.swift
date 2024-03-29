@@ -48,6 +48,7 @@ public class PipManager: PipManagerProtocol {
     
     public func set(holder: PlayerViewControllerHolder) {
         controllerHolder = holder
+        print("ALARM \(holder.playerController.player)")
     }
     
     public func remove(holder: PlayerViewControllerHolder) {
