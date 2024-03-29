@@ -46,7 +46,6 @@ extension UINavigationController {
         
         let image = CoreAssets.arrowLeft.image
         navigationBar.backIndicatorImage = image.withTintColor(Theme.UIColors.accentXColor)
-        navigationBar.backItem?.backButtonTitle = " "
         navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.UIColors.accentXColor)
         navigationBar.titleTextAttributes = [
             .foregroundColor: Theme.UIColors.navigationBarTintColor,
@@ -77,6 +76,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
+        navigationItem.backButtonDisplayMode = .minimal
     }
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
