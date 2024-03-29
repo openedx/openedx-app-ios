@@ -15,6 +15,10 @@ public class PipManager: PipManagerProtocol {
     let courseInteractor: CourseInteractorProtocol
     let router: Router
     let isNestedListEnabled: Bool
+    public var isPipActive: Bool {
+        controllerHolder != nil
+    }
+    
     public init(
         router: Router,
         discoveryInteractor: DiscoveryInteractorProtocol,
@@ -68,6 +72,11 @@ public class PipManager: PipManagerProtocol {
         }
         // else create navigation stack and push new stack to root navigation controller
         try await navigate(to: holder)
+    }
+    
+    public func pauseCurrentPipVideo() {
+        guard let holder = controllerHolder else { return }
+        holder.playerController.player?.pause()
     }
     
     @MainActor

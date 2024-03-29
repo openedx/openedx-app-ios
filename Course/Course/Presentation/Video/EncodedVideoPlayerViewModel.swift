@@ -63,11 +63,11 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
             case .pause:
-                if self?.controllerHolder.isPipModeActive != true {
+                if self?.controllerHolder.isPlayingInPip != true {
                     self?.controller.player?.pause()
                 }
             case .kill:
-                if self?.controllerHolder.isPipModeActive != true {
+                if self?.controllerHolder.isPlayingInPip != true {
                     self?.controller.player?.replaceCurrentItem(with: nil)
                 }
             case .none:

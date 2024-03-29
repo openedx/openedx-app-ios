@@ -33,7 +33,8 @@ struct PlayerViewController: UIViewControllerRepresentable {
     }
     
     func makeUIViewController(context: Context) -> AVPlayerViewController {
-        if playerHolder.isPipModeActive {
+        context.coordinator.currentHolder = playerHolder
+        if playerHolder.isPlayingInPip {
             return playerHolder.playerController
         }
         
@@ -59,7 +60,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
     
     func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
         let asset = playerController.player?.currentItem?.asset as? AVURLAsset
-        if asset?.url.absoluteString != videoURL?.absoluteString && !playerHolder.isPipModeActive {
+        if asset?.url.absoluteString != videoURL?.absoluteString && !playerHolder.isPlayingInPip {
             let player = context.coordinator.player(from: playerController)
             player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
             player?.currentItem?.preferredMaximumResolution = videoResolution
@@ -83,6 +84,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
         var currentPlayer: AVPlayer?
         var observer: Any?
         var cancellations: [AnyCancellable] = []
+        weak var currentHolder: PlayerViewControllerHolder?
         
         func player(from playerController: AVPlayerViewController) -> AVPlayer? {
             var player = playerController.player
@@ -117,9 +119,9 @@ struct PlayerViewController: UIViewControllerRepresentable {
             }
             
             player.publisher(for: \.rate)
-                .sink { rate in
+                .sink {[weak self] rate in
                     guard rate > 0 else { return }
-                    
+                    self?.currentHolder?.pausePipIfNeed()
                 }
                 .store(in: &cancellations)
                         
