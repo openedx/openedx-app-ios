@@ -154,22 +154,23 @@ public struct ThreadView: View {
                                 }
                                 .frameLimit(width: proxy.size.width)
                             }
-                            FlexibleKeyboardInputView(
-                                hint: DiscussionLocalization.Thread.addResponse,
-                                sendText: { commentText in
-                                    if let threadID = viewModel.postComments?.threadID {
-                                        Task {
-                                            await viewModel.postComment(
-                                                threadID: threadID,
-                                                rawBody: commentText,
-                                                parentID: viewModel.postComments?.parentID
-                                            )
+                            if !(thread.closed  || viewModel.isBlackedOut) {
+                                FlexibleKeyboardInputView(
+                                    hint: DiscussionLocalization.Thread.addResponse,
+                                    sendText: { commentText in
+                                        if let threadID = viewModel.postComments?.threadID {
+                                            Task {
+                                                await viewModel.postComment(
+                                                    threadID: threadID,
+                                                    rawBody: commentText,
+                                                    parentID: viewModel.postComments?.parentID
+                                                )
+                                            }
                                         }
                                     }
-                                }
-                            )
-                            .ignoresSafeArea(.all, edges: .horizontal)
-                            .disabled(thread.closed  || viewModel.isBlackedOut)
+                                )
+                                .ignoresSafeArea(.all, edges: .horizontal)
+                            }
                         }
                         .onReceive(viewModel.addPostSubject, perform: { newComment in
                             guard let newComment else { return }
