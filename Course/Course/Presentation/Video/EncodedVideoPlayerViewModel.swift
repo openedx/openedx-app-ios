@@ -8,7 +8,6 @@
 import _AVKit_SwiftUI
 import Core
 import Combine
-import Swinject
 
 public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
     
