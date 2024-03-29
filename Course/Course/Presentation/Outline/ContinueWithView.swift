@@ -85,6 +85,7 @@ struct ContinueWithView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: true
             ),
@@ -97,6 +98,7 @@ struct ContinueWithView_Previews: PreviewProvider {
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: false
 

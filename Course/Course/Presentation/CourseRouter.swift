@@ -51,7 +51,8 @@ public protocol CourseRouter: BaseRouter {
     
     func showCourseComponent(
         componentID: String,
-        courseStructure: CourseStructure
+        courseStructure: CourseStructure,
+        blockLink: String
     )
 
     func showDownloads(
@@ -107,7 +108,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public func showCourseComponent(
         componentID: String,
-        courseStructure: CourseStructure
+        courseStructure: CourseStructure,
+        blockLink: String
     ) {}
 
     public func showDownloads(

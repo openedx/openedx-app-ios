@@ -78,7 +78,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
 
         let blocks = try? context.fetch(requestBlocks).map {
             let userViewData = DataLayer.CourseDetailUserViewData(
-                transcripts: nil,
+                transcripts: $0.transcripts?.jsonStringToDictionary() as? [String: String],
                 encodedVideo: DataLayer.CourseDetailEncodedVideoData(
                     youTube: DataLayer.EncodedVideoData(
                         url: $0.youTube?.url,
@@ -113,6 +113,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 graded: $0.graded,
                 completion: $0.completion,
                 studentUrl: $0.studentUrl ?? "",
+                webUrl: $0.webUrl ?? "",
                 type: $0.type ?? "",
                 displayName: $0.displayName ?? "",
                 descendants: $0.descendants,
@@ -213,6 +214,10 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     courseDetail.hls = hls
                 }
 
+                if let transcripts = block.userViewData?.transcripts {
+                    courseDetail.transcripts = transcripts.toJson()
+                }
+                
                 do {
                     try context.save()
                 } catch {

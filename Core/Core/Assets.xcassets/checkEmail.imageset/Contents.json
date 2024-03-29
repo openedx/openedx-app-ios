@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "_1.svg",
+      "filename" : "checkEmailLight.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "_1-2.svg",
+      "filename" : "checkEmailDark.svg",
       "idiom" : "universal"
     }
   ],

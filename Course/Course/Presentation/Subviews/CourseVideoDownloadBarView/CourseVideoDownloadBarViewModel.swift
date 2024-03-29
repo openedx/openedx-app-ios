@@ -15,6 +15,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     private let courseStructure: CourseStructure
     private let courseViewModel: CourseContainerViewModel
+    private let analytics: CourseAnalytics
 
     @Published private(set) var currentDownloadTask: DownloadDataTask?
     @Published private(set) var isOn: Bool = false
@@ -105,10 +106,12 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     init(
         courseStructure: CourseStructure,
-        courseViewModel: CourseContainerViewModel
+        courseViewModel: CourseContainerViewModel,
+        analytics: CourseAnalytics
     ) {
         self.courseStructure = courseStructure
         self.courseViewModel = courseViewModel
+        self.analytics = analytics
         observers()
     }
 
@@ -132,6 +135,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                     Task {
                         await self.downloadAll(isOn: false)
                     }
+                    analytics.bulkDownloadVideosToggle(courseID: courseStructure.id, action: false)
                     self.courseViewModel.router.dismiss(animated: true)
                 },
                 type: .deleteVideo
@@ -152,13 +156,15 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                     Task {
                         await self.downloadAll(isOn: false)
                     }
+                    analytics.bulkDownloadVideosToggle(courseID: courseStructure.id, action: false)
                     self.courseViewModel.router.dismiss(animated: true)
                 },
                 type: .deleteVideo
             )
             return
         }
-
+        
+        analytics.bulkDownloadVideosToggle(courseID: courseStructure.id, action: true)
         await downloadAll(isOn: true)
     }
 

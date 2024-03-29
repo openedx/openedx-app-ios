@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Course
 
@@ -7,7 +7,7 @@
 */
 
 "OUTLINE.CONGRATULATIONS" = "Congratulations!";
-"OUTLINE.PASSED_THE_COURSE" = "You've passed the course";
+"OUTLINE.PASSED_THE_COURSE" = "You’ve completed the course";
 "OUTLINE.VIEW_CERTIFICATE" = "View certificate";
 "OUTLINE.CERTIFICATE" = "Certificate";
 "OUTLINE.COURSE_VIDEOS" = "Course videos";
@@ -18,10 +18,10 @@
 "COURSEWARE.NEXT" = "Next";
 "COURSEWARE.PREVIOUS" = "Prev";
 "COURSEWARE.FINISH" = "Finish";
-"COURSEWARE.GOOD_WORK" = "Good Work!";
+"COURSEWARE.GOOD_WORK" = "Good job!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";
-"COURSEWARE.SECTION" = "Section “";
-"COURSEWARE.IS_FINISHED" = "“ is finished.";
+"COURSEWARE.SECTION" = "You've completed “";
+"COURSEWARE.IS_FINISHED" = "“.";
 "COURSEWARE.CONTINUE" = "Continue";
 "COURSEWARE.RESUME_WITH" = "Resume with:";
 
@@ -40,7 +40,7 @@
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
 "COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSIONS" =  "Discussions";
-"COURSE_CONTAINER.HANDOUTS" =  "Handouts";
+"COURSE_CONTAINER.HANDOUTS" =  "More";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
 
 "HANDOUTS_CELL_HANDOUTS.TITLE" = "Handouts";
@@ -48,7 +48,7 @@
 "HANDOUTS_CELL_HANDOUTS.DESCRIPTION" = "Find important course information";
 "HANDOUTS_CELL_ANNOUNCEMENTS.DESCRIPTION" = "Keep up with the latest news";
 
-"NOT_AVALIABLE.TITLE" = "This interactive component isn’t yet available";
+"NOT_AVALIABLE.TITLE" = "This interactive component isn't available on mobile";
 "NOT_AVALIABLE.DESCRIPTION" = "Explore other parts of this course or view this on web.";
 "NOT_AVALIABLE.BUTTON" = "Open in browser";
 
@@ -83,6 +83,25 @@
 "COURSE_DATES.TOAST_SUCCESS_TITLE" = "Due dates shifted";
 "COURSE_DATES.TOAST_SUCCESS_MESSAGE" = "Your due dates have been successfully shifted to help you stay on track.";
 "COURSE_DATES.VIEW_ALL_DATES" = "View all dates";
+"COURSE_DATES.SYNC_TO_CALENDAR" = "Sync to calendar";
+"COURSE_DATES.SYNC_TO_CALENDAR_MESSAGE" = "Automatically sync all deadlines and due dates for this course to your calendar.";
+"COURSE_DATES.ADD_CALENDAR_TITLE"="Add calendar";
+"COURSE_DATES.REMOVE_CALENDAR_TITLE"="Remove calendar";
+"COURSE_DATES.ADD_CALENDAR_PROMPT"="Would you like to add the %@ calendar \"%@\" ? \n You can edit or remove the course calendar any time in Calendar or Settings";
+"COURSE_DATES.REMOVE_CALENDAR_PROMPT"="Would you like to remove the %@ calendar \"%@\" ?";
+"COURSE_DATES.DATES_ADDED_ALERT_MESSAGE" = "\"%@\" has been added to your calendar.";
+"COURSE_DATES.CALENDAR_SYNC_MESSAGE"="Syncing calendar...";
+"COURSE_DATES.CALENDAR_VIEW_EVENTS"="View Events";
+"COURSE_DATES.CALENDAR_EVENTS_ADDED"="Your course calendar has been added.";
+"COURSE_DATES.CALENDAR_EVENTS_REMOVED"="Your course calendar has been removed.";
+"COURSE_DATES.CALENDAR_EVENTS"="Calendar events";
+"COURSE_DATES.CALENDAR_OUT_OF_DATE"="Your course calendar is out of date";
+"COURSE_DATES.CALENDAR_SHIFT_MESSAGE"="Your course dates have been shifted and your course calendar is no longer up to date with your new schedule.";
+"COURSE_DATES.CALENDAR_SHIFT_PROMPT_UPDATE_NOW"="Update now";
+"COURSE_DATES.CALENDAR_EVENTS_UPDATED"="Your course calendar has been updated.";
+"COURSE_DATES.CALENDAR_PERMISSION_NOT_DETERMINED"="%@ does not have calendar permission. Please go to settings and give calender permission.";
+"COURSE_DATES.OPEN_SETTINGS"="Open Settings";
+"COURSE_DATES.SETTINGS" = "Settings";
 
 "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY" = "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.";
 "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON" = "Shift due dates";

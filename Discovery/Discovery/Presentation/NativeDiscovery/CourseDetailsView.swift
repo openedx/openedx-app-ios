@@ -99,19 +99,19 @@ public struct CourseDetailsView: View {
                                                     viewModel?.showCourseVideo()
                                                 })
                                         }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
-//                                            .frame(maxHeight: 250)
                                             .cornerRadius(12)
                                             .padding(.horizontal, 6)
                                             .padding(.top, 7)
                                             .fixedSize(horizontal: false, vertical: true)
                                         
-                                        // MARK: - Title and description
-                                        CourseTitleView(courseDetails: courseDetails)
-                                        
                                         // MARK: - Course state button
                                         CourseStateView(title: title,
                                                         courseDetails: courseDetails,
                                                         viewModel: viewModel)
+                                        .padding(.top, 24)
+                                        
+                                        // MARK: - Title and description
+                                        CourseTitleView(courseDetails: courseDetails)
                                     }
                                     
                                     // MARK: - HTML Embed
@@ -137,10 +137,11 @@ public struct CourseDetailsView: View {
                                     }
                                 }
                             }
-                        }.frameLimit()
-                            .onRightSwipeGesture {
-                                viewModel.router.back()
-                            }
+                            .frameLimit(width: proxy.size.width)
+                        }
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
                         Spacer(minLength: 84)
                     }
                 }
@@ -176,10 +177,12 @@ public struct CourseDetailsView: View {
             }
             
             // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                reloadAction: {
-                await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
-            })
+            if viewModel.courseState() != .enrollOpen {
+                OfflineSnackBarView(connectivity: viewModel.connectivity,
+                                    reloadAction: {
+                    await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
+                })
+            }
             
             // MARK: - Error Alert
             if viewModel.showError {
@@ -221,20 +224,34 @@ private struct CourseStateView: View {
     var body: some View {
         switch viewModel.courseState() {
         case .enrollOpen:
-            StyledButton(DiscoveryLocalization.Details.enrollNow, action: {
-                if !viewModel.userloggedIn {
-                    viewModel.router.showRegisterScreen(
-                        sourceScreen: .courseDetail(
-                            courseDetails.courseID,
-                            courseDetails.courseTitle)
-                    )
+            Group {
+            if viewModel.connectivity.isInternetAvaliable {
+                    StyledButton(DiscoveryLocalization.Details.enrollNow, action: {
+                        if !viewModel.userloggedIn {
+                            viewModel.router.showRegisterScreen(
+                                sourceScreen: .courseDetail(
+                                    courseDetails.courseID,
+                                    courseDetails.courseTitle)
+                            )
+                        } else {
+                            Task {
+                                await viewModel.enrollToCourse(id: courseDetails.courseID)
+                            }
+                        }
+                    })
+                    .padding(16)
                 } else {
-                    Task {
-                        await viewModel.enrollToCourse(id: courseDetails.courseID)
-                    }
+                    HStack(alignment: .center, spacing: 10) {
+                        CoreAssets.noWifiMini.swiftUIImage
+                            .renderingMode(.template)
+                            .foregroundStyle(Theme.Colors.warning)
+                        Text(DiscoveryLocalization.Details.enrollmentNoInternet)
+                            .multilineTextAlignment(.leading)
+                            .font(Theme.Fonts.titleSmall)
+                        Spacer()
+                    }.cardStyle(paddingAll: 12, bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
                 }
-            })
-            .padding(16)
+            }
             .accessibilityIdentifier("enroll_button")
         case .enrollClose:
             Text(DiscoveryLocalization.Details.enrollmentDateIsOver)

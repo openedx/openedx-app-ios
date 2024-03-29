@@ -24,6 +24,10 @@ public struct FlexibleKeyboardInputView: View {
         self.sendText = sendText
     }
     
+    private var canSend: Bool {
+        commentText.trimmingCharacters(in: .whitespacesAndNewlines).count > 0
+    }
+    
     public var body: some View {
         VStack {
             VStack {
@@ -49,18 +53,15 @@ public struct FlexibleKeyboardInputView: View {
                                 .overlay(
                                     TextEditor(text: $commentText)
                                         .padding(.horizontal, 8)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .hideScrollContentBackground()
                                         .frame(maxHeight: commentSize)
                                         .background(
-                                            ZStack(alignment: .leading) {
-                                                Theme.Shapes.textInputShape
-                                                    .fill(Theme.Colors.textInputBackground)
-                                                Text(commentText.count == 0 ? hint : "")
-                                                    .foregroundColor(Theme.Colors.textSecondary)
-                                                    .font(Theme.Fonts.labelLarge)
-                                                    .padding(.leading, 14)
-                                            }
+                                            Theme.InputFieldBackground(
+                                                placeHolder: commentText.count == 0 ? hint : "",
+                                                text: commentText,
+                                                padding: 14
+                                            )
                                         )
                                         .overlay(
                                             Theme.Shapes.textInputShape
@@ -71,25 +72,29 @@ public struct FlexibleKeyboardInputView: View {
                                         )
                                 ).padding(8)
                             Button(action: {
-                                if commentText.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
+                                if canSend {
                                     sendText(commentText)
                                     self.commentText = ""
                                 }
                             }, label: {
                                 VStack {
-                                    commentText.trimmingCharacters(in: .whitespacesAndNewlines).count > 0
-                                    ? CoreAssets.send.swiftUIImage
-                                    : CoreAssets.sendDisabled.swiftUIImage
+                                    CoreAssets.send.swiftUIImage
+                                        .renderingMode(.template)
+                                        .foregroundStyle(Theme.Colors.accentXColor)
+                                        .opacity(canSend ? 1 : 0.5)
                                 }
                                 .frame(width: 36, height: 36)
                                 .foregroundColor(Theme.Colors.white)
-                            }).padding(.top, 8)
+                            })
+                            .padding(.top, 8)
+                            .disabled(!canSend)
                                 
                         }.padding(.horizontal, isHorizontal ? 50 : 16)
                         
                     }
                     .padding(.leading, 6)
                     .padding(.trailing, 14)
+                    .frameLimit()
                 }.frame(maxWidth: .infinity, maxHeight: commentSize + 16)
                     .background(
                         Theme.Colors.commentCellBackground

@@ -12,6 +12,10 @@ import Foundation
 public enum CoreLocalization {
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
+  /// View in Safari
+  public static let openInBrowser = CoreLocalization.tr("Localizable", "OPEN_IN_BROWSER", fallback: "View in Safari")
+  /// Register
+  public static let register = CoreLocalization.tr("Localizable", "REGISTER", fallback: "Register")
   /// The user canceled the sign-in flow.
   public static let socialSignCanceled = CoreLocalization.tr("Localizable", "SOCIAL_SIGN_CANCELED", fallback: "The user canceled the sign-in flow.")
   /// Tomorrow
@@ -23,6 +27,10 @@ public enum CoreLocalization {
   public enum Alert {
     /// ACCEPT
     public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "ACCEPT")
+    /// Add
+    public static let add = CoreLocalization.tr("Localizable", "ALERT.ADD", fallback: "Add")
+    /// Remove course calendar
+    public static let calendarShiftPromptRemoveCourseCalendar = CoreLocalization.tr("Localizable", "ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR", fallback: "Remove course calendar")
     /// CANCEL
     public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "CANCEL")
     /// DELETE
@@ -33,6 +41,8 @@ public enum CoreLocalization {
     public static let leave = CoreLocalization.tr("Localizable", "ALERT.LEAVE", fallback: "Leave")
     /// Log out
     public static let logout = CoreLocalization.tr("Localizable", "ALERT.LOGOUT", fallback: "Log out")
+    /// Remove
+    public static let remove = CoreLocalization.tr("Localizable", "ALERT.REMOVE", fallback: "Remove")
   }
   public enum Courseware {
     /// Back to outline
@@ -41,14 +51,14 @@ public enum CoreLocalization {
     public static let `continue` = CoreLocalization.tr("Localizable", "COURSEWARE.CONTINUE", fallback: "Continue")
     /// Course content
     public static let courseContent = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT", fallback: "Course content")
+    /// This interactive component isn't yet available on mobile.
+    public static let courseContentNotAvailable = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE", fallback: "This interactive component isn't yet available on mobile.")
     /// Course units
     public static let courseUnits = CoreLocalization.tr("Localizable", "COURSEWARE.COURSE_UNITS", fallback: "Course units")
     /// Finish
     public static let finish = CoreLocalization.tr("Localizable", "COURSEWARE.FINISH", fallback: "Finish")
-    /// Good Work!
-    public static let goodWork = CoreLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good Work!")
-    /// “ is finished.
-    public static let isFinished = CoreLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“ is finished.")
+    /// Good job!
+    public static let goodWork = CoreLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good job!")
     /// Next
     public static let next = CoreLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Next section
@@ -63,8 +73,10 @@ public enum CoreLocalization {
     public static let resume = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME", fallback: "Resume")
     /// Resume with:
     public static let resumeWith = CoreLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
-    /// Section “
-    public static let section = CoreLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
+    /// You've completed “%@”.
+    public static func sectionCompleted(_ p1: Any) -> String {
+      return CoreLocalization.tr("Localizable", "COURSEWARE.SECTION_COMPLETED", String(describing: p1), fallback: "You've completed “%@”.")
+    }
   }
   public enum Date {
     /// Ended
@@ -107,6 +119,12 @@ public enum CoreLocalization {
     public static let userNotActive = CoreLocalization.tr("Localizable", "ERROR.USER_NOT_ACTIVE", fallback: "User account is not activated. Please activate your account first.")
     /// You can only download files over Wi-Fi. You can change this in the settings.
     public static let wifi = CoreLocalization.tr("Localizable", "ERROR.WIFI", fallback: "You can only download files over Wi-Fi. You can change this in the settings.")
+    public enum Internet {
+      /// Please connect to the internet to view this content.
+      public static let noInternetDescription = CoreLocalization.tr("Localizable", "ERROR.INTERNET.NO_INTERNET_DESCRIPTION", fallback: "Please connect to the internet to view this content.")
+      /// No internet connection
+      public static let noInternetTitle = CoreLocalization.tr("Localizable", "ERROR.INTERNET.NO_INTERNET_TITLE", fallback: "No internet connection")
+    }
   }
   public enum Mainscreen {
     /// Dashboard
@@ -192,8 +210,6 @@ public enum CoreLocalization {
   public enum SignIn {
     /// Sign in
     public static let logInBtn = CoreLocalization.tr("Localizable", "SIGN_IN.LOG_IN_BTN", fallback: "Sign in")
-    /// Register
-    public static let registerBtn = CoreLocalization.tr("Localizable", "SIGN_IN.REGISTER_BTN", fallback: "Register")
   }
   public enum View {
     public enum Snackbar {

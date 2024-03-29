@@ -44,7 +44,7 @@ public struct CoursewareTopics: Hashable, Identifiable {
     
     public init(id: String, name: String, threadListURL: String, children: [CoursewareTopics]) {
         self.id = id
-        self.name = name
+        self.name = name.isEmpty ? DiscussionLocalization.Topics.unnamed : name
         self.threadListURL = threadListURL
         self.children = children
     }

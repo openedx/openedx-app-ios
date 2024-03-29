@@ -138,12 +138,13 @@ public struct CourseVerticalView: View {
                             }
                         }
                     }
+                    .frameLimit(width: proxy.size.width)
                     Spacer(minLength: 84)
-                }.accessibilityAction {}
-                .frameLimit()
-                    .onRightSwipeGesture {
-                        viewModel.router.back()
-                    }
+                }
+                .accessibilityAction {}
+                .onRightSwipeGesture {
+                    viewModel.router.back()
+                }
             }
             .padding(.top, 8)
             

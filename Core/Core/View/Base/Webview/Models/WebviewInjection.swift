@@ -56,4 +56,14 @@ public extension WebviewInjection {
         AjaxInjection()
             .webviewInjection()
     }
+    
+    static var readability: WebviewInjection {
+        ReadabilityInjection()
+            .webviewInjection()
+    }
+    
+    static var accessibility: WebviewInjection {
+        AccessibilityInjection()
+            .webviewInjection()
+    }
 }

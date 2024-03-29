@@ -55,8 +55,8 @@ public struct StartupView: View {
                             Image(systemName: "magnifyingglass")
                                 .padding(.leading, 16)
                                 .padding(.top, 1)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                            TextField(AuthLocalization.Startup.searchPlaceholder, text: $searchQuery, onCommit: {
+                                .foregroundColor(Theme.Colors.textInputTextColor)
+                            TextField("", text: $searchQuery, onCommit: {
                                 if searchQuery.isEmpty { return }
                                 viewModel.router.showDiscoveryScreen(
                                     searchQuery: searchQuery,
@@ -68,7 +68,7 @@ public struct StartupView: View {
                             .frame(minHeight: 50)
                             .submitLabel(.search)
                             .font(Theme.Fonts.bodyLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .accessibilityIdentifier("explore_courses_textfield")
                             
                         }.overlay(
@@ -77,19 +77,22 @@ public struct StartupView: View {
                                 .fill(Theme.Colors.textInputStroke)
                         )
                         .background(
-                            Theme.Shapes.textInputShape
-                                .fill(Theme.Colors.textInputBackground)
+                            Theme.InputFieldBackground(
+                                placeHolder: AuthLocalization.Startup.searchPlaceholder,
+                                text: searchQuery,
+                                padding: 48
+                            )
                         )
                         
                         Button {
-                            viewModel.router.showDiscoveryScreen (
+                            viewModel.router.showDiscoveryScreen(
                                 searchQuery: searchQuery,
                                 sourceScreen: .startup
                             )
                         } label: {
                             Text(AuthLocalization.Startup.exploreAllCourses)
                                 .underline()
-                                .foregroundColor(Theme.Colors.accentXColor)
+                                .foregroundColor(Theme.Colors.infoColor)
                                 .font(Theme.Fonts.bodyLarge)
                         }
                         .padding(.top, isHorizontal ? 0 : 5)
@@ -113,6 +116,7 @@ public struct StartupView: View {
             .onDisappear {
                 searchQuery = ""
             }
+            .frameLimit()
         }
         .hideNavigationBar()
         .padding(.all, isHorizontal ? 1 : 0)
@@ -128,7 +132,8 @@ public struct StartupView: View {
 struct StartupView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = StartupViewModel(
-            router: AuthorizationRouterMock()
+            router: AuthorizationRouterMock(),
+            analytics: CoreAnalyticsMock()
         )
         
         StartupView(viewModel: vm)

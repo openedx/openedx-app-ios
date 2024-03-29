@@ -1,5 +1,5 @@
 //
-//  DatesShiftedSuccessView.swift
+//  DatesSuccessView.swift
 //  Core
 //
 //  Created by Shafqat Muneer on 2/18/24.
@@ -9,19 +9,60 @@ import SwiftUI
 import Combine
 import Theme
 
-public struct DatesShiftedSuccessView: View {
+public struct DatesSuccessView: View {
     
     enum Tab {
         case course
         case dates
     }
 
+    private var title: String
+    private var message: String
     var selectedTab: Tab
     var courseDatesViewModel: CourseDatesViewModel?
     var courseContainerViewModel: CourseContainerViewModel?
-    var action: () async -> Void = {}
+    var action: () -> Void = {}
+    var dismissAction: () -> Void = {}
 
     @State private var dismiss: Bool = false
+    
+    init (
+        title: String,
+        message: String,
+        selectedTab: Tab,
+        dismissAction: @escaping () -> Void
+    ) {
+        self.title = title
+        self.message = message
+        self.selectedTab = selectedTab
+        self.dismissAction = dismissAction
+    }
+    
+    init (
+        title: String,
+        message: String,
+        selectedTab: Tab,
+        courseDatesViewModel: CourseDatesViewModel?
+    ) {
+        self.title = title
+        self.message = message
+        self.selectedTab = selectedTab
+        self.courseDatesViewModel = courseDatesViewModel
+    }
+    
+    init (
+        title: String,
+        message: String,
+        selectedTab: Tab,
+        courseContainerViewModel: CourseContainerViewModel?,
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.message = message
+        self.selectedTab = selectedTab
+        self.courseContainerViewModel = courseContainerViewModel
+        self.action = action
+    }
     
     public var body: some View {
         ZStack {
@@ -29,7 +70,7 @@ public struct DatesShiftedSuccessView: View {
                 Spacer()
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(alignment: .top) {
-                        Text(CourseLocalization.CourseDates.toastSuccessTitle)
+                        Text(title)
                             .foregroundStyle(Theme.Colors.textPrimary)
                             .font(Theme.Fonts.titleMedium)
                         Spacer()
@@ -46,16 +87,14 @@ public struct DatesShiftedSuccessView: View {
                         .tint(Theme.Colors.textPrimary)
                     }
                     
-                    Text(CourseLocalization.CourseDates.toastSuccessMessage)
+                    Text(message)
                         .foregroundStyle(Theme.Colors.textPrimary)
                         .font(Theme.Fonts.labelLarge)
                     
                     if selectedTab == .course {
                         Button(CourseLocalization.CourseDates.viewAllDates,
                                action: {
-                            Task {
-                                await action()
-                            }
+                            action()
                             withAnimation {
                                 dismissView()
                             }
@@ -99,15 +138,20 @@ public struct DatesShiftedSuccessView: View {
     
     private func dismissView() {
         dismiss = true
-        courseDatesViewModel?.resetDueDatesShiftedFlag()
+        courseDatesViewModel?.resetEventState()
         courseContainerViewModel?.resetDueDatesShiftedFlag()
+        dismissAction()
     }
 }
 
 #if DEBUG
-struct DatesShiftedSuccessView_Previews: PreviewProvider {
+struct DatesSuccessView_Previews: PreviewProvider {
     static var previews: some View {
-        DatesShiftedSuccessView(selectedTab: .course)
+        DatesSuccessView(
+            title: CourseLocalization.CourseDates.toastSuccessTitle,
+            message: CourseLocalization.CourseDates.toastSuccessMessage,
+            selectedTab: .course
+        ) {}
     }
 }
 #endif

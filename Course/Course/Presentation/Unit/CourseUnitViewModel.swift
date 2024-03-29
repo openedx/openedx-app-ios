@@ -16,7 +16,7 @@ public enum LessonType: Equatable {
     case discussion(String, String, String)
     
     static func from(_ block: CourseBlock, streamingQuality: StreamingQuality) -> Self {
-        let mandatoryInjections: [WebviewInjection] = [.colorInversionCss, .ajaxCallback]
+        let mandatoryInjections: [WebviewInjection] = [.colorInversionCss, .ajaxCallback, .readability, .accessibility]
         switch block.type {
         case .course, .chapter, .vertical, .sequential:
             return .unknown(block.studentUrl)

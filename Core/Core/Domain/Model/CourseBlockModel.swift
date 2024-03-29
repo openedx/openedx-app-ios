@@ -63,7 +63,13 @@ public struct CourseStructure: Equatable {
     public func totalVideosSizeInGb(downloadQuality: DownloadQuality) -> Double {
         Double(totalVideosSizeInBytes(downloadQuality: downloadQuality)) / 1024.0 / 1024.0 / 1024.0
     }
-
+    
+    public func blockWithID(courseBlockId: String) -> CourseBlock? {
+        let block = childs.flatMap {
+            $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
+        }.filter { $0.id == courseBlockId }.first
+        return block
+    }
 }
 
 public struct CourseChapter: Identifiable {
@@ -185,6 +191,7 @@ public struct CourseBlock: Hashable, Identifiable {
     public let type: BlockType
     public let displayName: String
     public let studentUrl: String
+    public let webUrl: String
     public let subtitles: [SubtitleUrl]?
     public let encodedVideo: CourseBlockEncodedVideo?
     public let multiDevice: Bool?
@@ -203,6 +210,7 @@ public struct CourseBlock: Hashable, Identifiable {
         type: BlockType,
         displayName: String,
         studentUrl: String,
+        webUrl: String,
         subtitles: [SubtitleUrl]? = nil,
         encodedVideo: CourseBlockEncodedVideo?,
         multiDevice: Bool?
@@ -216,6 +224,7 @@ public struct CourseBlock: Hashable, Identifiable {
         self.type = type
         self.displayName = displayName
         self.studentUrl = studentUrl
+        self.webUrl = webUrl
         self.subtitles = subtitles
         self.encodedVideo = encodedVideo
         self.multiDevice = multiDevice
@@ -258,15 +267,15 @@ public struct CourseBlockEncodedVideo {
             [mobileLow, mobileHigh, desktopMP4, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
-        case .high_720:
+        case .high:
             [desktopMP4, mobileHigh, mobileLow, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
-        case .medium_540:
+        case .medium:
             [mobileHigh, mobileLow, desktopMP4, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
-        case .low_360:
+        case .low:
             [mobileLow, mobileHigh, desktopMP4, fallback, hls]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }

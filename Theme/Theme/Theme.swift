@@ -44,6 +44,7 @@ public struct Theme {
         public private(set) static var textInputUnfocusedBackground = ThemeAssets.textInputUnfocusedBackground.swiftUIColor
         public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
+        public private(set) static var warningText = ThemeAssets.warningText.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
         public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
         public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor
@@ -59,6 +60,10 @@ public struct Theme {
         public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
         public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
         public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
+        public private(set) static var textInputTextColor = ThemeAssets.textInputTextColor.swiftUIColor
+        public private(set) static var textInputPlaceholderColor = ThemeAssets.textInputPlaceholderColor.swiftUIColor
+        public private(set) static var infoColor = ThemeAssets.infoColor.swiftUIColor
+        public private(set) static var irreversibleAlert = ThemeAssets.irreversibleAlert.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -101,7 +106,11 @@ public struct Theme {
             success: Color = ThemeAssets.success.swiftUIColor,
             tabbarColor: Color = ThemeAssets.tabbarColor.swiftUIColor,
             primaryButtonTextColor: Color = ThemeAssets.primaryButtonTextColor.swiftUIColor,
-            toggleSwitchColor: Color = ThemeAssets.toggleSwitchColor.swiftUIColor
+            toggleSwitchColor: Color = ThemeAssets.toggleSwitchColor.swiftUIColor,
+            textInputTextColor: Color = ThemeAssets.textInputTextColor.swiftUIColor,
+            textInputPlaceholderColor: Color = ThemeAssets.textInputPlaceholderColor.swiftUIColor,
+            infoColor: Color = ThemeAssets.infoColor.swiftUIColor,
+            irreversibleAlert: Color = ThemeAssets.irreversibleAlert.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
@@ -144,6 +153,10 @@ public struct Theme {
             self.tabbarColor = tabbarColor
             self.primaryButtonTextColor = primaryButtonTextColor
             self.toggleSwitchColor = toggleSwitchColor
+            self.textInputTextColor = textInputTextColor
+            self.textInputPlaceholderColor = textInputPlaceholderColor
+            self.infoColor = infoColor
+            self.irreversibleAlert = irreversibleAlert
         }
     }
     
@@ -250,6 +263,40 @@ public struct Theme {
         public static let snackbarMessageLongTimeout: TimeInterval = 5
     }
     
+    public struct InputFieldBackground: View {
+        public let placeHolder: String
+        public let text: String
+        public let color: Color
+        public let padding: CGFloat
+        public let font: Font
+        
+        public init(
+            placeHolder: String,
+            text: String,
+            color: Color = Theme.Colors.textInputPlaceholderColor,
+            font: Font = Theme.Fonts.bodyLarge,
+            padding: CGFloat = 8
+        ) {
+            self.placeHolder = placeHolder
+            self.color = color
+            self.text = text
+            self.padding = padding
+            self.font = font
+        }
+        
+        public var body: some View {
+            ZStack(alignment: .leading) {
+                Theme.Shapes.textInputShape
+                    .fill(Theme.Colors.textInputBackground)
+                if text.count == 0 {
+                    Text(placeHolder)
+                        .foregroundColor(color)
+                        .padding(.leading, padding)
+                        .font(font)
+                }
+            }
+        }
+    }
 }
 
 public extension Theme.Fonts {

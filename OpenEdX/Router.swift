@@ -69,12 +69,13 @@ public class Router: AuthorizationRouter,
         let config = Container.shared.resolve(ConfigProtocol.self)!
         let persistence = Container.shared.resolve(CorePersistenceProtocol.self)!
         let coreStorage = Container.shared.resolve(CoreStorage.self)!
+        let analytics = Container.shared.resolve(WhatsNewAnalytics.self)!
 
         if let userId = coreStorage.user?.id {
             persistence.set(userId: userId)
         }
 
-        let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen)
+        let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen, analytics: analytics)
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
@@ -101,11 +102,15 @@ public class Router: AuthorizationRouter,
         guard let viewModel = Container.shared.resolve(
             SignInViewModel.self,
             argument: sourceScreen
+        ), let authAnalytics = Container.shared.resolve(
+            AuthorizationAnalytics.self
         ) else { return }
         
         let view = SignInView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
+        
+        authAnalytics.signInClicked()
     }
     
     public func showStartupScreen() {
@@ -129,10 +134,11 @@ public class Router: AuthorizationRouter,
         guard let config = Container.shared.resolve(ConfigProtocol.self),
               let storage = Container.shared.resolve(CoreStorage.self),
               let connectivity = Container.shared.resolve(ConnectivityProtocol.self),
+              let analytics = Container.shared.resolve(CoreAnalytics.self),
               connectivity.isInternetAvaliable
         else { return }
-        let vm = AppReviewViewModel(config: config, storage: storage)
-        if vm.shouldShowRatingView() {
+        let vm = AppReviewViewModel(config: config, storage: storage, analytics: analytics)
+        if true {
             presentView(
                 transitionStyle: .crossDissolve,
                 view: AppReviewView(viewModel: vm)
@@ -190,8 +196,8 @@ public class Router: AuthorizationRouter,
         }
     }
     
-    public func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {
-        present(transitionStyle: transitionStyle, view: view)
+    public func presentView(transitionStyle: UIModalTransitionStyle, view: any View, completion: (() -> Void)? = nil) {
+        present(transitionStyle: transitionStyle, view: view, completion: completion)
     }
     
     public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {
@@ -211,7 +217,7 @@ public class Router: AuthorizationRouter,
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
         
-        authAnalytics.signUpClicked()
+        authAnalytics.registerClicked()
     }
 
     public func showForgotPasswordScreen() {
@@ -314,25 +320,6 @@ public class Router: AuthorizationRouter,
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
-        let controller = getVerticalController(
-            courseID: courseID,
-            courseName: courseName,
-            title: title,
-            chapters: chapters,
-            chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
-        )
-        navigationController.pushViewController(controller, animated: true)
-    }
-    
-    public func getVerticalController(
-        courseID: String,
-        courseName: String,
-        title: String,
-        chapters: [CourseChapter],
-        chapterIndex: Int,
-        sequentialIndex: Int
-    ) -> UIHostingController<CourseVerticalView> {
         let viewModel = Container.shared.resolve(
             CourseVerticalViewModel.self,
             arguments: chapters,
@@ -346,7 +333,8 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             viewModel: viewModel
         )
-        return UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showCourseScreens(
@@ -358,27 +346,6 @@ public class Router: AuthorizationRouter,
         enrollmentEnd: Date?,
         title: String
     ) {
-        let controller = getCourseScreensController(
-            courseID: courseID,
-            isActive: isActive,
-            courseStart: courseStart,
-            courseEnd: courseEnd,
-            enrollmentStart: enrollmentStart,
-            enrollmentEnd: enrollmentEnd,
-            title: title
-        )
-        navigationController.pushViewController(controller, animated: true)
-    }
-    
-    public func getCourseScreensController(
-        courseID: String,
-        isActive: Bool?,
-        courseStart: Date?,
-        courseEnd: Date?,
-        enrollmentStart: Date?,
-        enrollmentEnd: Date?,
-        title: String
-    ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
             arguments: isActive,
@@ -393,7 +360,8 @@ public class Router: AuthorizationRouter,
             title: title
         )
         
-        return UIHostingController(rootView: screensView)
+        let controller = UIHostingController(rootView: screensView)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showHandoutsUpdatesView(
@@ -416,32 +384,12 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
+        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
-        let controller = getUnitController(
-            courseName: courseName,
-            blockId: blockId,
-            courseID: courseID,
-            verticalIndex: verticalIndex,
-            chapters: chapters,
-            chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
-        )
-        navigationController.pushViewController(controller, animated: true)
-    }
-    
-    public func getUnitController(
-        courseName: String,
-        blockId: String,
-        courseID: String,
-        verticalIndex: Int,
-        chapters: [CourseChapter],
-        chapterIndex: Int,
-        sequentialIndex: Int
-    ) -> UIHostingController<CourseUnitView> {
         let viewModel = Container.shared.resolve(
             CourseUnitViewModel.self,
             arguments: blockId,
@@ -456,36 +404,76 @@ public class Router: AuthorizationRouter,
         let config = Container.shared.resolve(ConfigProtocol.self)
         let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
 
-        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
-        return UIHostingController(rootView: view)
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showCourseComponent(
         componentID: String,
-        courseStructure: CourseStructure) {
+        courseStructure: CourseStructure,
+        blockLink: String) {
+            var courseBlock: CourseBlock?
+            var courseName: String?
+            var chapterPosition: Int?
+            var sequentialPosition: Int?
+            var verticalPosition: Int?
+            
             courseStructure.childs.enumerated().forEach { chapterIndex, chapter in
                 chapter.childs.enumerated().forEach { sequentialIndex, sequential in
                     sequential.childs.enumerated().forEach { verticalIndex, vertical in
                         vertical.childs.forEach { block in
                             if block.id == componentID {
-                                DispatchQueue.main.async { [weak self] in
-                                    guard let self else { return }
-                                    self.showCourseUnit(
-                                        courseName: courseStructure.displayName,
-                                        blockId: block.blockId,
-                                        courseID: courseStructure.id,
-                                        verticalIndex: verticalIndex,
-                                        chapters: courseStructure.childs,
-                                        chapterIndex: chapterIndex,
-                                        sequentialIndex: sequentialIndex)
-                                }
+                                courseBlock = block
+                                courseName = sequential.displayName
+                                chapterPosition = chapterIndex
+                                sequentialPosition = sequentialIndex
+                                verticalPosition = verticalIndex
                                 return
                             }
                         }
                     }
                 }
             }
+            
+            if let block = courseBlock {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.showCourseUnit(
+                        courseName: courseStructure.displayName,
+                        blockId: block.blockId,
+                        courseID: courseStructure.id,
+                        sectionName: courseName ?? "",
+                        verticalIndex: verticalPosition ?? 0,
+                        chapters: courseStructure.childs,
+                        chapterIndex: chapterPosition ?? 0,
+                        sequentialIndex: sequentialPosition ?? 0)
+                }
+            } else if !blockLink.isEmpty, let blockURL = URL(string: blockLink) {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.openBlockInBrowser(blockURL: blockURL)
+                }
+            }
         }
+    
+    private func openBlockInBrowser(blockURL: URL) {
+        presentAlert(
+            alertTitle: "",
+            alertMessage: CoreLocalization.Courseware.courseContentNotAvailable,
+            positiveAction: CoreLocalization.openInBrowser,
+            onCloseTapped: {
+                self.dismiss(animated: true)
+            },
+            okTapped: {
+                self.dismiss(animated: true)
+                if UIApplication.shared.canOpenURL(blockURL) {
+                    UIApplication.shared.open(blockURL, options: [:], completionHandler: nil)
+                }
+            },
+            type: .default(positiveAction: CoreLocalization.openInBrowser, image: nil)
+        )
+    }
 
     public func showDownloads(
         downloads: [DownloadDataTask],
@@ -500,41 +488,52 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
+        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
         animated: Bool
     ) {
-
-        let controllerUnit = getUnitController(
+        
+        let vmVertical = Container.shared.resolve(
+            CourseVerticalViewModel.self,
+            arguments: chapters,
+            chapterIndex,
+            sequentialIndex
+        )!
+        
+        let viewVertical = CourseVerticalView(
+            title: chapters[chapterIndex].childs[sequentialIndex].displayName,
             courseName: courseName,
-            blockId: blockId,
             courseID: courseID,
-            verticalIndex: verticalIndex,
-            chapters: chapters,
-            chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
+            viewModel: vmVertical
         )
+        let controllerVertical = UIHostingController(rootView: viewVertical)
+        
+        let viewModel = Container.shared.resolve(
+            CourseUnitViewModel.self,
+            arguments: blockId,
+            courseID,
+            courseName,
+            chapters,
+            chapterIndex,
+            sequentialIndex,
+            verticalIndex
+        )!
 
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
-        
+        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
+
+        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
+        let controllerUnit = UIHostingController(rootView: view)
         var controllers = navigationController.viewControllers
 
-        if isCourseNestedListEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
+        if let config = container.resolve(ConfigProtocol.self),
+            config.uiComponents.courseNestedListEnabled {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {
-            let controllerVertical = getVerticalController(
-                courseID: courseID,
-                courseName: courseName,
-                title: chapters[chapterIndex].childs[sequentialIndex].displayName,
-                chapters: chapters,
-                chapterIndex: chapterIndex,
-                sequentialIndex: sequentialIndex
-            )
-
             controllers.removeLast(2)
             controllers.append(contentsOf: [controllerVertical, controllerUnit])
         }
@@ -649,21 +648,26 @@ public class Router: AuthorizationRouter,
 
     public func showVideoDownloadQualityView(
         downloadQuality: DownloadQuality,
-        didSelect: ((DownloadQuality) -> Void)?
+        didSelect: ((DownloadQuality) -> Void)?,
+        analytics: CoreAnalytics
     ) {
         let view = VideoDownloadQualityView(
             downloadQuality: downloadQuality,
-            didSelect: didSelect
+            didSelect: didSelect,
+            analytics: analytics
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
 
-    private func present<ToPresent: View>(transitionStyle: UIModalTransitionStyle, view: ToPresent) {
+    private func present<ToPresent: View>(
+        transitionStyle: UIModalTransitionStyle,
+        view: ToPresent,
+        completion: (() -> Void)? = nil) {
         navigationController.present(
             prepareToPresent(view, transitionStyle: transitionStyle),
             animated: true,
-            completion: {}
+            completion: completion
         )
     }
     

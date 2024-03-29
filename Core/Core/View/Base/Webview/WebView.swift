@@ -5,10 +5,11 @@
 //  Created by  Stepanok Ivan on 07.10.2022.
 //
 
+import Combine
 import Foundation
-import WebKit
 import SwiftUI
 import Theme
+import WebKit
 
 public protocol WebViewNavigationDelegate: AnyObject {
     func webView(
@@ -52,13 +53,15 @@ public struct WebView: UIViewRepresentable {
     }
 
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+        var cancellables: [AnyCancellable] = []
         var parent: WebView
+        var url: URL?
 
         init(_ parent: WebView) {
             self.parent = parent
             super.init()
 
-            addObserver()
+            addObservers()
         }
 
         public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
@@ -167,34 +170,33 @@ public struct WebView: UIViewRepresentable {
             return .allow
         }
         
-        private func addObserver() {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(reload),
-                name: .webviewReloadNotification,
-                object: nil
-            )
+        private func addObservers() {
+            cancellables.removeAll()
+            NotificationCenter.default.publisher(for: .webviewReloadNotification, object: nil)
+                .sink { [weak self] _ in
+                    self?.reload()
+                }
+                .store(in: &cancellables)
+
+            NotificationCenter.default.publisher(for: UIContentSizeCategory.didChangeNotification, object: nil)
+                .sink { [weak self] _ in
+                    self?.webview?.evaluateSizeNotification()
+                }
+                .store(in: &cancellables)
         }
-        
+
         fileprivate var webview: WKWebView?
         
         @objc private func reload() {
             parent.isLoading = true
             webview?.reload()
         }
-        
-        deinit {
-            NotificationCenter.default.removeObserver(self)
-        }
 
         public func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            let messages = parent.viewModel.injections?.compactMap({$0.messages}).flatMap({$0}) ?? []
-            if let currentMessage = messages.first(where: { $0.name == message.name }) {
-                currentMessage.handler(message.body, message.webView)
-            }
+            parent.viewModel.injections?.handle(message: message)
         }
     }
 
@@ -237,31 +239,23 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        
-        for injection in viewModel.injections ?? [] {
-            let script = WKUserScript(
-                source: injection.script,
-                injectionTime: injection.injectionTime,
-                forMainFrameOnly: injection.forMainFrameOnly
-            )
-            webView.configuration.userContentController.addUserScript(script)
-            
-            for message in injection.messages ?? [] {
-                webView.configuration.userContentController.add(context.coordinator, name: message.name)
-            }
-        }
+        // To add ability to change font size with webkitTextSizeAdjust need to set mode to mobile
+        webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile
+        webView.applyInjections(viewModel.injections, toHandler: context.coordinator)
         
         webView.customUserAgent = userAgent
+        context.coordinator.url = nil
         
         return webView
     }
 
     public func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<WebView>) {
         if let url = URL(string: viewModel.url) {
-            if webview.url?.absoluteString != url.absoluteString {
+            if context.coordinator.url?.absoluteString != url.absoluteString {
                 DispatchQueue.main.async {
                     isLoading = true
                 }
+                context.coordinator.url = url
                 let request = URLRequest(url: url)
                 webview.load(request)
             }
@@ -269,7 +263,49 @@ public struct WebView: UIViewRepresentable {
     }
 
     public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
-        uiView.configuration.userContentController.removeAllUserScripts()
-        uiView.configuration.userContentController.removeAllScriptMessageHandlers()
+        uiView.clear()
+    }
+}
+
+extension WKWebView {
+    func evaluateSizeNotification() {
+        let script = """
+        function sendSizeEvent() {
+            const contentSizeEvent = new CustomEvent("UIContentSizeCategory.didChangeNotification", { bubbles: true });
+            window.dispatchEvent(contentSizeEvent);
+        }
+        sendSizeEvent();
+        """
+        evaluateJavaScript(script)
+    }
+    
+    func applyInjections(_ injections: [WebviewInjection]?, toHandler handler: WKScriptMessageHandler) {
+        for injection in injections ?? [] {
+            let script = WKUserScript(
+                source: injection.script,
+                injectionTime: injection.injectionTime,
+                forMainFrameOnly: injection.forMainFrameOnly
+            )
+            configuration.userContentController.addUserScript(script)
+            
+            for message in injection.messages ?? [] {
+                configuration.userContentController.add(handler, name: message.name)
+            }
+        }
+    }
+    
+    func clear() {
+        configuration.userContentController.removeAllUserScripts()
+        configuration.userContentController.removeAllScriptMessageHandlers()
+    }
+}
+
+extension Array where Element == WebviewInjection {
+    func handle(message: WKScriptMessage) {
+        let messages = compactMap{ $0.messages }
+            .flatMap{ $0 }
+        if let currentMessage = messages.first(where: { $0.name == message.name }) {
+            currentMessage.handler(message.body, message.webView)
+        }
     }
 }

@@ -167,7 +167,7 @@ public struct CourseUnitView: View {
             ForEach(data, id: \.offset) { index, block in
                 VStack(spacing: 0) {
                     if isDropdownActive {
-                        dropdown(block: block)
+                        videoTitle(block: block, width: reader.size.width)
                     }
                     switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
                         // MARK: YouTube
@@ -183,12 +183,13 @@ public struct CourseUnitView: View {
                                     languages: block.subtitles ?? [],
                                     isOnScreen: index == viewModel.index
                                 )
-                                .frameLimit()
+                                .frameLimit(width: reader.size.width)
+
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                             
                         } else {
@@ -212,12 +213,13 @@ public struct CourseUnitView: View {
                                     isOnScreen: index == viewModel.index
                                 )
                                 .padding(.top, 5)
-                                .frameLimit()
+                                .frameLimit(width: reader.size.width)
+
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         }
                         // MARK: Web
@@ -229,8 +231,9 @@ public struct CourseUnitView: View {
                                     injections: injections,
                                     roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
                                 )
+                                // not need to add frame limit there because we did that with injection
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         } else {
                             EmptyView()
@@ -239,13 +242,12 @@ public struct CourseUnitView: View {
                     case .unknown(let url):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                             if viewModel.connectivity.isInternetAvaliable {
-                                ScrollView(showsIndicators: false) {
-                                    UnknownView(url: url, viewModel: viewModel)
-                                    Spacer()
-                                        .frame(minHeight: 100)
-                                }
+                                UnknownView(url: url, viewModel: viewModel)
+                                    .frameLimit(width: reader.size.width)
+                                Spacer()
+                                    .frame(minHeight: 100)
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         } else {
                             EmptyView()
@@ -269,9 +271,11 @@ public struct CourseUnitView: View {
                                             Color.clear
                                         }
                                     }
-                                }.frameLimit()
+                                }
+                                //No need iPad paddings there bacause they were added
+                                //to PostsView that placed inside DiscussionView
                             } else {
-                                NoInternetView(playerStateSubject: playerStateSubject)
+                                NoInternetView()
                             }
                         } else {
                             EmptyView()
@@ -319,7 +323,7 @@ public struct CourseUnitView: View {
         return CGPoint(x: x, y: y)
     }
     
-    private func dropdown(block: CourseBlock) -> some View {
+    private func videoTitle(block: CourseBlock, width: CGFloat) -> some View {
         HStack {
             if block.type == .video {
                 let title = block.displayName
@@ -332,6 +336,7 @@ public struct CourseUnitView: View {
                 Spacer()
             }
         }
+        .frameLimit(width: width)
     }
 
     // MARK: - Course Navigation
@@ -423,7 +428,6 @@ public struct CourseUnitView: View {
             .padding(.bottom, isHorizontal ? 0 : 50)
             .padding(.top, isHorizontal ? 12 : 0)
         }
-        .frameLimit(sizePortrait: 420)
     }
 }
 
@@ -442,6 +446,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 1",
                 studentUrl: "",
+                webUrl: "",
                 encodedVideo: nil,
                 multiDevice: true
             ),
@@ -455,6 +460,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .video,
                 displayName: "Lesson 2",
                 studentUrl: "2",
+                webUrl: "2",
                 encodedVideo: nil,
                 multiDevice: false
             ),
@@ -468,6 +474,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "Lesson 3",
                 studentUrl: "3",
+                webUrl: "3",
                 encodedVideo: nil,
                 multiDevice: true
             ),
@@ -481,6 +488,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 type: .unknown,
                 displayName: "4",
                 studentUrl: "4",
+                webUrl: "4",
                 encodedVideo: nil,
                 multiDevice: false
             ),
@@ -553,7 +561,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity(), 
+            connectivity: Connectivity(),
             storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         ))
@@ -563,20 +571,23 @@ struct CourseUnitView_Previews: PreviewProvider {
 #endif
 
 struct NoInternetView: View {
-    
-    let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    
+        
     var body: some View {
         VStack(spacing: 28) {
-            Image(systemName: "wifi").resizable()
+            Spacer()
+            CoreAssets.noWifi.swiftUIImage
+                .renderingMode(.template)
+                .foregroundStyle(Color.primary)
                 .scaledToFit()
-                .frame(width: 100)
-            Text(CourseLocalization.Error.noInternet)
+            Text(CoreLocalization.Error.Internet.noInternetTitle)
+                            .font(Theme.Fonts.titleLarge)
+                            .foregroundColor(Theme.Colors.textPrimary)
+            Text(CoreLocalization.Error.Internet.noInternetDescription)
+                .font(Theme.Fonts.bodyLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-            UnitButtonView(type: .reload, action: {
-                playerStateSubject.send(VideoPlayerState.kill)
-            }).frame(width: 100)
+                .padding(.horizontal, 50)
+            Spacer()
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

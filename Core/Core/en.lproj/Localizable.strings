@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Core
 
@@ -22,15 +22,18 @@
 "ERROR.WIFI" = "You can only download files over Wi-Fi. You can change this in the settings.";
 "ERROR.AUTHORIZATION_FAILED" = "Authorization failed.";
 
+"ERROR.INTERNET.NO_INTERNET_TITLE" = "No internet connection";
+"ERROR.INTERNET.NO_INTERNET_DESCRIPTION" = "Please connect to the internet to view this content.";
+
 "COURSEWARE.COURSE_CONTENT" = "Course content";
+"COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE" = "This interactive component isn't yet available on mobile.";
 "COURSEWARE.COURSE_UNITS" = "Course units";
 "COURSEWARE.NEXT" = "Next";
 "COURSEWARE.PREVIOUS" = "Prev";
 "COURSEWARE.FINISH" = "Finish";
-"COURSEWARE.GOOD_WORK" = "Good Work!";
+"COURSEWARE.GOOD_WORK" = "Good job!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";
-"COURSEWARE.SECTION" = "Section “";
-"COURSEWARE.IS_FINISHED" = "“ is finished.";
+"COURSEWARE.SECTION_COMPLETED" = "You've completed “%@”.";
 "COURSEWARE.CONTINUE" = "Continue";
 "COURSEWARE.RESUME" = "Resume";
 "COURSEWARE.RESUME_WITH" = "Resume with:";
@@ -52,6 +55,9 @@
 "ALERT.LEAVE" = "Leave";
 "ALERT.KEEP_EDITING" = "Keep editing";
 "ALERT.DELETE" = "DELETE";
+"ALERT.ADD" = "Add";
+"ALERT.REMOVE" = "Remove";
+"ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR"="Remove course calendar";
 
 "NO_INTERNET.OFFLINE" = "Offline";
 "NO_INTERNET.DISMISS" = "Dismiss";
@@ -102,7 +108,9 @@
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 
 "SIGN_IN.LOG_IN_BTN" = "Sign in";
-"SIGN_IN.REGISTER_BTN" = "Register";
+"REGISTER" = "Register";
 
 "TOMORROW" = "Tomorrow";
 "YESTERDAY" = "Yesterday";
+
+"OPEN_IN_BROWSER"="View in Safari";

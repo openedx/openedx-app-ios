@@ -52,6 +52,8 @@ public enum DiscoveryLocalization {
     public static let enrollNow = DiscoveryLocalization.tr("Localizable", "DETAILS.ENROLL_NOW", fallback: "Enroll now")
     /// You cannot enroll in this course because the enrollment date is over.
     public static let enrollmentDateIsOver = DiscoveryLocalization.tr("Localizable", "DETAILS.ENROLLMENT_DATE_IS_OVER", fallback: "You cannot enroll in this course because the enrollment date is over.")
+    /// To enroll in this course, please make sure you are connected to the internet.
+    public static let enrollmentNoInternet = DiscoveryLocalization.tr("Localizable", "DETAILS.ENROLLMENT_NO_INTERNET", fallback: "To enroll in this course, please make sure you are connected to the internet.")
     /// Course details
     public static let title = DiscoveryLocalization.tr("Localizable", "DETAILS.TITLE", fallback: "Course details")
     /// View course
