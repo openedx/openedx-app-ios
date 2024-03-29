@@ -171,7 +171,7 @@ public struct CourseUnitView: View {
                     switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
                         // MARK: YouTube
                     case let .youtube(url, blockID):
-                        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+                        if index == viewModel.index {
                             if viewModel.connectivity.isInternetAvaliable {
                                 YouTubeView(
                                     name: block.displayName,
