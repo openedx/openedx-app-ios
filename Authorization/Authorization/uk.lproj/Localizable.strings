@@ -7,6 +7,7 @@
 */
 
 "SIGN_IN.LOG_IN_TITLE" = "Увійти";
+"SIGN_IN.WELCOME_BACK" = "Welcome back! Sign in to access your courses.";
 "SIGN_IN.EMAIL" = "Пошта";
 "SIGN_IN.PASSWORD" = "Пароль";
 "SIGN_IN.FORGOT_PASS_BTN" = "Забули пароль?";
@@ -18,6 +19,7 @@ accordance with the [Privacy Policy.](%@)";
 "ERROR.ACCOUNT_NOT_REGISTERED" = "This %@ account is not linked with any %@ account. Please register.";
 "ERROR.DISABLED_ACCOUNT" = "Your account is disabled. Please contact customer support for assistance.";
 
+"SIGN_UP.SUBTITLE" = "Create an account to start learning today!";
 "SIGN_UP.CREATE_ACCOUNT_BTN" = "Створити акаунт";
 "SIGN_UP.HIDE_FIELDS" = "Приховати необовʼязкові поля";
 "SIGN_UP.SHOW_FIELDS" = "Показати необовʼязкові поля";

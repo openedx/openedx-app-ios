@@ -68,7 +68,12 @@ public struct SignUpView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
                                     .accessibilityIdentifier("signup_text")
-
+                                Text(AuthLocalization.SignUp.subtitle)
+                                    .font(Theme.Fonts.titleSmall)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .padding(.bottom, 20)
+                                    .accessibilityIdentifier("signup_subtitle_text")
+                                
                                 if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)

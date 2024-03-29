@@ -65,7 +65,11 @@ public struct SignInView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
                                     .accessibilityIdentifier("signin_text")
-                                
+                                Text(AuthLocalization.SignIn.welcomeBack)
+                                    .font(Theme.Fonts.titleSmall)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .padding(.bottom, 20)
+                                    .accessibilityIdentifier("welcome_back_text")
                                 Text(AuthLocalization.SignIn.emailOrUsername)
                                     .font(Theme.Fonts.labelLarge)
                                     .foregroundColor(Theme.Colors.textPrimary)

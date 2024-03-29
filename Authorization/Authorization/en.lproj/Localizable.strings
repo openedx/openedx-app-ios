@@ -7,6 +7,7 @@
 */
 
 "SIGN_IN.LOG_IN_TITLE" = "Sign in";
+"SIGN_IN.WELCOME_BACK" = "Welcome back! Sign in to access your courses.";
 "SIGN_IN.EMAIL" = "Email";
 "SIGN_IN.EMAIL_OR_USERNAME" = "Email or username";
 "SIGN_IN.PASSWORD" = "Password";
@@ -21,6 +22,7 @@ accordance with the [Privacy Policy.](%@)";
 "ERROR.INVALID_EMAIL_ADDRESS_OR_USERNAME" = "Invalid email or username";
 "ERROR.DISABLED_ACCOUNT" = "Your account is disabled. Please contact customer support for assistance.";
 
+"SIGN_UP.SUBTITLE" = "Create an account to start learning today!";
 "SIGN_UP.CREATE_ACCOUNT_BTN" = "Create account";
 "SIGN_UP.HIDE_FIELDS" = "Hide optional Fields";
 "SIGN_UP.SHOW_FIELDS" = "Show optional Fields";
