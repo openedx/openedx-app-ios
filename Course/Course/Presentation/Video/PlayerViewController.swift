@@ -97,11 +97,12 @@ struct PlayerViewController: UIViewControllerRepresentable {
         }
         
         func setPlayer(_ player: AVPlayer?, currentProgress: @escaping ((Float, Double) -> Void)) {
-            guard let player = player else { return }
             cancellations.removeAll()
             if let observer = observer {
                 currentPlayer?.removeTimeObserver(observer)
-                currentPlayer?.pause()
+                if currentHolder?.isPlayingInPip == false {
+                    currentPlayer?.pause()
+                }
             }
             
             let interval = CMTime(
@@ -109,7 +110,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
                 preferredTimescale: CMTimeScale(NSEC_PER_SEC)
             )
             
-            observer = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) {[weak player] time in
+            observer = player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) {[weak player] time in
                 var progress: Float = .zero
                 let currentSeconds = CMTimeGetSeconds(time)
                 guard let duration = player?.currentItem?.duration else { return }
@@ -118,7 +119,7 @@ struct PlayerViewController: UIViewControllerRepresentable {
                 currentProgress(progress, currentSeconds)
             }
             
-            player.publisher(for: \.rate)
+            player?.publisher(for: \.rate)
                 .sink {[weak self] rate in
                     guard rate > 0 else { return }
                     self?.currentHolder?.pausePipIfNeed()

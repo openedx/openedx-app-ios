@@ -119,7 +119,7 @@ public struct CourseUnitView: View {
                     offsetY: isHorizontal ? landscapeTopSpacing : portraitTopSpacing,
                     showDropdown: $showDropdown
                 ) { [weak viewModel] vertical in
-                    let data = viewModel?.dataFor(blockId: vertical.childs.first?.id)
+                    let data = VerticalData.dataFor(blockId: vertical.childs.first?.id, in: viewModel?.chapters ?? [])
                     viewModel?.route(to: data)
                     playerStateSubject.send(VideoPlayerState.kill)
                 }

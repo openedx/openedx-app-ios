@@ -133,21 +133,16 @@ public class PipManager: PipManagerProtocol {
         if holder.selectedCourseTab == CourseTab.videos.rawValue {
             courseStructure = courseInteractor.getCourseVideoBlocks(fullStructure: courseStructure)
         }
-        for (chapterIndex, chapter) in courseStructure.childs.enumerated() {
-            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
-                for (verticalIndex, vertical) in sequential.childs.enumerated() {
-                    for block in vertical.childs where block.id == holder.blockID {
-                        return router.getVerticalController(
-                            courseID: holder.courseID,
-                            courseName: courseStructure.displayName,
-                            title: courseStructure.childs[chapterIndex].childs[sequentialIndex].displayName,
-                            chapters: courseStructure.childs,
-                            chapterIndex: chapterIndex,
-                            sequentialIndex: sequentialIndex
-                        )
-                    }
-                }
-            }
+        
+        if let data = VerticalData.dataFor(blockId: holder.blockID, in: courseStructure.childs) {
+            return router.getVerticalController(
+                courseID: holder.courseID,
+                courseName: courseStructure.displayName,
+                title: courseStructure.childs[data.chapterIndex].childs[data.sequentialIndex].displayName,
+                chapters: courseStructure.childs,
+                chapterIndex: data.chapterIndex,
+                sequentialIndex: data.sequentialIndex
+            )
         }
        
         throw PipManagerError.cantCreateCourseVerticalView
@@ -162,22 +157,20 @@ public class PipManager: PipManagerProtocol {
         if holder.selectedCourseTab == CourseTab.videos.rawValue {
             courseStructure = courseInteractor.getCourseVideoBlocks(fullStructure: courseStructure)
         }
-        for (chapterIndex, chapter) in courseStructure.childs.enumerated() {
-            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
-                for (verticalIndex, vertical) in sequential.childs.enumerated() {
-                    for block in vertical.childs where block.id == holder.blockID {
-                        return router.getUnitController(
-                            courseName: courseStructure.displayName,
-                            blockId: block.blockId,
-                            courseID: courseStructure.id,
-                            verticalIndex: verticalIndex,
-                            chapters: courseStructure.childs,
-                            chapterIndex: chapterIndex,
-                            sequentialIndex: sequentialIndex
-                        )
-                    }
-                }
-            }
+        if let data = VerticalData.dataFor(blockId: holder.blockID, in: courseStructure.childs) {
+            let chapter = courseStructure.childs[data.chapterIndex]
+            let sequential = chapter.childs[data.sequentialIndex]
+            let vertical = sequential.childs[data.verticalIndex]
+            let block = vertical.childs[data.blockIndex]
+            return router.getUnitController(
+                courseName: courseStructure.displayName,
+                blockId: block.id,
+                courseID: courseStructure.id,
+                verticalIndex: data.verticalIndex,
+                chapters: courseStructure.childs,
+                chapterIndex: data.chapterIndex,
+                sequentialIndex: data.sequentialIndex
+            )
         }
        
         throw PipManagerError.cantCreateCourseUnitView

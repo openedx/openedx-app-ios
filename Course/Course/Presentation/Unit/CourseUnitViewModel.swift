@@ -54,18 +54,44 @@ public enum LessonType: Equatable {
     }
 }
 
+public struct VerticalData: Equatable {
+    public var chapterIndex: Int
+    public var sequentialIndex: Int
+    public var verticalIndex: Int
+    public var blockIndex: Int
+    
+    public init(chapterIndex: Int, sequentialIndex: Int, verticalIndex: Int, blockIndex: Int) {
+        self.chapterIndex = chapterIndex
+        self.sequentialIndex = sequentialIndex
+        self.verticalIndex = verticalIndex
+        self.blockIndex = blockIndex
+    }
+    
+    public static func dataFor(blockId: String?, in chapters: [CourseChapter]) -> VerticalData? {
+        guard let blockId = blockId else { return nil }
+        for (chapterIndex, chapter) in chapters.enumerated() {
+            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
+                for (verticalIndex, vertical) in sequential.childs.enumerated() {
+                    for (blockIndex, block) in vertical.childs.enumerated() where block.id.contains(blockId) {
+                        return VerticalData(
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex,
+                            verticalIndex: verticalIndex,
+                            blockIndex: blockIndex
+                        )
+                    }
+                }
+            }
+        }
+        return nil
+    }
+}
+
 public class CourseUnitViewModel: ObservableObject {
     
     enum LessonAction {
         case next
         case previous
-    }
-
-    struct VerticalData: Equatable {
-        var chapterIndex: Int
-        var sequentialIndex: Int
-        var verticalIndex: Int
-        var blockIndex: Int
     }
 
     var verticals: [CourseVertical]
@@ -310,7 +336,7 @@ public class CourseUnitViewModel: ObservableObject {
                   let block = blockFor(index: data.blockIndex, in: vertical) {
             router.replaceCourseUnit(
                 courseName: courseName,
-                blockId: block.id,
+                blockId: block.blockId,
                 courseID: courseID,
                 verticalIndex: data.verticalIndex,
                 chapters: chapters,
@@ -322,27 +348,8 @@ public class CourseUnitViewModel: ObservableObject {
     }
     
     public func route(to blockId: String?) {
-        guard let data = dataFor(blockId: blockId) else { return }
+        guard let data = VerticalData.dataFor(blockId: blockId, in: chapters) else { return }
         route(to: data, animated: true)
-    }
-    
-    func dataFor(blockId: String?) -> VerticalData? {
-        guard let blockId = blockId else { return nil }
-        for (chapterIndex, chapter) in chapters.enumerated() {
-            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
-                for (verticalIndex, vertical) in sequential.childs.enumerated() {
-                    for (blockIndex, block) in vertical.childs.enumerated() where block.id.contains(blockId) {
-                        return VerticalData(
-                            chapterIndex: chapterIndex,
-                            sequentialIndex: sequentialIndex,
-                            verticalIndex: verticalIndex,
-                            blockIndex: blockIndex
-                        )
-                    }
-                }
-            }
-        }
-        return nil
     }
     
     public var currentCourseId: String {

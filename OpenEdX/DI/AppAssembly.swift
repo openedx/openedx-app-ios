@@ -127,10 +127,6 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
-        container.register(DeepLinkRouter.self) { r in
-            r.resolve(Router.self)!
-        }.inObjectScope(.container)
-        
         container.register(ConfigProtocol.self) { _ in
             Config()
         }.inObjectScope(.container)
