@@ -139,5 +139,12 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 self.isLoading = false
             }
         }).store(in: &subscription)
+        
+        pipManager.pipRatePublisher()?
+            .sink {[weak self] rate in
+                guard rate > 0 else { return }
+                self?.youtubePlayer.pause()
+            }
+            .store(in: &subscription)
     }
 }

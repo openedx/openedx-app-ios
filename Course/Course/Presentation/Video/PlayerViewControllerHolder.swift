@@ -16,6 +16,7 @@ public protocol PipManagerProtocol {
     func set(holder: PlayerViewControllerHolder)
     func remove(holder: PlayerViewControllerHolder)
     func restore(holder: PlayerViewControllerHolder) async throws
+    func pipRatePublisher() -> AnyPublisher<Float, Never>?
     func pauseCurrentPipVideo()
 }
 
@@ -37,6 +38,7 @@ public class PipManagerProtocolMock: PipManagerProtocol {
     public func set(holder: PlayerViewControllerHolder) {}
     public func remove(holder: PlayerViewControllerHolder) {}
     public func restore(holder: PlayerViewControllerHolder) async throws {}
+    public func pipRatePublisher() -> AnyPublisher<Float, Never>? { nil }
     public func pauseCurrentPipVideo() {}
 }
 #endif
@@ -56,15 +58,15 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         )
         return holder == nil && pipManager.isPipActive
     }
-
+    
     private let pipManager: PipManagerProtocol
-
+    
     public lazy var playerController: AVPlayerViewController = {
         let playerController = AVPlayerViewController()
         playerController.delegate = self
         return playerController
     }()
-
+    
     public init(
         url: URL?,
         blockID: String,
@@ -77,12 +79,12 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         self.selectedCourseTab = selectedCourseTab
         self.pipManager = Container.shared.resolve(PipManagerProtocol.self)!
     }
-
+    
     public func playerViewControllerWillStartPictureInPicture(_ playerViewController: AVPlayerViewController) {
         isPlayingInPip = true
         pipManager.set(holder: self)
     }
-
+    
     public func playerViewController(
         _ playerViewController: AVPlayerViewController,
         failedToStartPictureInPictureWithError error: any Error
@@ -95,7 +97,7 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         isPlayingInPip = false
         pipManager.remove(holder: self)
     }
-
+    
     public func playerViewControllerRestoreUserInterfaceForPictureInPictureStop(
         _ playerViewController: AVPlayerViewController
     ) async -> Bool {
@@ -121,5 +123,9 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         if !isPlayingInPip {
             pipManager.pauseCurrentPipVideo()
         }
+    }
+    
+    public func pipRatePublisher() -> AnyPublisher<Float, Never>? {
+        pipManager.pipRatePublisher()
     }
 }

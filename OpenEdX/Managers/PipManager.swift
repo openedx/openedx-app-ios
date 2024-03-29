@@ -6,6 +6,7 @@
 //
 
 import Course
+import Combine
 import Discovery
 import SwiftUI
 
@@ -18,6 +19,9 @@ public class PipManager: PipManagerProtocol {
     public var isPipActive: Bool {
         controllerHolder != nil
     }
+    
+    private var ratePublisher: PassthroughSubject<Float, Never>?
+    private var cancellations: [AnyCancellable] = []
     
     public init(
         router: Router,
@@ -48,13 +52,26 @@ public class PipManager: PipManagerProtocol {
     
     public func set(holder: PlayerViewControllerHolder) {
         controllerHolder = holder
-        print("ALARM \(holder.playerController.player)")
+        ratePublisher = PassthroughSubject<Float, Never>()
+        cancellations.removeAll()
+        holder.playerController.player?.publisher(for: \.rate)
+            .sink { [weak self] rate in
+                self?.ratePublisher?.send(rate)
+            }
+            .store(in: &cancellations)
     }
     
     public func remove(holder: PlayerViewControllerHolder) {
         if controllerHolder == holder {
             controllerHolder = nil
+            cancellations.removeAll()
+            ratePublisher = nil
         }
+    }
+    
+    public func pipRatePublisher() -> AnyPublisher<Float, Never>? {
+        ratePublisher?
+            .eraseToAnyPublisher()
     }
     
     @MainActor

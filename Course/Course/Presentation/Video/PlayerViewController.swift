@@ -124,7 +124,15 @@ struct PlayerViewController: UIViewControllerRepresentable {
                     self?.currentHolder?.pausePipIfNeed()
                 }
                 .store(in: &cancellations)
-                        
+            currentHolder?.pipRatePublisher()?
+                .sink {[weak self] rate in
+                    guard rate > 0 else { return }
+                    if self?.currentHolder?.isPlayingInPip == false {
+                        self?.currentPlayer?.pause()
+                    }
+                }
+                .store(in: &cancellations)
+
             currentPlayer = player
             
         }
