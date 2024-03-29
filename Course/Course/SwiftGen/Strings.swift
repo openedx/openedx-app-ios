@@ -41,18 +41,18 @@ public enum CourseLocalization {
     public static let courseUnits = CourseLocalization.tr("Localizable", "COURSEWARE.COURSE_UNITS", fallback: "Course units")
     /// Finish
     public static let finish = CourseLocalization.tr("Localizable", "COURSEWARE.FINISH", fallback: "Finish")
-    /// Good Work!
-    public static let goodWork = CourseLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good Work!")
-    /// “ is finished.
-    public static let isFinished = CourseLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“ is finished.")
+    /// Good job!
+    public static let goodWork = CourseLocalization.tr("Localizable", "COURSEWARE.GOOD_WORK", fallback: "Good job!")
+    /// “.
+    public static let isFinished = CourseLocalization.tr("Localizable", "COURSEWARE.IS_FINISHED", fallback: "“.")
     /// Next
     public static let next = CourseLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Prev
     public static let previous = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Prev")
     /// Resume with:
     public static let resumeWith = CourseLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
-    /// Section “
-    public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "Section “")
+    /// You've completed “
+    public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
   public enum CourseContainer {
     /// Course
@@ -61,8 +61,8 @@ public enum CourseLocalization {
     public static let dates = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DATES", fallback: "Dates")
     /// Discussions
     public static let discussions = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DISCUSSIONS", fallback: "Discussions")
-    /// Handouts
-    public static let handouts = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HANDOUTS", fallback: "Handouts")
+    /// More
+    public static let handouts = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HANDOUTS", fallback: "More")
     /// Handouts In developing
     public static let handoutsInDeveloping = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING", fallback: "Handouts In developing")
     /// Videos
@@ -231,8 +231,8 @@ public enum CourseLocalization {
     public static let button = CourseLocalization.tr("Localizable", "NOT_AVALIABLE.BUTTON", fallback: "Open in browser")
     /// Explore other parts of this course or view this on web.
     public static let description = CourseLocalization.tr("Localizable", "NOT_AVALIABLE.DESCRIPTION", fallback: "Explore other parts of this course or view this on web.")
-    /// This interactive component isn’t yet available
-    public static let title = CourseLocalization.tr("Localizable", "NOT_AVALIABLE.TITLE", fallback: "This interactive component isn’t yet available")
+    /// This interactive component isn't available on mobile
+    public static let title = CourseLocalization.tr("Localizable", "NOT_AVALIABLE.TITLE", fallback: "This interactive component isn't available on mobile")
   }
   public enum Outline {
     /// Certificate
@@ -246,8 +246,8 @@ public enum CourseLocalization {
     public static let courseHasntStarted = CourseLocalization.tr("Localizable", "OUTLINE.COURSE_HASNT_STARTED", fallback: "This course hasn't started yet.")
     /// Course videos
     public static let courseVideos = CourseLocalization.tr("Localizable", "OUTLINE.COURSE_VIDEOS", fallback: "Course videos")
-    /// You've passed the course
-    public static let passedTheCourse = CourseLocalization.tr("Localizable", "OUTLINE.PASSED_THE_COURSE", fallback: "You've passed the course")
+    /// You’ve completed the course
+    public static let passedTheCourse = CourseLocalization.tr("Localizable", "OUTLINE.PASSED_THE_COURSE", fallback: "You’ve completed the course")
     /// View certificate
     public static let viewCertificate = CourseLocalization.tr("Localizable", "OUTLINE.VIEW_CERTIFICATE", fallback: "View certificate")
   }

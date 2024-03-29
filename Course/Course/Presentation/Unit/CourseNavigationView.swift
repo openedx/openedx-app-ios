@@ -91,8 +91,7 @@ struct CourseNavigationView: View {
                 
                 viewModel.router.presentAlert(
                     alertTitle: CourseLocalization.Courseware.goodWork,
-                    alertMessage: (CourseLocalization.Courseware.section
-                                   + currentVertical.displayName + CourseLocalization.Courseware.isFinished),
+                    alertMessage: (CoreLocalization.Courseware.sectionCompleted(currentVertical.displayName)),
                     nextSectionName: {
                         if let data = viewModel.nextData,
                            let vertical = viewModel.vertical(for: data) {

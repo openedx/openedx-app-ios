@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "_93_Door_Exit_Logout_Out.svg",
+      "filename" : "logOut_lighttheme.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "_93_Door_Exit_Logout_Out-2.svg",
+      "filename" : "logOut_darktheme.svg",
       "idiom" : "universal"
     }
   ],

@@ -175,6 +175,7 @@ public struct EditProfileView: View {
                         HStack(alignment: .top, spacing: 6) {
                             CoreAssets.alarm.swiftUIImage.renderingMode(.template)
                             Text(viewModel.alertMessage ?? "")
+                                .font(Theme.Fonts.labelLarge)
                         }.shadowCardStyle(bgColor: Theme.Colors.warning,
                                           textColor: .black)
                         .transition(.move(edge: .bottom))

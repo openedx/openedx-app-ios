@@ -70,6 +70,7 @@ public enum ThemeAssets {
   public static let toggleSwitchColor = ColorAsset(name: "ToggleSwitchColor")
   public static let navigationBarTintColor = ColorAsset(name: "navigationBarTintColor")
   public static let warning = ColorAsset(name: "warning")
+  public static let warningText = ColorAsset(name: "warningText")
   public static let white = ColorAsset(name: "white")
   public static let appLogo = ImageAsset(name: "appLogo")
 }

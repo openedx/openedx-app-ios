@@ -43,16 +43,16 @@ public struct DashboardView: View {
                         await viewModel.getMyCourses(page: 1, refresh: true)
                     }) {
                         Group {
-                            if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
-                                EmptyPageIcon()
-                            } else {
-                                LazyVStack(spacing: 0) {
-                                    HStack {
-                                        dashboardCourses
-                                            .padding(.horizontal, 20)
-                                            .padding(.bottom, 20)
-                                        Spacer()
-                                    }.padding(.leading, 10)
+                            LazyVStack(spacing: 0) {
+                                HStack {
+                                    dashboardCourses
+                                        .padding(.horizontal, 20)
+                                        .padding(.bottom, 20)
+                                    Spacer()
+                                }.padding(.leading, 10)
+                                if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
+                                    EmptyPageIcon()
+                                } else {
                                     ForEach(Array(viewModel.courses.enumerated()),
                                             id: \.offset) { index, course in
                                         
@@ -164,11 +164,6 @@ struct EmptyPageIcon: View {
             CoreAssets.dashboardEmptyPage.swiftUIImage
                 .padding(.bottom, 16)
                 .accessibilityIdentifier("empty_page_image")
-            Text(DashboardLocalization.Empty.title)
-                .font(Theme.Fonts.titleMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .padding(.bottom, 8)
-                .accessibilityIdentifier("empty_page_title_text")
             Text(DashboardLocalization.Empty.subtitle)
                 .font(Theme.Fonts.bodySmall)
                 .foregroundColor(Theme.Colors.textSecondary)

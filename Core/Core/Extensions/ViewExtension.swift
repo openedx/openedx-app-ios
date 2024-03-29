@@ -14,13 +14,14 @@ public extension View {
     func cardStyle(
         top: CGFloat? = 0,
         bottom: CGFloat? = 0,
+        paddingAll: CGFloat? = 20,
         leftLineEnabled: Bool = false,
         bgColor: Color = Theme.Colors.background,
         strokeColor: Color = Theme.Colors.cardViewStroke,
         textColor: Color = Theme.Colors.textPrimary
     ) -> some View {
         return self
-            .padding(.all, 20)
+            .padding(.all, paddingAll)
             .padding(.vertical, leftLineEnabled ? 0 : 6)
             .font(Theme.Fonts.titleMedium)
             .frame(minWidth: 0,
