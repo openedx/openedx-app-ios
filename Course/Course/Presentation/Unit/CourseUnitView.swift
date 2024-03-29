@@ -121,6 +121,7 @@ public struct CourseUnitView: View {
                 ) { [weak viewModel] vertical in
                     let data = viewModel?.dataFor(blockId: vertical.childs.first?.id)
                     viewModel?.route(to: data)
+                    playerStateSubject.send(VideoPlayerState.kill)
                 }
             }
         }
