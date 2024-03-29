@@ -25,6 +25,11 @@ public protocol DeepLinkRouter: BaseRouter {
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
     )
+    func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure,
+        blockLink: String
+    )
     func showAnnouncement(
         courseDetails: CourseDetails,
         updates: [CourseUpdate]
@@ -325,6 +330,11 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
         link: DeepLink,
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
+    ) {}
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure,
+        blockLink: String
     ) {}
     public func showAnnouncement(
         courseDetails: CourseDetails,

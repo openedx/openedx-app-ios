@@ -204,6 +204,19 @@ public class DeepLinkManager {
             router.showTabScreen(tab: .profile)
         case .userProfile:
             await showEditProfile()
+        case .courseComponent:
+            guard let courseID = link.courseID else { return }
+            do {
+                let courseStructure = try await courseInteractor.getLoadedCourseBlocks(courseID: courseID)
+                router.showCourseComponent(
+                    componentID: link.componentID ?? "",
+                    courseStructure: courseStructure,
+                    blockLink: ""
+                )
+                router.showTabScreen(tab: .dashboard)
+            } catch {
+                router.dismissProgress()
+            }
         default:
             break
         }
