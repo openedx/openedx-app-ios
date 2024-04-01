@@ -253,7 +253,7 @@ struct ResponsesView_Previews: PreviewProvider {
             commentID: "",
             viewModel: viewModel,
             router: router,
-            parentComment: post, 
+            parentComment: post,
             isBlackedOut: false
         )
         .loadFonts()
@@ -264,7 +264,7 @@ struct ResponsesView_Previews: PreviewProvider {
             commentID: "",
             viewModel: viewModel,
             router: router,
-            parentComment: post, 
+            parentComment: post,
             isBlackedOut: false
         )
         .loadFonts()

@@ -17,8 +17,8 @@ public struct DiscussionInfo {
         }
         var isBlackedOut = false
         for blackout in blackouts {
-            let start = Date(iso8601:  blackout.start)
-            let end = Date(iso8601:  blackout.end)
+            let start = Date(iso8601: blackout.start)
+            let end = Date(iso8601: blackout.end)
 
             if Date().isEarlierThanOrEqualTo(date: end) &&
                 Date().isLaterThanOrEqualTo(date: start) {
