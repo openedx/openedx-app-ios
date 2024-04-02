@@ -126,7 +126,8 @@ extension Router: DeepLinkRouter {
             .discussions,
             .courseHandout,
             .courseAnnouncement,
-            .courseDashboard:
+            .courseDashboard,
+            .courseComponent:
             popToCourseContainerView(animated: false)
         default:
             break
@@ -138,7 +139,7 @@ extension Router: DeepLinkRouter {
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.course.rawValue
             case .courseVideos:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
-            case .courseDates:
+            case .courseDates, .courseComponent:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
             case .discussions, .discussionTopic, .discussionPost, .discussionComment:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.discussion.rawValue
