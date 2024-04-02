@@ -15,10 +15,20 @@ public struct DiscussionTopicsView: View {
     @StateObject private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
+    @Binding private var coordinate: CGFloat
+    @Binding private var collapsed: Bool
     
-    public init(courseID: String, viewModel: DiscussionTopicsViewModel, router: DiscussionRouter) {
+    public init(
+        courseID: String,
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
+        viewModel: DiscussionTopicsViewModel,
+        router: DiscussionRouter
+    ) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
+        self._coordinate = coordinate
+        self._collapsed = collapsed
         self.router = router
     }
     
@@ -26,6 +36,7 @@ public struct DiscussionTopicsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
                 VStack(alignment: .center) {
+                    ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                     // MARK: - Search fake field
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
@@ -179,7 +190,9 @@ struct DiscussionView_Previews: PreviewProvider {
             config: ConfigMock())
         let router = DiscussionRouterMock()
         
-        DiscussionTopicsView(courseID: "",
+        DiscussionTopicsView(courseID: "", 
+                             coordinate: .constant(0),
+                             collapsed: .constant(false),
                              viewModel: vm,
                              router: router)
         .preferredColorScheme(.light)
@@ -187,6 +200,8 @@ struct DiscussionView_Previews: PreviewProvider {
         .loadFonts()
         
         DiscussionTopicsView(courseID: "",
+                             coordinate: .constant(0),
+                             collapsed: .constant(false),
                              viewModel: vm,
                              router: router)
         .preferredColorScheme(.dark)

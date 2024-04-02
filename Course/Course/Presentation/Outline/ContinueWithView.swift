@@ -40,7 +40,6 @@ struct ContinueWithView: View {
                         UnitButtonView(type: .continueLesson, action: action)
                             .frame(width: 200)
                     } .padding(.horizontal, 24)
-                        .padding(.top, 32)
                 } else {
                     VStack(alignment: .leading) {
                         ContinueTitle(vertical: courseContinueUnit)
@@ -49,7 +48,6 @@ struct ContinueWithView: View {
                     UnitButtonView(type: .continueLesson, action: action)
                 }
         }.padding(.horizontal, 24)
-            .padding(.top, 32)
     }
 }
 

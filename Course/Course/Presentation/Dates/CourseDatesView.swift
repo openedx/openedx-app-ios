@@ -16,18 +16,25 @@ public struct CourseDatesView: View {
     
     @StateObject
     private var viewModel: CourseDatesViewModel
-    
+    @Binding private var coordinate: CGFloat
+    @Binding private var collapsed: Bool
+
     public init(
         courseID: String,
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
         viewModel: CourseDatesViewModel
     ) {
         self.courseID = courseID
+        self._coordinate = coordinate
+        self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
         ZStack {
             VStack(alignment: .center) {
+                ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                 if viewModel.isShowProgress {
                     HStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
@@ -490,6 +497,8 @@ struct CourseDatesView_Previews: PreviewProvider {
         
         CourseDatesView(
             courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
             viewModel: viewModel)
     }
 }

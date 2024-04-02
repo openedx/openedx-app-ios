@@ -25,6 +25,8 @@ public struct CourseOutlineView: View {
     @State private var showingVideoDownloadQuality: Bool = false
     @State private var showingNoWifiMessage: Bool = false
     @Binding private var selection: Int
+    @Binding private var coordinate: CGFloat
+    @Binding private var collapsed: Bool
 
     public init(
         viewModel: CourseContainerViewModel,
@@ -32,6 +34,8 @@ public struct CourseOutlineView: View {
         courseID: String,
         isVideo: Bool,
         selection: Binding<Int>,
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
         dateTabIndex: Int
     ) {
         self.title = title
@@ -39,6 +43,8 @@ public struct CourseOutlineView: View {
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection
+        self._coordinate = coordinate
+        self._collapsed = collapsed
         self.dateTabIndex = dateTabIndex
     }
     
@@ -58,6 +64,7 @@ public struct CourseOutlineView: View {
                             }
                         }
                     }) {
+                        ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                         VStack(alignment: .leading) {
                             if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
                                courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
@@ -70,10 +77,7 @@ public struct CourseOutlineView: View {
                                     screen: .courseDashbaord
                                 )
                                 .padding(.horizontal, 16)
-                                .padding(.top, 16)
-                            }
-                            if viewModel.config.uiComponents.courseBannerEnabled {
-                                courseBanner(proxy: proxy)
+//                                .padding(.top, 16)
                             }
 
                             downloadQualityBars
@@ -150,7 +154,7 @@ public struct CourseOutlineView: View {
                         viewModel.router.back()
                     }
                 }
-                .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
+//                .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
                 .accessibilityAction {}
 
                 if viewModel.dueDatesShifted && !isVideo {
@@ -274,15 +278,15 @@ public struct CourseOutlineView: View {
 
     private func courseBanner(proxy: GeometryProxy) -> some View {
         ZStack {
-            // MARK: - Course Banner
-            if let banner = viewModel.courseStructure?.media.image.raw
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
-                    .onFailureImage(CoreAssets.noCourseImage.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
-            }
+//            // MARK: - Course Banner
+//            if let banner = viewModel.courseStructure?.media.image.raw
+//                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+//                KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+//                    .onFailureImage(CoreAssets.noCourseImage.image)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fill)
+//                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+//            }
 
             // MARK: - Course Certificate
             if let certificate = viewModel.courseStructure?.certificate {
@@ -366,7 +370,9 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 title: "Course title",
                 courseID: "",
                 isVideo: false,
-                selection: $selection,
+                selection: $selection, 
+                coordinate: .constant(0),
+                collapsed: .constant(false),
                 dateTabIndex: 2
             )
             .preferredColorScheme(.light)
@@ -378,6 +384,8 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 courseID: "",
                 isVideo: false,
                 selection: $selection,
+                coordinate: .constant(0),
+                collapsed: .constant(false),
                 dateTabIndex: 2
             )
             .preferredColorScheme(.dark)

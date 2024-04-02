@@ -105,7 +105,8 @@ extension Router: DeepLinkRouter {
                     courseEnd: courseDetails.courseEnd,
                     enrollmentStart: courseDetails.enrollmentStart,
                     enrollmentEnd: courseDetails.enrollmentEnd,
-                    title: courseDetails.courseTitle
+                    title: courseDetails.courseTitle,
+                    org: courseDetails.org
                 )
             } else {
                 showCourseDetais(

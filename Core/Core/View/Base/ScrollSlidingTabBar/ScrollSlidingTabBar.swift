@@ -13,7 +13,7 @@ public struct ScrollSlidingTabBar: View {
     @Binding private var selection: Int
     @State private var buttonFrames: [Int: CGRect] = [:]
     private let containerWidth: CGFloat
-    private let tabs: [String]
+    private let tabs: [(String, Image)]
     private let style: Style
     private let onTap: ((Int) -> Void)?
 
@@ -23,7 +23,7 @@ public struct ScrollSlidingTabBar: View {
     
     public init(
         selection: Binding<Int>,
-        tabs: [String],
+        tabs: [(String, Image)],
         style: Style = .default,
         containerWidth: CGFloat,
         onTap: ((Int) -> Void)? = nil) {
@@ -36,9 +36,6 @@ public struct ScrollSlidingTabBar: View {
     
     public var body: some View {
         ZStack(alignment: .bottomLeading) {
-            Rectangle()
-                .fill(style.borderColor)
-                .frame(height: style.borderHeight, alignment: .leading)
             ScrollViewReader { proxy in
                 ScrollView(.horizontal, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
@@ -50,6 +47,8 @@ public struct ScrollSlidingTabBar: View {
                     }
                     .coordinateSpace(name: containerSpace)
                 }
+                .onTapGesture {}
+                // Fix button tapable area bug – https://forums.developer.apple.com/forums/thread/745059
                 .onChange(of: selection) { newValue in
                     withAnimation {
                         proxy.scrollTo(newValue, anchor: .center)
@@ -66,20 +65,53 @@ extension ScrollSlidingTabBar {
     private func buttons() -> some View {
         HStack(spacing: 0) {
             ForEach(Array(tabs.enumerated()), id: \.offset) { obj in
-                Button {
+                Button(action: {
                     selection = obj.offset
                     onTap?(obj.offset)
-                } label: {
-                    HStack {
-                        Text(obj.element)
-                            .font(isSelected(index: obj.offset) ? style.selectedFont : style.font)
+                }, label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20)
+//                            .frame( height: 40)
+                            .foregroundStyle(
+                                isSelected(index: obj.offset)
+                                ? style.activeAccentColor
+                                : style.inactiveAccentColor
+                            )
+                            .onTapGesture {
+                                selection = obj.offset
+                                onTap?(obj.offset)
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(
+                                        isSelected(index: obj.offset)
+                                        ? .clear
+                                        : style.borderColor,
+                                        lineWidth: style.borderHeight
+                                    )
+                            )
+                        HStack {
+                            obj.element.1.renderingMode(.template)
+                                .padding(.leading, 12)
+                            Text(obj.element.0)
+                                .padding(.trailing, 12)
+                                .font(isSelected(index: obj.offset) ? style.selectedFont : style.font)
+                        }
+                        .accentColor(
+                            isSelected(index: obj.offset)
+                            ? Theme.Colors.white
+                            : Theme.Colors.slidingTextColor
+                        )
                     }
-                    .padding(.horizontal, style.buttonHInset)
-                    .padding(.vertical, style.buttonVInset)
-                }
-                .accentColor(
-                    isSelected(index: obj.offset) ? style.activeAccentColor : style.inactiveAccentColor
-                )
+                    .frame( height: 40)
+                    .fixedSize(horizontal: true, vertical: true)
+                  
+                })
+                .padding(.horizontal, style.buttonHInset)
+                .padding(.vertical, style.buttonVInset)
+//                .accentColor(
+//                    isSelected(index: obj.offset) ? style.activeAccentColor : style.inactiveAccentColor
+//                )
                 .readFrame(in: .named(containerSpace)) {
                     buttonFrames[obj.offset] = $0
                 }
@@ -165,15 +197,15 @@ extension ScrollSlidingTabBar {
         }
         
         public static let `default` = Style(
-            font: Theme.Fonts.bodyLarge,
-            selectedFont: Theme.Fonts.titleMedium,
+            font: Theme.Fonts.titleSmall,
+            selectedFont: Theme.Fonts.titleSmall,
             activeAccentColor: Theme.Colors.accentXColor,
-            inactiveAccentColor: Theme.Colors.textSecondary,
-            indicatorHeight: 2,
-            borderColor: .gray.opacity(0.2),
+            inactiveAccentColor: Theme.Colors.background,
+            indicatorHeight: 0,
+            borderColor: Theme.Colors.slidingStrokeColor,
             borderHeight: 1,
-            buttonHInset: 16,
-            buttonVInset: 10
+            buttonHInset: 4,
+            buttonVInset: 2
         )
     }
 }
@@ -187,7 +219,14 @@ private struct SlidingTabConsumerView: View {
         VStack(alignment: .leading) {
             ScrollSlidingTabBar(
                 selection: $selection,
-                tabs: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth"],
+                tabs: [
+                    ("First", Image(systemName: "1.circle")),
+                    ("Second", Image(systemName: "2.circle")),
+                    ("Third", Image(systemName: "3.circle")),
+                    ("Fourth", Image(systemName: "4.circle")),
+                    ("Fifth", Image(systemName: "5.circle")),
+                    ("Sixth", Image(systemName: "6.circle"))
+                ],
                 containerWidth: 300
             )
             TabView(selection: $selection) {

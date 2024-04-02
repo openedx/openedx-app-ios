@@ -12,16 +12,22 @@ import Theme
 struct HandoutsView: View {
     
     private let courseID: String
+    @Binding private var coordinate: CGFloat
+    @Binding private var collapsed: Bool
     
     @StateObject
     private var viewModel: HandoutsViewModel
     
     public init(
         courseID: String,
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
         viewModel: HandoutsViewModel
     ) {
         self.courseID = courseID
+        self._coordinate = coordinate
 //        self.viewModel = viewModel
+        self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
     
@@ -29,7 +35,7 @@ struct HandoutsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack(alignment: .center) {
-                    
+                    ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                     // MARK: - Page Body
                     if viewModel.isShowProgress {
                         HStack(alignment: .center) {
@@ -124,6 +130,8 @@ struct HandoutsView_Previews: PreviewProvider {
                                           courseID: "",
                                           analytics: CourseAnalyticsMock())
         HandoutsView(courseID: "",
+                     coordinate: .constant(0), 
+                     collapsed: .constant(false),
                      viewModel: viewModel)
     }
 }
