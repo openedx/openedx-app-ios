@@ -36,14 +36,17 @@ public protocol DeepLinkRouter: BaseRouter {
     func showThreads(
         topicID: String,
         courseDetails: CourseDetails,
-        topics: Topics
+        topics: Topics,
+        isBlackedOut: Bool
     )
     func showThread(
-        userThread: UserThread
+        userThread: UserThread,
+        isBlackedOut: Bool
     )
     func showComment(
         comment: UserComment,
-        parentComment: Post
+        parentComment: Post,
+        isBlackedOut: Bool
     )
     func showProgram(
         pathID: String
@@ -195,7 +198,8 @@ extension Router: DeepLinkRouter {
     public func showThreads(
         topicID: String,
         courseDetails: CourseDetails,
-        topics: Topics
+        topics: Topics,
+        isBlackedOut: Bool
     ) {
         popToCourseContainerView()
 
@@ -205,28 +209,33 @@ extension Router: DeepLinkRouter {
             topics: topics,
             title: title,
             type: .courseTopics(topicID: topicID),
+            isBlackedOut: isBlackedOut,
             animated: false
         )
     }
 
     public func showThread(
-        userThread: UserThread
+        userThread: UserThread,
+        isBlackedOut: Bool
     ) {
         showThread(
             thread: userThread,
             postStateSubject: .init(.none),
+            isBlackedOut: isBlackedOut,
             animated: false
         )
     }
 
     public func showComment(
         comment: UserComment,
-        parentComment: Post
+        parentComment: Post,
+        isBlackedOut: Bool
     ) {
         showComments(
             commentID: comment.commentID,
             parentComment: parentComment,
             threadStateSubject: .init(.none),
+            isBlackedOut: isBlackedOut,
             animated: false
         )
     }
@@ -337,14 +346,17 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
     public func showThreads(
         topicID: String,
         courseDetails: CourseDetails,
-        topics: Topics
+        topics: Topics,
+        isBlackedOut: Bool
     ) {}
     public func showThread(
-        userThread: UserThread
+        userThread: UserThread,
+        isBlackedOut: Bool
     ) {}
     public func showComment(
         comment: UserComment,
-        parentComment: Post
+        parentComment: Post,
+        isBlackedOut: Bool
     ) {}
     public func showProgram(
         pathID: String
