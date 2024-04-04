@@ -96,7 +96,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
                                                                 small: "",
                                                                 large: "")),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
         
         let resumeBlock = ResumeBlock(blockID: "123")
@@ -161,7 +162,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
                                                                 small: "",
                                                                 large: "")),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
         
         Given(interactor, .getLoadedCourseBlocks(courseID: .any, willReturn: courseStructure))
@@ -417,7 +419,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
 
         let downloadData = DownloadDataTask(
@@ -551,7 +554,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -670,7 +674,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -790,7 +795,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -903,7 +909,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
 
         let downloadData = DownloadDataTask(
@@ -1031,7 +1038,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
 
         let downloadData = DownloadDataTask(
@@ -1179,7 +1187,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            org: ""
         )
 
         let downloadData = DownloadDataTask(
