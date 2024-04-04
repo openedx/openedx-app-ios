@@ -54,6 +54,7 @@ public struct NavigationBar: View {
             VStack {
                 BackNavigationButton(color: leftButtonColor, action: leftButtonAction)
                     .padding(8)
+                    .backViewStyle()
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .topLeading)

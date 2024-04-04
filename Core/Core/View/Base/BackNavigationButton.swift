@@ -32,6 +32,7 @@ public struct BackNavigationButtonRepresentable: UIViewRepresentable {
         button.tintColor = UIColor(color)
         button.contentHorizontalAlignment = .leading
         button.addTarget(context.coordinator, action: #selector(Coordinator.buttonAction), for: .touchUpInside)
+        button.accessibilityIdentifier = "back_button"
         return button
     }
 
@@ -76,12 +77,7 @@ public struct BackNavigationButton: View {
     }
     
     public var body: some View {
-        BackNavigationButtonRepresentable(action: action, color: color, viewModel: viewModel)
-            .frame(height: 24)
-            .padding(.horizontal, 8)
-            .offset(y: -10)
-            .foregroundColor(color)
-        .accessibilityIdentifier("back_button")
+        BackNavigationButtonRepresentable(action: action, color: color, viewModel: viewModel)            
         .onAppear {
             viewModel.loadItems()
         }

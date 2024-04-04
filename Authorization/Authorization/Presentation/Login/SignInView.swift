@@ -40,6 +40,7 @@ public struct SignInView: View {
                             viewModel.router.back()
                         }
                     )
+                    .backViewStyle()
                     .padding(.leading, isHorizontal ? 48 : 0)
                     .padding(.top, 11)
                     

@@ -52,6 +52,7 @@ public struct SignUpView: View {
                                 viewModel.router.back()
                             }
                         )
+                        .backViewStyle()
                         .padding(.leading, isHorizontal ? 48 : 0)
                         
                     }.frame(minWidth: 0,
