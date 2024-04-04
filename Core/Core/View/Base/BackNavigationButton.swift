@@ -8,6 +8,60 @@
 import SwiftUI
 import Theme
 
+class BackButton: UIButton {
+    override func menuAttachmentPoint(for configuration: UIContextMenuConfiguration) -> CGPoint {
+        return .zero
+    }
+}
+
+public struct BackNavigationButtonRepresentable: UIViewRepresentable {
+    @ObservedObject var viewModel: BackNavigationButtonViewModel
+    var action: (() -> Void)?
+    var color: Color
+
+    init(action: (() -> Void)? = nil, color: Color, viewModel: BackNavigationButtonViewModel) {
+        self.viewModel = viewModel
+        self.action = action
+        self.color = color
+    }
+    
+    public func makeUIView(context: Context) -> UIButton {
+        let button = BackButton(type: .custom)
+        let image = CoreAssets.arrowLeft.image.withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor(color)
+        button.contentHorizontalAlignment = .leading
+        button.addTarget(context.coordinator, action: #selector(Coordinator.buttonAction), for: .touchUpInside)
+        return button
+    }
+
+    public func updateUIView(_ button: UIButton, context: Context) {
+        var actions: [UIAction] = []
+        for item in viewModel.items {
+            let action = UIAction(title: item.title) {[weak viewModel] _ in
+                viewModel?.navigateTo(item: item)
+            }
+            actions.append(action)
+        }
+        button.menu = UIMenu(title: "", children: actions)
+    }
+    
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(action: action)
+    }
+    
+    public class Coordinator: NSObject {
+        var action: (() -> Void)?
+        init(action: (() -> Void)?) {
+            self.action = action
+        }
+        
+        @objc func buttonAction() {
+            action?()
+        }
+    }
+}
+
 public struct BackNavigationButton: View {
     @StateObject var viewModel = BackNavigationButtonViewModel()
     private let color: Color
@@ -22,19 +76,11 @@ public struct BackNavigationButton: View {
     }
     
     public var body: some View {
-        Menu {
-            ForEach(viewModel.items) { item in
-                Button(item.title) {
-                    viewModel.navigateTo(item: item)
-                }
-            }
-        } label: {
-            CoreAssets.arrowLeft.swiftUIImage
-                .backButtonStyle(color: color)
-        } primaryAction: {
-            action?()
-        }
-        .foregroundColor(Theme.Colors.styledButtonText)
+        BackNavigationButtonRepresentable(action: action, color: color, viewModel: viewModel)
+            .frame(height: 24)
+            .padding(.horizontal, 8)
+            .offset(y: -10)
+            .foregroundColor(color)
         .accessibilityIdentifier("back_button")
         .onAppear {
             viewModel.loadItems()
