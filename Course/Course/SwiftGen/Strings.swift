@@ -237,17 +237,17 @@ public enum CourseLocalization {
   public enum Outline {
     /// Certificate
     public static let certificate = CourseLocalization.tr("Localizable", "OUTLINE.CERTIFICATE", fallback: "Certificate")
-    /// Localizable.strings
-    ///   Course
-    /// 
-    ///   Created by  Stepanok Ivan on 26.09.2022.
-    public static let congratulations = CourseLocalization.tr("Localizable", "OUTLINE.CONGRATULATIONS", fallback: "Congratulations!")
     /// This course hasn't started yet.
     public static let courseHasntStarted = CourseLocalization.tr("Localizable", "OUTLINE.COURSE_HASNT_STARTED", fallback: "This course hasn't started yet.")
     /// Course videos
     public static let courseVideos = CourseLocalization.tr("Localizable", "OUTLINE.COURSE_VIDEOS", fallback: "Course videos")
-    /// You’ve completed the course
-    public static let passedTheCourse = CourseLocalization.tr("Localizable", "OUTLINE.PASSED_THE_COURSE", fallback: "You’ve completed the course")
+    /// Localizable.strings
+    ///   Course
+    /// 
+    ///   Created by  Stepanok Ivan on 26.09.2022.
+    public static func passedTheCourse(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "OUTLINE.PASSED_THE_COURSE", String(describing: p1), fallback: "Congratulations, you have earned this course certificate in “%@.”")
+    }
     /// View certificate
     public static let viewCertificate = CourseLocalization.tr("Localizable", "OUTLINE.VIEW_CERTIFICATE", fallback: "View certificate")
   }

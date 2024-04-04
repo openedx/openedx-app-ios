@@ -59,6 +59,7 @@ public struct CourseOutlineView: View {
                         }
                     }) {
                         VStack(alignment: .leading) {
+
                             if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
                                courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
                                !courseDeadlineInfo.hasEnded,
@@ -77,7 +78,8 @@ public struct CourseOutlineView: View {
                             }
 
                             downloadQualityBars
-
+                            certificateView
+                            
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
                                !isVideo {
@@ -100,7 +102,7 @@ public struct CourseOutlineView: View {
                                     viewModel.trackResumeCourseClicked(
                                         blockId: continueBlock?.id ?? ""
                                     )
-                                    
+                                                                        
                                     if let course = viewModel.courseStructure {
                                         viewModel.router.showCourseUnit(
                                             courseName: course.displayName,
@@ -271,6 +273,33 @@ public struct CourseOutlineView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    private var certificateView: some View {
+        // MARK: - Course Certificate
+        if let certificate = viewModel.courseStructure?.certificate {
+            if let url = certificate.url, url.count > 0 {
+                MessageSectionView(
+                    title: CourseLocalization.Outline.passedTheCourse(title),
+                    actionTitle: CourseLocalization.Outline.viewCertificate,
+                    action: {
+                        openCertificateView = true
+                        viewModel.trackViewCertificateClicked(courseID: courseID)
+                    }
+                )
+                .padding(.horizontal, 24)
+                .fullScreenCover(
+                    isPresented: $openCertificateView,
+                    content: {
+                        WebBrowser(
+                            url: url,
+                            pageTitle: CourseLocalization.Outline.certificate
+                        )
+                    }
+                )
+            }
+        }
+    }
 
     private func courseBanner(proxy: GeometryProxy) -> some View {
         ZStack {
@@ -282,43 +311,6 @@ public struct CourseOutlineView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
-            }
-
-            // MARK: - Course Certificate
-            if let certificate = viewModel.courseStructure?.certificate {
-                if let url = certificate.url, url.count > 0 {
-                    Theme.Colors.certificateForeground
-                    VStack(alignment: .center, spacing: 8) {
-                        CoreAssets.certificate.swiftUIImage
-                        Text(CourseLocalization.Outline.congratulations)
-                            .multilineTextAlignment(.center)
-                            .font(Theme.Fonts.headlineMedium)
-                        Text(CourseLocalization.Outline.passedTheCourse)
-                            .font(Theme.Fonts.bodyMedium)
-                            .multilineTextAlignment(.center)
-                        StyledButton(
-                            CourseLocalization.Outline.viewCertificate,
-                            action: {
-                                openCertificateView = true
-                                viewModel.trackViewCertificateClicked(courseID: courseID)
-                            },
-                            isTransparent: true
-                        )
-                        .frame(width: 141)
-                        .padding(.top, 8)
-
-                        .fullScreenCover(
-                            isPresented: $openCertificateView,
-                            content: {
-                                WebBrowser(
-                                    url: url,
-                                    pageTitle: CourseLocalization.Outline.certificate
-                                )
-                            })
-                    }.padding(.horizontal, 24)
-                        .padding(.top, 8)
-                        .foregroundColor(.white)
-                }
             }
         }
         .frame(maxHeight: 250)
