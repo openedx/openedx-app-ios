@@ -104,6 +104,9 @@ public enum AnalyticsEvent: String {
     case courseOutlineDiscussionTabClicked = "Course:Discussion Tab"
     case courseOutlineHandoutsTabClicked = "Course:Handouts Tab"
     case datesComponentClicked = "Dates:Course Component Clicked"
+    case datesCalendarSyncToggle = "Dates:CalendarSync Toggle"
+    case datesCalendarSyncDialogAction = "Dates:CalendarSync Dialog Action"
+    case datesCalendarSyncSnackbar = "Dates:CalendarSync Snackbar"
     case plsBannerViewed = "PLS:Banner Viewed"
     case plsShiftDatesClicked = "PLS:Shift Button Clicked"
     case plsShiftDatesSuccess = "PLS:Shift Dates Success"
@@ -157,7 +160,10 @@ public enum EventBIValue: String {
     case cookiePolicyClicked = "edx.bi.app.profile.cookie_policy.clicked"
     case profileDeleteAccountClicked = "edx.bi.app.profile.delete_account.clicked"
     case userLogout = "edx.bi.app.user.logout"
-    case datesComponentClicked = "edx.bi.app.coursedates.component.clicked"
+    case datesComponentClicked = "edx.bi.app.dates.component.clicked"
+    case datesCalendarSyncToggle = "edx.bi.app.dates.calendar_sync.toggle"
+    case datesCalendarSyncDialogAction = "edx.bi.app.dates.calendar_sync.dialog_action"
+    case datesCalendarSyncSnackbar = "edx.bi.app.dates.calendar_sync.snackbar"
     case plsBannerViewed = "edx.bi.app.dates.pls_banner.viewed"
     case plsShiftDatesClicked = "edx.bi.app.dates.pls_banner.shift_dates.clicked"
     case plsShiftDatesSuccess = "edx.bi.app.dates.pls_banner.shift_dates.success"
@@ -233,6 +239,10 @@ public struct EventParamKey {
     public static let noOfVideos = "number_of_videos"
     public static let supported = "supported"
     public static let conversion = "conversion"
+    public static let userType = "user_type"
+    public static let pacing = "pacing"
+    public static let dialog = "dialog"
+    public static let snackbar = "snackbar"
 }
 
 public struct EventCategory {
@@ -243,4 +253,42 @@ public struct EventCategory {
     public static let profile = "profile"
     public static let video = "video"
     public static let course = "course"
+}
+
+public enum EnrollmentMode: String {
+    case audit
+    case verified
+    case none
+}
+
+public enum Pacing: String {
+    case `self` = "self"
+    case instructor = "instructor"
+}
+
+public enum Action: String {
+    case on = "on"
+    case off = "off"
+    case allow = "Allow"
+    case doNotAllow = "donot_allow"
+    case ok = "OK"
+    case cancel = "Cancel"
+    case update = "Update"
+    case remove = "Remove"
+    case done = "Done"
+    case viewEvent = "view_event"
+}
+
+public enum Dialog: String {
+    case permission = "Permission"
+    case add = "Add"
+    case remove = "Remove"
+    case update = "Update"
+    case confirmed = "Confirmed"
+}
+
+public enum Snackbar: String {
+    case add = "Add"
+    case remove = "Remove"
+    case update = "Update"
 }

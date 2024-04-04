@@ -29,6 +29,25 @@ public protocol CourseAnalytics {
         link: String,
         supported: Bool
     )
+    func calendarSyncToggle(
+        userType: EnrollmentMode,
+        pacing: Pacing,
+        courseId: String,
+        action: Action
+    )
+    func calendarSyncDialogAction(
+        userType: EnrollmentMode,
+        pacing: Pacing,
+        courseId: String,
+        dialog: Dialog,
+        action: Action
+    )
+    func calendarSyncSnackbar(
+        userType: EnrollmentMode,
+        pacing: Pacing,
+        courseId: String,
+        snackbar: Snackbar
+    )
     func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String)
     func plsEvent(
         _ event: AnalyticsEvent,
@@ -86,6 +105,25 @@ class CourseAnalyticsMock: CourseAnalytics {
         blockId: String,
         link: String,
         supported: Bool
+    ) {}
+    func calendarSyncToggle(
+        userType: EnrollmentMode,
+        pacing: Pacing,
+        courseId: String,
+        action: Action
+    ) {}
+    func calendarSyncDialogAction(
+        userType: EnrollmentMode,
+        pacing: Pacing,
+        courseId: String,
+        dialog: Dialog,
+        action: Action
+    ) {}
+    func calendarSyncSnackbar(
+        userType: EnrollmentMode,
+        pacing: Pacing,
+        courseId: String,
+        snackbar: Snackbar
     ) {}
     public func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String) {}
     public func plsEvent(
