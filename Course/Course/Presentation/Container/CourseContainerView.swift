@@ -19,7 +19,6 @@ public struct CourseContainerView: View {
     @State private var isAnimatingForTap: Bool = false
     public var courseID: String
     private var title: String
-    private var org: String
     @State private var coordinate: CGFloat = .zero
     @State private var lastCoordinate: CGFloat = .zero
     @State private var collapsed: Bool = false
@@ -38,8 +37,7 @@ public struct CourseContainerView: View {
     public init(
         viewModel: CourseContainerViewModel,
         courseID: String,
-        title: String,
-        org: String
+        title: String
     ) {
         self.viewModel = viewModel
         Task {
@@ -54,7 +52,6 @@ public struct CourseContainerView: View {
         }
         self.courseID = courseID
         self.title = title
-        self.org = org
     }
     
     public var body: some View {
@@ -87,7 +84,14 @@ public struct CourseContainerView: View {
                     tabs
                     GeometryReader { proxy in
                         VStack(spacing: 0) {
-                            topHeader(containerWidth: proxy.size.width)
+                            TopHeaderView(
+                                viewModel: viewModel,
+                                title: title,
+                                collapsed: $collapsed,
+                                containerWidth: proxy.size.width,
+                                animationNamespace: animationNamespace,
+                                isAnimatingForTap: $isAnimatingForTap
+                            )
                         } .offset(y: coordinate)
                         backButton(containerWidth: proxy.size.width)
                     }
@@ -124,122 +128,6 @@ public struct CourseContainerView: View {
                 }
             }
         }.frameLimit(width: containerWidth)
-    }
-    
-    private func topHeader(containerWidth: CGFloat) -> some View {
-        ZStack(alignment: .bottomLeading) {
-            if let banner = viewModel.courseStructure?.media.image.raw
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                ScrollView {
-                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
-                        .onFailureImage(CoreAssets.noCourseImage.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .allowsHitTesting(false)
-                        .clipped()
-                }
-                .disabled(true)
-                .ignoresSafeArea()
-                
-            }
-            VStack(alignment: .leading) {
-                if collapsed {
-                    VStack {
-                        HStack {
-                            Button(action: {
-                                viewModel.router.back(animated: true)
-                            }, label: {
-                                Image(systemName: "arrow.left")
-                                    .foregroundStyle(Theme.Colors.textPrimary)
-                                    .padding(.vertical, 8)
-                                    .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
-                            })
-                            .foregroundStyle(Color.black)
-                            Text(title)
-                                .lineLimit(1)
-                                .foregroundStyle(Theme.Colors.textPrimary)
-                                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                .clipped()
-                                .font(Theme.Fonts.bodyLarge)
-                        }
-                        .padding(.top, 46)
-                        .padding(.horizontal, 24)
-                        topTabBar(containerWidth: containerWidth)
-                            .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
-                            .padding(.bottom, 12)
-                    }.background {
-                        ZStack(alignment: .bottom) {
-                            Rectangle()
-                                .padding(.top, 24)
-                                .foregroundStyle(Theme.Colors.primaryHeaderColor)
-                                .matchedGeometryEffect(id: GeometryName.blurPrimaryBg, in: animationNamespace)
-                            Rectangle().frame(height: 36)
-                                .foregroundStyle(Theme.Colors.secondaryHeaderColor)
-                                .matchedGeometryEffect(id: GeometryName.blurSecondaryBg, in: animationNamespace)
-                            VisualEffectView(effect: UIBlurEffect(style: .regular))
-                                .matchedGeometryEffect(id: GeometryName.blurBg, in: animationNamespace)
-                                .ignoresSafeArea()
-                        }
-                    }
-                } else {
-                    ZStack(alignment: .bottomLeading) {
-                        VStack {
-                            Text(org)
-                                .font(Theme.Fonts.labelLarge)
-                                .foregroundStyle(Theme.Colors.textPrimary)
-                                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                .multilineTextAlignment(.leading)
-                                .padding(.horizontal, 24)
-                                .padding(.top, 16)
-                                .allowsHitTesting(false)
-                                .frameLimit(width: containerWidth)
-                            Text(title)
-                                .lineLimit(3)
-                                .font(Theme.Fonts.titleLarge)
-                                .foregroundStyle(Theme.Colors.textPrimary)
-                                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                                .multilineTextAlignment(.leading)
-                                .padding(.horizontal, 24)
-                                .allowsHitTesting(false)
-                                .frameLimit(width: containerWidth)
-                            topTabBar(containerWidth: containerWidth)
-                                .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
-                                .padding(.bottom, 12)
-                        }.background {
-                            ZStack(alignment: .bottom) {
-                                Rectangle()
-                                    .padding(.top, 24)
-                                    .foregroundStyle(Theme.Colors.primaryHeaderColor)
-                                    .matchedGeometryEffect(id: GeometryName.blurPrimaryBg, in: animationNamespace)
-                                Rectangle().frame(height: 36)
-                                    .foregroundStyle(Theme.Colors.secondaryHeaderColor)
-                                    .matchedGeometryEffect(id: GeometryName.blurSecondaryBg, in: animationNamespace)
-                                VisualEffectView(effect: UIBlurEffect(style: .regular))
-                                    .matchedGeometryEffect(id: GeometryName.blurBg, in: animationNamespace)
-                                    .allowsHitTesting(false)
-                                    .ignoresSafeArea()
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .frame(height: collapsed ? (isHorizontal ? 230 : 260) : 300)
-        .ignoresSafeArea(edges: .top)
-    }
-    
-    private func topTabBar(containerWidth: CGFloat) -> some View {
-        ScrollSlidingTabBar(
-            selection: $viewModel.selection,
-            tabs: CourseTab.allCases.map { ($0.title, $0.image) },
-            containerWidth: containerWidth
-        ) { newValue in
-            isAnimatingForTap = true
-            viewModel.selection = newValue
-            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(300))) {
-                isAnimatingForTap = false
-            }
-        }
     }
     
     private var tabs: some View {
@@ -344,10 +232,13 @@ public struct CourseContainerView: View {
         }
     }
     
-    private func collapseHeader(_ coordinate: CGFloat) {   
+    private func collapseHeader(_ coordinate: CGFloat) {
         guard !isHorizontal else { return collapsed = true }
+        let lowerBound: CGFloat = -90
+        let upperBound: CGFloat = 160
+        
         switch coordinate {
-        case -90...160:
+        case lowerBound...upperBound:
             withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.6)) {
                 collapsed = false
             }
@@ -380,7 +271,7 @@ struct CourseScreensView_Previews: PreviewProvider {
                 enrollmentEnd: nil,
                 coreAnalytics: CoreAnalyticsMock()
             ),
-            courseID: "", title: "Title of Course", org: "organization")
+            courseID: "", title: "Title of Course")
     }
 }
 #endif

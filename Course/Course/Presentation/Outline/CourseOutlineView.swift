@@ -77,7 +77,6 @@ public struct CourseOutlineView: View {
                                     screen: .courseDashbaord
                                 )
                                 .padding(.horizontal, 16)
-//                                .padding(.top, 16)
                             }
 
                             downloadQualityBars
@@ -154,7 +153,6 @@ public struct CourseOutlineView: View {
                         viewModel.router.back()
                     }
                 }
-//                .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
                 .accessibilityAction {}
 
                 if viewModel.dueDatesShifted && !isVideo {
@@ -274,62 +272,6 @@ public struct CourseOutlineView: View {
                 }
             }
         }
-    }
-
-    private func courseBanner(proxy: GeometryProxy) -> some View {
-        ZStack {
-//            // MARK: - Course Banner
-//            if let banner = viewModel.courseStructure?.media.image.raw
-//                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-//                KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
-//                    .onFailureImage(CoreAssets.noCourseImage.image)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
-//            }
-
-            // MARK: - Course Certificate
-            if let certificate = viewModel.courseStructure?.certificate {
-                if let url = certificate.url, url.count > 0 {
-                    Theme.Colors.certificateForeground
-                    VStack(alignment: .center, spacing: 8) {
-                        CoreAssets.certificate.swiftUIImage
-                        Text(CourseLocalization.Outline.congratulations)
-                            .multilineTextAlignment(.center)
-                            .font(Theme.Fonts.headlineMedium)
-                        Text(CourseLocalization.Outline.passedTheCourse)
-                            .font(Theme.Fonts.bodyMedium)
-                            .multilineTextAlignment(.center)
-                        StyledButton(
-                            CourseLocalization.Outline.viewCertificate,
-                            action: {
-                                openCertificateView = true
-                                viewModel.trackViewCertificateClicked(courseID: courseID)
-                            },
-                            isTransparent: true
-                        )
-                        .frame(width: 141)
-                        .padding(.top, 8)
-
-                        .fullScreenCover(
-                            isPresented: $openCertificateView,
-                            content: {
-                                WebBrowser(
-                                    url: url,
-                                    pageTitle: CourseLocalization.Outline.certificate
-                                )
-                            })
-                    }.padding(.horizontal, 24)
-                        .padding(.top, 8)
-                        .foregroundColor(.white)
-                }
-            }
-        }
-        .frame(maxHeight: 250)
-        .cornerRadius(12)
-        .padding(.horizontal, 6)
-        .padding(.top, 7)
-        .fixedSize(horizontal: false, vertical: true)
     }
 }
 

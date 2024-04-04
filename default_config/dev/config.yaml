@@ -1,7 +1,9 @@
-API_HOST_URL: 'http://localhost:8000'
-ENVIRONMENT_DISPLAY_NAME: 'Localhost'
+API_HOST_URL: 'https://lms-axim-dev.raccoongang.com'
+ENVIRONMENT_DISPLAY_NAME: 'lms-axim-dev'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
-OAUTH_CLIENT_ID: ''
+OAUTH_CLIENT_ID: 'Wg4n1JbRE0PupClQfHX7e62eK0GI2awtRRMJpOld'
+DISCOVERY:
+    TYPE: "native"
 
 UI_COMPONENTS:
     COURSE_UNIT_PROGRESS_ENABLED: false

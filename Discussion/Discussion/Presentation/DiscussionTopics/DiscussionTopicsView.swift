@@ -187,23 +187,28 @@ struct DiscussionView_Previews: PreviewProvider {
             interactor: DiscussionInteractor.mock,
             router: DiscussionRouterMock(),
             analytics: DiscussionAnalyticsMock(),
-            config: ConfigMock())
+            config: ConfigMock()
+        )
         let router = DiscussionRouterMock()
         
-        DiscussionTopicsView(courseID: "", 
-                             coordinate: .constant(0),
-                             collapsed: .constant(false),
-                             viewModel: vm,
-                             router: router)
+        DiscussionTopicsView(
+            courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
+            viewModel: vm,
+            router: router
+        )
         .preferredColorScheme(.light)
         .previewDisplayName("DiscussionTopicsView Light")
         .loadFonts()
         
-        DiscussionTopicsView(courseID: "",
-                             coordinate: .constant(0),
-                             collapsed: .constant(false),
-                             viewModel: vm,
-                             router: router)
+        DiscussionTopicsView(
+            courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
+            viewModel: vm,
+            router: router
+        )
         .preferredColorScheme(.dark)
         .previewDisplayName("DiscussionTopicsView Dark")
         .loadFonts()

@@ -236,8 +236,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,
             enrollmentEnd: courseDetails.enrollmentEnd,
-            title: courseDetails.courseTitle,
-            org: courseDetails.org
+            title: courseDetails.courseTitle
         )
         
         return true

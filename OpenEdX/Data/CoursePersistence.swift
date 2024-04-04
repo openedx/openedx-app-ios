@@ -138,7 +138,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     large: structure.mediaLarge ?? ""
                 )
             ),
-            certificate: DataLayer.Certificate(url: structure.certificate)
+            certificate: DataLayer.Certificate(url: structure.certificate), 
+            org: structure.org ?? ""
         )
     }
     

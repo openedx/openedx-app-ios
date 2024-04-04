@@ -81,8 +81,7 @@ public struct DashboardView: View {
                                                 courseEnd: course.courseEnd,
                                                 enrollmentStart: course.enrollmentStart,
                                                 enrollmentEnd: course.enrollmentEnd,
-                                                title: course.name,
-                                                org: course.org
+                                                title: course.name
                                             )
                                         }
                                         .accessibilityIdentifier("course_item")

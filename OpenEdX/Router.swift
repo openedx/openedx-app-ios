@@ -344,8 +344,7 @@ public class Router: AuthorizationRouter,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String,
-        org: String
+        title: String
     ) {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
@@ -358,8 +357,7 @@ public class Router: AuthorizationRouter,
         let screensView = CourseContainerView(
             viewModel: vm,
             courseID: courseID,
-            title: title,
-            org: org
+            title: title
         )
         
         let controller = UIHostingController(rootView: screensView)

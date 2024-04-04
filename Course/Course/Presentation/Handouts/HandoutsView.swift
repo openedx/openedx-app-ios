@@ -26,7 +26,6 @@ struct HandoutsView: View {
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
-//        self.viewModel = viewModel
         self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
@@ -129,10 +128,12 @@ struct HandoutsView_Previews: PreviewProvider {
                                           connectivity: Connectivity(),
                                           courseID: "",
                                           analytics: CourseAnalyticsMock())
-        HandoutsView(courseID: "",
-                     coordinate: .constant(0), 
-                     collapsed: .constant(false),
-                     viewModel: viewModel)
+        HandoutsView(
+            courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
+            viewModel: viewModel
+        )
     }
 }
 #endif

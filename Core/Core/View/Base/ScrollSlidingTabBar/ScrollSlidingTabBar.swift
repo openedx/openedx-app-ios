@@ -71,7 +71,6 @@ extension ScrollSlidingTabBar {
                 }, label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
-//                            .frame( height: 40)
                             .foregroundStyle(
                                 isSelected(index: obj.offset)
                                 ? style.activeAccentColor
@@ -109,9 +108,6 @@ extension ScrollSlidingTabBar {
                 })
                 .padding(.horizontal, style.buttonHInset)
                 .padding(.vertical, style.buttonVInset)
-//                .accentColor(
-//                    isSelected(index: obj.offset) ? style.activeAccentColor : style.inactiveAccentColor
-//                )
                 .readFrame(in: .named(containerSpace)) {
                     buttonFrames[obj.offset] = $0
                 }
