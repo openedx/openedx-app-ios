@@ -26,7 +26,8 @@ public class Router: AuthorizationRouter,
                      ProfileRouter,
                      DashboardRouter,
                      CourseRouter,
-                     DiscussionRouter {
+                     DiscussionRouter,
+                     BackNavigationProtocol {
 
     public var container: Container
 
@@ -723,6 +724,26 @@ public class Router: AuthorizationRouter,
         )
         let controller = UIHostingController(rootView: webBrowser)
         navigationController.pushViewController(controller, animated: true)
+    }
+}
+
+// MARK: BackNavigationProtocol
+extension Router {
+    public func getBackMenuItems() -> [BackNavigationMenuItem] {
+        var viewControllers = navigationController.viewControllers
+        viewControllers.removeLast()
+        var items: [BackNavigationMenuItem] = []
+        for (index, controller) in viewControllers.enumerated() {
+            let title = controller.navigationItem.title ?? controller.title ?? ""
+            let item = BackNavigationMenuItem(id: index, title: title)
+            items.append(item)
+        }
+        return items
+    }
+    
+    public func navigateTo(item: BackNavigationMenuItem) {
+        let viewControllers = Array(navigationController.viewControllers[0 ... item.id])
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
 // swiftlint:enable file_length type_body_length

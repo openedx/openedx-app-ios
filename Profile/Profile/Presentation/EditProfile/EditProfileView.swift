@@ -212,13 +212,9 @@ public struct EditProfileView: View {
             .navigationTitle(ProfileLocalization.editProfile)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading, content: {
-                    Button(action: {
+                    BackNavigationButton(color: Theme.Colors.accentColor) {
                         viewModel.backButtonTapped()
-                    }, label: {
-                        CoreAssets.arrowLeft.swiftUIImage
-                            .renderingMode(.template)
-                            .foregroundColor(Theme.Colors.accentColor)
-                    })
+                    }
                 })
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button(action: {

@@ -34,14 +34,14 @@ public struct SignInView: View {
             }.frame(maxWidth: .infinity, maxHeight: 200)
             if viewModel.config.features.startupScreenEnabled {
                 VStack {
-                    Button(action: { viewModel.router.back() }, label: {
-                        CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                            .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                    })
-                    .foregroundColor(Theme.Colors.styledButtonText)
+                    BackNavigationButton(
+                        color: Theme.Colors.loginNavigationText,
+                        action: {
+                            viewModel.router.back()
+                        }
+                    )
                     .padding(.leading, isHorizontal ? 48 : 0)
                     .padding(.top, 11)
-                    .accessibilityIdentifier("back_button")
                     
                 }.frame(maxWidth: .infinity, alignment: .topLeading)
                     .padding(.top, isHorizontal ? 20 : 0)

@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Theme
+import Swinject
 
 public struct SignUpView: View {
     
@@ -45,13 +46,13 @@ public struct SignUpView: View {
                             .accessibilityIdentifier("register_text")
                     }
                     VStack {
-                        Button(action: { viewModel.router.back() }, label: {
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                        })
-                        .foregroundColor(Theme.Colors.styledButtonText)
+                        BackNavigationButton(
+                            color: Theme.Colors.loginNavigationText,
+                            action: {
+                                viewModel.router.back()
+                            }
+                        )
                         .padding(.leading, isHorizontal ? 48 : 0)
-                        .accessibilityIdentifier("back_button")
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,

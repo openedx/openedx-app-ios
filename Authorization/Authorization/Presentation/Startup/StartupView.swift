@@ -118,6 +118,7 @@ public struct StartupView: View {
             }
             .frameLimit()
         }
+        .navigationTitle(AuthLocalization.Startup.title)
         .hideNavigationBar()
         .padding(.all, isHorizontal ? 1 : 0)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
