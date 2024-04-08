@@ -9,14 +9,14 @@ import SwiftUI
 import Theme
 
 public struct ScrollSlidingTabBar: View {
-
+    
     @Binding private var selection: Int
     @State private var buttonFrames: [Int: CGRect] = [:]
     private let containerWidth: CGFloat
     private let tabs: [(String, Image)]
     private let style: Style
     private let onTap: ((Int) -> Void)?
-
+    
     private var containerSpace: String {
         return "container"
     }
@@ -27,12 +27,12 @@ public struct ScrollSlidingTabBar: View {
         style: Style = .default,
         containerWidth: CGFloat,
         onTap: ((Int) -> Void)? = nil) {
-        self._selection = selection
-        self.tabs = tabs
-        self.style = style
-        self.onTap = onTap
-        self.containerWidth = containerWidth
-    }
+            self._selection = selection
+            self.tabs = tabs
+            self.style = style
+            self.onTap = onTap
+            self.containerWidth = containerWidth
+        }
     
     public var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -65,47 +65,49 @@ extension ScrollSlidingTabBar {
     private func buttons() -> some View {
         HStack(spacing: 0) {
             ForEach(Array(tabs.enumerated()), id: \.offset) { obj in
-                Button(action: {
-                    selection = obj.offset
-                    onTap?(obj.offset)
-                }, label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 20)
-                            .foregroundStyle(
-                                isSelected(index: obj.offset)
-                                ? style.activeAccentColor
-                                : style.inactiveAccentColor
-                            )
-                            .onTapGesture {
-                                selection = obj.offset
-                                onTap?(obj.offset)
+                Button(
+                    action: {
+                        selection = obj.offset
+                        onTap?(obj.offset)
+                    },
+                    label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundStyle(
+                                    isSelected(index: obj.offset)
+                                    ? style.activeAccentColor
+                                    : style.inactiveAccentColor
+                                )
+                                .onTapGesture {
+                                    selection = obj.offset
+                                    onTap?(obj.offset)
+                                }
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(
+                                            isSelected(index: obj.offset)
+                                            ? .clear
+                                            : style.borderColor,
+                                            lineWidth: style.borderHeight
+                                        )
+                                )
+                            HStack {
+                                obj.element.1.renderingMode(.template)
+                                    .padding(.leading, 12)
+                                Text(obj.element.0)
+                                    .padding(.trailing, 12)
+                                    .font(isSelected(index: obj.offset) ? style.selectedFont : style.font)
                             }
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(
-                                        isSelected(index: obj.offset)
-                                        ? .clear
-                                        : style.borderColor,
-                                        lineWidth: style.borderHeight
-                                    )
+                            .accentColor(
+                                isSelected(index: obj.offset)
+                                ? Theme.Colors.white
+                                : Theme.Colors.slidingTextColor
                             )
-                        HStack {
-                            obj.element.1.renderingMode(.template)
-                                .padding(.leading, 12)
-                            Text(obj.element.0)
-                                .padding(.trailing, 12)
-                                .font(isSelected(index: obj.offset) ? style.selectedFont : style.font)
                         }
-                        .accentColor(
-                            isSelected(index: obj.offset)
-                            ? Theme.Colors.white
-                            : Theme.Colors.slidingTextColor
-                        )
+                        .frame( height: 40)
+                        .fixedSize(horizontal: true, vertical: true)
                     }
-                    .frame( height: 40)
-                    .fixedSize(horizontal: true, vertical: true)
-                  
-                })
+                )
                 .padding(.horizontal, style.buttonHInset)
                 .padding(.vertical, style.buttonVInset)
                 .readFrame(in: .named(containerSpace)) {

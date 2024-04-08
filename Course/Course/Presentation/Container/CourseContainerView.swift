@@ -10,7 +10,6 @@ import Core
 import Discussion
 import Swinject
 import Theme
-import Kingfisher
 
 public struct CourseContainerView: View {
     

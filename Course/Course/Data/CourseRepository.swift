@@ -137,8 +137,8 @@ public class CourseRepository: CourseRepositoryProtocol {
             topicID: courseBlock.userViewData?.topicID,
             childs: childs,
             media: course.media,
-            certificate: course.certificate?.domain, 
-            org: course.org
+            certificate: course.certificate?.domain,
+            org: course.org ?? ""
         )
     }
     
@@ -348,7 +348,7 @@ And there are various ways of describing it-- call it oral poetry or
             childs: childs,
             media: course.media,
             certificate: course.certificate?.domain, 
-            org: course.org
+            org: course.org ?? ""
         )
     }
     

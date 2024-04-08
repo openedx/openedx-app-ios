@@ -19,7 +19,7 @@ public extension DataLayer {
         public let id: String
         public let media: DataLayer.CourseMedia
         public let certificate: Certificate?
-        public let org: String
+        public let org: String?
         
         enum CodingKeys: String, CodingKey {
             case blocks
@@ -36,7 +36,7 @@ public extension DataLayer {
             id: String,
             media: DataLayer.CourseMedia,
             certificate: Certificate?,
-            org: String
+            org: String?
         ) {
             self.rootItem = rootItem
             self.dict = dict

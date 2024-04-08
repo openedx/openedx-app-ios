@@ -31,11 +31,7 @@ public struct ResponsiveView: View {
         }.frame(
             height: idiom == .pad
             ? padHeight
-            : (
-                collapsed ? (
-                    isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight
-                ) : expandedHeight
-            )
+            : (collapsed ? ( isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight) : expandedHeight)
         )
         .overlay(
             GeometryReader { geometry -> Color in
