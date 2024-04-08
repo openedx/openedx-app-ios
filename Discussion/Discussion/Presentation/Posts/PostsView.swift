@@ -32,7 +32,8 @@ public struct PostsView: View {
         type: ThreadType,
         viewModel: PostsViewModel,
         router: DiscussionRouter,
-        showTopMenu: Bool = true
+        showTopMenu: Bool = true,
+        isBlackedOut: Bool? = nil
     ) {
         self.courseID = courseID
         self.title = title
@@ -40,18 +41,25 @@ public struct PostsView: View {
         self.router = router
         self.showTopMenu = showTopMenu
         self.viewModel = viewModel
+        self.viewModel.isBlackedOut = isBlackedOut
         self.viewModel.courseID = courseID
         self.viewModel.topics = topics
         viewModel.type = type
     }
     
-    public init(courseID: String, router: DiscussionRouter, viewModel: PostsViewModel) {
+    public init(
+        courseID: String,
+        router: DiscussionRouter,
+        viewModel: PostsViewModel,
+        isBlackedOut: Bool = false
+    ) {
         self.courseID = courseID
         self.title = ""
         self.currentBlockID = ""
         self.router = router
         self.viewModel = viewModel
         self.showTopMenu = true
+        self.viewModel.isBlackedOut = isBlackedOut
         self.viewModel.courseID = courseID
     }
 
@@ -111,29 +119,31 @@ public struct PostsView: View {
                                                     .font(Theme.Fonts.titleLarge)
                                                     .foregroundColor(Theme.Colors.textPrimary)
                                                 Spacer()
-                                                Button(action: {
-                                                    router.createNewThread(
-                                                        courseID: courseID,
-                                                        selectedTopic: currentBlockID,
-                                                        onPostCreated: {
-                                                            reloadPage(onSuccess: {
-                                                                withAnimation {
-                                                                    scroll.scrollTo(1)
-                                                                }
+                                                if !(viewModel.isBlackedOut ?? false) {
+                                                    Button(action: {
+                                                        router.createNewThread(
+                                                            courseID: courseID,
+                                                            selectedTopic: currentBlockID,
+                                                            onPostCreated: {
+                                                                reloadPage(onSuccess: {
+                                                                    withAnimation {
+                                                                        scroll.scrollTo(1)
+                                                                    }
+                                                                })
                                                             })
-                                                        })
-                                                }, label: {
-                                                    VStack {
-                                                        CoreAssets.addComment.swiftUIImage
-                                                            .font(Theme.Fonts.labelLarge)
-                                                            .padding(6)
-                                                    }
-                                                    .foregroundColor(Theme.Colors.white)
-                                                    .background(
-                                                        Circle()
-                                                            .foregroundColor(Theme.Colors.accentButtonColor)
-                                                    )
-                                                })
+                                                    }, label: {
+                                                        VStack {
+                                                            CoreAssets.addComment.swiftUIImage
+                                                                .font(Theme.Fonts.labelLarge)
+                                                                .padding(6)
+                                                        }
+                                                        .foregroundColor(Theme.Colors.white)
+                                                        .background(
+                                                            Circle()
+                                                                .foregroundColor(Theme.Colors.accentButtonColor)
+                                                        )
+                                                    })
+                                                }
                                             }
                                             .padding(.horizontal, 24)
                                             
@@ -167,29 +177,31 @@ public struct PostsView: View {
                                                     .multilineTextAlignment(.center)
                                                     .frame(maxWidth: .infinity)
                                                     .padding(.top, 40)
-                                                Text(DiscussionLocalization.Posts.NoDiscussion.description)
-                                                    .font(Theme.Fonts.bodyLarge)
-                                                    .multilineTextAlignment(.center)
-                                                    .frame(maxWidth: .infinity)
-                                                    .padding(.top, 12)
-                                                StyledButton(
-                                                    DiscussionLocalization.Posts.NoDiscussion.createbutton,
-                                                    action: {
-                                                        router.createNewThread(courseID: courseID,
-                                                                               selectedTopic: currentBlockID,
-                                                                               onPostCreated: {
-                                                            reloadPage(onSuccess: {
-                                                                withAnimation {
-                                                                    scroll.scrollTo(1)
-                                                                }
+                                                if !(viewModel.isBlackedOut ?? false) {
+                                                    Text(DiscussionLocalization.Posts.NoDiscussion.description)
+                                                        .font(Theme.Fonts.bodyLarge)
+                                                        .multilineTextAlignment(.center)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.top, 12)
+                                                    StyledButton(
+                                                        DiscussionLocalization.Posts.NoDiscussion.addPost,
+                                                        action: {
+                                                            router.createNewThread(courseID: courseID,
+                                                                                   selectedTopic: currentBlockID,
+                                                                                   onPostCreated: {
+                                                                reloadPage(onSuccess: {
+                                                                    withAnimation {
+                                                                        scroll.scrollTo(1)
+                                                                    }
+                                                                })
                                                             })
-                                                        })
-                                                    },
-                                                    isTransparent: true)
-                                                .frame(width: 215)
-                                                .padding(.top, 40)
-                                                .colorMultiply(Theme.Colors.accentColor)
-                                                
+                                                        },
+                                                        isTransparent: true)
+                                                    .frame(width: 215)
+                                                    .padding(.top, 40)
+                                                    .colorMultiply(Theme.Colors.accentColor)
+                                                    .disabled(viewModel.isBlackedOut ?? false)
+                                                }
                                             }
                                             .padding(24)
                                             .padding(.top, 100)
