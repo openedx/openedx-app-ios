@@ -77,7 +77,7 @@ public struct BackNavigationButton: View {
     }
     
     public var body: some View {
-        BackNavigationButtonRepresentable(action: action, color: color, viewModel: viewModel)            
+        BackNavigationButtonRepresentable(action: action, color: color, viewModel: viewModel)
         .onAppear {
             viewModel.loadItems()
         }

@@ -51,13 +51,14 @@ public struct NavigationBar: View {
             }
             .padding(.horizontal, 24)
             if leftButton {
-            VStack {
-                BackNavigationButton(color: leftButtonColor, action: leftButtonAction)
-                    .padding(8)
-                    .backViewStyle()
-                }.frame(minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading)
+                VStack {
+                    BackNavigationButton(color: leftButtonColor, action: leftButtonAction)
+                        .padding(8)
+                        .backViewStyle()
+                }
+                .frame(minWidth: 0,
+                       maxWidth: .infinity,
+                       alignment: .topLeading)
                 
             }
             if rightButtonType != nil {

@@ -211,12 +211,15 @@ public struct EditProfileView: View {
             .navigationBarBackButtonHidden(true)
             .navigationTitle(ProfileLocalization.editProfile)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading, content: {
-                    BackNavigationButton(color: Theme.Colors.accentColor) {
-                        viewModel.backButtonTapped()
+                ToolbarItem(
+                    placement: .navigationBarLeading,
+                    content: {
+                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                            viewModel.backButtonTapped()
+                        }
+                        .offset(x: -8, y: -1.5)
                     }
-                    .offset(x: -8, y: -1.5)
-                })
+                )
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button(action: {
                         if viewModel.isChanged {

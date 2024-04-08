@@ -208,8 +208,19 @@ public struct ResponsesView: View {
             }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
+            .navigationBarBackButtonHidden(true)
             .navigationTitle(title)
+            .toolbar {
+                ToolbarItem(
+                    placement: .navigationBarLeading,
+                    content: {
+                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                            viewModel.router.back()
+                        }
+                        .offset(x: -8, y: -1.5)
+                    }
+                )
+            }
             .edgesIgnoringSafeArea(.bottom)
             .background(
                 Theme.Colors.background
