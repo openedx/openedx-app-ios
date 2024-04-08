@@ -201,6 +201,15 @@ class AppAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
+        
+        container.register(PipManagerProtocol.self) { r in
+            PipManager(
+                router: r.resolve(Router.self)!,
+                discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                isNestedListEnabled: r.resolve(ConfigProtocol.self)?.uiComponents.courseNestedListEnabled ?? false
+            )
+        }.inObjectScope(.container)
     }
 }
 // swiftlint:enable function_body_length

@@ -54,7 +54,6 @@ public struct CourseVerticalView: View {
                                             courseName: courseName,
                                             blockId: block.id,
                                             courseID: courseID,
-                                            sectionName: block.displayName,
                                             verticalIndex: index,
                                             chapters: viewModel.chapters,
                                             chapterIndex: viewModel.chapterIndex,

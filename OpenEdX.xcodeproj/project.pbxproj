@@ -28,6 +28,7 @@
 		02ED50D429A6554E008341CD /* сountries.json in Resources */ = {isa = PBXBuildFile; fileRef = 02ED50D629A6554E008341CD /* сountries.json */; };
 		02ED50D829A66007008341CD /* languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 02ED50DA29A66007008341CD /* languages.json */; };
 		02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */; };
+		065275372BB1B4070093BCCA /* PipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065275362BB1B4070093BCCA /* PipManager.swift */; };
 		071009C928D1DB3F00344290 /* ScreenAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C828D1DB3F00344290 /* ScreenAssembly.swift */; };
 		0727878E28D347C7002E9142 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0727878D28D347C7002E9142 /* MainScreenView.swift */; };
 		072787B128D34D83002E9142 /* Discovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 072787B028D34D83002E9142 /* Discovery.framework */; };
@@ -112,6 +113,7 @@
 		02ED50D929A66007008341CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/languages.json; sourceTree = "<group>"; };
 		02ED50DB29A6600B008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = uk.lproj/languages.json; sourceTree = "<group>"; };
 		02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenAnalytics.swift; sourceTree = "<group>"; };
+		065275362BB1B4070093BCCA /* PipManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PipManager.swift; sourceTree = "<group>"; };
 		071009C828D1DB3F00344290 /* ScreenAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAssembly.swift; sourceTree = "<group>"; };
 		0727878D28D347C7002E9142 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		072787B028D34D83002E9142 /* Discovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -292,6 +294,7 @@
 		A50066882B613E800024680B /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				065275362BB1B4070093BCCA /* PipManager.swift */,
 				A59568932B6162E400ED4F90 /* DeepLinkManager */,
 				A50066872B613E4B0024680B /* PushNotificationsManager */,
 				A50066892B613E990024680B /* AnalyticsManager */,
@@ -576,6 +579,7 @@
 				A500668D2B6143000024680B /* FCMProvider.swift in Sources */,
 				025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */,
 				024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */,
+				065275372BB1B4070093BCCA /* PipManager.swift in Sources */,
 				0770DE2028D0858A006D8A5D /* Router.swift in Sources */,
 				0293A2092A6FCDE50090A336 /* DashboardPersistence.swift in Sources */,
 				0770DE1728D080A1006D8A5D /* RouteController.swift in Sources */,

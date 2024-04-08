@@ -321,6 +321,25 @@ public class Router: AuthorizationRouter,
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
+        let controller = getVerticalController(
+            courseID: courseID,
+            courseName: courseName,
+            title: title,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getVerticalController(
+        courseID: String,
+        courseName: String,
+        title: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) -> UIHostingController<CourseVerticalView> {
         let viewModel = Container.shared.resolve(
             CourseVerticalViewModel.self,
             arguments: chapters,
@@ -334,8 +353,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             viewModel: viewModel
         )
-        let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        return UIHostingController(rootView: view)
     }
     
     public func showCourseScreens(
@@ -347,6 +365,27 @@ public class Router: AuthorizationRouter,
         enrollmentEnd: Date?,
         title: String
     ) {
+        let controller = getCourseScreensController(
+            courseID: courseID,
+            isActive: isActive,
+            courseStart: courseStart,
+            courseEnd: courseEnd,
+            enrollmentStart: enrollmentStart,
+            enrollmentEnd: enrollmentEnd,
+            title: title
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getCourseScreensController(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
             arguments: isActive,
@@ -361,8 +400,7 @@ public class Router: AuthorizationRouter,
             title: title
         )
         
-        let controller = UIHostingController(rootView: screensView)
-        navigationController.pushViewController(controller, animated: true)
+        return UIHostingController(rootView: screensView)
     }
     
     public func showHandoutsUpdatesView(
@@ -385,12 +423,32 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
+        let controller = getUnitController(
+            courseName: courseName,
+            blockId: blockId,
+            courseID: courseID,
+            verticalIndex: verticalIndex,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getUnitController(
+        courseName: String,
+        blockId: String,
+        courseID: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) -> UIHostingController<CourseUnitView> {
         let viewModel = Container.shared.resolve(
             CourseUnitViewModel.self,
             arguments: blockId,
@@ -405,9 +463,8 @@ public class Router: AuthorizationRouter,
         let config = Container.shared.resolve(ConfigProtocol.self)
         let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
 
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
-        let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
+        return UIHostingController(rootView: view)
     }
     
     public func showCourseComponent(
@@ -444,7 +501,6 @@ public class Router: AuthorizationRouter,
                         courseName: courseStructure.displayName,
                         blockId: block.blockId,
                         courseID: courseStructure.id,
-                        sectionName: courseName ?? "",
                         verticalIndex: verticalPosition ?? 0,
                         chapters: courseStructure.childs,
                         chapterIndex: chapterPosition ?? 0,
@@ -489,52 +545,41 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
         animated: Bool
     ) {
-        
-        let vmVertical = Container.shared.resolve(
-            CourseVerticalViewModel.self,
-            arguments: chapters,
-            chapterIndex,
-            sequentialIndex
-        )!
-        
-        let viewVertical = CourseVerticalView(
-            title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+
+        let controllerUnit = getUnitController(
             courseName: courseName,
+            blockId: blockId,
             courseID: courseID,
-            viewModel: vmVertical
+            verticalIndex: verticalIndex,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
         )
-        let controllerVertical = UIHostingController(rootView: viewVertical)
-        
-        let viewModel = Container.shared.resolve(
-            CourseUnitViewModel.self,
-            arguments: blockId,
-            courseID,
-            courseName,
-            chapters,
-            chapterIndex,
-            sequentialIndex,
-            verticalIndex
-        )!
 
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
-
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
-        let controllerUnit = UIHostingController(rootView: view)
+        let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
+        
         var controllers = navigationController.viewControllers
 
-        if let config = container.resolve(ConfigProtocol.self),
-            config.uiComponents.courseNestedListEnabled {
+        if isCourseNestedListEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {
+            let controllerVertical = getVerticalController(
+                courseID: courseID,
+                courseName: courseName,
+                title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex
+            )
+
             controllers.removeLast(2)
             controllers.append(contentsOf: [controllerVertical, controllerUnit])
         }

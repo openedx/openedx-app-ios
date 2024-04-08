@@ -23,6 +23,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
     private var duration: Double?
     private var isViewedOnce: Bool = false
     private var url: String
+    private let pipManager: PipManagerProtocol
     
     public init(
         url: String,
@@ -33,13 +34,14 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
         appStorage: CoreStorage,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        pipManager: PipManagerProtocol
     ) {
         self.url = url
 
         let videoID = url.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
         let configuration = YouTubePlayer.Configuration(configure: {
-            $0.autoPlay = true
+            $0.autoPlay = !pipManager.isPipActive
             $0.playInline = true
             $0.showFullscreenButton = true
             $0.allowsPictureInPictureMediaPlayback = false
@@ -55,7 +57,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                                  """
         })
         self.youtubePlayer = YouTubePlayer(source: .video(id: videoID), configuration: configuration)
-        
+        self.pipManager = pipManager
         super.init(
             blockID: blockID,
             courseID: courseID,
@@ -123,6 +125,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 self.play = false
             case .playing:
                 self.play = true
+                self.pipManager.pauseCurrentPipVideo()
             case .paused:
                 self.play = false
             case .buffering, .cued:
@@ -136,5 +139,12 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                 self.isLoading = false
             }
         }).store(in: &subscription)
+        
+        pipManager.pipRatePublisher()?
+            .sink {[weak self] rate in
+                guard rate > 0 else { return }
+                self?.youtubePlayer.pause()
+            }
+            .store(in: &subscription)
     }
 }

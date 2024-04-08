@@ -65,7 +65,6 @@ public protocol DeepLinkRouter: BaseRouter {
 extension Router: DeepLinkRouter {
 
     // MARK: - DeepLinkRouter
-
     public func showDiscoveryDetails(
         link: DeepLink,
         pathID: String
@@ -324,6 +323,9 @@ extension Router: DeepLinkRouter {
         backToRoot(animated: false)
     }
 
+    public var currentCourseTabSelection: Int {
+        self.hostCourseContainerView?.rootView.viewModel.selection ?? 0
+    }
 }
 
 // Mark - For testing and SwiftUI preview
