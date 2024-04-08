@@ -165,6 +165,10 @@ public class DeepLinkManager {
         type == .courseHandout ||
         type == .courseAnnouncement
     }
+    
+    private func isCourseComponent(type: DeepLinkType) -> Bool {
+        type == .courseComponent
+    }
 
     @MainActor
     private func navigateToScreen(
@@ -191,7 +195,8 @@ public class DeepLinkManager {
             .courseAnnouncement,
             .discussionTopic,
             .discussionPost,
-            .discussionComment:
+            .discussionComment,
+            .courseComponent:
             await showCourseScreen(with: type, link: link)
         case .program, .programDetail:
             guard config.program.enabled else { return }
@@ -273,6 +278,15 @@ public class DeepLinkManager {
                             courseDetails: courseDetails,
                             isBlackedOut: discussionInfo.isBlackedOut()
                         )
+                        self.router.dismissProgress()
+                    }
+                    return
+                }
+                
+                if self.isCourseComponent(type: type) {
+                    self.router.showProgress()
+                    Task {
+                        await self.showCourseComponent(link: link, courseDetails: courseDetails)
                         self.router.dismissProgress()
                     }
                     return
@@ -394,7 +408,23 @@ public class DeepLinkManager {
             break
         }
     }
-
+     
+    @MainActor
+    private func showCourseComponent(
+        link: DeepLink,
+        courseDetails: CourseDetails
+    ) async {
+        guard let courseID = link.courseID else { return }
+        guard let courseStructure = try? await courseInteractor.getCourseBlocks(courseID: courseID) else {
+            return
+        }
+        router.showCourseComponent(
+            componentID: link.componentID ?? "",
+            courseStructure: courseStructure,
+            blockLink: ""
+        )
+    }
+    
     @MainActor
     private func showEditProfile() async {
         guard let userProfile = try? await profileInteractor.getMyProfile() else {

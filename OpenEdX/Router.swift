@@ -139,7 +139,7 @@ public class Router: AuthorizationRouter,
               connectivity.isInternetAvaliable
         else { return }
         let vm = AppReviewViewModel(config: config, storage: storage, analytics: analytics)
-        if true {
+        if vm.shouldShowRatingView() {
             presentView(
                 transitionStyle: .crossDissolve,
                 view: AppReviewView(viewModel: vm)
