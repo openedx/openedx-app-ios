@@ -27,7 +27,7 @@ public struct MessageSectionView: View {
     
     public var body: some View {
         HStack(alignment: .top, spacing: 8) {
-            CoreAssets.badge.swiftUIImage
+            CoreAssets.certificateBadge.swiftUIImage
                 .resizable()
                 .frame(width: 24, height: 24)
                 .foregroundColor(Theme.Colors.textPrimary)

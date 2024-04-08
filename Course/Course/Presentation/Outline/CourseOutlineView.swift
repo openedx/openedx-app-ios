@@ -59,7 +59,6 @@ public struct CourseOutlineView: View {
                         }
                     }) {
                         VStack(alignment: .leading) {
-
                             if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
                                courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
                                !courseDeadlineInfo.hasEnded,
@@ -277,27 +276,27 @@ public struct CourseOutlineView: View {
     @ViewBuilder
     private var certificateView: some View {
         // MARK: - Course Certificate
-        if let certificate = viewModel.courseStructure?.certificate {
-            if let url = certificate.url, url.count > 0 {
-                MessageSectionView(
-                    title: CourseLocalization.Outline.passedTheCourse(title),
-                    actionTitle: CourseLocalization.Outline.viewCertificate,
-                    action: {
-                        openCertificateView = true
-                        viewModel.trackViewCertificateClicked(courseID: courseID)
-                    }
-                )
-                .padding(.horizontal, 24)
-                .fullScreenCover(
-                    isPresented: $openCertificateView,
-                    content: {
-                        WebBrowser(
-                            url: url,
-                            pageTitle: CourseLocalization.Outline.certificate
-                        )
-                    }
-                )
-            }
+        if let certificate = viewModel.courseStructure?.certificate,
+           let url = certificate.url,
+           url.count > 0 {
+            MessageSectionView(
+                title: CourseLocalization.Outline.passedTheCourse(title),
+                actionTitle: CourseLocalization.Outline.viewCertificate,
+                action: {
+                    openCertificateView = true
+                    viewModel.trackViewCertificateClicked(courseID: courseID)
+                }
+            )
+            .padding(.horizontal, 24)
+            .fullScreenCover(
+                isPresented: $openCertificateView,
+                content: {
+                    WebBrowser(
+                        url: url,
+                        pageTitle: CourseLocalization.Outline.certificate
+                    )
+                }
+            )
         }
     }
 
