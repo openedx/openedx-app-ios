@@ -8,6 +8,44 @@
 import Foundation
 import Core
 
+public enum EnrollmentMode: String {
+    case audit
+    case verified
+    case none
+}
+
+public enum CoursePacing: String {
+    case `self` = "self"
+    case instructor = "instructor"
+}
+
+public enum CalendarDialogueAction: String {
+    case on = "on"
+    case off = "off"
+    case allow = "allow"
+    case doNotAllow = "donot_allow"
+    case add = "add"
+    case cancel = "cancel"
+    case remove = "remove"
+    case update = "update"
+    case done = "done"
+    case viewEvent = "view_event"
+}
+
+public enum CalendarDialogueType: String {
+    case devicePermission = "device_permission"
+    case addCalendar = "add_calendar"
+    case removeCalendar = "remove_calendar"
+    case updateCalendar = "update_calendar"
+    case eventsAdded = "events_added"
+}
+
+public enum Snackbar: String {
+    case added
+    case removed
+    case updated
+}
+
 //sourcery: AutoMockable
 public protocol CourseAnalytics {
     func resumeCourseClicked(courseId: String, courseName: String, blockId: String)
@@ -31,20 +69,20 @@ public protocol CourseAnalytics {
     )
     func calendarSyncToggle(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
-        action: Action
+        action: CalendarDialogueAction
     )
     func calendarSyncDialogAction(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
-        dialog: Dialog,
-        action: Action
+        dialog: CalendarDialogueType,
+        action: CalendarDialogueAction
     )
     func calendarSyncSnackbar(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
         snackbar: Snackbar
     )
@@ -108,20 +146,20 @@ class CourseAnalyticsMock: CourseAnalytics {
     ) {}
     func calendarSyncToggle(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
-        action: Action
+        action: CalendarDialogueAction
     ) {}
     func calendarSyncDialogAction(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
-        dialog: Dialog,
-        action: Action
+        dialog: CalendarDialogueType,
+        action: CalendarDialogueAction
     ) {}
     func calendarSyncSnackbar(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
         snackbar: Snackbar
     ) {}

@@ -549,9 +549,9 @@ class AnalyticsManager: AuthorizationAnalytics,
     
     func calendarSyncToggle(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
-        action: Action
+        action: CalendarDialogueAction
     ) {
         let parameters: [String: Any] = [
             EventParamKey.userType: userType.rawValue,
@@ -567,10 +567,10 @@ class AnalyticsManager: AuthorizationAnalytics,
     
     func calendarSyncDialogAction(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
-        dialog: Dialog,
-        action: Action
+        dialog: CalendarDialogueType,
+        action: CalendarDialogueAction
     ) {
         let parameters: [String: Any] = [
             EventParamKey.userType: userType.rawValue,
@@ -587,7 +587,7 @@ class AnalyticsManager: AuthorizationAnalytics,
     
     func calendarSyncSnackbar(
         userType: EnrollmentMode,
-        pacing: Pacing,
+        pacing: CoursePacing,
         courseId: String,
         snackbar: Snackbar
     ) {

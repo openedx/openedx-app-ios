@@ -144,7 +144,7 @@
 		02F0144E28F46474002E513D /* CourseContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerView.swift; sourceTree = "<group>"; };
 		02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerViewModel.swift; sourceTree = "<group>"; };
 		02F066E729DC71750073E13B /* SubtittlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtittlesView.swift; sourceTree = "<group>"; };
-		02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAnalytics.swift; sourceTree = "<group>"; };
+		02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CourseAnalytics.swift; path = ../Presentation/CourseAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFDC29252E900051930C /* CourseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRouter.swift; sourceTree = "<group>"; };
 		02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoPlayerViewModelTests.swift; path = CourseTests/Presentation/Unit/VideoPlayerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02F98A8028F8224200DE94C0 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -288,6 +288,7 @@
 		0289F8F028E1C3510064F8F3 /* Course */ = {
 			isa = PBXGroup;
 			children = (
+				979A6AB92BC3FFF8001B0DE3 /* Analytics */,
 				02B6B3AD28E1C47100232911 /* SwiftGen */,
 				02B6B3B828E1D12900232911 /* Data */,
 				02B6B3B528E1D10700232911 /* Domain */,
@@ -382,7 +383,6 @@
 				BAC0E0DC2B32F0EA006B68A9 /* Downloads */,
 				BAD9CA482B2C88D500DE790A /* Subviews */,
 				02F3BFDC29252E900051930C /* CourseRouter.swift */,
-				02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -491,6 +491,14 @@
 				975F475F2B615DA700E5B031 /* CourseStructureMock.swift */,
 			);
 			path = Mock;
+			sourceTree = "<group>";
+		};
+		979A6AB92BC3FFF8001B0DE3 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				02F175362A4DAFD20019CD70 /* CourseAnalytics.swift */,
+			);
+			path = Analytics;
 			sourceTree = "<group>";
 		};
 		97CA95212B875EA200A9EDEA /* Views */ = {

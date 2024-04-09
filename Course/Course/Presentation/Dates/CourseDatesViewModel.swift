@@ -220,12 +220,12 @@ extension CourseDatesViewModel {
             switch status {
             case .authorized:
                 if previousStatus == .notDetermined {
-                    trackCalendarSyncDialogAction(dialog: .permission, action: .allow)
+                    trackCalendarSyncDialogAction(dialog: .devicePermission, action: .allow)
                 }
                 showAddCalendarAlert()
             default:
                 if previousStatus == .notDetermined {
-                    trackCalendarSyncDialogAction(dialog: .permission, action: .doNotAllow)
+                    trackCalendarSyncDialogAction(dialog: .devicePermission, action: .doNotAllow)
                 }
                 isOn = false
                 if previousStatus == status {
@@ -268,13 +268,13 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CoreLocalization.Alert.accept,
             onCloseTapped: { [weak self] in
-                self?.trackCalendarSyncDialogAction(dialog: .add, action: .cancel)
+                self?.trackCalendarSyncDialogAction(dialog: .addCalendar, action: .cancel)
                 self?.router.dismiss(animated: true)
                 self?.isOn = false
                 self?.calendar.syncOn = false
             },
             okTapped: { [weak self] in
-                self?.trackCalendarSyncDialogAction(dialog: .add, action: .ok)
+                self?.trackCalendarSyncDialogAction(dialog: .addCalendar, action: .add)
                 self?.router.dismiss(animated: true)
                 Task { [weak self] in
                     await self?.addCourseEvents()
@@ -293,14 +293,14 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CoreLocalization.Alert.accept,
             onCloseTapped: { [weak self] in
-                self?.trackCalendarSyncDialogAction(dialog: .remove, action: .cancel)
+                self?.trackCalendarSyncDialogAction(dialog: .removeCalendar, action: .cancel)
                 self?.router.dismiss(animated: true)
             },
             okTapped: { [weak self] in
-                self?.trackCalendarSyncDialogAction(dialog: .remove, action: .ok)
+                self?.trackCalendarSyncDialogAction(dialog: .removeCalendar, action: .remove)
                 self?.router.dismiss(animated: true)
                 self?.removeCourseCalendar { [weak self] _ in
-                    self?.trackCalendarSyncSnackbar(snackbar: .remove)
+                    self?.trackCalendarSyncSnackbar(snackbar: .removed)
                     self?.eventState = .removedCalendar
                 }
                 
@@ -311,7 +311,7 @@ extension CourseDatesViewModel {
     
     private func showEventsAddedSuccessAlert() {
         if calendar.isModalPresented {
-            trackCalendarSyncSnackbar(snackbar: .add)
+            trackCalendarSyncSnackbar(snackbar: .added)
             eventState = .addedCalendar
             return
         }
@@ -323,13 +323,13 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CourseLocalization.CourseDates.calendarViewEvents,
             onCloseTapped: { [weak self] in
-                self?.trackCalendarSyncDialogAction(dialog: .confirmed, action: .done)
+                self?.trackCalendarSyncDialogAction(dialog: .eventsAdded, action: .done)
                 self?.router.dismiss(animated: true)
                 self?.isOn = true
                 self?.calendar.syncOn = true
             },
             okTapped: { [weak self] in
-                self?.trackCalendarSyncDialogAction(dialog: .confirmed, action: .viewEvent)
+                self?.trackCalendarSyncDialogAction(dialog: .eventsAdded, action: .viewEvent)
                 self?.router.dismiss(animated: true)
                 if let url = URL(string: "calshow://"), UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -366,16 +366,16 @@ extension CourseDatesViewModel {
             positiveAction: CourseLocalization.CourseDates.calendarShiftPromptUpdateNow,
             onCloseTapped: { [weak self] in
                 // Remove course calendar
-                self?.trackCalendarSyncDialogAction(dialog: .update, action: .remove)
+                self?.trackCalendarSyncDialogAction(dialog: .updateCalendar, action: .remove)
                 self?.router.dismiss(animated: true)
                 self?.removeCourseCalendar { [weak self] _ in
-                    self?.trackCalendarSyncSnackbar(snackbar: .remove)
+                    self?.trackCalendarSyncSnackbar(snackbar: .removed)
                     self?.eventState = .removedCalendar
                 }
             },
             okTapped: { [weak self] in
                 // Update Calendar Now
-                self?.trackCalendarSyncDialogAction(dialog: .update, action: .update)
+                self?.trackCalendarSyncDialogAction(dialog: .updateCalendar, action: .update)
                 self?.router.dismiss(animated: true)
                 self?.removeCourseCalendar(trackAnalytics: false) { success in
                     self?.isOn = !success
@@ -383,7 +383,7 @@ extension CourseDatesViewModel {
                     self?.addCourseEvents(trackAnalytics: false) { [weak self] calendarEventsAdded in
                         self?.isOn = calendarEventsAdded
                         if calendarEventsAdded {
-                            self?.trackCalendarSyncSnackbar(snackbar: .update)
+                            self?.trackCalendarSyncSnackbar(snackbar: .updated)
                             self?.calendar.syncOn = calendarEventsAdded
                             self?.eventState = .updatedCalendar
                         }
@@ -466,7 +466,7 @@ extension CourseDatesViewModel {
 }
 
 extension CourseDatesViewModel {
-    private func trackCalendarSyncToggle(action: Action) {
+    private func trackCalendarSyncToggle(action: CalendarDialogueAction) {
         analytics.calendarSyncToggle(
             userType: .none,
             pacing: courseStructure?.isSelfPaced ?? true ? .`self` : .instructor,
@@ -475,7 +475,7 @@ extension CourseDatesViewModel {
         )
     }
     
-    private func trackCalendarSyncDialogAction(dialog: Dialog, action: Action) {
+    private func trackCalendarSyncDialogAction(dialog: CalendarDialogueType, action: CalendarDialogueAction) {
         analytics.calendarSyncDialogAction(
             userType: .none,
             pacing: courseStructure?.isSelfPaced ?? true ? .`self` : .instructor,
