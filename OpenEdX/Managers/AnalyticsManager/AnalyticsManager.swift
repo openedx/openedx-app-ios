@@ -420,8 +420,8 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
-            EventParamKey.unitID: blockId,
-            EventParamKey.unitName: blockName
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName
         ]
         logEvent(.verticalClicked, parameters: parameters)
     }
@@ -548,13 +548,13 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     func calendarSyncToggle(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
         action: CalendarDialogueAction
     ) {
         let parameters: [String: Any] = [
-            EventParamKey.userType: userType.rawValue,
+            EventParamKey.enrollmentMode: enrollmentMode.rawValue,
             EventParamKey.pacing: pacing.rawValue,
             EventParamKey.courseID: courseId,
             EventParamKey.action: action.rawValue,
@@ -566,14 +566,14 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     func calendarSyncDialogAction(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
         dialog: CalendarDialogueType,
         action: CalendarDialogueAction
     ) {
         let parameters: [String: Any] = [
-            EventParamKey.userType: userType.rawValue,
+            EventParamKey.enrollmentMode: enrollmentMode.rawValue,
             EventParamKey.pacing: pacing.rawValue,
             EventParamKey.courseID: courseId,
             EventParamKey.dialog: dialog.rawValue,
@@ -586,13 +586,13 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     func calendarSyncSnackbar(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
-        snackbar: Snackbar
+        snackbar: SnackbarType
     ) {
         let parameters: [String: Any] = [
-            EventParamKey.userType: userType.rawValue,
+            EventParamKey.enrollmentMode: enrollmentMode.rawValue,
             EventParamKey.pacing: pacing.rawValue,
             EventParamKey.courseID: courseId,
             EventParamKey.snackbar: snackbar.rawValue,

@@ -40,7 +40,7 @@ public enum CalendarDialogueType: String {
     case eventsAdded = "events_added"
 }
 
-public enum Snackbar: String {
+public enum SnackbarType: String {
     case added
     case removed
     case updated
@@ -68,23 +68,23 @@ public protocol CourseAnalytics {
         supported: Bool
     )
     func calendarSyncToggle(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
         action: CalendarDialogueAction
     )
     func calendarSyncDialogAction(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
         dialog: CalendarDialogueType,
         action: CalendarDialogueAction
     )
     func calendarSyncSnackbar(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
-        snackbar: Snackbar
+        snackbar: SnackbarType
     )
     func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String)
     func plsEvent(
@@ -145,23 +145,23 @@ class CourseAnalyticsMock: CourseAnalytics {
         supported: Bool
     ) {}
     func calendarSyncToggle(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
         action: CalendarDialogueAction
     ) {}
     func calendarSyncDialogAction(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
         dialog: CalendarDialogueType,
         action: CalendarDialogueAction
     ) {}
     func calendarSyncSnackbar(
-        userType: EnrollmentMode,
+        enrollmentMode: EnrollmentMode,
         pacing: CoursePacing,
         courseId: String,
-        snackbar: Snackbar
+        snackbar: SnackbarType
     ) {}
     public func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String) {}
     public func plsEvent(
