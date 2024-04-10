@@ -24,10 +24,23 @@ public struct UserComment: Hashable {
     public let parentID: String?
     public var abuseFlagged: Bool
     
-    public init(authorName: String, authorAvatar: String, postDate: Date, postTitle: String, postBody: String,
-                postBodyHtml: String,
-                postVisible: Bool, voted: Bool, followed: Bool, votesCount: Int, responsesCount: Int,
-                threadID: String, commentID: String, parentID: String?, abuseFlagged: Bool) {
+    public init(
+        authorName: String,
+        authorAvatar: String,
+        postDate: Date,
+        postTitle: String,
+        postBody: String,
+        postBodyHtml: String,
+        postVisible: Bool,
+        voted: Bool,
+        followed: Bool,
+        votesCount: Int,
+        responsesCount: Int,
+        threadID: String,
+        commentID: String,
+        parentID: String?,
+        abuseFlagged: Bool
+    ) {
         self.authorName = authorName
         self.authorAvatar = authorAvatar
         self.postDate = postDate

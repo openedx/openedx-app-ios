@@ -113,7 +113,7 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
             if index == comments.count - 3 {
                 if totalPages != 1 {
                     if nextPage != totalPages+1 {
-                        if await self.getPosts(thread: thread, page: nextPage) {
+                        if await self.getThreadData(thread: thread, page: nextPage) {
                             self.nextPage += 1
                             return true
                         }
@@ -125,7 +125,7 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     }
     
     @MainActor
-    public func getPosts(thread: UserThread, page: Int) async -> Bool {
+    public func getThreadData(thread: UserThread, page: Int, refresh: Bool = false) async -> Bool {
         guard !fetchInProgress else { return false }
         fetchInProgress = true
         do {
@@ -136,25 +136,31 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                     .getQuestionComments(threadID: thread.id, page: page)
                 self.totalPages = pagination.numPages
                 self.itemsCount = pagination.count
+                var threadPost = thread
                 if page == 1 {
                     self.comments = comments
+                    if refresh {
+                        threadPost = await getThreadPost(thread: thread)
+                    }
                 } else {
                     self.comments += comments
                 }
-                let threadData = try await interactor.getThread(threadID: thread.id)
-                postComments = generateComments(comments: self.comments, thread: threadData)
+                postComments = generateComments(comments: self.comments, thread: threadPost)
             case .discussion:
                 let (comments, pagination) = try await interactor
                     .getDiscussionComments(threadID: thread.id, page: page)
                 self.totalPages = pagination.numPages
                 self.itemsCount = pagination.count
+                var threadPost = thread
                 if page == 1 {
                     self.comments = comments
+                    if refresh {
+                        threadPost = await getThreadPost(thread: thread)
+                    }
                 } else {
                     self.comments += comments
                 }
-                let threadData = try await interactor.getThread(threadID: thread.id)
-                postComments = generateComments(comments: self.comments, thread: threadData)
+                postComments = generateComments(comments: self.comments, thread: threadPost)
             }
             fetchInProgress = false
             return true
@@ -169,6 +175,16 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
         }
     }
     
+    func getThreadPost(thread: UserThread) async -> UserThread {
+        do {
+            var threadPost = try await interactor.getThread(threadID: thread.id)
+            threadPost.avatar = thread.avatar
+            return threadPost
+        } catch {
+            return thread
+        }
+    }
+
     func sendPostFollowedState() {
         if let postComments {
             postStateSubject.send(.followed(id: postComments.threadID, postComments.followed))

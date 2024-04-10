@@ -37,7 +37,7 @@ public struct ThreadView: View {
                     VStack {
                         ZStack(alignment: .top) {
                             RefreshableScrollViewCompat(action: {
-                                _ = await viewModel.getPosts(thread: thread, page: 1)
+                                _ = await viewModel.getThreadData(thread: thread, page: 1, refresh: true)
                             }) {
                                 VStack {
                                     if let comments = viewModel.postComments {
@@ -230,7 +230,7 @@ public struct ThreadView: View {
             .navigationTitle(title)
             .onFirstAppear {
                 Task {
-                    await viewModel.getPosts(thread: thread, page: 1)
+                    await viewModel.getThreadData(thread: thread, page: 1)
                 }
             }
             .onDisappear {
@@ -242,13 +242,6 @@ public struct ThreadView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
-        }
-    }
-    
-    private func reloadPage(onSuccess: @escaping () -> Void) {
-        Task {
-            if await viewModel.getPosts(thread: thread,
-                                        page: viewModel.nextPage-1) { onSuccess() }
         }
     }
 }

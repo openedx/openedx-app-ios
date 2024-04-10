@@ -76,7 +76,7 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
             if index == comments.count - 3 {
                 if totalPages != 1 {
                     if nextPage != totalPages + 1 {
-                        if await self.getComments(commentID: commentID,
+                        if await self.getResponsesData(commentID: commentID,
                                                   parentComment: parentComment,
                                                   page: nextPage) {
                             self.nextPage += 1
@@ -88,25 +88,23 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
     }
     
     @MainActor
-    func getComments(commentID: String, parentComment: Post, page: Int) async -> Bool {
+    func getResponsesData(commentID: String, parentComment: Post, page: Int, refresh: Bool = false) async -> Bool {
         guard !fetchInProgress else { return false }
         do {
             let (comments, pagination) = try await interactor
                 .getCommentResponses(commentID: commentID, page: page)
             self.totalPages = pagination.numPages
             self.itemsCount = pagination.count
+            var parentPost = parentComment
             if page == 1 {
                 self.comments = comments
+                if refresh {
+                    parentPost = await getParentPost(parentComment: parentComment)
+                }
             } else {
                 self.comments += comments
             }
-
-            let parentCommentData = try await interactor.getResponse(responseID: parentComment.commentID)
-
-            postComments = generateCommentsResponses(
-                comments: self.comments,
-                parentComment: postUpdatedWithData(post: parentComment, data: parentCommentData)
-            )
+            postComments = generateCommentsResponses(comments: self.comments, parentComment: parentPost)
             return true
         } catch let error {
             if error.isInternetError {
@@ -118,12 +116,16 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
         }
     }
     
-    func postUpdatedWithData(post: Post, data: UserComment) -> Post {
-        var updatedPost = post
-        updatedPost.voted = data.voted
-        updatedPost.votesCount = data.votesCount
-        updatedPost.abuseFlagged = data.abuseFlagged
-        return updatedPost
+    func getParentPost(parentComment: Post) async -> Post {
+        do {
+            let parentCommentData = try await interactor.getResponse(responseID: parentComment.commentID)
+            var parentPost = parentCommentData.post
+            parentPost.closed = parentComment.closed
+            parentPost.authorAvatar = parentComment.authorAvatar
+            return parentPost
+        } catch {
+            return parentComment
+        }
     }
     
     func sendThreadLikeState() {
