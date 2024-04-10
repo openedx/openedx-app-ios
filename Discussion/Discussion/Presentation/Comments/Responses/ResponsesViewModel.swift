@@ -100,7 +100,13 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
             } else {
                 self.comments += comments
             }
-            postComments = generateCommentsResponses(comments: self.comments, parentComment: parentComment)
+
+            let parentCommentData = try await interactor.getResponse(responseID: parentComment.commentID)
+
+            postComments = generateCommentsResponses(
+                comments: self.comments,
+                parentComment: postUpdatedWithData(post: parentComment, data: parentCommentData)
+            )
             return true
         } catch let error {
             if error.isInternetError {
@@ -110,6 +116,14 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
             }
             return false
         }
+    }
+    
+    func postUpdatedWithData(post: Post, data: UserComment) -> Post {
+        var updatedPost = post
+        updatedPost.voted = data.voted
+        updatedPost.votesCount = data.votesCount
+        updatedPost.abuseFlagged = data.abuseFlagged
+        return updatedPost
     }
     
     func sendThreadLikeState() {

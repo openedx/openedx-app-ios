@@ -141,7 +141,8 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                 } else {
                     self.comments += comments
                 }
-                postComments = generateComments(comments: self.comments, thread: thread)
+                let threadData = try await interactor.getThread(threadID: thread.id)
+                postComments = generateComments(comments: self.comments, thread: threadData)
             case .discussion:
                 let (comments, pagination) = try await interactor
                     .getDiscussionComments(threadID: thread.id, page: page)
@@ -152,7 +153,8 @@ public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                 } else {
                     self.comments += comments
                 }
-                postComments = generateComments(comments: self.comments, thread: thread)
+                let threadData = try await interactor.getThread(threadID: thread.id)
+                postComments = generateComments(comments: self.comments, thread: threadData)
             }
             fetchInProgress = false
             return true
