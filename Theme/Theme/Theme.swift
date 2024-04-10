@@ -197,6 +197,7 @@ public struct Theme {
         public static let bodyLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 16)
         public static let bodyMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 14)
         public static let bodySmall: Font = .custom(fontsParser.fontName(for: .regular), size: 12)
+        public static let bodyMicro: Font = .custom(fontsParser.fontName(for: .light), size: 11)
         
         public static let labelLarge: Font = .custom(fontsParser.fontName(for: .medium), size: 14)
         public static let labelMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 12)
