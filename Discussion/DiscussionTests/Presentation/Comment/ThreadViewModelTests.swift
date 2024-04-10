@@ -221,7 +221,7 @@ final class ThreadViewModelTests: XCTestCase {
                                                                                        count: 1,
                                                                                        numPages: 1))))
         
-        result = await viewModel.getPosts(thread: threads.threads[0], page: 1)
+        result = await viewModel.getThreadData(thread: threads.threads[0], page: 1)
         
         Verify(interactor, .readBody(threadID: .value(threads.threads[0].id)))
         Verify(interactor, .getQuestionComments(threadID: .value(threads.threads[0].id), page: .value(1)))
@@ -250,7 +250,7 @@ final class ThreadViewModelTests: XCTestCase {
                                                                                        count: 1,
                                                                                        numPages: 1))))
                 
-        result = await viewModel.getPosts(thread: threads.threads[1], page: 1)
+        result = await viewModel.getThreadData(thread: threads.threads[1], page: 1)
         
         Verify(interactor, .readBody(threadID: .value(threads.threads[1].id)))
         Verify(interactor, .getDiscussionComments(threadID: .value(threads.threads[1].id), page: .value(1)))
@@ -277,7 +277,7 @@ final class ThreadViewModelTests: XCTestCase {
         Given(interactor, .readBody(threadID: .any, willThrow: noInternetError))
         Given(interactor, .getQuestionComments(threadID: .any, page: .any, willThrow: noInternetError))
                 
-        result = await viewModel.getPosts(thread: threads.threads[0], page: 1)
+        result = await viewModel.getThreadData(thread: threads.threads[0], page: 1)
         
         viewModel.postComments = postComments
         
@@ -306,7 +306,7 @@ final class ThreadViewModelTests: XCTestCase {
         Given(interactor, .readBody(threadID: .any, willThrow: NSError()))
         Given(interactor, .getQuestionComments(threadID: .any, page: .any, willThrow: NSError()))
                 
-        result = await viewModel.getPosts(thread: threads.threads[0], page: 1)
+        result = await viewModel.getThreadData(thread: threads.threads[0], page: 1)
         
         viewModel.postComments = postComments
         

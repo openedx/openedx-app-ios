@@ -33,7 +33,7 @@ public struct ResponsesView: View {
         self.viewModel = viewModel
         self.router = router
         Task {
-            await viewModel.getComments(commentID: commentID, parentComment: parentComment, page: 1)
+            await viewModel.getResponsesData(commentID: commentID, parentComment: parentComment, page: 1)
         }
         viewModel.addCommentsIsVisible = false
         self.viewModel.isBlackedOut = isBlackedOut
@@ -48,10 +48,11 @@ public struct ResponsesView: View {
                         ZStack(alignment: .top) {
                             RefreshableScrollViewCompat(action: {
                                 viewModel.comments = []
-                                _ = await viewModel.getComments(
+                                _ = await viewModel.getResponsesData(
                                     commentID: commentID,
                                     parentComment: parentComment,
-                                    page: 1
+                                    page: 1,
+                                    refresh: true
                                 )
                             }) {
                                 VStack {
