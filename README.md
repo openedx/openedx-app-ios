@@ -7,7 +7,7 @@ Modern vision of the mobile application for the Open EdX platform from Raccoon G
 ## Building
 1. Check out the source code:
 
-        git clone https://github.com/raccoongang/educationx-app-ios.git
+        git clone https://github.com/openedx/openedx-app-ios.git
 
 2. Navigate to the project folder and run ``pod install``.
 
@@ -15,7 +15,7 @@ Modern vision of the mobile application for the Open EdX platform from Raccoon G
 
 4. Ensure that the ``OpenEdXDev`` or ``OpenEdXProd`` scheme is selected.
 
-5. Configure `config_settings.yaml` inside `default_config` and `config.yaml` inside sub direcroties to point to your OpenEdx configuration [Configuration Docuementation](./Documentation/CONFIGURATION_MANAGEMENT.md)
+5. Configure `config_settings.yaml` inside `default_config` and `config.yaml` inside sub direcroties to point to your OpenEdx configuration [Configuration Documentation](./Documentation/CONFIGURATION_MANAGEMENT.md)
 
 6. Click the **Run** button.
 
@@ -27,4 +27,4 @@ You can find the plugin with the API and installation guide [here](https://githu
 ## License
 The code in this repository is licensed under the Apache-2.0 license unless otherwise noted.
 
-Please see [LICENSE](https://github.com/raccoongang/educationx-app-ios/blob/main/LICENSE) file for details.
+Please see [LICENSE](https://github.com/openedx/openedx-app-ios/blob/main/LICENSE) file for details.
