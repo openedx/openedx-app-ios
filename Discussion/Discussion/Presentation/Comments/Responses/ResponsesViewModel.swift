@@ -76,9 +76,11 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
             if index == comments.count - 3 {
                 if totalPages != 1 {
                     if nextPage != totalPages + 1 {
-                        if await self.getResponsesData(commentID: commentID,
-                                                  parentComment: parentComment,
-                                                  page: nextPage) {
+                        if await self.getResponsesData(
+                            commentID: commentID,
+                            parentComment: parentComment,
+                            page: nextPage
+                        ) {
                             self.nextPage += 1
                         }
                     }
