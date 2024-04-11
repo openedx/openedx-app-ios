@@ -123,15 +123,6 @@ public struct EditProfileView: View {
                             }
                         })
                         
-                        Button(ProfileLocalization.Edit.deleteAccount, action: {
-                            viewModel.trackProfileDeleteAccountClicked()
-                            viewModel.router.showDeleteProfileView()
-                        })
-                        .font(Theme.Fonts.labelLarge)
-                        .foregroundColor(Theme.Colors.alert)
-                        .padding(.top, 44)
-                        .accessibilityIdentifier("delete_account_button")
-                        
                         Spacer(minLength: 84)
                     }
                     .padding(.horizontal, 24)

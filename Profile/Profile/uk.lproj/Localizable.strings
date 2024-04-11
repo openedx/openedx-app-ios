@@ -24,6 +24,7 @@
 "SWITCH_TO" = "Переключити на";
 "FULL_PROFILE" = "повний профіль";
 "LIMITED_PROFILE" = "обмежений профіль";
+"MANAGE_ACCOUNT" = "Налаштування Профілю";
 
 "LOGOUT_ALERT.TITLE" = "Підтвердження виходу";
 "LOGOUT_ALERT.TEXT" = "Ви впевнені, що бажаєте вийти?";

@@ -20,6 +20,10 @@ public protocol ProfileRouter: BaseRouter {
     
     func showSettings()
     
+    func showVideoSettings()
+    
+    func showManageAccount()
+    
     func showVideoQualityView(viewModel: SettingsViewModel)
 
     func showVideoDownloadQualityView(
@@ -45,6 +49,10 @@ public class ProfileRouterMock: BaseRouterMock, ProfileRouter {
     ) {}
     
     public func showSettings() {}
+    
+    public func showVideoSettings() {}
+    
+    public func showManageAccount() {}
     
     public func showVideoQualityView(viewModel: SettingsViewModel) {}
 

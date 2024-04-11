@@ -17,7 +17,6 @@ import Theme
 
 struct MainScreenView: View {
     
-    @State private var settingsTapped: Bool = false
     @State private var disableAllTabs: Bool = false
     @State private var updateAvaliable: Bool = false
     
@@ -110,7 +109,7 @@ struct MainScreenView: View {
             
             VStack {
                 ProfileView(
-                    viewModel: Container.shared.resolve(ProfileViewModel.self)!, settingsTapped: $settingsTapped
+                    viewModel: Container.shared.resolve(ProfileViewModel.self)!
                 )
             }
             .tabItem {
@@ -125,17 +124,14 @@ struct MainScreenView: View {
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
-                if viewModel.selection == .profile {
                     Button(action: {
-                        settingsTapped.toggle()
+                        let router = Container.shared.resolve(ProfileRouter.self)!
+                        router.showSettings()
                     }, label: {
-                        CoreAssets.edit.swiftUIImage.renderingMode(.template)
-                            .foregroundColor(Theme.Colors.navigationBarTintColor)
+                        CoreAssets.settingsIcon.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
                     })
                     .accessibilityIdentifier("edit_profile_button")
-                } else {
-                    VStack {}
-                }
             })
         }
         .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in

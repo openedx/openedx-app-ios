@@ -28,7 +28,7 @@ public struct ResetPasswordView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.authBackground.swiftUIImage
+                    ThemeAssets.titleBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
                 }

@@ -33,11 +33,14 @@ public struct VideoDownloadQualityView: View {
     @StateObject
     private var viewModel: VideoDownloadQualityViewModel
     private var analytics: CoreAnalytics
+    private var router: BaseRouter
+    @Environment (\.isHorizontal) private var isHorizontal
 
     public init(
         downloadQuality: DownloadQuality,
         didSelect: ((DownloadQuality) -> Void)?,
-        analytics: CoreAnalytics
+        analytics: CoreAnalytics,
+        router: BaseRouter
     ) {
         self._viewModel = StateObject(
             wrappedValue: .init(
@@ -46,59 +49,85 @@ public struct VideoDownloadQualityView: View {
             )
         )
         self.analytics = analytics
+        self.router = router
     }
 
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                // MARK: - Page Body
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        ForEach(viewModel.downloadQuality, id: \.self) { quality in
-                            Button(action: {
-                                analytics.videoQualityChanged(
-                                    .videoDownloadQualityChanged,
-                                    bivalue: .videoDownloadQualityChanged,
-                                    value: quality.value ?? "",
-                                    oldValue: viewModel.selectedDownloadQuality.value ?? ""
-                                )
-                                
-                                viewModel.selectedDownloadQuality = quality
-                            }, label: {
-                                HStack {
-                                    SettingsCell(
-                                        title: quality.title,
-                                        description: quality.description
-                                    )
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
-                                    Spacer()
-                                    CoreAssets.checkmark.swiftUIImage
-                                        .renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.accentXColor)
-                                        .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
-                                        .accessibilityIdentifier("checkmark_image")
-                                    
-                                }
-                                .foregroundColor(Theme.Colors.textPrimary)
-                            })
-                            .accessibilityIdentifier("select_quality_button")
-                            Divider()
-                        }
-                    }
-                    .frame(
-                        minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading
-                    )
-                    .padding(.horizontal, 24)
-                    .frameLimit(width: proxy.size.width)
+                VStack {
+                    ThemeAssets.titleBackground.swiftUIImage
+                        .resizable()
+                        .edgesIgnoringSafeArea(.top)
                 }
-                .padding(.top, 8)
+                .frame(maxWidth: .infinity, maxHeight: 200)
+                .accessibilityIdentifier("auth_bg_image")
+                
+                // MARK: - Page name
+                VStack(alignment: .center) {
+                    ZStack {
+                        HStack {
+                            Text(CoreLocalization.Settings.videoDownloadQualityTitle)
+                                .titleSettings(color: Theme.Colors.loginNavigationText)
+                                .accessibilityIdentifier("manage_account_text")
+                        }
+                        VStack {
+                            Button(action: { router.back() }, label: {
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
+                            })
+                            .foregroundColor(Theme.Colors.styledButtonText)
+                            .padding(.leading, isHorizontal ? 48 : 0)
+                            .accessibilityIdentifier("back_button")
+                            
+                        }.frame(minWidth: 0,
+                                maxWidth: .infinity,
+                                alignment: .topLeading)
+                    }
+                    // MARK: - Page Body
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 24) {
+                            ForEach(viewModel.downloadQuality, id: \.self) { quality in
+                                Button(action: {
+                                    analytics.videoQualityChanged(
+                                        .videoDownloadQualityChanged,
+                                        bivalue: .videoDownloadQualityChanged,
+                                        value: quality.value ?? "",
+                                        oldValue: viewModel.selectedDownloadQuality.value ?? ""
+                                    )
+                                    
+                                    viewModel.selectedDownloadQuality = quality
+                                }, label: {
+                                    HStack {
+                                        SettingsCell(
+                                            title: quality.title,
+                                            description: quality.description
+                                        )
+                                        .accessibilityElement(children: .ignore)
+                                        .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
+                                        Spacer()
+                                        CoreAssets.checkmark.swiftUIImage
+                                            .renderingMode(.template)
+                                            .foregroundColor(Theme.Colors.accentXColor)
+                                            .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
+                                            .accessibilityIdentifier("checkmark_image")
+                                        
+                                    }
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                })
+                                .accessibilityIdentifier("select_quality_button")
+                                Divider()
+                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.top, 24)
+                        .frameLimit(width: proxy.size.width)
+                    }
+                    .roundedBackground(Theme.Colors.background)
+                }
             }
-            .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
-            .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
+            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
             .background(
                 Theme.Colors.background
                     .ignoresSafeArea()
