@@ -1518,6 +1518,24 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 		perform?(`courseId`, `blockId`, `link`, `supported`)
     }
 
+    open func calendarSyncToggle(enrollmentMode: EnrollmentMode, pacing: CoursePacing, courseId: String, action: CalendarDialogueAction) {
+        addInvocation(.m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(Parameter<EnrollmentMode>.value(`enrollmentMode`), Parameter<CoursePacing>.value(`pacing`), Parameter<String>.value(`courseId`), Parameter<CalendarDialogueAction>.value(`action`)))
+		let perform = methodPerformValue(.m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(Parameter<EnrollmentMode>.value(`enrollmentMode`), Parameter<CoursePacing>.value(`pacing`), Parameter<String>.value(`courseId`), Parameter<CalendarDialogueAction>.value(`action`))) as? (EnrollmentMode, CoursePacing, String, CalendarDialogueAction) -> Void
+		perform?(`enrollmentMode`, `pacing`, `courseId`, `action`)
+    }
+
+    open func calendarSyncDialogAction(enrollmentMode: EnrollmentMode, pacing: CoursePacing, courseId: String, dialog: CalendarDialogueType, action: CalendarDialogueAction) {
+        addInvocation(.m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(Parameter<EnrollmentMode>.value(`enrollmentMode`), Parameter<CoursePacing>.value(`pacing`), Parameter<String>.value(`courseId`), Parameter<CalendarDialogueType>.value(`dialog`), Parameter<CalendarDialogueAction>.value(`action`)))
+		let perform = methodPerformValue(.m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(Parameter<EnrollmentMode>.value(`enrollmentMode`), Parameter<CoursePacing>.value(`pacing`), Parameter<String>.value(`courseId`), Parameter<CalendarDialogueType>.value(`dialog`), Parameter<CalendarDialogueAction>.value(`action`))) as? (EnrollmentMode, CoursePacing, String, CalendarDialogueType, CalendarDialogueAction) -> Void
+		perform?(`enrollmentMode`, `pacing`, `courseId`, `dialog`, `action`)
+    }
+
+    open func calendarSyncSnackbar(enrollmentMode: EnrollmentMode, pacing: CoursePacing, courseId: String, snackbar: SnackbarType) {
+        addInvocation(.m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(Parameter<EnrollmentMode>.value(`enrollmentMode`), Parameter<CoursePacing>.value(`pacing`), Parameter<String>.value(`courseId`), Parameter<SnackbarType>.value(`snackbar`)))
+		let perform = methodPerformValue(.m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(Parameter<EnrollmentMode>.value(`enrollmentMode`), Parameter<CoursePacing>.value(`pacing`), Parameter<String>.value(`courseId`), Parameter<SnackbarType>.value(`snackbar`))) as? (EnrollmentMode, CoursePacing, String, SnackbarType) -> Void
+		perform?(`enrollmentMode`, `pacing`, `courseId`, `snackbar`)
+    }
+
     open func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String) {
         addInvocation(.m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<String>.value(`courseID`)))
 		let perform = methodPerformValue(.m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<String>.value(`courseID`))) as? (AnalyticsEvent, EventBIValue, String) -> Void
@@ -1570,6 +1588,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         case m_courseOutlineDiscussionTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseOutlineHandoutsTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<Bool>)
+        case m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(Parameter<EnrollmentMode>, Parameter<CoursePacing>, Parameter<String>, Parameter<CalendarDialogueAction>)
+        case m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(Parameter<EnrollmentMode>, Parameter<CoursePacing>, Parameter<String>, Parameter<CalendarDialogueType>, Parameter<CalendarDialogueAction>)
+        case m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(Parameter<EnrollmentMode>, Parameter<CoursePacing>, Parameter<String>, Parameter<SnackbarType>)
         case m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String>)
         case m_plsEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_type(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String>, Parameter<String>, Parameter<String>)
         case m_plsSuccessEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_typesuccess_success(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String>, Parameter<String>, Parameter<String>, Parameter<Bool>)
@@ -1678,6 +1699,31 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSupported, rhs: rhsSupported, with: matcher), lhsSupported, rhsSupported, "supported"))
 				return Matcher.ComparisonResult(results)
 
+            case (.m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(let lhsEnrollmentmode, let lhsPacing, let lhsCourseid, let lhsAction), .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(let rhsEnrollmentmode, let rhsPacing, let rhsCourseid, let rhsAction)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEnrollmentmode, rhs: rhsEnrollmentmode, with: matcher), lhsEnrollmentmode, rhsEnrollmentmode, "enrollmentMode"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPacing, rhs: rhsPacing, with: matcher), lhsPacing, rhsPacing, "pacing"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(let lhsEnrollmentmode, let lhsPacing, let lhsCourseid, let lhsDialog, let lhsAction), .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(let rhsEnrollmentmode, let rhsPacing, let rhsCourseid, let rhsDialog, let rhsAction)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEnrollmentmode, rhs: rhsEnrollmentmode, with: matcher), lhsEnrollmentmode, rhsEnrollmentmode, "enrollmentMode"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPacing, rhs: rhsPacing, with: matcher), lhsPacing, rhsPacing, "pacing"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDialog, rhs: rhsDialog, with: matcher), lhsDialog, rhsDialog, "dialog"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(let lhsEnrollmentmode, let lhsPacing, let lhsCourseid, let lhsSnackbar), .m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(let rhsEnrollmentmode, let rhsPacing, let rhsCourseid, let rhsSnackbar)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEnrollmentmode, rhs: rhsEnrollmentmode, with: matcher), lhsEnrollmentmode, rhsEnrollmentmode, "enrollmentMode"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPacing, rhs: rhsPacing, with: matcher), lhsPacing, rhsPacing, "pacing"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSnackbar, rhs: rhsSnackbar, with: matcher), lhsSnackbar, rhsSnackbar, "snackbar"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(let lhsEvent, let lhsBivalue, let lhsCourseid), .m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(let rhsEvent, let rhsBivalue, let rhsCourseid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
@@ -1744,6 +1790,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case let .m_courseOutlineDiscussionTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseOutlineHandoutsTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
+            case let .m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_plsEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_type(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_plsSuccessEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_typesuccess_success(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
@@ -1768,6 +1817,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case .m_courseOutlineDiscussionTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineDiscussionTabClicked(courseId:courseName:)"
             case .m_courseOutlineHandoutsTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineHandoutsTabClicked(courseId:courseName:)"
             case .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported: return ".datesComponentTapped(courseId:blockId:link:supported:)"
+            case .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action: return ".calendarSyncToggle(enrollmentMode:pacing:courseId:action:)"
+            case .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action: return ".calendarSyncDialogAction(enrollmentMode:pacing:courseId:dialog:action:)"
+            case .m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar: return ".calendarSyncSnackbar(enrollmentMode:pacing:courseId:snackbar:)"
             case .m_trackCourseEvent__eventbiValue_biValuecourseID_courseID: return ".trackCourseEvent(_:biValue:courseID:)"
             case .m_plsEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_type: return ".plsEvent(_:bivalue:courseID:screenName:type:)"
             case .m_plsSuccessEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_typesuccess_success: return ".plsSuccessEvent(_:bivalue:courseID:screenName:type:success:)"
@@ -1806,6 +1858,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         public static func courseOutlineDiscussionTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineDiscussionTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseOutlineHandoutsTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineHandoutsTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func datesComponentTapped(courseId: Parameter<String>, blockId: Parameter<String>, link: Parameter<String>, supported: Parameter<Bool>) -> Verify { return Verify(method: .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(`courseId`, `blockId`, `link`, `supported`))}
+        public static func calendarSyncToggle(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, action: Parameter<CalendarDialogueAction>) -> Verify { return Verify(method: .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(`enrollmentMode`, `pacing`, `courseId`, `action`))}
+        public static func calendarSyncDialogAction(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, dialog: Parameter<CalendarDialogueType>, action: Parameter<CalendarDialogueAction>) -> Verify { return Verify(method: .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(`enrollmentMode`, `pacing`, `courseId`, `dialog`, `action`))}
+        public static func calendarSyncSnackbar(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, snackbar: Parameter<SnackbarType>) -> Verify { return Verify(method: .m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(`enrollmentMode`, `pacing`, `courseId`, `snackbar`))}
         public static func trackCourseEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, courseID: Parameter<String>) -> Verify { return Verify(method: .m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(`event`, `biValue`, `courseID`))}
         public static func plsEvent(_ event: Parameter<AnalyticsEvent>, bivalue: Parameter<EventBIValue>, courseID: Parameter<String>, screenName: Parameter<String>, type: Parameter<String>) -> Verify { return Verify(method: .m_plsEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_type(`event`, `bivalue`, `courseID`, `screenName`, `type`))}
         public static func plsSuccessEvent(_ event: Parameter<AnalyticsEvent>, bivalue: Parameter<EventBIValue>, courseID: Parameter<String>, screenName: Parameter<String>, type: Parameter<String>, success: Parameter<Bool>) -> Verify { return Verify(method: .m_plsSuccessEvent__eventbivalue_bivaluecourseID_courseIDscreenName_screenNametype_typesuccess_success(`event`, `bivalue`, `courseID`, `screenName`, `type`, `success`))}
@@ -1859,6 +1914,15 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         }
         public static func datesComponentTapped(courseId: Parameter<String>, blockId: Parameter<String>, link: Parameter<String>, supported: Parameter<Bool>, perform: @escaping (String, String, String, Bool) -> Void) -> Perform {
             return Perform(method: .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(`courseId`, `blockId`, `link`, `supported`), performs: perform)
+        }
+        public static func calendarSyncToggle(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, action: Parameter<CalendarDialogueAction>, perform: @escaping (EnrollmentMode, CoursePacing, String, CalendarDialogueAction) -> Void) -> Perform {
+            return Perform(method: .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(`enrollmentMode`, `pacing`, `courseId`, `action`), performs: perform)
+        }
+        public static func calendarSyncDialogAction(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, dialog: Parameter<CalendarDialogueType>, action: Parameter<CalendarDialogueAction>, perform: @escaping (EnrollmentMode, CoursePacing, String, CalendarDialogueType, CalendarDialogueAction) -> Void) -> Perform {
+            return Perform(method: .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(`enrollmentMode`, `pacing`, `courseId`, `dialog`, `action`), performs: perform)
+        }
+        public static func calendarSyncSnackbar(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, snackbar: Parameter<SnackbarType>, perform: @escaping (EnrollmentMode, CoursePacing, String, SnackbarType) -> Void) -> Perform {
+            return Perform(method: .m_calendarSyncSnackbar__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdsnackbar_snackbar(`enrollmentMode`, `pacing`, `courseId`, `snackbar`), performs: perform)
         }
         public static func trackCourseEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, courseID: Parameter<String>, perform: @escaping (AnalyticsEvent, EventBIValue, String) -> Void) -> Perform {
             return Perform(method: .m_trackCourseEvent__eventbiValue_biValuecourseID_courseID(`event`, `biValue`, `courseID`), performs: perform)
