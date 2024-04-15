@@ -91,17 +91,17 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         }).store(in: &subscription)
 
         youtubePlayer.durationPublisher.sink(receiveValue: { [weak self] duration in
-            self?.duration = duration
+            self?.duration = duration.value
         }).store(in: &subscription)
 
         youtubePlayer.currentTimePublisher(updateInterval: 0.1).sink(receiveValue: { [weak self] time in
             guard let self else { return }
             if !self.pause {
-                self.currentTime = time
+                self.currentTime = time.value
             }
 
             if let duration = self.duration {
-                if (time / duration) >= 0.8 {
+                if (time.value / duration) >= 0.8 {
                     if !isViewedOnce {
                         Task {
                             await self.blockCompletionRequest()
@@ -110,7 +110,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                         isViewedOnce = true
                     }
                 }
-                if (time / duration) >= 0.999 {
+                if (time.value / duration) >= 0.999 {
                     self.router.presentAppReview()
                 }
             }
