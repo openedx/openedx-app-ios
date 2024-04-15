@@ -34,7 +34,6 @@ public struct CourseDatesView: View {
     public var body: some View {
         ZStack {
             VStack(alignment: .center) {
-                ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                 if viewModel.isShowProgress {
                     HStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
@@ -42,7 +41,13 @@ public struct CourseDatesView: View {
                             .padding(.horizontal)
                     }
                 } else if let courseDates = viewModel.courseDates, !courseDates.courseDateBlocks.isEmpty {
-                    CourseDateListView(viewModel: viewModel, courseDates: courseDates, courseID: courseID)
+                    CourseDateListView(
+                        viewModel: viewModel,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
+                        courseDates: courseDates,
+                        courseID: courseID
+                    )
                         .padding(.top, 10)
                 }
             }
@@ -146,6 +151,8 @@ struct TimeLineView: View {
 struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
     @State private var isExpanded = false
+    @Binding var coordinate: CGFloat
+    @Binding var collapsed: Bool
     var courseDates: CourseDates
     let courseID: String
 
@@ -153,6 +160,7 @@ struct CourseDateListView: View {
         GeometryReader { proxy in
             VStack {
                 ScrollView {
+                    ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                     VStack(alignment: .leading, spacing: 0) {
                         if !courseDates.hasEnded {
                             CalendarSyncView(courseID: courseID, viewModel: viewModel)

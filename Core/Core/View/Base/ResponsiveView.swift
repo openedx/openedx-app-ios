@@ -2,7 +2,7 @@
 //  ResponsiveView.swift
 //  Core
 //
-//  Created by  Stepanok Ivan on 26.03.2024.
+//  Created by  Stepanok Ivan on 26.03.2024.
 //
 
 import SwiftUI
@@ -11,13 +11,14 @@ public struct ResponsiveView: View {
     
     private let padHeight: CGFloat = 290
     private let collapsedHorizontalHeight: CGFloat = 120
-    private let collapsedVerticalHeight: CGFloat = 90
+    private let collapsedVerticalHeight: CGFloat = 100
     private let expandedHeight: CGFloat = 240
     private let coordinateBoundaryLower: CGFloat = -115
-    private let coordinateBoundaryUpper: CGFloat = 40
     
+    @State var lastHeight: CGFloat = 240
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @State private var isActiveView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @Environment(\.isHorizontal) private var isHorizontal
     
@@ -31,7 +32,7 @@ public struct ResponsiveView: View {
         }.frame(
             height: idiom == .pad
             ? padHeight
-            : (collapsed ? ( isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight) : expandedHeight)
+            : (collapsed ? (isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight) : expandedHeight)
         )
         .overlay(
             GeometryReader { geometry -> Color in
@@ -43,12 +44,7 @@ public struct ResponsiveView: View {
                     return Color.clear
                 }
                 DispatchQueue.main.async {
-                    let minY = geometry.frame(in: .global).minY
-                    if minY >= coordinateBoundaryLower && minY <= coordinateBoundaryUpper {
-                        coordinate = minY
-                    } else if minY <= coordinateBoundaryLower {
-                        coordinate = coordinateBoundaryLower
-                    }
+                    coordinate = geometry.frame(in: .global).minY
                 }
                 return Color.clear
             }

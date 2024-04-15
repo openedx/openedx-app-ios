@@ -108,6 +108,8 @@ extension ScrollSlidingTabBar {
                         .fixedSize(horizontal: true, vertical: true)
                     }
                 )
+                .padding(.leading, obj.offset == 0 ? style.buttonLeadingPadding : 0)
+                .padding(.trailing, obj.offset == tabs.count - 1 ? style.buttonTrailingPadding : 0)
                 .padding(.horizontal, style.buttonHInset)
                 .padding(.vertical, style.buttonVInset)
                 .readFrame(in: .named(containerSpace)) {
@@ -172,6 +174,9 @@ extension ScrollSlidingTabBar {
         public let buttonHInset: CGFloat
         public let buttonVInset: CGFloat
         
+        public let buttonLeadingPadding: CGFloat
+        public let buttonTrailingPadding: CGFloat
+        
         public init(
             font: Font,
             selectedFont: Font,
@@ -181,7 +186,9 @@ extension ScrollSlidingTabBar {
             borderColor: Color,
             borderHeight: CGFloat,
             buttonHInset: CGFloat,
-            buttonVInset: CGFloat
+            buttonVInset: CGFloat,
+            buttonLeadingPadding: CGFloat,
+            buttonTrailingPadding: CGFloat
         ) {
             self.font = font
             self.selectedFont = selectedFont
@@ -192,6 +199,8 @@ extension ScrollSlidingTabBar {
             self.borderHeight = borderHeight
             self.buttonHInset = buttonHInset
             self.buttonVInset = buttonVInset
+            self.buttonLeadingPadding = buttonLeadingPadding
+            self.buttonTrailingPadding = buttonTrailingPadding
         }
         
         public static let `default` = Style(
@@ -203,8 +212,11 @@ extension ScrollSlidingTabBar {
             borderColor: Theme.Colors.slidingStrokeColor,
             borderHeight: 1,
             buttonHInset: 4,
-            buttonVInset: 2
+            buttonVInset: 2,
+            buttonLeadingPadding: 8,
+            buttonTrailingPadding: 8
         )
+        
     }
 }
 

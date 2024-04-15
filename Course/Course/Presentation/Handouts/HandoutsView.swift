@@ -34,7 +34,6 @@ struct HandoutsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack(alignment: .center) {
-                    ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                     // MARK: - Page Body
                     if viewModel.isShowProgress {
                         HStack(alignment: .center) {
@@ -43,36 +42,39 @@ struct HandoutsView: View {
                                 .padding(.horizontal)
                         }
                     } else {
-                        VStack(alignment: .leading) {
-                            HandoutsItemCell(type: .handouts, onTapAction: {
-                                viewModel.router.showHandoutsUpdatesView(
-                                    handouts: viewModel.handouts,
-                                    announcements: nil,
-                                    router: viewModel.router,
-                                    cssInjector: viewModel.cssInjector)
-                                viewModel.analytics.trackCourseEvent(
-                                    .courseHandouts,
-                                    biValue: .courseHandouts,
-                                    courseID: courseID
-                                )
-                            })
-                            Divider()
-                            HandoutsItemCell(type: .announcements, onTapAction: {
-                                if !viewModel.updates.isEmpty {
+                        ScrollView {
+                            ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
+                            VStack(alignment: .leading) {
+                                HandoutsItemCell(type: .handouts, onTapAction: {
                                     viewModel.router.showHandoutsUpdatesView(
-                                        handouts: nil,
-                                        announcements: viewModel.updates,
+                                        handouts: viewModel.handouts,
+                                        announcements: nil,
                                         router: viewModel.router,
                                         cssInjector: viewModel.cssInjector)
                                     viewModel.analytics.trackCourseEvent(
-                                        .courseAnnouncement,
-                                        biValue: .courseAnnouncement,
+                                        .courseHandouts,
+                                        biValue: .courseHandouts,
                                         courseID: courseID
                                     )
-                                }
-                            })
-                        }.padding(.horizontal, 32)
-                        Spacer(minLength: 84)
+                                })
+                                Divider()
+                                HandoutsItemCell(type: .announcements, onTapAction: {
+                                    if !viewModel.updates.isEmpty {
+                                        viewModel.router.showHandoutsUpdatesView(
+                                            handouts: nil,
+                                            announcements: viewModel.updates,
+                                            router: viewModel.router,
+                                            cssInjector: viewModel.cssInjector)
+                                        viewModel.analytics.trackCourseEvent(
+                                            .courseAnnouncement,
+                                            biValue: .courseAnnouncement,
+                                            courseID: courseID
+                                        )
+                                    }
+                                })
+                            }.padding(.horizontal, 32)
+                            Spacer(minLength: 84)
+                        }
                     }
                 }
                 .frameLimit(width: proxy.size.width)

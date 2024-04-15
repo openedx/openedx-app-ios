@@ -48,7 +48,6 @@ struct TopHeaderView: View {
         self._isAnimatingForTap = isAnimatingForTap
     }
     
-    
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             if let banner = viewModel.courseStructure?.media.image.raw

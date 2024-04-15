@@ -2,7 +2,7 @@
 //  CourseScreensView.swift
 //  Course
 //
-//  Created by  Stepanok Ivan on 10.10.2022.
+//  Created by  Stepanok Ivan on 10.10.2022.
 //
 
 import SwiftUI
@@ -18,12 +18,16 @@ public struct CourseContainerView: View {
     @State private var isAnimatingForTap: Bool = false
     public var courseID: String
     private var title: String
+    @State private var ignoreOffset: Bool = false
     @State private var coordinate: CGFloat = .zero
     @State private var lastCoordinate: CGFloat = .zero
     @State private var collapsed: Bool = false
     @Environment(\.isHorizontal) private var isHorizontal
     @Namespace private var animationNamespace
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
+    private let coordinateBoundaryLower: CGFloat = -115
+    private let coordinateBoundaryHigher: CGFloat = 40
     
     private struct GeometryName {
         static let backButton = "backButton"
@@ -91,7 +95,13 @@ public struct CourseContainerView: View {
                                 animationNamespace: animationNamespace,
                                 isAnimatingForTap: $isAnimatingForTap
                             )
-                        } .offset(y: coordinate)
+                        }.offset(
+                            y: ignoreOffset
+                            ? (collapsed ? coordinateBoundaryLower : .zero)
+                            : ((coordinateBoundaryLower...coordinateBoundaryHigher).contains(coordinate)
+                               ? coordinate
+                               : (collapsed ? coordinateBoundaryLower : .zero))
+                        )
                         backButton(containerWidth: proxy.size.width)
                     }
                 }.ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
@@ -222,6 +232,7 @@ public struct CourseContainerView: View {
     
     private func didSelect(_ selection: Int) {
         lastCoordinate = .zero
+        ignoreOffset = true
         CourseTab(rawValue: selection).flatMap {
             viewModel.trackSelectedTab(
                 selection: $0,
@@ -238,15 +249,42 @@ public struct CourseContainerView: View {
         
         switch coordinate {
         case lowerBound...upperBound:
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.6)) {
-                collapsed = false
+            if shouldAnimateHeader(coordinate: coordinate) {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.6)) {
+                    ignoreOffset = false
+                    collapsed = false
+                }
+            } else {
+                lastCoordinate = coordinate
             }
         default:
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.6)) {
-                collapsed = true
+            if shouldAnimateHeader(coordinate: coordinate) {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.6)) {
+                    ignoreOffset = false
+                    collapsed = true
+                }
+            } else {
+                lastCoordinate = coordinate
             }
         }
-        lastCoordinate = coordinate
+    }
+    
+    private func shouldAnimateHeader(coordinate: CGFloat) -> Bool {
+        let ignoringOffset: CGFloat = 120
+        
+        guard coordinate <= ignoringOffset, lastCoordinate != 0 else {
+            return false
+            }
+        
+        if collapsed && lastCoordinate > coordinate {
+            return false
+        }
+        
+        if !collapsed && lastCoordinate < coordinate {
+            return false
+        }
+        
+        return true
     }
 }
 

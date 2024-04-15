@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Kingfisher
 import Theme
+import SwiftUIIntrospect
 
 public struct CourseOutlineView: View {
     
@@ -24,6 +25,7 @@ public struct CourseOutlineView: View {
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
     @State private var showingNoWifiMessage: Bool = false
+    @State private var stopScroll: Bool = false
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
@@ -57,14 +59,15 @@ public struct CourseOutlineView: View {
                     RefreshableScrollViewCompat(action: {
                         await withTaskGroup(of: Void.self) { group in
                             group.addTask {
-                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: true)
                             }
                             group.addTask {
-                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: true)
                             }
                         }
                     }) {
                         ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
+                        RefreshProgressView(isShowProgress: $viewModel.isShowProgress)
                         VStack(alignment: .leading) {
                             if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
                                courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
@@ -149,6 +152,12 @@ public struct CourseOutlineView: View {
                         }
                         .frameLimit(width: proxy.size.width)
                     }
+                    .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { scrollView in
+                        if stopScroll {
+                            scrollView.setContentOffset(scrollView.contentOffset, animated: false)
+                            stopScroll = false
+                        }
+                    })
                     .onRightSwipeGesture {
                         viewModel.router.back()
                     }
@@ -196,14 +205,10 @@ public struct CourseOutlineView: View {
                         }
                     }
                 }
-                if viewModel.isShowProgress {
-                    VStack(alignment: .center) {
-                        ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.horizontal)
-                    }.frame(maxWidth: .infinity,
-                            maxHeight: .infinity)
-                }
             }
+        }
+        .onDisappear {
+            stopScroll = true
         }
         .background(
             Theme.Colors.background

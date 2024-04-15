@@ -35,6 +35,7 @@
 		024D723529C8BB1A006D36ED /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024D723429C8BB1A006D36ED /* NavigationBar.swift */; };
 		024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024FCCFF28EF1CD300232339 /* WebBrowser.swift */; };
 		02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02512FEF299533DE0024D438 /* CoreDataHandlerProtocol.swift */; };
+		0254D1912BCD699F000CDE89 /* RefreshProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0254D1902BCD699F000CDE89 /* RefreshProgressView.swift */; };
 		0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0255D55729362839004DBC1A /* UploadBodyEncoding.swift */; };
 		0259104A29C4A5B6004B5A55 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259104929C4A5B6004B5A55 /* UserSettings.swift */; };
 		025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025B36742A13B7D5001A640E /* UnitButtonView.swift */; };
@@ -215,6 +216,7 @@
 		024D723429C8BB1A006D36ED /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		024FCCFF28EF1CD300232339 /* WebBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowser.swift; sourceTree = "<group>"; };
 		02512FEF299533DE0024D438 /* CoreDataHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandlerProtocol.swift; sourceTree = "<group>"; };
+		0254D1902BCD699F000CDE89 /* RefreshProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshProgressView.swift; sourceTree = "<group>"; };
 		0255D55729362839004DBC1A /* UploadBodyEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadBodyEncoding.swift; sourceTree = "<group>"; };
 		0259104929C4A5B6004B5A55 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		025B36742A13B7D5001A640E /* UnitButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitButtonView.swift; sourceTree = "<group>"; };
@@ -730,6 +732,7 @@
 				02E93F862AEBAED4006C4750 /* AppReview */,
 				BA981BCF2B91ED50005707C2 /* FullScreenProgressView.swift */,
 				02E224DA2BB76B3E00EF1ADB /* ResponsiveView.swift */,
+				0254D1902BCD699F000CDE89 /* RefreshProgressView.swift */,
 				020D72F32BB76DFE00773319 /* VisualEffectView.swift */,
 			);
 			path = Base;
@@ -1197,6 +1200,7 @@
 				0727878928D31734002E9142 /* User.swift in Sources */,
 				A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */,
 				02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */,
+				0254D1912BCD699F000CDE89 /* RefreshProgressView.swift in Sources */,
 				02066B482906F73400F4307E /* PickerMenu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

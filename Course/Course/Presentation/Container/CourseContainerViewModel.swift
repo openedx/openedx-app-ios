@@ -55,7 +55,7 @@ public enum CourseTab: Int, CaseIterable, Identifiable {
 public class CourseContainerViewModel: BaseCourseViewModel {
 
     @Published public var selection: Int = CourseTab.course.rawValue
-    @Published private(set) var isShowProgress = false
+    @Published var isShowProgress = false
     @Published var courseStructure: CourseStructure?
     @Published var courseDeadlineInfo: CourseDateBanner?
     @Published var courseVideosStructure: CourseStructure?
