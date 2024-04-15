@@ -59,7 +59,8 @@ public struct YouTubeVideoPlayer: View {
                             SubtittlesView(
                                 languages: viewModel.languages,
                                 currentTime: $viewModel.currentTime,
-                                viewModel: viewModel, scrollTo: { date in
+                                viewModel: viewModel, 
+                                scrollTo: { date in
                                     viewModel.youtubePlayer.seek(
                                         to: Measurement(value: date.secondsSinceMidnight(), unit: UnitDuration.seconds),
                                         allowSeekAhead: true
