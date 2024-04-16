@@ -24,7 +24,7 @@ public enum CourseTab: Int, CaseIterable, Identifiable {
     public var title: String {
         switch self {
         case .course:
-            return CourseLocalization.CourseContainer.course
+            return CourseLocalization.CourseContainer.home
         case .videos:
             return CourseLocalization.CourseContainer.videos
         case .dates:
@@ -39,15 +39,15 @@ public enum CourseTab: Int, CaseIterable, Identifiable {
     public var image: Image {
         switch self {
         case .course:
-            return CoreAssets.bookCircle.swiftUIImage.renderingMode(.template)
+            return CoreAssets.home.swiftUIImage.renderingMode(.template)
         case .videos:
-            return CoreAssets.videoCircle.swiftUIImage.renderingMode(.template)
+            return CoreAssets.videos.swiftUIImage.renderingMode(.template)
         case .dates:
-            return Image(systemName: "calendar").renderingMode(.template)
+            return CoreAssets.dates.swiftUIImage.renderingMode(.template)
         case .discussion:
-            return  CoreAssets.bubbleLeftCircle.swiftUIImage.renderingMode(.template)
+            return  CoreAssets.discussions.swiftUIImage.renderingMode(.template)
         case .handounds:
-            return CoreAssets.docCircle.swiftUIImage.renderingMode(.template)
+            return CoreAssets.more.swiftUIImage.renderingMode(.template)
         }
     }
 }
