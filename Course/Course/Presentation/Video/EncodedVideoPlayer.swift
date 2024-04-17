@@ -59,7 +59,7 @@ public struct EncodedVideoPlayer: View {
                         VStack {
                             PlayerViewController(
                                 videoURL: viewModel.url,
-                                controller: viewModel.controller,
+                                playerHolder: viewModel.controllerHolder,
                                 bitrate: viewModel.getVideoResolution(),
                                 progress: { progress in
                                     if progress >= 0.8 {
@@ -81,7 +81,10 @@ public struct EncodedVideoPlayer: View {
                             .frame(minWidth: playerWidth(for: reader.size))
                             .cornerRadius(12)
                             .onAppear {
-                                viewModel.controller.player?.play()
+                                if !viewModel.controllerHolder.isPlayingInPip,
+                                    !viewModel.controllerHolder.isOtherPlayerInPip {
+                                    viewModel.controller.player?.play()
+                                }
                             }
                             if isHorizontal {
                                 Spacer()
@@ -168,7 +171,9 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
                 router: CourseRouterMock(),
                 appStorage: CoreStorageMock(),
-                connectivity: Connectivity()
+                connectivity: Connectivity(),
+                pipManager: PipManagerProtocolMock(),
+                selectedCourseTab: 0
             ),
             isOnScreen: true
         )

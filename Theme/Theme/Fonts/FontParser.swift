@@ -8,7 +8,7 @@
 import Foundation
 
 public enum FontIdentifier: String {
-    case regular, medium, semiBold, bold
+    case light, regular, medium, semiBold, bold
 }
 
 public class FontParser {

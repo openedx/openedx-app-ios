@@ -125,6 +125,7 @@ public struct ThreadView: View {
                                                         commentID: comment.commentID,
                                                         parentComment: comment,
                                                         threadStateSubject: viewModel.threadStateSubject,
+                                                        isBlackedOut: viewModel.isBlackedOut,
                                                         animated: true
                                                     )
                                                 },
@@ -153,7 +154,7 @@ public struct ThreadView: View {
                                 }
                                 .frameLimit(width: proxy.size.width)
                             }
-                            if !thread.closed {
+                            if !(thread.closed  || viewModel.isBlackedOut) {
                                 FlexibleKeyboardInputView(
                                     hint: DiscussionLocalization.Thread.addResponse,
                                     sendText: { commentText in
@@ -167,7 +168,8 @@ public struct ThreadView: View {
                                             }
                                         }
                                     }
-                                ).ignoresSafeArea(.all, edges: .horizontal)
+                                )
+                                .ignoresSafeArea(.all, edges: .horizontal)
                             }
                         }
                         .onReceive(viewModel.addPostSubject, perform: { newComment in
@@ -224,8 +226,19 @@ public struct ThreadView: View {
             }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
+            .navigationBarBackButtonHidden(true)
             .navigationTitle(title)
+            .toolbar {
+                ToolbarItem(
+                    placement: .navigationBarLeading,
+                    content: {
+                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                            viewModel.router.back()
+                        }
+                        .offset(x: -8, y: -1.5)
+                    }
+                )
+            }
             .onFirstAppear {
                 Task {
                     await viewModel.getPosts(thread: thread, page: 1)

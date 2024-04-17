@@ -19,11 +19,14 @@ public struct ResponsesView: View {
     
     @ObservedObject private var viewModel: ResponsesViewModel
     @State private var isShowProgress: Bool = true
-    
-    public init(commentID: String,
-                viewModel: ResponsesViewModel,
-                router: DiscussionRouter,
-                parentComment: Post) {
+
+    public init(
+        commentID: String,
+        viewModel: ResponsesViewModel,
+        router: DiscussionRouter,
+        parentComment: Post,
+        isBlackedOut: Bool
+    ) {
         self.commentID = commentID
         self.parentComment = parentComment
         self.title = DiscussionLocalization.Response.commentsResponses
@@ -33,6 +36,7 @@ public struct ResponsesView: View {
             await viewModel.getComments(commentID: commentID, parentComment: parentComment, page: 1)
         }
         viewModel.addCommentsIsVisible = false
+        self.viewModel.isBlackedOut = isBlackedOut
     }
     
     public var body: some View {
@@ -152,8 +156,7 @@ public struct ResponsesView: View {
                                 }
                                 .frameLimit(width: proxy.size.width)
                             }
-                            
-                            if !parentComment.closed {
+                            if !(parentComment.closed  || viewModel.isBlackedOut) {
                                 FlexibleKeyboardInputView(
                                     hint: DiscussionLocalization.Response.addComment,
                                     sendText: { commentText in
@@ -167,7 +170,8 @@ public struct ResponsesView: View {
                                             }
                                         }
                                     }
-                                ).ignoresSafeArea(.all, edges: .horizontal)
+                                )
+                                .ignoresSafeArea(.all, edges: .horizontal)
                             }
                         }
                     }
@@ -204,8 +208,19 @@ public struct ResponsesView: View {
             }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
+            .navigationBarBackButtonHidden(true)
             .navigationTitle(title)
+            .toolbar {
+                ToolbarItem(
+                    placement: .navigationBarLeading,
+                    content: {
+                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                            viewModel.router.back()
+                        }
+                        .offset(x: -8, y: -1.5)
+                    }
+                )
+            }
             .edgesIgnoringSafeArea(.bottom)
             .background(
                 Theme.Colors.background
@@ -249,7 +264,8 @@ struct ResponsesView_Previews: PreviewProvider {
             commentID: "",
             viewModel: viewModel,
             router: router,
-            parentComment: post
+            parentComment: post,
+            isBlackedOut: false
         )
         .loadFonts()
         .preferredColorScheme(.light)
@@ -259,7 +275,8 @@ struct ResponsesView_Previews: PreviewProvider {
             commentID: "",
             viewModel: viewModel,
             router: router,
-            parentComment: post
+            parentComment: post,
+            isBlackedOut: false
         )
         .loadFonts()
         .preferredColorScheme(.dark)

@@ -100,7 +100,10 @@ final class PostViewModelTests: XCTestCase {
                    hasEndorsed: true,
                    numPages: 4),
     ])
-    
+
+    let discussionInfo = DiscussionInfo(discussionID: "1", blackouts: [])
+
+
     func testGetThreadListSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
@@ -112,6 +115,7 @@ final class PostViewModelTests: XCTestCase {
         viewModel.type = .allPosts
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willReturn: threads))
+        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
 
         viewModel.type = .allPosts
         result = await viewModel.getPosts(pageNumber: 1)
@@ -146,10 +150,12 @@ final class PostViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
         let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
-        
+        viewModel.isBlackedOut = false
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: noInternetError))
+        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willThrow: noInternetError))
 
         viewModel.courseID = "1"
         viewModel.type = .allPosts
@@ -169,8 +175,10 @@ final class PostViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
         let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
+        viewModel.isBlackedOut = false
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError()))
+        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willThrow: NSError()))
 
         viewModel.courseID = "1"
         viewModel.type = .allPosts
@@ -192,6 +200,8 @@ final class PostViewModelTests: XCTestCase {
         
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any,
                                           willReturn: threads))
+        Given(interactor, .getCourseDiscussionInfo(courseID: "1", willReturn: discussionInfo))
+        
         viewModel.courseID = "1"
         viewModel.type = .allPosts
         viewModel.sortTitle = .mostActivity

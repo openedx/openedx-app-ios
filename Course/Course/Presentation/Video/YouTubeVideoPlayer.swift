@@ -59,8 +59,12 @@ public struct YouTubeVideoPlayer: View {
                             SubtittlesView(
                                 languages: viewModel.languages,
                                 currentTime: $viewModel.currentTime,
-                                viewModel: viewModel, scrollTo: { date in
-                                    viewModel.youtubePlayer.seek(to: date.secondsSinceMidnight(), allowSeekAhead: true)
+                                viewModel: viewModel, 
+                                scrollTo: { date in
+                                    viewModel.youtubePlayer.seek(
+                                        to: Measurement(value: date.secondsSinceMidnight(), unit: UnitDuration.seconds),
+                                        allowSeekAhead: true
+                                    )
                                     viewModel.youtubePlayer.play()
                                     viewModel.pauseScrolling()
                                     viewModel.currentTime = date.secondsSinceMidnight() + 1
@@ -88,10 +92,13 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(), 
+                router: CourseRouterMock(),
                 appStorage: CoreStorageMock(),
-                connectivity: Connectivity()),
-            isOnScreen: true)
+                connectivity: Connectivity(),
+                pipManager: PipManagerProtocolMock()
+            ),
+            isOnScreen: true
+        )
     }
 }
 #endif

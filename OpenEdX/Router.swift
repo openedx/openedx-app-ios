@@ -26,7 +26,8 @@ public class Router: AuthorizationRouter,
                      ProfileRouter,
                      DashboardRouter,
                      CourseRouter,
-                     DiscussionRouter {
+                     DiscussionRouter,
+                     BackNavigationProtocol {
 
     public var container: Container
 
@@ -138,7 +139,7 @@ public class Router: AuthorizationRouter,
               connectivity.isInternetAvaliable
         else { return }
         let vm = AppReviewViewModel(config: config, storage: storage, analytics: analytics)
-        if true {
+        if vm.shouldShowRatingView() {
             presentView(
                 transitionStyle: .crossDissolve,
                 view: AppReviewView(viewModel: vm)
@@ -304,8 +305,9 @@ public class Router: AuthorizationRouter,
         }
     }
     
-    public func showDiscussionsSearch(courseID: String) {
+    public func showDiscussionsSearch(courseID: String, isBlackedOut: Bool) {
         let viewModel = Container.shared.resolve(DiscussionSearchTopicsViewModel<RunLoop>.self, argument: courseID)!
+
         let view = DiscussionSearchTopicsView(viewModel: viewModel)
         
         let controller = UIHostingController(rootView: view)
@@ -320,6 +322,25 @@ public class Router: AuthorizationRouter,
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
+        let controller = getVerticalController(
+            courseID: courseID,
+            courseName: courseName,
+            title: title,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getVerticalController(
+        courseID: String,
+        courseName: String,
+        title: String,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) -> UIHostingController<CourseVerticalView> {
         let viewModel = Container.shared.resolve(
             CourseVerticalViewModel.self,
             arguments: chapters,
@@ -333,8 +354,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             viewModel: viewModel
         )
-        let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        return UIHostingController(rootView: view)
     }
     
     public func showCourseScreens(
@@ -346,6 +366,27 @@ public class Router: AuthorizationRouter,
         enrollmentEnd: Date?,
         title: String
     ) {
+        let controller = getCourseScreensController(
+            courseID: courseID,
+            isActive: isActive,
+            courseStart: courseStart,
+            courseEnd: courseEnd,
+            enrollmentStart: enrollmentStart,
+            enrollmentEnd: enrollmentEnd,
+            title: title
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getCourseScreensController(
+        courseID: String,
+        isActive: Bool?,
+        courseStart: Date?,
+        courseEnd: Date?,
+        enrollmentStart: Date?,
+        enrollmentEnd: Date?,
+        title: String
+    ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
             arguments: isActive,
@@ -360,8 +401,7 @@ public class Router: AuthorizationRouter,
             title: title
         )
         
-        let controller = UIHostingController(rootView: screensView)
-        navigationController.pushViewController(controller, animated: true)
+        return UIHostingController(rootView: screensView)
     }
     
     public func showHandoutsUpdatesView(
@@ -384,12 +424,32 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int
     ) {
+        let controller = getUnitController(
+            courseName: courseName,
+            blockId: blockId,
+            courseID: courseID,
+            verticalIndex: verticalIndex,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func getUnitController(
+        courseName: String,
+        blockId: String,
+        courseID: String,
+        verticalIndex: Int,
+        chapters: [CourseChapter],
+        chapterIndex: Int,
+        sequentialIndex: Int
+    ) -> UIHostingController<CourseUnitView> {
         let viewModel = Container.shared.resolve(
             CourseUnitViewModel.self,
             arguments: blockId,
@@ -404,9 +464,8 @@ public class Router: AuthorizationRouter,
         let config = Container.shared.resolve(ConfigProtocol.self)
         let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
 
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
-        let controller = UIHostingController(rootView: view)
-        navigationController.pushViewController(controller, animated: true)
+        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
+        return UIHostingController(rootView: view)
     }
     
     public func showCourseComponent(
@@ -443,7 +502,6 @@ public class Router: AuthorizationRouter,
                         courseName: courseStructure.displayName,
                         blockId: block.blockId,
                         courseID: courseStructure.id,
-                        sectionName: courseName ?? "",
                         verticalIndex: verticalPosition ?? 0,
                         chapters: courseStructure.childs,
                         chapterIndex: chapterPosition ?? 0,
@@ -488,52 +546,41 @@ public class Router: AuthorizationRouter,
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
         animated: Bool
     ) {
-        
-        let vmVertical = Container.shared.resolve(
-            CourseVerticalViewModel.self,
-            arguments: chapters,
-            chapterIndex,
-            sequentialIndex
-        )!
-        
-        let viewVertical = CourseVerticalView(
-            title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+
+        let controllerUnit = getUnitController(
             courseName: courseName,
+            blockId: blockId,
             courseID: courseID,
-            viewModel: vmVertical
+            verticalIndex: verticalIndex,
+            chapters: chapters,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
         )
-        let controllerVertical = UIHostingController(rootView: viewVertical)
-        
-        let viewModel = Container.shared.resolve(
-            CourseUnitViewModel.self,
-            arguments: blockId,
-            courseID,
-            courseName,
-            chapters,
-            chapterIndex,
-            sequentialIndex,
-            verticalIndex
-        )!
 
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
-
-        let view = CourseUnitView(viewModel: viewModel, sectionName: sectionName, isDropdownActive: isDropdownActive)
-        let controllerUnit = UIHostingController(rootView: view)
+        let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
+        
         var controllers = navigationController.viewControllers
 
-        if let config = container.resolve(ConfigProtocol.self),
-            config.uiComponents.courseNestedListEnabled {
+        if isCourseNestedListEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {
+            let controllerVertical = getVerticalController(
+                courseID: courseID,
+                courseName: courseName,
+                title: chapters[chapterIndex].childs[sequentialIndex].displayName,
+                chapters: chapters,
+                chapterIndex: chapterIndex,
+                sequentialIndex: sequentialIndex
+            )
+
             controllers.removeLast(2)
             controllers.append(contentsOf: [controllerVertical, controllerUnit])
         }
@@ -546,6 +593,7 @@ public class Router: AuthorizationRouter,
         topics: Topics,
         title: String,
         type: ThreadType,
+        isBlackedOut: Bool,
         animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
@@ -557,7 +605,8 @@ public class Router: AuthorizationRouter,
             title: title,
             type: type,
             viewModel: viewModel,
-            router: router
+            router: router,
+            isBlackedOut: isBlackedOut
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: animated)
@@ -566,9 +615,11 @@ public class Router: AuthorizationRouter,
     public func showThread(
         thread: UserThread,
         postStateSubject: CurrentValueSubject<PostState?, Never>,
+        isBlackedOut: Bool,
         animated: Bool
     ) {
         let viewModel = Container.shared.resolve(ThreadViewModel.self, argument: postStateSubject)!
+        viewModel.isBlackedOut = isBlackedOut
         let view = ThreadView(thread: thread, viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: animated)
@@ -578,15 +629,18 @@ public class Router: AuthorizationRouter,
         commentID: String,
         parentComment: Post,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
+        isBlackedOut: Bool,
         animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
         let viewModel = Container.shared.resolve(ResponsesViewModel.self, argument: threadStateSubject)!
+        viewModel.isBlackedOut = isBlackedOut
         let view = ResponsesView(
             commentID: commentID,
             viewModel: viewModel,
             router: router,
-            parentComment: parentComment
+            parentComment: parentComment,
+            isBlackedOut: isBlackedOut
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: animated)
@@ -730,6 +784,26 @@ public class Router: AuthorizationRouter,
         )
         let controller = UIHostingController(rootView: webBrowser)
         navigationController.pushViewController(controller, animated: true)
+    }
+}
+
+// MARK: BackNavigationProtocol
+extension Router {
+    public func getBackMenuItems() -> [BackNavigationMenuItem] {
+        var viewControllers = navigationController.viewControllers
+        viewControllers.removeLast()
+        var items: [BackNavigationMenuItem] = []
+        for (index, controller) in viewControllers.enumerated() {
+            let title = controller.navigationItem.title ?? controller.title ?? ""
+            let item = BackNavigationMenuItem(id: index, title: title)
+            items.append(item)
+        }
+        return items
+    }
+    
+    public func navigateTo(item: BackNavigationMenuItem) {
+        let viewControllers = Array(navigationController.viewControllers[0 ... item.id])
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
 // swiftlint:enable file_length type_body_length

@@ -80,22 +80,24 @@ struct CourseStructureNestedListView: View {
             Button {
                 onLabelClick(sequential: sequential, chapter: chapter)
             } label: {
-                Group {
-                    if sequential.completion == 1 {
-                        CoreAssets.finished.swiftUIImage
-                            .renderingMode(.template)
-                            .foregroundColor(Theme.Colors.accentXColor)
-                    } else {
-                        sequential.type.image
+                HStack(spacing: 0) {
+                    Group {
+                        if sequential.completion == 1 {
+                            CoreAssets.finished.swiftUIImage
+                                .renderingMode(.template)
+                                .foregroundColor(Theme.Colors.accentXColor)
+                        } else {
+                            sequential.type.image
+                        }
+                        Text(sequential.displayName)
+                            .font(Theme.Fonts.titleMedium)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(1)
                     }
-                    Text(sequential.displayName)
-                        .font(Theme.Fonts.titleMedium)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(1)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    Spacer()
                 }
-                .foregroundColor(Theme.Colors.textPrimary)
             }
-            Spacer()
             downloadButton(
                 sequential: sequential,
                 chapter: chapter
@@ -224,7 +226,6 @@ struct CourseStructureNestedListView: View {
             courseName: viewModel.courseStructure?.displayName ?? "",
             blockId: block.id,
             courseID: viewModel.courseStructure?.id ?? "",
-            sectionName: block.displayName,
             verticalIndex: 0,
             chapters: course.childs,
             chapterIndex: chapterIndex,

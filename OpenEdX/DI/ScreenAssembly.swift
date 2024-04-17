@@ -187,7 +187,8 @@ class ScreenAssembly: Assembly {
         }
         container.register(ProfileViewModel.self) { r in
             ProfileViewModel(
-                interactor: r.resolve(ProfileInteractorProtocol.self)!, 
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -336,14 +337,16 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                pipManager: r.resolve(PipManagerProtocol.self)!
             )
         }
         
         container.register(
             EncodedVideoPlayerViewModel.self
         ) { r, url, blockID, courseID, languages, playerStateSubject in
-            EncodedVideoPlayerViewModel(
+            let router: Router = r.resolve(Router.self)!
+            return EncodedVideoPlayerViewModel(
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
@@ -352,7 +355,9 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                pipManager: r.resolve(PipManagerProtocol.self)!,
+                selectedCourseTab: router.currentCourseTabSelection
             )
         }
         
@@ -447,6 +452,10 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!
             )
+        }
+        
+        container.register(BackNavigationProtocol.self) { r in
+            r.resolve(Router.self)!
         }
     }
 }
