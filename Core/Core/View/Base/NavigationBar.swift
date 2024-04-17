@@ -51,20 +51,14 @@ public struct NavigationBar: View {
             }
             .padding(.horizontal, 24)
             if leftButton {
-            VStack {
-                    Button(action: {
-                        leftButtonAction?()
-                    }, label: {
-                        CoreAssets.arrowLeft.swiftUIImage
-                            .backButtonStyle(color: leftButtonColor)
-                            .padding(8)
-                    })
-                    .foregroundColor(Theme.Colors.styledButtonText)
-                    .accessibilityIdentifier("back_button")
-                    
-                }.frame(minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading)
+                VStack {
+                    BackNavigationButton(color: leftButtonColor, action: leftButtonAction)
+                        .padding(8)
+                        .backViewStyle()
+                }
+                .frame(minWidth: 0,
+                       maxWidth: .infinity,
+                       alignment: .topLeading)
                 
             }
             if rightButtonType != nil {

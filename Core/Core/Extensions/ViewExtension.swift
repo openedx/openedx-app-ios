@@ -230,6 +230,13 @@ public extension View {
     func onFirstAppear(_ action: @escaping () -> Void) -> some View {
         modifier(FirstAppear(action: action))
     }
+    
+    func backViewStyle(topPadding: CGFloat = -10) -> some View {
+        return self
+            .frame(height: 24)
+            .padding(.horizontal, 8)
+            .offset(y: topPadding)
+    }
 }
 
 public extension View {
@@ -300,10 +307,8 @@ public extension Image {
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
-            .frame(height: 24)
-            .padding(.horizontal, 8)
-            .offset(y: topPadding)
             .foregroundColor(color)
+            .backViewStyle(topPadding: topPadding)
     }
 }
 

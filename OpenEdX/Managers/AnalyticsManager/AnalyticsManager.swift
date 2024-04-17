@@ -420,8 +420,8 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters = [
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName,
-            EventParamKey.unitID: blockId,
-            EventParamKey.unitName: blockName
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName
         ]
         logEvent(.verticalClicked, parameters: parameters)
     }
@@ -545,6 +545,62 @@ class AnalyticsManager: AuthorizationAnalytics,
         ]
         
         logEvent(.datesComponentClicked, parameters: parameters)
+    }
+    
+    func calendarSyncToggle(
+        enrollmentMode: EnrollmentMode,
+        pacing: CoursePacing,
+        courseId: String,
+        action: CalendarDialogueAction
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.enrollmentMode: enrollmentMode.rawValue,
+            EventParamKey.pacing: pacing.rawValue,
+            EventParamKey.courseID: courseId,
+            EventParamKey.action: action.rawValue,
+            EventParamKey.category: EventCategory.courseDates,
+            EventParamKey.name: EventBIValue.datesCalendarSyncToggle.rawValue
+        ]
+        
+        logEvent(.datesCalendarSyncToggle, parameters: parameters)
+    }
+    
+    func calendarSyncDialogAction(
+        enrollmentMode: EnrollmentMode,
+        pacing: CoursePacing,
+        courseId: String,
+        dialog: CalendarDialogueType,
+        action: CalendarDialogueAction
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.enrollmentMode: enrollmentMode.rawValue,
+            EventParamKey.pacing: pacing.rawValue,
+            EventParamKey.courseID: courseId,
+            EventParamKey.dialog: dialog.rawValue,
+            EventParamKey.action: action.rawValue,
+            EventParamKey.category: EventCategory.courseDates,
+            EventParamKey.name: EventBIValue.datesCalendarSyncDialogAction.rawValue
+        ]
+        
+        logEvent(.datesCalendarSyncDialogAction, parameters: parameters)
+    }
+    
+    func calendarSyncSnackbar(
+        enrollmentMode: EnrollmentMode,
+        pacing: CoursePacing,
+        courseId: String,
+        snackbar: SnackbarType
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.enrollmentMode: enrollmentMode.rawValue,
+            EventParamKey.pacing: pacing.rawValue,
+            EventParamKey.courseID: courseId,
+            EventParamKey.snackbar: snackbar.rawValue,
+            EventParamKey.category: EventCategory.courseDates,
+            EventParamKey.name: EventBIValue.datesCalendarSyncSnackbar.rawValue
+        ]
+        
+        logEvent(.datesCalendarSyncSnackbar, parameters: parameters)
     }
     
     public func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String) {
@@ -678,7 +734,7 @@ class AnalyticsManager: AuthorizationAnalytics,
     ) {
         var parameters: [String: Any] = [
             EventParamKey.category: EventCategory.appreviews,
-            EventParamKey.name: biValue.rawValue,
+            EventParamKey.name: biValue.rawValue
         ]
         
         if rating != 0 {

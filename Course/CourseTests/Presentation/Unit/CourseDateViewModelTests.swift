@@ -44,7 +44,8 @@ final class CourseDateViewModelTests: XCTestCase {
             media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
                                                                 small: "",
                                                                 large: "")),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
         
         Given(interactor, .getCourseDates(courseID: .any, willReturn: courseDates))

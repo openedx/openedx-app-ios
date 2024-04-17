@@ -138,7 +138,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     large: structure.mediaLarge ?? ""
                 )
             ),
-            certificate: DataLayer.Certificate(url: structure.certificate)
+            certificate: DataLayer.Certificate(url: structure.certificate),
+            isSelfPaced: structure.isSelfPaced
         )
     }
     
@@ -151,6 +152,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.mediaRaw = structure.media.image.raw
             newStructure.id = structure.id
             newStructure.rootItem = structure.rootItem
+            newStructure.isSelfPaced = structure.isSelfPaced
             
             for block in Array(structure.dict.values) {
                 let courseDetail = CDCourseBlock(context: self.context)
