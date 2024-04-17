@@ -23,36 +23,6 @@ public struct ManageAccountView: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                VStack {
-                    ThemeAssets.titleBackground.swiftUIImage
-                        .resizable()
-                        .edgesIgnoringSafeArea(.top)
-                }
-                .frame(maxWidth: .infinity, maxHeight: 200)
-                .accessibilityIdentifier("auth_bg_image")
-                
-                // MARK: - Page name
-                VStack(alignment: .center) {
-                    ZStack {
-                        HStack {
-                            Text(ProfileLocalization.manageAccount)
-                                .titleSettings(color: Theme.Colors.loginNavigationText)
-                                .accessibilityIdentifier("manage_account_text")
-                        }
-                        VStack {
-                            Button(action: { viewModel.router.back() }, label: {
-                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                            })
-                            .foregroundColor(Theme.Colors.styledButtonText)
-                            .padding(.leading, isHorizontal ? 48 : 0)
-                            .accessibilityIdentifier("back_button")
-                            
-                        }.frame(minWidth: 0,
-                                maxWidth: .infinity,
-                                alignment: .topLeading)
-                    }
-                    
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(
                         action: {
@@ -75,9 +45,9 @@ public struct ManageAccountView: View {
                         })
                     .frameLimit(width: proxy.size.width)
                     .roundedBackground(Theme.Colors.background)
-                }
-                .navigationBarHidden(true)
-                .navigationBarBackButtonHidden(true)
+                .navigationBarHidden(false)
+                .navigationBarBackButtonHidden(false)
+                .navigationTitle(ProfileLocalization.manageAccount)
                 
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
@@ -119,7 +89,7 @@ public struct ManageAccountView: View {
                     .font(Theme.Fonts.headlineSmall)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityIdentifier("user_name_text")
-                Text("@\(viewModel.userModel?.username ?? "")")
+                Text("\(viewModel.userModel?.email ?? "")")
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textSecondary)
                     .accessibilityIdentifier("user_username_text")

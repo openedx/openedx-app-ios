@@ -8,7 +8,7 @@
 
 "TITLE" = "Profile";
 "INFO" = "Profile info";
-"EDIT_PROFILE" = "Edit profile";
+"EDIT_PROFILE" = "Edit Profile";
 "YEAR_OF_BIRTH" = "Year of birth:";
 "BIO" = "Bio:";
 "SETTINGS" = "Settings";
@@ -38,7 +38,7 @@
 
 "EDIT.TOO_YONG_USER" = "You must be over 13 years old to have a profile with full access to information.";
 "EDIT.LIMITED_PROFILE_DESCRIPTION" = "A limited profile only shares your username and profile photo.";
-"EDIT.DELETE_ACCOUNT" = "Delete account";
+"EDIT.DELETE_ACCOUNT" = "Delete Account";
 
 "EDIT.FIELDS.YEAR_OF_BIRTH" = "Year of birth";
 "EDIT.FIELDS.LOCATION" = "Location";
@@ -50,7 +50,7 @@
 "EDIT.BOTTOM_SHEET.REMOVE" = "Remove photo";
 "EDIT.BOTTOM_SHEET.CANCEL" = "Cancel";
 
-"DELETE_ACCOUNT.TITLE" = "Delete account";
+"DELETE_ACCOUNT.TITLE" = "Delete Account";
 "DELETE_ACCOUNT.ARE_YOU_SURE" = "Are you sure you want to ";
 "DELETE_ACCOUNT.WANT_TO_DELETE" = "delete your account?";
 "DELETE_ACCOUNT.DESCRIPTION" = "To confirm this action, please enter your account password.";

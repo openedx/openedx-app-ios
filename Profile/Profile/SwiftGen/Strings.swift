@@ -18,8 +18,8 @@ public enum ProfileLocalization {
   public static let cookiePolicy = ProfileLocalization.tr("Localizable", "COOKIE_POLICY", fallback: "Cookie policy")
   /// Do not sell my personal information
   public static let doNotSellInformation = ProfileLocalization.tr("Localizable", "DO_NOT_SELL_INFORMATION", fallback: "Do not sell my personal information")
-  /// Edit profile
-  public static let editProfile = ProfileLocalization.tr("Localizable", "EDIT_PROFILE", fallback: "Edit profile")
+  /// Edit Profile
+  public static let editProfile = ProfileLocalization.tr("Localizable", "EDIT_PROFILE", fallback: "Edit Profile")
   /// View FAQ
   public static let faqTitle = ProfileLocalization.tr("Localizable", "FAQ_TITLE", fallback: "View FAQ")
   /// full profile
@@ -66,8 +66,8 @@ public enum ProfileLocalization {
     public static let password = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.PASSWORD", fallback: "Password")
     /// Enter password
     public static let passwordDescription = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.PASSWORD_DESCRIPTION", fallback: "Enter password")
-    /// Delete account
-    public static let title = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.TITLE", fallback: "Delete account")
+    /// Delete Account
+    public static let title = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.TITLE", fallback: "Delete Account")
     /// delete your account?
     public static let wantToDelete = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.WANT_TO_DELETE", fallback: "delete your account?")
   }
@@ -78,8 +78,8 @@ public enum ProfileLocalization {
     public static let title = ProfileLocalization.tr("Localizable", "DELETE_ALERT.TITLE", fallback: "Warning!")
   }
   public enum Edit {
-    /// Delete account
-    public static let deleteAccount = ProfileLocalization.tr("Localizable", "EDIT.DELETE_ACCOUNT", fallback: "Delete account")
+    /// Delete Account
+    public static let deleteAccount = ProfileLocalization.tr("Localizable", "EDIT.DELETE_ACCOUNT", fallback: "Delete Account")
     /// A limited profile only shares your username and profile photo.
     public static let limitedProfileDescription = ProfileLocalization.tr("Localizable", "EDIT.LIMITED_PROFILE_DESCRIPTION", fallback: "A limited profile only shares your username and profile photo.")
     /// You must be over 13 years old to have a profile with full access to information.

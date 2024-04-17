@@ -215,7 +215,8 @@ public struct CourseOutlineView: View {
                 VideoDownloadQualityContainerView(
                     downloadQuality: $0.downloadQuality,
                     didSelect: viewModel.update(downloadQuality:),
-                    analytics: viewModel.coreAnalytics
+                    analytics: viewModel.coreAnalytics,
+                    router: viewModel.router
                 )
             }
         }

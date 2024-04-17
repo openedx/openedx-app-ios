@@ -89,7 +89,7 @@ public struct VideoSettingsView: View {
                                     viewModel.router.showVideoDownloadQualityView(
                                         downloadQuality: viewModel.userSettings.downloadQuality,
                                         didSelect: viewModel.update(downloadQuality:),
-                                        analytics: CoreAnalyticsMock() //viewModel.analytics
+                                        analytics: viewModel.coreAnalytics
                                     )
                                 } label: {
                                     SettingsCell(

@@ -88,7 +88,7 @@ public struct ProfileView: View {
     
     private var editProfileButton: some View {
         StyledButton(
-            "Edit Profile",
+            ProfileLocalization.editProfile,
             action: {
                 let userModel = viewModel.userModel ?? UserProfile()
                 viewModel.trackProfileEditClicked()
