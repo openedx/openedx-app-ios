@@ -48,7 +48,10 @@ public struct SettingsView: View {
                         .frameLimit(width: proxy.size.width)
                         .padding(.top, 24)
                     }
-                    .roundedBackground(Theme.Colors.background)
+                    .background(
+                        Theme.Colors.background
+                            .ignoresSafeArea()
+                    )
                 
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)

@@ -44,7 +44,10 @@ public struct ManageAccountView: View {
                             .padding(.top, 24)
                         })
                     .frameLimit(width: proxy.size.width)
-                    .roundedBackground(Theme.Colors.background)
+                    .background(
+                        Theme.Colors.background
+                            .ignoresSafeArea()
+                    )
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)
                 .navigationTitle(ProfileLocalization.manageAccount)
