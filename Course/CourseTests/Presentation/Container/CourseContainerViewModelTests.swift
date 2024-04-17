@@ -97,7 +97,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                                                                 small: "",
                                                                 large: "")),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
         
@@ -164,7 +164,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                                                                 small: "",
                                                                 large: "")),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
         
@@ -422,7 +422,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 large: ""
             )),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
 
@@ -558,7 +558,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 large: ""
             )),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
 
@@ -679,7 +679,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 large: ""
             )),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
 
@@ -801,7 +801,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 large: ""
             )),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
 
@@ -916,7 +916,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 large: ""
             )),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
 
@@ -1046,7 +1046,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 large: ""
             )),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
 
@@ -1196,7 +1196,7 @@ final class CourseContainerViewModelTests: XCTestCase {
                 large: ""
             )),
             certificate: nil,
-            org: ""
+            org: "",
             isSelfPaced: true
         )
 
