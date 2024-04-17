@@ -331,9 +331,9 @@ class ScreenAssembly: Assembly {
         container.register(
             EncodedVideoPlayerViewModel.self
         ) { r, url, blockID, courseID, languages, playerStateSubject in
+            let videoUrl: URL? = url
             let router: Router = r.resolve(Router.self)!
             return EncodedVideoPlayerViewModel(
-                url: url,
                 blockID: blockID,
                 courseID: courseID,
                 languages: languages,
@@ -343,7 +343,7 @@ class ScreenAssembly: Assembly {
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 playerHolder: r.resolve(
                     PlayerViewControllerHolder.self,
-                    arguments: url,
+                    arguments: videoUrl,
                     blockID,
                     courseID,
                     router.currentCourseTabSelection

@@ -163,7 +163,6 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
         EncodedVideoPlayer(
             viewModel: EncodedVideoPlayerViewModel(
-                url: URL(string: "")!,
                 blockID: "",
                 courseID: "",
                 languages: [],

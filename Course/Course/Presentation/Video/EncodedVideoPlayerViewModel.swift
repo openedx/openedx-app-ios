@@ -10,9 +10,6 @@ import Core
 import Combine
 
 public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
-    
-    let url: URL?
-    
     let playerHolder: PlayerViewControllerHolder
     var controller: AVPlayerViewController {
         playerHolder.playerController
@@ -20,7 +17,6 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
     private var subscription = Set<AnyCancellable>()
     
     public init(
-        url: URL?,
         blockID: String,
         courseID: String,
         languages: [SubtitleUrl],
@@ -30,7 +26,6 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         connectivity: ConnectivityProtocol,
         playerHolder: PlayerViewControllerHolder
     ) {
-        self.url = url        
         self.playerHolder = playerHolder
         
         super.init(blockID: blockID,
