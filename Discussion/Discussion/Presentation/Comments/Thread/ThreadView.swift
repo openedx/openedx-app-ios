@@ -226,8 +226,19 @@ public struct ThreadView: View {
             }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
+            .navigationBarBackButtonHidden(true)
             .navigationTitle(title)
+            .toolbar {
+                ToolbarItem(
+                    placement: .navigationBarLeading,
+                    content: {
+                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                            viewModel.router.back()
+                        }
+                        .offset(x: -8, y: -1.5)
+                    }
+                )
+            }
             .onFirstAppear {
                 Task {
                     await viewModel.getPosts(thread: thread, page: 1)

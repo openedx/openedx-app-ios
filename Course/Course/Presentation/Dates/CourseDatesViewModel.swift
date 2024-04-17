@@ -48,8 +48,10 @@ public class CourseDatesViewModel: ObservableObject {
         }
         set {
             if newValue {
+                trackCalendarSyncToggle(action: .on)
                 handleCalendar()
             } else {
+                trackCalendarSyncToggle(action: .off)
                 showRemoveCalendarAlert()
             }
         }
@@ -217,8 +219,14 @@ extension CourseDatesViewModel {
             guard let self else { return }
             switch status {
             case .authorized:
+                if previousStatus == .notDetermined {
+                    trackCalendarSyncDialogAction(dialog: .devicePermission, action: .allow)
+                }
                 showAddCalendarAlert()
             default:
+                if previousStatus == .notDetermined {
+                    trackCalendarSyncDialogAction(dialog: .devicePermission, action: .doNotAllow)
+                }
                 isOn = false
                 if previousStatus == status {
                     self.showCalendarSettingsAlert()
@@ -260,11 +268,13 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CoreLocalization.Alert.accept,
             onCloseTapped: { [weak self] in
+                self?.trackCalendarSyncDialogAction(dialog: .addCalendar, action: .cancel)
                 self?.router.dismiss(animated: true)
                 self?.isOn = false
                 self?.calendar.syncOn = false
             },
             okTapped: { [weak self] in
+                self?.trackCalendarSyncDialogAction(dialog: .addCalendar, action: .add)
                 self?.router.dismiss(animated: true)
                 Task { [weak self] in
                     await self?.addCourseEvents()
@@ -283,11 +293,14 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CoreLocalization.Alert.accept,
             onCloseTapped: { [weak self] in
+                self?.trackCalendarSyncDialogAction(dialog: .removeCalendar, action: .cancel)
                 self?.router.dismiss(animated: true)
             },
             okTapped: { [weak self] in
+                self?.trackCalendarSyncDialogAction(dialog: .removeCalendar, action: .remove)
                 self?.router.dismiss(animated: true)
                 self?.removeCourseCalendar { [weak self] _ in
+                    self?.trackCalendarSyncSnackbar(snackbar: .removed)
                     self?.eventState = .removedCalendar
                 }
                 
@@ -298,6 +311,7 @@ extension CourseDatesViewModel {
     
     private func showEventsAddedSuccessAlert() {
         if calendar.isModalPresented {
+            trackCalendarSyncSnackbar(snackbar: .added)
             eventState = .addedCalendar
             return
         }
@@ -309,11 +323,13 @@ extension CourseDatesViewModel {
             ),
             positiveAction: CourseLocalization.CourseDates.calendarViewEvents,
             onCloseTapped: { [weak self] in
+                self?.trackCalendarSyncDialogAction(dialog: .eventsAdded, action: .done)
                 self?.router.dismiss(animated: true)
                 self?.isOn = true
                 self?.calendar.syncOn = true
             },
             okTapped: { [weak self] in
+                self?.trackCalendarSyncDialogAction(dialog: .eventsAdded, action: .viewEvent)
                 self?.router.dismiss(animated: true)
                 if let url = URL(string: "calshow://"), UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -350,13 +366,16 @@ extension CourseDatesViewModel {
             positiveAction: CourseLocalization.CourseDates.calendarShiftPromptUpdateNow,
             onCloseTapped: { [weak self] in
                 // Remove course calendar
+                self?.trackCalendarSyncDialogAction(dialog: .updateCalendar, action: .remove)
                 self?.router.dismiss(animated: true)
                 self?.removeCourseCalendar { [weak self] _ in
+                    self?.trackCalendarSyncSnackbar(snackbar: .removed)
                     self?.eventState = .removedCalendar
                 }
             },
             okTapped: { [weak self] in
                 // Update Calendar Now
+                self?.trackCalendarSyncDialogAction(dialog: .updateCalendar, action: .update)
                 self?.router.dismiss(animated: true)
                 self?.removeCourseCalendar(trackAnalytics: false) { success in
                     self?.isOn = !success
@@ -364,6 +383,7 @@ extension CourseDatesViewModel {
                     self?.addCourseEvents(trackAnalytics: false) { [weak self] calendarEventsAdded in
                         self?.isOn = calendarEventsAdded
                         if calendarEventsAdded {
+                            self?.trackCalendarSyncSnackbar(snackbar: .updated)
                             self?.calendar.syncOn = calendarEventsAdded
                             self?.eventState = .updatedCalendar
                         }
@@ -441,6 +461,36 @@ extension CourseDatesViewModel {
             screenName: screenName,
             type: type,
             success: success
+        )
+    }
+}
+
+extension CourseDatesViewModel {
+    private func trackCalendarSyncToggle(action: CalendarDialogueAction) {
+        analytics.calendarSyncToggle(
+            enrollmentMode: .none,
+            pacing: courseStructure?.isSelfPaced ?? true ? .`self` : .instructor,
+            courseId: courseID,
+            action: action
+        )
+    }
+    
+    private func trackCalendarSyncDialogAction(dialog: CalendarDialogueType, action: CalendarDialogueAction) {
+        analytics.calendarSyncDialogAction(
+            enrollmentMode: .none,
+            pacing: courseStructure?.isSelfPaced ?? true ? .`self` : .instructor,
+            courseId: courseID,
+            dialog: dialog,
+            action: action
+        )
+    }
+    
+    private func trackCalendarSyncSnackbar(snackbar: SnackbarType) {
+        analytics.calendarSyncSnackbar(
+            enrollmentMode: .none,
+            pacing: courseStructure?.isSelfPaced ?? true ? .`self` : .instructor,
+            courseId: courseID,
+            snackbar: snackbar
         )
     }
 }

@@ -103,6 +103,8 @@ public enum AuthLocalization {
     public static let searchPlaceholder = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_PLACEHOLDER", fallback: "Search our 3000+ courses")
     /// What do you want to learn?
     public static let searchTitle = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_TITLE", fallback: "What do you want to learn?")
+    /// Start
+    public static let title = AuthLocalization.tr("Localizable", "STARTUP.TITLE", fallback: "Start")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

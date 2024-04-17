@@ -440,6 +440,10 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!
             )
         }
+        
+        container.register(BackNavigationProtocol.self) { r in
+            r.resolve(Router.self)!
+        }
     }
 }
 // swiftlint:enable function_body_length type_body_length

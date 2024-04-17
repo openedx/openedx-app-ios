@@ -144,9 +144,16 @@ public struct DeleteAccountView: View {
                        alignment: .top)
                 .padding(.top, 8)
                 .navigationBarHidden(false)
-                .navigationBarBackButtonHidden(false)
+                .navigationBarBackButtonHidden(true)
                 .navigationTitle(ProfileLocalization.DeleteAccount.title)
-                
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                            viewModel.router.back()
+                        }
+                        .offset(x: -8, y: -1.5)
+                    }
+                }
                 // MARK: - Error Alert
                 if viewModel.showError {
                     VStack {

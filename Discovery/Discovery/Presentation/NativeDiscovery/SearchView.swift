@@ -174,7 +174,7 @@ public struct SearchView: View {
                 viewModel.searchText = ""
             }
             .background(Theme.Colors.background.ignoresSafeArea())
-            .addTapToEndEditing(isForced: true)
+            .avoidKeyboard(dismissKeyboardByTap: true)
         }
     }
     
