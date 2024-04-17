@@ -13,9 +13,9 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
     
     let url: URL?
     
-    let controllerHolder: PlayerViewControllerHolder
+    let playerHolder: PlayerViewControllerHolder
     var controller: AVPlayerViewController {
-        controllerHolder.playerController
+        playerHolder.playerController
     }
     private var subscription = Set<AnyCancellable>()
     
@@ -27,46 +27,27 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
-        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol,
-        pipManager: PipManagerProtocol,
-        selectedCourseTab: Int
+        playerHolder: PlayerViewControllerHolder
     ) {
-        self.url = url
-        
-        if let holder = pipManager.holder(
-            for: url,
-            blockID: blockID,
-            courseID: courseID,
-            selectedCourseTab: selectedCourseTab
-        ) {
-            controllerHolder = holder
-        } else {
-            let holder = PlayerViewControllerHolder(
-                url: url,
-                blockID: blockID,
-                courseID: courseID,
-                selectedCourseTab: selectedCourseTab
-            )
-            controllerHolder = holder
-        }
+        self.url = url        
+        self.playerHolder = playerHolder
         
         super.init(blockID: blockID,
                    courseID: courseID,
                    languages: languages,
                    interactor: interactor,
                    router: router,
-                   appStorage: appStorage,
                    connectivity: connectivity)
         
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
             case .pause:
-                if self?.controllerHolder.isPlayingInPip != true {
+                if self?.playerHolder.isPlayingInPip != true {
                     self?.controller.player?.pause()
                 }
             case .kill:
-                if self?.controllerHolder.isPlayingInPip != true {
+                if self?.playerHolder.isPlayingInPip != true {
                     self?.controller.player?.replaceCurrentItem(with: nil)
                 }
             case .none:
@@ -74,19 +55,12 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
             }
         }).store(in: &subscription)
     }
-    
-    func getVideoResolution() -> CGSize {
-        switch appStorage.userSettings?.streamingQuality {
-        case .auto:
-            return CGSize(width: 1280, height: 720)
-        case .low:
-            return CGSize(width: 640, height: 360)
-        case .medium:
-            return CGSize(width: 854, height: 480)
-        case .high:
-            return CGSize(width: 1280, height: 720)
-        case .none:
-            return CGSize(width: 1280, height: 720)
+        
+    func progress(for time: Double) -> Double {
+        let duration = playerHolder.duration
+        if !time.isNaN && !duration.isNaN {
+            return time/duration
         }
+        return 0
     }
 }

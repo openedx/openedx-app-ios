@@ -93,7 +93,6 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
                 router: CourseRouterMock(),
-                appStorage: CoreStorageMock(),
                 connectivity: Connectivity(),
                 pipManager: PipManagerProtocolMock()
             ),

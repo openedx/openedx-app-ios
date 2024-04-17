@@ -323,7 +323,6 @@ class ScreenAssembly: Assembly {
                 playerStateSubject: playerStateSubject,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
-                appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 pipManager: r.resolve(PipManagerProtocol.self)!
             )
@@ -341,10 +340,37 @@ class ScreenAssembly: Assembly {
                 playerStateSubject: playerStateSubject,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
-                appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                pipManager: r.resolve(PipManagerProtocol.self)!,
-                selectedCourseTab: router.currentCourseTabSelection
+                playerHolder: r.resolve(
+                    PlayerViewControllerHolder.self,
+                    arguments: url,
+                    blockID,
+                    courseID,
+                    router.currentCourseTabSelection
+                )!
+            )
+        }
+        
+        container.register(PlayerViewControllerHolder.self) { r, url, blockID, courseID, selectedCourseTab in
+            let pipManager = r.resolve(PipManagerProtocol.self)!
+            if let holder = pipManager.holder(
+                for: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab
+            ) {
+                return holder
+            }
+
+            let storage = r.resolve(CoreStorage.self)!
+            let quality = storage.userSettings?.streamingQuality ?? .auto
+            return PlayerViewControllerHolder(
+                url: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab,
+                videoResolution: quality.resolution,
+                pipManager: pipManager
             )
         }
         

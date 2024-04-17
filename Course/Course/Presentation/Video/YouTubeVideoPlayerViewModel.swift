@@ -33,7 +33,6 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
-        appStorage: CoreStorage,
         connectivity: ConnectivityProtocol,
         pipManager: PipManagerProtocol
     ) {
@@ -64,7 +63,6 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
             languages: languages,
             interactor: interactor,
             router: router,
-            appStorage: appStorage,
             connectivity: connectivity
         )
         

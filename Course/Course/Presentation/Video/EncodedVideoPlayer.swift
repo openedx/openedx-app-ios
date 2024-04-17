@@ -58,31 +58,16 @@ public struct EncodedVideoPlayer: View {
                     HStack {
                         VStack {
                             PlayerViewController(
-                                videoURL: viewModel.url,
-                                playerHolder: viewModel.controllerHolder,
-                                bitrate: viewModel.getVideoResolution(),
-                                progress: { progress in
-                                    if progress >= 0.8 {
-                                        if !isViewedOnce {
-                                            Task {
-                                                await viewModel.blockCompletionRequest()
-                                            }
-                                            isViewedOnce = true
-                                        }
-                                    }
-                                    if progress == 1 {
-                                        viewModel.router.presentAppReview()
-                                    }
-                                    
-                                }, seconds: { seconds in
+                                playerHolder: viewModel.playerHolder,
+                                seconds: { seconds in
                                     currentTime = seconds
                                 })
                             .aspectRatio(16 / 9, contentMode: .fit)
                             .frame(minWidth: playerWidth(for: reader.size))
                             .cornerRadius(12)
                             .onAppear {
-                                if !viewModel.controllerHolder.isPlayingInPip,
-                                    !viewModel.controllerHolder.isOtherPlayerInPip {
+                                if !viewModel.playerHolder.isPlayingInPip,
+                                    !viewModel.playerHolder.isOtherPlayerInPip {
                                     viewModel.controller.player?.play()
                                 }
                             }
@@ -130,10 +115,25 @@ public struct EncodedVideoPlayer: View {
         }
         .padding(.horizontal, 8)
         .statusBarHidden(false)
+        .onChange(of: currentTime) { time in
+            let progress = viewModel.progress(for: time)
+            if progress >= 0.8 {
+                if !isViewedOnce {
+                    Task {
+                        await viewModel.blockCompletionRequest()
+                    }
+                    isViewedOnce = true
+                }
+            }
+            if progress == 1 {
+                viewModel.router.presentAppReview()
+            }
+        }
         .onDisappear {
             viewModel.controller.player?.allowsExternalPlayback = false
         }
         .onAppear {
+            viewModel.controller.player?.allowsExternalPlayback = true
             viewModel.controller.setNeedsStatusBarAppearanceUpdate()
         }
     }
@@ -170,10 +170,8 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
                 router: CourseRouterMock(),
-                appStorage: CoreStorageMock(),
                 connectivity: Connectivity(),
-                pipManager: PipManagerProtocolMock(),
-                selectedCourseTab: 0
+                playerHolder: PlayerViewControllerHolder.mock
             ),
             isOnScreen: true
         )

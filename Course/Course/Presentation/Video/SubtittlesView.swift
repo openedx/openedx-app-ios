@@ -124,8 +124,7 @@ struct SubtittlesView_Previews: PreviewProvider {
                 blockID: "", courseID: "",
                 languages: [],
                 interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(), 
-                appStorage: CoreStorageMock(),
+                router: CourseRouterMock(),
                 connectivity: Connectivity()
             ), scrollTo: {_ in }
         )

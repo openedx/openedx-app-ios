@@ -58,12 +58,28 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         )
         return holder == nil && pipManager.isPipActive
     }
+    public var duration: Double {
+        guard let duration = playerController.player?.currentItem?.duration else { return .nan }
+        return duration.seconds
+    }
+    private let videoResolution: CGSize
+    private var cancellations: [AnyCancellable] = []
     
-    private let pipManager: PipManagerProtocol
+    let pipManager: PipManagerProtocol
     
     public lazy var playerController: AVPlayerViewController = {
         let playerController = AVPlayerViewController()
+        playerController.modalPresentationStyle = .fullScreen
+        playerController.allowsPictureInPicturePlayback = true
+        playerController.canStartPictureInPictureAutomaticallyFromInline = true
         playerController.delegate = self
+        if let url = url {
+            let player = AVPlayer()
+            player.replaceCurrentItem(with: AVPlayerItem(url: url))
+            player.currentItem?.preferredMaximumResolution = videoResolution
+            addSubscriptions(to: player)
+            playerController.player = player
+        }
         return playerController
     }()
     
@@ -71,13 +87,16 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
         url: URL?,
         blockID: String,
         courseID: String,
-        selectedCourseTab: Int
+        selectedCourseTab: Int,
+        videoResolution: CGSize,
+        pipManager: PipManagerProtocol
     ) {
         self.url = url
         self.blockID = blockID
         self.courseID = courseID
         self.selectedCourseTab = selectedCourseTab
-        self.pipManager = Container.shared.resolve(PipManagerProtocol.self)!
+        self.videoResolution = videoResolution
+        self.pipManager = pipManager
     }
     
     public func playerViewControllerWillStartPictureInPicture(_ playerViewController: AVPlayerViewController) {
@@ -127,5 +146,22 @@ public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegat
     
     public func pipRatePublisher() -> AnyPublisher<Float, Never>? {
         pipManager.pipRatePublisher()
+    }
+    
+    private func addSubscriptions(to player: AVPlayer) {
+        
+    }
+}
+
+extension PlayerViewControllerHolder {
+    static var mock: PlayerViewControllerHolder {
+        PlayerViewControllerHolder(
+            url: URL(string: "")!,
+            blockID: "",
+            courseID: "",
+            selectedCourseTab: 0,
+            videoResolution: .zero,
+            pipManager: PipManagerProtocolMock()
+        )
     }
 }
