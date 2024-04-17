@@ -2229,7 +2229,7 @@
 			repositoryURL = "https://github.com/SvenTiigi/YouTubePlayerKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.0;
+				minimumVersion = 1.8.0;
 			};
 		};
 		142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */ = {
