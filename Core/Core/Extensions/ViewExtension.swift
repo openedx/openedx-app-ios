@@ -230,6 +230,13 @@ public extension View {
     func onFirstAppear(_ action: @escaping () -> Void) -> some View {
         modifier(FirstAppear(action: action))
     }
+    
+    func backViewStyle(topPadding: CGFloat = -10) -> some View {
+        return self
+            .frame(height: 24)
+            .padding(.horizontal, 8)
+            .offset(y: topPadding)
+    }
 }
 
 public extension View {
@@ -252,21 +259,25 @@ public extension View {
     func sheetNavigation(isSheet: Bool, onDismiss: (() -> Void)? = nil) -> some View {
         if isSheet {
             NavigationView {
-                self
-                    .if(onDismiss != nil) { view in
-                        view
-                            .toolbar {
-                                ToolbarItem(placement: .navigationBarTrailing) {
-                                    Button {
-                                        onDismiss?()
-                                    } label: {
-                                        Image(systemName: "xmark")
-                                            .foregroundColor(Theme.Colors.accentColor)
+                ZStack {
+                    Theme.Colors.background
+                        .ignoresSafeArea()
+                    self
+                        .if(onDismiss != nil) { view in
+                            view
+                                .toolbar {
+                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        Button {
+                                            onDismiss?()
+                                        } label: {
+                                            Image(systemName: "xmark")
+                                                .foregroundColor(Theme.Colors.accentColor)
+                                        }
+                                        .accessibilityIdentifier("close_button")
                                     }
-                                    .accessibilityIdentifier("close_button")
                                 }
-                            }
-                    }
+                        }
+                }
             }
         } else {
             self
@@ -296,10 +307,8 @@ public extension Image {
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
-            .frame(height: 24)
-            .padding(.horizontal, 8)
-            .offset(y: topPadding)
             .foregroundColor(color)
+            .backViewStyle(topPadding: topPadding)
     }
 }
 

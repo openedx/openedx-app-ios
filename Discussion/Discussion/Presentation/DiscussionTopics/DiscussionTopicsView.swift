@@ -38,6 +38,10 @@ public struct DiscussionTopicsView: View {
                 VStack(alignment: .center) {
                     ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
                     // MARK: - Search fake field
+                    if viewModel.isBlackedOut {
+                        bannerDiscussionsDisabled
+                    }
+
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(Theme.Colors.textInputTextColor)
@@ -59,7 +63,10 @@ public struct DiscussionTopicsView: View {
                             .fill(Theme.Colors.textInputUnfocusedStroke)
                     )
                     .onTapGesture {
-                        viewModel.router.showDiscussionsSearch(courseID: courseID)
+                        viewModel.router.showDiscussionsSearch(
+                            courseID: courseID,
+                            isBlackedOut: viewModel.isBlackedOut
+                        )
                     }
                     .frameLimit(width: proxy.size.width)
                     .padding(.horizontal, 24)
@@ -175,6 +182,20 @@ public struct DiscussionTopicsView: View {
                     .ignoresSafeArea()
             )
         }
+    }
+
+    private var bannerDiscussionsDisabled: some View {
+        HStack {
+            Spacer()
+            Text(DiscussionLocalization.Banner.discussionsIsDisabled)
+                .font(Theme.Fonts.titleSmall)
+                .foregroundStyle(.black)
+                .multilineTextAlignment(.center)
+                .padding(.vertical, 10)
+            Spacer()
+        }
+        .background(Theme.Colors.warning)
+        .padding(.bottom, 10)
     }
 }
 

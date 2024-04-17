@@ -83,7 +83,8 @@ public struct CourseOutlineView: View {
                             }
 
                             downloadQualityBars
-
+                            certificateView
+                            
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
                                !isVideo {
@@ -106,13 +107,12 @@ public struct CourseOutlineView: View {
                                     viewModel.trackResumeCourseClicked(
                                         blockId: continueBlock?.id ?? ""
                                     )
-                                    
+                                                                        
                                     if let course = viewModel.courseStructure {
                                         viewModel.router.showCourseUnit(
                                             courseName: course.displayName,
                                             blockId: continueBlock?.id ?? "",
                                             courseID: course.id,
-                                            sectionName: continueUnit.displayName,
                                             verticalIndex: continueWith.verticalIndex,
                                             chapters: course.childs,
                                             chapterIndex: continueWith.chapterIndex,
@@ -277,6 +277,51 @@ public struct CourseOutlineView: View {
                 }
             }
         }
+    }
+    @ViewBuilder
+    private var certificateView: some View {
+        // MARK: - Course Certificate
+        if let certificate = viewModel.courseStructure?.certificate,
+           let url = certificate.url,
+           url.count > 0 {
+            MessageSectionView(
+                title: CourseLocalization.Outline.passedTheCourse(title),
+                actionTitle: CourseLocalization.Outline.viewCertificate,
+                action: {
+                    openCertificateView = true
+                    viewModel.trackViewCertificateClicked(courseID: courseID)
+                }
+            )
+            .padding(.horizontal, 24)
+            .fullScreenCover(
+                isPresented: $openCertificateView,
+                content: {
+                    WebBrowser(
+                        url: url,
+                        pageTitle: CourseLocalization.Outline.certificate
+                    )
+                }
+            )
+        }
+    }
+
+    private func courseBanner(proxy: GeometryProxy) -> some View {
+        ZStack {
+            // MARK: - Course Banner
+            if let banner = viewModel.courseStructure?.media.image.raw
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
+            }
+        }
+        .frame(maxHeight: 250)
+        .cornerRadius(12)
+        .padding(.horizontal, 6)
+        .padding(.top, 7)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 

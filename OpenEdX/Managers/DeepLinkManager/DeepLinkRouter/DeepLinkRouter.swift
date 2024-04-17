@@ -25,6 +25,11 @@ public protocol DeepLinkRouter: BaseRouter {
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
     )
+    func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure,
+        blockLink: String
+    )
     func showAnnouncement(
         courseDetails: CourseDetails,
         updates: [CourseUpdate]
@@ -36,14 +41,17 @@ public protocol DeepLinkRouter: BaseRouter {
     func showThreads(
         topicID: String,
         courseDetails: CourseDetails,
-        topics: Topics
+        topics: Topics,
+        isBlackedOut: Bool
     )
     func showThread(
-        userThread: UserThread
+        userThread: UserThread,
+        isBlackedOut: Bool
     )
     func showComment(
         comment: UserComment,
-        parentComment: Post
+        parentComment: Post,
+        isBlackedOut: Bool
     )
     func showProgram(
         pathID: String
@@ -57,7 +65,6 @@ public protocol DeepLinkRouter: BaseRouter {
 extension Router: DeepLinkRouter {
 
     // MARK: - DeepLinkRouter
-
     public func showDiscoveryDetails(
         link: DeepLink,
         pathID: String
@@ -121,7 +128,8 @@ extension Router: DeepLinkRouter {
             .discussions,
             .courseHandout,
             .courseAnnouncement,
-            .courseDashboard:
+            .courseDashboard,
+            .courseComponent:
             popToCourseContainerView(animated: false)
         default:
             break
@@ -133,7 +141,7 @@ extension Router: DeepLinkRouter {
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.course.rawValue
             case .courseVideos:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
-            case .courseDates:
+            case .courseDates, .courseComponent:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
             case .discussions, .discussionTopic, .discussionPost, .discussionComment:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.discussion.rawValue
@@ -195,7 +203,8 @@ extension Router: DeepLinkRouter {
     public func showThreads(
         topicID: String,
         courseDetails: CourseDetails,
-        topics: Topics
+        topics: Topics,
+        isBlackedOut: Bool
     ) {
         popToCourseContainerView()
 
@@ -205,28 +214,33 @@ extension Router: DeepLinkRouter {
             topics: topics,
             title: title,
             type: .courseTopics(topicID: topicID),
+            isBlackedOut: isBlackedOut,
             animated: false
         )
     }
 
     public func showThread(
-        userThread: UserThread
+        userThread: UserThread,
+        isBlackedOut: Bool
     ) {
         showThread(
             thread: userThread,
             postStateSubject: .init(.none),
+            isBlackedOut: isBlackedOut,
             animated: false
         )
     }
 
     public func showComment(
         comment: UserComment,
-        parentComment: Post
+        parentComment: Post,
+        isBlackedOut: Bool
     ) {
         showComments(
             commentID: comment.commentID,
             parentComment: parentComment,
             threadStateSubject: .init(.none),
+            isBlackedOut: isBlackedOut,
             animated: false
         )
     }
@@ -309,6 +323,9 @@ extension Router: DeepLinkRouter {
         backToRoot(animated: false)
     }
 
+    public var currentCourseTabSelection: Int {
+        self.hostCourseContainerView?.rootView.viewModel.selection ?? 0
+    }
 }
 
 // Mark - For testing and SwiftUI preview
@@ -326,6 +343,11 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
         courseDetails: CourseDetails,
         completion: @escaping () -> Void
     ) {}
+    public func showCourseComponent(
+        componentID: String,
+        courseStructure: CourseStructure,
+        blockLink: String
+    ) {}
     public func showAnnouncement(
         courseDetails: CourseDetails,
         updates: [CourseUpdate]
@@ -337,14 +359,17 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
     public func showThreads(
         topicID: String,
         courseDetails: CourseDetails,
-        topics: Topics
+        topics: Topics,
+        isBlackedOut: Bool
     ) {}
     public func showThread(
-        userThread: UserThread
+        userThread: UserThread,
+        isBlackedOut: Bool
     ) {}
     public func showComment(
         comment: UserComment,
-        parentComment: Post
+        parentComment: Post,
+        isBlackedOut: Bool
     ) {}
     public func showProgram(
         pathID: String

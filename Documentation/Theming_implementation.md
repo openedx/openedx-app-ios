@@ -79,6 +79,7 @@ assets:
 ### Font
 The `whitelabel.yaml` configuration may contain the path to a font file, and an existing font in the project will be replaced with this font. 
 This ttf file must contain multiple ttf fonts "merged" into a single ttf file. Font types used in the application:
+- light
 - regular
 - medium
 - semiBold
@@ -91,6 +92,7 @@ font:
     project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
     project_font_names_json_path: 'path/to/names/file/in project/fonts.json' # path to existing font names json-file in project
     font_names:
+        light: 'FontName-Light'
         regular: 'FontName-Regular'
         medium: 'FontName-Medium'
         semiBold: 'FontName-Semibold'

@@ -79,6 +79,7 @@
     <entity name="CDCourseStructure" representedClassName="CDCourseStructure" syncable="YES" codeGenerationType="class">
         <attribute name="certificate" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isSelfPaced" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="mediaLarge" optional="YES" attributeType="String"/>
         <attribute name="mediaRaw" optional="YES" attributeType="String"/>
         <attribute name="mediaSmall" optional="YES" attributeType="String"/>

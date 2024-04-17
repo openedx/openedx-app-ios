@@ -38,10 +38,14 @@ public struct DownloadsView: View {
     // MARK: - Body
 
     public var body: some View {
-        content
-            .sheetNavigation(isSheet: isSheet) {
-                dismiss()
-            }
+        ZStack {
+            Theme.Colors.background
+                .ignoresSafeArea()
+            content
+                .sheetNavigation(isSheet: isSheet) {
+                    dismiss()
+                }
+        }
     }
 
     private var content: some View {

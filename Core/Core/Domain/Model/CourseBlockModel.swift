@@ -23,6 +23,7 @@ public struct CourseStructure: Equatable {
     public let media: DataLayer.CourseMedia //FIXME Domain model
     public let certificate: Certificate?
     public let org: String
+    public let isSelfPaced: Bool
     
     public init(
         id: String,
@@ -35,7 +36,8 @@ public struct CourseStructure: Equatable {
         childs: [CourseChapter],
         media: DataLayer.CourseMedia,
         certificate: Certificate?,
-        org: String
+        org: String,
+        isSelfPaced: Bool
     ) {
         self.id = id
         self.graded = graded
@@ -48,6 +50,7 @@ public struct CourseStructure: Equatable {
         self.media = media
         self.certificate = certificate
         self.org = org
+        self.isSelfPaced = isSelfPaced
     }
 
     public func totalVideosSizeInBytes(downloadQuality: DownloadQuality) -> Int {

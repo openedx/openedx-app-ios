@@ -20,6 +20,7 @@ public extension DataLayer {
         public let media: DataLayer.CourseMedia
         public let certificate: Certificate?
         public let org: String?
+        public let isSelfPaced: Bool
         
         enum CodingKeys: String, CodingKey {
             case blocks
@@ -28,6 +29,7 @@ public extension DataLayer {
             case media
             case certificate
             case org
+            case isSelfPaced = "is_self_paced"
         }
         
         public init(
@@ -36,7 +38,8 @@ public extension DataLayer {
             id: String,
             media: DataLayer.CourseMedia,
             certificate: Certificate?,
-            org: String?
+            org: String?,
+            isSelfPaced: Bool
         ) {
             self.rootItem = rootItem
             self.dict = dict
@@ -44,6 +47,7 @@ public extension DataLayer {
             self.media = media
             self.certificate = certificate
             self.org = org
+            self.isSelfPaced = isSelfPaced
         }
         
         public init(from decoder: Decoder) throws {
@@ -55,6 +59,7 @@ public extension DataLayer {
             media = try values.decode(DataLayer.CourseMedia.self, forKey: .media)
             certificate = try values.decode(Certificate.self, forKey: .certificate)
             org = try values.decode(String.self, forKey: .org)
+            isSelfPaced = try values.decode(Bool.self, forKey: .isSelfPaced)
         }
     }
 }

@@ -14,7 +14,7 @@ import Theme
 
 public struct CourseUnitView: View {
     
-    @ObservedObject private var viewModel: CourseUnitViewModel
+    @ObservedObject public var viewModel: CourseUnitViewModel
     @State private var showAlert: Bool = false
     @State var alertMessage: String? {
         didSet {
@@ -27,7 +27,6 @@ public struct CourseUnitView: View {
     @State var showDiscussion: Bool = false
     @Environment(\.isPresented) private var isPresented
     @Environment(\.isHorizontal) private var isHorizontal
-    private let sectionName: String
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
     
     //Dropdown parameters
@@ -60,11 +59,9 @@ public struct CourseUnitView: View {
     
     public init(
         viewModel: CourseUnitViewModel,
-        sectionName: String,
         isDropdownActive: Bool = false
     ) {
         self.viewModel = viewModel
-        self.sectionName = sectionName
         self.isDropdownActive = isDropdownActive
         viewModel.loadIndex()
         viewModel.nextTitles()
@@ -122,7 +119,9 @@ public struct CourseUnitView: View {
                     offsetY: isHorizontal ? landscapeTopSpacing : portraitTopSpacing,
                     showDropdown: $showDropdown
                 ) { [weak viewModel] vertical in
-                    viewModel?.route(to: vertical)
+                    let data = VerticalData.dataFor(blockId: vertical.childs.first?.id, in: viewModel?.chapters ?? [])
+                    viewModel?.route(to: data)
+                    playerStateSubject.send(VideoPlayerState.kill)
                 }
             }
         }
@@ -173,7 +172,7 @@ public struct CourseUnitView: View {
                     switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
                         // MARK: YouTube
                     case let .youtube(url, blockID):
-                        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+                        if index == viewModel.index {
                             if viewModel.connectivity.isInternetAvaliable {
                                 YouTubeView(
                                     name: block.displayName,
@@ -418,7 +417,6 @@ public struct CourseUnitView: View {
                     Spacer()
                 }
                 CourseNavigationView(
-                    sectionName: sectionName,
                     viewModel: viewModel,
                     playerStateSubject: playerStateSubject
                 )
@@ -566,7 +564,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             connectivity: Connectivity(),
             storage: CourseStorageMock(),
             manager: DownloadManagerMock()
-        ), sectionName: "")
+        ))
     }
 }
 //swiftlint:enable all

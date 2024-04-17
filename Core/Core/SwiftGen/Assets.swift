@@ -93,6 +93,7 @@ public enum CoreAssets {
   public static let arrowLeft = ImageAsset(name: "arrowLeft")
   public static let arrowRight16 = ImageAsset(name: "arrowRight16")
   public static let certificate = ImageAsset(name: "certificate")
+  public static let certificateBadge = ImageAsset(name: "certificateBadge")
   public static let check = ImageAsset(name: "check")
   public static let checkEmail = ImageAsset(name: "checkEmail")
   public static let clearInput = ImageAsset(name: "clearInput")

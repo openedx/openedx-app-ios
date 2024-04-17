@@ -165,6 +165,10 @@ public class DeepLinkManager {
         type == .courseHandout ||
         type == .courseAnnouncement
     }
+    
+    private func isCourseComponent(type: DeepLinkType) -> Bool {
+        type == .courseComponent
+    }
 
     @MainActor
     private func navigateToScreen(
@@ -191,7 +195,8 @@ public class DeepLinkManager {
             .courseAnnouncement,
             .discussionTopic,
             .discussionPost,
-            .discussionComment:
+            .discussionComment,
+            .courseComponent:
             await showCourseScreen(with: type, link: link)
         case .program, .programDetail:
             guard config.program.enabled else { return }
@@ -263,7 +268,25 @@ public class DeepLinkManager {
                 if self.isDiscussionThreads(type: type) {
                     self.router.showProgress()
                     Task {
-                        await self.showCourseDiscussion(link: link, courseDetails: courseDetails)
+                        guard let discussionInfo = try? await self.discussionInteractor.getCourseDiscussionInfo(
+                            courseID: courseDetails.courseID
+                        ) else {
+                            return
+                        }
+                        await self.showCourseDiscussion(
+                            link: link,
+                            courseDetails: courseDetails,
+                            isBlackedOut: discussionInfo.isBlackedOut()
+                        )
+                        self.router.dismissProgress()
+                    }
+                    return
+                }
+                
+                if self.isCourseComponent(type: type) {
+                    self.router.showProgress()
+                    Task {
+                        await self.showCourseComponent(link: link, courseDetails: courseDetails)
                         self.router.dismissProgress()
                     }
                     return
@@ -297,7 +320,8 @@ public class DeepLinkManager {
     @MainActor
     private func showCourseDiscussion(
         link: DeepLink,
-        courseDetails: CourseDetails
+        courseDetails: CourseDetails,
+        isBlackedOut: Bool
     ) async {
         switch link.type {
         case .discussionTopic:
@@ -316,7 +340,8 @@ public class DeepLinkManager {
             router.showThreads(
                 topicID: topicID,
                 courseDetails: courseDetails,
-                topics: topics
+                topics: topics,
+                isBlackedOut: isBlackedOut
             )
         case .discussionPost:
 
@@ -329,7 +354,8 @@ public class DeepLinkManager {
                 router.showThreads(
                     topicID: topicID,
                     courseDetails: courseDetails,
-                    topics: topics
+                    topics: topics,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -337,7 +363,8 @@ public class DeepLinkManager {
                 !threadID.isEmpty,
                 let userThread = try? await discussionInteractor.getThread(threadID: threadID) {
                 router.showThread(
-                    userThread: userThread
+                    userThread: userThread,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -351,7 +378,8 @@ public class DeepLinkManager {
                 router.showThreads(
                     topicID: topicID,
                     courseDetails: courseDetails,
-                    topics: topics
+                    topics: topics,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -359,7 +387,8 @@ public class DeepLinkManager {
                 !threadID.isEmpty,
                 let userThread = try? await discussionInteractor.getThread(threadID: threadID) {
                 router.showThread(
-                    userThread: userThread
+                    userThread: userThread,
+                    isBlackedOut: isBlackedOut
                 )
             }
 
@@ -371,14 +400,31 @@ public class DeepLinkManager {
                let parentComment = try? await self.discussionInteractor.getResponse(responseID: parentID) {
                 router.showComment(
                     comment: comment,
-                    parentComment: parentComment.post
+                    parentComment: parentComment.post,
+                    isBlackedOut: isBlackedOut
                 )
             }
         default:
             break
         }
     }
-
+     
+    @MainActor
+    private func showCourseComponent(
+        link: DeepLink,
+        courseDetails: CourseDetails
+    ) async {
+        guard let courseID = link.courseID else { return }
+        guard let courseStructure = try? await courseInteractor.getCourseBlocks(courseID: courseID) else {
+            return
+        }
+        router.showCourseComponent(
+            componentID: link.componentID ?? "",
+            courseStructure: courseStructure,
+            blockLink: ""
+        )
+    }
+    
     @MainActor
     private func showEditProfile() async {
         guard let userProfile = try? await profileInteractor.getMyProfile() else {
