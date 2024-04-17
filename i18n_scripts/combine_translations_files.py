@@ -46,8 +46,8 @@ def get_translations_ordereddict(modules_dir, lang='en'):
         1. Iterate over each module in the list of modules:
             a. Construct the path to the Localizable.strings file for the module in the specified language.
             b. Parse the Localizable.strings file to retrieve translations.
-            c. Add the module's name to each translation key to distinguish it from other modules.
-        2. Return the OrderedDict of translations.
+            c. Add the module's name to ordered dict's key to distinguish it from other modules.
+        2. Return the translations' ordered dict.
     """
     ordered_dict_of_translations = OrderedDict()
     modules = get_modules_to_translate(modules_dir, lang=lang)
@@ -63,7 +63,7 @@ def get_translations_ordereddict(modules_dir, lang='en'):
         for line in module_translations:
             ordered_dict_of_translations[f"{module.upper()}.{line['key']}"] = line
 
-    # Step 2: Return the list of translations
+    # Step 2: Return the translations' ordered dict
     return ordered_dict_of_translations
 
 
@@ -95,7 +95,7 @@ def get_languages(module_dir):
 
 
 if __name__ == "__main__":
-    modules_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    modules_dir = os.path.dirname(os.path.dirname(__file__))
     langs = get_languages(modules_dir)
     langs.discard('en')
     en_translation_ordered_dict = get_translations_ordereddict(modules_dir, lang='en')

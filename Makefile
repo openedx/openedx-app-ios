@@ -11,4 +11,5 @@ pull_translations:
 
 combine_translations:
 	make clean_translations_temp_directory
-	python i18n_scripts/combine_translations_files.py
+	pip3 install localizable==0.1.2
+	python3 i18n_scripts/combine_translations_files.py
