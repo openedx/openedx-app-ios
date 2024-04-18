@@ -50,19 +50,20 @@ struct TopHeaderView: View {
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            if let banner = viewModel.courseStructure?.media.image.raw
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                 ScrollView {
+                    if let banner = viewModel.courseStructure?.media.image.raw
+                        .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                     KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
                         .onFailureImage(CoreAssets.noCourseImage.image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .allowsHitTesting(false)
                         .clipped()
+                        .background(Theme.Colors.background)
+                }
                 }
                 .disabled(true)
                 .ignoresSafeArea()
-            }
             VStack(alignment: .leading) {
                 if collapsed {
                     VStack {
@@ -147,6 +148,7 @@ struct TopHeaderView: View {
                 }
             }
         }
+        .background(Theme.Colors.background)
         .frame(
             height: collapsed ? (
                 isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight

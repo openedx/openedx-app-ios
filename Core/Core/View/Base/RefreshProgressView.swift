@@ -9,14 +9,14 @@ import SwiftUI
 
 public struct RefreshProgressView: View {
     
-    @Binding private var isShowProgress: Bool
+    @Binding private var isShowRefresh: Bool
     
-    public init(isShowProgress: Binding<Bool>) {
-        self._isShowProgress = isShowProgress
+    public init(isShowRefresh: Binding<Bool>) {
+            self._isShowRefresh = isShowRefresh
     }
     
     public var body: some View {
         ProgressView()
-            .padding(.top, isShowProgress ? 20 : -60)
+            .padding(.top, isShowRefresh ? 20 : -60)
     }
 }

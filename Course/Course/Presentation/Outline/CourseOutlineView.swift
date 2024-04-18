@@ -26,6 +26,8 @@ public struct CourseOutlineView: View {
     @State private var showingVideoDownloadQuality: Bool = false
     @State private var showingNoWifiMessage: Bool = false
     @State private var stopScroll: Bool = false
+    @State private var scrollHeight: Double = 0
+    @State private var runOnce: Bool = false
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
@@ -59,15 +61,19 @@ public struct CourseOutlineView: View {
                     RefreshableScrollViewCompat(action: {
                         await withTaskGroup(of: Void.self) { group in
                             group.addTask {
-                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: true)
+                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
                             }
                             group.addTask {
-                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: true)
+                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
                             }
                         }
                     }) {
-                        ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
-                        RefreshProgressView(isShowProgress: $viewModel.isShowProgress)
+                        ResponsiveView(
+                            coordinate: $coordinate,
+                            collapsed: $collapsed,
+                            scrollHeight: $scrollHeight
+                        )
+                        RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         VStack(alignment: .leading) {
                             if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
                                courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
@@ -157,6 +163,9 @@ public struct CourseOutlineView: View {
                             scrollView.setContentOffset(scrollView.contentOffset, animated: false)
                             stopScroll = false
                         }
+                        guard !runOnce, !viewModel.isShowProgress else { return }
+                            scrollHeight = scrollView.contentSize.height
+                        runOnce = true
                     })
                     .onRightSwipeGesture {
                         viewModel.router.back()
@@ -204,6 +213,13 @@ public struct CourseOutlineView: View {
                             viewModel.errorMessage = nil
                         }
                     }
+                }
+                if viewModel.isShowProgress {
+                    VStack(alignment: .center) {
+                        ProgressBar(size: 40, lineWidth: 8)
+                            .padding(.horizontal)
+                    }.frame(maxWidth: .infinity,
+                            maxHeight: .infinity)
                 }
             }
         }

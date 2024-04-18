@@ -18,13 +18,20 @@ public struct ResponsiveView: View {
     @State var lastHeight: CGFloat = 240
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var scrollHeight: Double
+    @State private var enableCollapsing: Bool = true
     @State private var isActiveView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @Environment(\.isHorizontal) private var isHorizontal
     
-    public init(coordinate: Binding<CGFloat>, collapsed: Binding<Bool>) {
+    public init(
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
+        scrollHeight: Binding<Double> = .constant(0)
+    ) {
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._scrollHeight = scrollHeight
     }
     
     public var body: some View {
@@ -36,7 +43,7 @@ public struct ResponsiveView: View {
         )
         .overlay(
             GeometryReader { geometry -> Color in
-                guard idiom != .pad else {
+                guard idiom != .pad, enableCollapsing else {
                     return Color.clear
                 }
                 guard !isHorizontal else {
@@ -49,5 +56,15 @@ public struct ResponsiveView: View {
                 return Color.clear
             }
         )
+        .onChange(of: scrollHeight) { scrollHeight in
+            guard scrollHeight != 0 else { return }
+            enableCollapsing(scrollHeight: scrollHeight)
+        }
+    }
+    
+    private func enableCollapsing(scrollHeight: Double) {
+        let screenHeight = Double(UIScreen.main.bounds.size.height)
+        let minHeightForCollapse = screenHeight * 1.3
+            enableCollapsing = scrollHeight > minHeightForCollapse
     }
 }

@@ -17,6 +17,8 @@ public struct DiscussionTopicsView: View {
     private let courseID: String
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @State private var scrollHeight: Double = 0
+    @State private var runOnce: Bool = false
     
     public init(
         courseID: String,
@@ -36,7 +38,15 @@ public struct DiscussionTopicsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
                 VStack(alignment: .center) {
-                    ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
+                    RefreshableScrollViewCompat(action: {
+                        await viewModel.getTopics(courseID: self.courseID, withProgress: false)
+                    }) {
+                        ResponsiveView(
+                            coordinate: $coordinate,
+                            collapsed: $collapsed,
+                            scrollHeight: $scrollHeight
+                        )
+                    RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                     // MARK: - Search fake field
                     if viewModel.isBlackedOut {
                         bannerDiscussionsDisabled
@@ -77,9 +87,6 @@ public struct DiscussionTopicsView: View {
                     // MARK: - Page Body
                     VStack {
                         ZStack(alignment: .top) {
-                            RefreshableScrollViewCompat(action: {
-                                await viewModel.getTopics(courseID: self.courseID, withProgress: false)
-                            }) {
                                 VStack {
                                     if let topics = viewModel.discussionTopics {
                                         HStack {
@@ -163,6 +170,13 @@ public struct DiscussionTopicsView: View {
                             
                         }
                     }.frame(maxWidth: .infinity)
+                        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { scrollView in
+                            DispatchQueue.main.async {
+                                guard !runOnce, !viewModel.isShowProgress else { return }
+                                scrollHeight = scrollView.contentSize.height
+                            runOnce = true
+                            }
+                        })
                 }.padding(.top, 8)
                 if viewModel.isShowProgress {
                     ProgressBar(size: 40, lineWidth: 8)

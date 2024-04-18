@@ -95,7 +95,8 @@ public struct CourseContainerView: View {
                                 animationNamespace: animationNamespace,
                                 isAnimatingForTap: $isAnimatingForTap
                             )
-                        }.offset(
+                        }
+                        .offset(
                             y: ignoreOffset
                             ? (collapsed ? coordinateBoundaryLower : .zero)
                             : ((coordinateBoundaryLower...coordinateBoundaryHigher).contains(coordinate)

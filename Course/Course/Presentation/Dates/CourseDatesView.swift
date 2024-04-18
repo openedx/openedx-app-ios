@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Core
 import Theme
+import SwiftUIIntrospect
 
 public struct CourseDatesView: View {
     
@@ -18,7 +19,7 @@ public struct CourseDatesView: View {
     private var viewModel: CourseDatesViewModel
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
-
+    
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
@@ -48,7 +49,7 @@ public struct CourseDatesView: View {
                         courseDates: courseDates,
                         courseID: courseID
                     )
-                        .padding(.top, 10)
+                    .padding(.top, 10)
                 }
             }
             
@@ -151,16 +152,22 @@ struct TimeLineView: View {
 struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
     @State private var isExpanded = false
+    @State private var scrollHeight: Double = 0
+    @State private var runOnce: Bool = false
     @Binding var coordinate: CGFloat
     @Binding var collapsed: Bool
     var courseDates: CourseDates
     let courseID: String
-
+    
     var body: some View {
         GeometryReader { proxy in
             VStack {
                 ScrollView {
-                    ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
+                    ResponsiveView(
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
+                        scrollHeight: $scrollHeight
+                    )
                     VStack(alignment: .leading, spacing: 0) {
                         if !courseDates.hasEnded {
                             CalendarSyncView(courseID: courseID, viewModel: viewModel)
@@ -215,6 +222,13 @@ struct CourseDateListView: View {
                     .frameLimit(width: proxy.size.width)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { scrollView in
+                    DispatchQueue.main.async {
+                        guard !runOnce, !viewModel.isShowProgress else { return }
+                        scrollHeight = scrollView.contentSize.height
+                        runOnce = true
+                    }
+                })
             }
         }
     }
@@ -224,7 +238,7 @@ struct CompletedBlocks: View {
     @Binding var isExpanded: Bool
     let courseDateBlockDict: [Date: [CourseDateBlock]]
     let viewModel: CourseDatesViewModel
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             // Toggle button to expand/collapse the cell
@@ -296,11 +310,10 @@ struct CompletedBlocks: View {
                 .padding(.bottom, 15)
                 .padding(.leading, 16)
             }
-
         }
         .overlay(
-          RoundedRectangle(cornerRadius: 8)
-            .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
         )
         .background(Theme.Colors.datesSectionBackground)
     }

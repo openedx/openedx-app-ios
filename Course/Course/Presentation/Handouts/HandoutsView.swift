@@ -35,15 +35,15 @@ struct HandoutsView: View {
             ZStack(alignment: .top) {
                 VStack(alignment: .center) {
                     // MARK: - Page Body
-                    if viewModel.isShowProgress {
-                        HStack(alignment: .center) {
-                            ProgressBar(size: 40, lineWidth: 8)
-                                .padding(.top, 200)
-                                .padding(.horizontal)
-                        }
-                    } else {
                         ScrollView {
                             ResponsiveView(coordinate: $coordinate, collapsed: $collapsed)
+                            if viewModel.isShowProgress {
+                                HStack(alignment: .center) {
+                                    ProgressBar(size: 40, lineWidth: 8)
+                                        .padding(.top, 200)
+                                        .padding(.horizontal)
+                                }
+                            } else {
                             VStack(alignment: .leading) {
                                 HandoutsItemCell(type: .handouts, onTapAction: {
                                     viewModel.router.showHandoutsUpdatesView(

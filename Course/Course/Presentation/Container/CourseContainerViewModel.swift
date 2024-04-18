@@ -55,7 +55,8 @@ public enum CourseTab: Int, CaseIterable, Identifiable {
 public class CourseContainerViewModel: BaseCourseViewModel {
 
     @Published public var selection: Int = CourseTab.course.rawValue
-    @Published var isShowProgress = false
+    @Published var isShowProgress = true
+    @Published var isShowRefresh = false
     @Published var courseStructure: CourseStructure?
     @Published var courseDeadlineInfo: CourseDateBanner?
     @Published var courseVideosStructure: CourseStructure?
@@ -135,10 +136,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         guard let courseStart, courseStart < Date() else { return }
         
         isShowProgress = withProgress
+        isShowRefresh = !withProgress
         do {
             if isInternetAvaliable {
                 courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                 isShowProgress = false
+                isShowRefresh = false
                 if let courseStructure {
                     let continueWith = try await getResumeBlock(
                         courseID: courseID,
@@ -154,9 +157,11 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
             await setDownloadsStates()
             isShowProgress = false
+            isShowRefresh = false
             
         } catch let error {
             isShowProgress = false
+            isShowRefresh = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
@@ -184,10 +189,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func shiftDueDates(courseID: String, withProgress: Bool = true, screen: DatesStatusInfoScreen, type: String) async {
         isShowProgress = withProgress
+        isShowRefresh = !withProgress
+        
         do {
             try await interactor.shiftDueDates(courseID: courseID)
             NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
             isShowProgress = false
+            isShowRefresh = false
             
             analytics.plsSuccessEvent(
                 .plsShiftDatesSuccess,
@@ -200,6 +208,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             
         } catch let error {
             isShowProgress = false
+            isShowRefresh = false
             analytics.plsSuccessEvent(
                 .plsShiftDatesSuccess,
                 bivalue: .plsShiftDatesSuccess,
@@ -263,7 +272,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 videos: blocks.count
             )
         }
-        
 
         await download(state: state, blocks: blocks)
     }
