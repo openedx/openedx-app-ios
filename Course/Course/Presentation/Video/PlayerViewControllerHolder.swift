@@ -205,7 +205,7 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     }
 
     public var isPlayingInPip: Bool {
-        playerDelegate?.isPlayingInPip
+        playerDelegate?.isPlayingInPip ?? false
     }
 
     public var isOtherPlayerInPipPlaying: Bool {
@@ -557,7 +557,6 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
         if let url = url {
             let videoID = url.absoluteString.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
             let configuration = YouTubePlayer.Configuration(configure: {
-//                $0.autoPlay = !pipManager.isPipActive
                 $0.playInline = true
                 $0.showFullscreenButton = true
                 $0.allowsPictureInPictureMediaPlayback = false
@@ -601,9 +600,14 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
                 self?.timePublisher.send(time.value)
             }
             .store(in: &cancellations)
-        player?.playbackRatePublisher
-            .sink { [weak self] rate in
-                self?.ratePublisher.send(Float(rate))
+        player?.playbackStatePublisher
+            .sink { [weak self] state in
+                switch state {
+                case .playing:
+                    self?.ratePublisher.send(1)
+                default:
+                    self?.ratePublisher.send(0)
+                }
             }
             .store(in: &cancellations)
         player?.playbackStatePublisher
@@ -715,7 +719,11 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
         self.playerTracker = playerTracker
         self.playerService = playerService
         let youtubePlayer = playerTracker.player as? YouTubePlayer
-        youtubePlayer?.configuration.autoPlay = !pipManager.isPipActive
+        var configuration = youtubePlayer?.configuration
+        configuration?.autoPlay = !pipManager.isPipActive
+        if let configuration = configuration {
+            youtubePlayer?.update(configuration: configuration)
+        }
         addObservers()
     }
     
@@ -776,5 +784,26 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
     
     public func getService() -> PlayerServiceProtocol {
         playerService
+    }
+}
+
+extension YoutubePlayerViewControllerHolder {
+    static var mock: YoutubePlayerViewControllerHolder {
+        YoutubePlayerViewControllerHolder(
+            url: URL(string: "")!,
+            blockID: "",
+            courseID: "",
+            selectedCourseTab: 0,
+            videoResolution: .zero,
+            pipManager: PipManagerProtocolMock(),
+            playerTracker: PlayerTrackerProtocolMock(url: URL(string: "")),
+            playerDelegate: nil,
+            playerService: PlayerServiceMock(
+                courseID: "",
+                blockID: "",
+                interactor: CourseInteractor.mock,
+                router: CourseRouterMock()
+            )
+        )
     }
 }

@@ -18,18 +18,4 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
     }
     private (set) var play = false
     @Published var isLoading: Bool = true
-    
-    public init(
-        languages: [SubtitleUrl],
-        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
-        connectivity: ConnectivityProtocol,
-        playerHolder: PlayerViewControllerHolderProtocol
-    ) {
-        super.init(
-            languages: languages,
-            playerStateSubject: playerStateSubject,
-            connectivity: connectivity,
-            playerHolder: playerHolder
-        )
-    }
 }

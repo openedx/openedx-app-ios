@@ -86,14 +86,10 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
         YouTubeVideoPlayer(
             viewModel: YouTubeVideoPlayerViewModel(
-                url: "",
-                blockID: "",
-                courseID: "",
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 connectivity: Connectivity(),
-                pipManager: PipManagerProtocolMock(),
-                playerService: PlayerServiceMock()
+                playerHolder: YoutubePlayerViewControllerHolder.mock
             ),
             isOnScreen: true
         )

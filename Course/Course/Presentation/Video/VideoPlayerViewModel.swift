@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Core
+import _AVKit_SwiftUI
 import Combine
 
 public class VideoPlayerViewModel: ObservableObject {
@@ -13,11 +15,6 @@ public class VideoPlayerViewModel: ObservableObject {
     @Published var currentTime: Double = 0
 
     public let connectivity: ConnectivityProtocol
-    let playerHolder: PlayerViewControllerHolderProtocol
-
-    var playerService: PlayerServiceProtocol {
-        playerHolder.getService()
-    }
 
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
@@ -31,15 +28,14 @@ public class VideoPlayerViewModel: ObservableObject {
             showError = errorMessage != nil
         }
     }
-    
-    private var subscription = Set<AnyCancellable>()
     var isPlayingInPip: Bool {
         playerHolder.isPlayingInPip
     }
-    
+
     var isOtherPlayerInPip: Bool {
         playerHolder.isOtherPlayerInPipPlaying
     }
+    public let playerHolder: PlayerViewControllerHolderProtocol
 
     public init(
         languages: [SubtitleUrl],
@@ -51,42 +47,12 @@ public class VideoPlayerViewModel: ObservableObject {
         self.connectivity = connectivity
         self.playerHolder = playerHolder
         self.prepareLanguages()
-        
-        playerStateSubject.sink(receiveValue: { [weak self] state in
-            switch state {
-            case .pause:
-                if self?.playerHolder.isPlayingInPip != true {
-                    self?.controller.pause()
-                }
-            case .kill:
-                if self?.playerHolder.isPlayingInPip != true {
-                    self?.controller.stop()
-                }
-            case .none:
-                break
-            }
-        }).store(in: &subscription)
-        
-        playerHolder.getTimePublisher()
-            .sink {[weak self] time in
-                self?.currentTime = time
-            }
-            .store(in: &subscription)
-        playerHolder.getErrorPublisher()
-            .sink {[weak self] error in
-                if error.isInternetError || error is NoCachedDataError {
-                    self?.errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                } else {
-                    self?.errorMessage = CoreLocalization.Error.unknownError
-                }
-            }
-            .store(in: &subscription)
     }
     
     @MainActor
     public func getSubtitles(subtitlesUrl: String) async {
         do {
-            let result = try await playerService.getSubtitles(
+            let result = try await playerHolder.getService().getSubtitles(
                 url: subtitlesUrl,
                 selectedLanguage: self.selectedLanguage ?? "en"
             )
@@ -156,8 +122,9 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     func presentPicker() {
-        let router = playerService.router
-        playerService.presentView(
+        let service = playerHolder.getService()
+        let router = service.router
+        service.presentView(
             transitionStyle: .crossDissolve,
             animated: true
         ) {

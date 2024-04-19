@@ -135,13 +135,10 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
         EncodedVideoPlayer(
             viewModel: EncodedVideoPlayerViewModel(
-                blockID: "",
-                courseID: "",
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 connectivity: Connectivity(),
-                playerHolder: PlayerViewControllerHolder.mock,
-                playerService: PlayerServiceMock()
+                playerHolder: PlayerViewControllerHolder.mock
             ),
             isOnScreen: true
         )

@@ -321,7 +321,13 @@ class ScreenAssembly: Assembly {
                 languages: languages,
                 playerStateSubject: playerStateSubject,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                playerHolder: r.resolve(YoutubePlayerViewControllerHolder.self, arguments: url, blockID, courseID, router.currentCourseTabSelection)!
+                playerHolder: r.resolve(
+                    YoutubePlayerViewControllerHolder.self,
+                    arguments: url,
+                    blockID,
+                    courseID,
+                    router.currentCourseTabSelection
+                )!
             )
         }
         
@@ -360,8 +366,7 @@ class ScreenAssembly: Assembly {
         container.register(
             YoutubePlayerViewControllerHolder.self
         ) { r, url, blockID, courseID, selectedCourseTab in
-            let pipManager = r.resolve(PipManagerProtocol.self)!
-            return YoutubePlayerViewControllerHolder(
+            YoutubePlayerViewControllerHolder(
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
@@ -371,19 +376,19 @@ class ScreenAssembly: Assembly {
                 playerTracker: r.resolve(YoutubePlayerTracker.self, argument: url)!,
                 playerDelegate: nil,
                 playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
-                )
+            )
         }
 
         container.register(
-            PlayerViewControllerHolderProtocol.self
-        ) { (r, url, blockID, courseID, selectedCourseTab) in
+            PlayerViewControllerHolder.self
+        ) { (r, url: URL?, blockID: String, courseID: String, selectedCourseTab: Int) in
             let pipManager = r.resolve(PipManagerProtocol.self)!
             if let holder = pipManager.holder(
                 for: url,
                 blockID: blockID,
                 courseID: courseID,
                 selectedCourseTab: selectedCourseTab
-            ) {
+            ) as? PlayerViewControllerHolder {
                 return holder
             }
 

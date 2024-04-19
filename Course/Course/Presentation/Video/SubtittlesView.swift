@@ -113,6 +113,7 @@ public struct SubtittlesView: View {
 }
 
 #if DEBUG
+import Combine
 struct SubtittlesView_Previews: PreviewProvider {
     static var previews: some View {
         
@@ -121,12 +122,12 @@ struct SubtittlesView_Previews: PreviewProvider {
                         SubtitleUrl(language: "uk", url: "url2")],
             currentTime: .constant(0),
             viewModel: VideoPlayerViewModel(
-                blockID: "", courseID: "",
                 languages: [],
+                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 connectivity: Connectivity(),
-                playerService: PlayerServiceMock()
+                playerHolder: PlayerViewControllerHolder.mock
             ), scrollTo: {_ in }
         )
-    }
+    }    
 }
 #endif
