@@ -13,6 +13,7 @@ import Combine
 public class VideoPlayerViewModel: ObservableObject {
     @Published var pause: Bool = false
     @Published var currentTime: Double = 0
+    @Published var isLoading: Bool = true
 
     public let connectivity: ConnectivityProtocol
 
@@ -53,7 +54,7 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     func observePlayer(with playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) {
-        playerStateSubject.sink{ [weak self] state in
+        playerStateSubject.sink { [weak self] state in
             switch state {
             case .pause:
                 if self?.playerHolder.isPlayingInPip != true {
@@ -83,6 +84,13 @@ public class VideoPlayerViewModel: ObservableObject {
                 }
             }
             .store(in: &subscription)
+        playerHolder.getReadyPublisher()
+            .sink {[weak self] isReady in
+                guard isReady else { return }
+                self?.isLoading = false
+            }
+            .store(in: &subscription)
+
     }
     
     @MainActor
