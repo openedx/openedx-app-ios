@@ -100,7 +100,12 @@ public class PlayerService: PlayerServiceProtocol {
     private let interactor: CourseInteractorProtocol
     public let router: CourseRouter
     
-    public required init(courseID: String, blockID: String, interactor: CourseInteractorProtocol, router: CourseRouter) {
+    public required init(
+        courseID: String,
+        blockID: String,
+        interactor: CourseInteractorProtocol,
+        router: CourseRouter
+    ) {
         self.courseID = courseID
         self.blockID = blockID
         self.interactor = interactor
@@ -134,12 +139,32 @@ public class PlayerService: PlayerServiceProtocol {
     }
 }
 
+public protocol PlayerControllerProtocol {
+    func play()
+    func pause()
+    func seekTo(to date: Date)
+}
+
+extension AVPlayerViewController: PlayerControllerProtocol {
+    public func play() {
+        player?.play()
+    }
+    
+    public func pause() {
+        player?.pause()
+    }
+    
+    public func seekTo(to date: Date) {
+        player?.seek(to: date)
+    }
+}
+
 public protocol PlayerViewControllerHolderProtocol: AnyObject {
     var url: URL? { get }
     var blockID: String { get }
     var courseID: String { get }
     var selectedCourseTab: Int { get }
-    var playerController: AVPlayerViewController { get }
+    var playerController: PlayerControllerProtocol { get }
     var isPlaying: Bool { get }
     var isPlayingInPip: Bool { get }
     var isOtherPlayerInPipPlaying: Bool { get }
@@ -151,7 +176,7 @@ public protocol PlayerViewControllerHolderProtocol: AnyObject {
         selectedCourseTab: Int,
         videoResolution: CGSize,
         pipManager: PipManagerProtocol,
-        playerTracker: PlayerTrackerProtocol,
+        playerTracker: any PlayerTrackerProtocol,
         playerDelegate: PlayerDelegateProtocol,
         playerService: PlayerServiceProtocol
     )
@@ -187,10 +212,9 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
         return holder == nil && pipManager.isPipActive && pipManager.isPipPlaying
     }
     public var duration: Double {
-        guard let duration = playerController.player?.currentItem?.duration else { return .nan }
-        return duration.seconds
+        playerTracker.duration
     }
-    private let playerTracker: PlayerTrackerProtocol
+    private let playerTracker: any PlayerTrackerProtocol
     private let playerDelegate: PlayerDelegateProtocol
     private let playerService: PlayerServiceProtocol
     private let videoResolution: CGSize
@@ -200,13 +224,13 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
 
     let pipManager: PipManagerProtocol
 
-    public lazy var playerController: AVPlayerViewController = {
+    public lazy var playerController: PlayerControllerProtocol = {
         let playerController = AVPlayerViewController()
         playerController.modalPresentationStyle = .fullScreen
         playerController.allowsPictureInPicturePlayback = true
         playerController.canStartPictureInPictureAutomaticallyFromInline = true
         playerController.delegate = playerDelegate
-        playerController.player = playerTracker.player
+        playerController.player = playerTracker.player as? AVPlayer
         playerController.player?.currentItem?.preferredMaximumResolution = videoResolution
         return playerController
     }()
@@ -218,7 +242,7 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
         selectedCourseTab: Int,
         videoResolution: CGSize,
         pipManager: PipManagerProtocol,
-        playerTracker: PlayerTrackerProtocol,
+        playerTracker: any PlayerTrackerProtocol,
         playerDelegate: PlayerDelegateProtocol,
         playerService: PlayerServiceProtocol
     ) {
@@ -264,7 +288,7 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
         pipManager.pipRatePublisher()?
             .sink {[weak self] rate in
                 guard rate > 0, self?.isPlayingInPip == false else { return }
-                self?.playerController.player?.pause()
+                self?.playerController.pause()
             }
             .store(in: &cancellations)
     }
@@ -374,12 +398,13 @@ public class PlayerDelegate: NSObject, PlayerDelegateProtocol {
 }
 
 public protocol PlayerTrackerProtocol {
-    var player: AVPlayer { get }
+    associatedtype Player
+    var player: Player { get }
     var duration: Double { get }
     var progress: Double { get }
     var isPlaying: Bool { get }
     init(url: URL?)
-    
+
     func getTimePublisher() -> AnyPublisher<Double, Never>
     func getRatePublisher() -> AnyPublisher<Float, Never>
     func getFinishPublisher() -> AnyPublisher<Void, Never>

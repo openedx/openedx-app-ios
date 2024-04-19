@@ -28,7 +28,6 @@ public struct EncodedVideoPlayer: View {
     @State private var isLoading: Bool = true
     @State private var isAnimating: Bool = false
     @State private var isOrientationChanged: Bool = false
-    @State private var pause: Bool = false
     
     @State var showAlert = false
     @State var alertMessage: String? {
@@ -82,7 +81,7 @@ public struct EncodedVideoPlayer: View {
                                         )
                                     )
                                     viewModel.controller.player?.play()
-                                    pauseScrolling()
+                                    viewModel.pauseScrolling()
                                     viewModel.currentTime = (date.secondsSinceMidnight() + 1)
                                 })
                         }
@@ -100,7 +99,7 @@ public struct EncodedVideoPlayer: View {
                                     )
                                 )
                                 viewModel.controller.player?.play()
-                                pauseScrolling()
+                                viewModel.pauseScrolling()
                                 viewModel.currentTime = (date.secondsSinceMidnight() + 1)
                             })
                     }
@@ -115,13 +114,6 @@ public struct EncodedVideoPlayer: View {
         .onAppear {
             viewModel.controller.player?.allowsExternalPlayback = true
             viewModel.controller.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
-    private func pauseScrolling() {
-        pause = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.pause = false
         }
     }
     

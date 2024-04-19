@@ -10,7 +10,9 @@ import Core
 import _AVKit_SwiftUI
 
 public class VideoPlayerViewModel: ObservableObject {
-    
+    @Published var pause: Bool = false
+    @Published var currentTime: Double = 0
+
     private var blockID: String
     private var courseID: String
 
@@ -83,6 +85,13 @@ public class VideoPlayerViewModel: ObservableObject {
     public func generateLanguageName(code: String) -> String {
         let locale = Locale(identifier: code)
         return locale.localizedString(forLanguageCode: code)?.capitalized ?? ""
+    }
+    
+    func pauseScrolling() {
+        pause = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.pause = false
+        }
     }
     
     private func generateLanguageItems() {

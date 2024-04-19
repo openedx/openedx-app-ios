@@ -10,10 +10,9 @@ import Core
 import Combine
 
 public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
-    @Published var currentTime: Double = 0
     let playerHolder: PlayerViewControllerHolderProtocol
     var controller: AVPlayerViewController {
-        playerHolder.playerController
+        (playerHolder.playerController as? AVPlayerViewController) ?? AVPlayerViewController()
     }
     private var subscription = Set<AnyCancellable>()
     var isPlayingInPip: Bool {
