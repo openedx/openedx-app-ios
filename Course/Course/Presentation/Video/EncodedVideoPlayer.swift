@@ -27,7 +27,6 @@ public struct EncodedVideoPlayer: View {
     @State private var orientation = UIDevice.current.orientation
     @State private var isLoading: Bool = true
     @State private var isAnimating: Bool = false
-    @State private var isViewedOnce: Bool = false
     @State private var isOrientationChanged: Bool = false
     @State private var pause: Bool = false
     
@@ -110,20 +109,6 @@ public struct EncodedVideoPlayer: View {
         }
         .padding(.horizontal, 8)
         .statusBarHidden(false)
-//        .onChange(of: currentTime) { time in
-//            let progress = viewModel.progress(for: time)
-//            if progress >= 0.8 {
-//                if !isViewedOnce {
-//                    Task {
-//                        await viewModel.blockCompletionRequest()
-//                    }
-//                    isViewedOnce = true
-//                }
-//            }
-//            if progress == 1 {
-//                viewModel.router.presentAppReview()
-//            }
-//        }
         .onDisappear {
             viewModel.controller.player?.allowsExternalPlayback = false
         }
