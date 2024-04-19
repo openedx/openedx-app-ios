@@ -14,6 +14,7 @@ import Dashboard
 import Profile
 import Course
 import Discussion
+import Combine
 
 // swiftlint:disable function_body_length type_body_length
 class ScreenAssembly: Assembly {
@@ -314,39 +315,33 @@ class ScreenAssembly: Assembly {
         
         container.register(
             YouTubeVideoPlayerViewModel.self
-        ) { r, url, blockID, courseID, languages, playerStateSubject in
-            YouTubeVideoPlayerViewModel(
-                url: url,
-                blockID: blockID,
-                courseID: courseID,
+        ) { (r, url: URL?, blockID: String, courseID: String, languages, playerStateSubject) in
+            let router: Router = r.resolve(Router.self)!
+            return YouTubeVideoPlayerViewModel(
                 languages: languages,
                 playerStateSubject: playerStateSubject,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                pipManager: r.resolve(PipManagerProtocol.self)!,
-                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+                playerHolder: r.resolve(YoutubePlayerViewControllerHolder.self, arguments: url, blockID, courseID, router.currentCourseTabSelection)!
             )
         }
         
         container.register(
             EncodedVideoPlayerViewModel.self
-        ) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject) in
+        ) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) in
             let router: Router = r.resolve(Router.self)!
 
             let holder = r.resolve(
-                PlayerViewControllerHolderProtocol.self,
+                PlayerViewControllerHolder.self,
                 arguments: url,
                 blockID,
                 courseID,
                 router.currentCourseTabSelection
             )!
             return EncodedVideoPlayerViewModel(
-                blockID: blockID,
-                courseID: courseID,
                 languages: languages,
                 playerStateSubject: playerStateSubject,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                playerHolder: holder,
-                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+                playerHolder: holder
             )
         }
         
@@ -354,13 +349,34 @@ class ScreenAssembly: Assembly {
             PlayerDelegate(pipManager: manager)
         }
         
-        container.register(PlayerTrackerProtocol.self) { (_, url) in
+        container.register(YoutubePlayerTracker.self) { (_, url) in
+            YoutubePlayerTracker(url: url)
+        }
+        
+        container.register(PlayerTracker.self) { (_, url) in
             PlayerTracker(url: url)
         }
         
         container.register(
-            PlayerViewControllerHolderProtocol.self
+            YoutubePlayerViewControllerHolder.self
         ) { r, url, blockID, courseID, selectedCourseTab in
+            let pipManager = r.resolve(PipManagerProtocol.self)!
+            return YoutubePlayerViewControllerHolder(
+                url: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab,
+                videoResolution: .zero,
+                pipManager: r.resolve(PipManagerProtocol.self)!,
+                playerTracker: r.resolve(YoutubePlayerTracker.self, argument: url)!,
+                playerDelegate: nil,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+                )
+        }
+
+        container.register(
+            PlayerViewControllerHolderProtocol.self
+        ) { (r, url, blockID, courseID, selectedCourseTab) in
             let pipManager = r.resolve(PipManagerProtocol.self)!
             if let holder = pipManager.holder(
                 for: url,
@@ -373,7 +389,7 @@ class ScreenAssembly: Assembly {
 
             let storage = r.resolve(CoreStorage.self)!
             let quality = storage.userSettings?.streamingQuality ?? .auto
-            let tracker = r.resolve(PlayerTrackerProtocol.self, argument: url)!
+            let tracker = r.resolve(PlayerTracker.self, argument: url)!
             let delegate = r.resolve(PlayerDelegateProtocol.self, argument: pipManager)!
             let holder = PlayerViewControllerHolder(
                 url: url,

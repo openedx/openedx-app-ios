@@ -6,18 +6,18 @@
 //
 
 import Foundation
-import Core
-import _AVKit_SwiftUI
+import Combine
 
 public class VideoPlayerViewModel: ObservableObject {
     @Published var pause: Bool = false
     @Published var currentTime: Double = 0
 
-    private var blockID: String
-    private var courseID: String
-
     public let connectivity: ConnectivityProtocol
-    internal let playerService: PlayerServiceProtocol
+    let playerHolder: PlayerViewControllerHolderProtocol
+
+    var playerService: PlayerServiceProtocol {
+        playerHolder.getService()
+    }
 
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
@@ -31,33 +31,56 @@ public class VideoPlayerViewModel: ObservableObject {
             showError = errorMessage != nil
         }
     }
-
-    public init(
-        blockID: String,
-        courseID: String,
-        languages: [SubtitleUrl],
-        connectivity: ConnectivityProtocol,
-        playerService: PlayerServiceProtocol
-    ) {
-        self.blockID = blockID
-        self.courseID = courseID
-        self.languages = languages
-        self.connectivity = connectivity
-        self.playerService = playerService
-        self.prepareLanguages()
+    
+    private var subscription = Set<AnyCancellable>()
+    var isPlayingInPip: Bool {
+        playerHolder.isPlayingInPip
     }
     
-    @MainActor
-    func blockCompletionRequest() async {
-        do {
-            try await playerService.blockCompletionRequest()
-        } catch let error {
-            if error.isInternetError || error is NoCachedDataError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
+    var isOtherPlayerInPip: Bool {
+        playerHolder.isOtherPlayerInPipPlaying
+    }
+
+    public init(
+        languages: [SubtitleUrl],
+        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
+        connectivity: ConnectivityProtocol,
+        playerHolder: PlayerViewControllerHolderProtocol
+    ) {
+        self.languages = languages
+        self.connectivity = connectivity
+        self.playerHolder = playerHolder
+        self.prepareLanguages()
+        
+        playerStateSubject.sink(receiveValue: { [weak self] state in
+            switch state {
+            case .pause:
+                if self?.playerHolder.isPlayingInPip != true {
+                    self?.controller.pause()
+                }
+            case .kill:
+                if self?.playerHolder.isPlayingInPip != true {
+                    self?.controller.stop()
+                }
+            case .none:
+                break
             }
-        }
+        }).store(in: &subscription)
+        
+        playerHolder.getTimePublisher()
+            .sink {[weak self] time in
+                self?.currentTime = time
+            }
+            .store(in: &subscription)
+        playerHolder.getErrorPublisher()
+            .sink {[weak self] error in
+                if error.isInternetError || error is NoCachedDataError {
+                    self?.errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                } else {
+                    self?.errorMessage = CoreLocalization.Error.unknownError
+                }
+            }
+            .store(in: &subscription)
     }
     
     @MainActor

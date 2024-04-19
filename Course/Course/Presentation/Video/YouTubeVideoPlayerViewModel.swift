@@ -13,125 +13,23 @@ import Swinject
 
 public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
     
-    var youtubePlayer: YouTubePlayer
+    var youtubePlayer: YouTubePlayer {
+        (playerHolder.playerController as? YouTubePlayer) ?? YouTubePlayer()
+    }
     private (set) var play = false
     @Published var isLoading: Bool = true
     
-    private var subscription = Set<AnyCancellable>()
-    private var duration: Double?
-    private var isViewedOnce: Bool = false
-    private var url: String
-    private let pipManager: PipManagerProtocol
-    
     public init(
-        url: String,
-        blockID: String,
-        courseID: String,
         languages: [SubtitleUrl],
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
         connectivity: ConnectivityProtocol,
-        pipManager: PipManagerProtocol,
-        playerService: PlayerServiceProtocol
+        playerHolder: PlayerViewControllerHolderProtocol
     ) {
-        self.url = url
-
-        let videoID = url.replacingOccurrences(of: "https://www.youtube.com/watch?v=", with: "")
-        let configuration = YouTubePlayer.Configuration(configure: {
-            $0.autoPlay = !pipManager.isPipActive
-            $0.playInline = true
-            $0.showFullscreenButton = true
-            $0.allowsPictureInPictureMediaPlayback = false
-            $0.showControls = true
-            $0.useModestBranding = false
-            $0.progressBarColor = .white
-            $0.showRelatedVideos = false
-            $0.showCaptions = false
-            $0.showAnnotations = false
-            $0.customUserAgent = """
-                                 Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp)
-                                 AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5
-                                 """
-        })
-        self.youtubePlayer = YouTubePlayer(source: .video(id: videoID), configuration: configuration)
-        self.pipManager = pipManager
         super.init(
-            blockID: blockID,
-            courseID: courseID,
             languages: languages,
+            playerStateSubject: playerStateSubject,
             connectivity: connectivity,
-            playerService: playerService
+            playerHolder: playerHolder
         )
-        
-        self.youtubePlayer.pause()
-        
-        subscrube(playerStateSubject: playerStateSubject)
-    }
-
-    private func subscrube(playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) {
-        playerStateSubject.sink(receiveValue: { [weak self] state in
-            switch state {
-            case .pause:
-                self?.youtubePlayer.stop()
-            case .kill, .none:
-                break
-            }
-        }).store(in: &subscription)
-
-        youtubePlayer.durationPublisher.sink(receiveValue: { [weak self] duration in
-            self?.duration = duration.value
-        }).store(in: &subscription)
-
-        youtubePlayer.currentTimePublisher(updateInterval: 0.1).sink(receiveValue: { [weak self] time in
-            guard let self else { return }
-            if !self.pause {
-                self.currentTime = time.value
-            }
-
-            if let duration = self.duration {
-                if (time.value / duration) >= 0.8 {
-                    if !isViewedOnce {
-                        Task {
-                            await self.blockCompletionRequest()
-                           
-                        }
-                        isViewedOnce = true
-                    }
-                }
-                if (time.value / duration) >= 0.999 {
-                    self.playerService.presentAppReview()
-                }
-            }
-        }).store(in: &subscription)
-
-        youtubePlayer.playbackStatePublisher.sink(receiveValue: { [weak self] state in
-            guard let self else { return }
-            switch state {
-            case .unstarted:
-                self.play = false
-            case .ended:
-                self.play = false
-            case .playing:
-                self.play = true
-                self.pipManager.pauseCurrentPipVideo()
-            case .paused:
-                self.play = false
-            case .buffering, .cued:
-                break
-            }
-        }).store(in: &subscription)
-
-        youtubePlayer.statePublisher.sink(receiveValue: { [weak self] state in
-            guard let self else { return }
-            if state == .ready {
-                self.isLoading = false
-            }
-        }).store(in: &subscription)
-        
-        pipManager.pipRatePublisher()?
-            .sink {[weak self] rate in
-                guard rate > 0 else { return }
-                self?.youtubePlayer.pause()
-            }
-            .store(in: &subscription)
     }
 }

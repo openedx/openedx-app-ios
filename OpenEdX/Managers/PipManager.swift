@@ -91,7 +91,7 @@ public class PipManager: PipManagerProtocol {
     
     public func pauseCurrentPipVideo() {
         guard let holder = controllerHolder else { return }
-        holder.playerController.pause()
+        holder.playerController?.pause()
     }
     
     @MainActor
