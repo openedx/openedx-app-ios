@@ -14,9 +14,8 @@ public class VideoPlayerViewModel: ObservableObject {
     private var blockID: String
     private var courseID: String
 
-    private let interactor: CourseInteractorProtocol
     public let connectivity: ConnectivityProtocol
-    public let router: CourseRouter
+    internal let playerService: PlayerServiceProtocol
 
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
@@ -35,27 +34,21 @@ public class VideoPlayerViewModel: ObservableObject {
         blockID: String,
         courseID: String,
         languages: [SubtitleUrl],
-        interactor: CourseInteractorProtocol,
-        router: CourseRouter,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        playerService: PlayerServiceProtocol
     ) {
         self.blockID = blockID
         self.courseID = courseID
         self.languages = languages
-        self.interactor = interactor
-        self.router = router
         self.connectivity = connectivity
+        self.playerService = playerService
         self.prepareLanguages()
     }
     
     @MainActor
     func blockCompletionRequest() async {
         do {
-            try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
-            NotificationCenter.default.post(
-                name: NSNotification.blockCompletion,
-                object: nil
-            )
+            try await playerService.blockCompletionRequest()
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -68,10 +61,11 @@ public class VideoPlayerViewModel: ObservableObject {
     @MainActor
     public func getSubtitles(subtitlesUrl: String) async {
         do {
-            let result = try await interactor.getSubtitles(
+            let result = try await playerService.getSubtitles(
                 url: subtitlesUrl,
                 selectedLanguage: self.selectedLanguage ?? "en"
             )
+
             subtitles = result
         } catch {
             print(">>>>> ⛔️⛔️⛔️⛔️⛔️⛔️⛔️⛔️", error)
@@ -130,7 +124,8 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     func presentPicker() {
-        router.presentView(
+        let router = playerService.router
+        playerService.presentView(
             transitionStyle: .crossDissolve,
             animated: true
         ) {

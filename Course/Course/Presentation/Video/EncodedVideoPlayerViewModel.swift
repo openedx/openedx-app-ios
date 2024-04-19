@@ -10,30 +10,35 @@ import Core
 import Combine
 
 public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
-    let playerHolder: PlayerViewControllerHolder
+    @Published var currentTime: Double = 0
+    let playerHolder: PlayerViewControllerHolderProtocol
     var controller: AVPlayerViewController {
         playerHolder.playerController
     }
     private var subscription = Set<AnyCancellable>()
+    var isPlayingInPip: Bool {
+        playerHolder.isPlayingInPip
+    }
+    
+    var isOtherPlayerInPip: Bool {
+        playerHolder.isOtherPlayerInPipPlaying
+    }
     
     public init(
         blockID: String,
         courseID: String,
         languages: [SubtitleUrl],
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
-        interactor: CourseInteractorProtocol,
-        router: CourseRouter,
         connectivity: ConnectivityProtocol,
-        playerHolder: PlayerViewControllerHolder
+        playerHolder: PlayerViewControllerHolderProtocol,
+        playerService: PlayerServiceProtocol
     ) {
         self.playerHolder = playerHolder
-        
         super.init(blockID: blockID,
                    courseID: courseID,
-                   languages: languages,
-                   interactor: interactor,
-                   router: router,
-                   connectivity: connectivity)
+                   languages: languages, 
+                   connectivity: connectivity,
+                   playerService: playerService)
         
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
@@ -49,13 +54,11 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
                 break
             }
         }).store(in: &subscription)
-    }
         
-    func progress(for time: Double) -> Double {
-        let duration = playerHolder.duration
-        if !time.isNaN && !duration.isNaN {
-            return time/duration
-        }
-        return 0
+        playerHolder.getTimePublisher()
+            .sink {[weak self] time in
+                self?.currentTime = time
+            }
+            .store(in: &subscription)
     }
 }

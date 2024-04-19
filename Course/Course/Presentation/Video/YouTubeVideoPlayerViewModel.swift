@@ -31,10 +31,9 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
         courseID: String,
         languages: [SubtitleUrl],
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
-        interactor: CourseInteractorProtocol,
-        router: CourseRouter,
         connectivity: ConnectivityProtocol,
-        pipManager: PipManagerProtocol
+        pipManager: PipManagerProtocol,
+        playerService: PlayerServiceProtocol
     ) {
         self.url = url
 
@@ -61,9 +60,8 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
             blockID: blockID,
             courseID: courseID,
             languages: languages,
-            interactor: interactor,
-            router: router,
-            connectivity: connectivity
+            connectivity: connectivity,
+            playerService: playerService
         )
         
         self.youtubePlayer.pause()
@@ -109,7 +107,7 @@ public class YouTubeVideoPlayerViewModel: VideoPlayerViewModel {
                     }
                 }
                 if (time.value / duration) >= 0.999 {
-                    self.router.presentAppReview()
+                    self.playerService.presentAppReview()
                 }
             }
         }).store(in: &subscription)

@@ -321,37 +321,46 @@ class ScreenAssembly: Assembly {
                 courseID: courseID,
                 languages: languages,
                 playerStateSubject: playerStateSubject,
-                interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                pipManager: r.resolve(PipManagerProtocol.self)!
+                pipManager: r.resolve(PipManagerProtocol.self)!,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
             )
         }
         
         container.register(
             EncodedVideoPlayerViewModel.self
-        ) { r, url, blockID, courseID, languages, playerStateSubject in
-            let videoUrl: URL? = url
+        ) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject) in
             let router: Router = r.resolve(Router.self)!
+
+            let holder = r.resolve(
+                PlayerViewControllerHolderProtocol.self,
+                arguments: url,
+                blockID,
+                courseID,
+                router.currentCourseTabSelection
+            )!
             return EncodedVideoPlayerViewModel(
                 blockID: blockID,
                 courseID: courseID,
                 languages: languages,
                 playerStateSubject: playerStateSubject,
-                interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                playerHolder: r.resolve(
-                    PlayerViewControllerHolder.self,
-                    arguments: videoUrl,
-                    blockID,
-                    courseID,
-                    router.currentCourseTabSelection
-                )!
+                playerHolder: holder,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
             )
         }
         
-        container.register(PlayerViewControllerHolder.self) { r, url, blockID, courseID, selectedCourseTab in
+        container.register(PlayerDelegateProtocol.self) { _, manager in
+            PlayerDelegate(pipManager: manager)
+        }
+        
+        container.register(PlayerTrackerProtocol.self) { (_, url) in
+            PlayerTracker(url: url)
+        }
+        
+        container.register(
+            PlayerViewControllerHolderProtocol.self
+        ) { r, url, blockID, courseID, selectedCourseTab in
             let pipManager = r.resolve(PipManagerProtocol.self)!
             if let holder = pipManager.holder(
                 for: url,
@@ -364,14 +373,27 @@ class ScreenAssembly: Assembly {
 
             let storage = r.resolve(CoreStorage.self)!
             let quality = storage.userSettings?.streamingQuality ?? .auto
-            return PlayerViewControllerHolder(
+            let tracker = r.resolve(PlayerTrackerProtocol.self, argument: url)!
+            let delegate = r.resolve(PlayerDelegateProtocol.self, argument: pipManager)!
+            let holder = PlayerViewControllerHolder(
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
                 selectedCourseTab: selectedCourseTab,
                 videoResolution: quality.resolution,
-                pipManager: pipManager
+                pipManager: pipManager,
+                playerTracker: tracker,
+                playerDelegate: delegate,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
             )
+            delegate.playerHolder = holder
+            return holder
+        }
+        
+        container.register(PlayerServiceProtocol.self) { r, courseID, blockID in
+            let interactor = r.resolve(CourseInteractorProtocol.self)!
+            let router = r.resolve(CourseRouter.self)!
+            return PlayerService(courseID: courseID, blockID: blockID, interactor: interactor, router: router)
         }
         
         container.register(HandoutsViewModel.self) { r, courseID in

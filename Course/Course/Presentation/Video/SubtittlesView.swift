@@ -123,9 +123,8 @@ struct SubtittlesView_Previews: PreviewProvider {
             viewModel: VideoPlayerViewModel(
                 blockID: "", courseID: "",
                 languages: [],
-                interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
-                connectivity: Connectivity()
+                connectivity: Connectivity(),
+                playerService: PlayerServiceMock()
             ), scrollTo: {_ in }
         )
     }
