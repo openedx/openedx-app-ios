@@ -61,7 +61,7 @@ def get_translations_ordereddict(modules_dir, lang='en'):
 
         # Step 1c: Add the module's name to each translation key
         for line in module_translations:
-            ordered_dict_of_translations[f"{module.upper()}.{line['key']}"] = line
+            ordered_dict_of_translations[f"{module}.{line['key']}"] = line
 
     # Step 2: Return the translations' ordered dict
     return ordered_dict_of_translations
