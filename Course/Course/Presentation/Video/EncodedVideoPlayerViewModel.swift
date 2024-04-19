@@ -36,7 +36,7 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         self.playerHolder = playerHolder
         super.init(blockID: blockID,
                    courseID: courseID,
-                   languages: languages, 
+                   languages: languages,
                    connectivity: connectivity,
                    playerService: playerService)
         
@@ -58,6 +58,15 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         playerHolder.getTimePublisher()
             .sink {[weak self] time in
                 self?.currentTime = time
+            }
+            .store(in: &subscription)
+        playerHolder.getErrorPublisher()
+            .sink {[weak self] error in
+                if error.isInternetError || error is NoCachedDataError {
+                    self?.errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                } else {
+                    self?.errorMessage = CoreLocalization.Error.unknownError
+                }
             }
             .store(in: &subscription)
     }

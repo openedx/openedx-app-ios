@@ -281,6 +281,7 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
 
     public func getErrorPublisher() -> AnyPublisher<Error, Never> {
         errorPublisher
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
