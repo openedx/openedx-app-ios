@@ -24,7 +24,36 @@ public struct SettingsView: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
+                VStack {
+                    ThemeAssets.titleBackground.swiftUIImage
+                        .resizable()
+                        .edgesIgnoringSafeArea(.top)
+                }
+                .frame(maxWidth: .infinity, maxHeight: 200)
+                .accessibilityIdentifier("auth_bg_image")
                 
+                // MARK: - Page name
+                VStack(alignment: .center) {
+                    ZStack {
+                        HStack {
+                            Text(ProfileLocalization.settings)
+                                .titleSettings(color: Theme.Colors.loginNavigationText)
+                                .accessibilityIdentifier("register_text")
+                        }
+                        VStack {
+                            Button(action: { viewModel.router.back() }, label: {
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
+                            })
+                            .foregroundColor(Theme.Colors.styledButtonText)
+                            .padding(.leading, isHorizontal ? 48 : 0)
+                            .accessibilityIdentifier("back_button")
+                            
+                        }.frame(minWidth: 0,
+                                maxWidth: .infinity,
+                                alignment: .topLeading)
+                    }
+                    
                     // MARK: - Page Body
                     ScrollView {
                         VStack(alignment: .leading, spacing: 12) {
@@ -48,14 +77,10 @@ public struct SettingsView: View {
                         .frameLimit(width: proxy.size.width)
                         .padding(.top, 24)
                     }
-                    .background(
-                        Theme.Colors.background
-                            .ignoresSafeArea()
-                    )
-                
-                .navigationBarHidden(false)
-                .navigationBarBackButtonHidden(false)
-                .navigationTitle(ProfileLocalization.settings)
+                    .roundedBackground(Theme.Colors.background)
+                }
+                .navigationBarHidden(true)
+                .navigationBarBackButtonHidden(true)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -71,6 +96,10 @@ public struct SettingsView: View {
                     }
                 }
             }
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
             .ignoresSafeArea(.all, edges: .horizontal)
         }
     }
@@ -78,7 +107,7 @@ public struct SettingsView: View {
     // MARK: - Manage Account
     @ViewBuilder
     private var manageAccount: some View {
-
+        
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 viewModel.trackProfileVideoSettingsClicked()
@@ -92,7 +121,7 @@ public struct SettingsView: View {
                 }
             })
             .accessibilityIdentifier("video_settings_button")
-
+            
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProfileLocalization.settingsVideo)
@@ -103,7 +132,7 @@ public struct SettingsView: View {
     }
     
     // MARK: - Settings
-
+    
     @ViewBuilder
     private var settings: some View {
         Text(ProfileLocalization.settings)
@@ -112,7 +141,7 @@ public struct SettingsView: View {
             .foregroundColor(Theme.Colors.textSecondary)
             .accessibilityIdentifier("settings_text")
             .padding(.top, 12)
-
+        
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 viewModel.trackProfileVideoSettingsClicked()
@@ -126,7 +155,7 @@ public struct SettingsView: View {
                 }
             })
             .accessibilityIdentifier("video_settings_button")
-
+            
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProfileLocalization.settingsVideo)
@@ -137,7 +166,7 @@ public struct SettingsView: View {
     }
     
     // MARK: - Log out
-
+    
     private var logOutButton: some View {
         VStack {
             Button(action: {

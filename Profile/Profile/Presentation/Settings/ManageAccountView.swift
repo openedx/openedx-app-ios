@@ -23,6 +23,36 @@ public struct ManageAccountView: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
+                VStack {
+                    ThemeAssets.titleBackground.swiftUIImage
+                        .resizable()
+                        .edgesIgnoringSafeArea(.top)
+                }
+                .frame(maxWidth: .infinity, maxHeight: 200)
+                .accessibilityIdentifier("auth_bg_image")
+                
+                // MARK: - Page name
+                VStack(alignment: .center) {
+                    ZStack {
+                        HStack {
+                            Text(ProfileLocalization.manageAccount)
+                                .titleSettings(color: Theme.Colors.loginNavigationText)
+                                .accessibilityIdentifier("manage_account_text")
+                        }
+                        VStack {
+                            Button(action: { viewModel.router.back() }, label: {
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
+                            })
+                            .foregroundColor(Theme.Colors.styledButtonText)
+                            .padding(.leading, isHorizontal ? 48 : 0)
+                            .accessibilityIdentifier("back_button")
+                            
+                        }.frame(minWidth: 0,
+                                maxWidth: .infinity,
+                                alignment: .topLeading)
+                    }
+                    
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(
                         action: {
@@ -44,13 +74,10 @@ public struct ManageAccountView: View {
                             .padding(.top, 24)
                         })
                     .frameLimit(width: proxy.size.width)
-                    .background(
-                        Theme.Colors.background
-                            .ignoresSafeArea()
-                    )
-                .navigationBarHidden(false)
-                .navigationBarBackButtonHidden(false)
-                .navigationTitle(ProfileLocalization.manageAccount)
+                    .roundedBackground(Theme.Colors.background)
+                }
+                .navigationBarHidden(true)
+                .navigationBarBackButtonHidden(true)
                 
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
@@ -74,6 +101,10 @@ public struct ManageAccountView: View {
                     }
                 }
             }
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
             .ignoresSafeArea(.all, edges: .horizontal)
             .onFirstAppear {
                 Task {
@@ -133,7 +164,7 @@ public struct ManageAccountView: View {
                 ProfileLocalization.editProfile,
                 action: {
                     let userModel = viewModel.userModel ?? UserProfile()
-                                    viewModel.trackProfileEditClicked()
+                    viewModel.trackProfileEditClicked()
                     viewModel.router.showEditProfile(
                         userModel: userModel,
                         avatar: viewModel.updatedAvatar,
