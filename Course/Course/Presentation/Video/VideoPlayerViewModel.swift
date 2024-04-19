@@ -36,6 +36,7 @@ public class VideoPlayerViewModel: ObservableObject {
         playerHolder.isOtherPlayerInPipPlaying
     }
     public let playerHolder: PlayerViewControllerHolderProtocol
+    internal var subscription = Set<AnyCancellable>()
 
     public init(
         languages: [SubtitleUrl],
@@ -47,6 +48,41 @@ public class VideoPlayerViewModel: ObservableObject {
         self.connectivity = connectivity
         self.playerHolder = playerHolder
         self.prepareLanguages()
+        
+        observePlayer(with: playerStateSubject)
+    }
+    
+    func observePlayer(with playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) {
+        playerStateSubject.sink{ [weak self] state in
+            switch state {
+            case .pause:
+                if self?.playerHolder.isPlayingInPip != true {
+                    self?.playerHolder.playerController?.pause()
+                }
+            case .kill:
+                if self?.playerHolder.isPlayingInPip != true {
+                    self?.playerHolder.playerController?.stop()
+                }
+            case .none:
+                break
+            }
+        }
+        .store(in: &subscription)
+        
+        playerHolder.getTimePublisher()
+            .sink {[weak self] time in
+                self?.currentTime = time
+            }
+            .store(in: &subscription)
+        playerHolder.getErrorPublisher()
+            .sink {[weak self] error in
+                if error.isInternetError || error is NoCachedDataError {
+                    self?.errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                } else {
+                    self?.errorMessage = CoreLocalization.Error.unknownError
+                }
+            }
+            .store(in: &subscription)
     }
     
     @MainActor

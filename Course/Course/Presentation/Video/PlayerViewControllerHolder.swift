@@ -188,6 +188,7 @@ public protocol PlayerViewControllerHolderProtocol: AnyObject {
     func getTimePublisher() -> AnyPublisher<Double, Never>
     func getErrorPublisher() -> AnyPublisher<Error, Never>
     func getRatePublisher() -> AnyPublisher<Float, Never>
+    func getReadyPublisher() -> AnyPublisher<Bool, Never>
     func getService() -> PlayerServiceProtocol
 }
 
@@ -318,6 +319,10 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     public func getRatePublisher() -> AnyPublisher<Float, Never> {
         playerTracker.getRatePublisher()
     }
+    
+    public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
+        playerTracker.getReadyPublisher()
+    }
 
     public func getService() -> PlayerServiceProtocol {
         playerService
@@ -405,11 +410,13 @@ public protocol PlayerTrackerProtocol {
     var duration: Double { get }
     var progress: Double { get }
     var isPlaying: Bool { get }
+    var isReady: Bool { get }
     init(url: URL?)
 
     func getTimePublisher() -> AnyPublisher<Double, Never>
     func getRatePublisher() -> AnyPublisher<Float, Never>
     func getFinishPublisher() -> AnyPublisher<Void, Never>
+    func getReadyPublisher() -> AnyPublisher<Bool, Never>
 }
 
 #if DEBUG
@@ -422,6 +429,7 @@ class PlayerTrackerProtocolMock: PlayerTrackerProtocol {
         0
     }
     let isPlaying = false
+    let isReady = false
 
     required init(url: URL?) {
         var item: AVPlayerItem?
@@ -442,9 +450,14 @@ class PlayerTrackerProtocolMock: PlayerTrackerProtocol {
     func getFinishPublisher() -> AnyPublisher<Void, Never> {
         PassthroughSubject<Void, Never>().eraseToAnyPublisher()
     }
+    
+    func getReadyPublisher() -> AnyPublisher<Bool, Never> {
+        PassthroughSubject<Bool, Never>().eraseToAnyPublisher()
+    }
 }
 #endif
 public class PlayerTracker: PlayerTrackerProtocol {
+    public var isReady: Bool = false
     public let player: AVPlayer?
     public var duration: Double {
         player?.currentItem?.duration.seconds ?? .nan
@@ -468,6 +481,7 @@ public class PlayerTracker: PlayerTrackerProtocol {
     private let timePublisher: CurrentValueSubject<Double, Never>
     private let ratePublisher: CurrentValueSubject<Float, Never>
     private let finishPublisher: PassthroughSubject<Void, Never>
+    private let readyPublisher: PassthroughSubject<Bool, Never>
     
     public required init(url: URL?) {
         var item: AVPlayerItem?
@@ -478,6 +492,7 @@ public class PlayerTracker: PlayerTrackerProtocol {
         timePublisher = CurrentValueSubject(player?.currentTime().seconds ?? 0)
         ratePublisher = CurrentValueSubject(player?.rate ?? 0)
         finishPublisher = PassthroughSubject<Void, Never>()
+        readyPublisher = PassthroughSubject<Bool, Never>()
         observe()
     }
 
@@ -500,6 +515,16 @@ public class PlayerTracker: PlayerTrackerProtocol {
                 self?.ratePublisher.send(rate)
             }
             .store(in: &cancellations)
+        
+        player?.publisher(for: \.status)
+            .sink {[weak self] status in
+                guard let strongSelf = self else { return }
+                strongSelf.isReady = status == .readyToPlay
+                strongSelf.readyPublisher.send(strongSelf.isReady)
+            }
+            .store(in: &cancellations)
+
+        
         NotificationCenter.default.publisher(for: AVPlayerItem.didPlayToEndTimeNotification, object: player?.currentItem)
             .sink {[weak self] _ in
                 if self?.player?.currentItem != nil {
@@ -533,11 +558,19 @@ public class PlayerTracker: PlayerTrackerProtocol {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+    
+    public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
+        readyPublisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 }
 
 // MARK: YouTube
 import YouTubePlayerKit
 public class YoutubePlayerTracker: PlayerTrackerProtocol {
+    public var isReady: Bool = false
+    
     public let player: YouTubePlayer?
     public var duration: Double = 0
     public var isPlaying: Bool {
@@ -552,6 +585,7 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
     private let timePublisher: CurrentValueSubject<Double, Never>
     private let ratePublisher: CurrentValueSubject<Float, Never>
     private let finishPublisher: PassthroughSubject<Void, Never>
+    private let readyPublisher: PassthroughSubject<Bool, Never>
     
     public required init(url: URL?) {
         if let url = url {
@@ -580,6 +614,7 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
         timePublisher = CurrentValueSubject(0)
         ratePublisher = CurrentValueSubject(0)
         finishPublisher = PassthroughSubject<Void, Never>()
+        readyPublisher = PassthroughSubject<Bool, Never>()
         observe()
     }
 
@@ -600,21 +635,30 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
                 self?.timePublisher.send(time.value)
             }
             .store(in: &cancellations)
-        player?.playbackStatePublisher
+        player?.statePublisher
             .sink { [weak self] state in
                 switch state {
-                case .playing:
-                    self?.ratePublisher.send(1)
+                case .ready:
+                    self?.isReady = true
+                    self?.readyPublisher.send(true)
                 default:
-                    self?.ratePublisher.send(0)
+                    self?.isReady = false
+                    self?.readyPublisher.send(false)
                 }
             }
             .store(in: &cancellations)
+        
         player?.playbackStatePublisher
             .sink { [weak self] state in
-                guard let self else { return }
-                if state == .ended {
-                    self.finishPublisher.send()
+                guard let strongSelf = self else { return }
+                switch state {
+                case .playing:
+                    strongSelf.ratePublisher.send(1)
+                case .ended:
+                    strongSelf.ratePublisher.send(0)
+                    strongSelf.finishPublisher.send()
+                default:
+                    strongSelf.ratePublisher.send(0)
                 }
             }
             .store(in: &cancellations)
@@ -638,6 +682,12 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
     
     public func getFinishPublisher() -> AnyPublisher<Void, Never> {
         finishPublisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
+        readyPublisher
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
@@ -781,7 +831,11 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
     public func getRatePublisher() -> AnyPublisher<Float, Never> {
         playerTracker.getRatePublisher()
     }
-    
+
+    public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
+        playerTracker.getReadyPublisher()
+    }
+
     public func getService() -> PlayerServiceProtocol {
         playerService
     }
