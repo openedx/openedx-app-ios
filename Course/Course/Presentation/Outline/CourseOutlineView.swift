@@ -13,7 +13,7 @@ import SwiftUIIntrospect
 
 public struct CourseOutlineView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @ObservedObject private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -21,17 +21,15 @@ public struct CourseOutlineView: View {
     
     @State private var openCertificateView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-
+    
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
     @State private var showingNoWifiMessage: Bool = false
-    @State private var stopScroll: Bool = false
-    @State private var scrollHeight: Double = 0
     @State private var runOnce: Bool = false
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
-
+    
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
@@ -43,7 +41,7 @@ public struct CourseOutlineView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel//StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection
@@ -68,10 +66,9 @@ public struct CourseOutlineView: View {
                             }
                         }
                     }) {
-                        ResponsiveView(
+                        DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed,
-                            scrollHeight: $scrollHeight
+                            collapsed: $collapsed
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         VStack(alignment: .leading) {
@@ -87,7 +84,7 @@ public struct CourseOutlineView: View {
                                 )
                                 .padding(.horizontal, 16)
                             }
-
+                            
                             downloadQualityBars
                             certificateView
                             
@@ -113,7 +110,7 @@ public struct CourseOutlineView: View {
                                     viewModel.trackResumeCourseClicked(
                                         blockId: continueBlock?.id ?? ""
                                     )
-                                                                        
+                                    
                                     if let course = viewModel.courseStructure {
                                         viewModel.router.showCourseUnit(
                                             courseName: course.displayName,
@@ -146,7 +143,7 @@ public struct CourseOutlineView: View {
                                         viewModel: viewModel
                                     )
                                 }
-
+                                
                             } else {
                                 if let courseStart = viewModel.courseStart {
                                     Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
@@ -154,25 +151,16 @@ public struct CourseOutlineView: View {
                                         .padding(.top, 100)
                                 }
                             }
-                            Spacer(minLength: 84)
+                            Spacer(minLength: 200)
                         }
                         .frameLimit(width: proxy.size.width)
                     }
-                    .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { scrollView in
-                        if stopScroll {
-                            scrollView.setContentOffset(scrollView.contentOffset, animated: false)
-                            stopScroll = false
-                        }
-                        guard !runOnce, !viewModel.isShowProgress else { return }
-                            scrollHeight = scrollView.contentSize.height
-                        runOnce = true
-                    })
                     .onRightSwipeGesture {
                         viewModel.router.back()
                     }
                 }
                 .accessibilityAction {}
-
+                
                 if viewModel.dueDatesShifted && !isVideo {
                     DatesSuccessView(
                         title: CourseLocalization.CourseDates.toastSuccessTitle,
@@ -223,9 +211,6 @@ public struct CourseOutlineView: View {
                 }
             }
         }
-        .onDisappear {
-            stopScroll = true
-        }
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
@@ -262,7 +247,7 @@ public struct CourseOutlineView: View {
             )
         }
     }
-
+    
     @ViewBuilder
     private var downloadQualityBars: some View {
         if isVideo,
@@ -320,7 +305,7 @@ public struct CourseOutlineView: View {
             )
         }
     }
-
+    
     private func courseBanner(proxy: GeometryProxy) -> some View {
         ZStack {
             // MARK: - Course Banner

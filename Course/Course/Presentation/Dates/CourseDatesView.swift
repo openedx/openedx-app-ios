@@ -152,8 +152,6 @@ struct TimeLineView: View {
 struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
     @State private var isExpanded = false
-    @State private var scrollHeight: Double = 0
-    @State private var runOnce: Bool = false
     @Binding var coordinate: CGFloat
     @Binding var collapsed: Bool
     var courseDates: CourseDates
@@ -163,10 +161,9 @@ struct CourseDateListView: View {
         GeometryReader { proxy in
             VStack {
                 ScrollView {
-                    ResponsiveView(
+                    DynamicOffsetView(
                         coordinate: $coordinate,
-                        collapsed: $collapsed,
-                        scrollHeight: $scrollHeight
+                        collapsed: $collapsed
                     )
                     VStack(alignment: .leading, spacing: 0) {
                         if !courseDates.hasEnded {
@@ -220,15 +217,9 @@ struct CourseDateListView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 5)
                     .frameLimit(width: proxy.size.width)
+                    Spacer(minLength: 200)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { scrollView in
-                    DispatchQueue.main.async {
-                        guard !runOnce, !viewModel.isShowProgress else { return }
-                        scrollHeight = scrollView.contentSize.height
-                        runOnce = true
-                    }
-                })
             }
         }
     }
@@ -519,7 +510,7 @@ struct CourseDatesView_Previews: PreviewProvider {
         CourseDatesView(
             courseID: "",
             coordinate: .constant(0),
-            collapsed: .constant(false),
+            collapsed: .constant(false), 
             viewModel: viewModel)
     }
 }

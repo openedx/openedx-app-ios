@@ -10,26 +10,26 @@ import Kingfisher
 import Core
 import Theme
 
-struct TopHeaderView: View {
+struct CourseHeaderView: View {
     
     @ObservedObject var viewModel: CourseContainerViewModel
-    var title: String
-    @Binding var collapsed: Bool
-    var containerWidth: CGFloat
-    var animationNamespace: Namespace.ID
+    private var title: String
+    private var containerWidth: CGFloat
+    private var animationNamespace: Namespace.ID
+    @Binding private var collapsed: Bool
     @Binding private var isAnimatingForTap: Bool
     @Environment(\.isHorizontal) private var isHorizontal
     
-    let collapsedHorizontalHeight: CGFloat = 230
-    let collapsedVerticalHeight: CGFloat = 260
-    let expandedHeight: CGFloat = 300
+    private let collapsedHorizontalHeight: CGFloat = 230
+    private let collapsedVerticalHeight: CGFloat = 260
+    private let expandedHeight: CGFloat = 300
     
-    private struct GeometryName {
-        static let backButton = "backButton"
-        static let topTabBar = "topTabBar"
-        static let blurSecondaryBg = "blurSecondaryBg"
-        static let blurPrimaryBg = "blurPrimaryBg"
-        static let blurBg = "blurBg"
+    private enum GeometryName {
+        case backButton
+        case topTabBar
+        case blurSecondaryBg
+        case blurPrimaryBg
+        case blurBg
     }
     
     init(
@@ -50,9 +50,9 @@ struct TopHeaderView: View {
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-                ScrollView {
-                    if let banner = viewModel.courseStructure?.media.image.raw
-                        .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            ScrollView {
+                if let banner = viewModel.courseStructure?.media.image.raw
+                    .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                     KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
                         .onFailureImage(CoreAssets.noCourseImage.image)
                         .resizable()
@@ -61,22 +61,23 @@ struct TopHeaderView: View {
                         .clipped()
                         .background(Theme.Colors.background)
                 }
-                }
-                .disabled(true)
-                .ignoresSafeArea()
+            }
+            .disabled(true)
+            .ignoresSafeArea()
             VStack(alignment: .leading) {
                 if collapsed {
                     VStack {
                         HStack {
-                            Button(action: {
-                                viewModel.router.back(animated: true)
-                            }, label: {
-                                Image(systemName: "arrow.left")
-                                    .foregroundStyle(Theme.Colors.textPrimary)
-                                    .padding(.vertical, 8)
-                                    .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
-                            })
-                            .foregroundStyle(Color.black)
+                            BackNavigationButton(
+                                color: Theme.Colors.textPrimary,
+                                action: {
+                                    viewModel.router.back()
+                                }
+                            )
+                            .backViewStyle()
+                            .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
+                            .frame(width: 30, height: 30)
+                            .offset(y: 10)
                             Text(title)
                                 .lineLimit(1)
                                 .foregroundStyle(Theme.Colors.textPrimary)
@@ -86,7 +87,7 @@ struct TopHeaderView: View {
                         }
                         .padding(.top, 46)
                         .padding(.horizontal, 24)
-                        topTabBar(containerWidth: containerWidth)
+                        courseMenuBar(containerWidth: containerWidth)
                             .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
                             .padding(.bottom, 12)
                     }.background {
@@ -126,7 +127,7 @@ struct TopHeaderView: View {
                                 .padding(.horizontal, 24)
                                 .allowsHitTesting(false)
                                 .frameLimit(width: containerWidth)
-                            topTabBar(containerWidth: containerWidth)
+                            courseMenuBar(containerWidth: containerWidth)
                                 .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
                                 .padding(.bottom, 12)
                         }.background {
@@ -157,7 +158,7 @@ struct TopHeaderView: View {
         .ignoresSafeArea(edges: .top)
     }
     
-    private func topTabBar(containerWidth: CGFloat) -> some View {
+    private func courseMenuBar(containerWidth: CGFloat) -> some View {
         ScrollSlidingTabBar(
             selection: $viewModel.selection,
             tabs: CourseTab.allCases.map { ($0.title, $0.image) },

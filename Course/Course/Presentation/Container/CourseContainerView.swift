@@ -87,7 +87,7 @@ public struct CourseContainerView: View {
                     tabs
                     GeometryReader { proxy in
                         VStack(spacing: 0) {
-                            TopHeaderView(
+                            CourseHeaderView(
                                 viewModel: viewModel,
                                 title: title,
                                 collapsed: $collapsed,
@@ -117,22 +117,22 @@ public struct CourseContainerView: View {
         ZStack(alignment: .topLeading) {
             if !collapsed {
                 HStack {
-                    Button(action: {
-                        viewModel.router.back(animated: true)
-                    }, label: {
-                        ZStack {
-                            VisualEffectView(effect: UIBlurEffect(style: .regular))
-                                .clipShape(Circle())
-                                .frame(width: 30, height: 30)
-                            Image(systemName: "arrow.left")
-                                .foregroundStyle(Theme.Colors.textPrimary)
-                                .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 24)
-                            
-                        }
-                    })
-                    .foregroundStyle(Color.black)
+                    ZStack(alignment: .bottom) {
+                        VisualEffectView(effect: UIBlurEffect(style: .regular))
+                            .clipShape(Circle())
+                        BackNavigationButton(
+                            color: Theme.Colors.textPrimary,
+                            action: {
+                                viewModel.router.back()
+                            }
+                        )
+                        .backViewStyle()
+                        .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
+                        .offset(y: 7)
+                    }
+                    .frame(width: 30, height: 30)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 24)
                     .padding(.top, 55)
                     Spacer()
                 }
@@ -224,6 +224,9 @@ public struct CourseContainerView: View {
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
+        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { tabView in
+            tabView.isScrollEnabled = false
+        })
         .onFirstAppear {
             Task {
                 await viewModel.tryToRefreshCookies()
@@ -275,7 +278,7 @@ public struct CourseContainerView: View {
         
         guard coordinate <= ignoringOffset, lastCoordinate != 0 else {
             return false
-            }
+        }
         
         if collapsed && lastCoordinate > coordinate {
             return false

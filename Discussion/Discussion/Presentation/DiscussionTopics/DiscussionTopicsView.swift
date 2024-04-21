@@ -17,7 +17,6 @@ public struct DiscussionTopicsView: View {
     private let courseID: String
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
-    @State private var scrollHeight: Double = 0
     @State private var runOnce: Bool = false
     
     public init(
@@ -41,52 +40,51 @@ public struct DiscussionTopicsView: View {
                     RefreshableScrollViewCompat(action: {
                         await viewModel.getTopics(courseID: self.courseID, withProgress: false)
                     }) {
-                        ResponsiveView(
+                        DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed,
-                            scrollHeight: $scrollHeight
+                            collapsed: $collapsed
                         )
-                    RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
-                    // MARK: - Search fake field
-                    if viewModel.isBlackedOut {
-                        bannerDiscussionsDisabled
-                    }
-
-                    HStack(spacing: 11) {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textInputTextColor)
-                            .padding(.leading, 16)
-                            .padding(.top, 1)
-                        Text(DiscussionLocalization.Topics.search)
-                            .foregroundColor(Theme.Colors.textInputTextColor)
-                            .font(Theme.Fonts.bodyMedium)
-                        Spacer()
-                    }
-                    .frame(minHeight: 48)
-                    .background(
-                        Theme.Shapes.textInputShape
-                            .fill(Theme.Colors.textInputBackground)
-                    )
-                    .overlay(
-                        Theme.Shapes.textInputShape
-                            .stroke(lineWidth: 1)
-                            .fill(Theme.Colors.textInputUnfocusedStroke)
-                    )
-                    .onTapGesture {
-                        viewModel.router.showDiscussionsSearch(
-                            courseID: courseID,
-                            isBlackedOut: viewModel.isBlackedOut
+                        RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+                        // MARK: - Search fake field
+                        if viewModel.isBlackedOut {
+                            bannerDiscussionsDisabled
+                        }
+                        
+                        HStack(spacing: 11) {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(Theme.Colors.textInputTextColor)
+                                .padding(.leading, 16)
+                                .padding(.top, 1)
+                            Text(DiscussionLocalization.Topics.search)
+                                .foregroundColor(Theme.Colors.textInputTextColor)
+                                .font(Theme.Fonts.bodyMedium)
+                            Spacer()
+                        }
+                        .frame(minHeight: 48)
+                        .background(
+                            Theme.Shapes.textInputShape
+                                .fill(Theme.Colors.textInputBackground)
                         )
-                    }
-                    .frameLimit(width: proxy.size.width)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 10)
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(DiscussionLocalization.Topics.search)
-                    
-                    // MARK: - Page Body
-                    VStack {
-                        ZStack(alignment: .top) {
+                        .overlay(
+                            Theme.Shapes.textInputShape
+                                .stroke(lineWidth: 1)
+                                .fill(Theme.Colors.textInputUnfocusedStroke)
+                        )
+                        .onTapGesture {
+                            viewModel.router.showDiscussionsSearch(
+                                courseID: courseID,
+                                isBlackedOut: viewModel.isBlackedOut
+                            )
+                        }
+                        .frameLimit(width: proxy.size.width)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 10)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(DiscussionLocalization.Topics.search)
+                        
+                        // MARK: - Page Body
+                        VStack {
+                            ZStack(alignment: .top) {
                                 VStack {
                                     if let topics = viewModel.discussionTopics {
                                         HStack {
@@ -160,7 +158,7 @@ public struct DiscussionTopicsView: View {
                                         }
                                         
                                     }
-                                    Spacer(minLength: 84)
+                                    Spacer(minLength: 200)
                                 }
                                 .frameLimit(width: proxy.size.width)
                             }
@@ -170,17 +168,11 @@ public struct DiscussionTopicsView: View {
                             
                         }
                     }.frame(maxWidth: .infinity)
-                        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { scrollView in
-                            DispatchQueue.main.async {
-                                guard !runOnce, !viewModel.isShowProgress else { return }
-                                scrollHeight = scrollView.contentSize.height
-                            runOnce = true
-                            }
-                        })
                 }.padding(.top, 8)
                 if viewModel.isShowProgress {
                     ProgressBar(size: 40, lineWidth: 8)
                         .padding(.horizontal)
+                        .padding(.top, 100)
                 }
             }
             .onFirstAppear {
@@ -197,7 +189,7 @@ public struct DiscussionTopicsView: View {
             )
         }
     }
-
+    
     private var bannerDiscussionsDisabled: some View {
         HStack {
             Spacer()
