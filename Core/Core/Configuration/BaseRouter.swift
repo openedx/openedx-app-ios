@@ -55,9 +55,9 @@ public protocol BaseRouter {
         nextSectionTapped: @escaping () -> Void
     )
     
-    func presentView(transitionStyle: UIModalTransitionStyle, view: any View)
+    func presentView(transitionStyle: UIModalTransitionStyle, view: any View, completion: (() -> Void)?)
     
-    func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View)
+    func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
 
 }
 
@@ -121,9 +121,9 @@ open class BaseRouterMock: BaseRouter {
         nextSectionTapped: @escaping () -> Void
     ) {}
 
-    public func presentView(transitionStyle: UIModalTransitionStyle, view: any View) {}
+    public func presentView(transitionStyle: UIModalTransitionStyle, view: any View, completion: (() -> Void)?) {}
 
-    public func presentView(transitionStyle: UIModalTransitionStyle, content: () -> any View) {}
+    public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {}
     
 }
 #endif

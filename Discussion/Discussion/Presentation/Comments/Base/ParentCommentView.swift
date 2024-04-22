@@ -53,10 +53,11 @@ public struct ParentCommentView: View {
                 VStack(alignment: .leading) {
                     Text(comments.authorName)
                         .font(Theme.Fonts.titleMedium)
+                        .foregroundColor(Theme.Colors.textPrimary)
                     Text(comments.postDate
                         .dateToString(style: .lastPost))
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(Theme.Colors.textSecondaryLight)
                 }
                 Spacer()
                 if isThread {
@@ -67,15 +68,18 @@ public struct ParentCommentView: View {
                         Text(comments.followed
                              ? DiscussionLocalization.Comment.unfollow
                              : DiscussionLocalization.Comment.follow)
+                        .font(Theme.Fonts.bodyMedium)
                     }).foregroundColor(comments.followed
                                        ? Theme.Colors.accentColor
-                                       : Theme.Colors.textSecondary)
+                                       : Theme.Colors.textSecondaryLight)
                 }
-            }.padding(.top, 31)
+            }.padding(.top, 15)
             Text(comments.postTitle)
                 .font(Theme.Fonts.titleLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
             Text(comments.postBodyHtml.hideHtmlTagsAndUrls())
                 .font(Theme.Fonts.bodyMedium)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 8)
             ForEach(Array(comments.postBody.extractURLs().enumerated()), id: \.offset) { _, url in
@@ -89,12 +93,12 @@ public struct ParentCommentView: View {
                     }
                 } else {
                     HStack {
-                        Image(systemName: "globe")
+                        Image(systemName: "globe").renderingMode(.template)
                         Link(destination: url) {
                             Text(url.absoluteString)
                             .multilineTextAlignment(.leading)
                         }
-                    }.foregroundColor(Theme.Colors.accentColor)
+                    }.foregroundColor(Theme.Colors.accentXColor)
                         .font(Theme.Fonts.bodyMedium)
                 }
             }
@@ -106,11 +110,13 @@ public struct ParentCommentView: View {
                     ? CoreAssets.voted.swiftUIImage
                     : CoreAssets.vote.swiftUIImage
                     Text("\(comments.votesCount)")
+                        .foregroundColor(Theme.Colors.textPrimary)
                     Text(DiscussionLocalization.votesCount(comments.votesCount))
                         .font(Theme.Fonts.labelLarge)
+                        .foregroundColor(Theme.Colors.textPrimary)
                 }).foregroundColor(comments.voted
                                    ? Theme.Colors.accentColor
-                                   : Theme.Colors.textSecondary)
+                                   : Theme.Colors.textSecondaryLight)
                 Spacer()
                 Button(action: {
                     onReportTap()
@@ -124,10 +130,9 @@ public struct ParentCommentView: View {
                 })
             }
             .accentColor(comments.abuseFlagged
-                ? Theme.Colors.snackbarErrorColor
-                         : Theme.Colors.textSecondary)
+                ? Theme.Colors.alert
+                         : Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelLarge)
-                .padding(.top, 8)
         }
         .padding(.horizontal, 24)
         if isThread {

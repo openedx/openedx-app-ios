@@ -12,7 +12,7 @@ public struct ScrollSlidingTabBar: View {
 
     @Binding private var selection: Int
     @State private var buttonFrames: [Int: CGRect] = [:]
-    
+    private let containerWidth: CGFloat
     private let tabs: [String]
     private let style: Style
     private let onTap: ((Int) -> Void)?
@@ -25,33 +25,38 @@ public struct ScrollSlidingTabBar: View {
         selection: Binding<Int>,
         tabs: [String],
         style: Style = .default,
+        containerWidth: CGFloat,
         onTap: ((Int) -> Void)? = nil) {
         self._selection = selection
         self.tabs = tabs
         self.style = style
         self.onTap = onTap
+        self.containerWidth = containerWidth
     }
     
     public var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView(.horizontal, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 0) {
-                    buttons()
-                    
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .fill(style.borderColor)
-                            .frame(height: style.borderHeight, alignment: .leading)
-                        indicatorContainer()
+        ZStack(alignment: .bottomLeading) {
+            Rectangle()
+                .fill(style.borderColor)
+                .frame(height: style.borderHeight, alignment: .leading)
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        buttons()
+                        
+                        ZStack(alignment: .leading) {
+                            indicatorContainer()
+                        }
+                    }
+                    .coordinateSpace(name: containerSpace)
+                }
+                .onChange(of: selection) { newValue in
+                    withAnimation {
+                        proxy.scrollTo(newValue, anchor: .center)
                     }
                 }
-                .coordinateSpace(name: containerSpace)
             }
-            .onChange(of: selection) { newValue in
-                withAnimation {
-                    proxy.scrollTo(newValue, anchor: .center)
-                }
-            }
+            .frameLimit(width: containerWidth)
         }
     }
     
@@ -160,9 +165,9 @@ extension ScrollSlidingTabBar {
         }
         
         public static let `default` = Style(
-            font: .body,
-            selectedFont: .body.bold(),
-            activeAccentColor: Theme.Colors.accentColor,
+            font: Theme.Fonts.bodyLarge,
+            selectedFont: Theme.Fonts.titleMedium,
+            activeAccentColor: Theme.Colors.accentXColor,
             inactiveAccentColor: Theme.Colors.textSecondary,
             indicatorHeight: 2,
             borderColor: .gray.opacity(0.2),
@@ -182,7 +187,8 @@ private struct SlidingTabConsumerView: View {
         VStack(alignment: .leading) {
             ScrollSlidingTabBar(
                 selection: $selection,
-                tabs: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth"]
+                tabs: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth"],
+                containerWidth: 300
             )
             TabView(selection: $selection) {
                 HStack {

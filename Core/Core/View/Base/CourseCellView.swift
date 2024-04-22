@@ -50,12 +50,14 @@ public struct CourseCellView: View {
                     .clipShape(RoundedRectangle(cornerRadius: Theme.Shapes.cardImageRadius))
                     .padding(.leading, 3)
                     .accessibilityElement(children: .ignore)
+                    .accessibilityIdentifier("course_image")
                 
                 VStack(alignment: .leading) {
                     Text(courseOrg)
                         .font(Theme.Fonts.labelMedium)
                         .foregroundColor(Theme.Colors.textSecondary)
                         .multilineTextAlignment(.leading)
+                        .accessibilityIdentifier("org_text")
                     
                     Text(courseName)
                         .font(Theme.Fonts.titleSmall)
@@ -63,6 +65,7 @@ public struct CourseCellView: View {
                         .lineLimit(type == .discovery ? 3 : 2)
                         .multilineTextAlignment(.leading)
                         .padding(.top, 1)
+                        .accessibilityIdentifier("course_name_text")
                     Spacer()
                     if type == .dashboard {
                         HStack {
@@ -70,17 +73,20 @@ public struct CourseCellView: View {
                                 Text(courseEnd)
                                     .font(Theme.Fonts.labelMedium)
                                     .foregroundColor(Theme.Colors.textSecondary)
+                                    .accessibilityIdentifier("course_end_text")
                             } else {
                                 Text(courseStart)
                                     .font(Theme.Fonts.labelMedium)
                                     .foregroundColor(Theme.Colors.textSecondary)
+                                    .accessibilityIdentifier("course_start_text")
                             }
                             Spacer()
                             CoreAssets.arrowRight16.swiftUIImage.renderingMode(.template)
                                 .resizable()
                                 .frame(width: 16, height: 16)
                                 .offset(x: 15)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(Theme.Colors.accentXColor)
+                                .accessibilityIdentifier("arrow_image")
                         }
                     }
                 }.padding(.horizontal, 10)
@@ -110,6 +116,7 @@ public struct CourseCellView: View {
                     .overlay(Theme.Colors.cardViewStroke)
                     .padding(.vertical, 18)
                     .padding(.horizontal, 3)
+                    .accessibilityIdentifier("devider")
             }
         }
     }

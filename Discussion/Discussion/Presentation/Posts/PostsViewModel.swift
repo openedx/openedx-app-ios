@@ -10,20 +10,6 @@ import SwiftUI
 import Combine
 import Core
 
-public extension ThreadsFilter {
-    
-    var localizedValue: String {
-        switch self {
-        case .allThreads:
-            return DiscussionLocalization.Posts.Filter.allPosts
-        case .unread:
-            return DiscussionLocalization.Posts.Filter.unread
-        case .unanswered:
-            return DiscussionLocalization.Posts.Filter.unanswered
-        }
-    }
-}
-
 public class PostsViewModel: ObservableObject {
     
     public var nextPage = 1
@@ -40,7 +26,7 @@ public class PostsViewModel: ObservableObject {
     @Published var filteredPosts: [DiscussionPost] = []
     @Published var filterTitle: ThreadsFilter = .allThreads {
         willSet {
-            if let courseID {
+            if courseID != nil {
                 resetPosts()
                 Task {
                     _ = await getPosts(pageNumber: 1)
@@ -50,7 +36,7 @@ public class PostsViewModel: ObservableObject {
     }
     @Published var sortTitle: SortType = .recentActivity {
         willSet {
-            if let courseID {
+            if courseID != nil {
                 resetPosts()
                 Task {
                     _ = await getPosts(pageNumber: 1)
@@ -58,9 +44,26 @@ public class PostsViewModel: ObservableObject {
             }
         }
     }
-    @Published var filterButtons: [ActionSheet.Button] = []
+
+    var filterInfos: [ThreadsFilter] {
+        [
+            .allThreads,
+            .unread,
+            .unanswered
+        ]
+    }
+    
+    var sortInfos: [SortType] {
+        [
+            .recentActivity,
+            .mostActivity,
+            .mostVotes
+        ]
+    }
     
     public var courseID: String?
+    @Published var isBlackedOut: Bool?
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -113,41 +116,14 @@ public class PostsViewModel: ObservableObject {
         totalPages = 1
     }
     
-    public func generateButtons(type: ButtonType) {
-        switch type {
-        case .sort:
-            self.filterButtons = [
-                ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.recentActivity)) {
-                    self.sortTitle = .recentActivity
-                    self.filteredPosts = self.discussionPosts
-                },
-                ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.mostActivity)) {
-                    self.sortTitle = .mostActivity
-                    self.filteredPosts = self.discussionPosts
-                },
-                ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Sort.mostVotes)) {
-                    self.sortTitle = .mostVotes
-                    self.filteredPosts = self.discussionPosts
-                },
-                .cancel()
-            ]
-        case .filter:
-            self.filterButtons = [
-                ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.allPosts)) {
-                    self.filterTitle = .allThreads
-                    self.filteredPosts = self.discussionPosts
-                },
-                ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.unread)) {
-                    self.filterTitle = .unread
-                    self.filteredPosts = self.discussionPosts
-                },
-                ActionSheet.Button.default(Text(DiscussionLocalization.Posts.Filter.unanswered)) {
-                    self.filterTitle = .unanswered
-                    self.filteredPosts = self.discussionPosts
-                },
-                .cancel()
-            ]
-        }
+    public func sort(by value: SortType) {
+        self.sortTitle = value
+        self.filteredPosts = self.discussionPosts
+    }
+    
+    public func filter(by value: ThreadsFilter) {
+        self.filterTitle = value
+        self.filteredPosts = self.discussionPosts
     }
     
     func generatePosts(threads: ThreadLists?) -> [DiscussionPost] {
@@ -158,7 +134,12 @@ public class PostsViewModel: ObservableObject {
                     guard let self, let actualThread = self.threads.threads
                         .first(where: {$0.id  == thread.id }) else { return }
                     
-                    self.router.showThread(thread: actualThread, postStateSubject: self.postStateSubject)
+                    self.router.showThread(
+                        thread: actualThread,
+                        postStateSubject: self.postStateSubject,
+                        isBlackedOut: self.isBlackedOut ?? false,
+                        animated: true
+                    )
                 }))
             }
         }
@@ -182,6 +163,11 @@ public class PostsViewModel: ObservableObject {
         fetchInProgress = true
         isShowProgress = withProgress
         do {
+            if let courseID, isBlackedOut == nil {
+                let discussionInfo = try await interactor.getCourseDiscussionInfo(courseID: courseID)
+                isBlackedOut = discussionInfo.isBlackedOut()
+            }
+
             if pageNumber == 1 {
                 threads.threads = try await getThreadsList(type: type, page: pageNumber)
                 if threads.threads.indices.contains(0) {

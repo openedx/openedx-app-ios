@@ -47,6 +47,7 @@ public struct SocialAuthButton: View {
                 Text(title)
                     .foregroundStyle(textColor)
                     .padding(.leading, 10)
+                    .font(Theme.Fonts.bodyLarge)
                 Spacer()
             } icon: {
                 image.padding(.leading, 10)

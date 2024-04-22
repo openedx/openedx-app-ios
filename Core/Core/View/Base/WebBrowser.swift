@@ -36,6 +36,7 @@ public struct WebBrowser: View {
                             lineWidth: 8
                         )
                         .padding(20)
+                        .accessibilityIdentifier("progress_bar")
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -53,10 +54,15 @@ public struct WebBrowser: View {
                 leftButtonAction: { presentationMode.wrappedValue.dismiss() }
             )
             WebView(
-                viewModel: .init(url: url, baseURL: ""),
+                viewModel: .init(
+                    url: url,
+                    baseURL: "",
+                    injections: [.colorInversionCss, .readability, .accessibility]
+                ),
                 isLoading: $isLoading,
                 refreshCookies: {}
             )
+            .accessibilityIdentifier("web_browser")
         }
         .padding(.top, proxy.safeAreaInsets.top)
         .padding(.bottom, proxy.safeAreaInsets.bottom)

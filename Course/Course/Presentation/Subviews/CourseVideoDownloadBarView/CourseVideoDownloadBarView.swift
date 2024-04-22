@@ -22,12 +22,14 @@ struct CourseVideoDownloadBarView: View {
         courseStructure: CourseStructure,
         courseViewModel: CourseContainerViewModel,
         onNotInternetAvaliable: (() -> Void)?,
-        onTap: (() -> Void)? = nil
+        onTap: (() -> Void)? = nil,
+        analytics: CourseAnalytics
     ) {
         self._viewModel = .init(
             wrappedValue: .init(
                 courseStructure: courseStructure,
-                courseViewModel: courseViewModel
+                courseViewModel: courseViewModel,
+                analytics: analytics
             )
         )
         self.onNotInternetAvaliable = onNotInternetAvaliable
@@ -131,7 +133,7 @@ struct CourseVideoDownloadBarView: View {
 
     private var toggle: some View {
         Toggle("", isOn: .constant(viewModel.isOn))
-            .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentColor))
+            .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
             .padding(.trailing, 15)
             .onTapGesture {
                 if !viewModel.isInternetAvaliable {

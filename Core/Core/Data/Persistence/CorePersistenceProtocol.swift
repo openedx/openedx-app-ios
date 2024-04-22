@@ -9,12 +9,14 @@ import CoreData
 import Combine
 
 public protocol CorePersistenceProtocol {
+    func set(userId: Int)
+    func getUserID() -> Int?
     func publisher() -> AnyPublisher<Int, Never>
     func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality)
-    func getNextBlockForDownloading() -> DownloadDataTask?
+    func nextBlockForDownloading() -> DownloadDataTask?
     func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
     func deleteDownloadDataTask(id: String) throws
-    func saveDownloadDataTask(data: DownloadDataTask)
+    func saveDownloadDataTask(_ task: DownloadDataTask)
     func downloadDataTask(for blockId: String) -> DownloadDataTask?
     func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void)
     func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void)

@@ -33,16 +33,35 @@ public struct UserThread {
     public let closed: Bool
     public var following: Bool
     public var commentCount: Int
-    public let avatar: String
+    public var avatar: String
     public var unreadCommentCount: Int
     public var abuseFlagged: Bool
     public let hasEndorsed: Bool
     public let numPages: Int
     
-    public init(id: String, author: String, authorLabel: String, createdAt: Date, updatedAt: Date, rawBody: String,
-                renderedBody: String, voted: Bool, voteCount: Int, courseID: String, type: PostType, title: String,
-                pinned: Bool, closed: Bool, following: Bool, commentCount: Int, avatar: String, unreadCommentCount: Int,
-                abuseFlagged: Bool, hasEndorsed: Bool, numPages: Int) {
+    public init(
+        id: String,
+        author: String,
+        authorLabel: String,
+        createdAt: Date,
+        updatedAt: Date,
+        rawBody: String,
+        renderedBody: String,
+        voted: Bool,
+        voteCount: Int,
+        courseID: String, 
+        type: PostType,
+        title: String,
+        pinned: Bool,
+        closed: Bool,
+        following: Bool,
+        commentCount: Int,
+        avatar: String,
+        unreadCommentCount: Int,
+        abuseFlagged: Bool,
+        hasEndorsed: Bool,
+        numPages: Int
+    ) {
         self.id = id
         self.author = author
         self.authorLabel = authorLabel
@@ -110,5 +129,33 @@ public extension DataLayer.ThreadListsResponse {
                        numPages: pagination.numPages)
         })
         return ThreadLists(threads: threadsReady)
+    }
+}
+
+public extension DataLayer.ThreadList {
+    var userThread: UserThread {
+        UserThread(
+            id: id,
+            author: author ?? DiscussionLocalization.anonymous,
+            authorLabel: authorLabel ?? "",
+            createdAt: Date(iso8601: createdAt),
+            updatedAt: Date(iso8601: updatedAt),
+            rawBody: rawBody,
+            renderedBody: renderedBody,
+            voted: voted,
+            voteCount: voteCount,
+            courseID: courseID,
+            type: type,
+            title: title,
+            pinned: pinned,
+            closed: closed,
+            following: following,
+            commentCount: commentCount,
+            avatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
+            unreadCommentCount: unreadCommentCount,
+            abuseFlagged: abuseFlagged,
+            hasEndorsed: hasEndorsed,
+            numPages: 0
+        )
     }
 }

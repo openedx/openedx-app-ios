@@ -25,8 +25,8 @@ public struct NavigationBar: View {
     @Binding private var rightButtonIsActive: Bool
     
     public init(title: String,
-                titleColor: Color = Theme.Colors.textPrimary,
-                leftButtonColor: Color = Theme.Colors.accentColor,
+                titleColor: Color = Theme.Colors.navigationBarTintColor,
+                leftButtonColor: Color = Theme.Colors.accentXColor,
                 leftButtonAction: (() -> Void)? = nil,
                 rightButtonType: ButtonType? = nil,
                 rightButtonAction: (() -> Void)? = nil,
@@ -51,20 +51,14 @@ public struct NavigationBar: View {
             }
             .padding(.horizontal, 24)
             if leftButton {
-            VStack {
-                    Button(action: {
-                        leftButtonAction?()
-                    }, label: {
-                        CoreAssets.arrowLeft.swiftUIImage
-                            .backButtonStyle(color: leftButtonColor)
-                            .padding(8)
-                    })
-                    .foregroundColor(Theme.Colors.styledButtonText)
-                    .accessibilityIdentifier("back_button")
-                    
-                }.frame(minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading)
+                VStack {
+                    BackNavigationButton(color: leftButtonColor, action: leftButtonAction)
+                        .padding(8)
+                        .backViewStyle()
+                }
+                .frame(minWidth: 0,
+                       maxWidth: .infinity,
+                       alignment: .topLeading)
                 
             }
             if rightButtonType != nil {
@@ -81,14 +75,15 @@ public struct NavigationBar: View {
                                     .backButtonStyle(topPadding: 0)
                                 Text(CoreLocalization.done)
                                     .font(Theme.Fonts.labelLarge)
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(Theme.Colors.accentXColor)
                             }.offset(y: -6)
                         case .edit:
-                            CoreAssets.edit.swiftUIImage
+                            CoreAssets.edit.swiftUIImage.renderingMode(.template)
                                 .resizable()
                                 .frame(width: 24, height: 24)
                                 .padding(.horizontal)
                                 .padding(.top, -10)
+                                .foregroundColor(Theme.Colors.accentXColor)
                         case .none:
                             EmptyView()
                         }

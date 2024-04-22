@@ -13,16 +13,13 @@ struct CourseNavigationView: View {
     
     @ObservedObject
     private var viewModel: CourseUnitViewModel
-    private let sectionName: String
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
     
     init(
-        sectionName: String,
         viewModel: CourseUnitViewModel,
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
     ) {
         self.viewModel = viewModel
-        self.sectionName = sectionName
         self.playerStateSubject = playerStateSubject
     }
     
@@ -91,8 +88,7 @@ struct CourseNavigationView: View {
                 
                 viewModel.router.presentAlert(
                     alertTitle: CourseLocalization.Courseware.goodWork,
-                    alertMessage: (CourseLocalization.Courseware.section
-                                   + currentVertical.displayName + CourseLocalization.Courseware.isFinished),
+                    alertMessage: (CoreLocalization.Courseware.sectionCompleted(currentVertical.displayName)),
                     nextSectionName: {
                         if let data = viewModel.nextData,
                            let vertical = viewModel.vertical(for: data) {
@@ -129,7 +125,6 @@ struct CourseNavigationView: View {
                             courseName: viewModel.courseName,
                             blockId: viewModel.lessonID,
                             courseID: viewModel.courseID,
-                            sectionName: viewModel.selectedLesson().displayName,
                             verticalIndex: data.verticalIndex,
                             chapters: viewModel.chapters,
                             chapterIndex: data.chapterIndex,
@@ -171,7 +166,6 @@ struct CourseNavigationView_Previews: PreviewProvider {
         )
         
         CourseNavigationView(
-            sectionName: "Name",
             viewModel: viewModel,
             playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil)
         )

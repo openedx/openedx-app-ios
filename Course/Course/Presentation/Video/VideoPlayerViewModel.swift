@@ -133,7 +133,10 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     func presentPicker() {
-        router.presentView(transitionStyle: .crossDissolve) {
+        router.presentView(
+            transitionStyle: .crossDissolve,
+            animated: true
+        ) {
             PickerMenu(items: items,
                        titleText: generateLanguageName(code: selectedLanguage ?? ""),
                        router: router,

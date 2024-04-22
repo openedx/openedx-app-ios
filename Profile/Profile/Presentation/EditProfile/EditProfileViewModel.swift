@@ -9,6 +9,7 @@ import Foundation
 import Core
 import SwiftUI
 
+// swiftlint:disable file_length type_body_length
 public struct Changes: Equatable {
     public var shortBiography: String
     public var profileType: ProfileType
@@ -23,7 +24,10 @@ public class EditProfileViewModel: ObservableObject {
     @Published private(set) var selectedCountry: PickerItem?
     @Published private(set) var selectedSpokeLanguage: PickerItem?
     @Published private(set) var selectedYearOfBirth: PickerItem?
-    
+
+    var profileDidEdit: (((UserProfile?, UIImage?)) -> Void)?
+    var oldAvatar: UIImage?
+
     private let currentYear = Calendar.current.component(.year, from: Date())
     public let profileTypes: [ProfileType] = [.full, .limited]
     private var years: [PickerFields.Option] = []
@@ -160,6 +164,8 @@ public class EditProfileViewModel: ObservableObject {
         } else {
             profileChanges.profileType.toggle()
         }
+        
+        analytics.profileSwitch(action: profileChanges.profileType.value ?? "")
     }
     
     func checkProfileType() {
@@ -214,6 +220,12 @@ public class EditProfileViewModel: ObservableObject {
             parameters["bio"] = self.profileChanges.shortBiography
         }
         await uploadData(parameters: parameters)
+        
+        if profileChanges.isAvatarSaved {
+            profileDidEdit?((editedProfile, inputImage))
+        } else {
+            profileDidEdit?((editedProfile, oldAvatar))
+        }
     }
     
     @MainActor
@@ -353,3 +365,4 @@ public class EditProfileViewModel: ObservableObject {
         analytics.profileEditDoneClicked()
     }
 }
+// swiftlint:enable file_length type_body_length

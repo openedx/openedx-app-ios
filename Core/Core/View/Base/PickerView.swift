@@ -33,7 +33,10 @@ public struct PickerView: View {
                             Animation.easeInOut(duration: 0.3)
                         ) {
                             let pickerItems = config.field.options.map { PickerItem(key: $0.value, value: $0.name) }
-                            router.presentView(transitionStyle: .crossDissolve) {
+                            router.presentView(
+                                transitionStyle: .crossDissolve,
+                                animated: true
+                            ) {
                                 PickerMenu(items: pickerItems,
                                            titleText: config.field.label,
                                            router: router,
@@ -51,7 +54,7 @@ public struct PickerView: View {
                     })
                     .accessibilityIdentifier("\(config.field.name)_picker_button")
                 }.padding(.all, 14)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textInputTextColor)
                     .background(
                         Theme.Shapes.textInputShape
                             .fill(Theme.Colors.textInputBackground)
@@ -61,7 +64,7 @@ public struct PickerView: View {
                             .stroke(lineWidth: 1)
                             .fill(config.error == "" ?
                                   Theme.Colors.textInputStroke
-                                  : Color.red)
+                                  : Theme.Colors.alert)
                     )
                     .shake($config.shake)
                 Text(config.error == "" ? config.field.instructions
@@ -69,7 +72,7 @@ public struct PickerView: View {
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(config.error == ""
                                  ? Theme.Colors.textPrimary
-                                 : Color.red)
+                                 : Theme.Colors.alert)
                 .accessibilityIdentifier("\(config.field.name)_instructions_text")
             }
         }

@@ -78,7 +78,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
 
         let blocks = try? context.fetch(requestBlocks).map {
             let userViewData = DataLayer.CourseDetailUserViewData(
-                transcripts: nil,
+                transcripts: $0.transcripts?.jsonStringToDictionary() as? [String: String],
                 encodedVideo: DataLayer.CourseDetailEncodedVideoData(
                     youTube: DataLayer.EncodedVideoData(
                         url: $0.youTube?.url,
@@ -113,11 +113,13 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 graded: $0.graded,
                 completion: $0.completion,
                 studentUrl: $0.studentUrl ?? "",
+                webUrl: $0.webUrl ?? "",
                 type: $0.type ?? "",
                 displayName: $0.displayName ?? "",
                 descendants: $0.descendants,
                 allSources: $0.allSources,
-                userViewData: userViewData
+                userViewData: userViewData,
+                multiDevice: $0.multiDevice
             )
         }
         
@@ -136,7 +138,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     large: structure.mediaLarge ?? ""
                 )
             ),
-            certificate: DataLayer.Certificate(url: structure.certificate)
+            certificate: DataLayer.Certificate(url: structure.certificate),
+            isSelfPaced: structure.isSelfPaced
         )
     }
     
@@ -149,6 +152,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.mediaRaw = structure.media.image.raw
             newStructure.id = structure.id
             newStructure.rootItem = structure.rootItem
+            newStructure.isSelfPaced = structure.isSelfPaced
             
             for block in Array(structure.dict.values) {
                 let courseDetail = CDCourseBlock(context: self.context)
@@ -162,6 +166,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 courseDetail.studentUrl = block.studentUrl
                 courseDetail.type = block.type
                 courseDetail.completion = block.completion ?? 0
+                courseDetail.multiDevice = block.multiDevice ?? false
 
                 if block.userViewData?.encodedVideo?.youTube != nil {
                     let youTube = CDCourseBlockVideo(context: self.context)
@@ -211,6 +216,10 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     courseDetail.hls = hls
                 }
 
+                if let transcripts = block.userViewData?.transcripts {
+                    courseDetail.transcripts = transcripts.toJson()
+                }
+                
                 do {
                     try context.save()
                 } catch {

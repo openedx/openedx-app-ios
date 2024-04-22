@@ -7,11 +7,13 @@
 */
 
 "TITLE" = "Discussions";
+"BANNER.DISCUSSIONS_IS_DISABLED" = "Posting in discussions is disabled by the course team";
 
 "TOPICS.SEARCH" = "Search all posts";
 "TOPICS.ALL_POSTS" = "All Posts";
 "TOPICS.POST_IM_FOLLOWING" = "Posts I'm following";
 "TOPICS.MAIN_CATEGORIES" = "Main categories";
+"TOPICS.UNNAMED" = "Unnamed subcategory";
 
 "POSTS.SORT.RECENT_ACTIVITY" = "Recent Activity";
 "POSTS.SORT.MOST_ACTIVITY" = "Most Activity";
@@ -19,6 +21,7 @@
 "POSTS.NO_DISCUSSION.TITLE" = "No discussions yet";
 "POSTS.NO_DISCUSSION.DESCRIPTION" = "Click the button below to create your first discussion.";
 "POSTS.NO_DISCUSSION.CREATEBUTTON" = "Create discussion";
+"POSTS.NO_DISCUSSION.ADD_POST" = "Add a post";
 
 "POSTS.FILTER.ALL_POSTS" = "All Posts";
 "POSTS.FILTER.UNREAD" = "Unread";

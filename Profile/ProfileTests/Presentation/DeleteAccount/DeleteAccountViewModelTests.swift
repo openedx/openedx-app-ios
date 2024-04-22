@@ -18,7 +18,12 @@ final class DeleteAccountViewModelTests: XCTestCase {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DeleteAccountViewModel(interactor: interactor, router: router, connectivity: connectivity)
+        let viewModel = DeleteAccountViewModel(
+            interactor: interactor,
+            router: router,
+            connectivity: connectivity,
+            analytics: ProfileAnalyticsMock()
+        )
         
         Given(interactor, .deleteAccount(password: .any, willReturn: true))
         
@@ -32,7 +37,12 @@ final class DeleteAccountViewModelTests: XCTestCase {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DeleteAccountViewModel(interactor: interactor, router: router, connectivity: connectivity)
+        let viewModel = DeleteAccountViewModel(
+            interactor: interactor,
+            router: router,
+            connectivity: connectivity,
+            analytics: ProfileAnalyticsMock()
+        )
         
         Given(interactor, .deleteAccount(password: .any, willReturn: false))
         
@@ -48,7 +58,12 @@ final class DeleteAccountViewModelTests: XCTestCase {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DeleteAccountViewModel(interactor: interactor, router: router, connectivity: connectivity)
+        let viewModel = DeleteAccountViewModel(
+            interactor: interactor,
+            router: router,
+            connectivity: connectivity,
+            analytics: ProfileAnalyticsMock()
+        )
         
         let validationError = CustomValidationError(statusCode: 401, data: ["error_code": "user_not_active"])
         let error = AFError.responseValidationFailed(
@@ -71,7 +86,12 @@ final class DeleteAccountViewModelTests: XCTestCase {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DeleteAccountViewModel(interactor: interactor, router: router, connectivity: connectivity)
+        let viewModel = DeleteAccountViewModel(
+            interactor: interactor,
+            router: router,
+            connectivity: connectivity,
+            analytics: ProfileAnalyticsMock()
+        )
         
         Given(interactor, .deleteAccount(password: .any, willThrow: NSError()))
         
@@ -89,7 +109,12 @@ final class DeleteAccountViewModelTests: XCTestCase {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let connectivity = ConnectivityProtocolMock()
-        let viewModel = DeleteAccountViewModel(interactor: interactor, router: router, connectivity: connectivity)
+        let viewModel = DeleteAccountViewModel(
+            interactor: interactor,
+            router: router,
+            connectivity: connectivity,
+            analytics: ProfileAnalyticsMock()
+        )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         

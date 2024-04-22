@@ -39,7 +39,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         let block = CourseBlock(
@@ -52,7 +53,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .problem,
             displayName: "",
             studentUrl: "",
-            encodedVideo: nil
+            webUrl: "",
+            encodedVideo: nil,
+            multiDevice: true
         )
         let vertical = CourseVertical(
             blockId: "",
@@ -93,7 +96,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
                                                                 small: "",
                                                                 large: "")),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
         
         let resumeBlock = ResumeBlock(blockID: "123")
@@ -142,7 +146,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         let courseStructure = CourseStructure(
@@ -157,7 +162,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
                                                                 small: "",
                                                                 large: "")),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
         
         Given(interactor, .getLoadedCourseBlocks(courseID: .any, willReturn: courseStructure))
@@ -198,7 +204,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -240,7 +247,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -279,7 +287,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -318,7 +327,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         viewModel.trackSelectedTab(selection: .course, courseId: "1", courseName: "name")
@@ -355,6 +365,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -362,7 +373,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
 
         )
 
@@ -407,12 +419,15 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -443,7 +458,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -485,6 +501,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -492,7 +509,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -536,7 +554,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -559,7 +578,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -601,6 +621,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -608,7 +629,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -652,7 +674,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -675,7 +698,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -718,6 +742,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -725,7 +750,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -769,7 +795,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -792,7 +819,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -828,6 +856,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -835,7 +864,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -879,12 +909,15 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -915,7 +948,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -951,6 +985,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -958,7 +993,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -1002,12 +1038,15 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -1038,7 +1077,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -1073,6 +1113,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -1080,7 +1121,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
         let block2 = CourseBlock(
             blockId: "123",
@@ -1092,6 +1134,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             type: .video,
             displayName: "",
             studentUrl: "",
+            webUrl: "",
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
@@ -1099,7 +1142,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
-            )
+            ),
+            multiDevice: true
         )
 
         let vertical = CourseVertical(
@@ -1143,12 +1187,15 @@ final class CourseContainerViewModelTests: XCTestCase {
                 small: "",
                 large: ""
             )),
-            certificate: nil
+            certificate: nil,
+            isSelfPaced: true
         )
 
         let downloadData = DownloadDataTask(
             id: "1",
+            blockId: "1",
             courseId: "course123",
+            userId: 1,
             url: "https://example.com/file.mp4",
             fileName: "file.mp4",
             displayName: "file.mp4",
@@ -1179,7 +1226,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: nil,
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()

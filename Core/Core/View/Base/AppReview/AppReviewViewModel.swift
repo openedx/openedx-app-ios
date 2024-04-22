@@ -51,10 +51,12 @@ public class AppReviewViewModel: ObservableObject {
     
     private let config: ConfigProtocol
     var storage: CoreStorage
+    private let analytics: CoreAnalytics
     
-    public init(config: ConfigProtocol, storage: CoreStorage) {
+    public init(config: ConfigProtocol, storage: CoreStorage, analytics: CoreAnalytics) {
         self.config = config
         self.storage = storage
+        self.analytics = analytics
     }
     
     public func shouldShowRatingView() -> Bool {
@@ -151,5 +153,13 @@ public class AppReviewViewModel: ObservableObject {
         }
         
         return false
+    }
+    
+    func trackAppReviewAction(_ action: String? = nil) {
+        analytics.appreview(.appreviewPopupAction, biValue: .appreviewPopupAction, action: action, rating: rating)
+    }
+    
+    func trackAppReviewViewed() {
+        analytics.appreview(.appreviewPopupViewed, biValue: .appreviewPopupViewed, action: nil, rating: rating)
     }
 }

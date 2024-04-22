@@ -25,7 +25,9 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .video,
                     displayName: "Lesson 1",
                     studentUrl: "",
-                    encodedVideo: nil
+                    webUrl: "",
+                    encodedVideo: nil,
+                    multiDevice: true
                    ),
         CourseBlock(blockId: "2",
                     id: "2",
@@ -36,7 +38,9 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .video,
                     displayName: "Lesson 2",
                     studentUrl: "2",
-                    encodedVideo: nil
+                    webUrl: "2",
+                    encodedVideo: nil,
+                    multiDevice: false
                    ),
         CourseBlock(blockId: "3",
                     id: "3",
@@ -47,7 +51,9 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .unknown,
                     displayName: "Lesson 3",
                     studentUrl: "3",
-                    encodedVideo: nil
+                    webUrl: "3",
+                    encodedVideo: nil,
+                    multiDevice: true
                    ),
         CourseBlock(blockId: "4",
                     id: "4",
@@ -58,7 +64,9 @@ final class CourseUnitViewModelTests: XCTestCase {
                     type: .unknown,
                     displayName: "4",
                     studentUrl: "4",
-                    encodedVideo: nil
+                    webUrl: "4",
+                    encodedVideo: nil,
+                    multiDevice: false
                    ),
     ]
     

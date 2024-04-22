@@ -10,11 +10,27 @@ import Core
 
 public class StartupViewModel: ObservableObject {
     let router: AuthorizationRouter
+    let analytics: CoreAnalytics
+    
     @Published var searchQuery: String?
     
     public init(
-        router: AuthorizationRouter
+        router: AuthorizationRouter,
+        analytics: CoreAnalytics
     ) {
         self.router = router
+        self.analytics = analytics
+    }
+    
+    func logAnalytics(searchQuery: String?) {
+        if let searchQuery {
+            analytics.trackEvent(
+                .logistrationCoursesSearch,
+                biValue: .logistrationCoursesSearch,
+                parameters: [EventParamKey.searchQuery: searchQuery]
+            )
+        } else {
+            analytics.trackEvent(.logistrationExploreAllCourses, biValue: .logistrationExploreAllCourses)
+        }
     }
 }

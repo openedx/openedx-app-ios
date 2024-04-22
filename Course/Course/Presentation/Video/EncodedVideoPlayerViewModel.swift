@@ -13,7 +13,10 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
     
     let url: URL?
     
-    let controller = AVPlayerViewController()
+    let controllerHolder: PlayerViewControllerHolder
+    var controller: AVPlayerViewController {
+        controllerHolder.playerController
+    }
     private var subscription = Set<AnyCancellable>()
     
     public init(
@@ -25,24 +28,47 @@ public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
         appStorage: CoreStorage,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        pipManager: PipManagerProtocol,
+        selectedCourseTab: Int
     ) {
         self.url = url
+        
+        if let holder = pipManager.holder(
+            for: url,
+            blockID: blockID,
+            courseID: courseID,
+            selectedCourseTab: selectedCourseTab
+        ) {
+            controllerHolder = holder
+        } else {
+            let holder = PlayerViewControllerHolder(
+                url: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab
+            )
+            controllerHolder = holder
+        }
         
         super.init(blockID: blockID,
                    courseID: courseID,
                    languages: languages,
                    interactor: interactor,
-                   router: router, 
+                   router: router,
                    appStorage: appStorage,
                    connectivity: connectivity)
         
         playerStateSubject.sink(receiveValue: { [weak self] state in
             switch state {
             case .pause:
-                self?.controller.player?.pause()
+                if self?.controllerHolder.isPlayingInPip != true {
+                    self?.controller.player?.pause()
+                }
             case .kill:
-                self?.controller.player?.replaceCurrentItem(with: nil)
+                if self?.controllerHolder.isPlayingInPip != true {
+                    self?.controller.player?.replaceCurrentItem(with: nil)
+                }
             case .none:
                 break
             }

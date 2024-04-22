@@ -12,7 +12,7 @@ import Theme
 public struct ThreadView: View {
     
     private var title: String
-    private let thread: UserThread
+    public let thread: UserThread
     private var onBackTapped: (() -> Void) = {}
     
     @ObservedObject private var viewModel: ThreadViewModel
@@ -29,219 +29,230 @@ public struct ThreadView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            
-            // MARK: - Page Body
-            ScrollViewReader { scroll in
-                VStack {
-                    ZStack(alignment: .top) {
-                        RefreshableScrollViewCompat(action: {
-                            _ = await viewModel.getPosts(thread: thread, page: 1)
-                        }) {
-                            VStack {
-                                if let comments = viewModel.postComments {
-                                    ParentCommentView(
-                                        comments: comments,
-                                        isThread: true, 
-                                        onAvatarTap: { username in
-                                            viewModel.router.showUserDetails(username: username)
-                                        },
-                                        onLikeTap: {
-                                            Task {
-                                                if await viewModel.vote(
-                                                    id: comments.threadID,
-                                                    isThread: true,
-                                                    voted: comments.voted,
-                                                    index: nil
-                                                ) {
-                                                    viewModel.sendPostLikedState()
-                                                }
-                                            }
-                                        },
-                                        onReportTap: {
-                                            Task {
-                                                if await viewModel.flag(
-                                                    id: comments.threadID,
-                                                    isThread: true,
-                                                    abuseFlagged: comments.abuseFlagged,
-                                                    index: nil
-                                                ) {
-                                                    viewModel.sendReportedState()
-                                                }
-                                            }
-                                        },
-                                        onFollowTap: {
-                                            Task {
-                                                if await viewModel.followThread(
-                                                    following: comments.followed,
-                                                    threadID: comments.threadID
-                                                ) {
-                                                    viewModel.sendPostFollowedState()
-                                                }
-                                            }
-                                        }
-                                    )
-                                    
-                                    HStack {
-                                        Text("\(viewModel.itemsCount)")
-                                        Text(DiscussionLocalization.responsesCount(viewModel.itemsCount))
-                                        Spacer()
-                                    }.padding(.top, 40)
-                                        .padding(.bottom, 14)
-                                        .padding(.leading, 24)
-                                        .font(Theme.Fonts.titleMedium)
-                                    
-                                    ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
-                                        CommentCell(
-                                            comment: comment,
-                                            addCommentAvailable: true,
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                
+                // MARK: - Page Body
+                ScrollViewReader { scroll in
+                    VStack {
+                        ZStack(alignment: .top) {
+                            RefreshableScrollViewCompat(action: {
+                                _ = await viewModel.getThreadData(thread: thread, page: 1, refresh: true)
+                            }) {
+                                VStack {
+                                    if let comments = viewModel.postComments {
+                                        ParentCommentView(
+                                            comments: comments,
+                                            isThread: true,
                                             onAvatarTap: { username in
                                                 viewModel.router.showUserDetails(username: username)
-                                            }, onLikeTap: {
+                                            },
+                                            onLikeTap: {
                                                 Task {
-                                                    await viewModel.vote(
-                                                        id: comment.commentID,
-                                                        isThread: false,
-                                                        voted: comment.voted,
-                                                        index: index
-                                                    )
+                                                    if await viewModel.vote(
+                                                        id: comments.threadID,
+                                                        isThread: true,
+                                                        voted: comments.voted,
+                                                        index: nil
+                                                    ) {
+                                                        viewModel.sendPostLikedState()
+                                                    }
                                                 }
                                             },
                                             onReportTap: {
                                                 Task {
-                                                    await viewModel.flag(
-                                                        id: comment.commentID,
-                                                        isThread: false,
-                                                        abuseFlagged: comment.abuseFlagged,
-                                                        index: index
-                                                    )
+                                                    if await viewModel.flag(
+                                                        id: comments.threadID,
+                                                        isThread: true,
+                                                        abuseFlagged: comments.abuseFlagged,
+                                                        index: nil
+                                                    ) {
+                                                        viewModel.sendReportedState()
+                                                    }
                                                 }
                                             },
-                                            onCommentsTap: {
-                                                viewModel.router.showComments(
-                                                    commentID: comment.commentID,
-                                                    parentComment: comment,
-                                                    threadStateSubject: viewModel.threadStateSubject
-                                                )
-                                            },
-                                            onFetchMore: {
+                                            onFollowTap: {
                                                 Task {
-                                                    await viewModel.fetchMorePosts(thread: thread,
-                                                                                   index: index)
+                                                    if await viewModel.followThread(
+                                                        following: comments.followed,
+                                                        threadID: comments.threadID
+                                                    ) {
+                                                        viewModel.sendPostFollowedState()
+                                                    }
                                                 }
                                             }
                                         )
-                                        .id(index)
-                                    }
-                                    if viewModel.nextPage <= viewModel.totalPages {
-                                        VStack(alignment: .center) {
-                                            ProgressBar(size: 40, lineWidth: 8)
-                                                .padding(.top, 20)
+                                        
+                                        HStack {
+                                            Text("\(viewModel.itemsCount)")
+                                            Text(DiscussionLocalization.responsesCount(viewModel.itemsCount))
+                                            Spacer()
                                         }
-                                    }
-                                    Spacer(minLength: 84)
-                                }
-                            }
-                            .frameLimit()
-                            .onRightSwipeGesture {
-                                viewModel.router.back()
-                                onBackTapped()
-                                viewModel.sendUpdateUnreadState()
-                            }
-                        }
-                        if !thread.closed {
-                            FlexibleKeyboardInputView(
-                                hint: DiscussionLocalization.Thread.addResponse,
-                                sendText: { commentText in
-                                    if let threadID = viewModel.postComments?.threadID {
-                                        Task {
-                                            await viewModel.postComment(
-                                                threadID: threadID,
-                                                rawBody: commentText,
-                                                parentID: viewModel.postComments?.parentID
+                                        .padding(.top, 20)
+                                        .padding(.leading, 24)
+                                        .font(Theme.Fonts.titleMedium)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        
+                                        ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
+                                            CommentCell(
+                                                comment: comment,
+                                                addCommentAvailable: true,
+                                                onAvatarTap: { username in
+                                                    viewModel.router.showUserDetails(username: username)
+                                                },
+                                                onLikeTap: {
+                                                    Task {
+                                                        await viewModel.vote(
+                                                            id: comment.commentID,
+                                                            isThread: false,
+                                                            voted: comment.voted,
+                                                            index: index
+                                                        )
+                                                    }
+                                                },
+                                                onReportTap: {
+                                                    Task {
+                                                        await viewModel.flag(
+                                                            id: comment.commentID,
+                                                            isThread: false,
+                                                            abuseFlagged: comment.abuseFlagged,
+                                                            index: index
+                                                        )
+                                                    }
+                                                },
+                                                onCommentsTap: {
+                                                    viewModel.router.showComments(
+                                                        commentID: comment.commentID,
+                                                        parentComment: comment,
+                                                        threadStateSubject: viewModel.threadStateSubject,
+                                                        isBlackedOut: viewModel.isBlackedOut,
+                                                        animated: true
+                                                    )
+                                                },
+                                                onFetchMore: {
+                                                    Task {
+                                                        await viewModel.fetchMorePosts(thread: thread,
+                                                                                       index: index)
+                                                    }
+                                                }
                                             )
+                                            .id(index)
                                         }
+                                        if viewModel.nextPage <= viewModel.totalPages {
+                                            VStack(alignment: .center) {
+                                                ProgressBar(size: 40, lineWidth: 8)
+                                                    .padding(.top, 20)
+                                            }
+                                        }
+                                        Spacer(minLength: 84)
                                     }
                                 }
-                            ).ignoresSafeArea(.all, edges: .horizontal)
-                        }
-                    }
-                    .onReceive(viewModel.addPostSubject, perform: { newComment in
-                        guard let newComment else { return }
-                        viewModel.sendPostRepliesCountState()
-                        if viewModel.nextPage - 1 == viewModel.totalPages {
-                            viewModel.addNewPost(newComment)
-                            withAnimation {
-                                guard let count = viewModel.postComments?.comments.count else { return }
-                                scroll.scrollTo(count - 2, anchor: .top)
+                                .onRightSwipeGesture {
+                                    viewModel.router.back()
+                                    onBackTapped()
+                                    viewModel.sendUpdateUnreadState()
+                                }
+                                .frameLimit(width: proxy.size.width)
                             }
-                        } else {
-                            viewModel.alertMessage = DiscussionLocalization.Thread.Alert.commentAdded
-                            viewModel.showAlert = true
+                            if !(thread.closed  || viewModel.isBlackedOut) {
+                                FlexibleKeyboardInputView(
+                                    hint: DiscussionLocalization.Thread.addResponse,
+                                    sendText: { commentText in
+                                        if let threadID = viewModel.postComments?.threadID {
+                                            Task {
+                                                await viewModel.postComment(
+                                                    threadID: threadID,
+                                                    rawBody: commentText,
+                                                    parentID: viewModel.postComments?.parentID
+                                                )
+                                            }
+                                        }
+                                    }
+                                )
+                                .ignoresSafeArea(.all, edges: .horizontal)
+                            }
                         }
-                    })
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }.scrollAvoidKeyboard(dismissKeyboardByTap: true)
-            }
-            .padding(.top, 8)
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
+                        .onReceive(viewModel.addPostSubject, perform: { newComment in
+                            guard let newComment else { return }
+                            viewModel.sendPostRepliesCountState()
+                            if viewModel.nextPage - 1 == viewModel.totalPages {
+                                viewModel.addNewPost(newComment)
+                                withAnimation {
+                                    guard let count = viewModel.postComments?.comments.count else { return }
+                                    scroll.scrollTo(count - 2, anchor: .top)
+                                }
+                            } else {
+                                viewModel.alertMessage = DiscussionLocalization.Thread.Alert.commentAdded
+                                viewModel.showAlert = true
+                            }
+                        })
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }.scrollAvoidKeyboard(dismissKeyboardByTap: true)
                 }
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
+                .padding(.top, 8)
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
+                    }
+                }
+                
+                // MARK: - Alert
+                if viewModel.showAlert {
+                    VStack {
+                        Text(viewModel.alertMessage ?? "")
+                            .shadowCardStyle(
+                                bgColor: Theme.Colors.accentColor,
+                                textColor: Theme.Colors.white
+                            )
+                            .padding(.top, 80)
+                        Spacer()
+                        
+                    }
+                    .transition(.move(edge: .top))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.alertMessage = nil
+                        }
                     }
                 }
             }
-            
-            // MARK: - Alert
-            if viewModel.showAlert {
-                VStack {
-                    Text(viewModel.alertMessage ?? "")
-                        .shadowCardStyle(
-                            bgColor: Theme.Colors.accentColor,
-                            textColor: Theme.Colors.white
-                        )
-                        .padding(.top, 80)
-                    Spacer()
-                    
-                }
-                .transition(.move(edge: .top))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.alertMessage = nil
+            .ignoresSafeArea(.all, edges: .horizontal)
+            .navigationBarHidden(false)
+            .navigationBarBackButtonHidden(true)
+            .navigationTitle(title)
+            .toolbar {
+                ToolbarItem(
+                    placement: .navigationBarLeading,
+                    content: {
+                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                            viewModel.router.back()
+                        }
+                        .offset(x: -8, y: -1.5)
                     }
+                )
+            }
+            .onFirstAppear {
+                Task {
+                    await viewModel.getThreadData(thread: thread, page: 1)
                 }
             }
-        }
-        .ignoresSafeArea(.all, edges: .horizontal)
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle(title)
-        .onFirstAppear {
-            Task {
-                await viewModel.getPosts(thread: thread, page: 1)
+            .onDisappear {
+                onBackTapped()
+                viewModel.sendUpdateUnreadState()
             }
-        }
-        .onDisappear {
-            onBackTapped()
-            viewModel.sendUpdateUnreadState()
-        }
-        .edgesIgnoringSafeArea(.bottom)
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
-    }
-    
-    private func reloadPage(onSuccess: @escaping () -> Void) {
-        Task {
-            if await viewModel.getPosts(thread: thread,
-                                        page: viewModel.nextPage-1) { onSuccess() }
+            .edgesIgnoringSafeArea(.bottom)
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
         }
     }
 }

@@ -14,6 +14,7 @@ public struct Theme {
     
     public struct Colors {
         public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
+        public private(set) static var accentXColor = ThemeAssets.accentXColor.swiftUIColor
         public private(set) static var accentButtonColor = ThemeAssets.accentButtonColor.swiftUIColor
         public private(set) static var alert = ThemeAssets.alert.swiftUIColor
         public private(set) static var avatarStroke = ThemeAssets.avatarStroke.swiftUIColor
@@ -31,17 +32,19 @@ public struct Theme {
         public private(set) static var upcomingTimelineColor = ThemeAssets.upcomingTimelineColor.swiftUIColor
         public private(set) static var shadowColor = ThemeAssets.shadowColor.swiftUIColor
         public private(set) static var snackbarErrorColor = ThemeAssets.snackbarErrorColor.swiftUIColor
-        public private(set) static var snackbarErrorTextColor = ThemeAssets.snackbarErrorTextColor.swiftUIColor
-        public private(set) static var snackbarInfoAlert = ThemeAssets.snackbarInfoAlert.swiftUIColor
-        public private(set) static var styledButtonBackground = ThemeAssets.styledButtonBackground.swiftUIColor
+        public private(set) static var snackbarWarningColor = ThemeAssets.snackbarWarningColor.swiftUIColor
+        public private(set) static var snackbarInfoColor = ThemeAssets.snackbarInfoColor.swiftUIColor
+        public private(set) static var snackbarTextColor = ThemeAssets.snackbarTextColor.swiftUIColor
         public private(set) static var styledButtonText = ThemeAssets.styledButtonText.swiftUIColor
         public private(set) static var textPrimary = ThemeAssets.textPrimary.swiftUIColor
         public private(set) static var textSecondary = ThemeAssets.textSecondary.swiftUIColor
+        public private(set) static var textSecondaryLight = ThemeAssets.textSecondaryLight.swiftUIColor
         public private(set) static var textInputBackground = ThemeAssets.textInputBackground.swiftUIColor
         public private(set) static var textInputStroke = ThemeAssets.textInputStroke.swiftUIColor
         public private(set) static var textInputUnfocusedBackground = ThemeAssets.textInputUnfocusedBackground.swiftUIColor
         public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
         public private(set) static var warning = ThemeAssets.warning.swiftUIColor
+        public private(set) static var warningText = ThemeAssets.warningText.swiftUIColor
         public private(set) static var white = ThemeAssets.white.swiftUIColor
         public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
         public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor
@@ -50,9 +53,21 @@ public struct Theme {
         public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
         public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
         public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
+        public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
+        public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
+        public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
+        public private(set) static var success = ThemeAssets.success.swiftUIColor
+        public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
+        public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
+        public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
+        public private(set) static var textInputTextColor = ThemeAssets.textInputTextColor.swiftUIColor
+        public private(set) static var textInputPlaceholderColor = ThemeAssets.textInputPlaceholderColor.swiftUIColor
+        public private(set) static var infoColor = ThemeAssets.infoColor.swiftUIColor
+        public private(set) static var irreversibleAlert = ThemeAssets.irreversibleAlert.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
+            accentXColor: Color = ThemeAssets.accentXColor.swiftUIColor,
             alert: Color = ThemeAssets.alert.swiftUIColor,
             avatarStroke: Color = ThemeAssets.avatarStroke.swiftUIColor,
             background: Color = ThemeAssets.background.swiftUIColor,
@@ -68,12 +83,12 @@ public struct Theme {
             upcomingTimelineColor: Color = ThemeAssets.upcomingTimelineColor.swiftUIColor,
             shadowColor: Color = ThemeAssets.shadowColor.swiftUIColor,
             snackbarErrorColor: Color = ThemeAssets.snackbarErrorColor.swiftUIColor,
-            snackbarErrorTextColor: Color = ThemeAssets.snackbarErrorTextColor.swiftUIColor,
-            snackbarInfoAlert: Color = ThemeAssets.snackbarInfoAlert.swiftUIColor,
-            styledButtonBackground: Color = ThemeAssets.styledButtonBackground.swiftUIColor,
+            snackbarInfoColor: Color = ThemeAssets.snackbarInfoColor.swiftUIColor,
+            snackbarTextColor: Color = ThemeAssets.snackbarTextColor.swiftUIColor,
             styledButtonText: Color = ThemeAssets.styledButtonText.swiftUIColor,
             textPrimary: Color = ThemeAssets.textPrimary.swiftUIColor,
             textSecondary: Color = ThemeAssets.textSecondary.swiftUIColor,
+            textSecondaryLight: Color = ThemeAssets.textSecondaryLight.swiftUIColor,
             textInputBackground: Color = ThemeAssets.textInputBackground.swiftUIColor,
             textInputStroke: Color = ThemeAssets.textInputStroke.swiftUIColor,
             textInputUnfocusedBackground: Color = ThemeAssets.textInputUnfocusedBackground.swiftUIColor,
@@ -84,9 +99,21 @@ public struct Theme {
             progressDone: Color = ThemeAssets.progressDone.swiftUIColor,
             progressSkip: Color = ThemeAssets.progressSkip.swiftUIColor,
             datesSectionBackground: Color = ThemeAssets.datesSectionBackground.swiftUIColor,
-            datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor
+            datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor,
+            navigationBarTintColor: Color = ThemeAssets.navigationBarTintColor.swiftUIColor,
+            secondaryButtonBorderColor: Color = ThemeAssets.secondaryButtonBorderColor.swiftUIColor,
+            secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor,
+            success: Color = ThemeAssets.success.swiftUIColor,
+            tabbarColor: Color = ThemeAssets.tabbarColor.swiftUIColor,
+            primaryButtonTextColor: Color = ThemeAssets.primaryButtonTextColor.swiftUIColor,
+            toggleSwitchColor: Color = ThemeAssets.toggleSwitchColor.swiftUIColor,
+            textInputTextColor: Color = ThemeAssets.textInputTextColor.swiftUIColor,
+            textInputPlaceholderColor: Color = ThemeAssets.textInputPlaceholderColor.swiftUIColor,
+            infoColor: Color = ThemeAssets.infoColor.swiftUIColor,
+            irreversibleAlert: Color = ThemeAssets.irreversibleAlert.swiftUIColor
         ) {
             self.accentColor = accentColor
+            self.accentXColor = accentXColor
             self.alert = alert
             self.avatarStroke = avatarStroke
             self.background = background
@@ -102,12 +129,12 @@ public struct Theme {
             self.upcomingTimelineColor = upcomingTimelineColor
             self.shadowColor = shadowColor
             self.snackbarErrorColor = snackbarErrorColor
-            self.snackbarErrorTextColor = snackbarErrorTextColor
-            self.snackbarInfoAlert = snackbarInfoAlert
-            self.styledButtonBackground = styledButtonBackground
+            self.snackbarInfoColor = snackbarInfoColor
+            self.snackbarTextColor = snackbarTextColor
             self.styledButtonText = styledButtonText
             self.textPrimary = textPrimary
             self.textSecondary = textSecondary
+            self.textSecondaryLight = textSecondaryLight
             self.textInputBackground = textInputBackground
             self.textInputStroke = textInputStroke
             self.textInputUnfocusedBackground = textInputUnfocusedBackground
@@ -119,6 +146,17 @@ public struct Theme {
             self.progressSkip = progressSkip
             self.datesSectionBackground = datesSectionBackground
             self.datesSectionStroke = datesSectionStroke
+            self.navigationBarTintColor = navigationBarTintColor
+            self.secondaryButtonBorderColor = secondaryButtonBorderColor
+            self.secondaryButtonTextColor = secondaryButtonTextColor
+            self.success = success
+            self.tabbarColor = tabbarColor
+            self.primaryButtonTextColor = primaryButtonTextColor
+            self.toggleSwitchColor = toggleSwitchColor
+            self.textInputTextColor = textInputTextColor
+            self.textInputPlaceholderColor = textInputPlaceholderColor
+            self.infoColor = infoColor
+            self.irreversibleAlert = irreversibleAlert
         }
     }
     
@@ -126,13 +164,19 @@ public struct Theme {
     public struct UIColors {
         public private(set) static var textPrimary = ThemeAssets.textPrimary.color
         public private(set) static var accentColor = ThemeAssets.accentColor.color
+        public private(set) static var accentXColor = ThemeAssets.accentXColor.color
+        public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.color
 
         public static func update(
             textPrimary: UIColor = ThemeAssets.textPrimary.color,
-            accentColor: UIColor = ThemeAssets.accentColor.color
+            accentColor: UIColor = ThemeAssets.accentColor.color,
+            accentXColor: UIColor = ThemeAssets.accentXColor.color,
+            navigationBarTintColor: UIColor = ThemeAssets.navigationBarTintColor.color
         ) {
             self.textPrimary = textPrimary
             self.accentColor = accentColor
+            self.accentXColor = accentXColor
+            self.navigationBarTintColor = navigationBarTintColor
         }
     }
 
@@ -153,10 +197,40 @@ public struct Theme {
         public static let bodyLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 16)
         public static let bodyMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 14)
         public static let bodySmall: Font = .custom(fontsParser.fontName(for: .regular), size: 12)
+        public static let bodyMicro: Font = .custom(fontsParser.fontName(for: .light), size: 11)
         
         public static let labelLarge: Font = .custom(fontsParser.fontName(for: .medium), size: 14)
         public static let labelMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 12)
         public static let labelSmall: Font = .custom(fontsParser.fontName(for: .regular), size: 10)
+    }
+    
+    public struct UIFonts {
+        public static func labelSmall() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 10) else {
+                assert(false, "Could not find the required font")
+                return UIFont.systemFont(ofSize: 10)
+            }
+            
+            return font
+        }
+        
+        public static func labelLarge() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 14) else {
+                assert(false, "Could not find the required font")
+                return UIFont.systemFont(ofSize: 14)
+            }
+            
+            return font
+        }
+        
+        public static func titleMedium() -> UIFont {
+            guard let font = UIFont(name: fontsParser.fontName(for: .semiBold), size: 18) else {
+                assert(false, "Could not find the required font")
+                return UIFont.systemFont(ofSize: 18)
+            }
+            
+            return font
+        }
     }
     
     public struct Shapes {
@@ -190,6 +264,40 @@ public struct Theme {
         public static let snackbarMessageLongTimeout: TimeInterval = 5
     }
     
+    public struct InputFieldBackground: View {
+        public let placeHolder: String
+        public let text: String
+        public let color: Color
+        public let padding: CGFloat
+        public let font: Font
+        
+        public init(
+            placeHolder: String,
+            text: String,
+            color: Color = Theme.Colors.textInputPlaceholderColor,
+            font: Font = Theme.Fonts.bodyLarge,
+            padding: CGFloat = 8
+        ) {
+            self.placeHolder = placeHolder
+            self.color = color
+            self.text = text
+            self.padding = padding
+            self.font = font
+        }
+        
+        public var body: some View {
+            ZStack(alignment: .leading) {
+                Theme.Shapes.textInputShape
+                    .fill(Theme.Colors.textInputBackground)
+                if text.count == 0 {
+                    Text(placeHolder)
+                        .foregroundColor(color)
+                        .padding(.leading, padding)
+                        .font(font)
+                }
+            }
+        }
+    }
 }
 
 public extension Theme.Fonts {

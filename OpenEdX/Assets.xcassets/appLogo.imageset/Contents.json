@@ -1,10 +1,20 @@
 {
   "images" : [
-    {
-      "filename" : "Group 21.svg",
-      "idiom" : "universal"
-    }
-  ],
+      {
+        "filename" : "appLogo.svg",
+        "idiom" : "universal"
+      },
+      {
+        "appearances" : [
+          {
+            "appearance" : "luminosity",
+            "value" : "dark"
+          }
+        ],
+        "filename" : "appLogo-light.svg",
+        "idiom" : "universal"
+      }
+    ],
   "info" : {
     "author" : "xcode",
     "version" : 1

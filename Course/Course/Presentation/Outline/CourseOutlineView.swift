@@ -16,6 +16,7 @@ public struct CourseOutlineView: View {
     private let title: String
     private let courseID: String
     private let isVideo: Bool
+    private let dateTabIndex: Int
     
     @State private var openCertificateView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -23,17 +24,22 @@ public struct CourseOutlineView: View {
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
     @State private var showingNoWifiMessage: Bool = false
+    @Binding private var selection: Int
 
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
         courseID: String,
-        isVideo: Bool
+        isVideo: Bool,
+        selection: Binding<Int>,
+        dateTabIndex: Int
     ) {
         self.title = title
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self.isVideo = isVideo
+        self._selection = selection
+        self.dateTabIndex = dateTabIndex
     }
     
     public var body: some View {
@@ -43,15 +49,36 @@ public struct CourseOutlineView: View {
                 VStack(alignment: .center) {
                     // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                        await withTaskGroup(of: Void.self) { group in
+                            group.addTask {
+                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                            }
+                            group.addTask {
+                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                            }
+                        }
                     }) {
                         VStack(alignment: .leading) {
+                            if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
+                               courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
+                               !courseDeadlineInfo.hasEnded,
+                               !isVideo {
+                                DatesStatusInfoView(
+                                    datesBannerInfo: courseDeadlineInfo.datesBannerInfo,
+                                    courseID: courseID,
+                                    courseContainerViewModel: viewModel,
+                                    screen: .courseDashbaord
+                                )
+                                .padding(.horizontal, 16)
+                                .padding(.top, 16)
+                            }
                             if viewModel.config.uiComponents.courseBannerEnabled {
                                 courseBanner(proxy: proxy)
                             }
 
                             downloadQualityBars
-
+                            certificateView
+                            
                             if let continueWith = viewModel.continueWith,
                                let courseStructure = viewModel.courseStructure,
                                !isVideo {
@@ -71,16 +98,15 @@ public struct CourseOutlineView: View {
                                         }
                                     }
                                     
-                                    viewModel.trackResumeCourseTapped(
+                                    viewModel.trackResumeCourseClicked(
                                         blockId: continueBlock?.id ?? ""
                                     )
-                                    
+                                                                        
                                     if let course = viewModel.courseStructure {
                                         viewModel.router.showCourseUnit(
                                             courseName: course.displayName,
                                             blockId: continueBlock?.id ?? "",
                                             courseID: course.id,
-                                            sectionName: continueUnit.displayName,
                                             verticalIndex: continueWith.verticalIndex,
                                             chapters: course.childs,
                                             chapterIndex: continueWith.chapterIndex,
@@ -118,20 +144,38 @@ public struct CourseOutlineView: View {
                             }
                             Spacer(minLength: 84)
                         }
+                        .frameLimit(width: proxy.size.width)
                     }
-                    .frameLimit()
-                        .onRightSwipeGesture {
-                            viewModel.router.back()
-                        }
+                    .onRightSwipeGesture {
+                        viewModel.router.back()
+                    }
                 }
                 .padding(.top, viewModel.config.uiComponents.courseTopTabBarEnabled ? 0 : 8)
                 .accessibilityAction {}
 
+                if viewModel.dueDatesShifted && !isVideo {
+                    DatesSuccessView(
+                        title: CourseLocalization.CourseDates.toastSuccessTitle,
+                        message: CourseLocalization.CourseDates.toastSuccessMessage,
+                        selectedTab: .course,
+                        courseContainerViewModel: viewModel
+                    ) {
+                        selection = dateTabIndex
+                    }
+                }
+                
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
                     reloadAction: {
-                        await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                        await withTaskGroup(of: Void.self) { group in
+                            group.addTask {
+                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                            }
+                            group.addTask {
+                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                            }
+                        }
                     }
                 )
                 
@@ -170,7 +214,8 @@ public struct CourseOutlineView: View {
             viewModel.storage.userSettings.map {
                 VideoDownloadQualityContainerView(
                     downloadQuality: $0.downloadQuality,
-                    didSelect: viewModel.update(downloadQuality:)
+                    didSelect: viewModel.update(downloadQuality:),
+                    analytics: viewModel.coreAnalytics
                 )
             }
         }
@@ -209,7 +254,8 @@ public struct CourseOutlineView: View {
                     },
                     onTap: {
                         showingDownloads = true
-                    }
+                    },
+                    analytics: viewModel.analytics
                 )
                 viewModel.userSettings.map {
                     VideoDownloadQualityBarView(
@@ -225,6 +271,33 @@ public struct CourseOutlineView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    private var certificateView: some View {
+        // MARK: - Course Certificate
+        if let certificate = viewModel.courseStructure?.certificate,
+           let url = certificate.url,
+           url.count > 0 {
+            MessageSectionView(
+                title: CourseLocalization.Outline.passedTheCourse(title),
+                actionTitle: CourseLocalization.Outline.viewCertificate,
+                action: {
+                    openCertificateView = true
+                    viewModel.trackViewCertificateClicked(courseID: courseID)
+                }
+            )
+            .padding(.horizontal, 24)
+            .fullScreenCover(
+                isPresented: $openCertificateView,
+                content: {
+                    WebBrowser(
+                        url: url,
+                        pageTitle: CourseLocalization.Outline.certificate
+                    )
+                }
+            )
+        }
+    }
 
     private func courseBanner(proxy: GeometryProxy) -> some View {
         ZStack {
@@ -236,40 +309,6 @@ public struct CourseOutlineView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: proxy.size.width - 12, maxHeight: .infinity)
-            }
-
-            // MARK: - Course Certificate
-            if let certificate = viewModel.courseStructure?.certificate {
-                if let url = certificate.url, url.count > 0 {
-                    Theme.Colors.certificateForeground
-                    VStack(alignment: .center, spacing: 8) {
-                        CoreAssets.certificate.swiftUIImage
-                        Text(CourseLocalization.Outline.congratulations)
-                            .multilineTextAlignment(.center)
-                            .font(Theme.Fonts.headlineMedium)
-                        Text(CourseLocalization.Outline.passedTheCourse)
-                            .font(Theme.Fonts.bodyMedium)
-                            .multilineTextAlignment(.center)
-                        StyledButton(
-                            CourseLocalization.Outline.viewCertificate,
-                            action: { openCertificateView = true },
-                            isTransparent: true
-                        )
-                        .frame(width: 141)
-                        .padding(.top, 8)
-
-                        .fullScreenCover(
-                            isPresented: $openCertificateView,
-                            content: {
-                                WebBrowser(
-                                    url: url,
-                                    pageTitle: CourseLocalization.Outline.certificate
-                                )
-                            })
-                    }.padding(.horizontal, 24)
-                        .padding(.top, 8)
-                        .foregroundColor(.white)
-                }
             }
         }
         .frame(maxHeight: 250)
@@ -283,6 +322,7 @@ public struct CourseOutlineView: View {
 #if DEBUG
 struct CourseOutlineView_Previews: PreviewProvider {
     static var previews: some View {
+        @State var selection: Int = 0
         let viewModel = CourseContainerViewModel(
             interactor: CourseInteractor.mock,
             authInteractor: AuthInteractor.mock,
@@ -296,10 +336,18 @@ struct CourseOutlineView_Previews: PreviewProvider {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: Date(),
-            enrollmentEnd: nil
+            enrollmentEnd: nil,
+            coreAnalytics: CoreAnalyticsMock()
         )
         Task {
-            await viewModel.getCourseBlocks(courseID: "courseId")
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    await viewModel.getCourseBlocks(courseID: "courseId")
+                }
+                group.addTask {
+                    await viewModel.getCourseDeadlineInfo(courseID: "courseId")
+                }
+            }
         }
         
         return Group {
@@ -307,7 +355,9 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 viewModel: viewModel,
                 title: "Course title",
                 courseID: "",
-                isVideo: false
+                isVideo: false,
+                selection: $selection,
+                dateTabIndex: 2
             )
             .preferredColorScheme(.light)
             .previewDisplayName("CourseOutlineView Light")
@@ -316,7 +366,9 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 viewModel: viewModel,
                 title: "Course title",
                 courseID: "",
-                isVideo: false
+                isVideo: false,
+                selection: $selection,
+                dateTabIndex: 2
             )
             .preferredColorScheme(.dark)
             .previewDisplayName("CourseOutlineView Dark")

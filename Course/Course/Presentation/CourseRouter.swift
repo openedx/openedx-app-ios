@@ -16,7 +16,6 @@ public protocol CourseRouter: BaseRouter {
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -27,7 +26,6 @@ public protocol CourseRouter: BaseRouter {
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -53,7 +51,13 @@ public protocol CourseRouter: BaseRouter {
     
     func showCourseComponent(
         componentID: String,
-        courseStructure: CourseStructure
+        courseStructure: CourseStructure,
+        blockLink: String
+    )
+
+    func showDownloads(
+        downloads: [DownloadDataTask],
+        manager: DownloadManagerProtocol
     )
 }
 
@@ -69,7 +73,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -80,7 +83,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         courseName: String,
         blockId: String,
         courseID: String,
-        sectionName: String,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
@@ -106,8 +108,13 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     
     public func showCourseComponent(
         componentID: String,
-        courseStructure: CourseStructure
+        courseStructure: CourseStructure,
+        blockLink: String
     ) {}
-    
+
+    public func showDownloads(
+        downloads: [Core.DownloadDataTask],
+        manager: Core.DownloadManagerProtocol
+    ) {}
 }
 #endif
