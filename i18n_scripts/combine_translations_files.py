@@ -1,10 +1,13 @@
-import os, localizable
+import os
+import re
+import localizable
 from collections import OrderedDict
 
 
-def translation_file_of(module):
+def get_translation_file_path(modules_dir, module):
     translation_file = os.path.join(modules_dir, module, module, 'en.lproj', 'Localizable.strings')
     return translation_file
+
 
 def get_modules_to_translate(modules_dir):
     """
@@ -21,8 +24,8 @@ def get_modules_to_translate(modules_dir):
 
     modules_list = []
     for module in dirs:
-        translation_file = translation_file_of(module)
-        if os.path.exists(translation_file) and os.path.isfile(translation_file):
+        translation_file = get_translation_file_path(modules_dir, module)
+        if os.path.isfile(translation_file):
             modules_list.append(module)
     return modules_list
 
@@ -42,7 +45,7 @@ def get_translations(modules_dir):
     ordered_dict_of_translations = OrderedDict()
     modules = get_modules_to_translate(modules_dir)
     for module in modules:
-        translation_file = translation_file_of(module)
+        translation_file = get_translation_file_path(modules_dir, module)
         module_translations = localizable.parse_strings(filename=translation_file)
 
         for line in module_translations:
@@ -55,24 +58,32 @@ def _escape(s):
     """
     Reverse the replacements performed by _unescape() in the localizable library
     """
-    s = s.replace('\n', r'\n').replace('\r', r'\r').replace('"', r'\"')
+    replacement_function = lambda match: {
+        '\n': r'\n',
+        '\r': r'\r',
+        '\t': r'\t',
+        '\\': r'\\',
+        '"': r'\"'
+    }[match.group(0)]
+
+    s = re.sub(r'([\n\t\r\\"])', replacement_function, s)
     return s
 
 
-def write_dict_to_file(content_ordered_dict, modules_dir):
+def write_translations_file(content_ordered_dict, modules_dir):
     """
-       Write the contents of an ordered dictionary to a Localizable.strings file.
+    Write the contents of an ordered dictionary to a Localizable.strings file.
 
-       This function takes an ordered dictionary containing translation data and writes it to a Localizable.strings
-       file located in the 'I18N/en.lproj' directory within the specified modules directory. It creates the directory
-       if it doesn't exist.
-
-       Parameters:
-           content_ordered_dict (OrderedDict): An ordered dictionary containing translation data. The keys
-           are the translation keys, and the values are dictionaries with 'value' and 'comment' keys representing the
-           translation value and optional comments, respectively.
-           modules_dir (str): The path to the modules directory
-           where the I18N directory will be written.
+    This function takes an ordered dictionary containing translation data and writes it to a Localizable.strings
+    file located in the 'I18N/en.lproj' directory within the specified modules directory. It creates the directory
+    if it doesn't exist.
+    
+    Parameters:
+       content_ordered_dict (OrderedDict): An ordered dictionary containing translation data. The keys
+       are the translation keys, and the values are dictionaries with 'value' and 'comment' keys representing the
+       translation value and optional comments, respectively.
+       modules_dir (str): The path to the modules directory
+       where the I18N directory will be written.
     """
     combined_translation_file = os.path.join(modules_dir, 'I18N', 'en.lproj')
     os.makedirs(combined_translation_file, exist_ok=True)
@@ -84,22 +95,14 @@ def write_dict_to_file(content_ordered_dict, modules_dir):
             f.write(f'"{key}" = "{_escape(value["value"])}";\n')
 
 
-if __name__ == "__main__":
+def combine_translation_files():
+    """
+    Combine translation files from different modules into a single file.
+    """
     modules_dir = os.path.dirname(os.path.dirname(__file__))
     en_translation_ordered_dict = get_translations(modules_dir)
-    write_dict_to_file(en_translation_ordered_dict, modules_dir)
+    write_translations_file(en_translation_ordered_dict, modules_dir)
 
 
-def make_test_dirs_and_files():
-    modules_path = 'test_dir'
-    test_modules = ['Test_module_1', 'Test_module_2', 'Test_module_3']
-    test_contents = {
-                     'Test_module_1': '''"TEST_MOD_1_STRING.EXTENSION_KEY" =  "extension_value_1";\n''',
-                     'Test_module_2': '''"TEST_MOD_2_STRING.EXTENSION_KEY" =  "extension_value_2";\n''',
-                     'Test_module_3': '''"TEST_MOD_3_STRING.EXTENSION_KEY" =  "extension_value_3";\n''',
-                     }
-    for test_module in test_modules:
-        translation_path = os.path.join(modules_path, test_module, test_module, 'en.lproj', 'Localizable.strings')
-        os.makedirs(os.path.dirname(translation_path), exist_ok=True)
-        with open(translation_path, 'w') as f:
-            f.write(test_contents[test_module])
+if __name__ == "__main__":
+    combine_translation_files()
