@@ -57,6 +57,7 @@ struct CourseHeaderView: View {
                         .onFailureImage(CoreAssets.noCourseImage.image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .frame(maxHeight: expandedHeight, alignment: .center)
                         .allowsHitTesting(false)
                         .clipped()
                         .background(Theme.Colors.background)

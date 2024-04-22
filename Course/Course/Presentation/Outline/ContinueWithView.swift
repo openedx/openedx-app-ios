@@ -31,23 +31,27 @@ struct ContinueWithView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-                if idiom == .pad {
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading) {
-                            ContinueTitle(vertical: courseContinueUnit)
-                        }.foregroundColor(Theme.Colors.textPrimary)
-                        Spacer()
-                        UnitButtonView(type: .continueLesson, action: action)
-                            .frame(width: 200)
-                    } .padding(.horizontal, 24)
-                } else {
+            if idiom == .pad {
+                HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         ContinueTitle(vertical: courseContinueUnit)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                    }
+                    }.foregroundColor(Theme.Colors.textPrimary)
+                    Spacer()
                     UnitButtonView(type: .continueLesson, action: action)
+                        .frame(width: 200)
                 }
-        }.padding(.horizontal, 24)
+                .padding(.horizontal, 24)
+                .padding(.top, 32)
+            } else {
+                VStack(alignment: .leading) {
+                    ContinueTitle(vertical: courseContinueUnit)
+                        .foregroundColor(Theme.Colors.textPrimary)
+                }
+                UnitButtonView(type: .continueLesson, action: action)
+            }
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 32)
     }
 }
 
@@ -99,7 +103,7 @@ struct ContinueWithView_Previews: PreviewProvider {
                 webUrl: "",
                 encodedVideo: nil,
                 multiDevice: false
-
+                
             )
         ]
         

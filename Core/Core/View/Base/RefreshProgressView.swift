@@ -18,5 +18,6 @@ public struct RefreshProgressView: View {
     public var body: some View {
         ProgressView()
             .padding(.top, isShowRefresh ? 20 : -60)
+            .padding(.bottom, isShowRefresh ? 20 : 0)
     }
 }

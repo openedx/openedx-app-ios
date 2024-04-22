@@ -62,7 +62,8 @@ public struct CourseContainerView: View {
             content
         }
         .navigationBarHidden(true)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle(title)
         .onChange(of: viewModel.selection, perform: didSelect)
         .onChange(of: coordinate, perform: collapseHeader)
         .background(Theme.Colors.background)
@@ -133,7 +134,7 @@ public struct CourseContainerView: View {
                     .frame(width: 30, height: 30)
                     .padding(.vertical, 8)
                     .padding(.horizontal, 24)
-                    .padding(.top, 55)
+                    .padding(.top, idiom == .pad ? 0 : 55)
                     Spacer()
                 }
             }
