@@ -41,7 +41,7 @@ public class VideoPlayerViewModel: ObservableObject {
 
     public init(
         languages: [SubtitleUrl],
-        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>,
+        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>? = nil,
         connectivity: ConnectivityProtocol,
         playerHolder: PlayerViewControllerHolderProtocol
     ) {
@@ -53,8 +53,8 @@ public class VideoPlayerViewModel: ObservableObject {
         observePlayer(with: playerStateSubject)
     }
     
-    func observePlayer(with playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) {
-        playerStateSubject.sink { [weak self] state in
+    func observePlayer(with playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>?) {
+        playerStateSubject?.sink { [weak self] state in
             switch state {
             case .pause:
                 if self?.playerHolder.isPlayingInPip != true {

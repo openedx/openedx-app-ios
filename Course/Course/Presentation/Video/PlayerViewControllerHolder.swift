@@ -64,36 +64,6 @@ public protocol PlayerServiceProtocol {
     func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle]
 }
 
-#if DEBUG
-public class PlayerServiceMock: PlayerServiceProtocol {
-    private let courseID: String
-    private let blockID: String
-    private let interactor: CourseInteractorProtocol
-    public let router: CourseRouter
-    
-    public init() {
-        courseID = ""
-        blockID = ""
-        interactor = CourseInteractor.mock
-        router = CourseRouterMock()
-    }
-    
-    public required init(courseID: String, blockID: String, interactor: CourseInteractorProtocol, router: CourseRouter) {
-        self.courseID = courseID
-        self.blockID = blockID
-        self.interactor = interactor
-        self.router = router
-    }
-    
-    public func blockCompletionRequest() async throws {}
-    public func presentAppReview() {}
-    public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {}
-    public func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle] {
-        []
-    }
-}
-#endif
-
 public class PlayerService: PlayerServiceProtocol {
     private let courseID: String
     private let blockID: String
@@ -190,6 +160,7 @@ public protocol PlayerViewControllerHolderProtocol: AnyObject {
     func getRatePublisher() -> AnyPublisher<Float, Never>
     func getReadyPublisher() -> AnyPublisher<Bool, Never>
     func getService() -> PlayerServiceProtocol
+    func sendCompletion() async
 }
 
 public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
@@ -272,11 +243,7 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
                 if strongSelf.playerTracker.progress > 0.8 && !strongSelf.isViewedOnce {
                     strongSelf.isViewedOnce = true
                     Task {
-                        do {
-                            try await strongSelf.playerService.blockCompletionRequest()
-                        } catch {
-                            strongSelf.errorPublisher.send(error)
-                        }
+                        await strongSelf.sendCompletion()
                     }
                 }
             }
@@ -327,6 +294,14 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     public func getService() -> PlayerServiceProtocol {
         playerService
     }
+    
+    public func sendCompletion() async {
+        do {
+            try await playerService.blockCompletionRequest()
+        } catch {
+            errorPublisher.send(error)
+        }
+    }
 }
 
 extension PlayerViewControllerHolder {
@@ -340,7 +315,7 @@ extension PlayerViewControllerHolder {
             pipManager: PipManagerProtocolMock(),
             playerTracker: PlayerTrackerProtocolMock(url: URL(string: "")),
             playerDelegate: nil,
-            playerService: PlayerServiceMock(
+            playerService: PlayerService(
                 courseID: "",
                 blockID: "",
                 interactor: CourseInteractor.mock,
@@ -423,13 +398,17 @@ public protocol PlayerTrackerProtocol {
 class PlayerTrackerProtocolMock: PlayerTrackerProtocol {
     let player: AVPlayer?
     var duration: Double {
-        player?.currentItem?.duration.seconds ?? .nan
+        1
     }
     var progress: Double {
         0
     }
     let isPlaying = false
     let isReady = false
+    private let timePublisher: CurrentValueSubject<Double, Never>
+    private let ratePublisher: CurrentValueSubject<Float, Never>
+    private let finishPublisher: PassthroughSubject<Void, Never>
+    private let readyPublisher: PassthroughSubject<Bool, Never>
 
     required init(url: URL?) {
         var item: AVPlayerItem?
@@ -437,22 +416,34 @@ class PlayerTrackerProtocolMock: PlayerTrackerProtocol {
             item = AVPlayerItem(url: url)
         }
         self.player = AVPlayer(playerItem: item)
+        timePublisher = CurrentValueSubject(0)
+        ratePublisher = CurrentValueSubject(0)
+        finishPublisher = PassthroughSubject<Void, Never>()
+        readyPublisher = PassthroughSubject<Bool, Never>()
     }
 
     func getTimePublisher() -> AnyPublisher<Double, Never> {
-        CurrentValueSubject<Double, Never>(0).eraseToAnyPublisher()
+        timePublisher.eraseToAnyPublisher()
     }
 
     func getRatePublisher() -> AnyPublisher<Float, Never> {
-        CurrentValueSubject<Float, Never>(0).eraseToAnyPublisher()
+        ratePublisher.eraseToAnyPublisher()
     }
 
     func getFinishPublisher() -> AnyPublisher<Void, Never> {
-        PassthroughSubject<Void, Never>().eraseToAnyPublisher()
+        finishPublisher.eraseToAnyPublisher()
     }
     
     func getReadyPublisher() -> AnyPublisher<Bool, Never> {
-        PassthroughSubject<Bool, Never>().eraseToAnyPublisher()
+        readyPublisher.eraseToAnyPublisher()
+    }
+    
+    func sendProgress(_ progress: Double) {
+        timePublisher.send(progress)
+    }
+    
+    func sendFinish() {
+        finishPublisher.send()
     }
 }
 #endif
@@ -784,11 +775,7 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
                 if strongSelf.playerTracker.progress > 0.8 && !strongSelf.isViewedOnce {
                     strongSelf.isViewedOnce = true
                     Task {
-                        do {
-                            try await strongSelf.playerService.blockCompletionRequest()
-                        } catch {
-                            strongSelf.errorPublisher.send(error)
-                        }
+                        await strongSelf.sendCompletion()
                     }
                 }
             }
@@ -839,6 +826,14 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
     public func getService() -> PlayerServiceProtocol {
         playerService
     }
+    
+    public func sendCompletion() async {
+        do {
+            try await playerService.blockCompletionRequest()
+        } catch {
+            errorPublisher.send(error)
+        }
+    }
 }
 
 extension YoutubePlayerViewControllerHolder {
@@ -852,7 +847,7 @@ extension YoutubePlayerViewControllerHolder {
             pipManager: PipManagerProtocolMock(),
             playerTracker: PlayerTrackerProtocolMock(url: URL(string: "")),
             playerDelegate: nil,
-            playerService: PlayerServiceMock(
+            playerService: PlayerService(
                 courseID: "",
                 blockID: "",
                 interactor: CourseInteractor.mock,
