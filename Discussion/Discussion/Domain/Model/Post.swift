@@ -24,13 +24,27 @@ public struct Post {
     public let commentID: String
     public let parentID: String?
     public var abuseFlagged: Bool
-    public let closed: Bool
+    public var closed: Bool
     
-    public init(authorName: String, authorAvatar: String, postDate: Date, postTitle: String, postBodyHtml: String,
-                postBody: String,
-                postVisible: Bool, voted: Bool, followed: Bool, votesCount: Int, responsesCount: Int,
-                comments: [Post], threadID: String, commentID: String, parentID: String?, abuseFlagged: Bool,
-                closed: Bool) {
+    public init(
+        authorName: String,
+        authorAvatar: String,
+        postDate: Date,
+        postTitle: String,
+        postBodyHtml: String,
+        postBody: String,
+        postVisible: Bool,
+        voted: Bool,
+        followed: Bool,
+        votesCount: Int,
+        responsesCount: Int,
+        comments: [Post],
+        threadID: String,
+        commentID: String,
+        parentID: String?,
+        abuseFlagged: Bool,
+        closed: Bool
+    ) {
         self.authorName = authorName
         self.authorAvatar = authorAvatar
         self.postDate = postDate

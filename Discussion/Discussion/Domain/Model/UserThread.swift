@@ -33,16 +33,35 @@ public struct UserThread {
     public let closed: Bool
     public var following: Bool
     public var commentCount: Int
-    public let avatar: String
+    public var avatar: String
     public var unreadCommentCount: Int
     public var abuseFlagged: Bool
     public let hasEndorsed: Bool
     public let numPages: Int
     
-    public init(id: String, author: String, authorLabel: String, createdAt: Date, updatedAt: Date, rawBody: String,
-                renderedBody: String, voted: Bool, voteCount: Int, courseID: String, type: PostType, title: String,
-                pinned: Bool, closed: Bool, following: Bool, commentCount: Int, avatar: String, unreadCommentCount: Int,
-                abuseFlagged: Bool, hasEndorsed: Bool, numPages: Int) {
+    public init(
+        id: String,
+        author: String,
+        authorLabel: String,
+        createdAt: Date,
+        updatedAt: Date,
+        rawBody: String,
+        renderedBody: String,
+        voted: Bool,
+        voteCount: Int,
+        courseID: String, 
+        type: PostType,
+        title: String,
+        pinned: Bool,
+        closed: Bool,
+        following: Bool,
+        commentCount: Int,
+        avatar: String,
+        unreadCommentCount: Int,
+        abuseFlagged: Bool,
+        hasEndorsed: Bool,
+        numPages: Int
+    ) {
         self.id = id
         self.author = author
         self.authorLabel = authorLabel

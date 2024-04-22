@@ -11,6 +11,7 @@ import Foundation
 public extension Date {
     init(iso8601: String) {
         let formats = ["yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"]
+        let calender = Calendar.current
         var date: Date
         var dateFormatter: DateFormatter?
         dateFormatter = DateFormatter()
@@ -18,7 +19,12 @@ public extension Date {
         
         date = formats.compactMap { format in
             dateFormatter?.dateFormat = format
-            return dateFormatter?.date(from: iso8601)
+            guard let formattedDate = dateFormatter?.date(from: iso8601) else { return nil }
+            let components = calender.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: formattedDate
+            )
+            return calender.date(from: components)
         }
         .first ?? Date()
         
