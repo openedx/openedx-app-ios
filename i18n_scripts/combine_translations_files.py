@@ -71,11 +71,10 @@ def _escape(s):
     replacement_function = lambda match: {
         '\n': r'\n',
         '\r': r'\r',
-        '\\': r'\\',
         '"': r'\"'
     }[match.group(0)]
 
-    s = re.sub(r'([\n\r\\"])', replacement_function, s)
+    s = re.sub(r'([\n\r"])', replacement_function, s)
     return s
 
 
