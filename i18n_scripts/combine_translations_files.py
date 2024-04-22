@@ -5,6 +5,16 @@ from collections import OrderedDict
 
 
 def get_translation_file_path(modules_dir, module):
+    """
+    Retrieves the path of the translation file from the module name
+
+    Parameters:
+        modules_dir (str): The path to the directory containing all the modules.
+        module (str): The module's name that we want its translation.
+
+    Returns:
+        file_path (str): The module's translation path.
+    """
     translation_file = os.path.join(modules_dir, module, module, 'en.lproj', 'Localizable.strings')
     return translation_file
 
