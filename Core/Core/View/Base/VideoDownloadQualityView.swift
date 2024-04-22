@@ -56,7 +56,7 @@ public struct VideoDownloadQualityView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.titleBackground.swiftUIImage
+                    ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
                 }

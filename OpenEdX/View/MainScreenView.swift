@@ -128,7 +128,7 @@ struct MainScreenView: View {
                         let router = Container.shared.resolve(ProfileRouter.self)!
                         router.showSettings()
                     }, label: {
-                        CoreAssets.settingsIcon.swiftUIImage.renderingMode(.template)
+                        CoreAssets.settings.swiftUIImage.renderingMode(.template)
                             .foregroundColor(Theme.Colors.accentColor)
                     })
                     .accessibilityIdentifier("edit_profile_button")

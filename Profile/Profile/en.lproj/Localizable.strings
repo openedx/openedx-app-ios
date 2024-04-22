@@ -8,6 +8,7 @@
 
 "TITLE" = "Profile";
 "INFO" = "Profile info";
+"ABOUT" = "About Me";
 "EDIT_PROFILE" = "Edit Profile";
 "YEAR_OF_BIRTH" = "Year of birth:";
 "BIO" = "Bio:";

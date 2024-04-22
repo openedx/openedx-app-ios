@@ -27,7 +27,7 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.titleBackground.swiftUIImage
+                ThemeAssets.headerBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
                     .accessibilityIdentifier("auth_bg_image")

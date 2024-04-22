@@ -63,7 +63,7 @@ public struct ProfileView: View {
                     }
                 }
             }
-            .onFirstAppear {
+            .onAppear {
                 Task {
                     await viewModel.getMyProfile()
                 }
@@ -147,7 +147,7 @@ public struct ProfileView: View {
     private var profileInfo: some View {
         if viewModel.userModel?.shortBiography != "" {
             VStack(alignment: .leading, spacing: 6) {
-                Text("About Me") // Add Localization, delete old ProfileLocalization.info
+                Text(ProfileLocalization.about) 
                     .font(Theme.Fonts.titleSmall)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityIdentifier("profile_info_text")

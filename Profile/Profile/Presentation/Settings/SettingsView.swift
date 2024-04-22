@@ -25,7 +25,7 @@ public struct SettingsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.titleBackground.swiftUIImage
+                    ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
                 }
@@ -41,10 +41,15 @@ public struct SettingsView: View {
                                 .accessibilityIdentifier("register_text")
                         }
                         VStack {
-                            Button(action: { viewModel.router.back() }, label: {
-                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                            })
+                            Button(
+                                action: {
+                                    viewModel.router.back()
+                                },
+                                label: {
+                                    CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
+                                        .backButtonStyle(color: Theme.Colors.loginNavigationText)
+                                }
+                            )
                             .foregroundColor(Theme.Colors.styledButtonText)
                             .padding(.leading, isHorizontal ? 48 : 0)
                             .accessibilityIdentifier("back_button")
@@ -107,7 +112,6 @@ public struct SettingsView: View {
     // MARK: - Manage Account
     @ViewBuilder
     private var manageAccount: some View {
-        
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 viewModel.trackProfileVideoSettingsClicked()
@@ -121,7 +125,6 @@ public struct SettingsView: View {
                 }
             })
             .accessibilityIdentifier("video_settings_button")
-            
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProfileLocalization.settingsVideo)
@@ -187,7 +190,8 @@ public struct SettingsView: View {
                             Task {
                                 await viewModel.logOut()
                             }
-                        }, type: .logOut
+                        }, 
+                        type: .logOut
                     )
                 }
             }, label: {
@@ -202,8 +206,7 @@ public struct SettingsView: View {
             .accessibilityIdentifier("logout_button")
         }
         .foregroundColor(Theme.Colors.alert)
-        .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
-                   strokeColor: .clear)
+        .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
         .padding(.top, 24)
         .padding(.bottom, 60)
     }

@@ -2,7 +2,7 @@ API_HOST_URL: 'http://localhost:8000'
 ENVIRONMENT_DISPLAY_NAME: 'Localhost'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
 OAUTH_CLIENT_ID: ''
-    
+
 UI_COMPONENTS:
     COURSE_BANNER_ENABLED: true
     COURSE_TOP_TAB_BAR_ENABLED: false
