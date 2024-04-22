@@ -40,9 +40,16 @@ public struct ManageAccountView: View {
                                 .accessibilityIdentifier("manage_account_text")
                         }
                         VStack {
-                            Button(action: { viewModel.router.back() }, label: {
-                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
+                            Button(action: {
+                                viewModel.router.back()
+                            },
+                                   label: {
+                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(
+                                    .template
+                                )
+                                .backButtonStyle(
+                                    color: Theme.Colors.loginNavigationText
+                                )
                             })
                             .foregroundColor(Theme.Colors.styledButtonText)
                             .padding(.leading, isHorizontal ? 48 : 0)
