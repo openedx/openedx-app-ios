@@ -26,6 +26,7 @@ public struct AppReviewView: View {
                 .ignoresSafeArea()
                 .onTapGesture {
                     presentationMode.wrappedValue.dismiss()
+                    viewModel.trackAppReviewAction("dismissed")
                 }
             if viewModel.showSelectMailClientView {
                 SelectMailClientView(clients: viewModel.clients, onMailTapped: { client in
@@ -59,15 +60,21 @@ public struct AppReviewView: View {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.accentColor)
-                                .onTapGesture { presentationMode.wrappedValue.dismiss() }
+                                .onTapGesture {
+                                    viewModel.trackAppReviewAction("dismissed")
+                                    presentationMode.wrappedValue.dismiss()
+                                }
                             
                             AppReviewButton(type: .submit, action: {
                                 viewModel.reviewAction()
+                                viewModel.trackAppReviewAction("submit")
                             }, isActive: .constant(viewModel.rating != 0))
                         }
                         
                     case .feedback:
                         TextEditor(text: $viewModel.feedback)
+                            .font(Theme.Fonts.bodyMedium)
+                            .foregroundColor(Theme.Colors.textPrimary)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 4)
                             .hideScrollContentBackground()
@@ -97,10 +104,14 @@ public struct AppReviewView: View {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.accentColor)
-                                .onTapGesture { presentationMode.wrappedValue.dismiss() }
+                                .onTapGesture {
+                                    viewModel.trackAppReviewAction("dismissed")
+                                    presentationMode.wrappedValue.dismiss()
+                                }
                             
                             AppReviewButton(type: .shareFeedback, action: {
                                 viewModel.writeFeedbackToMail()
+                                viewModel.trackAppReviewAction("share_feedback")
                             }, isActive: .constant(viewModel.feedback.count >= 3))
                         }
                         
@@ -109,12 +120,16 @@ public struct AppReviewView: View {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundColor(Theme.Colors.accentColor)
-                                .onTapGesture { presentationMode.wrappedValue.dismiss() }
+                                .onTapGesture {
+                                    viewModel.trackAppReviewAction("dismissed")
+                                    presentationMode.wrappedValue.dismiss()
+                                }
                             
                             AppReviewButton(type: .rateUs, action: {
                                 presentationMode.wrappedValue.dismiss()
                                 SKStoreReviewController.requestReviewInCurrentScene()
                                 viewModel.storage.lastReviewDate = Date()
+                                viewModel.trackAppReviewAction("rate_app")
                             }, isActive: .constant(true))
                         }
                     }
@@ -133,13 +148,22 @@ public struct AppReviewView: View {
                     .shadow(color: Color.black.opacity(0.4), radius: 12, x: 0, y: 0)
             }
         }
+        .onFirstAppear {
+            viewModel.trackAppReviewViewed()
+        }
     }
 }
 
 #if DEBUG
 struct AppReviewView_Previews: PreviewProvider {
     static var previews: some View {
-        AppReviewView(viewModel: AppReviewViewModel(config: ConfigMock(), storage: CoreStorageMock()))
+        AppReviewView(
+            viewModel: AppReviewViewModel(
+                config: ConfigMock(),
+                storage: CoreStorageMock(),
+                analytics: CoreAnalyticsMock()
+            )
+        )
     }
 }
 #endif

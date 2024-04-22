@@ -47,8 +47,23 @@ public extension WebviewInjection {
             .webviewInjection()
     }
 
+    static var colorInversionCss: WebviewInjection {
+        ColorInversionInjection()
+            .webviewInjection()
+    }
+
     static var ajaxCallback: WebviewInjection {
         AjaxInjection()
+            .webviewInjection()
+    }
+    
+    static var readability: WebviewInjection {
+        ReadabilityInjection()
+            .webviewInjection()
+    }
+    
+    static var accessibility: WebviewInjection {
+        AccessibilityInjection()
             .webviewInjection()
     }
 }

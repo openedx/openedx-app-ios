@@ -29,7 +29,7 @@ public struct CourseButton: View {
             if isCompleted {
                 CoreAssets.finished.swiftUIImage
                     .renderingMode(.template)
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(Theme.Colors.accentXColor)
             } else {
                 image
                     .foregroundColor(Theme.Colors.textPrimary)
@@ -41,7 +41,7 @@ public struct CourseButton: View {
             Spacer()
             Image(systemName: "chevron.right")
                 .padding(.vertical, 8)
-                .foregroundColor(.accentColor)
+                .foregroundColor(Theme.Colors.accentXColor)
         }
         .padding(.horizontal, 36)
         .padding(.vertical, 14)

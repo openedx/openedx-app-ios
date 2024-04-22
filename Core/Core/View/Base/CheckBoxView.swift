@@ -26,10 +26,11 @@ public struct CheckBoxView: View {
                 systemName: checked ? "checkmark.square.fill" : "square"
             )
             .foregroundColor(
-                checked ? Theme.Colors.accentColor : Theme.Colors.textPrimary
+                checked ? Theme.Colors.accentXColor : Theme.Colors.textPrimary
             )
             Text(text)
                 .font(font)
+                .foregroundColor(Theme.Colors.textPrimary)
         }
         .onTapGesture {
             withAnimation(.linear(duration: 0.1)) {

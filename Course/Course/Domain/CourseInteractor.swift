@@ -19,6 +19,8 @@ public protocol CourseInteractorProtocol {
     func resumeBlock(courseID: String) async throws -> ResumeBlock
     func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle]
     func getCourseDates(courseID: String) async throws -> CourseDates
+    func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner
+    func shiftDueDates(courseID: String) async throws
 }
 
 public class CourseInteractor: CourseInteractorProtocol {
@@ -51,7 +53,8 @@ public class CourseInteractor: CourseInteractorProtocol {
             topicID: course.topicID,
             childs: newChilds,
             media: course.media,
-            certificate: course.certificate
+            certificate: course.certificate,
+            isSelfPaced: course.isSelfPaced
         )
     }
     
@@ -61,6 +64,10 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
         return try await repository.blockCompletionRequest(courseID: courseID, blockID: blockID)
+    }
+    
+    public func shiftDueDates(courseID: String) async throws {
+        return try await repository.shiftDueDates(courseID: courseID)
     }
     
     public func getHandouts(courseID: String) async throws -> String? {
@@ -82,6 +89,10 @@ public class CourseInteractor: CourseInteractorProtocol {
     
     public func getCourseDates(courseID: String) async throws -> CourseDates {
         return try await repository.getCourseDates(courseID: courseID)
+    }
+    
+    public func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner {
+        return try await repository.getCourseDeadlineInfo(courseID: courseID)
     }
     
     private func filterChapter(chapter: CourseChapter) -> CourseChapter {
@@ -177,7 +188,7 @@ public class CourseInteractor: CourseInteractorProtocol {
                 let subtitle = Subtitle(id: id,
                                         fromTo: DateInterval(start: Date(subtitleTime: startTime),
                                                              end: Date(subtitleTime: endTime)),
-                                        text: text)
+                                        text: text.decodedHTMLEntities())
                 subtitles.append(subtitle)
             }
         }

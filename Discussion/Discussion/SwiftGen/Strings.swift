@@ -39,6 +39,10 @@ public enum DiscussionLocalization {
   public static func votesCount(_ p1: Int) -> String {
     return DiscussionLocalization.tr("Localizable", "votes_count", p1, fallback: "Plural format key: \"%#@votes@\"")
   }
+  public enum Banner {
+    /// Posting in discussions is disabled by the course team
+    public static let discussionsIsDisabled = DiscussionLocalization.tr("Localizable", "BANNER.DISCUSSIONS_IS_DISABLED", fallback: "Posting in discussions is disabled by the course team")
+  }
   public enum Comment {
     /// Follow
     public static let follow = DiscussionLocalization.tr("Localizable", "COMMENT.FOLLOW", fallback: "Follow")
@@ -87,6 +91,8 @@ public enum DiscussionLocalization {
       public static let unread = DiscussionLocalization.tr("Localizable", "POSTS.FILTER.UNREAD", fallback: "Unread")
     }
     public enum NoDiscussion {
+      /// Add a post
+      public static let addPost = DiscussionLocalization.tr("Localizable", "POSTS.NO_DISCUSSION.ADD_POST", fallback: "Add a post")
       /// Create discussion
       public static let createbutton = DiscussionLocalization.tr("Localizable", "POSTS.NO_DISCUSSION.CREATEBUTTON", fallback: "Create discussion")
       /// Click the button below to create your first discussion.
@@ -142,6 +148,8 @@ public enum DiscussionLocalization {
     public static let postImFollowing = DiscussionLocalization.tr("Localizable", "TOPICS.POST_IM_FOLLOWING", fallback: "Posts I'm following")
     /// Search all posts
     public static let search = DiscussionLocalization.tr("Localizable", "TOPICS.SEARCH", fallback: "Search all posts")
+    /// Unnamed subcategory
+    public static let unnamed = DiscussionLocalization.tr("Localizable", "TOPICS.UNNAMED", fallback: "Unnamed subcategory")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

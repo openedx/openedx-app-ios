@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 import Core
-import FirebaseCrashlytics
 
+// swiftlint:disable function_body_length
 public class DiscussionTopicsViewModel: ObservableObject {
     
     @Published var topics: Topics?
@@ -17,7 +17,8 @@ public class DiscussionTopicsViewModel: ObservableObject {
     @Published var showError: Bool = false
     @Published var discussionTopics: [DiscussionTopic]?
     @Published var courseID: String = ""
-    private var title: String
+    @Published  private(set) var isBlackedOut: Bool = false
+    let title: String
     
     var errorMessage: String? {
         didSet {
@@ -31,43 +32,55 @@ public class DiscussionTopicsViewModel: ObservableObject {
     let router: DiscussionRouter
     let analytics: DiscussionAnalytics
     let config: ConfigProtocol
-    
-    public init(title: String,
-                interactor: DiscussionInteractorProtocol,
-                router: DiscussionRouter,
-                analytics: DiscussionAnalytics,
-                config: ConfigProtocol) {
+
+    public init(
+        title: String,
+        interactor: DiscussionInteractorProtocol,
+        router: DiscussionRouter,
+        analytics: DiscussionAnalytics,
+        config: ConfigProtocol
+    ) {
         self.title = title
         self.interactor = interactor
         self.router = router
         self.analytics = analytics
         self.config = config
     }
-    
+
     func generateTopics(topics: Topics?) -> [DiscussionTopic] {
         var result = [
             DiscussionTopic(
                 name: DiscussionLocalization.Topics.allPosts,
                 action: {
-                    self.analytics.discussionAllPostsClicked(courseId: self.courseID,
-                                                                    courseName: self.title)
+                    self.analytics.discussionAllPostsClicked(
+                        courseId: self.courseID,
+                        courseName: self.title
+                    )
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
                         title: DiscussionLocalization.Topics.allPosts,
-                        type: .allPosts)
+                        type: .allPosts,
+                        isBlackedOut: self.isBlackedOut,
+                        animated: true
+                    )
                 },
                 style: .basic
             ),
             DiscussionTopic(
-                name: DiscussionLocalization.Topics.postImFollowing, action: {
-                    self.analytics.discussionFollowingClicked(courseId: self.courseID,
-                                                                     courseName: self.title)
+                name: DiscussionLocalization.Topics.postImFollowing,
+                action: {
+                    self.analytics.discussionFollowingClicked(
+                        courseId: self.courseID,
+                        courseName: self.title
+                    )
                     self.router.showThreads(
                         courseID: self.courseID,
                         topics: topics ?? Topics(coursewareTopics: [], nonCoursewareTopics: []),
                         title: DiscussionLocalization.Topics.postImFollowing,
-                        type: .followingPosts
+                        type: .followingPosts,
+                        isBlackedOut: self.isBlackedOut,
+                        animated: true
                     )
                 },
                 style: .followed)
@@ -88,8 +101,11 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                 courseID: self.courseID,
                                 topics: topics,
                                 title: t.name,
-                                type: .nonCourseTopics)
-                            
+                                type: .nonCourseTopics,
+                                isBlackedOut: self.isBlackedOut,
+                                animated: true
+                            )
+
                         },
                         style: .basic)
                 )
@@ -108,7 +124,9 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                     courseID: self.courseID,
                                     topics: topics,
                                     title: t.name,
-                                    type: .nonCourseTopics
+                                    type: .nonCourseTopics,
+                                    isBlackedOut: self.isBlackedOut,
+                                    animated: true
                                 )
                             },
                             style: .subTopic)
@@ -137,7 +155,9 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                     courseID: self.courseID,
                                     topics: topics,
                                     title: child.name,
-                                    type: .courseTopics(topicID: child.id)
+                                    type: .courseTopics(topicID: child.id),
+                                    isBlackedOut: self.isBlackedOut,
+                                    animated: true
                                 )
                             },
                             style: .subTopic)
@@ -147,12 +167,15 @@ public class DiscussionTopicsViewModel: ObservableObject {
         }
         return result
     }
-    
+
     @MainActor
     public func getTopics(courseID: String, withProgress: Bool = true) async {
         self.courseID = courseID
         isShowProgress = withProgress
         do {
+            let discussionInfo = try await interactor.getCourseDiscussionInfo(courseID: courseID)
+            isBlackedOut = discussionInfo.isBlackedOut()
+             
             topics = try await interactor.getTopics(courseID: courseID)
             discussionTopics = generateTopics(topics: topics)
             isShowProgress = false
@@ -166,3 +189,4 @@ public class DiscussionTopicsViewModel: ObservableObject {
         }
     }
 }
+// swiftlint:enable function_body_length

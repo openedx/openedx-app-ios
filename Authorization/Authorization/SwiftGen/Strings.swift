@@ -69,8 +69,8 @@ public enum AuthLocalization {
     public static let logInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_TITLE", fallback: "Sign in")
     /// Password
     public static let password = AuthLocalization.tr("Localizable", "SIGN_IN.PASSWORD", fallback: "Password")
-    /// Welcome back! Please authorize to continue.
-    public static let welcomeBack = AuthLocalization.tr("Localizable", "SIGN_IN.WELCOME_BACK", fallback: "Welcome back! Please authorize to continue.")
+    /// Welcome back! Sign in to access your courses.
+    public static let welcomeBack = AuthLocalization.tr("Localizable", "SIGN_IN.WELCOME_BACK", fallback: "Welcome back! Sign in to access your courses.")
   }
   public enum SignUp {
     /// By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)
@@ -87,14 +87,12 @@ public enum AuthLocalization {
     }
     /// Show optional Fields
     public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
-    /// Create new account.
-    public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create new account.")
+    /// Create an account to start learning today!
+    public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create an account to start learning today!")
     /// You've successfully signed in.
     public static let successSigninLabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_LABEL", fallback: "You've successfully signed in.")
     /// We just need a little more information before you start learning.
     public static let successSigninSublabel = AuthLocalization.tr("Localizable", "SIGN_UP.SUCCESS_SIGNIN_SUBLABEL", fallback: "We just need a little more information before you start learning.")
-    /// Sign up
-    public static let title = AuthLocalization.tr("Localizable", "SIGN_UP.TITLE", fallback: "Sign up")
   }
   public enum Startup {
     /// Explore all courses
@@ -105,6 +103,8 @@ public enum AuthLocalization {
     public static let searchPlaceholder = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_PLACEHOLDER", fallback: "Search our 3000+ courses")
     /// What do you want to learn?
     public static let searchTitle = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_TITLE", fallback: "What do you want to learn?")
+    /// Start
+    public static let title = AuthLocalization.tr("Localizable", "STARTUP.TITLE", fallback: "Start")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

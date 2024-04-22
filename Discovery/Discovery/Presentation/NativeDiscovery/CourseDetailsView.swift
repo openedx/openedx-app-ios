@@ -47,6 +47,7 @@ public struct CourseDetailsView: View {
                             ProgressBar(size: 40, lineWidth: 8)
                                 .padding(.top, 200)
                                 .padding(.horizontal)
+                                .accessibilityIdentifier("progressbar")
                         }.frame(width: proxy.size.width)
                     } else {
                         RefreshableScrollViewCompat(action: {
@@ -98,19 +99,19 @@ public struct CourseDetailsView: View {
                                                     viewModel?.showCourseVideo()
                                                 })
                                         }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
-//                                            .frame(maxHeight: 250)
                                             .cornerRadius(12)
                                             .padding(.horizontal, 6)
                                             .padding(.top, 7)
                                             .fixedSize(horizontal: false, vertical: true)
                                         
-                                        // MARK: - Title and description
-                                        CourseTitleView(courseDetails: courseDetails)
-                                        
                                         // MARK: - Course state button
                                         CourseStateView(title: title,
                                                         courseDetails: courseDetails,
                                                         viewModel: viewModel)
+                                        .padding(.top, 24)
+                                        
+                                        // MARK: - Title and description
+                                        CourseTitleView(courseDetails: courseDetails)
                                     }
                                     
                                     // MARK: - HTML Embed
@@ -131,14 +132,16 @@ public struct CourseDetailsView: View {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(.top, 20)
                                                 .frame(maxWidth: .infinity)
+                                                .accessibilityIdentifier("progressbar")
                                         }
                                     }
                                 }
                             }
-                        }.frameLimit()
-                            .onRightSwipeGesture {
-                                viewModel.router.back()
-                            }
+                            .frameLimit(width: proxy.size.width)
+                        }
+                        .onRightSwipeGesture {
+                            viewModel.router.back()
+                        }
                         Spacer(minLength: 84)
                     }
                 }
@@ -174,10 +177,12 @@ public struct CourseDetailsView: View {
             }
             
             // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                reloadAction: {
-                await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
-            })
+            if viewModel.courseState() != .enrollOpen {
+                OfflineSnackBarView(connectivity: viewModel.connectivity,
+                                    reloadAction: {
+                    await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
+                })
+            }
             
             // MARK: - Error Alert
             if viewModel.showError {
@@ -219,26 +224,42 @@ private struct CourseStateView: View {
     var body: some View {
         switch viewModel.courseState() {
         case .enrollOpen:
-            StyledButton(DiscoveryLocalization.Details.enrollNow, action: {
-                if !viewModel.userloggedIn {
-                    viewModel.router.showRegisterScreen(
-                        sourceScreen: .courseDetail(
-                            courseDetails.courseID,
-                            courseDetails.courseTitle)
-                    )
+            Group {
+            if viewModel.connectivity.isInternetAvaliable {
+                    StyledButton(DiscoveryLocalization.Details.enrollNow, action: {
+                        if !viewModel.userloggedIn {
+                            viewModel.router.showRegisterScreen(
+                                sourceScreen: .courseDetail(
+                                    courseDetails.courseID,
+                                    courseDetails.courseTitle)
+                            )
+                        } else {
+                            Task {
+                                await viewModel.enrollToCourse(id: courseDetails.courseID)
+                            }
+                        }
+                    })
+                    .padding(16)
                 } else {
-                    Task {
-                        await viewModel.enrollToCourse(id: courseDetails.courseID)
-                    }
+                    HStack(alignment: .center, spacing: 10) {
+                        CoreAssets.noWifiMini.swiftUIImage
+                            .renderingMode(.template)
+                            .foregroundStyle(Theme.Colors.warning)
+                        Text(DiscoveryLocalization.Details.enrollmentNoInternet)
+                            .multilineTextAlignment(.leading)
+                            .font(Theme.Fonts.titleSmall)
+                        Spacer()
+                    }.cardStyle(paddingAll: 12, bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
                 }
-            })
-            .padding(16)
+            }
+            .accessibilityIdentifier("enroll_button")
         case .enrollClose:
             Text(DiscoveryLocalization.Details.enrollmentDateIsOver)
                 .multilineTextAlignment(.center)
                 .font(Theme.Fonts.titleSmall)
                 .cardStyle()
                 .padding(.vertical, 24)
+                .accessibilityIdentifier("date_over_text")
         case .alreadyEnrolled:
             StyledButton(DiscoveryLocalization.Details.viewCourse, action: {
                 if !viewModel.userloggedIn {
@@ -264,6 +285,7 @@ private struct CourseStateView: View {
                 }
             })
             .padding(16)
+            .accessibilityIdentifier("view_course_button")
         }
     }
 }
@@ -277,6 +299,7 @@ private struct PlayButton: View {
                 .resizable()
                 .frame(width: 40, height: 40)
         })
+        .accessibilityIdentifier("play_button")
     }
 }
 
@@ -288,16 +311,19 @@ private struct CourseTitleView: View {
             Text(courseDetails.courseDescription ?? "")
                 .font(Theme.Fonts.labelSmall)
                 .padding(.horizontal, 26)
+                .accessibilityIdentifier("description_text")
             
             Text(courseDetails.courseTitle)
                 .font(Theme.Fonts.titleLarge)
                 .padding(.horizontal, 26)
+                .accessibilityIdentifier("title_text")
             
             Text(courseDetails.org)
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(Theme.Colors.accentColor)
                 .padding(.horizontal, 26)
                 .padding(.top, 10)
+                .accessibilityIdentifier("org_text")
         }
     }
 }
@@ -335,6 +361,7 @@ private struct CourseBannerView: View {
                             animate = true
                         }
                     }
+                    .accessibilityIdentifier("course_image")
                 if courseDetails.courseVideoURL != nil {
                     PlayButton(action: onPlayButtonTap)
                 }
@@ -350,6 +377,7 @@ private struct CourseBannerView: View {
                             animate = true
                         }
                     }
+                    .accessibilityIdentifier("course_image")
                 if courseDetails.courseVideoURL != nil {
                     PlayButton(action: onPlayButtonTap)
                 }

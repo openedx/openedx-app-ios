@@ -40,18 +40,19 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        Text(CoreLocalization.SignIn.registerBtn)
+                        Text(CoreLocalization.register)
                             .titleSettings(color: Theme.Colors.loginNavigationText)
                             .accessibilityIdentifier("register_text")
                     }
                     VStack {
-                        Button(action: { viewModel.router.back() }, label: {
-                            CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                        })
-                        .foregroundColor(Theme.Colors.styledButtonText)
+                        BackNavigationButton(
+                            color: Theme.Colors.loginNavigationText,
+                            action: {
+                                viewModel.router.back()
+                            }
+                        )
+                        .backViewStyle()
                         .padding(.leading, isHorizontal ? 48 : 0)
-                        .accessibilityIdentifier("back_button")
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
@@ -63,7 +64,7 @@ public struct SignUpView: View {
                         ScrollView {
                             VStack(alignment: .leading) {
                                 
-                                Text(AuthLocalization.SignUp.title)
+                                Text(CoreLocalization.register)
                                     .font(Theme.Fonts.displaySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
@@ -73,7 +74,7 @@ public struct SignUpView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
                                     .accessibilityIdentifier("signup_subtitle_text")
-
+                                
                                 if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)
@@ -111,9 +112,11 @@ public struct SignUpView: View {
                                         Text(disclosureGroupOpen
                                              ? AuthLocalization.SignUp.hideFields
                                              : AuthLocalization.SignUp.showFields)
+                                        .font(Theme.Fonts.labelLarge)
                                     }
                                     .accessibilityLabel("optional_fields_text")
                                     .padding(.top, 10)
+                                    .foregroundColor(Theme.Colors.accentXColor)
                                 }
 
                                 FieldsView(
@@ -137,7 +140,7 @@ public struct SignUpView: View {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
                                         viewModel.thirdPartyAuthSuccess = false
                                         Task {
-                                            await viewModel.registerUser()
+                                            await viewModel.registerUser(authMetod: viewModel.authMethod)
                                         }
                                         viewModel.trackCreateAccountClicked()
                                     }
@@ -161,7 +164,7 @@ public struct SignUpView: View {
                             }
                             .padding(.horizontal, 24)
                             .padding(.top, 24)
-                            
+                            .frameLimit(width: proxy.size.width)
                         }
                         .roundedBackground(Theme.Colors.background)
                         .onRightSwipeGesture {
@@ -182,7 +185,6 @@ public struct SignUpView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
-                        .accessibilityLabel("error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {

@@ -19,6 +19,7 @@ public extension DataLayer {
         public let id: String
         public let media: DataLayer.CourseMedia
         public let certificate: Certificate?
+        public let isSelfPaced: Bool
         
         enum CodingKeys: String, CodingKey {
             case blocks
@@ -26,14 +27,23 @@ public extension DataLayer {
             case id
             case media
             case certificate
+            case isSelfPaced = "is_self_paced"
         }
         
-        public init(rootItem: String, dict: Blocks, id: String, media: DataLayer.CourseMedia, certificate: Certificate?) {
+        public init(
+            rootItem: String,
+            dict: Blocks,
+            id: String,
+            media: DataLayer.CourseMedia,
+            certificate: Certificate?,
+            isSelfPaced: Bool
+        ) {
             self.rootItem = rootItem
             self.dict = dict
             self.id = id
             self.media = media
             self.certificate = certificate
+            self.isSelfPaced = isSelfPaced
         }
         
         public init(from decoder: Decoder) throws {
@@ -44,6 +54,7 @@ public extension DataLayer {
             id = try values.decode(String.self, forKey: .id)
             media = try values.decode(DataLayer.CourseMedia.self, forKey: .media)
             certificate = try values.decode(Certificate.self, forKey: .certificate)
+            isSelfPaced = try values.decode(Bool.self, forKey: .isSelfPaced)
         }
     }
 }
@@ -54,11 +65,13 @@ public extension DataLayer {
         public let graded: Bool
         public let completion: Double?
         public let studentUrl: String
+        public let webUrl: String
         public let type: String
         public let displayName: String
         public let descendants: [String]?
         public let allSources: [String]?
         public let userViewData: CourseDetailUserViewData?
+        public let multiDevice: Bool?
         
         public init(
             blockId: String,
@@ -66,31 +79,37 @@ public extension DataLayer {
             graded: Bool,
             completion: Double?,
             studentUrl: String,
+            webUrl: String,
             type: String,
             displayName: String,
             descendants: [String]?,
             allSources: [String]?,
-            userViewData: CourseDetailUserViewData?
+            userViewData: CourseDetailUserViewData?,
+            multiDevice: Bool?
         ) {
             self.blockId = blockId
             self.id = id
             self.graded = graded
             self.completion = completion
             self.studentUrl = studentUrl
+            self.webUrl = webUrl
             self.type = type
             self.displayName = displayName
             self.descendants = descendants
             self.allSources = allSources
             self.userViewData = userViewData
+            self.multiDevice = multiDevice
         }
         
         public enum CodingKeys: String, CodingKey {
             case id, type, descendants, graded, completion
             case blockId = "block_id"
             case studentUrl = "student_view_url"
+            case webUrl = "lms_web_url"
             case displayName = "display_name"
             case userViewData = "student_view_data"
             case allSources = "all_sources"
+            case multiDevice = "student_view_multi_device"
         }
     }
         

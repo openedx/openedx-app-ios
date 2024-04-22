@@ -26,10 +26,11 @@ struct HandoutsView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            VStack(alignment: .center) {
-
-                // MARK: - Page Body
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                VStack(alignment: .center) {
+                    
+                    // MARK: - Page Body
                     if viewModel.isShowProgress {
                         HStack(alignment: .center) {
                             ProgressBar(size: 40, lineWidth: 8)
@@ -39,12 +40,16 @@ struct HandoutsView: View {
                     } else {
                         VStack(alignment: .leading) {
                             HandoutsItemCell(type: .handouts, onTapAction: {
-                                guard let handouts = viewModel.handouts else { return }
                                 viewModel.router.showHandoutsUpdatesView(
-                                    handouts: handouts,
+                                    handouts: viewModel.handouts,
                                     announcements: nil,
                                     router: viewModel.router,
                                     cssInjector: viewModel.cssInjector)
+                                viewModel.analytics.trackCourseEvent(
+                                    .courseHandouts,
+                                    biValue: .courseHandouts,
+                                    courseID: courseID
+                                )
                             })
                             Divider()
                             HandoutsItemCell(type: .announcements, onTapAction: {
@@ -54,50 +59,57 @@ struct HandoutsView: View {
                                         announcements: viewModel.updates,
                                         router: viewModel.router,
                                         cssInjector: viewModel.cssInjector)
+                                    viewModel.analytics.trackCourseEvent(
+                                        .courseAnnouncement,
+                                        biValue: .courseAnnouncement,
+                                        courseID: courseID
+                                    )
                                 }
                             })
                         }.padding(.horizontal, 32)
                         Spacer(minLength: 84)
                     }
-            }
-            
-            // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(
-                connectivity: viewModel.connectivity,
-                reloadAction: {
-                    Task {
-                        await viewModel.getHandouts(courseID: courseID)
-                        await viewModel.getUpdates(courseID: courseID)
+                }
+                .frameLimit(width: proxy.size.width)
+                // MARK: - Offline mode SnackBar
+                OfflineSnackBarView(
+                    connectivity: viewModel.connectivity,
+                    reloadAction: {
+                        Task {
+                            await viewModel.getHandouts(courseID: courseID)
+                            await viewModel.getUpdates(courseID: courseID)
+                        }
+                    }
+                )
+                
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .padding(.bottom, viewModel.connectivity.isInternetAvaliable
+                             ? 0 : OfflineSnackBarView.height)
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
                     }
                 }
+            }
+            
+            .onFirstAppear {
+                Task {
+                    await viewModel.getHandouts(courseID: courseID)
+                    await viewModel.getUpdates(courseID: courseID)
+                }
+            }
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
             )
-            
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }
-                .padding(.bottom, viewModel.connectivity.isInternetAvaliable
-                         ? 0 : OfflineSnackBarView.height)
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
-                    }
-                }
-            }
         }
-        .onFirstAppear {
-            Task {
-                await viewModel.getHandouts(courseID: courseID)
-                await viewModel.getUpdates(courseID: courseID)
-            }
-        }
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 }
 
@@ -109,7 +121,8 @@ struct HandoutsView_Previews: PreviewProvider {
                                           router: CourseRouterMock(),
                                           cssInjector: CSSInjectorMock(),
                                           connectivity: Connectivity(),
-                                          courseID: "")
+                                          courseID: "",
+                                          analytics: CourseAnalyticsMock())
         HandoutsView(courseID: "",
                      viewModel: viewModel)
     }

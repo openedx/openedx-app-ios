@@ -16,15 +16,23 @@ public enum LessonType: Equatable {
     case discussion(String, String, String)
     
     static func from(_ block: CourseBlock, streamingQuality: StreamingQuality) -> Self {
+        let mandatoryInjections: [WebviewInjection] = [.colorInversionCss, .ajaxCallback, .readability, .accessibility]
         switch block.type {
-        case .course, .chapter, .vertical, .sequential, .unknown:
+        case .course, .chapter, .vertical, .sequential:
             return .unknown(block.studentUrl)
+        case .unknown:
+            if let multiDevice = block.multiDevice, multiDevice {
+                return .web(url: block.studentUrl, injections: mandatoryInjections)
+            } else {
+                return .unknown(block.studentUrl)
+            }
         case .html:
-            return .web(url: block.studentUrl, injections: [.ajaxCallback])
+            return .web(url: block.studentUrl, injections: mandatoryInjections)
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
-            if block.encodedVideo?.youtubeVideoUrl != nil, let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
+            if block.encodedVideo?.youtubeVideoUrl != nil,
+                let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
                 return .video(videoUrl: encodedVideo, blockID: block.id)
             } else if let youtubeVideoUrl = block.encodedVideo?.youtubeVideoUrl {
                 return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockID: block.id)
@@ -35,12 +43,47 @@ public enum LessonType: Equatable {
             }
             
         case .problem:
-            return .web(url: block.studentUrl, injections: [.ajaxCallback])
+            return .web(url: block.studentUrl, injections: mandatoryInjections)
         case .dragAndDropV2:
-            return .web(url: block.studentUrl, injections: [.ajaxCallback, .dragAndDropCss])
+            return .web(url: block.studentUrl, injections: mandatoryInjections + [.dragAndDropCss])
         case .survey:
-            return .web(url: block.studentUrl, injections: [.ajaxCallback, .surveyCSS])
+            return .web(url: block.studentUrl, injections: mandatoryInjections + [.surveyCSS])
+        case .openassessment, .peerInstructionTool:
+            return .web(url: block.studentUrl, injections: mandatoryInjections)
         }
+    }
+}
+
+public struct VerticalData: Equatable {
+    public var chapterIndex: Int
+    public var sequentialIndex: Int
+    public var verticalIndex: Int
+    public var blockIndex: Int
+    
+    public init(chapterIndex: Int, sequentialIndex: Int, verticalIndex: Int, blockIndex: Int) {
+        self.chapterIndex = chapterIndex
+        self.sequentialIndex = sequentialIndex
+        self.verticalIndex = verticalIndex
+        self.blockIndex = blockIndex
+    }
+    
+    public static func dataFor(blockId: String?, in chapters: [CourseChapter]) -> VerticalData? {
+        guard let blockId = blockId else { return nil }
+        for (chapterIndex, chapter) in chapters.enumerated() {
+            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
+                for (verticalIndex, vertical) in sequential.childs.enumerated() {
+                    for (blockIndex, block) in vertical.childs.enumerated() where block.id.contains(blockId) {
+                        return VerticalData(
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex,
+                            verticalIndex: verticalIndex,
+                            blockIndex: blockIndex
+                        )
+                    }
+                }
+            }
+        }
+        return nil
     }
 }
 
@@ -49,12 +92,6 @@ public class CourseUnitViewModel: ObservableObject {
     enum LessonAction {
         case next
         case previous
-    }
-
-    struct VerticalData {
-        var chapterIndex: Int
-        var sequentialIndex: Int
-        var verticalIndex: Int
     }
 
     var verticals: [CourseVertical]
@@ -86,7 +123,7 @@ public class CourseUnitViewModel: ObservableObject {
     let chapterIndex: Int
     let sequentialIndex: Int
 
-    var streamingQuality: StreamingQuality  {
+    var streamingQuality: StreamingQuality {
         storage.userSettings?.streamingQuality ?? .auto
     }
 
@@ -133,7 +170,7 @@ public class CourseUnitViewModel: ObservableObject {
     
     private func selectLesson() -> Int {
         guard verticals[verticalIndex].childs.count > 0 else { return 0 }
-        let index = verticals[verticalIndex].childs.firstIndex(where: { $0.id == lessonID }) ?? 0
+        let index = verticals[verticalIndex].childs.firstIndex(where: { $0.id.contains(lessonID) }) ?? 0
         nextTitles()
         return index
     }
@@ -209,11 +246,16 @@ public class CourseUnitViewModel: ObservableObject {
     // MARK: Navigation to next vertical
     var nextData: VerticalData? {
         nextData(
-            from: VerticalData(
-                chapterIndex: chapterIndex,
-                sequentialIndex: sequentialIndex,
-                verticalIndex: verticalIndex
-            )
+            from: currentData
+        )
+    }
+    
+    var currentData: VerticalData {
+        VerticalData(
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex,
+            verticalIndex: verticalIndex,
+            blockIndex: index
         )
     }
     
@@ -262,6 +304,7 @@ public class CourseUnitViewModel: ObservableObject {
         }
 
         if let vertical = vertical(for: resultData), vertical.childs.count > 0 {
+            resultData.blockIndex = 0
             return resultData
         } else {
             return nextData(from: resultData)
@@ -282,20 +325,34 @@ public class CourseUnitViewModel: ObservableObject {
         )
     }
 
-    func route(to vertical: CourseVertical) {
-        if let index = verticals.firstIndex(where: { $0.id == vertical.id }),
-            let block = vertical.childs.first {
+    func blockFor(index: Int, in vertical: CourseVertical) -> CourseBlock? {
+        guard index >= 0 && index < vertical.childs.count else { return nil }
+        return vertical.childs[index]
+    }
+    
+    func route(to data: VerticalData?, animated: Bool = false) {
+        guard let data = data, data != currentData else { return }
+        if let vertical = vertical(for: data),
+                  let block = blockFor(index: data.blockIndex, in: vertical) {
             router.replaceCourseUnit(
                 courseName: courseName,
-                blockId: block.id,
+                blockId: block.blockId,
                 courseID: courseID,
-                sectionName: block.displayName,
-                verticalIndex: index,
+                verticalIndex: data.verticalIndex,
                 chapters: chapters,
-                chapterIndex: chapterIndex,
-                sequentialIndex: sequentialIndex,
-                animated: false
+                chapterIndex: data.chapterIndex,
+                sequentialIndex: data.sequentialIndex,
+                animated: animated
             )
         }
+    }
+    
+    public func route(to blockId: String?) {
+        guard let data = VerticalData.dataFor(blockId: blockId, in: chapters) else { return }
+        route(to: data, animated: true)
+    }
+    
+    public var currentCourseId: String {
+        courseID
     }
 }

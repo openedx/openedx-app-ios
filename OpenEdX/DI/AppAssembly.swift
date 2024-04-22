@@ -35,8 +35,10 @@ class AppAssembly: Assembly {
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
         
-        container.register(AnalyticsManager.self) { _ in
-            AnalyticsManager()
+        container.register(AnalyticsManager.self) { r in
+            AnalyticsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
         }
         
         container.register(AuthorizationAnalytics.self) { r in
@@ -64,6 +66,14 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(DiscussionAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(CoreAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
+        container.register(WhatsNewAnalytics.self) { r in
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
@@ -160,6 +170,45 @@ class AppAssembly: Assembly {
         
         container.register(Validator.self) { _ in
             Validator()
+        }.inObjectScope(.container)
+        
+        container.register(PushNotificationsManager.self) { r in
+            PushNotificationsManager(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+
+        container.register(DeepLinkManager.self) { r in
+            DeepLinkManager(
+                config: r.resolve(ConfigProtocol.self)!,
+                router: r.resolve(Router.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
+                discussionInteractor: r.resolve(DiscussionInteractorProtocol.self)!,
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                profileInteractor: r.resolve(ProfileInteractorProtocol.self)!
+            )
+        }.inObjectScope(.container)
+        
+        container.register(SegmentAnalyticsService.self) { r in
+            SegmentAnalyticsService(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+        
+        container.register(FirebaseAnalyticsService.self) { r in
+            FirebaseAnalyticsService(
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }.inObjectScope(.container)
+        
+        container.register(PipManagerProtocol.self) { r in
+            PipManager(
+                router: r.resolve(Router.self)!,
+                discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                isNestedListEnabled: r.resolve(ConfigProtocol.self)?.uiComponents.courseNestedListEnabled ?? false
+            )
         }.inObjectScope(.container)
     }
 }

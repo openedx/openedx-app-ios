@@ -54,13 +54,15 @@ class WhitelabelApp:
       project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
       project_font_names_json_path: 'path/to/names/file/in project/fonts.json' # path to existing font names json-file in project
       font_names:
+        light: 'SFPro-Light'
         regular: 'FontName-Regular'
         medium: 'FontName-Medium'
         semiBold: 'FontName-Semibold'
         bold: 'FontName-Bold'
-    whatsnew:
-      whatsnew_import_file_path: 'path/to/importing/whats_new.json'
-      project_whatsnew_file_path: 'path/to/json/file/in/project/whats_new.json'
+    files:
+      file_name:
+        import_file_path: 'path/to/importing/file_name.any'
+        project_file_path: 'path/to/json/file/in/project/file_name.any'
     """)
 
     def __init__(self, **kwargs):            
@@ -71,7 +73,7 @@ class WhitelabelApp:
         self.assets = kwargs.get('assets', {})
         self.project_config = kwargs.get('project_config', {})
         self.font = kwargs.get('font', {})
-        self.whatsnew = kwargs.get('whatsnew', {})
+        self.files = kwargs.get('files', {})
 
         if self.project_config:
             if "project_path" in self.project_config:
@@ -85,7 +87,7 @@ class WhitelabelApp:
         # Update the properties, resources, and configuration of the current app.
         self.copy_assets()
         self.copy_font()
-        self.copy_whatsnew()
+        self.copy_project_files()
         if self.project_config:
             self.set_app_project_config()
 
@@ -114,10 +116,12 @@ class WhitelabelApp:
                     for json_image in json_object["images"]:
                         if "appearances" in json_image:
                             # dark
-                            dark_image_name_original = json_image["filename"]
+                            if "filename" in json_image:
+                                dark_image_name_original = json_image["filename"]
                         else:
                             # light
-                            image_name_original = json_image["filename"]
+                            if "filename" in json_image:
+                                image_name_original = json_image["filename"]
                 has_dark = True if "dark_image_name" in image else False
                 image_name_import = image["image_name"] if "image_name" in image else ''
                 dark_image_name_import =  image["dark_image_name"] if "dark_image_name" in image else ''
@@ -456,7 +460,7 @@ class WhitelabelApp:
         except IOError as e:
             logging.error("Unable to copy file. "+e)
         else:
-            logging.debug(title+" file was copied to project")
+            logging.debug(title+" file was replaced in project")
 
     def set_font_names(self, font_names):
         if "project_font_names_json_path" in self.font:
@@ -478,27 +482,30 @@ class WhitelabelApp:
         else:
             logging.error("'project_font_names_json_path' not found in config")
 
-    def copy_whatsnew(self):
-        # check if whatsnew config exists
-        if self.whatsnew:
-            if "whatsnew_import_file_path" in self.whatsnew:
-                whatsnew_import_file_path = self.whatsnew["whatsnew_import_file_path"]
-                if "project_whatsnew_file_path" in self.whatsnew:
-                    project_whatsnew_file_path = self.whatsnew["project_whatsnew_file_path"]
-                    # if source and destination file exist
-                    if os.path.exists(whatsnew_import_file_path):
-                        if os.path.exists(project_whatsnew_file_path):
-                            self.copy_file(whatsnew_import_file_path, project_whatsnew_file_path, "What's new")
+    def copy_project_files(self):
+        # check if files config exists
+        if self.files:
+            for copy_file_data in self.files.items():
+                file_name = copy_file_data[0]
+                copy_file = copy_file_data[1]
+                if "import_file_path" in copy_file:
+                    import_file_path = copy_file["import_file_path"]
+                    if "project_file_path" in copy_file:
+                        project_file_path = copy_file["project_file_path"]
+                        # if source and destination file exist
+                        if os.path.exists(import_file_path):
+                            if os.path.exists(project_file_path):
+                                self.copy_file(import_file_path, project_file_path, file_name)
+                            else:
+                                logging.error(project_file_path+" file doesn't exist")
                         else:
-                            logging.error(project_whatsnew_file_path+" file doesn't exist")
+                            logging.error(import_file_path+" file doesn't exist")
                     else:
-                        logging.error(whatsnew_import_file_path+" file doesn't exist")
+                        logging.error("'project_file_path' for "+file_name+" not found in config")
                 else:
-                    logging.error("'project_whatsnew_file_path' not found in config")
-            else:
-                logging.error("'whatsnew_import_file_path' not found in config")
+                    logging.error("'import_file_path' for "+file_name+" not found in config")
         else:
-            logging.debug("What's New not found in config")
+            logging.debug("Project's Files for copying not found in config")
 
 def main():
     """

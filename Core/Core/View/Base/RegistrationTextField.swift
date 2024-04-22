@@ -42,8 +42,11 @@ public struct RegistrationTextField: View {
             }
             if isTextArea {
                 TextEditor(text: $config.text)
+                    .font(Theme.Fonts.bodyMedium)
+                    .foregroundColor(Theme.Colors.textInputTextColor)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 4)
+                    .foregroundColor(Theme.Colors.textInputTextColor)
                     .frame(height: 100)
                     .hideScrollContentBackground()
                     .background(
@@ -57,7 +60,7 @@ public struct RegistrationTextField: View {
                             .fill(
                                 config.error == "" ?
                                 Theme.Colors.textInputStroke
-                                : Color.red
+                                : Theme.Colors.alert
                             )
                     )
                     .shake($config.shake)
@@ -80,13 +83,15 @@ public struct RegistrationTextField: View {
                                 .fill(
                                     config.error == "" ?
                                     Theme.Colors.textInputStroke
-                                    : Color.red
+                                    : Theme.Colors.alert
                                 )
                         )
                         .shake($config.shake)
                         .accessibilityIdentifier("\(config.field.name)_textfield")
                 } else {
                     TextField(placeholder, text: $config.text)
+                        .font(Theme.Fonts.bodyLarge)
+                        .foregroundColor(Theme.Colors.textInputTextColor)
                         .keyboardType(keyboardType)
                         .textContentType(textContentType)
                         .autocapitalization(.none)
@@ -102,7 +107,7 @@ public struct RegistrationTextField: View {
                                 .fill(
                                     config.error == "" ?
                                     Theme.Colors.textInputStroke
-                                    : Color.red
+                                    : Theme.Colors.alert
                                 )
                         )
                         .shake($config.shake)
@@ -113,8 +118,8 @@ public struct RegistrationTextField: View {
             Text(config.error == "" ? config.field.instructions : config.error)
                 .font(Theme.Fonts.bodySmall)
                 .foregroundColor(config.error == ""
-                                 ? Theme.Colors.textSecondary
-                                 : Color.red)
+                                 ? Theme.Colors.textSecondaryLight
+                                 : Theme.Colors.alert)
                 .accessibilityIdentifier("\(config.field.name)_instructions_text")
         }
     }

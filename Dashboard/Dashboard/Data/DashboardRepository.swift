@@ -47,6 +47,18 @@ public class DashboardRepository: DashboardRepositoryProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 class DashboardRepositoryMock: DashboardRepositoryProtocol {
+    func getCourseEnrollments(baseURL: String) async throws -> [CourseItem] {
+        do {
+            let courseEnrollments = try
+            DashboardRepository.CourseEnrollmentsJSON.data(using: .utf8)!
+                .mapResponse(DataLayer.CourseEnrollments.self)
+                .domain(baseURL: baseURL)
+            return courseEnrollments
+        } catch {
+            throw error
+        }
+    }
+    
     func getMyCourses(page: Int) async throws -> [CourseItem] {
         var models: [CourseItem] = []
         for i in 0...10 {

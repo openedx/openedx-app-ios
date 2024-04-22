@@ -45,7 +45,8 @@ class ScreenAssembly: Assembly {
         // MARK: Startup screen
         container.register(StartupViewModel.self) { r in
             StartupViewModel(
-                router: r.resolve(AuthorizationRouter.self)!
+                router: r.resolve(AuthorizationRouter.self)!,
+                analytics: r.resolve(CoreAnalytics.self)!
             )
         }
         
@@ -187,6 +188,7 @@ class ScreenAssembly: Assembly {
         container.register(ProfileViewModel.self) { r in
             ProfileViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -206,7 +208,8 @@ class ScreenAssembly: Assembly {
         container.register(SettingsViewModel.self) { r in
             SettingsViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
-                router: r.resolve(ProfileRouter.self)!
+                router: r.resolve(ProfileRouter.self)!,
+                analytics: r.resolve(CoreAnalytics.self)!
             )
         }
         
@@ -214,7 +217,8 @@ class ScreenAssembly: Assembly {
             DeleteAccountViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(ProfileAnalytics.self)!
             )
         }
         
@@ -265,7 +269,8 @@ class ScreenAssembly: Assembly {
                 courseStart: courseStart,
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
-                enrollmentEnd: enrollmentEnd
+                enrollmentEnd: enrollmentEnd,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!
             )
         }
         
@@ -319,23 +324,27 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                pipManager: r.resolve(PipManagerProtocol.self)!
             )
         }
         
         container.register(
             EncodedVideoPlayerViewModel.self
         ) { r, url, blockID, courseID, languages, playerStateSubject in
-            EncodedVideoPlayerViewModel(
+            let router: Router = r.resolve(Router.self)!
+            return EncodedVideoPlayerViewModel(
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
                 languages: languages,
                 playerStateSubject: playerStateSubject,
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!, 
+                router: r.resolve(CourseRouter.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                pipManager: r.resolve(PipManagerProtocol.self)!,
+                selectedCourseTab: router.currentCourseTabSelection
             )
         }
         
@@ -345,17 +354,22 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(CourseRouter.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                courseID: courseID
+                courseID: courseID,
+                analytics: r.resolve(CourseAnalytics.self)!
             )
         }
         
-        container.register(CourseDatesViewModel.self) { r, courseID in
+        container.register(CourseDatesViewModel.self) { r, courseID, courseName in
             CourseDatesViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                courseID: courseID)
+                config: r.resolve(ConfigProtocol.self)!,
+                courseID: courseID,
+                courseName: courseName,
+                analytics: r.resolve(CourseAnalytics.self)!
+            )
         }
         
         // MARK: Discussion
@@ -425,6 +439,10 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!
             )
+        }
+        
+        container.register(BackNavigationProtocol.self) { r in
+            r.resolve(Router.self)!
         }
     }
 }

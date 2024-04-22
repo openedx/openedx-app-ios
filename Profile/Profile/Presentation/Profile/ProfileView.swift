@@ -21,72 +21,81 @@ public struct ProfileView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
-            // MARK: - Page Body
-            RefreshableScrollViewCompat(
-                action: {
-                    await viewModel.getMyProfile(withProgress: false)
-                },
-                content: content
-            )
-            .accessibilityAction {}
-            .frameLimit(sizePortrait: 420)
-            .padding(.top, 8)
-            .onChange(of: settingsTapped, perform: { _ in
-                let userModel = viewModel.userModel ?? UserProfile()
-                viewModel.trackProfileEditClicked()
-                viewModel.router.showEditProfile(
-                    userModel: userModel,
-                    avatar: viewModel.updatedAvatar,
-                    profileDidEdit: { updatedProfile, updatedImage in
-                        if let updatedProfile {
-                            self.viewModel.userModel = updatedProfile
-                        }
-                        if let updatedImage {
-                            self.viewModel.updatedAvatar = updatedImage
-                        }
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                // MARK: - Page Body
+                RefreshableScrollViewCompat(
+                    action: {
+                        await viewModel.getMyProfile(withProgress: false)
+                    },
+                    content: {
+                        content
+                            .frameLimit(width: proxy.size.width)
                     }
                 )
-            })
-            .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
-
-            // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(
-                connectivity: viewModel.connectivity,
-                reloadAction: {
-                    await viewModel.getMyProfile(withProgress: false)
-                }
-            )
-
-            // MARK: - Error Alert
-            if viewModel.showError {
-                VStack {
-                    Spacer()
-                    SnackBarView(message: viewModel.errorMessage)
-                }
-                .padding(
-                    .bottom,
-                    viewModel.connectivity.isInternetAvaliable
-                    ? 0 : OfflineSnackBarView.height
+                .accessibilityAction {}
+                .padding(.top, 8)
+                .onChange(of: settingsTapped, perform: { _ in
+                    let userModel = viewModel.userModel ?? UserProfile()
+                    viewModel.trackProfileEditClicked()
+                    viewModel.router.showEditProfile(
+                        userModel: userModel,
+                        avatar: viewModel.updatedAvatar,
+                        profileDidEdit: { updatedProfile, updatedImage in
+                            if let updatedProfile {
+                                self.viewModel.userModel = updatedProfile
+                            }
+                            if let updatedImage {
+                                self.viewModel.updatedAvatar = updatedImage
+                            }
+                        }
+                    )
+                })
+                .navigationBarHidden(false)
+                .navigationBarBackButtonHidden(false)
+                
+                // MARK: - Offline mode SnackBar
+                OfflineSnackBarView(
+                    connectivity: viewModel.connectivity,
+                    reloadAction: {
+                        await viewModel.getMyProfile(withProgress: false)
+                    }
                 )
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
+                
+                // MARK: - Error Alert
+                if viewModel.showError {
+                    VStack {
+                        Spacer()
+                        SnackBarView(message: viewModel.errorMessage)
+                    }
+                    .padding(
+                        .bottom,
+                        viewModel.connectivity.isInternetAvaliable
+                        ? 0 : OfflineSnackBarView.height
+                    )
+                    .transition(.move(edge: .bottom))
+                    .onAppear {
+                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                            viewModel.errorMessage = nil
+                        }
                     }
                 }
             }
-        }
-        .onFirstAppear {
-            Task {
-                await viewModel.getMyProfile()
+            .onFirstAppear {
+                Task {
+                    await viewModel.getMyProfile()
+                }
+            }
+            .background(
+                Theme.Colors.background
+                    .ignoresSafeArea()
+            )
+            .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { _ in
+                Task {
+                    await viewModel.getMyProfile()
+                }
             }
         }
-        .background(
-            Theme.Colors.background
-                .ignoresSafeArea()
-        )
     }
 
     private var progressBar: some View {
@@ -95,23 +104,28 @@ public struct ProfileView: View {
             .padding(.horizontal)
     }
 
-    private func content() -> some View {
+    private var content: some View {
         VStack {
             if viewModel.isShowProgress {
                 ProgressBar(size: 40, lineWidth: 8)
                     .padding(.top, 200)
                     .padding(.horizontal)
+                    .accessibilityIdentifier("progressbar")
             } else {
                 UserAvatar(url: viewModel.userModel?.avatarUrl ?? "", image: $viewModel.updatedAvatar)
                     .padding(.top, 30)
+                    .accessibilityIdentifier("user_avatar_image")
                 Text(viewModel.userModel?.name ?? "")
                     .font(Theme.Fonts.headlineSmall)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.top, 20)
+                    .accessibilityIdentifier("user_name_text")
                 Text("@\(viewModel.userModel?.username ?? "")")
                     .font(Theme.Fonts.labelLarge)
                     .padding(.top, 4)
                     .foregroundColor(Theme.Colors.textSecondary)
                     .padding(.bottom, 10)
+                    .accessibilityIdentifier("user_username_text")
                 profileInfo
                 VStack(alignment: .leading, spacing: 14) {
                    settings
@@ -132,21 +146,28 @@ public struct ProfileView: View {
                 Text(ProfileLocalization.info)
                     .padding(.horizontal, 24)
                     .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textSecondary)
+                    .accessibilityIdentifier("profile_info_text")
 
                 VStack(alignment: .leading, spacing: 16) {
                     if viewModel.userModel?.yearOfBirth != 0 {
                         HStack {
                             Text(ProfileLocalization.Edit.Fields.yearOfBirth)
                                 .foregroundColor(Theme.Colors.textSecondary)
+                                .accessibilityIdentifier("yob_text")
                             Text(String(viewModel.userModel?.yearOfBirth ?? 0))
+                                .foregroundColor(Theme.Colors.textPrimary)
+                                .accessibilityIdentifier("yob_value_text")
                         }
+                        .font(Theme.Fonts.titleMedium)
                     }
                     if let bio = viewModel.userModel?.shortBiography, bio != "" {
                         HStack(alignment: .top) {
                             Text(ProfileLocalization.bio + " ")
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textPrimary)
                             + Text(bio)
                         }
+                        .accessibilityIdentifier("bio_text")
                     }
                 }
                 .accessibilityElement(children: .ignore)
@@ -173,6 +194,9 @@ public struct ProfileView: View {
         Text(ProfileLocalization.settings)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.textSecondary)
+            .accessibilityIdentifier("settings_text")
+
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 viewModel.trackProfileVideoSettingsClicked()
@@ -180,10 +204,12 @@ public struct ProfileView: View {
             }, label: {
                 HStack {
                     Text(ProfileLocalization.settingsVideo)
+                        .font(Theme.Fonts.titleMedium)
                     Spacer()
                     Image(systemName: "chevron.right")
                 }
             })
+            .accessibilityIdentifier("video_settings_button")
 
         }
         .accessibilityElement(children: .ignore)
@@ -199,7 +225,11 @@ public struct ProfileView: View {
     private var logOutButton: some View {
         VStack {
             Button(action: {
-                viewModel.router.presentView(transitionStyle: .crossDissolve) {
+                viewModel.trackLogoutClickedClicked()
+                viewModel.router.presentView(
+                    transitionStyle: .crossDissolve,
+                    animated: true
+                ) {
                     AlertView(
                         alertTitle: ProfileLocalization.LogoutAlert.title,
                         alertMessage: ProfileLocalization.LogoutAlert.text,
@@ -224,6 +254,7 @@ public struct ProfileView: View {
             })
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(ProfileLocalization.logout)
+            .accessibilityIdentifier("logout_button")
         }
         .foregroundColor(Theme.Colors.alert)
         .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -237,11 +268,14 @@ public struct ProfileView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         let router = ProfileRouterMock()
-        let vm = ProfileViewModel(interactor: ProfileInteractor.mock,
-                                  router: router,
-                                  analytics: ProfileAnalyticsMock(),
-                                  config: ConfigMock(),
-                                  connectivity: Connectivity())
+        let vm = ProfileViewModel(
+            interactor: ProfileInteractor.mock,
+            downloadManager: DownloadManagerMock(),
+            router: router,
+            analytics: ProfileAnalyticsMock(),
+            config: ConfigMock(),
+            connectivity: Connectivity()
+        )
 
         ProfileView(viewModel: vm, settingsTapped: .constant(false))
             .preferredColorScheme(.light)

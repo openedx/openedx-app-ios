@@ -54,4 +54,8 @@ public enum ProfileType {
             return ProfileLocalization.fullProfile
         }
     }
+    
+    public var value: String? {
+        return String(describing: self).components(separatedBy: "(").first
+    }
 }

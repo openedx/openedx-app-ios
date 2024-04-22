@@ -9,6 +9,10 @@ import SwiftUI
 import Theme
 import Core
 
+private enum SupportType {
+    case contactSupport, tos, privacyPolicy, cookiesPolicy, sellData, faq
+}
+
 struct ProfileSupportInfoView: View {
 
     struct LinkViewModel {
@@ -22,6 +26,9 @@ struct ProfileSupportInfoView: View {
         Text(ProfileLocalization.supportInfo)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.textSecondary)
+            .accessibilityIdentifier("support_info_text")
+        
         VStack(alignment: .leading, spacing: 24) {
             viewModel.contactSupport().map(supportInfo)
             viewModel.config.agreement.tosURL.map(terms)
@@ -30,6 +37,7 @@ struct ProfileSupportInfoView: View {
             viewModel.config.agreement.dataSellContentURL.map(dataSellContent)
             viewModel.config.faq.map(faq)
             version
+                .accessibilityIdentifier("version_info")
         }
         .cardStyle(
             bgColor: Theme.Colors.textInputUnfocusedBackground,
@@ -43,9 +51,10 @@ struct ProfileSupportInfoView: View {
                 url: url,
                 title: ProfileLocalization.contact
             ),
-            isEmailSupport: true
+            isEmailSupport: true,
+            supportType: .contactSupport,
+            identifier: "contact_support"
         )
-
     }
 
     private func terms(url: URL) -> some View {
@@ -53,8 +62,10 @@ struct ProfileSupportInfoView: View {
             viewModel: .init(
                 url: url,
                 title: ProfileLocalization.terms
-            )
+            ),
+            type: .tos
         )
+        .accessibilityIdentifier("tos")
     }
 
     private func privacy(url: URL) -> some View {
@@ -62,8 +73,10 @@ struct ProfileSupportInfoView: View {
             viewModel: .init(
                 url: url,
                 title: ProfileLocalization.privacy
-            )
+            ),
+            type: .privacyPolicy
         )
+        .accessibilityIdentifier("privacy_policy")
     }
 
     private func cookiePolicy(url: URL) -> some View {
@@ -71,8 +84,10 @@ struct ProfileSupportInfoView: View {
             viewModel: .init(
                 url: url,
                 title: ProfileLocalization.cookiePolicy
-            )
+            ),
+            type: .cookiesPolicy
         )
+        .accessibilityIdentifier("cookies_policy")
     }
 
     private func dataSellContent(url: URL) -> some View {
@@ -80,8 +95,10 @@ struct ProfileSupportInfoView: View {
             viewModel: .init(
                 url: url,
                 title: ProfileLocalization.doNotSellInformation
-            )
+            ),
+            type: .sellData
         )
+        .accessibilityIdentifier("dont_sell_data")
     }
 
     private func faq(url: URL) -> some View {
@@ -89,26 +106,46 @@ struct ProfileSupportInfoView: View {
             linkViewModel: .init(
                 url: url,
                 title: ProfileLocalization.faqTitle
-            )
+            ),
+            supportType: .faq,
+            identifier: "view_faq"
         )
     }
 
     @ViewBuilder
-    private func navigationLink(viewModel: LinkViewModel) -> some View {
+    private func navigationLink(viewModel: LinkViewModel, type: SupportType) -> some View {
         NavigationLink {
             WebBrowser(
                 url: viewModel.url.absoluteString,
                 pageTitle: viewModel.title,
                 showProgress: true
             )
+            
         } label: {
             HStack {
                 Text(viewModel.title)
                     .multilineTextAlignment(.leading)
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
             }
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            switch type {
+            case .cookiesPolicy:
+                self.viewModel.trackCookiePolicyClicked()
+            case .tos:
+                self.viewModel.trackTOSClicked()
+            case .privacyPolicy:
+                self.viewModel.trackPrivacyPolicyClicked()
+            case .sellData:
+                self.viewModel.trackDataSellClicked()
+                
+            default:
+                break
+            }
+        })
         .foregroundColor(.primary)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(viewModel.title)
@@ -118,7 +155,12 @@ struct ProfileSupportInfoView: View {
     }
 
     @ViewBuilder
-    private func button(linkViewModel: LinkViewModel, isEmailSupport: Bool = false) -> some View {
+    private func button(
+        linkViewModel: LinkViewModel,
+        isEmailSupport: Bool = false,
+        supportType: SupportType,
+        identifier: String
+    ) -> some View {
         Button {
             guard UIApplication.shared.canOpenURL(linkViewModel.url) else {
                 viewModel.errorMessage = isEmailSupport ?
@@ -126,13 +168,22 @@ struct ProfileSupportInfoView: View {
                 CoreLocalization.Error.unknownError
                 return
             }
-            if isEmailSupport {
+            
+            switch supportType {
+            case .contactSupport:
                 viewModel.trackEmailSupportClicked()
+            case .faq:
+                viewModel.trackFAQClicked()
+            default:
+                break
             }
+            
             UIApplication.shared.open(linkViewModel.url)
         } label: {
             HStack {
                 Text(linkViewModel.title)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(Theme.Fonts.titleMedium)
                 Spacer()
                 Image(systemName: "chevron.right")
             }
@@ -140,6 +191,7 @@ struct ProfileSupportInfoView: View {
         .foregroundColor(.primary)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(linkViewModel.title)
+        .accessibilityIdentifier(identifier)
         Rectangle()
             .frame(height: 1)
             .foregroundColor(Theme.Colors.textSecondary)
@@ -159,13 +211,14 @@ struct ProfileSupportInfoView: View {
                                 .frame(width: 24, height: 24)
                         }
                         Text("\(ProfileLocalization.Settings.version) \(viewModel.currentVersion)")
+                            .font(Theme.Fonts.titleMedium)
                     }
                     switch viewModel.versionState {
                     case .actual:
                         HStack {
                             CoreAssets.checkmark.swiftUIImage
                                 .renderingMode(.template)
-                                .foregroundColor(.green)
+                                .foregroundColor(Theme.Colors.success)
                             Text(ProfileLocalization.Settings.upToDate)
                                 .font(Theme.Fonts.labelMedium)
                                 .foregroundStyle(Theme.Colors.textSecondary)
@@ -187,9 +240,10 @@ struct ProfileSupportInfoView: View {
                         .frame(width: 24, height: 24)
                         .foregroundStyle(Theme.Colors.accentColor)
                 }
-
             }
-        }).disabled(viewModel.versionState == .actual)
+        })
+        .disabled(viewModel.versionState == .actual)
+        .accessibilityIdentifier("version_button")
     }
 
 }

@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   Core
 
@@ -21,15 +21,18 @@
 "ERROR.UNKNOWN_ERROR" = "Щось пішло не так";
 "ERROR.WIFI" = "Завантажувати файли можна лише через Wi-Fi. Ви можете змінити це в налаштуваннях.";
 
+"ERROR.INTERNET.NO_INTERNET_TITLE" = "Немає підключення до Інтернету";
+"ERROR.INTERNET.NO_INTERNET_DESCRIPTION" = "Будь ласка, підключіться до Інтернету, щоб переглянути цей вміст.";
+
 "COURSEWARE.COURSE_CONTENT" = "Зміст курсу";
+"COURSEWARE.COURSE_CONTENT_NOT_AVAILABLE" = "This interactive component isn't yet available on mobile.";
 "COURSEWARE.COURSE_UNITS" = "Модулі";
 "COURSEWARE.NEXT" = "Далі";
 "COURSEWARE.PREVIOUS" = "Назад";
 "COURSEWARE.FINISH" = "Завершити";
 "COURSEWARE.GOOD_WORK" = "Гарна робота!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Повернутись до модуля";
-"COURSEWARE.SECTION" = "Секція “";
-"COURSEWARE.IS_FINISHED" = "“ завершена.";
+"COURSEWARE.SECTION_COMPLETED" = "Ви завершили “%@”.";
 "COURSEWARE.CONTINUE" = "Продовжити";
 "COURSEWARE.RESUME" = "Resume";
 "COURSEWARE.RESUME_WITH" = "Продовжити далі:";
@@ -50,6 +53,9 @@
 "ALERT.LOGOUT" = "Вийти";
 "ALERT.LEAVE" = "Покинути";
 "ALERT.KEEP_EDITING" = "Залишитись";
+"ALERT.ADD" = "Add";
+"ALERT.REMOVE" = "Remove";
+"ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR"="Remove course calendar";
 
 "NO_INTERNET.OFFLINE" = "Офлайн режим";
 "NO_INTERNET.DISMISS" = "Сховати";
@@ -97,19 +103,13 @@
 "REVIEW.BUTTON.RATE_US" = "Оцінити нас";
 "REVIEW.EMAIL.TITLE" = "Виберіть поштового клієнта:";
 
-"COURSE_DATES.TODAY" = "Today";
-"COURSE_DATES.COMPLETED" = "Completed";
-"COURSE_DATES.PAST_DUE" = "Past due";
-"COURSE_DATES.DUE_NEXT" = "Due next";
-"COURSE_DATES.UNRELEASED" = "Unreleased";
-"COURSE_DATES.VERIFIED_ONLY" = "Verified Only";
-"COURSE_DATES.TOMORROW" = "Tomorrow";
-"COURSE_DATES.YESTERDAY" = "Yesterday";
-"COURSE_DATES.ITEMS_HIDDEN" = "Items Hidden";
-"COURSE_DATES.ITEM_HIDDEN" = "Item Hidden";
-
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 "AUTHORIZATION_FAILED" = "Authorization failed.";
 
 "SIGN_IN.LOG_IN_BTN" = "Увійти";
-"SIGN_IN.REGISTER_BTN" = "Реєстрація";
+"REGISTER" = "Реєстрація";
+
+"TOMORROW" = "Tomorrow";
+"YESTERDAY" = "Yesterday";
+
+"OPEN_IN_BROWSER"="View in Safari";

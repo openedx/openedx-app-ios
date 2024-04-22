@@ -75,11 +75,11 @@ public class SignInViewModel: ObservableObject {
             errorMessage = AuthLocalization.Error.invalidPasswordLenght
             return
         }
-        
+        analytics.userSignInClicked()
         isShowProgress = true
         do {
             let user = try await interactor.login(username: username, password: password)
-            analytics.setUserID("\(user.id)")
+            analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: .password)
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
         } catch let error {
@@ -110,7 +110,7 @@ public class SignInViewModel: ObservableObject {
         isShowProgress = true
         do {
             let user = try await interactor.login(externalToken: externalToken, backend: backend)
-            analytics.setUserID("\(user.id)")
+            analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
         } catch let error {

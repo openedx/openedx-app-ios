@@ -99,19 +99,19 @@ public struct UnitButtonView: View {
                         HStack {
                             if isVerticalNavigation {
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.leading, 20)
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .rotationEffect(Angle.degrees(90))
                                     .padding(.trailing, 20)
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                             } else {
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .padding(.leading, 20)
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.trailing, 20)
                             }
@@ -139,7 +139,7 @@ public struct UnitButtonView: View {
                     case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
-                                .foregroundColor(bgColor == nil ? .white : Theme.Colors.accentColor)
+                                .foregroundColor(bgColor == nil ? .white : Theme.Colors.secondaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                         }.padding(.horizontal, 16)
                     case .continueLesson, .nextSection:
@@ -173,7 +173,10 @@ public struct UnitButtonView: View {
                                             lineJoin: .round,
                                             miterLimit: 1)
                                         )
-                                        .foregroundColor(Theme.Colors.accentButtonColor)
+                                        .foregroundColor(
+                                            type == .previous ? Theme.Colors.secondaryButtonBorderColor
+                                            : Theme.Colors.accentButtonColor
+                                        )
                                 )
                                 
                         case .continueLesson, .nextSection, .reload, .finish, .custom:
@@ -195,7 +198,10 @@ public struct UnitButtonView: View {
                                             lineJoin: .round,
                                             miterLimit: 1
                                         ))
-                                        .foregroundColor(Theme.Colors.accentButtonColor)
+                                        .foregroundColor(
+                                            type == .continueLesson ? Theme.Colors.accentButtonColor 
+                                            : Theme.Colors.secondaryButtonBorderColor
+                                        )
                                 )
                         }
                     }

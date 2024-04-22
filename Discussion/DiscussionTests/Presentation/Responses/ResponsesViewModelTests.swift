@@ -116,7 +116,7 @@ final class ResponsesViewModelTests: XCTestCase {
                                                                                      count: 1,
                                                                                      numPages: 1))))
         
-        result = await viewModel.getComments(commentID: "1", parentComment: post, page: 1)
+        result = await viewModel.getResponsesData(commentID: "1", parentComment: post, page: 1)
         
         Verify(interactor, .getCommentResponses(commentID: .any, page: .any))
         
@@ -141,7 +141,7 @@ final class ResponsesViewModelTests: XCTestCase {
         
         Given(interactor, .getCommentResponses(commentID: .any, page: .any, willThrow: noInternetError))
         
-        result = await viewModel.getComments(commentID: "1", parentComment: post, page: 1)
+        result = await viewModel.getResponsesData(commentID: "1", parentComment: post, page: 1)
         
         Verify(interactor, .getCommentResponses(commentID: .any, page: .any))
         
@@ -165,7 +165,7 @@ final class ResponsesViewModelTests: XCTestCase {
         
         Given(interactor, .getCommentResponses(commentID: .any, page: .any, willThrow: NSError()))
         
-        result = await viewModel.getComments(commentID: "1", parentComment: post, page: 1)
+        result = await viewModel.getResponsesData(commentID: "1", parentComment: post, page: 1)
         
         Verify(interactor, .getCommentResponses(commentID: .any, page: .any))
         

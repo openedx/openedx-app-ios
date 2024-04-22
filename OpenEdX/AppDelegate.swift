@@ -8,9 +8,6 @@
 import UIKit
 import Core
 import Swinject
-import FirebaseCore
-import FirebaseAnalytics
-import FirebaseCrashlytics
 import Profile
 import GoogleSignIn
 import FacebookCore
@@ -23,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var shared: AppDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }
-    
+
     var window: UIWindow?
         
     private var assembler: Assembler?
@@ -35,25 +32,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         initDI()
-        
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
-            if let configuration = config.firebase.firebaseOptions {
-                FirebaseApp.configure(options: configuration)
-                Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-            }
+            
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
                     application,
                     didFinishLaunchingWithOptions: launchOptions
                 )
             }
+            configureDeepLinkServices(launchOptions: launchOptions)
         }
 
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = RouteController()
         window?.makeKeyAndVisible()
+        window?.tintColor = Theme.UIColors.accentColor
         
         NotificationCenter.default.addObserver(
             self,
@@ -62,6 +57,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
         
+        if let pushManager = Container.shared.resolve(PushNotificationsManager.self) {
+            pushManager.performRegistration()
+        }
+
         return true
     }
 
@@ -69,25 +68,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ app: UIApplication,
         open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        if let config = Container.shared.resolve(ConfigProtocol.self) {
-            if config.facebook.enabled {
-                ApplicationDelegate.shared.application(
-                    app,
-                    open: url,
-                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-                    annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-                )
-            }
+        guard let config = Container.shared.resolve(ConfigProtocol.self) else { return false }
 
-            if config.google.enabled {
-                return GIDSignIn.sharedInstance.handle(url)
+        if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self),
+            deepLinkManager.anyServiceEnabled {
+            if deepLinkManager.handledURLWith(app: app, open: url, options: options) {
+                return true
             }
+        }
 
-            if config.microsoft.enabled {
-                return MSALPublicClientApplication.handleMSALResponse(
-                    url,
-                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-                )
+        if config.facebook.enabled {
+            if ApplicationDelegate.shared.application(
+                app,
+                open: url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+            ) {
+                return true
+            }
+        }
+
+        if config.google.enabled {
+            if GIDSignIn.sharedInstance.handle(url) {
+                return true
+            }
+        }
+
+        if config.microsoft.enabled {
+            if MSALPublicClientApplication.handleMSALResponse(
+                url,
+                sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+            ) {
+                return true
             }
         }
 
@@ -112,8 +124,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard Date().timeIntervalSince1970 - lastForceLogoutTime > 5 else {
             return
         }
-        let analytics = Container.shared.resolve(AnalyticsManager.self)
-        analytics?.userLogout(force: true)
+        let analyticsManager = Container.shared.resolve(AnalyticsManager.self)
+        analyticsManager?.userLogout(force: true)
         
         lastForceLogoutTime = Date().timeIntervalSince1970
         
@@ -125,4 +137,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = RouteController()
     }
     
+    // Push Notifications
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self) else { return }
+        pushManager.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
+    }
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self) else { return }
+        pushManager.didFailToRegisterForRemoteNotificationsWithError(error: error)
+    }
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        guard let pushManager = Container.shared.resolve(PushNotificationsManager.self)
+        else {
+            completionHandler(.newData)
+            return
+        }
+        pushManager.didReceiveRemoteNotification(userInfo: userInfo)
+        completionHandler(.newData)
+    }
+    
+    // Deep link
+    func configureDeepLinkServices(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        guard let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) else { return }
+        deepLinkManager.configureDeepLinkService(launchOptions: launchOptions)
+    }
 }

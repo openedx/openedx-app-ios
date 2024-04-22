@@ -35,10 +35,36 @@ public struct CourseDatesView: View {
                             .padding(.horizontal)
                     }
                 } else if let courseDates = viewModel.courseDates, !courseDates.courseDateBlocks.isEmpty {
-                    CourseDateListView(viewModel: viewModel, courseDates: courseDates)
+                    CourseDateListView(viewModel: viewModel, courseDates: courseDates, courseID: courseID)
                         .padding(.top, 10)
                 }
             }
+            
+            switch viewModel.eventState {
+            case .addedCalendar:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsAdded
+                )
+            case .removedCalendar:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsRemoved
+                )
+            case .updatedCalendar:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.calendarEvents,
+                    message: CourseLocalization.CourseDates.calendarEventsUpdated
+                )
+            case .shiftedDueDates:
+                showDatesSuccessView(
+                    title: CourseLocalization.CourseDates.toastSuccessTitle,
+                    message: CourseLocalization.CourseDates.toastSuccessMessage
+                )
+            default:
+                EmptyView()
+            }
+            
             if viewModel.showError {
                 VStack {
                     Spacer()
@@ -62,6 +88,25 @@ public struct CourseDatesView: View {
                 .ignoresSafeArea()
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    private func showDatesSuccessView(title: String, message: String) -> some View {
+        if viewModel.eventState == .shiftedDueDates {
+            return DatesSuccessView(
+                title: title,
+                message: message,
+                selectedTab: .dates,
+                courseDatesViewModel: viewModel
+            )
+        } else {
+            return DatesSuccessView(
+                title: title,
+                message: message,
+                selectedTab: .dates
+            ) {
+                viewModel.resetEventState()
+            }
+        }
     }
 }
 
@@ -95,50 +140,67 @@ struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
     @State private var isExpanded = false
     var courseDates: CourseDates
+    let courseID: String
 
     var body: some View {
-        VStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
-                        let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
-                        if status == .completed {
-                            CompletedBlocks(
-                                isExpanded: $isExpanded,
-                                courseDateBlockDict: courseDateBlockDict,
-                                viewModel: viewModel
+        GeometryReader { proxy in
+            VStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        if !courseDates.hasEnded {
+                            CalendarSyncView(courseID: courseID, viewModel: viewModel)
+                                .padding(.bottom, 16)
+                            
+                            DatesStatusInfoView(
+                                datesBannerInfo: courseDates.datesBannerInfo,
+                                courseID: courseID,
+                                courseDatesViewModel: viewModel,
+                                screen: .courseDates
                             )
-                        } else {
-                            Text(status.rawValue)
-                                .font(Theme.Fonts.titleSmall)
-                                .padding(.top, 10)
-                                .padding(.bottom, 10)
-                            HStack {
-                                TimeLineView(status: status)
-                                    .padding(.bottom, 15)
-                                VStack(alignment: .leading) {
-                                    ForEach(courseDateBlockDict.keys.sorted(), id: \.self) { date in
-                                        let blocks = courseDateBlockDict[date]!
-                                        let block = blocks[0]
-                                        Text(block.formattedDate)
-                                            .font(Theme.Fonts.labelMedium)
-                                            .foregroundStyle(Theme.Colors.textPrimary)
-                                        BlockStatusView(
-                                            viewModel: viewModel,
-                                            block: block,
-                                            blocks: blocks
-                                        )
+                            .padding(.bottom, 16)
+                        }
+                        
+                        ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
+                            let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
+                            if status == .completed {
+                                CompletedBlocks(
+                                    isExpanded: $isExpanded,
+                                    courseDateBlockDict: courseDateBlockDict,
+                                    viewModel: viewModel
+                                )
+                            } else {
+                                Text(status.rawValue)
+                                    .font(Theme.Fonts.titleSmall)
+                                    .padding(.top, 10)
+                                    .padding(.bottom, 10)
+                                HStack {
+                                    TimeLineView(status: status)
+                                        .padding(.bottom, 15)
+                                    VStack(alignment: .leading) {
+                                        ForEach(courseDateBlockDict.keys.sorted(), id: \.self) { date in
+                                            let blocks = courseDateBlockDict[date]!
+                                            let block = blocks[0]
+                                            Text(block.formattedDate)
+                                                .font(Theme.Fonts.labelMedium)
+                                                .foregroundStyle(Theme.Colors.textPrimary)
+                                            BlockStatusView(
+                                                viewModel: viewModel,
+                                                block: block,
+                                                blocks: blocks
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 5)
+                    .frameLimit(width: proxy.size.width)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 5)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
@@ -165,8 +227,8 @@ struct CompletedBlocks: View {
                         if !isExpanded {
                             let totalCount = courseDateBlockDict.values.reduce(0) { $0 + $1.count }
                             let itemsHidden = totalCount == 1 ?
-                            CoreLocalization.CourseDates.itemHidden :
-                            CoreLocalization.CourseDates.itemsHidden
+                            CourseLocalization.CourseDates.itemHidden :
+                            CourseLocalization.CourseDates.itemsHidden
                             Text("\(totalCount) \(itemsHidden)")
                                 .font(Theme.Fonts.labelMedium)
                                 .foregroundColor(Theme.Colors.textPrimary)
@@ -305,8 +367,14 @@ struct StyleBlock: View {
             .onTapGesture {
                 if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                     Task {
-                        await viewModel.showCourseDetails(componentID: block.firstComponentBlockID)
+                        await viewModel.showCourseDetails(
+                            componentID: block.firstComponentBlockID,
+                            blockLink: block.link
+                        )
                     }
+                    viewModel.logdateComponentTapped(block: block, supported: true)
+                } else {
+                    viewModel.logdateComponentTapped(block: block, supported: false)
                 }
             }
     }
@@ -318,14 +386,50 @@ struct StyleBlock: View {
     }
 }
 
+struct CalendarSyncView: View {
+    let courseID: String
+    @ObservedObject var viewModel: CourseDatesViewModel
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Spacer()
+            HStack {
+                CoreAssets.syncToCalendar.swiftUIImage
+                Text(CourseLocalization.CourseDates.syncToCalendar)
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                Toggle("", isOn: .constant(viewModel.isOn))
+                    .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentButtonColor))
+                    .padding(.trailing, 0)
+                    .onTapGesture {
+                        viewModel.calendarState = !viewModel.isOn
+                    }
+            }
+            .padding(.horizontal, 16)
+            
+            Text(CourseLocalization.CourseDates.syncToCalendarMessage)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+                .padding(.horizontal, 16)
+            Spacer()
+        }
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+        )
+        .background(Theme.Colors.datesSectionBackground)
+    }
+}
+
 fileprivate extension BlockStatus {
     var title: String {
         switch self {
-        case .completed: return CoreLocalization.CourseDates.completed
-        case .pastDue: return CoreLocalization.CourseDates.pastDue
-        case .dueNext: return CoreLocalization.CourseDates.dueNext
-        case .unreleased: return CoreLocalization.CourseDates.unreleased
-        case .verifiedOnly: return CoreLocalization.CourseDates.verifiedOnly
+        case .completed: return CourseLocalization.CourseDates.completed
+        case .pastDue: return CourseLocalization.CourseDates.pastDue
+        case .dueNext: return CourseLocalization.CourseDates.dueNext
+        case .unreleased: return CourseLocalization.CourseDates.unreleased
+        case .verifiedOnly: return CourseLocalization.CourseDates.verifiedOnly
         default: return ""
         }
     }
@@ -378,7 +482,11 @@ struct CourseDatesView_Previews: PreviewProvider {
             router: CourseRouterMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity(),
-            courseID: "")
+            config: ConfigMock(),
+            courseID: "",
+            courseName: "",
+            analytics: CourseAnalyticsMock()
+        )
         
         CourseDatesView(
             courseID: "",

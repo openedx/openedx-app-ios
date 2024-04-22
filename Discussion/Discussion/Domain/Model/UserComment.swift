@@ -24,10 +24,23 @@ public struct UserComment: Hashable {
     public let parentID: String?
     public var abuseFlagged: Bool
     
-    public init(authorName: String, authorAvatar: String, postDate: Date, postTitle: String, postBody: String,
-                postBodyHtml: String,
-                postVisible: Bool, voted: Bool, followed: Bool, votesCount: Int, responsesCount: Int,
-                threadID: String, commentID: String, parentID: String?, abuseFlagged: Bool) {
+    public init(
+        authorName: String,
+        authorAvatar: String,
+        postDate: Date,
+        postTitle: String,
+        postBody: String,
+        postBodyHtml: String,
+        postVisible: Bool,
+        voted: Bool,
+        followed: Bool,
+        votesCount: Int,
+        responsesCount: Int,
+        threadID: String,
+        commentID: String,
+        parentID: String?,
+        abuseFlagged: Bool
+    ) {
         self.authorName = authorName
         self.authorAvatar = authorAvatar
         self.postDate = postDate
@@ -43,5 +56,29 @@ public struct UserComment: Hashable {
         self.commentID = commentID
         self.parentID = parentID
         self.abuseFlagged = abuseFlagged
+    }
+}
+
+public extension UserComment {
+    var post: Post {
+        Post(
+            authorName: authorName,
+            authorAvatar: authorAvatar,
+            postDate: postDate,
+            postTitle: postTitle,
+            postBodyHtml: postBodyHtml,
+            postBody: postBody,
+            postVisible: postVisible,
+            voted: voted,
+            followed: followed,
+            votesCount: votesCount,
+            responsesCount: responsesCount,
+            comments: [],
+            threadID: threadID,
+            commentID: commentID,
+            parentID: parentID,
+            abuseFlagged: abuseFlagged,
+            closed: false
+        )
     }
 }

@@ -17,30 +17,27 @@ import Theme
 
 struct MainScreenView: View {
     
-    @State private var selection: MainTab = .discovery
     @State private var settingsTapped: Bool = false
     @State private var disableAllTabs: Bool = false
     @State private var updateAvaliable: Bool = false
     
-    enum MainTab {
-        case discovery
-        case dashboard
-        case programs
-        case profile
-    }
-    
-    @ObservedObject private var viewModel: MainScreenViewModel
- 
+    @ObservedObject private(set) var viewModel: MainScreenViewModel
+
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().barTintColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
-        UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.textInputUnfocusedBackground)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondary)
+        UITabBar.appearance().barTintColor = UIColor(Theme.Colors.tabbarColor)
+        UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.tabbarColor)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondaryLight)
+        
+        UITabBarItem.appearance().setTitleTextAttributes(
+            [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
+            for: .normal
+        )
     }
-    
+        
     var body: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $viewModel.selection) {
             let config = Container.shared.resolve(ConfigProtocol.self)
             if config?.discovery.enabled ?? false {
                 ZStack {
@@ -68,6 +65,7 @@ struct MainScreenView: View {
                     Text(CoreLocalization.Mainscreen.discovery)
                 }
                 .tag(MainTab.discovery)
+                .accessibilityIdentifier("discovery_tabitem")
             }
             
             ZStack {
@@ -84,6 +82,7 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.dashboard)
             }
             .tag(MainTab.dashboard)
+            .accessibilityIdentifier("dashboard_tabitem")
             
             if config?.program.enabled ?? false {
                 ZStack {
@@ -94,6 +93,7 @@ struct MainScreenView: View {
                         )
                     } else if config?.program.type == .native {
                         Text(CoreLocalization.Mainscreen.inDeveloping)
+                            .accessibilityIdentifier("indevelopment_program_text")
                     }
                     
                     if updateAvaliable {
@@ -105,6 +105,7 @@ struct MainScreenView: View {
                     Text(CoreLocalization.Mainscreen.programs)
                 }
                 .tag(MainTab.programs)
+                .accessibilityIdentifier("programs_tabitem")
             }
             
             VStack {
@@ -117,37 +118,39 @@ struct MainScreenView: View {
                 Text(CoreLocalization.Mainscreen.profile)
             }
             .tag(MainTab.profile)
+            .accessibilityIdentifier("profile_tabitem")
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
-                if selection == .profile {
+                if viewModel.selection == .profile {
                     Button(action: {
                         settingsTapped.toggle()
                     }, label: {
-                        CoreAssets.edit.swiftUIImage
-                            .foregroundColor(Theme.Colors.textPrimary)
+                        CoreAssets.edit.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.navigationBarTintColor)
                     })
+                    .accessibilityIdentifier("edit_profile_button")
                 } else {
                     VStack {}
                 }
             })
         }
         .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
-            selection = .profile
+            viewModel.selection = .profile
             disableAllTabs = true
         }
         .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
             updateAvaliable = true
         }
-        .onChange(of: selection) { _ in
+        .onChange(of: viewModel.selection) { _ in
             if disableAllTabs {
-                selection = .profile
+                viewModel.selection = .profile
             }
         }
-        .onChange(of: selection, perform: { selection in
+        .onChange(of: viewModel.selection, perform: { selection in
             switch selection {
             case .discovery:
                 viewModel.trackMainDiscoveryTabClicked()
@@ -164,11 +167,11 @@ struct MainScreenView: View {
                 await viewModel.prefetchDataForOffline()
             }
         }
-        .accentColor(Theme.Colors.accentColor)
+        .accentColor(Theme.Colors.accentXColor)
     }
     
     private func titleBar() -> String {
-        switch selection {
+        switch viewModel.selection {
         case .discovery:
             return DiscoveryLocalization.title
         case .dashboard:

@@ -7,9 +7,11 @@
 
 import Foundation
 
+
 public extension Date {
     init(iso8601: String) {
         let formats = ["yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"]
+        let calender = Calendar.current
         var date: Date
         var dateFormatter: DateFormatter?
         dateFormatter = DateFormatter()
@@ -17,7 +19,12 @@ public extension Date {
         
         date = formats.compactMap { format in
             dateFormatter?.dateFormat = format
-            return dateFormatter?.date(from: iso8601)
+            guard let formattedDate = dateFormatter?.date(from: iso8601) else { return nil }
+            let components = calender.dateComponents(
+                [.year, .month, .day, .hour, .minute, .second],
+                from: formattedDate
+            )
+            return calender.date(from: components)
         }
         .first ?? Date()
         
@@ -172,9 +179,9 @@ public extension Date {
             case 2...6:
                 return timeAgoDisplay()
             case -1:
-                return CoreLocalization.CourseDates.tomorrow
+                return CoreLocalization.tomorrow
             case 1:
-                return CoreLocalization.CourseDates.yesterday
+                return CoreLocalization.yesterday
             default:
                 if day > 6 || day < -6 {
                     return dateFormatterString
@@ -192,5 +199,15 @@ public extension Date {
         let selfYear = Calendar.current.component(.year, from: self)
         let runningYear = Calendar.current.component(.year, from: Date())
         return selfYear == runningYear
+    }
+}
+
+public extension Date {
+    func isEarlierThanOrEqualTo(date: Date) -> Bool {
+        timeIntervalSince1970 <= date.timeIntervalSince1970
+    }
+
+    func isLaterThanOrEqualTo(date: Date) -> Bool {
+        timeIntervalSince1970 >= date.timeIntervalSince1970
     }
 }

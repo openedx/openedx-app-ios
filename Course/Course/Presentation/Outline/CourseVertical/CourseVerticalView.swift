@@ -54,7 +54,6 @@ public struct CourseVerticalView: View {
                                             courseName: courseName,
                                             blockId: block.id,
                                             courseID: courseID,
-                                            sectionName: block.displayName,
                                             verticalIndex: index,
                                             chapters: viewModel.chapters,
                                             chapterIndex: viewModel.chapterIndex,
@@ -139,12 +138,13 @@ public struct CourseVerticalView: View {
                             }
                         }
                     }
+                    .frameLimit(width: proxy.size.width)
                     Spacer(minLength: 84)
-                }.accessibilityAction {}
-                .frameLimit()
-                    .onRightSwipeGesture {
-                        viewModel.router.back()
-                    }
+                }
+                .accessibilityAction {}
+                .onRightSwipeGesture {
+                    viewModel.router.back()
+                }
             }
             .padding(.top, 8)
             

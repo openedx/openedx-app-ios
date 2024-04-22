@@ -34,14 +34,15 @@ public struct SignInView: View {
             }.frame(maxWidth: .infinity, maxHeight: 200)
             if viewModel.config.features.startupScreenEnabled {
                 VStack {
-                    Button(action: { viewModel.router.back() }, label: {
-                        CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                            .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                    })
-                    .foregroundColor(Theme.Colors.styledButtonText)
+                    BackNavigationButton(
+                        color: Theme.Colors.loginNavigationText,
+                        action: {
+                            viewModel.router.back()
+                        }
+                    )
+                    .backViewStyle()
                     .padding(.leading, isHorizontal ? 48 : 0)
                     .padding(.top, 11)
-                    .accessibilityIdentifier("back_button")
                     
                 }.frame(maxWidth: .infinity, alignment: .topLeading)
                     .padding(.top, isHorizontal ? 20 : 0)
@@ -50,117 +51,131 @@ public struct SignInView: View {
             VStack(alignment: .center) {
                 ThemeAssets.appLogo.swiftUIImage
                     .resizable()
-                    .frame(maxWidth: 189, maxHeight: 54)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 189, maxHeight: 89)
                     .padding(.top, isHorizontal ? 20 : 40)
                     .padding(.bottom, isHorizontal ? 10 : 40)
                     .accessibilityIdentifier("logo_image")
                 
-                ScrollView {
-                    VStack {
-                        VStack(alignment: .leading) {
-                            Text(AuthLocalization.SignIn.logInTitle)
-                                .font(Theme.Fonts.displaySmall)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .padding(.bottom, 4)
-                                .accessibilityIdentifier("signin_text")
-                            Text(AuthLocalization.SignIn.welcomeBack)
-                                .font(Theme.Fonts.titleSmall)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .padding(.bottom, 20)
-                                .accessibilityIdentifier("welcome_back_text")
-                            
-                            Text(AuthLocalization.SignIn.emailOrUsername)
-                                .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .accessibilityIdentifier("username_text")
-                            TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
-                                .keyboardType(.emailAddress)
-                                .textContentType(.emailAddress)
-                                .autocapitalization(.none)
-                                .autocorrectionDisabled()
-                                .padding(.all, 14)
-                                .background(
-                                    Theme.Shapes.textInputShape
-                                        .fill(Theme.Colors.textInputBackground)
-                                )
-                                .overlay(
-                                    Theme.Shapes.textInputShape
-                                        .stroke(lineWidth: 1)
-                                        .fill(Theme.Colors.textInputStroke)
-                                )
-                                .accessibilityIdentifier("username_textfield")
-                            
-                            Text(AuthLocalization.SignIn.password)
-                                .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .padding(.top, 18)
-                                .accessibilityIdentifier("password_text")
-                            SecureField(AuthLocalization.SignIn.password, text: $password)
-                                .padding(.all, 14)
-                                .background(
-                                    Theme.Shapes.textInputShape
-                                        .fill(Theme.Colors.textInputBackground)
-                                )
-                                .overlay(
-                                    Theme.Shapes.textInputShape
-                                        .stroke(lineWidth: 1)
-                                        .fill(Theme.Colors.textInputStroke)
-                                )
-                                .accessibilityIdentifier("password_textfield")
-                            HStack {
-                                if !viewModel.config.features.startupScreenEnabled {
-                                    Button(CoreLocalization.SignIn.registerBtn) {
-                                        viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
+                GeometryReader { proxy in
+                    ScrollView {
+                        VStack {
+                            VStack(alignment: .leading) {
+                                Text(AuthLocalization.SignIn.logInTitle)
+                                    .font(Theme.Fonts.displaySmall)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .padding(.bottom, 4)
+                                    .accessibilityIdentifier("signin_text")
+                                Text(AuthLocalization.SignIn.welcomeBack)
+                                    .font(Theme.Fonts.titleSmall)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .padding(.bottom, 20)
+                                    .accessibilityIdentifier("welcome_back_text")
+                                Text(AuthLocalization.SignIn.emailOrUsername)
+                                    .font(Theme.Fonts.labelLarge)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .accessibilityIdentifier("username_text")
+                                TextField("", text: $email)
+                                    .font(Theme.Fonts.bodyLarge)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
+                                    .keyboardType(.emailAddress)
+                                    .textContentType(.emailAddress)
+                                    .autocapitalization(.none)
+                                    .autocorrectionDisabled()
+                                    .padding(.all, 14)
+                                    .background(
+                                        Theme.InputFieldBackground(
+                                            placeHolder: AuthLocalization.SignIn.emailOrUsername,
+                                            text: email,
+                                            padding: 15
+                                        )
+                                    )
+                                    .overlay(
+                                        Theme.Shapes.textInputShape
+                                            .stroke(lineWidth: 1)
+                                            .fill(Theme.Colors.textInputStroke)
+                                    )
+                                    .accessibilityIdentifier("username_textfield")
+                                
+                                Text(AuthLocalization.SignIn.password)
+                                    .font(Theme.Fonts.labelLarge)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .padding(.top, 18)
+                                    .accessibilityIdentifier("password_text")
+                                SecureField("", text: $password)
+                                    .font(Theme.Fonts.bodyLarge)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
+                                    .padding(.all, 14)
+                                    .background(
+                                        Theme.InputFieldBackground(
+                                            placeHolder: AuthLocalization.SignIn.password,
+                                            text: password,
+                                            padding: 15
+                                        )
+                                    )
+                                    .overlay(
+                                        Theme.Shapes.textInputShape
+                                            .stroke(lineWidth: 1)
+                                            .fill(Theme.Colors.textInputStroke)
+                                    )
+                                    .accessibilityIdentifier("password_textfield")
+                                HStack {
+                                    if !viewModel.config.features.startupScreenEnabled {
+                                        Button(CoreLocalization.register) {
+                                            viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
+                                        }
+                                        .foregroundColor(Theme.Colors.accentColor)
+                                        .accessibilityIdentifier("register_button")
+                                        
+                                        Spacer()
                                     }
-                                    .foregroundColor(Theme.Colors.accentColor)
-                                    .accessibilityIdentifier("register_button")
                                     
-                                    Spacer()
-                                }
-                                    
-                                Button(AuthLocalization.SignIn.forgotPassBtn) {
-                                    viewModel.trackForgotPasswordClicked()
-                                    viewModel.router.showForgotPasswordScreen()
-                                }
-                                .foregroundColor(Theme.Colors.accentColor)
-                                .padding(.top, 0)
-                                .accessibilityIdentifier("forgot_password_button")
-                            }
-                            
-                            if viewModel.isShowProgress {
-                                HStack(alignment: .center) {
-                                    ProgressBar(size: 40, lineWidth: 8)
-                                        .padding(20)
-                                        .accessibilityIdentifier("progressbar")
-                                }.frame(maxWidth: .infinity)
-                            } else {
-                                StyledButton(CoreLocalization.SignIn.logInBtn) {
-                                    Task {
-                                        await viewModel.login(username: email, password: password)
+                                    Button(AuthLocalization.SignIn.forgotPassBtn) {
+                                        viewModel.trackForgotPasswordClicked()
+                                        viewModel.router.showForgotPasswordScreen()
                                     }
+                                    .font(Theme.Fonts.bodyLarge)
+                                    .foregroundColor(Theme.Colors.infoColor)
+                                    .padding(.top, 0)
+                                    .accessibilityIdentifier("forgot_password_button")
                                 }
-                                .frame(maxWidth: .infinity)
-                                .padding(.top, 40)
-                                .accessibilityIdentifier("signin_button")
+                                
+                                if viewModel.isShowProgress {
+                                    HStack(alignment: .center) {
+                                        ProgressBar(size: 40, lineWidth: 8)
+                                            .padding(20)
+                                            .accessibilityIdentifier("progressbar")
+                                    }.frame(maxWidth: .infinity)
+                                } else {
+                                    StyledButton(CoreLocalization.SignIn.logInBtn) {
+                                        Task {
+                                            await viewModel.login(username: email, password: password)
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.top, 40)
+                                    .accessibilityIdentifier("signin_button")
+                                }
                             }
+                            if viewModel.socialAuthEnabled {
+                                SocialAuthView(
+                                    viewModel: .init(
+                                        config: viewModel.config
+                                    ) { result in
+                                        Task { await viewModel.login(with: result) }
+                                    }
+                                )
+                            }
+                            agreements
+                            Spacer()
                         }
-                        if viewModel.socialAuthEnabled {
-                            SocialAuthView(
-                                viewModel: .init(
-                                    config: viewModel.config
-                                ) { result in
-                                    Task { await viewModel.login(with: result) }
-                                }
-                            )
-                        }
-                        agreements
-                        Spacer()
+                        .padding(.horizontal, 24)
+                        .padding(.top, 50)
+                        .frameLimit(width: proxy.size.width)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 50)
-                }.roundedBackground(Theme.Colors.loginBackground)
+                    .roundedBackground(Theme.Colors.loginBackground)
                     .scrollAvoidKeyboard(dismissKeyboardByTap: true)
-                
+                }
             }
             
             // MARK: - Alert
@@ -186,7 +201,6 @@ public struct SignInView: View {
                 VStack {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
-                        .accessibilityLabel("error_snackbar")
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
@@ -214,8 +228,8 @@ public struct SignInView: View {
                 policy
             )
             Text(.init(text))
-                .tint(Theme.Colors.accentColor)
-                .foregroundStyle(Theme.Colors.textSecondary)
+                .tint(Theme.Colors.infoColor)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
                 .padding(.bottom, 15)

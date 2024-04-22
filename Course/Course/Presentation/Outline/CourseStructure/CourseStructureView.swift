@@ -53,7 +53,7 @@ struct CourseStructureView: View {
                                 if child.completion == 1 {
                                     CoreAssets.finished.swiftUIImage
                                         .renderingMode(.template)
-                                        .foregroundColor(.accentColor)
+                                        .foregroundColor(Theme.Colors.accentXColor)
                                 } else {
                                     child.type.image
                                 }

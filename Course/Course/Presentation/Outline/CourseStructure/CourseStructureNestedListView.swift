@@ -50,8 +50,8 @@ struct CourseStructureNestedListView: View {
                 .lineLimit(1)
                 .foregroundColor(Theme.Colors.textPrimary)
             Spacer()
-            Image(systemName: "chevron.down")
-                .foregroundColor(Theme.Colors.accentColor)
+            Image(systemName: "chevron.down").renderingMode(.template)
+                .foregroundColor(Theme.Colors.accentXColor)
                 .dropdownArrowRotationAnimation(value: isExpanded)
         }
         .padding(.horizontal, 30)
@@ -80,22 +80,24 @@ struct CourseStructureNestedListView: View {
             Button {
                 onLabelClick(sequential: sequential, chapter: chapter)
             } label: {
-                Group {
-                    if sequential.completion == 1 {
-                        CoreAssets.finished.swiftUIImage
-                            .renderingMode(.template)
-                            .foregroundColor(.accentColor)
-                    } else {
-                        sequential.type.image
+                HStack(spacing: 0) {
+                    Group {
+                        if sequential.completion == 1 {
+                            CoreAssets.finished.swiftUIImage
+                                .renderingMode(.template)
+                                .foregroundColor(Theme.Colors.accentXColor)
+                        } else {
+                            sequential.type.image
+                        }
+                        Text(sequential.displayName)
+                            .font(Theme.Fonts.titleMedium)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(1)
                     }
-                    Text(sequential.displayName)
-                        .font(Theme.Fonts.titleMedium)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(1)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    Spacer()
                 }
-                .foregroundColor(Theme.Colors.textPrimary)
             }
-            Spacer()
             downloadButton(
                 sequential: sequential,
                 chapter: chapter
@@ -131,22 +133,16 @@ struct CourseStructureNestedListView: View {
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(CourseLocalization.Accessibility.download)
                     }
-                    downloadCount(sequential: sequential)
                 }
             case .downloading:
                 if viewModel.isInternetAvaliable {
                     Button {
-                        Task {
-                            await viewModel.onDownloadViewTap(
-                                chapter: chapter,
-                                blockId: sequential.id,
-                                state: state
-                            )
-                        }
+                        viewModel.router.showDownloads(
+                            downloads: viewModel.getTasks(sequential: sequential),
+                            manager: viewModel.manager
+                        )
                     } label: {
-                        DownloadProgressView()
-                            .accessibilityElement(children: .ignore)
-                            .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
+                        ProgressBar(size: 30, lineWidth: 1.75)
                     }
                 }
             case .finished:
@@ -168,18 +164,15 @@ struct CourseStructureNestedListView: View {
                             }
                             viewModel.router.dismiss(animated: true)
                         },
-                        type: .default(
-                            positiveAction: CoreLocalization.Alert.delete,
-                            image: CoreAssets.bgDelete.swiftUIImage
-                        )
+                        type: .deleteVideo
                     )
                 } label: {
                     DownloadFinishedView()
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
                 }
-                downloadCount(sequential: sequential)
             }
+            downloadCount(sequential: sequential)
         }
     }
 
@@ -233,7 +226,6 @@ struct CourseStructureNestedListView: View {
             courseName: viewModel.courseStructure?.displayName ?? "",
             blockId: block.id,
             courseID: viewModel.courseStructure?.id ?? "",
-            sectionName: block.displayName,
             verticalIndex: 0,
             chapters: course.childs,
             chapterIndex: chapterIndex,

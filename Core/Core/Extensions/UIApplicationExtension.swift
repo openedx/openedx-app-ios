@@ -45,10 +45,30 @@ extension UINavigationController {
         navigationBar.shadowImage = UIImage()
         
         let image = CoreAssets.arrowLeft.image
-        navigationBar.backIndicatorImage = image.withTintColor(Theme.UIColors.accentColor)
-        navigationBar.backItem?.backButtonTitle = " "
-        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.UIColors.accentColor)
-        navigationBar.titleTextAttributes = [.foregroundColor: Theme.UIColors.textPrimary]
+        navigationBar.backIndicatorImage = image.withTintColor(Theme.UIColors.accentXColor)
+        navigationBar.backIndicatorTransitionMaskImage = image.withTintColor(Theme.UIColors.accentXColor)
+        navigationBar.titleTextAttributes = [
+            .foregroundColor: Theme.UIColors.navigationBarTintColor,
+            .font: Theme.UIFonts.titleMedium()
+        ]
+        
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [
+                .foregroundColor: Theme.Colors.textPrimary.uiColor(),
+                .font: Theme.UIFonts.labelLarge()
+            ],
+            for: .normal
+        )
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [
+                .foregroundColor: Theme.Colors.primaryButtonTextColor.uiColor(),
+                .font: Theme.UIFonts.labelLarge()
+            ],
+            for: .selected
+        )
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Theme.Colors.accentXColor)
+        
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = Theme.UIColors.accentXColor
     }
 }
 
@@ -56,6 +76,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
+        navigationItem.backButtonDisplayMode = .minimal
     }
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {

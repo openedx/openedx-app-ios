@@ -27,7 +27,7 @@ struct CourseUnitDropDownCell: View {
                             if vertical.completion == 1 {
                                 CoreAssets.finished.swiftUIImage
                                     .renderingMode(.template)
-                                    .foregroundColor(.accentColor)
+                                    .foregroundColor(Theme.Colors.accentXColor)
                             }
                         }
                         .frame(width: 25)
@@ -81,7 +81,9 @@ struct CourseUnitDropDownCell_Previews: PreviewProvider {
                     type: .video,
                     displayName: "Lesson 1",
                     studentUrl: "",
-                    encodedVideo: nil
+                    webUrl: "",
+                    encodedVideo: nil,
+                    multiDevice: true
                 )
             ]
         )

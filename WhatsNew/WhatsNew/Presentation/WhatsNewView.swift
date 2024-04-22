@@ -112,6 +112,10 @@ public struct WhatsNewView: View {
                                     } else {
                                         router.showMainOrWhatsNewScreen(sourceScreen: viewModel.sourceScreen)
                                     }
+                                    
+                                    if viewModel.index == viewModel.newItems.count - 1 {
+                                        viewModel.logWhatsNewDone()
+                                    }
                                 }
                             )
                             .accessibilityIdentifier("next_button")
@@ -143,12 +147,16 @@ public struct WhatsNewView: View {
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button(action: {
                         router.showMainOrWhatsNewScreen(sourceScreen: viewModel.sourceScreen)
+                            viewModel.logWhatsNewClose()
                     }, label: {
                         Image(systemName: "xmark")
-                            .foregroundColor(Theme.Colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentXColor)
                     })
                     .accessibilityIdentifier("close_button")
                 })
+            }
+            .onFirstAppear {
+                viewModel.logWhatsNewPopup()
             }
         }
     }
@@ -161,7 +169,10 @@ struct WhatsNewView_Previews: PreviewProvider {
     static var previews: some View {
         WhatsNewView(
             router: WhatsNewRouterMock(),
-            viewModel: WhatsNewViewModel(storage: WhatsNewStorageMock())
+            viewModel: WhatsNewViewModel(
+                storage: WhatsNewStorageMock(),
+                analytics: WhatsNewAnalyticsMock()
+            )
         )
         .loadFonts()
     }

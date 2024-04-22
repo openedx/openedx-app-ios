@@ -51,7 +51,7 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         self.interactor = interactor
         self.router = router
         self.debounce = debounce
-        
+
         cancellable = postStateSubject
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] state in
@@ -159,7 +159,12 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         for thread in threads {
             result.append(thread.discussionPost(action: { [weak self] in
                 guard let self else { return }
-                self.router.showThread(thread: thread, postStateSubject: self.postStateSubject)
+                self.router.showThread(
+                    thread: thread,
+                    postStateSubject: self.postStateSubject, 
+                    isBlackedOut: false,
+                    animated: true
+                )
             }))
         }
         return result

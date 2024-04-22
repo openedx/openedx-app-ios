@@ -7,11 +7,13 @@
 */
 
 "TITLE" = "Дискусії";
+"BANNER.DISCUSSIONS_IS_DISABLED" = "Posting in discussions is disabled by the course team";
 
 "TOPICS.SEARCH" = "Пошук по всім постам";
 "TOPICS.ALL_POSTS" = "Всі пости";
 "TOPICS.POST_IM_FOLLOWING" = "Улюблені пости";
 "TOPICS.MAIN_CATEGORIES" = "Основні категорії";
+"TOPICS.UNNAMED" = "Unnamed subcategory";
 
 "POSTS.SORT.RECENT_ACTIVITY" = "Остання активність";
 "POSTS.SORT.MOST_ACTIVITY" = "Найактивниші";
@@ -23,6 +25,7 @@
 "POSTS.NO_DISCUSSION.TITLE" = "Ще немає дискусій";
 "POSTS.NO_DISCUSSION.DESCRIPTION" = "Натисніть кнопку нижче, щоб створити свою першу дискусію.";
 "POSTS.NO_DISCUSSION.CREATEBUTTON" = "Створити дискусію";
+"POSTS.NO_DISCUSSION.ADD_POST" = "Add a post";
 
 "POSTS.CREATE_NEW_POST" = "Створити новий пост";
 "POSTS.ALERT.MAKE_SELECTION" = "Оберіть";
