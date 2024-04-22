@@ -2,81 +2,81 @@ import os, localizable
 from collections import OrderedDict
 
 
-def get_modules_to_translate(modules_dir, lang='en'):
+def translation_file_of(module):
+    translation_file = os.path.join(modules_dir, module, module, 'en.lproj', 'Localizable.strings')
+    return translation_file
+
+def get_modules_to_translate(modules_dir):
     """
     Retrieve the names of modules that have translation files for a specified language.
 
     Parameters:
         modules_dir (str): The path to the directory containing all the modules.
-        lang (str): The language code for which translations are sought. Defaults to 'en'.
 
     Returns:
         list of str: A list of module names that have translation files for the specified language.
-
-    Logic:
-        1. List all directories in the modules directory, excluding the 'I18N' directory.
-        2. Return the list of module names.
     """
     dirs = [directory for directory in os.listdir(modules_dir) if
-            os.path.isdir(os.path.join(modules_dir, directory)) and directory != 'I18N']
+            os.path.isdir(os.path.join(modules_dir, directory))]
 
     modules_list = []
     for module in dirs:
-        translation_path = os.path.join(modules_dir, module, module, f'{lang}.lproj', 'Localizable.strings')
-        if os.path.exists(translation_path) and os.path.isfile(translation_path):
+        translation_file = translation_file_of(module)
+        if os.path.exists(translation_file) and os.path.isfile(translation_file):
             modules_list.append(module)
     return modules_list
 
 
-def get_translations_ordereddict(modules_dir, lang='en'):
+def get_translations(modules_dir):
     """
     Retrieve the list of translations from all specified modules.
 
     Parameters:
         modules_dir (str): The directory containing the modules.
-        modules (list of str): The list of modules to iterate over.
-        lang (str): The language code for which translations are sought. Defaults to 'en'.
 
     Returns:
         OrderedDict of dict: An ordered dict of dictionaries containing the 'key', 'value', and 'comment' for each
         translation line. The key of the OrderedDict is the value of the key in the contained dict in addition to the
         name of the module containing the translation
-
-    Logic:
-        1. Iterate over each module in the list of modules:
-            a. Construct the path to the Localizable.strings file for the module in the specified language.
-            b. Parse the Localizable.strings file to retrieve translations.
-            c. Add the module's name to ordered dict's key to distinguish it from other modules.
-        2. Return the translations' ordered dict.
     """
     ordered_dict_of_translations = OrderedDict()
-    modules = get_modules_to_translate(modules_dir, lang=lang)
-    # Step 1: Iterate over each module in the list of modules
+    modules = get_modules_to_translate(modules_dir)
     for module in modules:
-        # Step 1a: Construct the path to the Localizable.strings file
-        path = os.path.join(modules_dir, module, module, f'{lang}.lproj', 'Localizable.strings')
+        translation_file = translation_file_of(module)
+        module_translations = localizable.parse_strings(filename=translation_file)
 
-        # Step 1b: Parse the Localizable.strings file to retrieve translations
-        module_translations = localizable.parse_strings(filename=path)
-
-        # Step 1c: Add the module's name to each translation key
         for line in module_translations:
             ordered_dict_of_translations[f"{module}.{line['key']}"] = line
 
-    # Step 2: Return the translations' ordered dict
     return ordered_dict_of_translations
 
 
 def _escape(s):
-    # Reverse the replacements performed by _unescape() in the localizable library
+    """
+    Reverse the replacements performed by _unescape() in the localizable library
+    """
     s = s.replace('\n', r'\n').replace('\r', r'\r').replace('"', r'\"')
     return s
 
 
-def write_dict_to_file(content_ordered_dict, modules_dir, lang='en'):
-    translation_file = os.path.join(modules_dir, 'I18N', 'I18N', f'{lang}.lproj')
-    os.makedirs(translation_file, exist_ok=True)
-    with open(os.path.join(translation_file, 'Localizable.strings'), 'w') as f:
+def write_dict_to_file(content_ordered_dict, modules_dir):
+    """
+       Write the contents of an ordered dictionary to a Localizable.strings file.
+
+       This function takes an ordered dictionary containing translation data and writes it to a Localizable.strings
+       file located in the 'I18N/en.lproj' directory within the specified modules directory. It creates the directory
+       if it doesn't exist.
+
+       Parameters:
+           content_ordered_dict (OrderedDict): An ordered dictionary containing translation data. The keys
+           are the translation keys, and the values are dictionaries with 'value' and 'comment' keys representing the
+           translation value and optional comments, respectively.
+           modules_dir (str): The path to the modules directory
+           where the I18N directory will be written.
+    """
+    combined_translation_file = os.path.join(modules_dir, 'I18N', 'en.lproj')
+    os.makedirs(combined_translation_file, exist_ok=True)
+    with open(os.path.join(combined_translation_file, 'Localizable.strings'), 'w') as f:
         for key, value in content_ordered_dict.items():
             comment = value.get('comment', '')  # Retrieve the comment, if present
             if comment:
@@ -84,28 +84,10 @@ def write_dict_to_file(content_ordered_dict, modules_dir, lang='en'):
             f.write(f'"{key}" = "{_escape(value["value"])}";\n')
 
 
-def get_languages(module_dir):
-    languages = set()
-    modules = [module for module in os.listdir(module_dir) if os.path.exists(os.path.join(module_dir, module, module))]
-    for module in modules:
-        if os.path.isdir(os.path.join(module_dir, module, module)):
-            lang_list = [elem.strip('.lproj') for elem in os.listdir(os.path.join(module_dir, module, module)) if elem.endswith('.lproj')]
-            languages.update(lang_list)
-    return languages
-
-
 if __name__ == "__main__":
     modules_dir = os.path.dirname(os.path.dirname(__file__))
-    langs = get_languages(modules_dir)
-    langs.discard('en')
-    en_translation_ordered_dict = get_translations_ordereddict(modules_dir, lang='en')
-    write_dict_to_file(en_translation_ordered_dict, modules_dir, lang='en')
-    for lang in langs:
-        lang_translation_ordered_dict = get_translations_ordereddict(modules_dir, lang=lang)
-        in_en_not_in_lang = OrderedDict([(key, value) for key, value in en_translation_ordered_dict.items()
-                                         if key not in lang_translation_ordered_dict])
-        lang_translation_ordered_dict.update(in_en_not_in_lang)
-        write_dict_to_file(lang_translation_ordered_dict, modules_dir, lang=lang)
+    en_translation_ordered_dict = get_translations(modules_dir)
+    write_dict_to_file(en_translation_ordered_dict, modules_dir)
 
 
 def make_test_dirs_and_files():
