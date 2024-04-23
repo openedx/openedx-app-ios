@@ -45,6 +45,7 @@ final class CourseDateViewModelTests: XCTestCase {
                                                                 small: "",
                                                                 large: "")),
             certificate: nil,
+            org: "",
             isSelfPaced: true
         )
         

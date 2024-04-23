@@ -35,7 +35,7 @@
 "ALERT.DELETE_VIDEOS" = "Are you sure you want to delete video(s) for";
 "ALERT.STOP_DOWNLOADING" = "Turning off the switch will stop downloading and delete all downloaded videos for";
 
-"COURSE_CONTAINER.COURSE" =  "Course";
+"COURSE_CONTAINER.HOME" =  "Home";
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
 "COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSIONS" =  "Discussions";
