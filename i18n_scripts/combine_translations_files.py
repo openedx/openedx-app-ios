@@ -29,8 +29,10 @@ def get_modules_to_translate(modules_dir):
     Returns:
         list of str: A list of module names that have translation files for the specified language.
     """
-    dirs = [directory for directory in os.listdir(modules_dir) if
-            os.path.isdir(os.path.join(modules_dir, directory))]
+    dirs = [
+        directory for directory in os.listdir(modules_dir)
+        if os.path.isdir(os.path.join(modules_dir, directory))
+    ]
 
     modules_list = []
     for module in dirs:
@@ -42,15 +44,15 @@ def get_modules_to_translate(modules_dir):
 
 def get_translations(modules_dir):
     """
-    Retrieve the list of translations from all specified modules.
+    Retrieve the translations from all specified modules as OrderedDict.
 
     Parameters:
         modules_dir (str): The directory containing the modules.
 
     Returns:
         OrderedDict of dict: An ordered dict of dictionaries containing the 'key', 'value', and 'comment' for each
-        translation line. The key of the OrderedDict is the value of the key in the contained dict in addition to the
-        name of the module containing the translation
+        translation line. The key of the outer OrderedDict consists of the value of the translation key combined with
+        the name of the module containing the translation.
     """
     ordered_dict_of_translations = OrderedDict()
     modules = get_modules_to_translate(modules_dir)
@@ -58,8 +60,9 @@ def get_translations(modules_dir):
         translation_file = get_translation_file_path(modules_dir, module)
         module_translations = localizable.parse_strings(filename=translation_file)
 
-        for line in module_translations:
-            ordered_dict_of_translations[f"{module}.{line['key']}"] = line
+        for entry in module_translations:
+            key_with_module = f"{module}.{entry['key']}"
+            ordered_dict_of_translations[key_with_module] = entry
 
     return ordered_dict_of_translations
 
@@ -68,17 +71,14 @@ def _escape(s):
     """
     Reverse the replacements performed by _unescape() in the localizable library
     """
-    replacement_function = lambda match: {
-        '\n': r'\n',
-        '\r': r'\r',
-        '"': r'\"'
-    }[match.group(0)]
+    replacements = {'\n': r'\n', '\r': r'\r', '"': r'\"'}
 
-    s = re.sub(r'([\n\r"])', replacement_function, s)
-    return s
+    result = re.sub(r'([\n\r"])', lambda match: replacements[match.group(0)], s)
+
+    return result
 
 
-def write_translations_file(content_ordered_dict, modules_dir):
+def write_translation_file(content_ordered_dict, modules_dir):
     """
     Write the contents of an ordered dictionary to a Localizable.strings file.
 
@@ -93,23 +93,24 @@ def write_translations_file(content_ordered_dict, modules_dir):
        modules_dir (str): The path to the modules directory
        where the I18N directory will be written.
     """
-    combined_translation_file = os.path.join(modules_dir, 'I18N', 'en.lproj')
-    os.makedirs(combined_translation_file, exist_ok=True)
-    with open(os.path.join(combined_translation_file, 'Localizable.strings'), 'w') as f:
+    combined_translation_dir = os.path.join(modules_dir, 'I18N', 'en.lproj')
+    os.makedirs(combined_translation_dir, exist_ok=True)
+    with open(os.path.join(combined_translation_dir, 'Localizable.strings'), 'w') as f:
         for key, value in content_ordered_dict.items():
-            comment = value.get('comment', '')  # Retrieve the comment, if present
+            comment = value.get('comment')  # Retrieve the comment, if present
             if comment:
                 f.write(f"/* {comment} */\n")
             f.write(f'"{key}" = "{_escape(value["value"])}";\n')
 
 
-def combine_translation_files():
+def combine_translation_files(modules_dir=None):
     """
     Combine translation files from different modules into a single file.
     """
-    modules_dir = os.path.dirname(os.path.dirname(__file__))
-    en_translation_ordered_dict = get_translations(modules_dir)
-    write_translations_file(en_translation_ordered_dict, modules_dir)
+    if not modules_dir:
+        modules_dir = os.path.dirname(os.path.dirname(__file__))
+    combined_translation_dict = get_translations(modules_dir)
+    write_translation_file(combined_translation_dict, modules_dir)
 
 
 if __name__ == "__main__":
