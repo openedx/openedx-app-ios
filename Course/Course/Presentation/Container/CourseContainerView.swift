@@ -133,12 +133,12 @@ public struct CourseContainerView: View {
                     }
                     .frame(width: 30, height: 30)
                     .padding(.vertical, 8)
-                    .padding(.horizontal, 24)
+                    .padding(.leading, 12)
                     .padding(.top, idiom == .pad ? 0 : 55)
                     Spacer()
                 }
             }
-        }.frameLimit(width: containerWidth)
+        }
     }
     
     private var tabs: some View {
