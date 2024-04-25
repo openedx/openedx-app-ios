@@ -1,12 +1,13 @@
+"""
+This script combines the English translations from all modules in the repository to the I18N directory.
+Then the translations are pushed to the repo https://github.com/openedx/openedx-translations from the I18N directory.
+"""
+
 import os
 import re
 import localizable
 from collections import OrderedDict
 
-"""
-This script combines the English translations from all modules in the repository to the I18N directory.
-Then the translations are pushed to the repo https://github.com/openedx/openedx-translations from the I18N directory.
-"""
 
 
 def get_translation_file_path(modules_dir, module):
