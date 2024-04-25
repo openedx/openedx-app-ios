@@ -13,7 +13,8 @@ import Core
 public class DiscussionTopicsViewModel: ObservableObject {
     
     @Published var topics: Topics?
-    @Published private(set) var isShowProgress = false
+    @Published var isShowProgress = true
+    @Published var isShowRefresh = false
     @Published var showError: Bool = false
     @Published var discussionTopics: [DiscussionTopic]?
     @Published var courseID: String = ""
@@ -172,6 +173,7 @@ public class DiscussionTopicsViewModel: ObservableObject {
     public func getTopics(courseID: String, withProgress: Bool = true) async {
         self.courseID = courseID
         isShowProgress = withProgress
+        isShowRefresh = !withProgress
         do {
             let discussionInfo = try await interactor.getCourseDiscussionInfo(courseID: courseID)
             isBlackedOut = discussionInfo.isBlackedOut()
@@ -179,8 +181,10 @@ public class DiscussionTopicsViewModel: ObservableObject {
             topics = try await interactor.getTopics(courseID: courseID)
             discussionTopics = generateTopics(topics: topics)
             isShowProgress = false
+            isShowRefresh = false
         } catch let error {
             isShowProgress = false
+            isShowRefresh = false
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
