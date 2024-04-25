@@ -3,6 +3,11 @@ import re
 import localizable
 from collections import OrderedDict
 
+"""
+Translations are pulled from https://github.com/openedx/openedx-translations to the I18N directory.
+This script splits the translations from the I18N directory to all modules in the repository.
+"""
+
 
 def get_translation_file_path(modules_dir, module):
     """
