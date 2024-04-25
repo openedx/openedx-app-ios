@@ -39,11 +39,13 @@ public struct VideoSettingsView: View {
                                 .accessibilityIdentifier("manage_account_text")
                         }
                         VStack {
-                            Button(action: { viewModel.router.back() }, label: {
-                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                            })
-                            .foregroundColor(Theme.Colors.styledButtonText)
+                            BackNavigationButton(
+                                color: Theme.Colors.loginNavigationText,
+                                action: {
+                                    viewModel.router.back()
+                                }
+                            )
+                            .backViewStyle()
                             .padding(.leading, isHorizontal ? 48 : 0)
                             .accessibilityIdentifier("back_button")
                             
@@ -115,6 +117,7 @@ public struct VideoSettingsView: View {
         }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
+        .navigationTitle(ProfileLocalization.Settings.videoSettingsTitle)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(
             Theme.Colors.background

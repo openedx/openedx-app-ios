@@ -72,11 +72,13 @@ public struct VideoDownloadQualityView: View {
                                 .accessibilityIdentifier("manage_account_text")
                         }
                         VStack {
-                            Button(action: { router.back() }, label: {
-                                CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                    .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                            })
-                            .foregroundColor(Theme.Colors.styledButtonText)
+                            BackNavigationButton(
+                                color: Theme.Colors.loginNavigationText,
+                                action: {
+                                    router.back()
+                                }
+                            )
+                            .backViewStyle()
                             .padding(.leading, isHorizontal ? 48 : 0)
                             .accessibilityIdentifier("back_button")
                             
@@ -128,6 +130,7 @@ public struct VideoDownloadQualityView: View {
             }
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
+            .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
             .background(
                 Theme.Colors.background
                     .ignoresSafeArea()

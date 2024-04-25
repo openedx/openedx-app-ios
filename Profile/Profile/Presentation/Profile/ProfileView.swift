@@ -35,6 +35,7 @@ public struct ProfileView: View {
                 .padding(.top, 8)
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)
+                .navigationTitle(ProfileLocalization.title)
                 
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(

@@ -41,19 +41,14 @@ public struct SettingsView: View {
                                 .accessibilityIdentifier("register_text")
                         }
                         VStack {
-                            Button(
+                            BackNavigationButton(
+                                color: Theme.Colors.loginNavigationText,
                                 action: {
                                     viewModel.router.back()
-                                },
-                                label: {
-                                    CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                        .backButtonStyle(color: Theme.Colors.loginNavigationText)
                                 }
                             )
-                            .foregroundColor(Theme.Colors.styledButtonText)
-                            .padding(.leading, isHorizontal ? 48 : 0)
+                            .backViewStyle()        
                             .accessibilityIdentifier("back_button")
-                            
                         }.frame(minWidth: 0,
                                 maxWidth: .infinity,
                                 alignment: .topLeading)
@@ -86,6 +81,7 @@ public struct SettingsView: View {
                 }
                 .navigationBarHidden(true)
                 .navigationBarBackButtonHidden(true)
+                .navigationTitle(ProfileLocalization.settings)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -190,7 +186,7 @@ public struct SettingsView: View {
                             Task {
                                 await viewModel.logOut()
                             }
-                        }, 
+                        },
                         type: .logOut
                     )
                 }
