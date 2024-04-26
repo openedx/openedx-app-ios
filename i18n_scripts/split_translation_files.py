@@ -72,10 +72,13 @@ def get_languages_dirs(modules_dir):
         Input:
             get_languages_dirs('/path/to/modules')
         Output:
-            ['en.lproj', 'uk.lproj', ...]
+            ['ar.lproj', 'uk.lproj', ...]
     """
     lang_parent_dir = os.path.join(modules_dir, 'I18N')
-    languages_dirs = [directory for directory in os.listdir(lang_parent_dir) if directory.endswith('.lproj')]
+    languages_dirs = [
+        directory for directory in os.listdir(lang_parent_dir)
+        if directory.endswith('.lproj') and directory != "en.lproj"
+    ]
     return languages_dirs
 
 

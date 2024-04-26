@@ -7,10 +7,9 @@ create_virtual_env:
 	# TODO: Publish new version on pypi as `python3-localizable`
 	. .venv/bin/activate && pip install git+https://github.com/Amr-Nash/python-localizable.git
 
-pull_translations:
-	make clean_translations_temp_directory
+pull_translations: clean_translations_temp_directory create_virtual_env
 	atlas pull $(ATLAS_OPTIONS) translations/openedx-app-ios/I18N/:I18N/
-	python i18n_scripts/split_translation_files.py
+	. .venv/bin/activate && python i18n_scripts/split_translation_files.py
 	make clean_translations_temp_directory
 
 
