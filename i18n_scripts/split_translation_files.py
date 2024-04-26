@@ -1,5 +1,10 @@
-import os, localizable
-from collections import OrderedDict
+"""
+Translations are pulled from https://github.com/openedx/openedx-translations to the I18N directory.
+This script splits the translations from the I18N directory to all modules in the repository.
+"""
+
+import os
+import localizable
 
 
 def separate_translation_to_modules(modules_dir, lang_dir):
@@ -34,7 +39,7 @@ def separate_translation_to_modules(modules_dir, lang_dir):
     file_path = os.path.join(modules_dir, 'I18N', lang_dir, 'Localizable.strings')
     lang_list = localizable.parse_strings(filename=file_path)
     for translation_entry in lang_list:
-        module_name, _dot, key_remainder = translation_entry['key'].partition('.')
+        module_name, key_remainder = translation_entry['key'].split('.', maxsplit=1)
         split_entry = {
             'key': key_remainder,
             'value': _escape(translation_entry['value']),

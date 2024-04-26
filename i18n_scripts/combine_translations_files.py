@@ -9,7 +9,6 @@ import localizable
 from collections import OrderedDict
 
 
-
 def get_translation_file_path(modules_dir, module):
     """
     Retrieves the path of the translation file from the module name
