@@ -15,6 +15,8 @@ public struct CourseContainerView: View {
     
     @ObservedObject
     public var viewModel: CourseContainerViewModel
+    @ObservedObject
+    public var courseDatesViewModel: CourseDatesViewModel
     @State private var isAnimatingForTap: Bool = false
     public var courseID: String
     private var title: String
@@ -55,6 +57,7 @@ public struct CourseContainerView: View {
         }
         self.courseID = courseID
         self.title = title
+        self.courseDatesViewModel = viewModel.courseDatesViewModel
     }
     
     public var body: some View {
@@ -112,8 +115,32 @@ public struct CourseContainerView: View {
                     }
             }
         }
+        
+        switch courseDatesViewModel.eventState {
+        case .removedCalendar:
+            showDatesSuccessView(
+                title: CourseLocalization.CourseDates.calendarEvents,
+                message: CourseLocalization.CourseDates.calendarEventsRemoved
+            )
+        case .updatedCalendar:
+            showDatesSuccessView(
+                title: CourseLocalization.CourseDates.calendarEvents,
+                message: CourseLocalization.CourseDates.calendarEventsUpdated
+            )
+        default:
+            EmptyView()
+        }
     }
     
+    private func showDatesSuccessView(title: String, message: String) -> some View {
+        return DatesSuccessView(
+            title: title,
+            message: message
+        ) {
+            courseDatesViewModel.resetEventState()
+        }
+    }
+
     private func backButton(containerWidth: CGFloat) -> some View {
         ZStack(alignment: .topLeading) {
             if !collapsed {
@@ -311,7 +338,17 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseEnd: nil,
                 enrollmentStart: nil,
                 enrollmentEnd: nil,
-                coreAnalytics: CoreAnalyticsMock()
+                coreAnalytics: CoreAnalyticsMock(),
+                courseDatesViewModel: CourseDatesViewModel(
+                    interactor: CourseInteractor.mock,
+                    router: CourseRouterMock(),
+                    cssInjector: CSSInjectorMock(),
+                    connectivity: Connectivity(),
+                    config: ConfigMock(),
+                    courseID: "1",
+                    courseName: "a",
+                    analytics: CourseAnalyticsMock()
+                )
             ),
             courseID: "", title: "Title of Course")
     }

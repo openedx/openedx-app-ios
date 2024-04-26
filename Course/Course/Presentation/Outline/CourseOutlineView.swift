@@ -344,7 +344,17 @@ struct CourseOutlineView_Previews: PreviewProvider {
             courseEnd: nil,
             enrollmentStart: Date(),
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseDatesViewModel: CourseDatesViewModel(
+                interactor: CourseInteractor.mock,
+                router: CourseRouterMock(),
+                cssInjector: CSSInjectorMock(),
+                connectivity: Connectivity(),
+                config: ConfigMock(),
+                courseID: "1",
+                courseName: "a",
+                analytics: CourseAnalyticsMock()
+            )
         )
         Task {
             await withTaskGroup(of: Void.self) { group in

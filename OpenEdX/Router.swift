@@ -393,7 +393,9 @@ public class Router: AuthorizationRouter,
             courseStart,
             courseEnd,
             enrollmentStart,
-            enrollmentEnd
+            enrollmentEnd,
+            courseID,
+            title
         )!
         let screensView = CourseContainerView(
             viewModel: vm,

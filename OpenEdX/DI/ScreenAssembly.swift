@@ -255,7 +255,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
+        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, courseID, courseName in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -270,7 +270,17 @@ class ScreenAssembly: Assembly {
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
                 enrollmentEnd: enrollmentEnd,
-                coreAnalytics: r.resolve(CoreAnalytics.self)!
+                coreAnalytics: r.resolve(CoreAnalytics.self)!,
+                courseDatesViewModel: CourseDatesViewModel(
+                    interactor: r.resolve(CourseInteractorProtocol.self)!,
+                    router: r.resolve(CourseRouter.self)!,
+                    cssInjector: r.resolve(CSSInjector.self)!,
+                    connectivity: r.resolve(ConnectivityProtocol.self)!,
+                    config: r.resolve(ConfigProtocol.self)!,
+                    courseID: courseID,
+                    courseName: courseName,
+                    analytics: r.resolve(CourseAnalytics.self)!
+                )
             )
         }
         
