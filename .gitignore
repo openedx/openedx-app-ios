@@ -116,3 +116,7 @@ venv/
 Podfile.lock
 config_settings.yaml
 default_config/
+
+# Additions for specific folders
+.venv/
+I18N/
