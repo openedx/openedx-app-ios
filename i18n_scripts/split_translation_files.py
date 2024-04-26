@@ -95,7 +95,9 @@ def write_translations(modules_dir, lang_dir, modules_translations):
         None
     """
     for module, translation_list in modules_translations.items():
-        with open(os.path.join(modules_dir, module, module, lang_dir, 'Localizable.strings'), 'w') as f:
+        combined_translation_dir = os.path.join(modules_dir, module, module, lang_dir)
+        os.makedirs(combined_translation_dir, exist_ok=True)
+        with open(os.path.join(combined_translation_dir, 'Localizable.strings'), 'w') as f:
             for translation_entry in translation_list:
                 comment = translation_entry.get('comment', '')  # Retrieve the comment, if present
                 if comment:
