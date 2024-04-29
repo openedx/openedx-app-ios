@@ -7,7 +7,7 @@
 */
 
 "OUTLINE.PASSED_THE_COURSE" = "Congratulations, you have earned this course certificate in “%@\.”";
-"OUTLINE." = "View certificate";
+"OUTLINE.VIEW_CERTIFICATE" = "View certificate";
 "OUTLINE.CERTIFICATE" = "Certificate";
 "OUTLINE.COURSE_VIDEOS" = "Course videos";
 "OUTLINE.COURSE_HASNT_STARTED" = "This course hasn't started yet.";
