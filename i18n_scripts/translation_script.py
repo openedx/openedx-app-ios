@@ -10,6 +10,10 @@ import argparse
 
 
 def parse_arguments():
+    """
+    This function is the argument parser for this script.
+    The script takes only one of the two arguments --split or --combine as indicated below.
+    """
     parser = argparse.ArgumentParser(description='Split or combine translations.')
     parser.add_argument('--split', action='store_true',
                         help='Split translations into separate files for each module and language.')
@@ -209,6 +213,17 @@ def _escape(s):
 
 
 def write_line_and_comment(file, entry, key=None):
+    """
+    Write a translation line with an optional comment to a file.
+
+    Args:
+        file (file object): The file object to write to.
+        entry (dict): A dictionary containing the translation entry with 'key', 'value', and optional 'comment'.
+        key (str, optional): The key to use in the translation line. If not provided, 'entry["key"]' is used.
+
+    Returns:
+        None
+    """
     comment = entry.get('comment')  # Retrieve the comment, if present
     key = key if key else entry['key']
     if comment:
