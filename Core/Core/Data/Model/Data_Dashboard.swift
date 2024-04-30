@@ -24,7 +24,7 @@ public extension DataLayer {
         }
     }
     
-    struct ServerConfigs: Codable, Hashable {
+    struct ServerConfigs: Codable {
         public let config: String
         
         public init(config: String) {

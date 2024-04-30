@@ -27,7 +27,27 @@ public extension DataLayer {
     }
 
     struct FulfillCheckout: Codable {
+        let orderData: OrderData
+        
+        enum CodingKeys: String, CodingKey {
+            case orderData = "order_data"
+        }
+        
+        public init(orderData: OrderData) {
+            self.orderData = orderData
+        }
+    }
+    
+    struct OrderData: Codable {
         let status: String
+        
+        enum CodingKeys: String, CodingKey {
+            case status
+        }
+        
+        public init(status: String) {
+            self.status = status
+        }
     }
 }
 
@@ -45,6 +65,6 @@ public extension DataLayer.CheckoutBasket {
 
 public extension DataLayer.FulfillCheckout {
     var domain: FulfillCheckout {
-        FulfillCheckout(status: status)
+        FulfillCheckout(orderData: orderData)
     }
 }

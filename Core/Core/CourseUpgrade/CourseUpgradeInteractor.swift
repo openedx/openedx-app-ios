@@ -62,5 +62,5 @@ public struct CheckoutBasket {
 }
 
 public struct FulfillCheckout {
-    let status: String
+    let orderData: DataLayer.OrderData
 }
