@@ -78,14 +78,15 @@
 "SETTINGS.DOWNLOAD_QUALITY_720_DESCRIPTION" = "Best quality";
 
 "DONE" = "Зберегти";
+"VIEW " = "View";
+"OK" = "Так";
+"CLOSE" = "Close";
 
 "PICKER.SEARCH" = "Знайти";
 "PICKER.ACCEPT" = "Прийняти";
 
-"WEBVIEW.ALERT.OK" = "Так";
 "WEBVIEW.ALERT.CANCEL" = "Скасувати";
 "WEBVIEW.ALERT.CONTINUE" = "Continue";
-
 
 "REVIEW.VOTE_TITLE" = "Вам подобається Open edX?";
 "REVIEW.VOTE_DESCRIPTION" = "Ваш відгук важливий для нас. Можливо, ви візьмете хвилинку, щоб оцінити додаток, натиснувши на зірку нижче? Дякуємо за вашу підтримку!";

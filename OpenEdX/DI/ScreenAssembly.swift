@@ -153,7 +153,8 @@ class ScreenAssembly: Assembly {
                 api: r.resolve(API.self)!,
                 storage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(DashboardPersistenceProtocol.self)!
+                persistence: r.resolve(DashboardPersistenceProtocol.self)!,
+                serverConfig: r.resolve(ServerConfigProtocol.self)!
             )
         }
         container.register(DashboardInteractorProtocol.self) { r in
@@ -444,6 +445,44 @@ class ScreenAssembly: Assembly {
         container.register(BackNavigationProtocol.self) { r in
             r.resolve(Router.self)!
         }
+        
+        container.register(StorekitHandler.self) { _ in
+            StorekitHandler()
+        }.inObjectScope(.container)
+        
+        container.register(CourseUpgradeRepositoryProtocol.self) { r in
+            CourseUpgradeRepository(
+                api: r.resolve(API.self)!,
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }
+        
+        container.register(CourseUpgradeInteractorProtocol.self) { r in
+            CourseUpgradeInteractor(
+                repository: r.resolve(CourseUpgradeRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(CourseUpgradeHandler.self) { r, course in
+            CourseUpgradeHandler(
+                for: course,
+                config: r.resolve(ConfigProtocol.self)!,
+                interactor: r.resolve(CourseUpgradeInteractorProtocol.self)!,
+                storeKitHandler: r.resolve(StorekitHandler.self)!
+            )
+        }.inObjectScope(.container)
+        
+        container.register(CourseUpgradeHelper.self) { r, courseID, pacing, blockID, localizedCoursePrice, screen  in
+            CourseUpgradeHelper(
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(CoreAnalytics.self)!,
+                courseID: courseID,
+                pacing: pacing,
+                blockID: blockID,
+                localizedCoursePrice: localizedCoursePrice,
+                screen: screen
+            )
+        }.inObjectScope(.container)
     }
 }
 // swiftlint:enable function_body_length type_body_length

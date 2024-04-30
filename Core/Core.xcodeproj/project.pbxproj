@@ -135,6 +135,19 @@
 		141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */; };
 		142EDD6C2B831D1400F9F320 /* BranchSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 142EDD6B2B831D1400F9F320 /* BranchSDK */; };
 		14769D3C2B9822EE00AB36D4 /* CoreAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */; };
+		14A832522BD7537A00E5654D /* StorekitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832512BD7537A00E5654D /* StorekitHandler.swift */; };
+		14A832552BD753F800E5654D /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = 14A832542BD753F800E5654D /* SwiftyStoreKit */; };
+		14A832572BD75D6100E5654D /* CourseUpgradeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832562BD75D6100E5654D /* CourseUpgradeHandler.swift */; };
+		14A832592BD75EC400E5654D /* CourseUpgradeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832582BD75EC400E5654D /* CourseUpgradeInteractor.swift */; };
+		14A8325B2BD7615C00E5654D /* CourseUpgradeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A8325A2BD7615C00E5654D /* CourseUpgradeRepository.swift */; };
+		14A8325D2BD7629B00E5654D /* CourseUpgradeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A8325C2BD7629B00E5654D /* CourseUpgradeEndpoint.swift */; };
+		14A8325F2BD766E900E5654D /* Data_Upgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A8325E2BD766E900E5654D /* Data_Upgrade.swift */; };
+		14A832612BD8B5F100E5654D /* CourseUpgradeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832602BD8B5F100E5654D /* CourseUpgradeHelper.swift */; };
+		14A832632BD8D54100E5654D /* Dictionary+SafeAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832622BD8D54100E5654D /* Dictionary+SafeAccess.swift */; };
+		14A832662BD8D5BD00E5654D /* Dictionary+SafeAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832652BD8D5BD00E5654D /* Dictionary+SafeAccessTests.swift */; };
+		14A832682BDA8B6000E5654D /* UIAlertController+BlockActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832672BDA8B6000E5654D /* UIAlertController+BlockActions.swift */; };
+		14DE13DA2BDF7E5E0059168F /* IAPConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE13D92BDF7E5E0059168F /* IAPConfig.swift */; };
+		14DE13DC2BDF83350059168F /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DE13DB2BDF83350059168F /* ServerConfig.swift */; };
 		A51CDBE72B6D21F2009B6D4E /* SegmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51CDBE62B6D21F2009B6D4E /* SegmentConfig.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A595689A2B6173DF00ED4F90 /* BranchConfig.swift */; };
@@ -317,6 +330,18 @@
 		0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugstage.xcconfig"; sourceTree = "<group>"; };
 		141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewCookiesUpdateProtocol.swift; sourceTree = "<group>"; };
 		14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAnalytics.swift; sourceTree = "<group>"; };
+		14A832512BD7537A00E5654D /* StorekitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorekitHandler.swift; sourceTree = "<group>"; };
+		14A832562BD75D6100E5654D /* CourseUpgradeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeHandler.swift; sourceTree = "<group>"; };
+		14A832582BD75EC400E5654D /* CourseUpgradeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeInteractor.swift; sourceTree = "<group>"; };
+		14A8325A2BD7615C00E5654D /* CourseUpgradeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeRepository.swift; sourceTree = "<group>"; };
+		14A8325C2BD7629B00E5654D /* CourseUpgradeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeEndpoint.swift; sourceTree = "<group>"; };
+		14A8325E2BD766E900E5654D /* Data_Upgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Upgrade.swift; sourceTree = "<group>"; };
+		14A832602BD8B5F100E5654D /* CourseUpgradeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeHelper.swift; sourceTree = "<group>"; };
+		14A832622BD8D54100E5654D /* Dictionary+SafeAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+SafeAccess.swift"; sourceTree = "<group>"; };
+		14A832652BD8D5BD00E5654D /* Dictionary+SafeAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+SafeAccessTests.swift"; sourceTree = "<group>"; };
+		14A832672BDA8B6000E5654D /* UIAlertController+BlockActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+BlockActions.swift"; sourceTree = "<group>"; };
+		14DE13D92BDF7E5E0059168F /* IAPConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPConfig.swift; sourceTree = "<group>"; };
+		14DE13DB2BDF83350059168F /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
 		1A154A95AF4EE85A4A1C083B /* Pods-App-Core.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releasedev.xcconfig"; sourceTree = "<group>"; };
 		2B7E6FE7843FC4CF2BFA712D /* Pods-App-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debug.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debug.xcconfig"; sourceTree = "<group>"; };
 		349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +402,7 @@
 			files = (
 				BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */,
 				025EF2F62971740000B838AB /* YouTubePlayerKit in Frameworks */,
+				14A832552BD753F800E5654D /* SwiftyStoreKit in Frameworks */,
 				C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */,
 				142EDD6C2B831D1400F9F320 /* BranchSDK in Frameworks */,
 				BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */,
@@ -400,6 +426,7 @@
 		0236961728F9A21600EEF206 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				14A8325A2BD7615C00E5654D /* CourseUpgradeRepository.swift */,
 				0236961828F9A26900EEF206 /* AuthRepository.swift */,
 			);
 			path = Repository;
@@ -480,6 +507,8 @@
 				02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */,
 				E0D5861B2B2FF85B009B4BA7 /* RawStringExtactable.swift */,
 				BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */,
+				14A832622BD8D54100E5654D /* Dictionary+SafeAccess.swift */,
+				14A832672BDA8B6000E5654D /* UIAlertController+BlockActions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -552,6 +581,7 @@
 		0727876E28D233EC002E9142 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				14DE13D82BDF7E4E0059168F /* ServerConfig */,
 				DBF6F2422B014AF30098414B /* Config */,
 				CFC84955299FAC4D0055E497 /* Combine */,
 				0770DE1828D0847D006D8A5D /* BaseRouter.swift */,
@@ -587,6 +617,7 @@
 				027BD3912907D88F00392132 /* Data_RegistrationFields.swift */,
 				028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */,
 				07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */,
+				14A8325E2BD766E900E5654D /* Data_Upgrade.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -641,6 +672,7 @@
 		0770DE0A28D07831006D8A5D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				14A832502BD7533000E5654D /* CourseUpgrade */,
 				14769D3A2B9822D900AB36D4 /* Analytics */,
 				BA8FA65F2AD5973500EA029A /* Providers */,
 				027BD3A12909470F00392132 /* AvoidingHelpers */,
@@ -743,6 +775,35 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
+		14A832502BD7533000E5654D /* CourseUpgrade */ = {
+			isa = PBXGroup;
+			children = (
+				14A832512BD7537A00E5654D /* StorekitHandler.swift */,
+				14A832562BD75D6100E5654D /* CourseUpgradeHandler.swift */,
+				14A832582BD75EC400E5654D /* CourseUpgradeInteractor.swift */,
+				14A8325C2BD7629B00E5654D /* CourseUpgradeEndpoint.swift */,
+				14A832602BD8B5F100E5654D /* CourseUpgradeHelper.swift */,
+			);
+			path = CourseUpgrade;
+			sourceTree = "<group>";
+		};
+		14A832642BD8D59E00E5654D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				14A832652BD8D5BD00E5654D /* Dictionary+SafeAccessTests.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		14DE13D82BDF7E4E0059168F /* ServerConfig */ = {
+			isa = PBXGroup;
+			children = (
+				14DE13D92BDF7E5E0059168F /* IAPConfig.swift */,
+				14DE13DB2BDF83350059168F /* ServerConfig.swift */,
+			);
+			path = ServerConfig;
+			sourceTree = "<group>";
+		};
 		BA30427C2B20B235009B64B7 /* SocialAuth */ = {
 			isa = PBXGroup;
 			children = (
@@ -839,6 +900,7 @@
 		E09179FA2B0F204D002AB695 /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				14A832642BD8D59E00E5654D /* Extensions */,
 				E09179FB2B0F204D002AB695 /* Configuration */,
 			);
 			path = CoreTests;
@@ -914,6 +976,7 @@
 				BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */,
 				BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */,
 				142EDD6B2B831D1400F9F320 /* BranchSDK */,
+				14A832542BD753F800E5654D /* SwiftyStoreKit */,
 			);
 			productName = Core;
 			productReference = 0770DE0828D07831006D8A5D /* Core.framework */;
@@ -954,6 +1017,7 @@
 				BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */,
+				14A832532BD753F800E5654D /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
 			);
 			productRefGroup = 0770DE0928D07831006D8A5D /* Products */;
 			projectDirPath = "";
@@ -1036,6 +1100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */,
+				14A832662BD8D5BD00E5654D /* Dictionary+SafeAccessTests.swift in Sources */,
 				E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1048,6 +1113,7 @@
 				064987942B4D69FF0071642A /* WebviewInjection.swift in Sources */,
 				02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */,
 				DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */,
+				14A832522BD7537A00E5654D /* StorekitHandler.swift in Sources */,
 				027BD3AF2909475000392132 /* DismissKeyboardTapHandler.swift in Sources */,
 				06619EAA2B8F2936001FAADE /* ReadabilityModifier.swift in Sources */,
 				BAFB99902B14B377007D09F9 /* GoogleConfig.swift in Sources */,
@@ -1065,6 +1131,7 @@
 				06619EAD2B90918B001FAADE /* ReadabilityInjection.swift in Sources */,
 				02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */,
 				0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */,
+				14DE13DA2BDF7E5E0059168F /* IAPConfig.swift in Sources */,
 				06619EAF2B973B25001FAADE /* AccessibilityInjection.swift in Sources */,
 				BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */,
 				027BD3B32909475900392132 /* Publishers+KeyboardState.swift in Sources */,
@@ -1097,6 +1164,7 @@
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,
 				0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */,
 				02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */,
+				14DE13DC2BDF83350059168F /* ServerConfig.swift in Sources */,
 				06078B702BA49C3100576798 /* Dictionary+JSON.swift in Sources */,
 				027BD3AE2909475000392132 /* KeyboardScrollerOptions.swift in Sources */,
 				BAFB99922B14E23D007D09F9 /* AppleSignInConfig.swift in Sources */,
@@ -1116,10 +1184,13 @@
 				0283347D28D4D3DE00C828FC /* Data_Discovery.swift in Sources */,
 				064987962B4D69FF0071642A /* WebviewMessage.swift in Sources */,
 				07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */,
+				14A832572BD75D6100E5654D /* CourseUpgradeHandler.swift in Sources */,
 				023A4DD4299E66BD006C0E48 /* OfflineSnackBarView.swift in Sources */,
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */,
+				14A8325F2BD766E900E5654D /* Data_Upgrade.swift in Sources */,
+				14A832682BDA8B6000E5654D /* UIAlertController+BlockActions.swift in Sources */,
 				A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */,
 				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
 				BA8FA6612AD5974300EA029A /* AppleAuthProvider.swift in Sources */,
@@ -1145,6 +1216,7 @@
 				0284DBFE28D48C5300830893 /* CourseItem.swift in Sources */,
 				0248C92329C075EF00DC8402 /* CourseBlockModel.swift in Sources */,
 				E0D5861A2B2FF74C009B4BA7 /* DiscoveryConfig.swift in Sources */,
+				14A8325D2BD7629B00E5654D /* CourseUpgradeEndpoint.swift in Sources */,
 				DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
@@ -1152,6 +1224,7 @@
 				06DEA4A52BBD66D700110D20 /* BackNavigationButtonViewModel.swift in Sources */,
 				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
 				0233D5712AF13EC800BAC8BD /* SelectMailClientView.swift in Sources */,
+				14A8325B2BD7615C00E5654D /* CourseUpgradeRepository.swift in Sources */,
 				BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				E0D5861C2B2FF85B009B4BA7 /* RawStringExtactable.swift in Sources */,
@@ -1163,6 +1236,7 @@
 				070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */,
 				024D723529C8BB1A006D36ED /* NavigationBar.swift in Sources */,
 				BA8B3A2F2AD546A700D25EF5 /* DebugLog.swift in Sources */,
+				14A832612BD8B5F100E5654D /* CourseUpgradeHelper.swift in Sources */,
 				0727877928D23BE0002E9142 /* RequestInterceptor.swift in Sources */,
 				BA8FA66E2AD59E7D00EA029A /* FacebookAuthProvider.swift in Sources */,
 				0770DE2E28D09743006D8A5D /* API.swift in Sources */,
@@ -1170,6 +1244,7 @@
 				027BD3A92909474200392132 /* KeyboardAvoidingViewControllerRepr.swift in Sources */,
 				02F98A7F28F81EE900DE94C0 /* Container+App.swift in Sources */,
 				02B3F16E2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift in Sources */,
+				14A832632BD8D54100E5654D /* Dictionary+SafeAccess.swift in Sources */,
 				0649879A2B4D69FF0071642A /* WebViewHTML.swift in Sources */,
 				0727877B28D24A1D002E9142 /* HeadersRedirectHandler.swift in Sources */,
 				0236961B28F9A28B00EEF206 /* AuthInteractor.swift in Sources */,
@@ -1191,6 +1266,7 @@
 				0233D56F2AF13EB200BAC8BD /* StarRatingView.swift in Sources */,
 				0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */,
 				027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */,
+				14A832592BD75EC400E5654D /* CourseUpgradeInteractor.swift in Sources */,
 				024BE3DF29B2615500BCDEE2 /* CGColorExtension.swift in Sources */,
 				0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */,
 				07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */,
@@ -2228,6 +2304,14 @@
 				minimumVersion = 2.2.0;
 			};
 		};
+		14A832532BD753F800E5654D /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bizz84/SwiftyStoreKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.16.4;
+			};
+		};
 		BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -2256,6 +2340,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */;
 			productName = BranchSDK;
+		};
+		14A832542BD753F800E5654D /* SwiftyStoreKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 14A832532BD753F800E5654D /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
+			productName = SwiftyStoreKit;
 		};
 		BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

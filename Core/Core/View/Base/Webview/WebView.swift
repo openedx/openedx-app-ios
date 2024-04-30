@@ -97,7 +97,7 @@ public struct WebView: UIViewRepresentable {
             let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
 
             alertController.addAction(UIAlertAction(
-                title: CoreLocalization.Webview.Alert.ok,
+                title: CoreLocalization.ok,
                 style: .default,
                 handler: { _ in
                     completionHandler(true)

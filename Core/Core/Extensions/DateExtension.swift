@@ -210,4 +210,9 @@ public extension Date {
     func isLaterThanOrEqualTo(date: Date) -> Bool {
         timeIntervalSince1970 >= date.timeIntervalSince1970
     }
+    
+    func isInPast() -> Bool {
+        let now = Date()
+        return now.compare(self) == .orderedDescending
+    }
 }

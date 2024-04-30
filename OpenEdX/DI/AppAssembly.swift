@@ -131,6 +131,10 @@ class AppAssembly: Assembly {
             Config()
         }.inObjectScope(.container)
         
+        container.register(ServerConfigProtocol.self) { _ in
+            ServerConfig()
+        }.inObjectScope(.container)
+        
         container.register(CSSInjector.self) { r in
             CSSInjector(
                 config: r.resolve(ConfigProtocol.self)!

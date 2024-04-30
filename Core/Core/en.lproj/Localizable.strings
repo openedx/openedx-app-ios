@@ -81,11 +81,12 @@
 
 "DONE" = "Done";
 "VIEW " = "View";
+"OK" = "Ok";
+"CLOSE" = "Close";
 
 "PICKER.SEARCH" = "Search";
 "PICKER.ACCEPT" = "Accept";
 
-"WEBVIEW.ALERT.OK" = "Ok";
 "WEBVIEW.ALERT.CANCEL" = "Cancel";
 "WEBVIEW.ALERT.CONTINUE" = "Continue";
 
@@ -114,3 +115,30 @@
 "YESTERDAY" = "Yesterday";
 
 "OPEN_IN_BROWSER"="View in Safari";
+
+"COURSE_UPGRADE.LEARN_HOW_TO_UNLOCK"= "Unlock graded assignments";
+"COURSE_UPGRADE.EMAIL_NOT_SETUP_TITLE"= "Email not set up";
+"COURSE_UPGRADE.EMAIL_NOT_SETUP_MESSAGE"= "Your email is not set up on this device. Please reach out to {email} for support processing your payment.";
+"COURSE_UPGRADE.SUCCESS_MESSAGE"="Thank you for your purchase. Enjoy full access to your course!";
+"COURSE_UPGRADE.SUCCESS_ALERT.TITLE"="Upgrade complete";
+"COURSE_UPGRADE.SUCCESS_ALERT.MESSAGE"="Thank you for your purchase. You can pick up right where you left off and enjoy full access to your course content.";
+"COURSE_UPGRADE.SUCCESS_ALERT.CONTINUE_BUTTON_TITLE"="Continue";
+"COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_TITLE"="New experience available";
+"COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_MESSAGE"="An update is available to unlock a purchased course. To update, we need to quickly refresh your app. If you choose not to update now, we’ll try again later.";
+"COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_REFRESH"="Refresh now";
+"COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_CONTINUE"="Continue without update";
+"COURSE_UPGRADE.FAILURE_ALERT.ALERT_TITLE"="An error occurred";
+"COURSE_UPGRADE.FAILURE_ALERT.GENERAL_ERROR_MESSAGE"="It looks like something went wrong when upgrading your course. If this error continues, please contact Support.";
+"COURSE_UPGRADE.FAILURE_ALERT.GET_HELP"="Get help";
+"COURSE_UPGRADE.FAILURE_ALERT.AUTHENTICATION_ERROR_MESSAGE"="Your account could not be authenticated. Try signing out and signing back into the app. If this error continues, please contact Support.";
+"COURSE_UPGRADE.FAILURE_ALERT.COURSE_NOT_FOUNT"="The course you are looking to upgrade could not be found. Please try your upgrade again. If this error continues, contact Support.";
+"COURSE_UPGRADE.FAILURE_ALERT.COURSE_ALREADY_PAID"="The course you are looking to upgrade has already been paid for. For additional help, reach out to Support.";
+"COURSE_UPGRADE.FAILURE_ALERT.PAYMENT_NOT_PROCESSED"="Your payment could not be processed at this time. Please try again. For additional help, reach out to Support.";
+"COURSE_UPGRADE.FAILURE_ALERT.COURSE_NOT_FULLFILLED"="Something happened when we tried to update your course experience. If this error continues, reach out to Support for help.";
+"COURSE_UPGRADE.FAILURE_ALERT.PRICE_FETCH_ERROR_MESSAGE"="Your request could not be completed at this time. If this error continues, please reach out to Support.";
+"COURSE_UPGRADE.FAILURE_ALERT.PRICE_FETCH_ERROR"="Try again";
+"COURSE_UPGRADE.FAILURE_ALERT.REFRESH_TO_RETRY"="Refresh to retry";
+"COURSE_UPGRADE.GET_SUPPORT_EMAIL_SUBJECT"="Error upgrading course in app";
+"COURSE_UPGRADE.RESTORE.ALERT_TITLE"="Purchases have been successfully restored";
+"COURSE_UPGRADE.RESTORE.ALERT_MESSAGE"="All purchases are up to date. If you’re not seeing your purchases restored, please try restarting your app to refresh the experience.";
+"COURSE_UPGRADE.RESTORE.INPROGRESS_TEXT"="Checking purchases...";

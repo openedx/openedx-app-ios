@@ -19,12 +19,19 @@ public class DashboardRepository: DashboardRepositoryProtocol {
     private let storage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: DashboardPersistenceProtocol
+    private let serverConfig: ServerConfigProtocol
     
-    public init(api: API, storage: CoreStorage, config: ConfigProtocol, persistence: DashboardPersistenceProtocol) {
+    public init(api: API,
+                storage: CoreStorage,
+                config: ConfigProtocol,
+                persistence: DashboardPersistenceProtocol,
+                serverConfig: ServerConfigProtocol
+    ) {
         self.api = api
         self.storage = storage
         self.config = config
         self.persistence = persistence
+        self.serverConfig = serverConfig
     }
     
     public func getMyCourses(page: Int) async throws -> [CourseItem] {
@@ -33,8 +40,13 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         )
             .mapResponse(DataLayer.CourseEnrollments.self)
             .domain(baseURL: config.baseURL.absoluteString)
-        persistence.saveMyCourses(items: result)
-        return result
+        
+        persistence.saveMyCourses(items: result.0)
+        persistence.saveServerConfig(configs: result.1)
+        
+        serverConfig.initialize(config: result.1)
+        
+        return result.0
         
     }
     
@@ -53,7 +65,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
             DashboardRepository.CourseEnrollmentsJSON.data(using: .utf8)!
                 .mapResponse(DataLayer.CourseEnrollments.self)
                 .domain(baseURL: baseURL)
-            return courseEnrollments
+            return courseEnrollments.0
         } catch {
             throw error
         }

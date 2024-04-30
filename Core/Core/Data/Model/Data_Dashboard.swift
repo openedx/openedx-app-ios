@@ -11,13 +11,24 @@ public extension DataLayer {
     // MARK: - CourseEnrollments
     struct CourseEnrollments: Codable {
         public let enrollments: Enrollments
+        public let configs: ServerConfigs
 
         enum CodingKeys: String, CodingKey {
             case enrollments
+            case configs
         }
 
-        public init(enrollments: Enrollments) {
+        public init(enrollments: Enrollments, configs: ServerConfigs) {
             self.enrollments = enrollments
+            self.configs = configs
+        }
+    }
+    
+    struct ServerConfigs: Codable, Hashable {
+        public let config: String
+        
+        public init(config: String) {
+            self.config = config
         }
     }
 
@@ -174,20 +185,17 @@ public extension DataLayer {
     struct CourseMode: Codable {
         public let slug: Mode?
         public let sku: String?
-        public let androidSku: String?
         public let iosSku: String?
 
         enum CodingKeys: String, CodingKey {
             case slug
             case sku
-            case androidSku = "android_sku"
             case iosSku = "ios_sku"
         }
 
-        public init(slug: Mode?, sku: String?, androidSku: String?, iosSku: String?) {
+        public init(slug: Mode?, sku: String?, iosSku: String?) {
             self.slug = slug
             self.sku = sku
-            self.androidSku = androidSku
             self.iosSku = iosSku
         }
     }
@@ -231,13 +239,24 @@ public extension DataLayer {
 }
 
 public extension DataLayer.CourseEnrollments {
-    func domain(baseURL: String) -> [CourseItem] {
-        return enrollments.results.map { result in
+    func domain(baseURL: String) -> ([CourseItem], DataLayer.ServerConfigs) {
+        return (enrollments.results.map { result in
             let course = result.course
             
             let imageUrl = course.media.courseImage?.url ?? ""
             let encodedUrl = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             let fullImageURL = baseURL + encodedUrl
+            var sku = ""
+            
+            for mode in result.courseModes where mode.slug == DataLayer.Mode.verified {
+                sku = mode.iosSku ?? ""
+            }
+            
+            var dynamicUpgradeDeadline: Date?
+            
+            if let dynamicDeadline = course.dynamicUpgradeDeadline {
+                dynamicUpgradeDeadline = Date(iso8601: dynamicDeadline)
+            }
             
             return CourseItem(
                 name: course.name,
@@ -255,8 +274,11 @@ public extension DataLayer.CourseEnrollments {
                 : nil,
                 courseID: course.id,
                 numPages: enrollments.numPages ?? 1,
-                coursesCount: enrollments.count ?? 0
+                coursesCount: enrollments.count ?? 0,
+                sku: sku,
+                dynamicUpgradeDeadline: dynamicUpgradeDeadline,
+                mode: result.mode
             )
-        }
+        }, configs)
     }
 }

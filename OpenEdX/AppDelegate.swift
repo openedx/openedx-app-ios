@@ -43,6 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             configureDeepLinkServices(launchOptions: launchOptions)
         }
+        
+        if let storekitHandler = Container.shared.resolve(StorekitHandler.self) {
+            storekitHandler.completeTransactions()
+        }
 
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)

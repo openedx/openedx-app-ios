@@ -62,8 +62,15 @@ public final class API {
         encoding: ParameterEncoding = URLEncoding.default
     ) async throws -> Data {
         var url = config.baseURL
-        if !route.path.isEmpty {
-            url = url.appendingPathComponent(route.path)
+        
+        if !route.baseURL.isEmpty {
+            if let baseURL = URL(string: route.baseURL) {
+                url = baseURL
+            }
+        }
+        
+        if !route.path.isEmpty, let urlWithPath = URL(string: url.absoluteString + route.path) {
+            url = urlWithPath
         }
         
         let result = session.request(

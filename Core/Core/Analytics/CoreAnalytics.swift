@@ -18,6 +18,71 @@ public protocol CoreAnalytics {
         value: String,
         oldValue: String
     )
+    
+    func trackCourseUpgradePaymentError(
+        _ event: AnalyticsEvent,
+        biValue: EventBIValue,
+        courseID: String,
+        blockID: String?,
+        pacing: String,
+        coursePrice: String,
+        screen: CourseUpgradeScreen,
+        error: String
+    )
+    
+    func trackCourseUpgradeError(
+        courseID: String,
+        blockID: String?,
+        pacing: String,
+        coursePrice: String?,
+        screen: CourseUpgradeScreen,
+        error: String,
+        flowType: String
+    )
+    
+    func trackCourseUpgradeErrorAction(
+        courseID: String,
+        blockID: String?,
+        pacing: String,
+        coursePrice: String?,
+        screen: CourseUpgradeScreen,
+        errorAction: String,
+        error: String,
+        flowType: String
+    )
+    
+    func trackCourseUpgradeSuccess(
+        courseID: String,
+        blockID: String?,
+        pacing: String,
+        coursePrice: String,
+        screen: CourseUpgradeScreen,
+        flowType: String
+    )
+    
+    func trackUpgradeNow(
+        courseID: String,
+        blockID: String?,
+        pacing: String,
+        screen: CourseUpgradeScreen,
+        coursePrice: String
+    )
+    
+    func trackCourseUpgradeLoadError(
+        courseID: String,
+        blockID: String?,
+        pacing: String,
+        screen: CourseUpgradeScreen
+    )
+    
+    func trackCourseUnfulfilledPurchaseInitiated(
+        courseID: String,
+        pacing: String,
+        screen: CourseUpgradeScreen,
+        flowType: String
+    )
+    
+    func trackRestorePurchaseClicked()
 }
 
 public extension CoreAnalytics {
@@ -42,6 +107,70 @@ public class CoreAnalyticsMock: CoreAnalytics {
         value: String,
         oldValue: String
     ) {}
+    
+    public func trackCourseUpgradePaymentError(
+        _ event: AnalyticsEvent,
+        biValue: EventBIValue,
+        courseID: String,
+        blockID: String? = nil,
+        pacing: String,
+        coursePrice: String,
+        screen: CourseUpgradeScreen,
+        error: String
+    ) {}
+    
+    public func trackCourseUpgradeError(
+        courseID: String,
+        blockID: String? = nil,
+        pacing: String,
+        coursePrice: String? = nil,
+        screen: CourseUpgradeScreen,
+        error: String,
+        flowType: String
+    ) {}
+    
+    public func trackCourseUpgradeErrorAction(
+        courseID: String,
+        blockID: String? = nil,
+        pacing: String,
+        coursePrice: String? = nil,
+        screen: CourseUpgradeScreen,
+        errorAction: String,
+        error: String,
+        flowType: String
+    ) {}
+    
+    public func trackCourseUpgradeSuccess(
+        courseID: String,
+        blockID: String? = nil,
+        pacing: String,
+        coursePrice: String,
+        screen: CourseUpgradeScreen,
+        flowType: String) {}
+    
+    public func trackUpgradeNow(
+        courseID: String,
+        blockID: String? = nil,
+        pacing: String,
+        screen: CourseUpgradeScreen,
+        coursePrice: String
+    ) {}
+    
+    public func trackCourseUpgradeLoadError(
+        courseID: String,
+        blockID: String? = nil,
+        pacing: String,
+        screen: CourseUpgradeScreen
+    ) {}
+    
+    public func trackCourseUnfulfilledPurchaseInitiated(
+        courseID: String,
+        pacing: String,
+        screen: CourseUpgradeScreen,
+        flowType: String
+    ) {}
+    
+    public func trackRestorePurchaseClicked() {}
 }
 #endif
 
@@ -124,6 +253,16 @@ public enum AnalyticsEvent: String {
     case whatnewPopup = "WhatsNew:Pop up Viewed"
     case whatnewDone = "WhatsNew:Done"
     case whatnewClose = "WhatsNew:Close"
+    case upgradeNowClicked = "Payments: Upgrade Now Clicked"
+    case courseUpgradePriceLoadError = "Payments: Price Load Error"
+    case courseUpgradePaymentError = "Payments: Payment Error"
+    case courseUpgradePaymentCancelError = "Payments: Canceled by User"
+    case courseUpgradeError = "Payments: Course Upgrade Error"
+    case courseUpgradeErrorAction = "Payments: Error Alert Action"
+    case courseUpgradeSuccess = "Payments: Course Upgrade Success"
+    case courseUpgradeUnfulfilledPurchaseInitiated = "Payments: Unfulfilled Purchase Initiated"
+    case courseUpgradeRestorePurchaseClicked = "Payments: Restore Purchases Clicked"
+    
 }
 
 public enum EventBIValue: String {
@@ -205,6 +344,15 @@ public enum EventBIValue: String {
     case whatnewPopup = "edx.bi.app.whats_new.popup.viewed"
     case whatnewDone = "edx.bi.app.whats_new.done"
     case whatnewClose = "edx.bi.app.whats_new.close"
+    case upgradeNowClicked = "edx.bi.app.payments.upgrade_now.clicked"
+    case courseUpgradePriceLoadError = "edx.bi.app.payments.price_load_error"
+    case courseUpgradePaymentError = "edx.bi.app.payments.payment_error"
+    case courseUpgradePaymentCancelError = "edx.bi.app.payments.canceled_by_user"
+    case courseUpgradeError = "edx.bi.app.payments.course_upgrade_error"
+    case courseUpgradeErrorAction = "edx.bi.app.payments.error_alert_action"
+    case courseUpgradeSuccess = "edx.bi.app.payments.course_upgrade_success"
+    case courseUpgradeUnfulfilledPurchaseInitiated = "edx.bi.app.payments.unfulfilled_purchase.initiated"
+    case courseUpgradeRestorePurchaseClicked = "edx.bi.app.payments.restore_purchases.clicked"
 }
 
 public struct EventParamKey {
@@ -241,6 +389,10 @@ public struct EventParamKey {
     public static let pacing = "pacing"
     public static let dialog = "dialog"
     public static let snackbar = "snackbar"
+    public static let price = "price"
+    public static let error = "error"
+    public static let errorAction = "error_action"
+    public static let flowType = "flow_type"
 }
 
 public struct EventCategory {
@@ -251,4 +403,5 @@ public struct EventCategory {
     public static let profile = "profile"
     public static let video = "video"
     public static let course = "course"
+    public static let inAppPurchases = "in_app_purchases"
 }

@@ -31,7 +31,10 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                               enrollmentEnd: $0.enrollmentEnd,
                               courseID: $0.courseID ?? "",
                               numPages: Int($0.numPages),
-                              coursesCount: Int($0.courseCount))}
+                              coursesCount: Int($0.courseCount),
+                              sku: $0.courseSku ?? "",
+                              dynamicUpgradeDeadline: $0.dynamicUpgradeDeadline,
+                              mode: DataLayer.Mode(rawValue: $0.mode ?? "") ?? .unknown)}
         if let result, !result.isEmpty {
             return result
         } else {
@@ -54,12 +57,47 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.enrollmentEnd = item.enrollmentEnd
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
-                
+                newItem.courseSku = item.sku
+                newItem.dynamicUpgradeDeadline = item.dynamicUpgradeDeadline
+                newItem.mode = item.mode.rawValue
                 do {
                     try context.save()
                 } catch {
                     print("⛔️⛔️⛔️⛔️⛔️", error)
                 }
+            }
+        }
+    }
+    
+    public func loadServerConfig() throws -> DataLayer.ServerConfigs? {
+        let result = try? context.fetch(CDServerConfigs.fetchRequest())
+            .map { DataLayer.ServerConfigs(config: $0.config ?? "")}
+        
+        if let result, !result.isEmpty {
+            return result.first
+        } else {
+            throw NoCachedDataError()
+        }
+    }
+    
+    public func saveServerConfig(configs: DataLayer.ServerConfigs) {
+        context.performAndWait {
+            let result = try? context.fetch(CDServerConfigs.fetchRequest())
+            var item: CDServerConfigs?
+            
+            if let result, !result.isEmpty {
+                item = result.first
+                item?.config = configs.config
+            } else {
+                item = CDServerConfigs(context: context)
+            }
+            
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            item?.config = configs.config
+            do {
+                try context.save()
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
             }
         }
     }

@@ -13,4 +13,11 @@ public protocol EndPointType {
     var httpMethod: HTTPMethod { get }
     var headers: HTTPHeaders? { get }
     var task: HTTPTask { get }
+    var baseURL: String { get }
+}
+
+public extension EndPointType {
+    var baseURL: String {
+        return ""
+    }
 }

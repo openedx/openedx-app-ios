@@ -10,8 +10,12 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum CoreLocalization {
+  /// Close
+  public static let close = CoreLocalization.tr("Localizable", "CLOSE", fallback: "Close")
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
+  /// Ok
+  public static let ok = CoreLocalization.tr("Localizable", "OK", fallback: "Ok")
   /// View in Safari
   public static let openInBrowser = CoreLocalization.tr("Localizable", "OPEN_IN_BROWSER", fallback: "View in Safari")
   /// Register
@@ -76,6 +80,66 @@ public enum CoreLocalization {
     /// You've completed “%@”.
     public static func sectionCompleted(_ p1: Any) -> String {
       return CoreLocalization.tr("Localizable", "COURSEWARE.SECTION_COMPLETED", String(describing: p1), fallback: "You've completed “%@”.")
+    }
+  }
+  public enum CourseUpgrade {
+    /// Your email is not set up on this device. Please reach out to {email} for support processing your payment.
+    public static let emailNotSetupMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.EMAIL_NOT_SETUP_MESSAGE", fallback: "Your email is not set up on this device. Please reach out to {email} for support processing your payment.")
+    /// Email not set up
+    public static let emailNotSetupTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.EMAIL_NOT_SETUP_TITLE", fallback: "Email not set up")
+    /// Error upgrading course in app
+    public static let getSupportEmailSubject = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.GET_SUPPORT_EMAIL_SUBJECT", fallback: "Error upgrading course in app")
+    /// Unlock graded assignments
+    public static let learnHowToUnlock = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.LEARN_HOW_TO_UNLOCK", fallback: "Unlock graded assignments")
+    /// Thank you for your purchase. Enjoy full access to your course!
+    public static let successMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_MESSAGE", fallback: "Thank you for your purchase. Enjoy full access to your course!")
+    public enum FailureAlert {
+      /// An error occurred
+      public static let alertTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.ALERT_TITLE", fallback: "An error occurred")
+      /// Your account could not be authenticated. Try signing out and signing back into the app. If this error continues, please contact Support.
+      public static let authenticationErrorMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.AUTHENTICATION_ERROR_MESSAGE", fallback: "Your account could not be authenticated. Try signing out and signing back into the app. If this error continues, please contact Support.")
+      /// The course you are looking to upgrade has already been paid for. For additional help, reach out to Support.
+      public static let courseAlreadyPaid = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.COURSE_ALREADY_PAID", fallback: "The course you are looking to upgrade has already been paid for. For additional help, reach out to Support.")
+      /// The course you are looking to upgrade could not be found. Please try your upgrade again. If this error continues, contact Support.
+      public static let courseNotFount = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.COURSE_NOT_FOUNT", fallback: "The course you are looking to upgrade could not be found. Please try your upgrade again. If this error continues, contact Support.")
+      /// Something happened when we tried to update your course experience. If this error continues, reach out to Support for help.
+      public static let courseNotFullfilled = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.COURSE_NOT_FULLFILLED", fallback: "Something happened when we tried to update your course experience. If this error continues, reach out to Support for help.")
+      /// It looks like something went wrong when upgrading your course. If this error continues, please contact Support.
+      public static let generalErrorMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.GENERAL_ERROR_MESSAGE", fallback: "It looks like something went wrong when upgrading your course. If this error continues, please contact Support.")
+      /// Get help
+      public static let getHelp = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.GET_HELP", fallback: "Get help")
+      /// Your payment could not be processed at this time. Please try again. For additional help, reach out to Support.
+      public static let paymentNotProcessed = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.PAYMENT_NOT_PROCESSED", fallback: "Your payment could not be processed at this time. Please try again. For additional help, reach out to Support.")
+      /// Try again
+      public static let priceFetchError = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.PRICE_FETCH_ERROR", fallback: "Try again")
+      /// Your request could not be completed at this time. If this error continues, please reach out to Support.
+      public static let priceFetchErrorMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.PRICE_FETCH_ERROR_MESSAGE", fallback: "Your request could not be completed at this time. If this error continues, please reach out to Support.")
+      /// Refresh to retry
+      public static let refreshToRetry = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.REFRESH_TO_RETRY", fallback: "Refresh to retry")
+    }
+    public enum Restore {
+      /// All purchases are up to date. If you’re not seeing your purchases restored, please try restarting your app to refresh the experience.
+      public static let alertMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.RESTORE.ALERT_MESSAGE", fallback: "All purchases are up to date. If you’re not seeing your purchases restored, please try restarting your app to refresh the experience.")
+      /// Purchases have been successfully restored
+      public static let alertTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.RESTORE.ALERT_TITLE", fallback: "Purchases have been successfully restored")
+      /// Checking purchases...
+      public static let inprogressText = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.RESTORE.INPROGRESS_TEXT", fallback: "Checking purchases...")
+    }
+    public enum SuccessAlert {
+      /// Continue
+      public static let continueButtonTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.CONTINUE_BUTTON_TITLE", fallback: "Continue")
+      /// Thank you for your purchase. You can pick up right where you left off and enjoy full access to your course content.
+      public static let message = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.MESSAGE", fallback: "Thank you for your purchase. You can pick up right where you left off and enjoy full access to your course content.")
+      /// Continue without update
+      public static let silentAlertContinue = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_CONTINUE", fallback: "Continue without update")
+      /// An update is available to unlock a purchased course. To update, we need to quickly refresh your app. If you choose not to update now, we’ll try again later.
+      public static let silentAlertMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_MESSAGE", fallback: "An update is available to unlock a purchased course. To update, we need to quickly refresh your app. If you choose not to update now, we’ll try again later.")
+      /// Refresh now
+      public static let silentAlertRefresh = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_REFRESH", fallback: "Refresh now")
+      /// New experience available
+      public static let silentAlertTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_TITLE", fallback: "New experience available")
+      /// Upgrade complete
+      public static let title = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.TITLE", fallback: "Upgrade complete")
     }
   }
   public enum Date {
@@ -223,8 +287,6 @@ public enum CoreLocalization {
       public static let cancel = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.CANCEL", fallback: "Cancel")
       /// Continue
       public static let `continue` = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.CONTINUE", fallback: "Continue")
-      /// Ok
-      public static let ok = CoreLocalization.tr("Localizable", "WEBVIEW.ALERT.OK", fallback: "Ok")
     }
   }
 }
