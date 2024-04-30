@@ -200,11 +200,11 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         let finishedCount = courseViewModel.downloadableVerticals.filter { $0.state == .finished }.count
         let downloadingCount = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }.count
 
-        if downloadingCount == totalCount {
+        if downloadingCount == totalCount, totalCount > 0 {
             self.isOn = true
             return
         }
-        if totalCount == finishedCount {
+        if totalCount == finishedCount, totalCount > 0 {
             self.isOn = true
             return
         }
@@ -217,7 +217,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             return
         }
 
-        let isOn = totalCount - finishedCount == downloadingCount
+        let isOn = totalCount - finishedCount == downloadingCount && totalCount > 0
         self.isOn = isOn
     }
 
