@@ -463,24 +463,18 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(CourseUpgradeHandler.self) { r, course in
+        container.register(CourseUpgradeHandler.self) { r in
             CourseUpgradeHandler(
-                for: course,
                 config: r.resolve(ConfigProtocol.self)!,
                 interactor: r.resolve(CourseUpgradeInteractorProtocol.self)!,
                 storeKitHandler: r.resolve(StorekitHandler.self)!
             )
         }.inObjectScope(.container)
         
-        container.register(CourseUpgradeHelper.self) { r, courseID, pacing, blockID, localizedCoursePrice, screen  in
+        container.register(CourseUpgradeHelper.self) { r in
             CourseUpgradeHelper(
                 config: r.resolve(ConfigProtocol.self)!,
-                analytics: r.resolve(CoreAnalytics.self)!,
-                courseID: courseID,
-                pacing: pacing,
-                blockID: blockID,
-                localizedCoursePrice: localizedCoursePrice,
-                screen: screen
+                analytics: r.resolve(CoreAnalytics.self)!
             )
         }.inObjectScope(.container)
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 public enum CourseUpgradeScreen: String {
-    case courses = "dashbaord"
+    case dashbaord
     case courseDashboard = "course_dashboard"
     case courseComponent = "course_component"
     case unknown
@@ -52,12 +52,10 @@ public class CourseUpgradeHandler: ObservableObject {
         }
     }
 
-    public init(for course: CourseItem,
-                config: ConfigProtocol,
+    public init(config: ConfigProtocol,
                 interactor: CourseUpgradeInteractorProtocol,
                 storeKitHandler: StorekitHandler
     ) {
-        self.course = course
         self.interactor = interactor
         self.storeKitHandler = storeKitHandler
         
@@ -65,23 +63,24 @@ public class CourseUpgradeHandler: ObservableObject {
     }
     
     public func upgradeCourse(
-        with upgradeMode: UpgradeMode = .userInitiated,
+        _ course: CourseItem,
+        mode: UpgradeMode = .userInitiated,
         price: NSDecimalNumber?,
         currencyCode: String?,
         completion: UpgradeCompletionHandler?
     ) async {
+        self.course = course
         self.completion = completion
-        self.upgradeMode = upgradeMode
+        self.upgradeMode = mode
         self.price = price
         self.currencyCode = currencyCode
         
-//        guard let course = self.course,
-//              let coursePurchaseSku = course.sku else {
-//            state = .error(type: .generalError, error: error(message: "course sku is missing"))
-//            return
-//        }
+        guard let course = self.course, !course.sku.isEmpty else {
+            state = .error(type: .generalError, error: error(message: "course sku is missing"))
+            return
+        }
         state = .initial
-        courseSku = course?.sku ?? ""
+        courseSku = course.sku
         await proceedWithUpgrade()
     }
     

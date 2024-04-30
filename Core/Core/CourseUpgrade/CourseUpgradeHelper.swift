@@ -58,15 +58,20 @@ public class CourseUpgradeHelper {
     
     public init(
         config: ConfigProtocol,
-        analytics: CoreAnalytics,
+        analytics: CoreAnalytics
+    ) {
+        self.config = config
+        self.analytics = analytics
+        
+    }
+    
+    public func setData(
         courseID: String,
         pacing: String,
         blockID: String? = nil,
         localizedCoursePrice: String,
         screen: CourseUpgradeScreen
     ) {
-        self.config = config
-        self.analytics = analytics
         self.courseID = courseID
         self.pacing = pacing
         self.blockID = blockID
@@ -74,7 +79,7 @@ public class CourseUpgradeHelper {
         self.screen = screen
     }
     
-    func handleCourseUpgrade(
+    public func handleCourseUpgrade(
         upgradeHadler: CourseUpgradeHandler,
         state: UpgradeCompletionState,
         delegate: CourseUpgradeHelperDelegate? = nil

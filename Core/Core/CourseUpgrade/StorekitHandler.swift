@@ -46,7 +46,10 @@ public class StorekitHandler: NSObject {
     // Use this dictionary to keep track of inprocess transctions and allow only one transction at a time
     private(set) var purchases: [String: Any] = [:]
 
-    public typealias PurchaseCompletionHandler = ((success: Bool, receipt: String?, error: (type: UpgradeError?, error: Error?)?)) -> Void
+    public typealias PurchaseCompletionHandler = ((success: Bool,
+                                                   receipt: String?,
+                                                   error: (type: UpgradeError?,
+                                                           error: Error?)?)) -> Void
     private var completion: PurchaseCompletionHandler?
 
     public var unfinishedPurchases: Bool {
@@ -96,7 +99,6 @@ public class StorekitHandler: NSObject {
             case .success(let purchase):
                 self?.purchases[purchase.productId] = purchase
                 self?.purchaseReceipt()
-                break
             case .error(let error):
                 completion?((false, receipt: nil, error: (type: .paymentError, error: error)))
                 debugLog(((error as NSError).localizedDescription))
@@ -110,11 +112,9 @@ public class StorekitHandler: NSObject {
         SwiftyStoreKit.retrieveProductsInfo([identifier]) { result in
             if let product = result.retrievedProducts.first {
                 completion?(product, nil)
-            }
-            else if let _ = result.invalidProductIDs.first {
+            } else if result.invalidProductIDs.count > 0 {
                 completion?(nil, .productNotExist)
-            }
-            else {
+            } else {
                 completion?(nil, .generalError)
             }
         }
@@ -143,14 +143,12 @@ public class StorekitHandler: NSObject {
                     SwiftyStoreKit.finishTransaction(purchase.transaction)
                 }
             }
-            break
         case .purchase:
             if let purchase = purchases[productID] as? PurchaseDetails {
                 if purchase.needsFinishTransaction {
                     SwiftyStoreKit.finishTransaction(purchase.transaction)
                 }
             }
-            break
         }
 
         removePurchase(productID)
