@@ -88,7 +88,8 @@ public class CourseUpgradeHandler: ObservableObject {
     private func proceedWithUpgrade() async {
         do {
             let basket = try await interactor.addbasket(sku: courseSku)
-            await checkout(basketID: basket.basketID)
+            basketID = basket.basketID
+            await checkout(basketID: basketID)
             
         } catch let error {
             if error.isInternetError {
@@ -144,7 +145,12 @@ public class CourseUpgradeHandler: ObservableObject {
         state = .verify
         
         do {
-            try await interactor.fulfillCheckout(basketID: "", price: 1.00, currencyCode: "USD", receipt: receipt)
+            try await interactor.fulfillCheckout(
+                basketID: basketID,
+                price: price ?? 0.0,
+                currencyCode: currencyCode ?? "",
+                receipt: receipt
+            )
             state = .complete
             
         } catch let error {

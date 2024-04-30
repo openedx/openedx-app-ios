@@ -13,7 +13,12 @@ private let PaymentProcessor = "ios-iap"
 enum CourseUpgradeEndpoint: EndPointType {
     case addBasket(sku: String)
     case checkout(basketID: Int)
-    case fulfillCheckout(basketID: String, price: NSDecimalNumber, currencyCode: String, receipt: String)
+    case fulfillCheckout(
+        basketID: Int,
+        price: NSDecimalNumber,
+        currencyCode: String,
+        receipt: String
+    )
     
     var path: String {
         switch self {
@@ -56,7 +61,12 @@ enum CourseUpgradeEndpoint: EndPointType {
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
             
-        case let .fulfillCheckout(basketID: basketID, price: price, currencyCode: currencyCode, receipt: receipt):
+        case let .fulfillCheckout(
+            basketID: basketID,
+            price: price,
+            currencyCode: currencyCode,
+            receipt: receipt):
+            
             let params: Parameters = [
                 "basket_id": basketID,
                 "price": price,

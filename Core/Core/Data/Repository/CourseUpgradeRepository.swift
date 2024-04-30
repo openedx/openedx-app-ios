@@ -11,7 +11,7 @@ public protocol CourseUpgradeRepositoryProtocol {
     func addbasket(sku: String) async throws -> UpgradeBasket
     func checkoutBasket(basketID: Int) async throws -> CheckoutBasket
     func fulfillCheckout(
-        basketID: String,
+        basketID: Int,
         price: NSDecimalNumber,
         currencyCode: String,
         receipt: String
@@ -44,7 +44,7 @@ public class CourseUpgradeRepository: CourseUpgradeRepositoryProtocol {
     }
     
     public func fulfillCheckout(
-        basketID: String,
+        basketID: Int,
         price: NSDecimalNumber,
         currencyCode: String,
         receipt: String

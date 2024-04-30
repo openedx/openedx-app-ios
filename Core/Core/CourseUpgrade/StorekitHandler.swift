@@ -121,7 +121,9 @@ public class StorekitHandler: NSObject {
     }
     
     public func purchaseReceipt(completion: PurchaseCompletionHandler? = nil) {
-        self.completion = completion
+        if let completion = completion {
+            self.completion = completion
+        }
         
         SwiftyStoreKit.fetchReceipt(forceRefresh: false) { [weak self] result in
             switch result {

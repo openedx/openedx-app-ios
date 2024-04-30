@@ -13,7 +13,7 @@ public protocol CourseUpgradeInteractorProtocol {
     func checkoutBasket(basketID: Int) async throws -> CheckoutBasket
     @discardableResult
     func fulfillCheckout(
-        basketID: String,
+        basketID: Int,
         price: NSDecimalNumber,
         currencyCode: String,
         receipt: String
@@ -38,7 +38,7 @@ public class CourseUpgradeInteractor: CourseUpgradeInteractorProtocol {
     
     @discardableResult
     public func fulfillCheckout(
-        basketID: String,
+        basketID: Int,
         price: NSDecimalNumber,
         currencyCode: String,
         receipt: String
