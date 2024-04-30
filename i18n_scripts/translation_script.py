@@ -1,6 +1,10 @@
 """
-This script combines the English translations from all modules in the repository to the I18N directory.
-Then the translations are pushed to the repo https://github.com/openedx/openedx-translations from the I18N directory.
+This script contains the necessary methods to accomplish two functions:
+ 1- Combine the English translations from all modules in the repository to the I18N directory. After the English
+    translation is combined, it will be pushed to the openedx-translations repository as described in OEP-58.
+ 2- Split all other Languages. After pulling the translations from the openedx-translations repository via atlas pull,
+    there will be a single strings file for each language, the "split_translation_files" method will run through each
+    language file in the I18N directory and split it into the modules.
 """
 
 import os
