@@ -143,21 +143,18 @@ public struct ProfileView: View {
     }
     
     // MARK: - Profile Info
-    
     @ViewBuilder
     private var profileInfo: some View {
-        if viewModel.userModel?.shortBiography != "" {
+        if let bio = viewModel.userModel?.shortBiography, bio != "" {
             VStack(alignment: .leading, spacing: 6) {
-                Text(ProfileLocalization.about) 
+                Text(ProfileLocalization.about)
                     .font(Theme.Fonts.titleSmall)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityIdentifier("profile_info_text")
-                if let bio = viewModel.userModel?.shortBiography, bio != "" {
-                    Text(bio)
-                        .font(Theme.Fonts.bodyMedium)
-                        .foregroundColor(Theme.Colors.textPrimary)
-                        .accessibilityIdentifier("bio_text")
-                }
+                Text(bio)
+                    .font(Theme.Fonts.bodyMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .accessibilityIdentifier("bio_text")
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
@@ -202,10 +199,8 @@ struct ProfileView_Previews: PreviewProvider {
 #endif
 
 struct UserAvatar: View {
-    
     private var url: URL?
     @Binding private var image: UIImage?
-    
     init(url: String, image: Binding<UIImage?>) {
         if let rightUrl = URL(string: url) {
             self.url = rightUrl
@@ -214,7 +209,6 @@ struct UserAvatar: View {
         }
         self._image = image
     }
-    
     var body: some View {
         ZStack {
             if let image {

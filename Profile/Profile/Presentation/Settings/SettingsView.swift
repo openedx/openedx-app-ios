@@ -47,8 +47,10 @@ public struct SettingsView: View {
                                     viewModel.router.back()
                                 }
                             )
-                            .backViewStyle()        
+                            .backViewStyle()
+                            .padding(.leading, isHorizontal ? 48 : 0)
                             .accessibilityIdentifier("back_button")
+                            
                         }.frame(minWidth: 0,
                                 maxWidth: .infinity,
                                 alignment: .topLeading)

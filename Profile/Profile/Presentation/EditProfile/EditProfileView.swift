@@ -251,7 +251,7 @@ struct EditProfileView_Previews: PreviewProvider {
             yearOfBirth: 0,
             country: "Ukraine",
             shortBiography: "",
-            isFullProfile: true, 
+            isFullProfile: true,
             email: "peter@example.org"
         )
         

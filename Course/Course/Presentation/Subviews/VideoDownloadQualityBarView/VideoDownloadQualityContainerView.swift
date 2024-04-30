@@ -35,7 +35,7 @@ struct VideoDownloadQualityContainerView: View {
             VideoDownloadQualityView(
                 downloadQuality: downloadQuality,
                 didSelect: didSelect,
-                analytics: analytics, 
+                analytics: analytics,
                 router: router
             )
             .navigationBarTitleDisplayMode(.inline)
