@@ -120,3 +120,5 @@ default_config/
 # Additions for specific folders
 .venv/
 I18N/
+*.lproj/
+!en.lproj/
