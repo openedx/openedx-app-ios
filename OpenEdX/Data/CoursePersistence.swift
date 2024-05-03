@@ -139,7 +139,11 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 )
             ),
             certificate: DataLayer.Certificate(url: structure.certificate),
-            isSelfPaced: structure.isSelfPaced
+            isSelfPaced: structure.isSelfPaced,
+            courseStart: structure.courseStart,
+            dynamicUpgradeDeadline: structure.dynamicUpgradeDeadline,
+            courseSKU: structure.courseSKU,
+            courseMode: DataLayer.Mode(rawValue: structure.mode ?? "")
         )
     }
     
@@ -153,6 +157,10 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.id = structure.id
             newStructure.rootItem = structure.rootItem
             newStructure.isSelfPaced = structure.isSelfPaced
+            newStructure.courseStart = structure.courseStart
+            newStructure.dynamicUpgradeDeadline = structure.dynamicUpgradeDeadline
+            newStructure.courseSKU = structure.courseSKU
+            newStructure.mode = structure.courseMode?.rawValue
             
             for block in Array(structure.dict.values) {
                 let courseDetail = CDCourseBlock(context: self.context)

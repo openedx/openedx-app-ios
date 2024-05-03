@@ -20,6 +20,12 @@ public extension DataLayer {
         public let media: DataLayer.CourseMedia
         public let certificate: Certificate?
         public let isSelfPaced: Bool
+        public let courseModes: [CourseMode]?
+        public let enrollment: EnrollmentDetail?
+        public let courseStart: String?
+        public let dynamicUpgradeDeadline: String?
+        public var courseSKU: String?
+        public var courseMode: Mode?
         
         enum CodingKeys: String, CodingKey {
             case blocks
@@ -28,6 +34,10 @@ public extension DataLayer {
             case media
             case certificate
             case isSelfPaced = "is_self_paced"
+            case enrollmentDetails = "enrollment_details"
+            case courseStart = "start"
+            case dynamicUpgradeDeadline = "dynamic_upgrade_deadline"
+            case courseModes = "course_modes"
         }
         
         public init(
@@ -36,7 +46,13 @@ public extension DataLayer {
             id: String,
             media: DataLayer.CourseMedia,
             certificate: Certificate?,
-            isSelfPaced: Bool
+            isSelfPaced: Bool,
+            courseModes: [CourseMode]? = nil,
+            enrollmentDetails: EnrollmentDetail? = nil,
+            courseStart: String? = nil,
+            dynamicUpgradeDeadline: String? = nil,
+            courseSKU: String? = nil,
+            courseMode: Mode? = .unknown
         ) {
             self.rootItem = rootItem
             self.dict = dict
@@ -44,6 +60,16 @@ public extension DataLayer {
             self.media = media
             self.certificate = certificate
             self.isSelfPaced = isSelfPaced
+            self.courseModes = courseModes
+            self.enrollment = enrollmentDetails
+            self.courseStart = courseStart
+            self.dynamicUpgradeDeadline = dynamicUpgradeDeadline
+            
+            if enrollmentDetails?.mode != nil {
+                self.courseMode = enrollmentDetails?.mode
+            }
+            
+            populateCourseSKU()
         }
         
         public init(from decoder: Decoder) throws {
@@ -55,6 +81,18 @@ public extension DataLayer {
             media = try values.decode(DataLayer.CourseMedia.self, forKey: .media)
             certificate = try values.decode(Certificate.self, forKey: .certificate)
             isSelfPaced = try values.decode(Bool.self, forKey: .isSelfPaced)
+            courseModes = try values.decode([CourseMode].self, forKey: .courseModes)
+            enrollment = try values.decode(EnrollmentDetail.self, forKey: .enrollmentDetails)
+            courseStart = try values.decode(String.self, forKey: .courseStart)
+            dynamicUpgradeDeadline = try? values.decode(String.self, forKey: .dynamicUpgradeDeadline)
+            
+            populateCourseSKU()
+        }
+        
+        mutating func populateCourseSKU() {
+            for mode in courseModes ?? [] where mode.slug == .verified {
+                courseSKU = mode.iosSku ?? ""
+            }
         }
     }
 }
@@ -122,6 +160,24 @@ public extension DataLayer {
 
         public init(en: String?) {
             self.en = en
+        }
+    }
+    
+    struct EnrollmentDetail: Codable {
+        let created: String
+        let isActive: Bool
+        let mode: Mode
+        
+        public enum CodingKeys: String, CodingKey {
+            case created
+            case isActive = "is_active"
+            case mode
+        }
+        
+        init(created: String, isActive: Bool, mode: Mode) {
+            self.created = created
+            self.isActive = isActive
+            self.mode = mode
         }
     }
     
@@ -198,5 +254,24 @@ public extension DataLayer {
             case streamPriority = "stream_priority"
         }
 
+    }
+}
+
+extension DataLayer.CourseStructure {
+    var isUpgradeable: Bool {
+        guard let start = courseStart,
+//                let upgradeDeadline = dynamicUpgradeDeadline,
+              enrollment?.mode == .audit
+        else { return false }
+        
+        let startDate = Date(iso8601: start)
+//        let dynamicUpgradeDeadline = Date(iso8601: upgradeDeadline)
+        
+        return startDate.isInPast()
+        && courseSKU?.isEmpty == false
+       // && !dynamicUpgradeDeadline.isInPast()
+        
+        // TODO: uncomment !dynamicUpgradeDeadline.isInPast() and related code
+        // when it will be available in API response
     }
 }
