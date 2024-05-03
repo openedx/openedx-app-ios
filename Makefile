@@ -10,9 +10,9 @@ create_virtual_env:
 
 pull_translations: clean_translations_temp_directory create_virtual_env
 	. .venv/bin/activate && atlas pull $(ATLAS_OPTIONS) translations/openedx-app-ios/I18N:I18N
-	. .venv/bin/activate && python i18n_scripts/split_translation_files.py
+	. .venv/bin/activate && python i18n_scripts/translation_script.py --split
 	make clean_translations_temp_directory
 
 
 combine_translations: clean_translations_temp_directory create_virtual_env
-	. .venv/bin/activate && python i18n_scripts/combine_translations_files.py
+	. .venv/bin/activate && python i18n_scripts/translation_script.py --combine
