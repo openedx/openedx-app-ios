@@ -73,9 +73,10 @@ public struct ManageAccountView: View {
                                     deleteAccount
                                 }
                             }
-                            .padding(.top, 24)
                         })
                     .frameLimit(width: proxy.size.width)
+                    .padding(.top, 24)
+                    .padding(.horizontal, isHorizontal ? 24 : 0)
                     .roundedBackground(Theme.Colors.background)
                 }
                 .navigationBarHidden(true)
@@ -104,15 +105,15 @@ public struct ManageAccountView: View {
                     }
                 }
             }
-            .background(
-                Theme.Colors.background
-                    .ignoresSafeArea()
-            )
-            .ignoresSafeArea(.all, edges: .horizontal)
-            .onFirstAppear {
-                Task {
-                    await viewModel.getMyProfile()
-                }
+        }
+        .background(
+            Theme.Colors.background
+                .ignoresSafeArea()
+        )
+        .ignoresSafeArea(.all, edges: .horizontal)
+        .onFirstAppear {
+            Task {
+                await viewModel.getMyProfile()
             }
         }
     }

@@ -78,6 +78,7 @@ public struct SettingsView: View {
                         )
                         .frameLimit(width: proxy.size.width)
                         .padding(.top, 24)
+                        .padding(.horizontal, isHorizontal ? 24 : 0)
                     }
                     .roundedBackground(Theme.Colors.background)
                 }
@@ -99,12 +100,12 @@ public struct SettingsView: View {
                     }
                 }
             }
-            .background(
-                Theme.Colors.background
-                    .ignoresSafeArea()
-            )
-            .ignoresSafeArea(.all, edges: .horizontal)
         }
+        .background(
+            Theme.Colors.background
+                .ignoresSafeArea()
+        )
+        .ignoresSafeArea(.all, edges: .horizontal)
     }
     
     // MARK: - Manage Account

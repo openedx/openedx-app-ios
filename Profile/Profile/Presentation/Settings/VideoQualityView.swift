@@ -111,15 +111,15 @@ public struct VideoQualityView: View {
                     }
                 }
             }
-            .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(true)
-            .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
-            .ignoresSafeArea(.all, edges: .horizontal)
-            .background(
-                Theme.Colors.background
-                    .ignoresSafeArea()
-            )
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
+        .ignoresSafeArea(.all, edges: .horizontal)
+        .background(
+            Theme.Colors.background
+                .ignoresSafeArea()
+        )
     }
 }
 

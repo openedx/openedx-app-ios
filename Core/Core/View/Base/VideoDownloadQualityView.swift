@@ -121,21 +121,22 @@ public struct VideoDownloadQualityView: View {
                                 Divider()
                             }
                         }
+                        .frameLimit(width: proxy.size.width)
                         .padding(.horizontal, 24)
                         .padding(.top, 24)
-                        .frameLimit(width: proxy.size.width)
                     }
                     .roundedBackground(Theme.Colors.background)
                 }
             }
-            .navigationBarHidden(true)
-            .navigationBarBackButtonHidden(true)
-            .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
-            .background(
-                Theme.Colors.background
-                    .ignoresSafeArea()
-            )
         }
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
+        .ignoresSafeArea(.all, edges: .horizontal)
+        .background(
+            Theme.Colors.background
+                .ignoresSafeArea()
+        )
     }
 }
 
