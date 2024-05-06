@@ -138,6 +138,7 @@ public class CourseRepository: CourseRepositoryProtocol {
             childs: childs,
             media: course.media,
             certificate: course.certificate?.domain,
+            org: course.org ?? "",
             isSelfPaced: course.isSelfPaced
         )
     }
@@ -348,6 +349,7 @@ And there are various ways of describing it-- call it oral poetry or
             childs: childs,
             media: course.media,
             certificate: course.certificate?.domain,
+            org: course.org ?? "",
             isSelfPaced: course.isSelfPaced
         )
     }

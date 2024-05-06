@@ -15,10 +15,21 @@ public struct DiscussionTopicsView: View {
     @StateObject private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
+    @Binding private var coordinate: CGFloat
+    @Binding private var collapsed: Bool
+    @State private var runOnce: Bool = false
     
-    public init(courseID: String, viewModel: DiscussionTopicsViewModel, router: DiscussionRouter) {
+    public init(
+        courseID: String,
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
+        viewModel: DiscussionTopicsViewModel,
+        router: DiscussionRouter
+    ) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
+        self._coordinate = coordinate
+        self._collapsed = collapsed
         self.router = router
     }
     
@@ -26,49 +37,54 @@ public struct DiscussionTopicsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
                 VStack(alignment: .center) {
-                    // MARK: - Search fake field
-                    if viewModel.isBlackedOut {
-                        bannerDiscussionsDisabled
-                    }
-
-                    HStack(spacing: 11) {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textInputTextColor)
-                            .padding(.leading, 16)
-                            .padding(.top, 1)
-                        Text(DiscussionLocalization.Topics.search)
-                            .foregroundColor(Theme.Colors.textInputTextColor)
-                            .font(Theme.Fonts.bodyMedium)
-                        Spacer()
-                    }
-                    .frame(minHeight: 48)
-                    .background(
-                        Theme.Shapes.textInputShape
-                            .fill(Theme.Colors.textInputBackground)
-                    )
-                    .overlay(
-                        Theme.Shapes.textInputShape
-                            .stroke(lineWidth: 1)
-                            .fill(Theme.Colors.textInputUnfocusedStroke)
-                    )
-                    .onTapGesture {
-                        viewModel.router.showDiscussionsSearch(
-                            courseID: courseID,
-                            isBlackedOut: viewModel.isBlackedOut
+                    RefreshableScrollViewCompat(action: {
+                        await viewModel.getTopics(courseID: self.courseID, withProgress: false)
+                    }) {
+                        DynamicOffsetView(
+                            coordinate: $coordinate,
+                            collapsed: $collapsed
                         )
-                    }
-                    .frameLimit(width: proxy.size.width)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 10)
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(DiscussionLocalization.Topics.search)
-                    
-                    // MARK: - Page Body
-                    VStack {
-                        ZStack(alignment: .top) {
-                            RefreshableScrollViewCompat(action: {
-                                await viewModel.getTopics(courseID: self.courseID, withProgress: false)
-                            }) {
+                        RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+                        // MARK: - Search fake field
+                        if viewModel.isBlackedOut {
+                            bannerDiscussionsDisabled
+                        }
+                        
+                        HStack(spacing: 11) {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(Theme.Colors.textInputTextColor)
+                                .padding(.leading, 16)
+                                .padding(.top, 1)
+                            Text(DiscussionLocalization.Topics.search)
+                                .foregroundColor(Theme.Colors.textInputTextColor)
+                                .font(Theme.Fonts.bodyMedium)
+                            Spacer()
+                        }
+                        .frame(minHeight: 48)
+                        .background(
+                            Theme.Shapes.textInputShape
+                                .fill(Theme.Colors.textInputBackground)
+                        )
+                        .overlay(
+                            Theme.Shapes.textInputShape
+                                .stroke(lineWidth: 1)
+                                .fill(Theme.Colors.textInputUnfocusedStroke)
+                        )
+                        .onTapGesture {
+                            viewModel.router.showDiscussionsSearch(
+                                courseID: courseID,
+                                isBlackedOut: viewModel.isBlackedOut
+                            )
+                        }
+                        .frameLimit(width: proxy.size.width)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 10)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(DiscussionLocalization.Topics.search)
+                        
+                        // MARK: - Page Body
+                        VStack {
+                            ZStack(alignment: .top) {
                                 VStack {
                                     if let topics = viewModel.discussionTopics {
                                         HStack {
@@ -142,7 +158,7 @@ public struct DiscussionTopicsView: View {
                                         }
                                         
                                     }
-                                    Spacer(minLength: 84)
+                                    Spacer(minLength: 200)
                                 }
                                 .frameLimit(width: proxy.size.width)
                             }
@@ -156,6 +172,7 @@ public struct DiscussionTopicsView: View {
                 if viewModel.isShowProgress {
                     ProgressBar(size: 40, lineWidth: 8)
                         .padding(.horizontal)
+                        .padding(.top, 100)
                 }
             }
             .onFirstAppear {
@@ -172,7 +189,7 @@ public struct DiscussionTopicsView: View {
             )
         }
     }
-
+    
     private var bannerDiscussionsDisabled: some View {
         HStack {
             Spacer()
@@ -197,19 +214,28 @@ struct DiscussionView_Previews: PreviewProvider {
             interactor: DiscussionInteractor.mock,
             router: DiscussionRouterMock(),
             analytics: DiscussionAnalyticsMock(),
-            config: ConfigMock())
+            config: ConfigMock()
+        )
         let router = DiscussionRouterMock()
         
-        DiscussionTopicsView(courseID: "",
-                             viewModel: vm,
-                             router: router)
+        DiscussionTopicsView(
+            courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
+            viewModel: vm,
+            router: router
+        )
         .preferredColorScheme(.light)
         .previewDisplayName("DiscussionTopicsView Light")
         .loadFonts()
         
-        DiscussionTopicsView(courseID: "",
-                             viewModel: vm,
-                             router: router)
+        DiscussionTopicsView(
+            courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
+            viewModel: vm,
+            router: router
+        )
         .preferredColorScheme(.dark)
         .previewDisplayName("DiscussionTopicsView Dark")
         .loadFonts()

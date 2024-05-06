@@ -2,7 +2,7 @@
 //  CourseScreensView.swift
 //  Course
 //
-//  Created by  Stepanok Ivan on 10.10.2022.
+//  Created by  Stepanok Ivan on 10.10.2022.
 //
 
 import SwiftUI
@@ -18,6 +18,24 @@ public struct CourseContainerView: View {
     @State private var isAnimatingForTap: Bool = false
     public var courseID: String
     private var title: String
+    @State private var ignoreOffset: Bool = false
+    @State private var coordinate: CGFloat = .zero
+    @State private var lastCoordinate: CGFloat = .zero
+    @State private var collapsed: Bool = false
+    @Environment(\.isHorizontal) private var isHorizontal
+    @Namespace private var animationNamespace
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    
+    private let coordinateBoundaryLower: CGFloat = -115
+    private let coordinateBoundaryHigher: CGFloat = 40
+    
+    private struct GeometryName {
+        static let backButton = "backButton"
+        static let topTabBar = "topTabBar"
+        static let blurSecondaryBg = "blurSecondaryBg"
+        static let blurPrimaryBg = "blurPrimaryBg"
+        static let blurBg = "blurBg"
+    }
     
     public init(
         viewModel: CourseContainerViewModel,
@@ -43,13 +61,14 @@ public struct CourseContainerView: View {
         ZStack(alignment: .top) {
             content
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .navigationTitle(title)
         .onChange(of: viewModel.selection, perform: didSelect)
+        .onChange(of: coordinate, perform: collapseHeader)
         .background(Theme.Colors.background)
     }
-
+    
     @ViewBuilder
     private var content: some View {
         if let courseStart = viewModel.courseStart {
@@ -60,35 +79,68 @@ public struct CourseContainerView: View {
                     courseID: courseID,
                     isVideo: false,
                     selection: $viewModel.selection,
+                    coordinate: $coordinate,
+                    collapsed: $collapsed,
                     dateTabIndex: CourseTab.dates.rawValue
                 )
             } else {
-                GeometryReader { proxy in
-                    VStack(spacing: 0) {
-                        if viewModel.config.uiComponents.courseTopTabBarEnabled {
-                            topTabBar(containerWidth: proxy.size.width)
+                ZStack(alignment: .top) {
+                    tabs
+                    GeometryReader { proxy in
+                        VStack(spacing: 0) {
+                            CourseHeaderView(
+                                viewModel: viewModel,
+                                title: title,
+                                collapsed: $collapsed,
+                                containerWidth: proxy.size.width,
+                                animationNamespace: animationNamespace,
+                                isAnimatingForTap: $isAnimatingForTap
+                            )
                         }
-                        tabs
+                        .offset(
+                            y: ignoreOffset
+                            ? (collapsed ? coordinateBoundaryLower : .zero)
+                            : ((coordinateBoundaryLower...coordinateBoundaryHigher).contains(coordinate)
+                               ? coordinate
+                               : (collapsed ? coordinateBoundaryLower : .zero))
+                        )
+                        backButton(containerWidth: proxy.size.width)
                     }
+                }.ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
+                    .onAppear {
+                        self.collapsed = isHorizontal
+                    }
+            }
+        }
+    }
+    
+    private func backButton(containerWidth: CGFloat) -> some View {
+        ZStack(alignment: .topLeading) {
+            if !collapsed {
+                HStack {
+                    ZStack(alignment: .bottom) {
+                        VisualEffectView(effect: UIBlurEffect(style: .regular))
+                            .clipShape(Circle())
+                        BackNavigationButton(
+                            color: Theme.Colors.textPrimary,
+                            action: {
+                                viewModel.router.back()
+                            }
+                        )
+                        .backViewStyle()
+                        .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
+                        .offset(y: 7)
+                    }
+                    .frame(width: 30, height: 30)
+                    .padding(.vertical, 8)
+                    .padding(.leading, 12)
+                    .padding(.top, idiom == .pad ? 0 : 55)
+                    Spacer()
                 }
             }
         }
     }
-
-    private func topTabBar(containerWidth: CGFloat) -> some View {
-        ScrollSlidingTabBar(
-            selection: $viewModel.selection,
-            tabs: CourseTab.allCases.map { $0.title },
-            containerWidth: containerWidth
-        ) { newValue in
-            isAnimatingForTap = true
-            viewModel.selection = newValue
-            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(300))) {
-                isAnimatingForTap = false
-            }
-        }
-    }
-
+    
     private var tabs: some View {
         TabView(selection: $viewModel.selection) {
             ForEach(CourseTab.allCases) { tab in
@@ -100,6 +152,8 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         isVideo: false,
                         selection: $viewModel.selection,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
                         dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
@@ -115,6 +169,8 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         isVideo: true,
                         selection: $viewModel.selection,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
                         dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
@@ -126,6 +182,8 @@ public struct CourseContainerView: View {
                 case .dates:
                     CourseDatesView(
                         courseID: courseID,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
                         viewModel: Container.shared.resolve(CourseDatesViewModel.self,
                                                             arguments: courseID, title)!
                     )
@@ -138,6 +196,8 @@ public struct CourseContainerView: View {
                 case .discussion:
                     DiscussionTopicsView(
                         courseID: courseID,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
                         viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                             argument: title)!,
                         router: Container.shared.resolve(DiscussionRouter.self)!
@@ -151,6 +211,8 @@ public struct CourseContainerView: View {
                 case .handounds:
                     HandoutsView(
                         courseID: courseID,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!
                     )
                     .tabItem {
@@ -162,19 +224,20 @@ public struct CourseContainerView: View {
                 }
             }
         }
-        .if(viewModel.config.uiComponents.courseTopTabBarEnabled) { view in
-            view
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .animation(.default, value: viewModel.selection)
-        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { tabView in
+            tabView.isScrollEnabled = false
+        })
         .onFirstAppear {
             Task {
                 await viewModel.tryToRefreshCookies()
             }
         }
     }
-
+    
     private func didSelect(_ selection: Int) {
+        lastCoordinate = .zero
+        ignoreOffset = true
         CourseTab(rawValue: selection).flatMap {
             viewModel.trackSelectedTab(
                 selection: $0,
@@ -182,6 +245,51 @@ public struct CourseContainerView: View {
                 courseName: title
             )
         }
+    }
+    
+    private func collapseHeader(_ coordinate: CGFloat) {
+        guard !isHorizontal else { return collapsed = true }
+        let lowerBound: CGFloat = -90
+        let upperBound: CGFloat = 160
+        
+        switch coordinate {
+        case lowerBound...upperBound:
+            if shouldAnimateHeader(coordinate: coordinate) {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.6)) {
+                    ignoreOffset = false
+                    collapsed = false
+                }
+            } else {
+                lastCoordinate = coordinate
+            }
+        default:
+            if shouldAnimateHeader(coordinate: coordinate) {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.6)) {
+                    ignoreOffset = false
+                    collapsed = true
+                }
+            } else {
+                lastCoordinate = coordinate
+            }
+        }
+    }
+    
+    private func shouldAnimateHeader(coordinate: CGFloat) -> Bool {
+        let ignoringOffset: CGFloat = 120
+        
+        guard coordinate <= ignoringOffset, lastCoordinate != 0 else {
+            return false
+        }
+        
+        if collapsed && lastCoordinate > coordinate {
+            return false
+        }
+        
+        if !collapsed && lastCoordinate < coordinate {
+            return false
+        }
+        
+        return true
     }
 }
 
