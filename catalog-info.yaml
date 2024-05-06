@@ -10,6 +10,8 @@ metadata:
     - url: "https://github.com/openedx/openedx-app-ios/tree/main/Documentation"
       title: "Documentation"
       icon: "PhoneIphone"
+  annotations:
+    openedx.org/release: "main"
 spec:
   owner: group:openedx-mobile-maintainers
   type: 'mobile'
