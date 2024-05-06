@@ -93,7 +93,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private let authInteractor: AuthInteractorProtocol
     let analytics: CourseAnalytics
     let coreAnalytics: CoreAnalytics
-    var courseDatesViewModel: CourseDatesViewModel
     private(set) var storage: CourseStorage
 
     public init(
@@ -110,8 +109,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        coreAnalytics: CoreAnalytics,
-        courseDatesViewModel: CourseDatesViewModel
+        coreAnalytics: CoreAnalytics
     ) {
         self.interactor = interactor
         self.authInteractor = authInteractor
@@ -128,7 +126,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.userSettings = storage.userSettings
         self.isInternetAvaliable = connectivity.isInternetAvaliable
         self.coreAnalytics = coreAnalytics
-        self.courseDatesViewModel = courseDatesViewModel
 
         super.init(manager: manager)
         addObservers()
@@ -143,9 +140,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         do {
             if isInternetAvaliable {
                 courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
-                Task {
-                    await courseDatesViewModel.getCourseDates(courseID: courseID)
-                }
+                NotificationCenter.default.post(name: .getCourseDates, object: courseID)
                 isShowProgress = false
                 isShowRefresh = false
                 if let courseStructure {

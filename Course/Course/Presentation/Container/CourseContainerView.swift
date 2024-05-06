@@ -41,6 +41,7 @@ public struct CourseContainerView: View {
     
     public init(
         viewModel: CourseContainerViewModel,
+        courseDatesViewModel: CourseDatesViewModel,
         courseID: String,
         title: String
     ) {
@@ -57,7 +58,7 @@ public struct CourseContainerView: View {
         }
         self.courseID = courseID
         self.title = title
-        self.courseDatesViewModel = viewModel.courseDatesViewModel
+        self.courseDatesViewModel = courseDatesViewModel
     }
     
     public var body: some View {
@@ -211,8 +212,7 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
-                                                            arguments: courseID, title)!
+                        viewModel: courseDatesViewModel
                     )
                     .tabItem {
                         tab.image
@@ -338,17 +338,17 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseEnd: nil,
                 enrollmentStart: nil,
                 enrollmentEnd: nil,
-                coreAnalytics: CoreAnalyticsMock(),
-                courseDatesViewModel: CourseDatesViewModel(
-                    interactor: CourseInteractor.mock,
-                    router: CourseRouterMock(),
-                    cssInjector: CSSInjectorMock(),
-                    connectivity: Connectivity(),
-                    config: ConfigMock(),
-                    courseID: "1",
-                    courseName: "a",
-                    analytics: CourseAnalyticsMock()
-                )
+                coreAnalytics: CoreAnalyticsMock()
+            ),
+            courseDatesViewModel: CourseDatesViewModel(
+                interactor: CourseInteractor.mock,
+                router: CourseRouterMock(),
+                cssInjector: CSSInjectorMock(),
+                connectivity: Connectivity(),
+                config: ConfigMock(),
+                courseID: "1",
+                courseName: "a",
+                analytics: CourseAnalyticsMock()
             ),
             courseID: "", title: "Title of Course")
     }

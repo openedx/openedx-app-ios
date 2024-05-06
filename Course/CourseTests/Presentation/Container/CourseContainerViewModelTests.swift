@@ -40,17 +40,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         let block = CourseBlock(
@@ -158,17 +148,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         let courseStructure = CourseStructure(
@@ -227,17 +207,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -280,17 +250,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -330,17 +290,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -380,17 +330,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         
         viewModel.trackSelectedTab(selection: .course, courseId: "1", courseName: "name")
@@ -522,17 +462,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -653,17 +583,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -784,17 +704,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -916,17 +826,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -1056,17 +956,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -1196,17 +1086,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
@@ -1356,17 +1236,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock()
-            )
+            coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
