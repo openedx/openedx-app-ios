@@ -537,7 +537,12 @@ public class Router: AuthorizationRouter,
         downloads: [DownloadDataTask],
         manager: DownloadManagerProtocol
     ) {
-        let downloadsView = DownloadsView(isSheet: false, downloads: downloads, manager: manager)
+        let downloadsView = DownloadsView(
+            isSheet: false,
+            router: Container.shared.resolve(CourseRouter.self)!,
+            downloads: downloads,
+            manager: manager
+        )
         let controller = UIHostingController(rootView: downloadsView)
         navigationController.pushViewController(controller, animated: true)
     }
