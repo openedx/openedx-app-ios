@@ -114,8 +114,7 @@ public struct CourseDatesView: View {
         } else {
             return DatesSuccessView(
                 title: title,
-                message: message,
-                selectedTab: .dates
+                message: message
             ) {
                 viewModel.resetEventState()
             }

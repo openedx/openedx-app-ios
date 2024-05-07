@@ -395,8 +395,16 @@ public class Router: AuthorizationRouter,
             enrollmentStart,
             enrollmentEnd
         )!
+        
+        let datesVm = Container.shared.resolve(
+            CourseDatesViewModel.self,
+            arguments: courseID,
+            title
+        )!
+        
         let screensView = CourseContainerView(
             viewModel: vm,
+            courseDatesViewModel: datesVm,
             courseID: courseID,
             title: title
         )
