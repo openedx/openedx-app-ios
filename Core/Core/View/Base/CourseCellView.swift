@@ -26,6 +26,7 @@ public struct CourseCellView: View {
     private var index: Double
     private var cellsCount: Int
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    private var isUpgradeable: Bool
     
     public init(model: CourseItem, type: CellType, index: Int, cellsCount: Int) {
         self.type = type
@@ -36,18 +37,25 @@ public struct CourseCellView: View {
         self.courseOrg =  model.org
         self.index = Double(index) + 1
         self.cellsCount = cellsCount
+        self.isUpgradeable = model.isUpgradeable
     }
     
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 KFImage(URL(string: courseImage))
                     .onFailureImage(CoreAssets.noCourseImage.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: idiom == .pad ? 171 : 105, height: 105)
-                    .cornerRadius(8)
-                    .clipShape(RoundedRectangle(cornerRadius: Theme.Shapes.cardImageRadius))
+                    .clipShape(
+                        RoundedCorners(
+                            tl: Theme.Shapes.cardImageRadius,
+                            tr: Theme.Shapes.cardImageRadius,
+                            bl: isUpgradeable ? 0 : Theme.Shapes.cardImageRadius,
+                            br: isUpgradeable ? 0 : Theme.Shapes.cardImageRadius
+                        )
+                    )
                     .padding(.leading, 3)
                     .accessibilityElement(children: .ignore)
                     .accessibilityIdentifier("course_image")
@@ -89,26 +97,49 @@ public struct CourseCellView: View {
                                 .accessibilityIdentifier("arrow_image")
                         }
                     }
-                }.padding(.horizontal, 10)
-                    .padding(.vertical, type == .discovery ? 10 : 0)
+                }
+                .padding(10)
                 Spacer()
             }
-           
-        }.frame(height: 105)
-            .background(Theme.Colors.background)
-            .opacity(showView ? 1 : 0)
-            .offset(y: showView ? 0 : 20)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(courseName + " " + (type == .dashboard ? (courseEnd == "" ? courseStart : courseEnd) : ""))
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    withAnimation(.easeInOut(duration: (index <= 5 ? 0.3 : 0.1))
-                        .delay((index <= 5 ? index : 0) * 0.05)) {
-                            showView = true
-                        }
-                }
+            if isUpgradeable {
+                StyledButton(
+                    CoreLocalization.Payments.Button.upgrade,
+                    action: {},
+                    color: Theme.Colors.accentColor,
+                    textColor: Theme.Colors.primaryButtonTextColor,
+                    leftImage: Image(systemName: "lock.fill"),
+                    rightImage: Image(systemName: "info.circle"),
+                    imagesStyle: .onSides,
+                    isTitleTracking: false,
+                    isLimitedOnPad: false
+                )
+                .clipShape(
+                    RoundedCorners(
+                        tl: 0,
+                        tr: 0,
+                        bl: Theme.Shapes.cardImageRadius,
+                        br: Theme.Shapes.cardImageRadius
+                    )
+                )
+                .padding(.leading, 3)
             }
-           
+        }
+        .padding(.vertical, type == .discovery ? 10 : 0)
+//        .frame(height: 105)
+        .background(Theme.Colors.background)
+        .opacity(showView ? 1 : 0)
+        .offset(y: showView ? 0 : 20)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(courseName + " " + (type == .dashboard ? (courseEnd == "" ? courseStart : courseEnd) : ""))
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                withAnimation(.easeInOut(duration: (index <= 5 ? 0.3 : 0.1))
+                    .delay((index <= 5 ? index : 0) * 0.05)) {
+                        showView = true
+                    }
+            }
+        }
+        
         VStack {
             if Int(index) != cellsCount {
                 Divider()

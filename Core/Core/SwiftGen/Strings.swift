@@ -213,6 +213,12 @@ public enum CoreLocalization {
     /// Reload
     public static let reload = CoreLocalization.tr("Localizable", "NO_INTERNET.RELOAD", fallback: "Reload")
   }
+  public enum Payments {
+    public enum Button {
+      /// Upgrade to access more features
+      public static let upgrade = CoreLocalization.tr("Localizable", "PAYMENTS.BUTTON.UPGRADE", fallback: "Upgrade to access more features")
+    }
+  }
   public enum Picker {
     /// Accept
     public static let accept = CoreLocalization.tr("Localizable", "PICKER.ACCEPT", fallback: "Accept")

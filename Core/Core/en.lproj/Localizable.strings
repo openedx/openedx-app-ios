@@ -142,3 +142,5 @@
 "COURSE_UPGRADE.RESTORE.ALERT_TITLE"="Purchases have been successfully restored";
 "COURSE_UPGRADE.RESTORE.ALERT_MESSAGE"="All purchases are up to date. If you’re not seeing your purchases restored, please try restarting your app to refresh the experience.";
 "COURSE_UPGRADE.RESTORE.INPROGRESS_TEXT"="Checking purchases...";
+
+"PAYMENTS.BUTTON.UPGRADE"="Upgrade to access more features";
