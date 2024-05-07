@@ -133,6 +133,7 @@ public extension DataLayer.UserProfile {
             country: country ?? "",
             spokenLanguage: languageProficiencies?[safe: 0]?.code ?? "",
             shortBiography: bio ?? "",
-            isFullProfile: accountPrivacy?.boolValue ?? true)
+            isFullProfile: accountPrivacy?.boolValue ?? true,
+            email: email ?? "")
     }
 }
