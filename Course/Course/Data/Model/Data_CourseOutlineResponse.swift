@@ -26,6 +26,7 @@ public extension DataLayer {
         public let dynamicUpgradeDeadline: String?
         public var courseSKU: String?
         public var courseMode: Mode?
+        public let coursewareAccessDetails: CoursewareAccessDetails?
         
         enum CodingKeys: String, CodingKey {
             case blocks
@@ -38,6 +39,7 @@ public extension DataLayer {
             case courseStart = "start"
             case dynamicUpgradeDeadline = "dynamic_upgrade_deadline"
             case courseModes = "course_modes"
+            case coursewareAccessDetails = "course_access_details"
         }
         
         public init(
@@ -52,7 +54,8 @@ public extension DataLayer {
             courseStart: String? = nil,
             dynamicUpgradeDeadline: String? = nil,
             courseSKU: String? = nil,
-            courseMode: Mode? = .unknown
+            courseMode: Mode? = .unknown,
+            coursewareAccessDetails: CoursewareAccessDetails? = nil
         ) {
             self.rootItem = rootItem
             self.dict = dict
@@ -64,6 +67,7 @@ public extension DataLayer {
             self.enrollment = enrollmentDetails
             self.courseStart = courseStart
             self.dynamicUpgradeDeadline = dynamicUpgradeDeadline
+            self.coursewareAccessDetails = coursewareAccessDetails
             
             if enrollmentDetails?.mode != nil {
                 self.courseMode = enrollmentDetails?.mode
@@ -85,6 +89,7 @@ public extension DataLayer {
             enrollment = try values.decode(EnrollmentDetail.self, forKey: .enrollmentDetails)
             courseStart = try values.decode(String.self, forKey: .courseStart)
             dynamicUpgradeDeadline = try? values.decode(String.self, forKey: .dynamicUpgradeDeadline)
+            coursewareAccessDetails = try values.decode(CoursewareAccessDetails.self, forKey: .coursewareAccessDetails)
             
             populateCourseSKU()
         }
@@ -93,6 +98,32 @@ public extension DataLayer {
             for mode in courseModes ?? [] where mode.slug == .verified {
                 courseSKU = mode.iosSku ?? ""
             }
+        }
+    }
+    
+    struct CoursewareAccessDetails: Codable {
+        let hasUNMETPrerequisites: Bool
+        let isTooEarly: Bool
+        let auditAccessExpires: String
+        let coursewareAccess: CoursewareAccess
+        
+        init(
+            hasUNMETPrerequisites: Bool,
+            isTooEarly: Bool,
+            auditAccessExpires: String,
+            coursewareAccess: CoursewareAccess
+        ) {
+            self.hasUNMETPrerequisites = hasUNMETPrerequisites
+            self.isTooEarly = isTooEarly
+            self.auditAccessExpires = auditAccessExpires
+            self.coursewareAccess = coursewareAccess
+        }
+        
+        public enum CodingKeys: String, CodingKey {
+            case hasUNMETPrerequisites = "has_unmet_prerequisites"
+            case isTooEarly = "is_too_early"
+            case auditAccessExpires = "audit_access_expires"
+            case coursewareAccess = "courseware_access"
         }
     }
 }

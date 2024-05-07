@@ -221,7 +221,7 @@ public extension DataLayer {
     // MARK: - CoursewareAccess
     struct CoursewareAccess: Codable {
         public let hasAccess: Bool
-        public let errorCode: String?
+        public let errorCode: CourseAccessError?
         public let developerMessage: String?
         public let userMessage: String?
         public let additionalContextUserMessage: String?
@@ -234,6 +234,19 @@ public extension DataLayer {
             case userMessage = "user_message"
             case additionalContextUserMessage = "additional_context_user_message"
             case userFragment = "user_fragment"
+        }
+    }
+    
+    enum CourseAccessError: String, Codable {
+        case notStarted = "course_not_started"
+        case auditExpired = "audit_expired"
+        case visibilityError = "not_visible_to_user"
+        case milestoneError = "unfulfilled_milestones"
+        case unknown
+        
+        public init(from decoder: Decoder) throws {
+            let rawValue = try decoder.singleValueContainer().decode(RawValue.self)
+            self = CourseAccessError(rawValue: rawValue) ?? .unknown
         }
     }
 }
