@@ -118,7 +118,7 @@ public struct ProfileView: View {
                 ProgressBar(size: 40, lineWidth: 8)
                     .padding(.top, 200)
                     .padding(.horizontal)
-                    .accessibilityIdentifier("progressbar")
+                    .accessibilityIdentifier("progress_bar")
             } else {
                 HStack(alignment: .center, spacing: 12) {
                     UserAvatar(url: viewModel.userModel?.avatarUrl ?? "", image: $viewModel.updatedAvatar)

@@ -117,7 +117,7 @@ public struct ResetPasswordView: View {
                                         HStack(alignment: .center) {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(20)
-                                                .accessibilityIdentifier("progressbar")
+                                                .accessibilityIdentifier("progress_bar")
                                         }.frame(maxWidth: .infinity)
                                     } else {
                                         StyledButton(AuthLocalization.Forgot.request) {

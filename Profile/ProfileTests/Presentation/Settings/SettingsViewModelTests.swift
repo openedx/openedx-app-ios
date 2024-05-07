@@ -40,7 +40,6 @@ final class SettingsViewModelTests: XCTestCase {
             config:  ConfigMock()
         )
         
-                
         await viewModel.logOut()
         
         Verify(router, .showStartupScreen())

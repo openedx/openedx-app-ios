@@ -63,7 +63,7 @@ public struct SettingsView: View {
                                 ProgressBar(size: 40, lineWidth: 8)
                                     .padding(.top, 200)
                                     .padding(.horizontal)
-                                    .accessibilityIdentifier("progressbar")
+                                    .accessibilityIdentifier("progress_bar")
                             } else {
                                 manageAccount
                                 settings

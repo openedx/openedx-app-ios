@@ -47,7 +47,7 @@ public struct CourseDetailsView: View {
                             ProgressBar(size: 40, lineWidth: 8)
                                 .padding(.top, 200)
                                 .padding(.horizontal)
-                                .accessibilityIdentifier("progressbar")
+                                .accessibilityIdentifier("progress_bar")
                         }.frame(width: proxy.size.width)
                     } else {
                         RefreshableScrollViewCompat(action: {
@@ -132,7 +132,7 @@ public struct CourseDetailsView: View {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(.top, 20)
                                                 .frame(maxWidth: .infinity)
-                                                .accessibilityIdentifier("progressbar")
+                                                .accessibilityIdentifier("progress_bar")
                                         }
                                     }
                                 }

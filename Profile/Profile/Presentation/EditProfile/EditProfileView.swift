@@ -195,7 +195,7 @@ public struct EditProfileView: View {
                     ProgressBar(size: 40, lineWidth: 8)
                         .padding(.top, 150)
                         .padding(.horizontal)
-                        .accessibilityIdentifier("progressbar")
+                        .accessibilityIdentifier("progress_bar")
                 }
             }
             .navigationBarHidden(false)
