@@ -189,7 +189,6 @@ class ScreenAssembly: Assembly {
         container.register(ProfileViewModel.self) { r in
             ProfileViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
-                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -209,8 +208,21 @@ class ScreenAssembly: Assembly {
         container.register(SettingsViewModel.self) { r in
             SettingsViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
-                analytics: r.resolve(CoreAnalytics.self)!
+                analytics: r.resolve(ProfileAnalytics.self)!,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }
+        
+        container.register(ManageAccountViewModel.self) { r in
+            ManageAccountViewModel(
+                router: r.resolve(ProfileRouter.self)!,
+                analytics: r.resolve(ProfileAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!
             )
         }
         

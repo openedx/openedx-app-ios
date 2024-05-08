@@ -3045,6 +3045,18 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 		perform?()
     }
 
+    open func showVideoSettings() {
+        addInvocation(.m_showVideoSettings)
+		let perform = methodPerformValue(.m_showVideoSettings) as? () -> Void
+		perform?()
+    }
+
+    open func showManageAccount() {
+        addInvocation(.m_showManageAccount)
+		let perform = methodPerformValue(.m_showManageAccount) as? () -> Void
+		perform?()
+    }
+
     open func showVideoQualityView(viewModel: SettingsViewModel) {
         addInvocation(.m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>.value(`viewModel`)))
 		let perform = methodPerformValue(.m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>.value(`viewModel`))) as? (SettingsViewModel) -> Void
@@ -3163,6 +3175,8 @@ open class ProfileRouterMock: ProfileRouter, Mock {
     fileprivate enum MethodType {
         case m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(Parameter<Core.UserProfile>, Parameter<UIImage?>, Parameter<((UserProfile?, UIImage?)) -> Void>)
         case m_showSettings
+        case m_showVideoSettings
+        case m_showManageAccount
         case m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>)
         case m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(Parameter<DownloadQuality>, Parameter<((DownloadQuality) -> Void)?>, Parameter<CoreAnalytics>)
         case m_showDeleteProfileView
@@ -3193,6 +3207,10 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_showSettings, .m_showSettings): return .match
+
+            case (.m_showVideoSettings, .m_showVideoSettings): return .match
+
+            case (.m_showManageAccount, .m_showManageAccount): return .match
 
             case (.m_showVideoQualityView__viewModel_viewModel(let lhsViewmodel), .m_showVideoQualityView__viewModel_viewModel(let rhsViewmodel)):
 				var results: [Matcher.ParameterComparisonResult] = []
@@ -3304,6 +3322,8 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             switch self {
             case let .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case .m_showSettings: return 0
+            case .m_showVideoSettings: return 0
+            case .m_showManageAccount: return 0
             case let .m_showVideoQualityView__viewModel_viewModel(p0): return p0.intValue
             case let .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case .m_showDeleteProfileView: return 0
@@ -3329,6 +3349,8 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             switch self {
             case .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit: return ".showEditProfile(userModel:avatar:profileDidEdit:)"
             case .m_showSettings: return ".showSettings()"
+            case .m_showVideoSettings: return ".showVideoSettings()"
+            case .m_showManageAccount: return ".showManageAccount()"
             case .m_showVideoQualityView__viewModel_viewModel: return ".showVideoQualityView(viewModel:)"
             case .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics: return ".showVideoDownloadQualityView(downloadQuality:didSelect:analytics:)"
             case .m_showDeleteProfileView: return ".showDeleteProfileView()"
@@ -3368,6 +3390,8 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 
         public static func showEditProfile(userModel: Parameter<Core.UserProfile>, avatar: Parameter<UIImage?>, profileDidEdit: Parameter<((UserProfile?, UIImage?)) -> Void>) -> Verify { return Verify(method: .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(`userModel`, `avatar`, `profileDidEdit`))}
         public static func showSettings() -> Verify { return Verify(method: .m_showSettings)}
+        public static func showVideoSettings() -> Verify { return Verify(method: .m_showVideoSettings)}
+        public static func showManageAccount() -> Verify { return Verify(method: .m_showManageAccount)}
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>) -> Verify { return Verify(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`))}
         public static func showVideoDownloadQualityView(downloadQuality: Parameter<DownloadQuality>, didSelect: Parameter<((DownloadQuality) -> Void)?>, analytics: Parameter<CoreAnalytics>) -> Verify { return Verify(method: .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(`downloadQuality`, `didSelect`, `analytics`))}
         public static func showDeleteProfileView() -> Verify { return Verify(method: .m_showDeleteProfileView)}
@@ -3398,6 +3422,12 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         }
         public static func showSettings(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showSettings, performs: perform)
+        }
+        public static func showVideoSettings(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showVideoSettings, performs: perform)
+        }
+        public static func showManageAccount(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showManageAccount, performs: perform)
         }
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>, perform: @escaping (SettingsViewModel) -> Void) -> Perform {
             return Perform(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`), performs: perform)

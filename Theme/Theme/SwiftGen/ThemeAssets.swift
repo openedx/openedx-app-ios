@@ -24,7 +24,6 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum ThemeAssets {
-  public static let authBackground = ImageAsset(name: "authBackground")
   public static let accentButtonColor = ColorAsset(name: "AccentButtonColor")
   public static let accentColor = ColorAsset(name: "AccentColor")
   public static let accentXColor = ColorAsset(name: "AccentXColor")
@@ -43,6 +42,8 @@ public enum ThemeAssets {
   public static let todayTimelineColor = ColorAsset(name: "TodayTimelineColor")
   public static let upcomingTimelineColor = ColorAsset(name: "UpcomingTimelineColor")
   public static let pastDueTimelineColor = ColorAsset(name: "pastDueTimelineColor")
+  public static let primaryHeaderColor = ColorAsset(name: "primaryHeaderColor")
+  public static let secondaryHeaderColor = ColorAsset(name: "secondaryHeaderColor")
   public static let infoColor = ColorAsset(name: "InfoColor")
   public static let irreversibleAlert = ColorAsset(name: "IrreversibleAlert")
   public static let loginBackground = ColorAsset(name: "LoginBackground")
@@ -55,6 +56,8 @@ public enum ThemeAssets {
   public static let secondaryButtonBorderColor = ColorAsset(name: "SecondaryButtonBorderColor")
   public static let secondaryButtonTextColor = ColorAsset(name: "SecondaryButtonTextColor")
   public static let shadowColor = ColorAsset(name: "ShadowColor")
+  public static let slidingStrokeColor = ColorAsset(name: "slidingStrokeColor")
+  public static let slidingTextColor = ColorAsset(name: "slidingTextColor")
   public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
   public static let snackbarInfoColor = ColorAsset(name: "SnackbarInfoColor")
   public static let snackbarTextColor = ColorAsset(name: "SnackbarTextColor")
@@ -78,6 +81,7 @@ public enum ThemeAssets {
   public static let white = ColorAsset(name: "white")
   public static let appLogo = ImageAsset(name: "appLogo")
   public static let campaignLaunch = ImageAsset(name: "campaign_launch")
+  public static let headerBackground = ImageAsset(name: "headerBackground")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

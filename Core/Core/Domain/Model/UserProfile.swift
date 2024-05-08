@@ -17,6 +17,7 @@ public struct UserProfile: Hashable {
     public let spokenLanguage: String?
     public let shortBiography: String
     public let isFullProfile: Bool
+    public let email: String
     
     public init(
         avatarUrl: String,
@@ -27,7 +28,8 @@ public struct UserProfile: Hashable {
         country: String,
         spokenLanguage: String? = nil,
         shortBiography: String,
-        isFullProfile: Bool
+        isFullProfile: Bool,
+        email: String
     ) {
         self.avatarUrl = avatarUrl
         self.name = name
@@ -38,6 +40,7 @@ public struct UserProfile: Hashable {
         self.spokenLanguage = spokenLanguage
         self.shortBiography = shortBiography
         self.isFullProfile = isFullProfile
+        self.email = email
     }
     
     public init() {
@@ -50,5 +53,6 @@ public struct UserProfile: Hashable {
         self.spokenLanguage = ""
         self.shortBiography = ""
         self.isFullProfile = true
+        self.email = ""
     }
 }

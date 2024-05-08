@@ -19,7 +19,7 @@ public class CourseDatesViewModel: ObservableObject {
         case none
     }
     
-    @Published private(set) var isShowProgress = false
+    @Published var isShowProgress = true
     @Published var showError: Bool = false
     @Published var courseDates: CourseDates?
     @Published var isOn: Bool = false
@@ -195,6 +195,18 @@ extension CourseDatesViewModel {
             selector: #selector(handleShiftDueDates),
             name: .shiftCourseDates, object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(getCourseDates),
+            name: .getCourseDates, object: nil
+        )
+    }
+    
+    @objc private func getCourseDates(_ notification: Notification) {
+        Task {
+            await getCourseDates(courseID: courseID)
+        }
     }
     
     @objc private func handleShiftDueDates(_ notification: Notification) {
