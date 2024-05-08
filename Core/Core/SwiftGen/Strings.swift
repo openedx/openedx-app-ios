@@ -99,6 +99,10 @@ public enum CoreLocalization {
     public static let unlockingText = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.UNLOCKING_TEXT", fallback: "Unlocking ")
     /// to your course
     public static let unlockingToCourse = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.UNLOCKING_TO_COURSE", fallback: "to your course")
+    public enum Button {
+      /// Upgrade to access more features
+      public static let upgrade = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.BUTTON.UPGRADE", fallback: "Upgrade to access more features")
+    }
     public enum FailureAlert {
       /// An error occurred
       public static let alertTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.ALERT_TITLE", fallback: "An error occurred")
@@ -146,6 +150,22 @@ public enum CoreLocalization {
       public static let silentAlertTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.SILENT_ALERT_TITLE", fallback: "New experience available")
       /// Upgrade complete
       public static let title = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.TITLE", fallback: "Upgrade complete")
+    }
+    public enum View {
+      /// Upgrade
+      public static let title = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.TITLE", fallback: "Upgrade")
+      public enum Button {
+        /// Upgrade now for
+        public static let upgradeNow = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.BUTTON.UPGRADE_NOW", fallback: "Upgrade now for")
+      }
+      public enum Option {
+        /// Earn a certificate of completion to showcase on your resume
+        public static let first = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.OPTION.FIRST", fallback: "Earn a certificate of completion to showcase on your resume")
+        /// Unlock access to all course activities, including graded assignments
+        public static let second = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.OPTION.SECOND", fallback: "Unlock access to all course activities, including graded assignments")
+        /// Full access to course content and course material even after the course ends
+        public static let third = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.OPTION.THIRD", fallback: "Full access to course content and course material even after the course ends")
+      }
     }
   }
   public enum Date {
@@ -218,26 +238,6 @@ public enum CoreLocalization {
     public static let offline = CoreLocalization.tr("Localizable", "NO_INTERNET.OFFLINE", fallback: "Offline")
     /// Reload
     public static let reload = CoreLocalization.tr("Localizable", "NO_INTERNET.RELOAD", fallback: "Reload")
-  }
-  public enum Payments {
-    public enum Button {
-      /// Upgrade to access more features
-      public static let upgrade = CoreLocalization.tr("Localizable", "PAYMENTS.BUTTON.UPGRADE", fallback: "Upgrade to access more features")
-      /// Upgrade now for
-      public static let upgradeNow = CoreLocalization.tr("Localizable", "PAYMENTS.BUTTON.UPGRADE_NOW", fallback: "Upgrade now for")
-    }
-    public enum Option {
-      /// Earn a certificate of completion to showcase on your resume
-      public static let first = CoreLocalization.tr("Localizable", "PAYMENTS.OPTION.FIRST", fallback: "Earn a certificate of completion to showcase on your resume")
-      /// Unlock access to all course activities, including graded assignments
-      public static let second = CoreLocalization.tr("Localizable", "PAYMENTS.OPTION.SECOND", fallback: "Unlock access to all course activities, including graded assignments")
-      /// Full access to course content and course material even after the course ends
-      public static let third = CoreLocalization.tr("Localizable", "PAYMENTS.OPTION.THIRD", fallback: "Full access to course content and course material even after the course ends")
-    }
-    public enum View {
-      /// Upgrade
-      public static let title = CoreLocalization.tr("Localizable", "PAYMENTS.VIEW.TITLE", fallback: "Upgrade")
-    }
   }
   public enum Picker {
     /// Accept

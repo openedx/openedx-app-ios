@@ -57,18 +57,18 @@ public struct UpgradeInfoView: View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("\(CoreLocalization.Payments.View.title) \(viewModel.productName)")
+                    Text("\(CoreLocalization.CourseUpgrade.View.title) \(viewModel.productName)")
                         .font(Theme.Fonts.displaySmall)
-                    UpgradeInfoCellView(title: CoreLocalization.Payments.Option.first)
-                    UpgradeInfoCellView(title: CoreLocalization.Payments.Option.second)
-                    UpgradeInfoCellView(title: CoreLocalization.Payments.Option.third)
+                    UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.first)
+                    UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.second)
+                    UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.third)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 30)
             }
             Spacer()
             StyledButton(
-                CoreLocalization.Payments.Button.upgrade,
+                CoreLocalization.CourseUpgrade.View.Button.upgradeNow,
                 action: {
                     
                 },
