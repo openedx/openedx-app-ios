@@ -27,8 +27,9 @@ public struct CourseCellView: View {
     private var cellsCount: Int
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var isUpgradeable: Bool
+    private var upgradeAction: (() -> Void)?
     
-    public init(model: CourseItem, type: CellType, index: Int, cellsCount: Int) {
+    public init(model: CourseItem, type: CellType, index: Int, cellsCount: Int, upgradeAction: (() -> Void)? = nil) {
         self.type = type
         self.courseImage = model.imageURL
         self.courseName = model.name
@@ -38,6 +39,7 @@ public struct CourseCellView: View {
         self.index = Double(index) + 1
         self.cellsCount = cellsCount
         self.isUpgradeable = model.isUpgradeable
+        self.upgradeAction = upgradeAction
     }
     
     public var body: some View {
@@ -104,7 +106,9 @@ public struct CourseCellView: View {
             if isUpgradeable {
                 StyledButton(
                     CoreLocalization.Payments.Button.upgrade,
-                    action: {},
+                    action: {
+                        upgradeAction?()
+                    },
                     color: Theme.Colors.accentColor,
                     textColor: Theme.Colors.primaryButtonTextColor,
                     leftImage: Image(systemName: "lock.fill"),
@@ -125,7 +129,6 @@ public struct CourseCellView: View {
             }
         }
         .padding(.vertical, type == .discovery ? 10 : 0)
-//        .frame(height: 105)
         .background(Theme.Colors.background)
         .opacity(showView ? 1 : 0)
         .offset(y: showView ? 0 : 20)

@@ -792,3 +792,17 @@ extension Router {
     }
 }
 // swiftlint:enable file_length type_body_length
+
+extension Router: PaymentRouter {
+    public func showUpgradeInfo(for sku: String) {
+        let view = UpgradeInfoView(viewModel: UpgradeInfoViewModel(productName: "Test"))
+        let controller = UIHostingController(rootView: view)
+        if let sheet = controller.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersEdgeAttachedInCompactHeight = true
+            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+            sheet.prefersGrabberVisible = true
+        }
+        navigationController.present(controller, animated: true)
+    }
+}

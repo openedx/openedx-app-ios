@@ -8,7 +8,11 @@
 import Foundation
 import Core
 
-public protocol DashboardRouter: BaseRouter {
+public protocol PaymentRouter {
+    func showUpgradeInfo(for sku: String)
+}
+
+public protocol DashboardRouter: BaseRouter, PaymentRouter {
     
     func showCourseScreens(courseID: String,
                            isActive: Bool?,
@@ -23,7 +27,6 @@ public protocol DashboardRouter: BaseRouter {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
-    
     public override init() {}
     
     public func showCourseScreens(courseID: String,
@@ -34,5 +37,6 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
                                   enrollmentEnd: Date?,
                                   title: String) {}
     
+    public func showUpgradeInfo(for sku: String) {}
 }
 #endif

@@ -217,6 +217,20 @@ public enum CoreLocalization {
     public enum Button {
       /// Upgrade to access more features
       public static let upgrade = CoreLocalization.tr("Localizable", "PAYMENTS.BUTTON.UPGRADE", fallback: "Upgrade to access more features")
+      /// Upgrade now for
+      public static let upgradeNow = CoreLocalization.tr("Localizable", "PAYMENTS.BUTTON.UPGRADE_NOW", fallback: "Upgrade now for")
+    }
+    public enum Option {
+      /// Earn a certificate of completion to showcase on your resume
+      public static let first = CoreLocalization.tr("Localizable", "PAYMENTS.OPTION.FIRST", fallback: "Earn a certificate of completion to showcase on your resume")
+      /// Unlock access to all course activities, including graded assignments
+      public static let second = CoreLocalization.tr("Localizable", "PAYMENTS.OPTION.SECOND", fallback: "Unlock access to all course activities, including graded assignments")
+      /// Full access to course content and course material even after the course ends
+      public static let third = CoreLocalization.tr("Localizable", "PAYMENTS.OPTION.THIRD", fallback: "Full access to course content and course material even after the course ends")
+    }
+    public enum View {
+      /// Upgrade
+      public static let title = CoreLocalization.tr("Localizable", "PAYMENTS.VIEW.TITLE", fallback: "Upgrade")
     }
   }
   public enum Picker {

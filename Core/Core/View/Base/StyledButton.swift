@@ -9,13 +9,6 @@ import SwiftUI
 import Theme
 
 public struct StyledButton: View {
-    public enum TextPosition {
-        case left
-        case right
-        case center
-        case none
-    }
-
     public enum ImagesStyle {
         case onSides
         case attachedToText
@@ -31,7 +24,6 @@ public struct StyledButton: View {
     private let borderColor: Color
     private let leftImage: Image?
     private let rightImage: Image?
-    private let textPosition: TextPosition
     private let imagesStyle: ImagesStyle
     private let isTitleTracking: Bool
     private let isLimitedOnPad: Bool
@@ -44,7 +36,6 @@ public struct StyledButton: View {
                 borderColor: Color = .clear,
                 leftImage: Image? = nil,
                 rightImage: Image? = nil,
-                textPosition: TextPosition = .center,
                 imagesStyle: ImagesStyle = .attachedToText,
                 isActive: Bool = true,
                 isTitleTracking: Bool = true,
@@ -59,7 +50,6 @@ public struct StyledButton: View {
         self.isActive = isActive
         self.leftImage = leftImage
         self.rightImage = rightImage
-        self.textPosition = textPosition
         self.imagesStyle = imagesStyle
         self.isTitleTracking = isTitleTracking
         self.isLimitedOnPad = isLimitedOnPad

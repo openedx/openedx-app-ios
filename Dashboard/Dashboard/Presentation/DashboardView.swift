@@ -60,7 +60,10 @@ public struct DashboardView: View {
                                             model: course,
                                             type: .dashboard,
                                             index: index,
-                                            cellsCount: viewModel.courses.count
+                                            cellsCount: viewModel.courses.count,
+                                            upgradeAction: {
+                                                self.router.showUpgradeInfo(for: course.sku)
+                                            }
                                         )
                                         .padding(.horizontal, 20)
                                         .listRowBackground(Color.clear)
