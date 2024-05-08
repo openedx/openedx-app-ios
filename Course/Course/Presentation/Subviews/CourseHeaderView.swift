@@ -197,6 +197,7 @@ struct CourseHeaderView: View {
         StyledButton(
             CoreLocalization.CourseUpgrade.Button.upgrade,
             action: {
+                upgradeAction?()
             },
             color: Theme.Colors.accentColor,
             textColor: Theme.Colors.primaryButtonTextColor,
