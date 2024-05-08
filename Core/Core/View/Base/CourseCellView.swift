@@ -105,7 +105,7 @@ public struct CourseCellView: View {
             }
             if isUpgradeable {
                 StyledButton(
-                    CoreLocalization.Payments.Button.upgrade,
+                    CoreLocalization.CourseUpgrade.Button.upgrade,
                     action: {
                         upgradeAction?()
                     },
