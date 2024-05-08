@@ -1,16 +1,16 @@
 //
-//  ProfileViewModel.swift
+//  ManageAccountViewModel.swift
 //  Profile
 //
-//  Created by  Stepanok Ivan on 22.09.2022.
+//  Created by  Stepanok Ivan on 10.04.2024.
 //
 
-import Combine
+import Foundation
 import Core
 import SwiftUI
 
-public class ProfileViewModel: ObservableObject {
-
+public class ManageAccountViewModel: ObservableObject {
+    
     @Published public var userModel: UserProfile?
     @Published public var updatedAvatar: UIImage?
     @Published private(set) var isShowProgress = false
@@ -24,26 +24,25 @@ public class ProfileViewModel: ObservableObject {
     }
     
     let router: ProfileRouter
+    let analytics: ProfileAnalytics
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
-    
     private let interactor: ProfileInteractorProtocol
-    private let analytics: ProfileAnalytics
     
     public init(
-        interactor: ProfileInteractorProtocol,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         config: ConfigProtocol,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        interactor: ProfileInteractorProtocol
     ) {
-        self.interactor = interactor
         self.router = router
         self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
+        self.interactor = interactor
     }
-      
+    
     @MainActor
     public func getMyProfile(withProgress: Bool = true) async {
         do {
@@ -65,6 +64,10 @@ public class ProfileViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.unknownError
             }
         }
+    }
+    
+    func trackProfileDeleteAccountClicked() {
+        analytics.profileDeleteAccountClicked()
     }
     
     func trackProfileEditClicked() {

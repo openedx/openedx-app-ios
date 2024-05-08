@@ -140,6 +140,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         do {
             if isInternetAvaliable {
                 courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
+                NotificationCenter.default.post(name: .getCourseDates, object: courseID)
                 isShowProgress = false
                 isShowRefresh = false
                 if let courseStructure {
