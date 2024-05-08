@@ -93,6 +93,12 @@ public enum CoreLocalization {
     public static let learnHowToUnlock = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.LEARN_HOW_TO_UNLOCK", fallback: "Unlock graded assignments")
     /// Thank you for your purchase. Enjoy full access to your course!
     public static let successMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_MESSAGE", fallback: "Thank you for your purchase. Enjoy full access to your course!")
+    /// full access 
+    public static let unlockingFullAccess = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.UNLOCKING_FULL_ACCESS", fallback: "full access ")
+    /// Unlocking 
+    public static let unlockingText = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.UNLOCKING_TEXT", fallback: "Unlocking ")
+    /// to your course
+    public static let unlockingToCourse = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.UNLOCKING_TO_COURSE", fallback: "to your course")
     public enum FailureAlert {
       /// An error occurred
       public static let alertTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.FAILURE_ALERT.ALERT_TITLE", fallback: "An error occurred")

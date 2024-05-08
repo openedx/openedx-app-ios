@@ -77,6 +77,7 @@ public enum ThemeAssets {
   public static let warningText = ColorAsset(name: "warningText")
   public static let white = ColorAsset(name: "white")
   public static let appLogo = ImageAsset(name: "appLogo")
+  public static let campaignLaunch = ImageAsset(name: "campaign_launch")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

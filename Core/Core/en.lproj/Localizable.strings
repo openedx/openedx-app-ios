@@ -142,3 +142,6 @@
 "COURSE_UPGRADE.RESTORE.ALERT_TITLE"="Purchases have been successfully restored";
 "COURSE_UPGRADE.RESTORE.ALERT_MESSAGE"="All purchases are up to date. If you’re not seeing your purchases restored, please try restarting your app to refresh the experience.";
 "COURSE_UPGRADE.RESTORE.INPROGRESS_TEXT"="Checking purchases...";
+"COURSE_UPGRADE.UNLOCKING_TEXT"= "Unlocking ";
+"COURSE_UPGRADE.UNLOCKING_FULL_ACCESS"= "full access ";
+"COURSE_UPGRADE.UNLOCKING_TO_COURSE"= "to your course";

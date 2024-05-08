@@ -135,6 +135,7 @@
 		141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */; };
 		142EDD6C2B831D1400F9F320 /* BranchSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 142EDD6B2B831D1400F9F320 /* BranchSDK */; };
 		14769D3C2B9822EE00AB36D4 /* CoreAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */; };
+		149936CE2BEB4F8900B4C89F /* CourseUpgradeUnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149936CD2BEB4F8900B4C89F /* CourseUpgradeUnlockView.swift */; };
 		14A832522BD7537A00E5654D /* StorekitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832512BD7537A00E5654D /* StorekitHandler.swift */; };
 		14A832552BD753F800E5654D /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = 14A832542BD753F800E5654D /* SwiftyStoreKit */; };
 		14A832572BD75D6100E5654D /* CourseUpgradeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A832562BD75D6100E5654D /* CourseUpgradeHandler.swift */; };
@@ -330,6 +331,7 @@
 		0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugstage.xcconfig"; sourceTree = "<group>"; };
 		141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewCookiesUpdateProtocol.swift; sourceTree = "<group>"; };
 		14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAnalytics.swift; sourceTree = "<group>"; };
+		149936CD2BEB4F8900B4C89F /* CourseUpgradeUnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeUnlockView.swift; sourceTree = "<group>"; };
 		14A832512BD7537A00E5654D /* StorekitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorekitHandler.swift; sourceTree = "<group>"; };
 		14A832562BD75D6100E5654D /* CourseUpgradeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeHandler.swift; sourceTree = "<group>"; };
 		14A832582BD75EC400E5654D /* CourseUpgradeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeInteractor.swift; sourceTree = "<group>"; };
@@ -775,9 +777,18 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
+		149936CF2BEB9C4900B4C89F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				149936CD2BEB4F8900B4C89F /* CourseUpgradeUnlockView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		14A832502BD7533000E5654D /* CourseUpgrade */ = {
 			isa = PBXGroup;
 			children = (
+				149936CF2BEB9C4900B4C89F /* View */,
 				14A832512BD7537A00E5654D /* StorekitHandler.swift */,
 				14A832562BD75D6100E5654D /* CourseUpgradeHandler.swift */,
 				14A832582BD75EC400E5654D /* CourseUpgradeInteractor.swift */,
@@ -1273,6 +1284,7 @@
 				0727878928D31734002E9142 /* User.swift in Sources */,
 				A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */,
 				02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */,
+				149936CE2BEB4F8900B4C89F /* CourseUpgradeUnlockView.swift in Sources */,
 				02066B482906F73400F4307E /* PickerMenu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

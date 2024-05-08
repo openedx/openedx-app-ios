@@ -7,6 +7,7 @@
 
 import Foundation
 import StoreKit
+import SwiftUI
 
 public struct CourseUpgradeHelperModel {
     let courseID: String
@@ -55,6 +56,8 @@ public class CourseUpgradeHelper {
     private var screen: CourseUpgradeScreen = .unknown
     private var localizedCoursePrice: String?
     weak private(set) var upgradeHadler: CourseUpgradeHandler?
+    private var unlockController: UIHostingController<CourseUpgradeUnlockView>?
+    private var topController: UIViewController?
     
     public init(
         config: ConfigProtocol,
@@ -86,6 +89,7 @@ public class CourseUpgradeHelper {
     ) {
         self.delegate = delegate
         self.upgradeHadler = upgradeHadler
+        topController = UIApplication.topViewController()
         
         switch state {
         case .fulfillment(let show):
@@ -164,7 +168,8 @@ public class CourseUpgradeHelper {
 
 extension CourseUpgradeHelper {
     func showSuccess() {
-        guard let topController = UIApplication.topViewController() else { return }
+        guard let topController = topController else { return }
+        
 //        topController.showBottomActionSnackBar(
 //            message: CoreLocalization.CourseUpgrade.successMessage,
 //            textSize: .xSmall,
@@ -184,7 +189,7 @@ extension CourseUpgradeHelper {
     }
     
     func showError() {
-        guard let topController = UIApplication.topViewController() else { return }
+        guard let topController = topController else { return }
         
         // not showing any error if payment is canceled by user
         if case .error(let type, let error) = upgradeHadler?.state, type == .paymentError,
@@ -201,12 +206,10 @@ extension CourseUpgradeHelper {
            type == .verifyReceiptError && error?.errorCode != 409 {
             alertController.addButton(
                 withTitle: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
-                style: .default) { [weak self] _ in
-                    self?.trackUpgradeErrorAction(errorAction: .refreshToRetry)
+                style: .default) { _ in
+                    self.trackUpgradeErrorAction(errorAction: .refreshToRetry)
                     Task {
-//                        if let self {
-//                            await self.upgradeHadler?.reverifyPayment()
-//                        }
+                        await self.upgradeHadler?.reverifyPayment()
                     }
                 }
         }
@@ -229,15 +232,14 @@ extension CourseUpgradeHelper {
 
         alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
             self?.trackUpgradeErrorAction(errorAction: .close)
-
-//            if self?.unlockController.isVisible == true {
-//                self?.unlockController.removeView() {
-//                    self?.hideAlertAction()
-//                }
-//            }
-//            else {
-//                hideAlertAction()
-//            }
+            
+            if self?.unlockController != nil {
+                self?.removeLoader()
+                self?.hideAlertAction()
+            }
+            else {
+                self?.hideAlertAction()
+            }
         }
     }
     
@@ -248,34 +250,45 @@ extension CourseUpgradeHelper {
 }
 
 extension CourseUpgradeHelper {
-    func showLoader(forceShow: Bool = false) {
-//        if (!unlockController.isVisible && upgradeHadler?.upgradeMode == .userInitiated) || forceShow {
-//            unlockController.showView()
-//        }
+    public func showLoader(forceShow: Bool = false) {
+        guard let topController = topController, unlockController == nil else { return }
+        let unlockView = CourseUpgradeUnlockView()
+        
+        unlockController = UIHostingController(rootView: unlockView)
+        unlockController?.modalTransitionStyle = .crossDissolve
+        unlockController?.modalPresentationStyle = .overFullScreen
+        
+        topController.navigationController?.present(unlockController!, animated: true)
     }
     
-    func removeLoader(
+    public func removeLoader(
         success: Bool? = false,
         removeView: Bool? = false,
-        completion: (()-> ())? = nil
+        completion: (() -> Void)? = nil
     ) {
         self.completion = completion
         if success == true {
             helperModel = nil
         }
         
-//        if unlockController.isVisible, removeView == true {
-//            unlockController.removeView() { [weak self] in
-//                self?.helperModel = nil
-//                if success == true {
-//                    self?.showSuccess()
-//                } else {
-//                    self?.showError()
-//                }
-//            }
-//        } else if success == false {
-//            showError()
-//        }
+        if unlockController != nil, removeView == true {
+            unlockController = nil
+            
+            if let controller = topController?.navigationController?
+                .presentedViewController as? UIHostingController<CourseUpgradeUnlockView> {
+                controller.dismiss(animated: true)
+            }
+            
+            helperModel = nil
+            
+            if success == true {
+                showSuccess()
+            } else {
+                showError()
+            }
+        } else if success == false {
+            showError()
+        }
     }
 }
 
