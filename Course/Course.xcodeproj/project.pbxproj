@@ -53,6 +53,7 @@
 		02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFDC29252E900051930C /* CourseRouter.swift */; };
 		02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */; };
 		02F98A8128F8224200DE94C0 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F98A8028F8224200DE94C0 /* Discussion.framework */; };
+		02FCB2B32BBEB36600373180 /* CourseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FCB2B22BBEB36600373180 /* CourseHeaderView.swift */; };
 		02FFAD0D29E4347300140E46 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */; };
 		060E8BCA2B5FD68C0080C952 /* UnitStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060E8BC92B5FD68C0080C952 /* UnitStack.swift */; };
 		065275352BB1B39C0093BCCA /* PlayerViewControllerHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065275342BB1B39C0093BCCA /* PlayerViewControllerHolder.swift */; };
@@ -151,6 +152,7 @@
 		02F3BFDC29252E900051930C /* CourseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRouter.swift; sourceTree = "<group>"; };
 		02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoPlayerViewModelTests.swift; path = CourseTests/Presentation/Unit/VideoPlayerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02F98A8028F8224200DE94C0 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		02FCB2B22BBEB36600373180 /* CourseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseHeaderView.swift; sourceTree = "<group>"; };
 		02FFAD0C29E4347300140E46 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
 		060E8BC92B5FD68C0080C952 /* UnitStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitStack.swift; sourceTree = "<group>"; };
 		065275342BB1B39C0093BCCA /* PlayerViewControllerHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewControllerHolder.swift; sourceTree = "<group>"; };
@@ -583,6 +585,7 @@
 				02D4FC2C2BBD7C7500C47748 /* MessageSectionView */,
 				BAC0E0D92B32F0A2006B68A9 /* CourseVideoDownloadBarView */,
 				BA58CF622B471047005B102E /* VideoDownloadQualityBarView */,
+				02FCB2B22BBEB36600373180 /* CourseHeaderView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -901,6 +904,7 @@
 				97C99C362B9A08FE004EEDE2 /* CalendarSyncProgressView.swift in Sources */,
 				BAC0E0D82B32EF03006B68A9 /* DownloadsView.swift in Sources */,
 				97CA95252B875EE200A9EDEA /* DatesSuccessView.swift in Sources */,
+				02FCB2B32BBEB36600373180 /* CourseHeaderView.swift in Sources */,
 				DB7D6EAC2ADFCAC50036BB13 /* CourseDatesView.swift in Sources */,
 				0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */,
 				022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */,

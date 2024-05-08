@@ -19,6 +19,7 @@ public extension DataLayer {
         public let id: String
         public let media: DataLayer.CourseMedia
         public let certificate: Certificate?
+        public let org: String?
         public let isSelfPaced: Bool
         public let courseModes: [CourseMode]?
         public let enrollment: EnrollmentDetail?
@@ -34,6 +35,7 @@ public extension DataLayer {
             case id
             case media
             case certificate
+            case org
             case isSelfPaced = "is_self_paced"
             case enrollmentDetails = "enrollment_details"
             case courseStart = "start"
@@ -48,6 +50,7 @@ public extension DataLayer {
             id: String,
             media: DataLayer.CourseMedia,
             certificate: Certificate?,
+            org: String?,
             isSelfPaced: Bool,
             courseModes: [CourseMode]? = nil,
             enrollmentDetails: EnrollmentDetail? = nil,
@@ -62,6 +65,7 @@ public extension DataLayer {
             self.id = id
             self.media = media
             self.certificate = certificate
+            self.org = org
             self.isSelfPaced = isSelfPaced
             self.courseModes = courseModes
             self.enrollment = enrollmentDetails
@@ -84,6 +88,7 @@ public extension DataLayer {
             id = try values.decode(String.self, forKey: .id)
             media = try values.decode(DataLayer.CourseMedia.self, forKey: .media)
             certificate = try values.decode(Certificate.self, forKey: .certificate)
+            org = try values.decode(String.self, forKey: .org)
             isSelfPaced = try values.decode(Bool.self, forKey: .isSelfPaced)
             courseModes = try values.decode([CourseMode].self, forKey: .courseModes)
             enrollment = try values.decode(EnrollmentDetail.self, forKey: .enrollmentDetails)

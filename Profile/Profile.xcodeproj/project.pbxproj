@@ -10,6 +10,7 @@
 		020102D129784B3100BBF80C /* EditProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020102D029784B3100BBF80C /* EditProfileViewModelTests.swift */; };
 		020306C82932B13F000949EA /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020306C72932B13F000949EA /* EditProfileView.swift */; };
 		020306CA2932B14D000949EA /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020306C92932B14D000949EA /* EditProfileViewModel.swift */; };
+		020CBD8D2BC53E1B003D6B4E /* VideoSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020CBD8C2BC53E1B003D6B4E /* VideoSettingsView.swift */; };
 		021D924628DC634300ACC565 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924528DC634300ACC565 /* ProfileView.swift */; };
 		021D924C28DC884A00ACC565 /* ProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924B28DC884A00ACC565 /* ProfileEndpoint.swift */; };
 		021D924E28DC88BB00ACC565 /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924D28DC88BB00ACC565 /* ProfileRepository.swift */; };
@@ -24,6 +25,8 @@
 		025DE1A028DB4D9D0053E0F4 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE19F28DB4D9D0053E0F4 /* Core.framework */; };
 		0262149229AE57A1008BD75A /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262149129AE57A1008BD75A /* DeleteAccountView.swift */; };
 		0262149429AE57B1008BD75A /* DeleteAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262149329AE57B1008BD75A /* DeleteAccountViewModel.swift */; };
+		0288C4EA2BC6AE2D009158B9 /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */; };
+		0288C4EC2BC6AE82009158B9 /* ManageAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288C4EB2BC6AE82009158B9 /* ManageAccountViewModel.swift */; };
 		029301DA2938948500E99AB8 /* ProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029301D92938948500E99AB8 /* ProfileType.swift */; };
 		02A4833329B7710A00D33F33 /* DeleteAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833229B7710A00D33F33 /* DeleteAccountViewModelTests.swift */; };
 		02A9A91D2978194A00B55797 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */; };
@@ -34,6 +37,7 @@
 		02D0FD0B2AD6984D0020D752 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */; };
 		02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */; };
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
+		02FE9A802BC707D500B3C206 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FE9A7F2BC707D400B3C206 /* SettingsViewModelTests.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
 		25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */; };
 		BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfoView.swift */; };
@@ -54,6 +58,7 @@
 		020102D029784B3100BBF80C /* EditProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModelTests.swift; sourceTree = "<group>"; };
 		020306C72932B13F000949EA /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		020306C92932B14D000949EA /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		020CBD8C2BC53E1B003D6B4E /* VideoSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSettingsView.swift; sourceTree = "<group>"; };
 		020F834A28DB4CCD0062FA70 /* Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		021D924528DC634300ACC565 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		021D924B28DC884A00ACC565 /* ProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEndpoint.swift; sourceTree = "<group>"; };
@@ -69,6 +74,8 @@
 		025DE19F28DB4D9D0053E0F4 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0262149129AE57A1008BD75A /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		0262149329AE57B1008BD75A /* DeleteAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewModel.swift; sourceTree = "<group>"; };
+		0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
+		0288C4EB2BC6AE82009158B9 /* ManageAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewModel.swift; sourceTree = "<group>"; };
 		029301D92938948500E99AB8 /* ProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileType.swift; sourceTree = "<group>"; };
 		02A4833229B7710A00D33F33 /* DeleteAccountViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeleteAccountViewModelTests.swift; path = ProfileTests/Presentation/DeleteAccount/DeleteAccountViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02A9A91A2978194A00B55797 /* ProfileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProfileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +87,7 @@
 		02ED50CE29A64BAD008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE6292539850051930C /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
+		02FE9A7F2BC707D400B3C206 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewModelTests.swift; path = ProfileTests/Presentation/Settings/SettingsViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBottomSheet.swift; sourceTree = "<group>"; };
 		0E5054C44435557666B6D885 /* Pods-App-Profile.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugstage.xcconfig"; sourceTree = "<group>"; };
 		3674C51E1BE41D834B5C4E99 /* Pods-App-Profile.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugdev.xcconfig"; sourceTree = "<group>"; };
@@ -239,6 +247,9 @@
 			isa = PBXGroup;
 			children = (
 				0259104329C39C9E004B5A55 /* SettingsView.swift */,
+				0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */,
+				0288C4EB2BC6AE82009158B9 /* ManageAccountViewModel.swift */,
+				020CBD8C2BC53E1B003D6B4E /* VideoSettingsView.swift */,
 				0259104729C3A5F0004B5A55 /* VideoQualityView.swift */,
 				0259104529C39CCF004B5A55 /* SettingsViewModel.swift */,
 			);
@@ -257,6 +268,7 @@
 		02A4832F29B770B600D33F33 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				02FE9A7F2BC707D400B3C206 /* SettingsViewModelTests.swift */,
 				02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */,
 			);
 			path = Profile;
@@ -572,6 +584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				021D924E28DC88BB00ACC565 /* ProfileRepository.swift in Sources */,
+				0288C4EC2BC6AE82009158B9 /* ManageAccountViewModel.swift in Sources */,
 				0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */,
 				021D924C28DC884A00ACC565 /* ProfileEndpoint.swift in Sources */,
 				BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */,
@@ -587,9 +600,11 @@
 				0248F9B128DDB09D0041327E /* Strings.swift in Sources */,
 				020306CA2932B14D000949EA /* EditProfileViewModel.swift in Sources */,
 				0259104829C3A5F0004B5A55 /* VideoQualityView.swift in Sources */,
+				0288C4EA2BC6AE2D009158B9 /* ManageAccountView.swift in Sources */,
 				021D924628DC634300ACC565 /* ProfileView.swift in Sources */,
 				02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */,
 				02D0FD0B2AD6984D0020D752 /* UserProfileViewModel.swift in Sources */,
+				020CBD8D2BC53E1B003D6B4E /* VideoSettingsView.swift in Sources */,
 				02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */,
 				0262149429AE57B1008BD75A /* DeleteAccountViewModel.swift in Sources */,
 			);
@@ -601,6 +616,7 @@
 			files = (
 				02A9A92B29781A6300B55797 /* ProfileMock.generated.swift in Sources */,
 				02A4833329B7710A00D33F33 /* DeleteAccountViewModelTests.swift in Sources */,
+				02FE9A802BC707D500B3C206 /* SettingsViewModelTests.swift in Sources */,
 				02A9A91D2978194A00B55797 /* ProfileViewModelTests.swift in Sources */,
 				020102D129784B3100BBF80C /* EditProfileViewModelTests.swift in Sources */,
 			);

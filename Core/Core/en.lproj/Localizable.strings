@@ -142,10 +142,14 @@
 "COURSE_UPGRADE.RESTORE.ALERT_TITLE"="Purchases have been successfully restored";
 "COURSE_UPGRADE.RESTORE.ALERT_MESSAGE"="All purchases are up to date. If you’re not seeing your purchases restored, please try restarting your app to refresh the experience.";
 "COURSE_UPGRADE.RESTORE.INPROGRESS_TEXT"="Checking purchases...";
+"COURSE_UPGRADE.UNLOCKING_TEXT"= "Unlocking ";
+"COURSE_UPGRADE.UNLOCKING_FULL_ACCESS"= "full access ";
+"COURSE_UPGRADE.UNLOCKING_TO_COURSE"= "to your course";
 
-"PAYMENTS.BUTTON.UPGRADE"="Upgrade to access more features";
-"PAYMENTS.BUTTON.UPGRADE_NOW"="Upgrade now for";
-"PAYMENTS.VIEW.TITLE"="Upgrade";
-"PAYMENTS.OPTION.FIRST"="Earn a certificate of completion to showcase on your resume";
-"PAYMENTS.OPTION.SECOND"="Unlock access to all course activities, including graded assignments";
-"PAYMENTS.OPTION.THIRD"="Full access to course content and course material even after the course ends";
+
+"COURSE_UPGRADE.BUTTON.UPGRADE"="Upgrade to access more features";
+"COURSE_UPGRADE.VIEW.BUTTON.UPGRADE_NOW"="Upgrade now for";
+"COURSE_UPGRADE.VIEW.TITLE"="Upgrade";
+"COURSE_UPGRADE.VIEW.OPTION.FIRST"="Earn a certificate of completion to showcase on your resume";
+"COURSE_UPGRADE.VIEW.OPTION.SECOND"="Unlock access to all course activities, including graded assignments";
+"COURSE_UPGRADE.VIEW.OPTION.THIRD"="Full access to course content and course material even after the course ends";

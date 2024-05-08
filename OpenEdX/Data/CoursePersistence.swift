@@ -139,6 +139,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 )
             ),
             certificate: DataLayer.Certificate(url: structure.certificate),
+            org: structure.org ?? "",
             isSelfPaced: structure.isSelfPaced,
             courseStart: structure.courseStart,
             dynamicUpgradeDeadline: structure.dynamicUpgradeDeadline,

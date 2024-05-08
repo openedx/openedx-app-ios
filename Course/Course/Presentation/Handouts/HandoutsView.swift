@@ -12,16 +12,21 @@ import Theme
 struct HandoutsView: View {
     
     private let courseID: String
+    @Binding private var coordinate: CGFloat
+    @Binding private var collapsed: Bool
     
     @StateObject
     private var viewModel: HandoutsViewModel
     
     public init(
         courseID: String,
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
         viewModel: HandoutsViewModel
     ) {
         self.courseID = courseID
-//        self.viewModel = viewModel
+        self._coordinate = coordinate
+        self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
     
@@ -29,45 +34,50 @@ struct HandoutsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack(alignment: .center) {
-                    
                     // MARK: - Page Body
-                    if viewModel.isShowProgress {
-                        HStack(alignment: .center) {
-                            ProgressBar(size: 40, lineWidth: 8)
-                                .padding(.top, 200)
-                                .padding(.horizontal)
-                        }
-                    } else {
-                        VStack(alignment: .leading) {
-                            HandoutsItemCell(type: .handouts, onTapAction: {
-                                viewModel.router.showHandoutsUpdatesView(
-                                    handouts: viewModel.handouts,
-                                    announcements: nil,
-                                    router: viewModel.router,
-                                    cssInjector: viewModel.cssInjector)
-                                viewModel.analytics.trackCourseEvent(
-                                    .courseHandouts,
-                                    biValue: .courseHandouts,
-                                    courseID: courseID
-                                )
-                            })
-                            Divider()
-                            HandoutsItemCell(type: .announcements, onTapAction: {
-                                if !viewModel.updates.isEmpty {
+                    ScrollView {
+                        DynamicOffsetView(
+                            coordinate: $coordinate,
+                            collapsed: $collapsed
+                        )
+                        if viewModel.isShowProgress {
+                            HStack(alignment: .center) {
+                                ProgressBar(size: 40, lineWidth: 8)
+                                    .padding(.top, 200)
+                                    .padding(.horizontal)
+                            }
+                        } else {
+                            VStack(alignment: .leading) {
+                                HandoutsItemCell(type: .handouts, onTapAction: {
                                     viewModel.router.showHandoutsUpdatesView(
-                                        handouts: nil,
-                                        announcements: viewModel.updates,
+                                        handouts: viewModel.handouts,
+                                        announcements: nil,
                                         router: viewModel.router,
                                         cssInjector: viewModel.cssInjector)
                                     viewModel.analytics.trackCourseEvent(
-                                        .courseAnnouncement,
-                                        biValue: .courseAnnouncement,
+                                        .courseHandouts,
+                                        biValue: .courseHandouts,
                                         courseID: courseID
                                     )
-                                }
-                            })
-                        }.padding(.horizontal, 32)
-                        Spacer(minLength: 84)
+                                })
+                                Divider()
+                                HandoutsItemCell(type: .announcements, onTapAction: {
+                                    if !viewModel.updates.isEmpty {
+                                        viewModel.router.showHandoutsUpdatesView(
+                                            handouts: nil,
+                                            announcements: viewModel.updates,
+                                            router: viewModel.router,
+                                            cssInjector: viewModel.cssInjector)
+                                        viewModel.analytics.trackCourseEvent(
+                                            .courseAnnouncement,
+                                            biValue: .courseAnnouncement,
+                                            courseID: courseID
+                                        )
+                                    }
+                                })
+                            }.padding(.horizontal, 32)
+                            Spacer(minLength: 84)
+                        }
                     }
                 }
                 .frameLimit(width: proxy.size.width)
@@ -123,8 +133,12 @@ struct HandoutsView_Previews: PreviewProvider {
                                           connectivity: Connectivity(),
                                           courseID: "",
                                           analytics: CourseAnalyticsMock())
-        HandoutsView(courseID: "",
-                     viewModel: viewModel)
+        HandoutsView(
+            courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
+            viewModel: viewModel
+        )
     }
 }
 #endif

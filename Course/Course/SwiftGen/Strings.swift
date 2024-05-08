@@ -55,8 +55,6 @@ public enum CourseLocalization {
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
   public enum CourseContainer {
-    /// Course
-    public static let course = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.COURSE", fallback: "Course")
     /// Dates
     public static let dates = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DATES", fallback: "Dates")
     /// Discussions
@@ -65,6 +63,8 @@ public enum CourseLocalization {
     public static let handouts = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HANDOUTS", fallback: "More")
     /// Handouts In developing
     public static let handoutsInDeveloping = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING", fallback: "Handouts In developing")
+    /// Home
+    public static let home = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HOME", fallback: "Home")
     /// Videos
     public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.VIDEOS", fallback: "Videos")
   }

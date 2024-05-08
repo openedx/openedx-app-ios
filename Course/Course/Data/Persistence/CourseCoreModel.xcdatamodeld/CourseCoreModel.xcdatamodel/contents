@@ -87,6 +87,7 @@
         <attribute name="mediaRaw" optional="YES" attributeType="String"/>
         <attribute name="mediaSmall" optional="YES" attributeType="String"/>
         <attribute name="mode" optional="YES" attributeType="String"/>
+        <attribute name="org" optional="YES" attributeType="String"/>
         <attribute name="rootItem" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

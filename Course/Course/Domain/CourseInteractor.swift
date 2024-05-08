@@ -54,6 +54,7 @@ public class CourseInteractor: CourseInteractorProtocol {
             childs: newChilds,
             media: course.media,
             certificate: course.certificate,
+            org: course.org,
             isSelfPaced: course.isSelfPaced
         )
     }
