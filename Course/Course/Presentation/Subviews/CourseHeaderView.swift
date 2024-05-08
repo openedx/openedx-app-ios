@@ -103,6 +103,7 @@ struct CourseHeaderView: View {
                         if isUpgradeable {
                             upgradeButton
                                 .padding(.horizontal, 20)
+                                .frameLimit(width: containerWidth)
                         }
                         courseMenuBar(containerWidth: containerWidth)
                             .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
@@ -147,6 +148,7 @@ struct CourseHeaderView: View {
                             if isUpgradeable {
                                 upgradeButton
                                     .padding(.horizontal, 24)
+                                    .frameLimit(width: containerWidth)
                             }
                             courseMenuBar(containerWidth: containerWidth)
                                 .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
