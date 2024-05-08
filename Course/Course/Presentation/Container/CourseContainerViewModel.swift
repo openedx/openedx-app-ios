@@ -277,6 +277,11 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         await download(state: state, blocks: blocks)
     }
 
+    @MainActor
+    func showPaymentsInfo(for sku: String) {
+        router.showUpgradeInfo(for: sku)
+    }
+    
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {
         let verticals = downloadableVerticals.filter { verticalState in
             courseSequential.childs.contains(where: { item in

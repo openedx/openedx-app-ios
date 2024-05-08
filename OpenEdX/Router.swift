@@ -364,7 +364,9 @@ public class Router: AuthorizationRouter,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        isUpgradeable: Bool,
+        sku: String?
     ) {
         let controller = getCourseScreensController(
             courseID: courseID,
@@ -373,7 +375,9 @@ public class Router: AuthorizationRouter,
             courseEnd: courseEnd,
             enrollmentStart: enrollmentStart,
             enrollmentEnd: enrollmentEnd,
-            title: title
+            title: title,
+            isUpgradeable: isUpgradeable,
+            sku: sku
         )
         navigationController.pushViewController(controller, animated: true)
     }
@@ -385,7 +389,9 @@ public class Router: AuthorizationRouter,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        isUpgradeable: Bool,
+        sku: String?
     ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
@@ -406,7 +412,9 @@ public class Router: AuthorizationRouter,
             viewModel: vm,
             courseDatesViewModel: datesVm,
             courseID: courseID,
-            title: title
+            title: title,
+            isUpgradeable: isUpgradeable,
+            sku: sku
         )
         
         return UIHostingController(rootView: screensView)
@@ -816,7 +824,8 @@ extension Router {
 }
 // swiftlint:enable file_length type_body_length
 
-extension Router: PaymentRouter {
+// MARK: Payments
+extension Router {
     public func showUpgradeInfo(for sku: String) {
         let view = UpgradeInfoView(viewModel: UpgradeInfoViewModel(productName: "Test"))
         let controller = UIHostingController(rootView: view)

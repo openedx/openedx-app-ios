@@ -224,7 +224,9 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,
             enrollmentEnd: courseDetails.enrollmentEnd,
-            title: courseDetails.courseTitle
+            title: courseDetails.courseTitle,
+            isUpgradeable: false,
+            sku: nil
         )
         
         return true

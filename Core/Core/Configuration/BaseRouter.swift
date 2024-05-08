@@ -59,6 +59,7 @@ public protocol BaseRouter {
     
     func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
 
+    func showUpgradeInfo(for sku: String)
 }
 
 extension BaseRouter {
@@ -125,5 +126,6 @@ open class BaseRouterMock: BaseRouter {
 
     public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {}
     
+    public func showUpgradeInfo(for sku: String) {}
 }
 #endif

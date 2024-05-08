@@ -18,19 +18,22 @@ public struct DiscussionTopicsView: View {
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
     @State private var runOnce: Bool = false
+    private let isUpgradeable: Bool
     
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
         viewModel: DiscussionTopicsViewModel,
-        router: DiscussionRouter
+        router: DiscussionRouter,
+        isUpgradeable: Bool
     ) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
         self.router = router
+        self.isUpgradeable = isUpgradeable
     }
     
     public var body: some View {
@@ -42,7 +45,8 @@ public struct DiscussionTopicsView: View {
                     }) {
                         DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed
+                            collapsed: $collapsed,
+                            isUpgradeable: isUpgradeable
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         // MARK: - Search fake field
@@ -223,7 +227,8 @@ struct DiscussionView_Previews: PreviewProvider {
             coordinate: .constant(0),
             collapsed: .constant(false),
             viewModel: vm,
-            router: router
+            router: router,
+            isUpgradeable: false
         )
         .preferredColorScheme(.light)
         .previewDisplayName("DiscussionTopicsView Light")
@@ -234,7 +239,8 @@ struct DiscussionView_Previews: PreviewProvider {
             coordinate: .constant(0),
             collapsed: .constant(false),
             viewModel: vm,
-            router: router
+            router: router,
+            isUpgradeable: false
         )
         .preferredColorScheme(.dark)
         .previewDisplayName("DiscussionTopicsView Dark")

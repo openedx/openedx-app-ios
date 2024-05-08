@@ -84,7 +84,9 @@ public struct DashboardView: View {
                                                 courseEnd: course.courseEnd,
                                                 enrollmentStart: course.enrollmentStart,
                                                 enrollmentEnd: course.enrollmentEnd,
-                                                title: course.name
+                                                title: course.name,
+                                                isUpgradeable: course.isUpgradeable,
+                                                sku: course.sku
                                             )
                                         }
                                         .accessibilityIdentifier("course_item")

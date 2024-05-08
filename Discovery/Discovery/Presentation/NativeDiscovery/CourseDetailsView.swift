@@ -280,7 +280,9 @@ private struct CourseStateView: View {
                         courseEnd: courseDetails.courseEnd,
                         enrollmentStart: courseDetails.enrollmentStart,
                         enrollmentEnd: courseDetails.enrollmentEnd,
-                        title: title
+                        title: title,
+                        isUpgradeable: false,
+                        sku: nil
                     )
                 }
             })

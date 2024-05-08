@@ -8,11 +8,7 @@
 import Foundation
 import Core
 
-public protocol PaymentRouter {
-    func showUpgradeInfo(for sku: String)
-}
-
-public protocol DashboardRouter: BaseRouter, PaymentRouter {
+public protocol DashboardRouter: BaseRouter {
     
     func showCourseScreens(courseID: String,
                            isActive: Bool?,
@@ -20,7 +16,10 @@ public protocol DashboardRouter: BaseRouter, PaymentRouter {
                            courseEnd: Date?,
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
-                           title: String)
+                           title: String,
+                           isUpgradeable: Bool,
+                           sku: String?
+    )
     
 }
 
@@ -35,8 +34,9 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String) {}
-    
-    public func showUpgradeInfo(for sku: String) {}
+                                  title: String,
+                                  isUpgradeable: Bool,
+                                  sku: String?
+    ) {}
 }
 #endif

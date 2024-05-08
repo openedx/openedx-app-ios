@@ -10,11 +10,18 @@ import SwiftUI
 public struct DynamicOffsetView: View {
     
     private let padHeight: CGFloat = 290
-    private let collapsedHorizontalHeight: CGFloat = 120
-    private let collapsedVerticalHeight: CGFloat = 100
-    private let expandedHeight: CGFloat = 240
+    private var collapsedHorizontalHeight: CGFloat {
+        120 + (isUpgradeable ? 42+20 : 0)
+    }
+    private var collapsedVerticalHeight: CGFloat {
+        100 + (isUpgradeable ? 42+20 : 0)
+    }
+    private var expandedHeight: CGFloat {
+        240 + (isUpgradeable ? 42+20 : 0)
+    }
     private let coordinateBoundaryLower: CGFloat = -115
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    private let isUpgradeable: Bool
     
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
@@ -24,10 +31,12 @@ public struct DynamicOffsetView: View {
     
     public init(
         coordinate: Binding<CGFloat>,
-        collapsed: Binding<Bool>
+        collapsed: Binding<Bool>,
+        isUpgradeable: Bool
     ) {
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self.isUpgradeable = isUpgradeable
     }
     
     public var body: some View {
