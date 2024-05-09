@@ -100,7 +100,7 @@ extension ScrollSlidingTabBar {
                             }
                             .accentColor(
                                 isSelected(index: obj.offset)
-                                ? Theme.Colors.white
+                                ? Theme.Colors.slidingSelectedTextColor
                                 : Theme.Colors.slidingTextColor
                             )
                         }
