@@ -1,5 +1,5 @@
 //
-//  LearnView.swift
+//  PrimaryCourseDashboardView.swift
 //  Dashboard
 //
 //  Created by  Stepanok Ivan on 16.04.2024.
@@ -11,10 +11,10 @@ import Theme
 //import Discovery
 import Swinject
 
-public struct LearnView<ProgramView: View>: View {
+public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     
     @StateObject
-    private var viewModel: LearnViewModel
+    private var viewModel: PrimaryCourseDashboardViewModel
     private let router: DashboardRouter
     private let config = Container.shared.resolve(ConfigProtocol.self)
     @ViewBuilder let programView: ProgramView
@@ -23,7 +23,7 @@ public struct LearnView<ProgramView: View>: View {
     @State private var selectedMenu: MenuOption = .courses
     
     public init(
-        viewModel: LearnViewModel,
+        viewModel: PrimaryCourseDashboardViewModel,
         router: DashboardRouter,
         programView: ProgramView,
         openDiscoveryPage: @escaping () -> Void
@@ -281,15 +281,15 @@ public struct LearnView<ProgramView: View>: View {
 }
 
 #if DEBUG
-struct LearnView_Previews: PreviewProvider {
+struct PrimaryCourseDashboardView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = LearnViewModel(
+        let vm = PrimaryCourseDashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
             analytics: DashboardAnalyticsMock()
         )
         
-        LearnView(viewModel: vm,
+        PrimaryCourseDashboardView(viewModel: vm,
                   router: DashboardRouterMock(),
                   programView: EmptyView(),
                   openDiscoveryPage: {
@@ -297,7 +297,7 @@ struct LearnView_Previews: PreviewProvider {
         .preferredColorScheme(.light)
         .previewDisplayName("DashboardView Light")
         
-        LearnView(viewModel: vm,
+        PrimaryCourseDashboardView(viewModel: vm,
                   router: DashboardRouterMock(),
                   programView: EmptyView(),
                   openDiscoveryPage: {

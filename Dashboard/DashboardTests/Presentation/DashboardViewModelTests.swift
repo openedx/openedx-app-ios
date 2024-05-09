@@ -1,5 +1,5 @@
 //
-//  DashboardViewModelTests.swift
+//  ListDashboardViewModelTests.swift
 //  DashboardTests
 //
 //  Created by  Stepanok Ivan on 18.01.2023.
@@ -12,13 +12,13 @@ import XCTest
 import Alamofire
 import SwiftUI
 
-final class DashboardViewModelTests: XCTestCase {
+final class ListDashboardViewModelTests: XCTestCase {
     
     func testGetMyCoursesSuccess() async throws {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         let items = [
             CourseItem(name: "Test",
@@ -67,7 +67,7 @@ final class DashboardViewModelTests: XCTestCase {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         let items = [
             CourseItem(name: "Test",
@@ -116,7 +116,7 @@ final class DashboardViewModelTests: XCTestCase {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getMyCourses(page: .any, willThrow: NoCachedDataError()) )
@@ -134,7 +134,7 @@ final class DashboardViewModelTests: XCTestCase {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = DashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getMyCourses(page: .any, willThrow: NSError()) )

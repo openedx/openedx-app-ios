@@ -8,8 +8,8 @@
 import Foundation
 
 public enum DashboardConfigType: String {
-    case learn
-    case dashboard
+    case primaryCourse = "primary_course"
+    case list
 }
 
 private enum DashboardKeys: String, RawStringExtractable {
@@ -22,7 +22,7 @@ public class DashboardConfig: NSObject {
     init(dictionary: [String: AnyObject]) {
         type = (dictionary[DashboardKeys.dashboardType] as? String).flatMap {
             DashboardConfigType(rawValue: $0)
-        } ?? .learn
+        } ?? .primaryCourse
     }
 }
 

@@ -161,16 +161,16 @@ class ScreenAssembly: Assembly {
                 repository: r.resolve(DashboardRepositoryProtocol.self)!
             )
         }
-        container.register(DashboardViewModel.self) { r in
-            DashboardViewModel(
+        container.register(ListDashboardViewModel.self) { r in
+            ListDashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DashboardAnalytics.self)!
             )
         }
         
-        container.register(LearnViewModel.self) { r in
-            LearnViewModel(
+        container.register(PrimaryCourseDashboardViewModel.self) { r in
+            PrimaryCourseDashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DashboardAnalytics.self)!

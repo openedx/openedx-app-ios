@@ -201,11 +201,11 @@ struct AllCoursesView_Previews: PreviewProvider {
         
         AllCoursesView(viewModel: vm, router: DashboardRouterMock())
             .preferredColorScheme(.light)
-            .previewDisplayName("DashboardView Light")
+            .previewDisplayName("AllCoursesView Light")
         
         AllCoursesView(viewModel: vm, router: DashboardRouterMock())
             .preferredColorScheme(.dark)
-            .previewDisplayName("DashboardView Dark")
+            .previewDisplayName("AllCoursesView Dark")
     }
 }
 #endif

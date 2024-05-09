@@ -1,8 +1,8 @@
 //
-//  LearnViewModel.swift
+//  ListDashboardViewModel.swift
 //  Dashboard
 //
-//  Created by  Stepanok Ivan on 16.04.2024.
+//  Created by  Stepanok Ivan on 19.09.2022.
 //
 
 import Foundation
@@ -10,13 +10,13 @@ import Core
 import SwiftUI
 import Combine
 
-public class LearnViewModel: ObservableObject {
+public class ListDashboardViewModel: ObservableObject {
     
     public var nextPage = 1
     public var totalPages = 1
     @Published public private(set) var fetchInProgress = false
     
-    @Published var myEnrollments: MyEnrollments?
+    @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {
@@ -43,21 +43,31 @@ public class LearnViewModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
-                    await self.getMyLearnings()
+                    await self.getMyCourses(page: 1, refresh: true)
                 }
             }
     }
     
     @MainActor
-    public func getMyLearnings(showProgress: Bool = true) async {
-        let pageSize = UIDevice.current.userInterfaceIdiom == .pad ? 7 : 5
-        fetchInProgress = showProgress
+    public func getMyCourses(page: Int, refresh: Bool = false) async {
         do {
+            fetchInProgress = true
             if connectivity.isInternetAvaliable {
-                myEnrollments = try await interactor.getMyLearnCourses(pageSize: pageSize)
+                if refresh {
+                    courses = try await interactor.getMyCourses(page: page)
+                    self.totalPages = 1
+                    self.nextPage = 2
+                } else {
+                    courses += try await interactor.getMyCourses(page: page)
+                    self.nextPage += 1
+                }
+                if !courses.isEmpty {
+                    totalPages = courses[0].numPages
+                }
                 fetchInProgress = false
             } else {
-                myEnrollments = try await interactor.getMyLearnCoursesOffline()
+                courses = try interactor.discoveryOffline()
+                self.nextPage += 1
                 fetchInProgress = false
             }
         } catch let error {
@@ -66,6 +76,21 @@ public class LearnViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.noCachedData
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+    }
+    
+    @MainActor
+    public func getMyCoursesPagination(index: Int) async {
+        if !fetchInProgress {
+            if totalPages > 1 {
+                if index == courses.count - 3 {
+                    if totalPages != 1 {
+                        if nextPage <= totalPages {
+                            await getMyCourses(page: self.nextPage)
+                        }
+                    }
+                }
             }
         }
     }

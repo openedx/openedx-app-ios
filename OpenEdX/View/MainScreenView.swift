@@ -23,8 +23,8 @@ struct MainScreenView: View {
     
     @ObservedObject private(set) var viewModel: MainScreenViewModel
     
-    private let config = Container.shared.resolve(ConfigProtocol.self)
-
+    private let config = Container.shared.resolve(ConfigProtocol.self)!
+    
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
@@ -37,13 +37,31 @@ struct MainScreenView: View {
             for: .normal
         )
     }
-        
+    
     var body: some View {
         TabView(selection: $viewModel.selection) {
-            if config?.dashboard.type == .learn {
+            switch config.dashboard.type {
+            case .list:
                 ZStack {
-                    LearnView(
-                        viewModel: Container.shared.resolve(LearnViewModel.self)!,
+                    ListDashboardView(
+                        viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
+                        router: Container.shared.resolve(DashboardRouter.self)!
+                    )
+                    
+                    if updateAvaliable {
+                        UpdateNotificationView(config: viewModel.config)
+                    }
+                }
+                .tabItem {
+                    CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
+                    Text(CoreLocalization.Mainscreen.dashboard)
+                }
+                .tag(MainTab.dashboard)
+                .accessibilityIdentifier("dashboard_tabitem")
+            case .primaryCourse:
+                ZStack {
+                    PrimaryCourseDashboardView(
+                        viewModel: Container.shared.resolve(PrimaryCourseDashboardViewModel.self)!,
                         router: Container.shared.resolve(DashboardRouter.self)!,
                         programView: ProgramWebviewView(
                             viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
@@ -62,16 +80,16 @@ struct MainScreenView: View {
                 .tag(MainTab.dashboard)
                 .accessibilityIdentifier("dashboard_tabitem")
             }
-
-            if config?.discovery.enabled ?? false {
+            
+            if config.discovery.enabled {
                 ZStack {
-                    if config?.discovery.type == .native {
+                    if config.discovery.type == .native {
                         DiscoveryView(
                             viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
                             router: Container.shared.resolve(DiscoveryRouter.self)!,
                             sourceScreen: viewModel.sourceScreen
                         )
-                    } else if config?.discovery.type == .webview {
+                    } else if config.discovery.type == .webview {
                         DiscoveryWebview(
                             viewModel: Container.shared.resolve(
                                 DiscoveryWebviewViewModel.self,
@@ -90,25 +108,6 @@ struct MainScreenView: View {
                 }
                 .tag(MainTab.discovery)
                 .accessibilityIdentifier("discovery_tabitem")
-            }
-            
-            if config?.dashboard.type == .dashboard {
-                ZStack {
-                    DashboardView(
-                        viewModel: Container.shared.resolve(DashboardViewModel.self)!,
-                        router: Container.shared.resolve(DashboardRouter.self)!
-                    )
-                    
-                    if updateAvaliable {
-                        UpdateNotificationView(config: viewModel.config)
-                    }
-                }
-                .tabItem {
-                    CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
-                    Text(CoreLocalization.Mainscreen.dashboard)
-                }
-                .tag(MainTab.dashboard)
-                .accessibilityIdentifier("dashboard_tabitem")
             }
             
             VStack {
@@ -178,7 +177,7 @@ struct MainScreenView: View {
         case .discovery:
             return DiscoveryLocalization.title
         case .dashboard:
-            return config?.dashboard.type == .dashboard
+            return config.dashboard.type == .list
             ? DashboardLocalization.title
             : DashboardLocalization.Learn.title
         case .programs:
