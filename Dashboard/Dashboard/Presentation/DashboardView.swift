@@ -62,7 +62,7 @@ public struct DashboardView: View {
                                             index: index,
                                             cellsCount: viewModel.courses.count,
                                             upgradeAction: {
-                                                self.router.showUpgradeInfo(for: course.sku)
+                                                self.router.showUpgradeInfo(productName: course.name, sku: course.sku)
                                             }
                                         )
                                         .padding(.horizontal, 20)

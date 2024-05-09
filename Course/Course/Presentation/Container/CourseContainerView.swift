@@ -102,9 +102,7 @@ public struct CourseContainerView: View {
                                 isAnimatingForTap: $isAnimatingForTap,
                                 isUpgradeable: viewModel.isUpgradeable,
                                 upgradeAction: {
-                                    if let sku = viewModel.sku, viewModel.isUpgradeable {
-                                        viewModel.showPaymentsInfo(for: sku)
-                                    }
+                                    viewModel.showPaymentsInfo()
                                 }
                             )
                         }

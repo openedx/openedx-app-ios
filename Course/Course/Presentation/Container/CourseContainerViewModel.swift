@@ -286,8 +286,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     @MainActor
-    func showPaymentsInfo(for sku: String) {
-        router.showUpgradeInfo(for: sku)
+    func showPaymentsInfo() {
+        guard let name = courseStructure?.displayName, let sku = courseStructure?.sku else { return }
+        router.showUpgradeInfo(productName: name, sku: sku)
     }
     
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {

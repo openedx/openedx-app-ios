@@ -10,9 +10,11 @@ import Theme
 
 public class UpgradeInfoViewModel: ObservableObject {
     let productName: String
+    let sku: String
 
-    public init(productName: String) {
+    public init(productName: String, sku: String) {
         self.productName = productName
+        self.sku = sku
     }
 }
 
@@ -85,6 +87,11 @@ public struct UpgradeInfoView: View {
 
 #if DEBUG
 #Preview {
-    UpgradeInfoView(viewModel: UpgradeInfoViewModel(productName: "Preview"))
+    UpgradeInfoView(
+        viewModel: UpgradeInfoViewModel(
+            productName: "Preview",
+            sku: "SKU"
+        )
+    )
 }
 #endif

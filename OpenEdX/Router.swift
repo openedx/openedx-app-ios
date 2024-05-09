@@ -818,8 +818,13 @@ extension Router {
 
 // MARK: Payments
 extension Router {
-    public func showUpgradeInfo(for sku: String) {
-        let view = UpgradeInfoView(viewModel: UpgradeInfoViewModel(productName: "Test"))
+    public func showUpgradeInfo(productName: String, sku: String) {
+        let view = UpgradeInfoView(
+            viewModel: UpgradeInfoViewModel(
+                productName: productName,
+                sku: sku
+            )
+        )
         let controller = UIHostingController(rootView: view)
         if let sheet = controller.sheetPresentationController {
             sheet.detents = [.large()]
