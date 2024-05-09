@@ -1,5 +1,5 @@
 //
-//  Data_Dashboard.swift
+//  Data_Enrollments.swift
 //  Core
 //
 //  Created by  Stepanok Ivan on 24.03.2023.
@@ -248,7 +248,7 @@ public extension DataLayer.CourseEnrollments {
                 org: course.org,
                 shortDescription: "",
                 imageURL: fullImageURL,
-                isActive: course.coursewareAccess.hasAccess,
+                hasAccess: course.coursewareAccess.hasAccess,
                 courseStart: course.start != nil ? Date(iso8601: course.start!) : nil,
                 courseEnd: course.end != nil ? Date(iso8601: course.end!) : nil,
                 enrollmentStart: course.start != nil

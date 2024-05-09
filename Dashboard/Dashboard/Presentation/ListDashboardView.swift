@@ -76,7 +76,7 @@ public struct ListDashboardView: View {
                                             )
                                             router.showCourseScreens(
                                                 courseID: course.courseID,
-                                                isActive: course.isActive,
+                                                hasAccess: course.hasAccess,
                                                 courseStart: course.courseStart,
                                                 courseEnd: course.courseEnd,
                                                 enrollmentStart: course.enrollmentStart,

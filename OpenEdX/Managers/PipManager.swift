@@ -182,10 +182,10 @@ public class PipManager: PipManagerProtocol {
         for holder: PlayerViewControllerHolder
     ) async throws -> UIHostingController<CourseContainerView> {
         let courseDetails = try await getCourseDetails(for: holder)
-        let isActive: Bool? = nil
+        let hasAccess: Bool? = nil
         let controller = router.getCourseScreensController(
             courseID: courseDetails.courseID,
-            isActive: isActive,
+            hasAccess: hasAccess,
             courseStart: courseDetails.courseStart,
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,

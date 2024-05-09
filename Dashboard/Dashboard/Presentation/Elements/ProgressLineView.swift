@@ -9,8 +9,8 @@ import SwiftUI
 import Theme
 
 struct ProgressLineView: View {
-    private let progressEarned: Double
-    private let progressPossible: Double
+    private let progressEarned: Int
+    private let progressPossible: Int
     private let height: CGFloat
     
     var progressValue: CGFloat {
@@ -18,7 +18,7 @@ struct ProgressLineView: View {
          return CGFloat(progressEarned) / CGFloat(progressPossible)
      }
     
-    init(progressEarned: Double, progressPossible: Double, height: CGFloat = 8) {
+    init(progressEarned: Int, progressPossible: Int, height: CGFloat = 8) {
         self.progressEarned = progressEarned
         self.progressPossible = progressPossible
         self.height = height

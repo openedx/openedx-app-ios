@@ -25,7 +25,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                            org: $0.org ?? "",
                            shortDescription: $0.desc ?? "",
                            imageURL: $0.imageURL ?? "",
-                           isActive: $0.isActive,
+                           hasAccess: $0.hasAccess,
                            courseStart: $0.courseStart,
                            courseEnd: $0.courseEnd,
                            enrollmentStart: $0.enrollmentStart,
@@ -50,7 +50,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 newItem.org = item.org
                 newItem.desc = item.shortDescription
                 newItem.imageURL = item.imageURL
-                newItem.isActive = item.isActive
+                newItem.hasAccess = item.hasAccess
                 newItem.courseStart = item.courseStart
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart

@@ -108,7 +108,7 @@ public extension DataLayer.DiscoveryResponce {
             CourseItem(name: $0.name, org: $0.org,
                        shortDescription: $0.shortDescription ?? "",
                        imageURL: $0.media.image?.small ?? "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(iso8601: $0.start ?? ""),
                        courseEnd: Date(iso8601: $0.end ?? ""),
                        enrollmentStart: Date(iso8601: $0.enrollmentStart ?? ""),

@@ -102,7 +102,7 @@ public enum CoreAssets {
   public static let edit = ImageAsset(name: "edit")
   public static let favorite = ImageAsset(name: "favorite")
   public static let goodWork = ImageAsset(name: "goodWork")
-  public static let learnBig = ImageAsset(name: "learn_big")
+  public static let learnEmpty = ImageAsset(name: "learn_empty")
   public static let airmail = ImageAsset(name: "airmail")
   public static let defaultMail = ImageAsset(name: "defaultMail")
   public static let fastmail = ImageAsset(name: "fastmail")

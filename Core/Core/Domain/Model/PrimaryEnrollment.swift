@@ -1,5 +1,5 @@
 //
-//  MyEnrollments.swift
+//  PrimaryEnrollment.swift
 //  Core
 //
 //  Created by  Stepanok Ivan on 16.04.2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MyEnrollments: Hashable {
+public struct PrimaryEnrollment: Hashable {
     public let primaryCourse: PrimaryCourse?
     public var courses: [CourseItem]
     public let totalPages: Int
@@ -25,14 +25,14 @@ public struct PrimaryCourse: Hashable {
     public let name: String
     public let org: String
     public let courseID: String
-    public let isActive: Bool
+    public let hasAccess: Bool
     public let courseStart: Date?
     public let courseEnd: Date?
     public let courseBanner: String
     public let futureAssignments: [Assignment]
     public let pastAssignments: [Assignment]
-    public let progressEarned: Double?
-    public let progressPossible: Double?
+    public let progressEarned: Int?
+    public let progressPossible: Int?
     public let lastVisitedBlockID: String?
     public let resumeTitle: String?
     
@@ -40,21 +40,21 @@ public struct PrimaryCourse: Hashable {
         name: String,
         org: String,
         courseID: String,
-        isActive: Bool,
+        hasAccess: Bool,
         courseStart: Date?,
         courseEnd: Date?,
         courseBanner: String,
         futureAssignments: [Assignment],
         pastAssignments: [Assignment],
-        progressEarned: Double?,
-        progressPossible: Double?,
+        progressEarned: Int?,
+        progressPossible: Int?,
         lastVisitedBlockID: String?,
         resumeTitle: String?
     ) {
         self.name = name
         self.org = org
         self.courseID = courseID
-        self.isActive = isActive
+        self.hasAccess = hasAccess
         self.courseStart = courseStart
         self.courseEnd = courseEnd
         self.courseBanner = courseBanner

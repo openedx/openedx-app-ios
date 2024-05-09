@@ -54,11 +54,11 @@ public class ListDashboardViewModel: ObservableObject {
             fetchInProgress = true
             if connectivity.isInternetAvaliable {
                 if refresh {
-                    courses = try await interactor.getMyCourses(page: page)
+                    courses = try await interactor.getEnrollments(page: page)
                     self.totalPages = 1
                     self.nextPage = 2
                 } else {
-                    courses += try await interactor.getMyCourses(page: page)
+                    courses += try await interactor.getEnrollments(page: page)
                     self.nextPage += 1
                 }
                 if !courses.isEmpty {
@@ -66,7 +66,7 @@ public class ListDashboardViewModel: ObservableObject {
                 }
                 fetchInProgress = false
             } else {
-                courses = try interactor.discoveryOffline()
+                courses = try interactor.getEnrollmentsOffline()
                 self.nextPage += 1
                 fetchInProgress = false
             }

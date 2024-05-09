@@ -1641,11 +1641,11 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getMyLearnCourses(pageSize: Int) throws -> MyEnrollments {
+    open func getMyLearnCourses(pageSize: Int) throws -> PrimaryEnrollment {
         addInvocation(.m_getMyLearnCourses__pageSize_pageSize(Parameter<Int>.value(`pageSize`)))
 		let perform = methodPerformValue(.m_getMyLearnCourses__pageSize_pageSize(Parameter<Int>.value(`pageSize`))) as? (Int) -> Void
 		perform?(`pageSize`)
-		var __value: MyEnrollments
+		var __value: PrimaryEnrollment
 		do {
 		    __value = try methodReturnValue(.m_getMyLearnCourses__pageSize_pageSize(Parameter<Int>.value(`pageSize`))).casted()
 		} catch MockError.notStubed {
@@ -1657,11 +1657,11 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getMyLearnCoursesOffline() throws -> MyEnrollments {
+    open func getMyLearnCoursesOffline() throws -> PrimaryEnrollment {
         addInvocation(.m_getMyLearnCoursesOffline)
 		let perform = methodPerformValue(.m_getMyLearnCoursesOffline) as? () -> Void
 		perform?()
-		var __value: MyEnrollments
+		var __value: PrimaryEnrollment
 		do {
 		    __value = try methodReturnValue(.m_getMyLearnCoursesOffline).casted()
 		} catch MockError.notStubed {
@@ -1673,11 +1673,11 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getAllCourses(filteredBy: String, page: Int) throws -> MyEnrollments {
+    open func getAllCourses(filteredBy: String, page: Int) throws -> PrimaryEnrollment {
         addInvocation(.m_getAllCourses__filteredBy_filteredBypage_page(Parameter<String>.value(`filteredBy`), Parameter<Int>.value(`page`)))
 		let perform = methodPerformValue(.m_getAllCourses__filteredBy_filteredBypage_page(Parameter<String>.value(`filteredBy`), Parameter<Int>.value(`page`))) as? (String, Int) -> Void
 		perform?(`filteredBy`, `page`)
-		var __value: MyEnrollments
+		var __value: PrimaryEnrollment
 		do {
 		    __value = try methodReturnValue(.m_getAllCourses__filteredBy_filteredBypage_page(Parameter<String>.value(`filteredBy`), Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
@@ -1689,11 +1689,11 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getAllCoursesOffline() throws -> MyEnrollments {
+    open func getAllCoursesOffline() throws -> PrimaryEnrollment {
         addInvocation(.m_getAllCoursesOffline)
 		let perform = methodPerformValue(.m_getAllCoursesOffline) as? () -> Void
 		perform?()
-		var __value: MyEnrollments
+		var __value: PrimaryEnrollment
 		do {
 		    __value = try methodReturnValue(.m_getAllCoursesOffline).casted()
 		} catch MockError.notStubed {
@@ -1778,16 +1778,16 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
         public static func discoveryOffline(willReturn: [CourseItem]...) -> MethodStub {
             return Given(method: .m_discoveryOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getMyLearnCourses(pageSize: Parameter<Int>, willReturn: MyEnrollments...) -> MethodStub {
+        public static func getMyLearnCourses(pageSize: Parameter<Int>, willReturn: PrimaryEnrollment...) -> MethodStub {
             return Given(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getMyLearnCoursesOffline(willReturn: MyEnrollments...) -> MethodStub {
+        public static func getMyLearnCoursesOffline(willReturn: PrimaryEnrollment...) -> MethodStub {
             return Given(method: .m_getMyLearnCoursesOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>, willReturn: MyEnrollments...) -> MethodStub {
+        public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>, willReturn: PrimaryEnrollment...) -> MethodStub {
             return Given(method: .m_getAllCourses__filteredBy_filteredBypage_page(`filteredBy`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getAllCoursesOffline(willReturn: MyEnrollments...) -> MethodStub {
+        public static func getAllCoursesOffline(willReturn: PrimaryEnrollment...) -> MethodStub {
             return Given(method: .m_getAllCoursesOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getMyCourses(page: Parameter<Int>, willThrow: Error...) -> MethodStub {
@@ -1813,40 +1813,40 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
         public static func getMyLearnCourses(pageSize: Parameter<Int>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getMyLearnCourses(pageSize: Parameter<Int>, willProduce: (StubberThrows<MyEnrollments>) -> Void) -> MethodStub {
+        public static func getMyLearnCourses(pageSize: Parameter<Int>, willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (MyEnrollments).self)
+			let stubber = given.stubThrows(for: (PrimaryEnrollment).self)
 			willProduce(stubber)
 			return given
         }
         public static func getMyLearnCoursesOffline(willThrow: Error...) -> MethodStub {
             return Given(method: .m_getMyLearnCoursesOffline, products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getMyLearnCoursesOffline(willProduce: (StubberThrows<MyEnrollments>) -> Void) -> MethodStub {
+        public static func getMyLearnCoursesOffline(willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getMyLearnCoursesOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (MyEnrollments).self)
+			let stubber = given.stubThrows(for: (PrimaryEnrollment).self)
 			willProduce(stubber)
 			return given
         }
         public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_getAllCourses__filteredBy_filteredBypage_page(`filteredBy`, `page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<MyEnrollments>) -> Void) -> MethodStub {
+        public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>, willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getAllCourses__filteredBy_filteredBypage_page(`filteredBy`, `page`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (MyEnrollments).self)
+			let stubber = given.stubThrows(for: (PrimaryEnrollment).self)
 			willProduce(stubber)
 			return given
         }
         public static func getAllCoursesOffline(willThrow: Error...) -> MethodStub {
             return Given(method: .m_getAllCoursesOffline, products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getAllCoursesOffline(willProduce: (StubberThrows<MyEnrollments>) -> Void) -> MethodStub {
+        public static func getAllCoursesOffline(willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
 			let given: Given = { return Given(method: .m_getAllCoursesOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (MyEnrollments).self)
+			let stubber = given.stubThrows(for: (PrimaryEnrollment).self)
 			willProduce(stubber)
 			return given
         }

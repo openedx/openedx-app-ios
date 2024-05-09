@@ -219,7 +219,7 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
         
         router.showCourseScreens(
             courseID: courseDetails.courseID,
-            isActive: nil,
+            hasAccess: nil,
             courseStart: courseDetails.courseStart,
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,

@@ -16,7 +16,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     public var totalPages = 1
     @Published public private(set) var fetchInProgress = false
     
-    @Published var myEnrollments: MyEnrollments?
+    @Published var enrollments: PrimaryEnrollment?
     @Published var showError: Bool = false
     var errorMessage: String? {
         didSet {
@@ -43,21 +43,21 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
-                    await self.getMyLearnings()
+                    await self.getEnrollments()
                 }
             }
     }
     
     @MainActor
-    public func getMyLearnings(showProgress: Bool = true) async {
+    public func getEnrollments(showProgress: Bool = true) async {
         let pageSize = UIDevice.current.userInterfaceIdiom == .pad ? 7 : 5
         fetchInProgress = showProgress
         do {
             if connectivity.isInternetAvaliable {
-                myEnrollments = try await interactor.getMyLearnCourses(pageSize: pageSize)
+                enrollments = try await interactor.getPrimaryEnrollment(pageSize: pageSize)
                 fetchInProgress = false
             } else {
-                myEnrollments = try await interactor.getMyLearnCoursesOffline()
+                enrollments = try await interactor.getPrimaryEnrollmentOffline()
                 fetchInProgress = false
             }
         } catch let error {

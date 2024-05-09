@@ -69,7 +69,7 @@ struct NoCoursesView: View {
     var body: some View {
         VStack(spacing: 8) {
             Spacer()
-            CoreAssets.learnBig.swiftUIImage
+            CoreAssets.learnEmpty.swiftUIImage
                 .resizable()
                 .frame(width: 96, height: 96)
                 .foregroundStyle(Theme.Colors.textSecondaryLight)

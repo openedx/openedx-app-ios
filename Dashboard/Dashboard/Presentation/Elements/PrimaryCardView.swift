@@ -19,8 +19,8 @@ public struct PrimaryCardView: View {
     private let courseEndDate: Date?
     private var futureAssignments: [Assignment]?
     private let pastAssignments: [Assignment]?
-    private let progressEarned: Double
-    private let progressPossible: Double
+    private let progressEarned: Int
+    private let progressPossible: Int
     private let canResume: Bool
     private let resumeTitle: String?
     private var pastAssignmentAction: (String?) -> Void
@@ -35,8 +35,8 @@ public struct PrimaryCardView: View {
         courseEndDate: Date?,
         futureAssignments: [Assignment]?,
         pastAssignments: [Assignment]?,
-        progressEarned: Double,
-        progressPossible: Double,
+        progressEarned: Int,
+        progressPossible: Int,
         canResume: Bool,
         resumeTitle: String?,
         pastAssignmentAction: @escaping (String?) -> Void,

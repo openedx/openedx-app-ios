@@ -37,7 +37,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                if !viewModel.fetchInProgress, viewModel.myEnrollments?.primaryCourse == nil {
+                if !viewModel.fetchInProgress, viewModel.enrollments?.primaryCourse == nil {
                     NoCoursesView(openDiscovery: {
                         openDiscoveryPage()
                     }).zIndex(1)
@@ -45,12 +45,12 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     // MARK: - Page body
                     VStack(alignment: .center) {
                         RefreshableScrollViewCompat(action: {
-                            await viewModel.getMyLearnings(showProgress: false)
+                            await viewModel.getEnrollments(showProgress: false)
                         }) {
                             ZStack(alignment: .topLeading) {
                                 learnTitleAndSearch()
                                     .zIndex(1)
-                                if !viewModel.fetchInProgress, viewModel.myEnrollments?.primaryCourse == nil {
+                                if !viewModel.fetchInProgress, viewModel.enrollments?.primaryCourse == nil {
                                     
                                 } else if viewModel.fetchInProgress {
                                     VStack(alignment: .center) {
@@ -63,8 +63,8 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                         Spacer(minLength: 50)
                                         switch selectedMenu {
                                         case .courses:
-                                            if let  myEnrollments = viewModel.myEnrollments {
-                                                if let primary = myEnrollments.primaryCourse {
+                                            if let  enrollments = viewModel.enrollments {
+                                                if let primary = enrollments.primaryCourse {
                                                     PrimaryCardView(
                                                         courseName: primary.name,
                                                         org: primary.org,
@@ -80,7 +80,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                         pastAssignmentAction: { lastVisitedBlockID in
                                                             router.showCourseScreens(
                                                                 courseID: primary.courseID,
-                                                                isActive: primary.isActive,
+                                                                hasAccess: primary.hasAccess,
                                                                 courseStart: primary.courseStart,
                                                                 courseEnd: primary.courseEnd,
                                                                 enrollmentStart: nil,
@@ -93,7 +93,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                         futureAssignmentAction: { lastVisitedBlockID in
                                                             router.showCourseScreens(
                                                                 courseID: primary.courseID,
-                                                                isActive: primary.isActive,
+                                                                hasAccess: primary.hasAccess,
                                                                 courseStart: primary.courseStart,
                                                                 courseEnd: primary.courseEnd,
                                                                 enrollmentStart: nil,
@@ -106,7 +106,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                         resumeAction: {
                                                             router.showCourseScreens(
                                                                 courseID: primary.courseID,
-                                                                isActive: primary.isActive,
+                                                                hasAccess: primary.hasAccess,
                                                                 courseStart: primary.courseStart,
                                                                 courseEnd: primary.courseEnd,
                                                                 enrollmentStart: nil,
@@ -118,13 +118,13 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                         }
                                                     )
                                                 }
-                                                if !myEnrollments.courses.isEmpty {
-                                                    viewAll(myEnrollments)
+                                                if !enrollments.courses.isEmpty {
+                                                    viewAll(enrollments)
                                                 }
                                                 ScrollView(.horizontal, showsIndicators: false) {
                                                     HStack(spacing: 16) {
                                                         ForEach(
-                                                            Array(myEnrollments.courses.enumerated()),
+                                                            Array(enrollments.courses.enumerated()),
                                                             id: \.offset
                                                         ) { _, course in
                                                             Button(action: {
@@ -134,7 +134,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                                 )
                                                                 router.showCourseScreens(
                                                                     courseID: course.courseID,
-                                                                    isActive: course.isActive,
+                                                                    hasAccess: course.hasAccess,
                                                                     courseStart: course.courseStart,
                                                                     courseEnd: course.courseEnd,
                                                                     enrollmentStart: course.enrollmentStart,
@@ -151,15 +151,15 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                                     progressPossible: 0,
                                                                     courseStartDate: nil,
                                                                     courseEndDate: nil,
-                                                                    isActive: course.isActive,
+                                                                    hasAccess: course.hasAccess,
                                                                     isFullCard: false
                                                                 ).frame(width: 120)
                                                             }
                                                             )
                                                             .accessibilityIdentifier("course_item")
                                                         }
-                                                        if myEnrollments.courses.count < myEnrollments.count {
-                                                            viewAllButton(myEnrollments)
+                                                        if enrollments.courses.count < enrollments.count {
+                                                            viewAllButton(enrollments)
                                                         }
                                                     }
                                                     .padding(20)
@@ -180,7 +180,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(connectivity: viewModel.connectivity,
                                     reloadAction: {
-                    await viewModel.getMyLearnings(showProgress: false)
+                    await viewModel.getEnrollments(showProgress: false)
                 })
                 
                 // MARK: - Error Alert
@@ -201,7 +201,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
             }
             .onFirstAppear {
                 Task {
-                    await viewModel.getMyLearnings()
+                    await viewModel.getEnrollments()
                 }
             }
             .background(
@@ -214,9 +214,9 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
         }
     }
     
-    private func viewAllButton(_ myEnrollments: MyEnrollments) -> some View {
+    private func viewAllButton(_ enrollments: PrimaryEnrollment) -> some View {
         Button(action: {
-            router.showAllCourses(courses: myEnrollments.courses)
+            router.showAllCourses(courses: enrollments.courses)
         }, label: {
             ZStack(alignment: .topTrailing) {
                 VStack(alignment: .leading, spacing: 0) {
@@ -236,12 +236,12 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
         })
     }
     
-    private func viewAll(_ myEnrollments: MyEnrollments) -> some View {
+    private func viewAll(_ enrollments: PrimaryEnrollment) -> some View {
         Button(action: {
-            router.showAllCourses(courses: myEnrollments.courses)
+            router.showAllCourses(courses: enrollments.courses)
         }, label: {
             HStack {
-                Text(DashboardLocalization.Learn.viewAllCourses(myEnrollments.count))
+                Text(DashboardLocalization.Learn.viewAllCourses(enrollments.count))
                     .font(Theme.Fonts.titleSmall)
                     .accessibilityIdentifier("courses_welcomeback_text")
                 Image(systemName: "chevron.right")

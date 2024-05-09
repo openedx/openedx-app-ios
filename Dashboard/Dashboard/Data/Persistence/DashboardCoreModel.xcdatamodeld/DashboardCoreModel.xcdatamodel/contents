@@ -22,13 +22,13 @@
         <attribute name="desc" optional="YES" attributeType="String"/>
         <attribute name="enrollmentEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="enrollmentStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hasAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String"/>
-        <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="numPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="org" optional="YES" attributeType="String"/>
-        <attribute name="progressEarned" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="progressPossible" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="progressEarned" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="progressPossible" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>
@@ -47,12 +47,12 @@
         <attribute name="courseEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="courseID" optional="YES" attributeType="String"/>
         <attribute name="courseStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hasAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastVisitedBlockID" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="org" optional="YES" attributeType="String"/>
-        <attribute name="progressEarned" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="progressPossible" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="progressEarned" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="progressPossible" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="resumeTitle" optional="YES" attributeType="String"/>
         <relationship name="futureAssignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAssignment"/>
         <relationship name="pastAssignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAssignment"/>

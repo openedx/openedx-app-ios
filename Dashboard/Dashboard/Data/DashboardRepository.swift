@@ -9,12 +9,11 @@ import Foundation
 import Core
 
 public protocol DashboardRepositoryProtocol {
-    func getMyCourses(page: Int) async throws -> [CourseItem]
-    func getMyCoursesOffline() throws -> [CourseItem]
-    func getMyLearnCourses(pageSize: Int) async throws -> MyEnrollments
-    func getMyLearnCoursesOffline() async throws -> MyEnrollments
-    func getAllCourses(filteredBy: String, page: Int) async throws -> MyEnrollments
-    func getAllCoursesOffline() async throws -> MyEnrollments
+    func getEnrollments(page: Int) async throws -> [CourseItem]
+    func getEnrollmentsOffline() throws -> [CourseItem]
+    func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment
+    func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment
+    func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment
 }
 
 public class DashboardRepository: DashboardRepositoryProtocol {
@@ -31,7 +30,7 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         self.persistence = persistence
     }
     
-    public func getMyCourses(page: Int) async throws -> [CourseItem] {
+    public func getEnrollments(page: Int) async throws -> [CourseItem] {
         let result = try await api.requestData(
             DashboardEndpoint.getMyCourses(username: storage.user?.username ?? "", page: page)
         )
@@ -42,28 +41,28 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         
     }
     
-    public func getMyCoursesOffline() throws -> [CourseItem] {
+    public func getEnrollmentsOffline() throws -> [CourseItem] {
         return try persistence.loadMyCourses()
     }
     
-    public func getMyLearnCourses(pageSize: Int) async throws -> MyEnrollments {
+    public func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment {
         let result = try await api.requestData(
             DashboardEndpoint.getMyLearnCourses(
                 username: storage.user?.username ?? "",
                 pageSize: pageSize
             )
         )
-            .mapResponse(DataLayer.MyLearnCourses.self)
+            .mapResponse(DataLayer.PrimaryEnrollment.self)
             .domain(baseURL: config.baseURL.absoluteString)
         persistence.saveMyEnrollments(enrollments: result)
         return result
     }
     
-    public func getMyLearnCoursesOffline() async throws -> MyEnrollments {
+    public func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment {
         return try persistence.loadMyEnrollments()
     }
     
-    public func getAllCourses(filteredBy: String, page: Int) async throws -> MyEnrollments {
+    public func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment {
         let result = try await api.requestData(
             DashboardEndpoint.getAllCourses(
                 username: storage.user?.username ?? "",
@@ -71,34 +70,18 @@ public class DashboardRepository: DashboardRepositoryProtocol {
                 page: page
             )
         )
-            .mapResponse(DataLayer.MyLearnCourses.self)
+            .mapResponse(DataLayer.PrimaryEnrollment.self)
             .domain(baseURL: config.baseURL.absoluteString)
-//        persistence.saveMyCourses(items: result.courses)
         return result
-    }
-    
-    public func getAllCoursesOffline() async throws -> MyEnrollments {
-//        let courses = try persistence.loadMyCourses()
-        return MyEnrollments(primaryCourse: nil, courses: [], totalPages: 1, count: 1)
     }
 }
 
+// swiftlint:disable all
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 class DashboardRepositoryMock: DashboardRepositoryProtocol {
-    func getCourseEnrollments(baseURL: String) async throws -> [CourseItem] {
-        do {
-            let courseEnrollments = try
-            DashboardRepository.CourseEnrollmentsJSON.data(using: .utf8)!
-                .mapResponse(DataLayer.CourseEnrollments.self)
-                .domain(baseURL: baseURL)
-            return courseEnrollments
-        } catch {
-            throw error
-        }
-    }
     
-    func getMyCourses(page: Int) async throws -> [CourseItem] {
+    func getEnrollments(page: Int) async throws -> [CourseItem] {
         var models: [CourseItem] = []
         for i in 0...10 {
             models.append(
@@ -107,7 +90,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
@@ -123,9 +106,9 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
         return models
     }
     
-    func getMyCoursesOffline() throws -> [CourseItem] { return [] }
+    func getEnrollmentsOffline() throws -> [CourseItem] { return [] }
     
-    public func getMyLearnCourses(pageSize: Int) async throws -> MyEnrollments {
+    public func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment {
         
         var courses: [CourseItem] = []
         for i in 0...10 {
@@ -135,7 +118,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
@@ -162,7 +145,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
             name: "Primary Course",
             org: "Organization",
             courseID: "123",
-            isActive: true,
+            hasAccess: true,
             courseStart: Date(),
             courseEnd: Date(),
             courseBanner: "https://thumbs.dreamstime.com/b/logo-edx-samsung-tablet-edx-massive-open-online-course-mooc-provider-hosts-online-university-level-courses-wide-117763805.jpg",
@@ -173,15 +156,14 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
             lastVisitedBlockID: nil, 
             resumeTitle: nil
         )
-        return MyEnrollments(primaryCourse: primaryCourse, courses: courses, totalPages: 1, count: 1)
+        return PrimaryEnrollment(primaryCourse: primaryCourse, courses: courses, totalPages: 1, count: 1)
     }
     
-    func getMyLearnCoursesOffline() async throws -> Core.MyEnrollments {
-        Core.MyEnrollments(primaryCourse: nil, courses: [], totalPages: 1, count: 1)
+    func getPrimaryEnrollmentOffline() async throws -> Core.PrimaryEnrollment {
+        Core.PrimaryEnrollment(primaryCourse: nil, courses: [], totalPages: 1, count: 1)
     }
     
-    
-    func getAllCourses(filteredBy: String, page: Int) async throws -> Core.MyEnrollments {
+    func getAllCourses(filteredBy: String, page: Int) async throws -> Core.PrimaryEnrollment {
         var courses: [CourseItem] = []
         for i in 0...10 {
             courses.append(
@@ -190,7 +172,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
@@ -204,11 +186,8 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
             )
         }
         
-        return MyEnrollments(primaryCourse: nil, courses: courses, totalPages: 1, count: 1)
-    }
-    
-    func getAllCoursesOffline() async throws -> Core.MyEnrollments {
-        Core.MyEnrollments(primaryCourse: nil, courses: [], totalPages: 1, count: 1)
+        return PrimaryEnrollment(primaryCourse: nil, courses: courses, totalPages: 1, count: 1)
     }
 }
 #endif
+// swiftlint:enable all

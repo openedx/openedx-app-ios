@@ -8,9 +8,9 @@
 import Foundation
 
 public extension DataLayer {
-    struct MyLearnCourses: Codable {
-        public let userTimezone: String
-        public let enrollments: Enrollments
+    struct PrimaryEnrollment: Codable {
+        public let userTimezone: String?
+        public let enrollments: Enrollments?
         public let primary: Primary?
         
         enum CodingKeys: String, CodingKey {
@@ -19,7 +19,7 @@ public extension DataLayer {
             case primary = "primary"
         }
         
-        public init(userTimezone: String, enrollments: Enrollments, primary: Primary?) {
+        public init(userTimezone: String?, enrollments: Enrollments?, primary: Primary?) {
             self.userTimezone = userTimezone
             self.enrollments = enrollments
             self.primary = primary
@@ -95,10 +95,10 @@ public extension DataLayer {
     
     // MARK: - CourseStatus
     struct CourseStatus: Codable {
-        public let lastVisitedModuleID: String
-        public let lastVisitedModulePath: [String]
-        public let lastVisitedBlockID: String
-        public let lastVisitedUnitDisplayName: String
+        public let lastVisitedModuleID: String?
+        public let lastVisitedModulePath: [String]?
+        public let lastVisitedBlockID: String?
+        public let lastVisitedUnitDisplayName: String?
 
         enum CodingKeys: String, CodingKey {
             case lastVisitedModuleID = "last_visited_module_id"
@@ -181,23 +181,23 @@ public extension DataLayer {
     
     // MARK: - Progress
     struct Progress: Codable {
-        public let assignmentsCompleted: Double
-        public let totalAssignmentsCount: Double
+        public let assignmentsCompleted: Int?
+        public let totalAssignmentsCount: Int?
         
         enum CodingKeys: String, CodingKey {
             case assignmentsCompleted = "assignments_completed"
             case  totalAssignmentsCount = "total_assignments_count"
         }
         
-        public init(assignmentsCompleted: Double, totalAssignmentsCount: Double) {
+        public init(assignmentsCompleted: Int?, totalAssignmentsCount: Int?) {
             self.assignmentsCompleted = assignmentsCompleted
             self.totalAssignmentsCount = totalAssignmentsCount
         }
     }
 }
 
-public extension DataLayer.MyLearnCourses {
-    func domain(baseURL: String) -> MyEnrollments {
+public extension DataLayer.PrimaryEnrollment {
+    func domain(baseURL: String) -> PrimaryEnrollment {
         var primaryCourse: PrimaryCourse?
         if let primary = self.primary {
             let futureAssignments: [DataLayer.Assignment] = primary.courseAssignments?.futureAssignments ?? []
@@ -207,7 +207,7 @@ public extension DataLayer.MyLearnCourses {
                 name: primary.course?.name ?? "",
                 org: primary.course?.org ?? "",
                 courseID: primary.course?.id ?? "",
-                isActive: primary.course?.coursewareAccess.hasAccess ?? true,
+                hasAccess: primary.course?.coursewareAccess.hasAccess ?? true,
                 courseStart: primary.course?.start != nil
                 ? Date(iso8601: primary.course?.start ?? "")
                 : nil,
@@ -237,11 +237,11 @@ public extension DataLayer.MyLearnCourses {
                 },
                 progressEarned: primary.progress?.assignmentsCompleted ?? 0,
                 progressPossible: primary.progress?.totalAssignmentsCount ?? 0,
-                lastVisitedBlockID: primary.courseStatus?.lastVisitedBlockID, 
+                lastVisitedBlockID: primary.courseStatus?.lastVisitedBlockID,
                 resumeTitle: primary.courseStatus?.lastVisitedUnitDisplayName
             )
         }
-        let courses = self.enrollments.results.map {
+        let courses = self.enrollments?.results.map {
             let imageUrl = $0.course.media.courseImage?.url ?? ""
             let encodedUrl = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             let fullImageURL = baseURL + encodedUrl
@@ -250,7 +250,7 @@ public extension DataLayer.MyLearnCourses {
                 org: $0.course.org,
                 shortDescription: "",
                 imageURL: fullImageURL,
-                isActive: $0.course.coursewareAccess.hasAccess,
+                hasAccess: $0.course.coursewareAccess.hasAccess,
                 courseStart: $0.course.start != nil
                 ? Date(iso8601: $0.course.start!)
                 : nil,
@@ -264,18 +264,18 @@ public extension DataLayer.MyLearnCourses {
                 ? Date(iso8601: $0.course.end!)
                 : nil,
                 courseID: $0.course.id,
-                numPages: enrollments.numPages ?? 1,
-                coursesCount: enrollments.count ?? 0,
+                numPages: enrollments?.numPages ?? 1,
+                coursesCount: enrollments?.count ?? 0,
                 progressEarned: $0.progress?.assignmentsCompleted ?? 0,
                 progressPossible: $0.progress?.totalAssignmentsCount ?? 0
             )
         }
         
-        return MyEnrollments(
+        return PrimaryEnrollment(
             primaryCourse: primaryCourse,
-            courses: courses,
-            totalPages: enrollments.numPages ?? 1,
-            count: enrollments.count ?? 1
+            courses: courses ?? [],
+            totalPages: enrollments?.numPages ?? 1,
+            count: enrollments?.count ?? 1
         )
     }
 }

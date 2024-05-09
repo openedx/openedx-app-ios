@@ -359,7 +359,7 @@ public class Router: AuthorizationRouter,
     
     public func showCourseScreens(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
@@ -370,7 +370,7 @@ public class Router: AuthorizationRouter,
     ) {
         let controller = getCourseScreensController(
             courseID: courseID,
-            isActive: isActive,
+            hasAccess: hasAccess,
             courseStart: courseStart,
             courseEnd: courseEnd,
             enrollmentStart: enrollmentStart,
@@ -384,7 +384,7 @@ public class Router: AuthorizationRouter,
     
     public func getCourseScreensController(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
@@ -395,7 +395,7 @@ public class Router: AuthorizationRouter,
     ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
-            arguments: isActive,
+            arguments: hasAccess,
             courseStart,
             courseEnd,
             enrollmentStart,

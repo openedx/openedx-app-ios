@@ -24,7 +24,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                               org: $0.org ?? "",
                               shortDescription: $0.desc ?? "",
                               imageURL: $0.imageURL ?? "",
-                              isActive: $0.isActive,
+                              hasAccess: $0.hasAccess,
                               courseStart: $0.courseStart,
                               courseEnd: $0.courseEnd,
                               enrollmentStart: $0.enrollmentStart,
@@ -50,7 +50,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.org = item.org
                 newItem.desc = item.shortDescription
                 newItem.imageURL = item.imageURL
-                newItem.isActive = item.isActive
+                newItem.hasAccess = item.hasAccess
                 newItem.courseStart = item.courseStart
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart
@@ -67,7 +67,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
 
-    public func loadMyEnrollments() throws -> MyEnrollments {
+    public func loadMyEnrollments() throws -> PrimaryEnrollment {
         let request = CDMyEnrollments.fetchRequest()
         if let result = try context.fetch(request).first {
             let primaryCourse = result.primaryCourse.flatMap { cdPrimaryCourse -> PrimaryCourse? in
@@ -100,15 +100,15 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                     name: cdPrimaryCourse.name ?? "",
                     org: cdPrimaryCourse.org ?? "",
                     courseID: cdPrimaryCourse.courseID ?? "",
-                    isActive: cdPrimaryCourse.isActive,
+                    hasAccess: cdPrimaryCourse.hasAccess,
                     courseStart: cdPrimaryCourse.courseStart,
                     courseEnd: cdPrimaryCourse.courseEnd,
                     courseBanner: cdPrimaryCourse.courseBanner ?? "",
                     futureAssignments: futureAssignments,
                     pastAssignments: pastAssignments,
-                    progressEarned: cdPrimaryCourse.progressEarned,
-                    progressPossible: cdPrimaryCourse.progressPossible,
-                    lastVisitedBlockID: cdPrimaryCourse.lastVisitedBlockID ?? "", 
+                    progressEarned: Int(cdPrimaryCourse.progressEarned),
+                    progressPossible: Int(cdPrimaryCourse.progressPossible),
+                    lastVisitedBlockID: cdPrimaryCourse.lastVisitedBlockID ?? "",
                     resumeTitle: cdPrimaryCourse.resumeTitle
                 )
             }
@@ -120,7 +120,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                         org: cdCourse.org ?? "",
                         shortDescription: cdCourse.desc ?? "",
                         imageURL: cdCourse.imageURL ?? "",
-                        isActive: cdCourse.isActive,
+                        hasAccess: cdCourse.hasAccess,
                         courseStart: cdCourse.courseStart,
                         courseEnd: cdCourse.courseEnd,
                         enrollmentStart: cdCourse.enrollmentStart,
@@ -128,12 +128,12 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                         courseID: cdCourse.courseID ?? "",
                         numPages: Int(cdCourse.numPages),
                         coursesCount: Int(cdCourse.courseCount),
-                        progressEarned: cdCourse.progressEarned,
-                        progressPossible: cdCourse.progressPossible
+                        progressEarned: Int(cdCourse.progressEarned),
+                        progressPossible: Int(cdCourse.progressPossible)
                     )
                 }
 
-            return MyEnrollments(
+            return PrimaryEnrollment(
                 primaryCourse: primaryCourse,
                 courses: courses,
                 totalPages: Int(result.totalPages),
@@ -145,7 +145,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     }
     
     // swiftlint:disable function_body_length
-    public func saveMyEnrollments(enrollments: MyEnrollments) {
+    public func saveMyEnrollments(enrollments: PrimaryEnrollment) {
         context.performAndWait {
             let request: NSFetchRequest<CDMyEnrollments> = CDMyEnrollments.fetchRequest()
             
@@ -225,12 +225,12 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 cdPrimaryCourse.name = primaryCourse.name
                 cdPrimaryCourse.org = primaryCourse.org
                 cdPrimaryCourse.courseID = primaryCourse.courseID
-                cdPrimaryCourse.isActive = primaryCourse.isActive
+                cdPrimaryCourse.hasAccess = primaryCourse.hasAccess
                 cdPrimaryCourse.courseStart = primaryCourse.courseStart
                 cdPrimaryCourse.courseEnd = primaryCourse.courseEnd
                 cdPrimaryCourse.courseBanner = primaryCourse.courseBanner
-                cdPrimaryCourse.progressEarned = primaryCourse.progressEarned ?? 0
-                cdPrimaryCourse.progressPossible = primaryCourse.progressPossible ?? 0
+                cdPrimaryCourse.progressEarned = Int32(primaryCourse.progressEarned ?? 0)
+                cdPrimaryCourse.progressPossible = Int32(primaryCourse.progressPossible ?? 0)
                 cdPrimaryCourse.lastVisitedBlockID = primaryCourse.lastVisitedBlockID
                 cdPrimaryCourse.resumeTitle = primaryCourse.resumeTitle
 

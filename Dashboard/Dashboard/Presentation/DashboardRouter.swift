@@ -11,7 +11,7 @@ import Core
 public protocol DashboardRouter: BaseRouter {
     
     func showCourseScreens(courseID: String,
-                           isActive: Bool?,
+                           hasAccess: Bool?,
                            courseStart: Date?,
                            courseEnd: Date?,
                            enrollmentStart: Date?,
@@ -33,7 +33,7 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
     public override init() {}
     
     public func showCourseScreens(courseID: String,
-                                  isActive: Bool?,
+                                  hasAccess: Bool?,
                                   courseStart: Date?,
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,

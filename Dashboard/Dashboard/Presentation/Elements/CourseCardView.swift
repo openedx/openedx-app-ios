@@ -14,21 +14,21 @@ struct CourseCardView: View {
     
     private let courseName: String
     private let courseImage: String
-    private let progressEarned: Double
-    private let progressPossible: Double
+    private let progressEarned: Int
+    private let progressPossible: Int
     private let courseStartDate: Date?
     private let courseEndDate: Date?
-    private let isActive: Bool
+    private let hasAccess: Bool
     private let isFullCard: Bool
     
     init(
         courseName: String,
         courseImage: String,
-        progressEarned: Double,
-        progressPossible: Double,
+        progressEarned: Int,
+        progressPossible: Int,
         courseStartDate: Date?,
         courseEndDate: Date?,
-        isActive: Bool,
+        hasAccess: Bool,
         isFullCard: Bool
     ) {
         self.courseName = courseName
@@ -37,7 +37,7 @@ struct CourseCardView: View {
         self.progressPossible = progressPossible
         self.courseStartDate = courseStartDate
         self.courseEndDate = courseEndDate
-        self.isActive = isActive
+        self.hasAccess = hasAccess
         self.isFullCard = isFullCard
     }
     
@@ -54,7 +54,7 @@ struct CourseCardView: View {
                 }
                 courseTitle
             }
-            if !isActive {
+            if !hasAccess {
                 ZStack(alignment: .center) {
                     Circle()
                         .foregroundStyle(Theme.Colors.primaryHeaderColor)
@@ -118,7 +118,7 @@ struct CourseCardView: View {
         progressPossible: 8, 
         courseStartDate: nil,
         courseEndDate: Date(),
-        isActive: true,
+        hasAccess: true,
         isFullCard: true
     ).frame(width: 170)
 }
