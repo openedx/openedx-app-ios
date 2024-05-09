@@ -343,14 +343,7 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(
-            EncodedVideoPlayerViewModel.self
-        ) { (r,
-             url: URL?,
-             blockID: String,
-             courseID: String,
-             languages: [SubtitleUrl],
-             playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) in
+        container.register(EncodedVideoPlayerViewModel.self) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) in
             let router: Router = r.resolve(Router.self)!
 
             let holder = r.resolve(
