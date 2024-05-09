@@ -56,6 +56,7 @@ public enum ThemeAssets {
   public static let secondaryButtonBorderColor = ColorAsset(name: "SecondaryButtonBorderColor")
   public static let secondaryButtonTextColor = ColorAsset(name: "SecondaryButtonTextColor")
   public static let shadowColor = ColorAsset(name: "ShadowColor")
+  public static let slidingSelectedTextColor = ColorAsset(name: "slidingSelectedTextColor")
   public static let slidingStrokeColor = ColorAsset(name: "slidingStrokeColor")
   public static let slidingTextColor = ColorAsset(name: "slidingTextColor")
   public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
