@@ -47,7 +47,9 @@ final class SearchViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "123",
                        numPages: 2,
-                       coursesCount: 0),
+                       coursesCount: 0,
+                       progressEarned: 0,
+                       progressPossible: 0),
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
@@ -59,7 +61,9 @@ final class SearchViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "1243",
                        numPages: 1,
-                       coursesCount: 0)
+                       coursesCount: 0,
+                       progressEarned: 0,
+                       progressPossible: 0)
         ]
 
         Given(interactor, .search(page: 1, searchTerm: .any, willReturn: items))

@@ -76,6 +76,8 @@ public extension Date {
 }
 
 public enum DateStringStyle {
+    case courseStartsMonthDDYear
+    case courseEndsMonthDDYear
     case startDDMonthYear
     case endedMonthDay
     case mmddyy
@@ -104,6 +106,10 @@ public extension Date {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         switch style {
+        case .courseStartsMonthDDYear:
+            dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmDdYyyy
+        case .courseEndsMonthDDYear:
+            dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmDdYyyy
         case .endedMonthDay:
             dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmmDd
         case .mmddyy:
@@ -123,6 +129,14 @@ public extension Date {
         let date = dateFormatter.string(from: self)
 
         switch style {
+        case .courseStartsMonthDDYear:
+            return CoreLocalization.Date.courseStarts + " " + date
+        case .courseEndsMonthDDYear:
+            if Date() < self {
+                return CoreLocalization.Date.courseEnds + " " + date
+            } else {
+                return CoreLocalization.Date.courseEnded + " " + date
+            }
         case .endedMonthDay:
             return CoreLocalization.Date.ended + " " + date
         case .mmddyy, .monthYear:

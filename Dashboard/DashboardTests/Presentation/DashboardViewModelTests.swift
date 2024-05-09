@@ -32,7 +32,9 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "123",
                        numPages: 2,
-                       coursesCount: 2),
+                       coursesCount: 2,
+                       progressEarned: 0,
+                       progressPossible: 0),
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
@@ -44,7 +46,9 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "1243",
                        numPages: 1,
-                       coursesCount: 2)
+                       coursesCount: 2,
+                       progressEarned: 0,
+                       progressPossible: 0)
         ]
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -77,7 +81,9 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "123",
                        numPages: 2,
-                       coursesCount: 2),
+                       coursesCount: 2,
+                       progressEarned: 0,
+                       progressPossible: 0),
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
@@ -89,7 +95,9 @@ final class DashboardViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "1243",
                        numPages: 1,
-                       coursesCount: 2)
+                       coursesCount: 2,
+                       progressEarned: 0,
+                       progressPossible: 0)
         ]
         
         Given(connectivity, .isInternetAvaliable(getter: false))

@@ -7,12 +7,25 @@
 
 import Foundation
 
+public enum CourseTab: Int, CaseIterable, Identifiable {
+    public var id: Int {
+        rawValue
+    }
+
+    case course
+    case videos
+    case discussion
+    case dates
+    case handounds
+
+}
+
 public struct CourseItem: Hashable {
     public let name: String
     public let org: String
     public let shortDescription: String
     public let imageURL: String
-    public let isActive: Bool?
+    public let isActive: Bool
     public let courseStart: Date?
     public let courseEnd: Date?
     public let enrollmentStart: Date?
@@ -20,19 +33,23 @@ public struct CourseItem: Hashable {
     public let courseID: String
     public let numPages: Int
     public let coursesCount: Int
+    public let progressEarned: Double
+    public let progressPossible: Double
     
     public init(name: String,
                 org: String,
                 shortDescription: String,
                 imageURL: String,
-                isActive: Bool?,
+                isActive: Bool,
                 courseStart: Date?,
                 courseEnd: Date?,
                 enrollmentStart: Date?,
                 enrollmentEnd: Date?,
                 courseID: String,
                 numPages: Int,
-                coursesCount: Int) {
+                coursesCount: Int,
+                progressEarned: Double,
+                progressPossible: Double) {
         self.name = name
         self.org = org
         self.shortDescription = shortDescription
@@ -45,5 +62,7 @@ public struct CourseItem: Hashable {
         self.courseID = courseID
         self.numPages = numPages
         self.coursesCount = coursesCount
+        self.progressEarned = progressEarned
+        self.progressPossible = progressPossible
     }
 }

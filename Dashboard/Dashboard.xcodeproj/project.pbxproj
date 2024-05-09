@@ -7,14 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0277241E2BCE9E1500C2908D /* PrimaryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277241D2BCE9E1500C2908D /* PrimaryCardView.swift */; };
+		027724202BCEA16C00C2908D /* ProgressLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0277241F2BCEA16C00C2908D /* ProgressLineView.swift */; };
 		027DB33328D8BDBA002B6862 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DB33228D8BDBA002B6862 /* DashboardView.swift */; };
 		027DB33928D8D9F6002B6862 /* DashboardEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DB33828D8D9F6002B6862 /* DashboardEndpoint.swift */; };
 		027DB33D28D8DB5E002B6862 /* DashboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DB33C28D8DB5E002B6862 /* DashboardRepository.swift */; };
 		027DB33F28D8E605002B6862 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 027DB33E28D8E605002B6862 /* Core.framework */; };
 		027DB34328D8E89B002B6862 /* DashboardInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DB34228D8E89B002B6862 /* DashboardInteractor.swift */; };
 		027DB34528D8E9D2002B6862 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DB34428D8E9D2002B6862 /* DashboardViewModel.swift */; };
+		028895672BE3B34F00102D8C /* NoCoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028895662BE3B34E00102D8C /* NoCoursesView.swift */; };
+		02935B6F2BCEC91100B22F66 /* LearnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02935B6E2BCEC91100B22F66 /* LearnView.swift */; };
+		02935B712BCEC91F00B22F66 /* LearnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02935B702BCEC91F00B22F66 /* LearnViewModel.swift */; };
+		02935B772BCFB2C100B22F66 /* CourseCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02935B762BCFB2C100B22F66 /* CourseCardView.swift */; };
 		02A48B18295ACE200033D5E0 /* DashboardCoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A48B16295ACE200033D5E0 /* DashboardCoreModel.xcdatamodeld */; };
 		02A48B1A295ACE3D0033D5E0 /* DashboardPersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A48B19295ACE3D0033D5E0 /* DashboardPersistenceProtocol.swift */; };
+		02A98F112BD96814009B46BD /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A98F102BD96814009B46BD /* DropDownMenu.swift */; };
+		02A98F132BD96B9D009B46BD /* AllCoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A98F122BD96B9D009B46BD /* AllCoursesView.swift */; };
+		02A98F152BD96BC2009B46BD /* AllCoursesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A98F142BD96BC2009B46BD /* AllCoursesViewModel.swift */; };
+		02A98F172BD97886009B46BD /* CategoryFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A98F162BD97885009B46BD /* CategoryFilterView.swift */; };
 		02A9A90B2978194100B55797 /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A90A2978194100B55797 /* DashboardViewModelTests.swift */; };
 		02A9A90C2978194100B55797 /* Dashboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02EF39E728D89F560058F6BD /* Dashboard.framework */; platformFilter = ios; };
 		02A9A92929781A4D00B55797 /* DashboardMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A92829781A4D00B55797 /* DashboardMock.generated.swift */; };
@@ -39,14 +49,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0277241D2BCE9E1500C2908D /* PrimaryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryCardView.swift; sourceTree = "<group>"; };
+		0277241F2BCEA16C00C2908D /* ProgressLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressLineView.swift; sourceTree = "<group>"; };
 		027DB33228D8BDBA002B6862 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		027DB33828D8D9F6002B6862 /* DashboardEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardEndpoint.swift; sourceTree = "<group>"; };
 		027DB33C28D8DB5E002B6862 /* DashboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRepository.swift; sourceTree = "<group>"; };
 		027DB33E28D8E605002B6862 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		027DB34228D8E89B002B6862 /* DashboardInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardInteractor.swift; sourceTree = "<group>"; };
 		027DB34428D8E9D2002B6862 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		028895662BE3B34E00102D8C /* NoCoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCoursesView.swift; sourceTree = "<group>"; };
+		02935B6E2BCEC91100B22F66 /* LearnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnView.swift; sourceTree = "<group>"; };
+		02935B702BCEC91F00B22F66 /* LearnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnViewModel.swift; sourceTree = "<group>"; };
+		02935B762BCFB2C100B22F66 /* CourseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCardView.swift; sourceTree = "<group>"; };
 		02A48B17295ACE200033D5E0 /* DashboardCoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DashboardCoreModel.xcdatamodel; sourceTree = "<group>"; };
 		02A48B19295ACE3D0033D5E0 /* DashboardPersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPersistenceProtocol.swift; sourceTree = "<group>"; };
+		02A98F102BD96814009B46BD /* DropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
+		02A98F122BD96B9D009B46BD /* AllCoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCoursesView.swift; sourceTree = "<group>"; };
+		02A98F142BD96BC2009B46BD /* AllCoursesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCoursesViewModel.swift; sourceTree = "<group>"; };
+		02A98F162BD97885009B46BD /* CategoryFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFilterView.swift; sourceTree = "<group>"; };
 		02A9A9082978194100B55797 /* DashboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DashboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A9A90A2978194100B55797 /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
 		02A9A92829781A4D00B55797 /* DashboardMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardMock.generated.swift; sourceTree = "<group>"; };
@@ -107,6 +127,19 @@
 				02A48B16295ACE200033D5E0 /* DashboardCoreModel.xcdatamodeld */,
 			);
 			path = Persistence;
+			sourceTree = "<group>";
+		};
+		0277241C2BCE9DF300C2908D /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				0277241D2BCE9E1500C2908D /* PrimaryCardView.swift */,
+				02A98F102BD96814009B46BD /* DropDownMenu.swift */,
+				02A98F162BD97885009B46BD /* CategoryFilterView.swift */,
+				02935B762BCFB2C100B22F66 /* CourseCardView.swift */,
+				0277241F2BCEA16C00C2908D /* ProgressLineView.swift */,
+				028895662BE3B34E00102D8C /* NoCoursesView.swift */,
+			);
+			path = Elements;
 			sourceTree = "<group>";
 		};
 		027DB33628D8D851002B6862 /* Domain */ = {
@@ -181,6 +214,11 @@
 		02F6EF3F28D9ECA200835477 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				0277241C2BCE9DF300C2908D /* Elements */,
+				02935B6E2BCEC91100B22F66 /* LearnView.swift */,
+				02935B702BCEC91F00B22F66 /* LearnViewModel.swift */,
+				02A98F122BD96B9D009B46BD /* AllCoursesView.swift */,
+				02A98F142BD96BC2009B46BD /* AllCoursesViewModel.swift */,
 				027DB33228D8BDBA002B6862 /* DashboardView.swift */,
 				027DB34428D8E9D2002B6862 /* DashboardViewModel.swift */,
 				02F3BFE029252FCB0051930C /* DashboardRouter.swift */,
@@ -455,14 +493,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				02A48B1A295ACE3D0033D5E0 /* DashboardPersistenceProtocol.swift in Sources */,
+				028895672BE3B34F00102D8C /* NoCoursesView.swift in Sources */,
+				02935B6F2BCEC91100B22F66 /* LearnView.swift in Sources */,
+				02A98F172BD97886009B46BD /* CategoryFilterView.swift in Sources */,
 				027DB33D28D8DB5E002B6862 /* DashboardRepository.swift in Sources */,
+				02935B712BCEC91F00B22F66 /* LearnViewModel.swift in Sources */,
+				02A98F112BD96814009B46BD /* DropDownMenu.swift in Sources */,
 				02A48B18295ACE200033D5E0 /* DashboardCoreModel.xcdatamodeld in Sources */,
+				02935B772BCFB2C100B22F66 /* CourseCardView.swift in Sources */,
 				02F175332A4DABBF0019CD70 /* DashboardAnalytics.swift in Sources */,
 				027DB34528D8E9D2002B6862 /* DashboardViewModel.swift in Sources */,
+				0277241E2BCE9E1500C2908D /* PrimaryCardView.swift in Sources */,
 				027DB33328D8BDBA002B6862 /* DashboardView.swift in Sources */,
+				02A98F152BD96BC2009B46BD /* AllCoursesViewModel.swift in Sources */,
+				02A98F132BD96B9D009B46BD /* AllCoursesView.swift in Sources */,
 				02F3BFE129252FCB0051930C /* DashboardRouter.swift in Sources */,
 				027DB33928D8D9F6002B6862 /* DashboardEndpoint.swift in Sources */,
 				02F6EF4828D9ED8300835477 /* Strings.swift in Sources */,
+				027724202BCEA16C00C2908D /* ProgressLineView.swift in Sources */,
 				97E7DF0B2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift in Sources */,
 				027DB34328D8E89B002B6862 /* DashboardInteractor.swift in Sources */,
 			);

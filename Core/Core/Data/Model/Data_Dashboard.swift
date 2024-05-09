@@ -68,6 +68,7 @@ public extension DataLayer {
         public let isActive: Bool
         public let course: DashboardCourse
         public let courseModes: [CourseMode]
+        public let progress: Progress?
 
         enum CodingKeys: String, CodingKey {
             case auditAccessExpires = "audit_access_expires"
@@ -76,6 +77,7 @@ public extension DataLayer {
             case isActive = "is_active"
             case course
             case courseModes = "course_modes"
+            case progress
         }
 
         public init(
@@ -84,7 +86,8 @@ public extension DataLayer {
             mode: Mode,
             isActive: Bool,
             course: DashboardCourse,
-            courseModes: [CourseMode]
+            courseModes: [CourseMode],
+            progress: Progress?
         ) {
             self.auditAccessExpires = auditAccessExpires
             self.created = created
@@ -92,6 +95,7 @@ public extension DataLayer {
             self.isActive = isActive
             self.course = course
             self.courseModes = courseModes
+            self.progress = progress
         }
     }
 
@@ -244,7 +248,7 @@ public extension DataLayer.CourseEnrollments {
                 org: course.org,
                 shortDescription: "",
                 imageURL: fullImageURL,
-                isActive: true,
+                isActive: course.coursewareAccess.hasAccess,
                 courseStart: course.start != nil ? Date(iso8601: course.start!) : nil,
                 courseEnd: course.end != nil ? Date(iso8601: course.end!) : nil,
                 enrollmentStart: course.start != nil
@@ -255,7 +259,9 @@ public extension DataLayer.CourseEnrollments {
                 : nil,
                 courseID: course.id,
                 numPages: enrollments.numPages ?? 1,
-                coursesCount: enrollments.count ?? 0
+                coursesCount: enrollments.count ?? 0,
+                progressEarned: 0,
+                progressPossible: 0
             )
         }
     }

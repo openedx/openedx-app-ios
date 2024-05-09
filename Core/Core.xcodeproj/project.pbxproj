@@ -63,6 +63,8 @@
 		028CE96929858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028CE96829858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift */; };
 		028F9F37293A44C700DE65D0 /* Data_ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */; };
 		028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F9F38293A452B00DE65D0 /* ResetPassword.swift */; };
+		02935B732BCECAD000B22F66 /* Data_MyLearnCourses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02935B722BCECAD000B22F66 /* Data_MyLearnCourses.swift */; };
+		02935B752BCEE6D600B22F66 /* MyEnrollments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02935B742BCEE6D600B22F66 /* MyEnrollments.swift */; };
 		0295C885299B99DD00ABE571 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */; };
 		02A463112AEA966C00331037 /* AppReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A463102AEA966C00331037 /* AppReviewView.swift */; };
 		02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */; };
@@ -75,6 +77,7 @@
 		02B3E3B32930198600A50475 /* AVPlayerViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */; };
 		02B3F16E2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */; };
 		02C917F029CDA99E00DBB8BD /* Data_Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */; };
+		02CA59842BD7DDBE00D517AA /* DashboardConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CA59832BD7DDBE00D517AA /* DashboardConfig.swift */; };
 		02CF46C829546AA200A698EE /* NoCachedDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CF46C729546AA200A698EE /* NoCachedDataError.swift */; };
 		02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */; };
 		02D800CC29348F460099CF16 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D800CB29348F460099CF16 /* ImagePicker.swift */; };
@@ -245,6 +248,8 @@
 		028CE96829858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleKeyboardInputView.swift; sourceTree = "<group>"; };
 		028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_ResetPassword.swift; sourceTree = "<group>"; };
 		028F9F38293A452B00DE65D0 /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
+		02935B722BCECAD000B22F66 /* Data_MyLearnCourses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_MyLearnCourses.swift; sourceTree = "<group>"; };
+		02935B742BCEE6D600B22F66 /* MyEnrollments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEnrollments.swift; sourceTree = "<group>"; };
 		0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
 		02A463102AEA966C00331037 /* AppReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewView.swift; sourceTree = "<group>"; };
 		02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorePersistenceProtocol.swift; sourceTree = "<group>"; };
@@ -257,6 +262,7 @@
 		02B3E3B22930198600A50475 /* AVPlayerViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerViewControllerExtension.swift; sourceTree = "<group>"; };
 		02B3F16D2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollViewCompat.swift; sourceTree = "<group>"; };
 		02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Dashboard.swift; sourceTree = "<group>"; };
+		02CA59832BD7DDBE00D517AA /* DashboardConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardConfig.swift; sourceTree = "<group>"; };
 		02CF46C729546AA200A698EE /* NoCachedDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCachedDataError.swift; sourceTree = "<group>"; };
 		02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKStoreReviewControllerExtension.swift; sourceTree = "<group>"; };
 		02D800CB29348F460099CF16 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -586,6 +592,7 @@
 				0727878428D31657002E9142 /* Data_User.swift */,
 				0283347C28D4D3DE00C828FC /* Data_Discovery.swift */,
 				02C917EF29CDA99E00DBB8BD /* Data_Dashboard.swift */,
+				02935B722BCECAD000B22F66 /* Data_MyLearnCourses.swift */,
 				021D924728DC860C00ACC565 /* Data_UserProfile.swift */,
 				0259104929C4A5B6004B5A55 /* UserSettings.swift */,
 				070019A428F6F17900D5FC78 /* Data_Media.swift */,
@@ -611,6 +618,7 @@
 			children = (
 				0727878828D31734002E9142 /* User.swift */,
 				0284DBFD28D48C5300830893 /* CourseItem.swift */,
+				02935B742BCEE6D600B22F66 /* MyEnrollments.swift */,
 				021D924F28DC89D100ACC565 /* UserProfile.swift */,
 				070019AB28F6FD0100D5FC78 /* CourseDetailBlock.swift */,
 				0248C92229C075EF00DC8402 /* CourseBlockModel.swift */,
@@ -839,6 +847,7 @@
 				BAFB99832B0E282E007D09F9 /* MicrosoftConfig.swift */,
 				BAFB998F2B14B377007D09F9 /* GoogleConfig.swift */,
 				BAFB99912B14E23D007D09F9 /* AppleSignInConfig.swift */,
+				02CA59832BD7DDBE00D517AA /* DashboardConfig.swift */,
 				A53A32342B233DEC005FE38A /* ThemeConfig.swift */,
 				E0D586192B2FF74C009B4BA7 /* DiscoveryConfig.swift */,
 			);
@@ -1076,6 +1085,7 @@
 				0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */,
 				06619EAF2B973B25001FAADE /* AccessibilityInjection.swift in Sources */,
 				BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */,
+				02935B732BCECAD000B22F66 /* Data_MyLearnCourses.swift in Sources */,
 				027BD3B32909475900392132 /* Publishers+KeyboardState.swift in Sources */,
 				06DEA4A32BBD66A700110D20 /* BackNavigationButton.swift in Sources */,
 				0727877D28D25212002E9142 /* ProgressBar.swift in Sources */,
@@ -1181,9 +1191,11 @@
 				02F98A7F28F81EE900DE94C0 /* Container+App.swift in Sources */,
 				02B3F16E2AB489A400DDDD4E /* RefreshableScrollViewCompat.swift in Sources */,
 				0649879A2B4D69FF0071642A /* WebViewHTML.swift in Sources */,
+				02CA59842BD7DDBE00D517AA /* DashboardConfig.swift in Sources */,
 				0727877B28D24A1D002E9142 /* HeadersRedirectHandler.swift in Sources */,
 				0236961B28F9A28B00EEF206 /* AuthInteractor.swift in Sources */,
 				0770DE3028D09793006D8A5D /* EndPointType.swift in Sources */,
+				02935B752BCEE6D600B22F66 /* MyEnrollments.swift in Sources */,
 				020C31C9290AC3F700D6DEA2 /* PickerFields.swift in Sources */,
 				02F6EF3B28D9B8EC00835477 /* CourseCellView.swift in Sources */,
 				023A1138291432FD00D0D354 /* FieldConfiguration.swift in Sources */,

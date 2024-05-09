@@ -169,6 +169,22 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(LearnViewModel.self) { r in
+            LearnViewModel(
+                interactor: r.resolve(DashboardInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(DashboardAnalytics.self)!
+            )
+        }
+        
+        container.register(AllCoursesViewModel.self) { r in
+            AllCoursesViewModel(
+                interactor: r.resolve(DashboardInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(DashboardAnalytics.self)!
+            )
+        }
+        
         // MARK: Profile
         
         container.register(ProfileRepositoryProtocol.self) { r in
@@ -255,7 +271,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
+        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, selection, lastVisitedBlockID in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -270,7 +286,9 @@ class ScreenAssembly: Assembly {
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
                 enrollmentEnd: enrollmentEnd,
-                coreAnalytics: r.resolve(CoreAnalytics.self)!
+                lastVisitedBlockID: lastVisitedBlockID,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!,
+                selection: selection
             )
         }
         

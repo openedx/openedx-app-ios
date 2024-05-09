@@ -137,7 +137,10 @@ struct CourseCellView_Previews: PreviewProvider {
         enrollmentEnd: nil,
         courseID: "1",
         numPages: 1,
-        coursesCount: 10)
+        coursesCount: 10,
+        progressEarned: 4,
+        progressPossible: 10
+    )
     
     static var previews: some View {
         ZStack {

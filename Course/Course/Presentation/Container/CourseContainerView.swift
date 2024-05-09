@@ -311,9 +311,12 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseEnd: nil,
                 enrollmentStart: nil,
                 enrollmentEnd: nil,
+                lastVisitedBlockID: nil,
                 coreAnalytics: CoreAnalyticsMock()
             ),
-            courseID: "", title: "Title of Course")
+            courseID: "",
+            title: "Title of Course"
+        )
     }
 }
 #endif

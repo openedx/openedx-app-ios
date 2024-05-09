@@ -134,7 +134,9 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }
@@ -150,13 +152,15 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: nil,
+                    isActive: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }
@@ -179,7 +183,9 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
                     numPages: 1,
-                    coursesCount: 10
+                    coursesCount: 10,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }

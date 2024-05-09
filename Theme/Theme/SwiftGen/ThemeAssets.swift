@@ -36,6 +36,7 @@ public enum ThemeAssets {
   public static let cardViewStroke = ColorAsset(name: "CardViewStroke")
   public static let certificateForeground = ColorAsset(name: "CertificateForeground")
   public static let commentCellBackground = ColorAsset(name: "CommentCellBackground")
+  public static let courseCardShadow = ColorAsset(name: "CourseCardShadow")
   public static let datesSectionBackground = ColorAsset(name: "DatesSectionBackground")
   public static let datesSectionStroke = ColorAsset(name: "DatesSectionStroke")
   public static let nextWeekTimelineColor = ColorAsset(name: "NextWeekTimelineColor")

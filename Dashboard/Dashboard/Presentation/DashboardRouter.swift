@@ -16,7 +16,13 @@ public protocol DashboardRouter: BaseRouter {
                            courseEnd: Date?,
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
-                           title: String)
+                           title: String,
+                           selection: CourseTab,
+                           lastVisitedBlockID: String?)
+    
+    func showAllCourses(courses: [CourseItem])
+    
+    func showDiscoverySearch(searchQuery: String?)
     
 }
 
@@ -32,7 +38,13 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String) {}
+                                  title: String,
+                                  selection: CourseTab,
+                                  lastVisitedBlockID: String?) {}
+    
+    public func showAllCourses(courses: [CourseItem]) {}
+    
+    public func showDiscoverySearch(searchQuery: String?) {}
     
 }
 #endif

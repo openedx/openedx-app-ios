@@ -364,7 +364,9 @@ public class Router: AuthorizationRouter,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        selection: CourseTab,
+        lastVisitedBlockID: String?
     ) {
         let controller = getCourseScreensController(
             courseID: courseID,
@@ -373,7 +375,9 @@ public class Router: AuthorizationRouter,
             courseEnd: courseEnd,
             enrollmentStart: enrollmentStart,
             enrollmentEnd: enrollmentEnd,
-            title: title
+            title: title,
+            selection: selection,
+            lastVisitedBlockID: lastVisitedBlockID
         )
         navigationController.pushViewController(controller, animated: true)
     }
@@ -385,7 +389,9 @@ public class Router: AuthorizationRouter,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        selection: CourseTab,
+        lastVisitedBlockID: String?
     ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
@@ -393,7 +399,9 @@ public class Router: AuthorizationRouter,
             courseStart,
             courseEnd,
             enrollmentStart,
-            enrollmentEnd
+            enrollmentEnd,
+            selection,
+            lastVisitedBlockID
         )!
         let screensView = CourseContainerView(
             viewModel: vm,
@@ -402,6 +410,13 @@ public class Router: AuthorizationRouter,
         )
         
         return UIHostingController(rootView: screensView)
+    }
+    
+    public func showAllCourses(courses: [CourseItem]) {
+        let vm = Container.shared.resolve(AllCoursesViewModel.self)!
+        let view = AllCoursesView(viewModel: vm, router: self)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showHandoutsUpdatesView(

@@ -32,7 +32,9 @@ public class CoursePersistence: CoursePersistenceProtocol {
                            enrollmentEnd: $0.enrollmentEnd,
                            courseID: $0.courseID ?? "",
                            numPages: Int($0.numPages),
-                           coursesCount: Int($0.courseCount))}
+                           coursesCount: Int($0.courseCount),
+                           progressEarned: 0,
+                           progressPossible: 0)}
         if let result, !result.isEmpty {
             return result
         } else {
@@ -48,9 +50,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 newItem.org = item.org
                 newItem.desc = item.shortDescription
                 newItem.imageURL = item.imageURL
-                if let isActive = item.isActive {
-                    newItem.isActive = isActive
-                }
+                newItem.isActive = item.isActive
                 newItem.courseStart = item.courseStart
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart
@@ -146,6 +146,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
     
     public func saveCourseStructure(structure: DataLayer.CourseStructure) {
         context.performAndWait {
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let newStructure = CDCourseStructure(context: self.context)
             newStructure.certificate = structure.certificate?.url
             newStructure.mediaSmall = structure.media.image.small

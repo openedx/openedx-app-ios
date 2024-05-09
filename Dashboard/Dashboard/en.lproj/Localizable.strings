@@ -10,4 +10,36 @@
 "HEADER.COURSES" = "Courses";
 "HEADER.WELCOME_BACK" = "Welcome back. Let's keep learning.";
 
+"SEARCH" = "Search";
+
 "EMPTY.SUBTITLE" = "You are not enrolled in any courses yet.";
+
+"LEARN.TITLE" = "Learn";
+"LEARN.VIEW_ALL" = "View All";
+"LEARN.VIEW_ALL_COURSES" = "View All Courses (%@)";
+"LEARN.ALL_COURSES" = "All Courses";
+
+"LEARN.PRIMARY_CARD.ONE_PAST_ASSIGNMENT" = "1 Past Due Assignment";
+"LEARN.PRIMARY_CARD.VIEW_ASSIGNMENTS" = "View Assignments";
+"LEARN.PRIMARY_CARD.PAST_ASSIGNMENTS" = "%@ Past Due Assignments";
+"LEARN.PRIMARY_CARD.FUTURE_ASSIGNMENTS" = "%@ Assignments Due %@ ";
+"LEARN.PRIMARY_CARD.DUE_DAYS" = "%@ Due in %@ Days";
+"LEARN.PRIMARY_CARD.RESUME" = "Resume Course";
+"LEARN.PRIMARY_CARD.START_COURSE" = "Start Course";
+
+"LEARN.DROPDOWN_MENU.COURSES" = "Courses";
+"LEARN.DROPDOWN_MENU.PROGRAMS" = "Programs";
+
+"LEARN.CATEGORY.ALL" = "All";
+"LEARN.CATEGORY.IN_PROGRESS" = "In Progress";
+"LEARN.CATEGORY.COMPLETED" = "Completed";
+"LEARN.CATEGORY.EXPIRED" = "Expired";
+
+"LEARN.NO_COURSES_VIEW.NO_COURSES" = "No Courses";
+"LEARN.NO_COURSES_VIEW.NO_COURSES_IN_PROGRESS" = "No Courses in Progress";
+"LEARN.NO_COURSES_VIEW.NO_COMPLETED_COURSES" = "No Completed Courses";
+"LEARN.NO_COURSES_VIEW.NO_EXPIRED_COURSES" = "No Expired Courses";
+
+"LEARN.NO_COURSES_VIEW.NO_COURSES_DESCRIPTION" = "ou are not currently enrolled in any courses, would you like to explore the course catalog?";
+
+"LEARN.NO_COURSES_VIEW.FIND_A_COURSE" = "Find a Course";

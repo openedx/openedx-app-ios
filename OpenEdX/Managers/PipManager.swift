@@ -6,6 +6,7 @@
 //
 
 import Course
+import Core
 import Combine
 import Discovery
 import SwiftUI
@@ -189,7 +190,9 @@ public class PipManager: PipManagerProtocol {
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,
             enrollmentEnd: courseDetails.enrollmentEnd,
-            title: courseDetails.courseTitle
+            title: courseDetails.courseTitle,
+            selection: .course,
+            lastVisitedBlockID: nil
         )
         controller.rootView.viewModel.selection = holder.selectedCourseTab
         return controller

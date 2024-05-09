@@ -22,6 +22,8 @@ struct MainScreenView: View {
     @State private var updateAvaliable: Bool = false
     
     @ObservedObject private(set) var viewModel: MainScreenViewModel
+    
+    private let config = Container.shared.resolve(ConfigProtocol.self)
 
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
@@ -38,7 +40,29 @@ struct MainScreenView: View {
         
     var body: some View {
         TabView(selection: $viewModel.selection) {
-            let config = Container.shared.resolve(ConfigProtocol.self)
+            if config?.dashboard.type == .learn {
+                ZStack {
+                    LearnView(
+                        viewModel: Container.shared.resolve(LearnViewModel.self)!,
+                        router: Container.shared.resolve(DashboardRouter.self)!,
+                        programView: ProgramWebviewView(
+                            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+                            router: Container.shared.resolve(DiscoveryRouter.self)!
+                        ),
+                        openDiscoveryPage: { viewModel.selection = .discovery }
+                    )
+                    if updateAvaliable {
+                        UpdateNotificationView(config: viewModel.config)
+                    }
+                }
+                .tabItem {
+                    CoreAssets.learn.swiftUIImage.renderingMode(.template)
+                    Text(CoreLocalization.Mainscreen.learn)
+                }
+                .tag(MainTab.dashboard)
+                .accessibilityIdentifier("dashboard_tabitem")
+            }
+
             if config?.discovery.enabled ?? false {
                 ZStack {
                     if config?.discovery.type == .native {
@@ -68,44 +92,23 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
-            ZStack {
-                DashboardView(
-                    viewModel: Container.shared.resolve(DashboardViewModel.self)!,
-                    router: Container.shared.resolve(DashboardRouter.self)!
-                )
-                if updateAvaliable {
-                    UpdateNotificationView(config: viewModel.config)
-                }
-            }
-            .tabItem {
-                CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
-                Text(CoreLocalization.Mainscreen.dashboard)
-            }
-            .tag(MainTab.dashboard)
-            .accessibilityIdentifier("dashboard_tabitem")
-            
-            if config?.program.enabled ?? false {
+            if config?.dashboard.type == .dashboard {
                 ZStack {
-                    if config?.program.type == .webview {
-                        ProgramWebviewView(
-                            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
-                            router: Container.shared.resolve(DiscoveryRouter.self)!
-                        )
-                    } else if config?.program.type == .native {
-                        Text(CoreLocalization.Mainscreen.inDeveloping)
-                            .accessibilityIdentifier("indevelopment_program_text")
-                    }
+                    DashboardView(
+                        viewModel: Container.shared.resolve(DashboardViewModel.self)!,
+                        router: Container.shared.resolve(DashboardRouter.self)!
+                    )
                     
                     if updateAvaliable {
                         UpdateNotificationView(config: viewModel.config)
                     }
                 }
                 .tabItem {
-                    CoreAssets.programs.swiftUIImage.renderingMode(.template)
-                    Text(CoreLocalization.Mainscreen.programs)
+                    CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
+                    Text(CoreLocalization.Mainscreen.dashboard)
                 }
-                .tag(MainTab.programs)
-                .accessibilityIdentifier("programs_tabitem")
+                .tag(MainTab.dashboard)
+                .accessibilityIdentifier("dashboard_tabitem")
             }
             
             VStack {
@@ -120,8 +123,8 @@ struct MainScreenView: View {
             .tag(MainTab.profile)
             .accessibilityIdentifier("profile_tabitem")
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarHidden(viewModel.selection == .dashboard)
+        .navigationBarBackButtonHidden(viewModel.selection == .dashboard)
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
@@ -175,7 +178,9 @@ struct MainScreenView: View {
         case .discovery:
             return DiscoveryLocalization.title
         case .dashboard:
-            return DashboardLocalization.title
+            return config?.dashboard.type == .dashboard
+            ? DashboardLocalization.title
+            : DashboardLocalization.Learn.title
         case .programs:
             return CoreLocalization.Mainscreen.programs
         case .profile:

@@ -79,6 +79,12 @@ public enum CoreLocalization {
     }
   }
   public enum Date {
+    /// Course Ended
+    public static let courseEnded = CoreLocalization.tr("Localizable", "DATE.COURSE_ENDED", fallback: "Course Ended")
+    /// Course Ends
+    public static let courseEnds = CoreLocalization.tr("Localizable", "DATE.COURSE_ENDS", fallback: "Course Ends")
+    /// Course Starts
+    public static let courseStarts = CoreLocalization.tr("Localizable", "DATE.COURSE_STARTS", fallback: "Course Starts")
     /// Ended
     public static let ended = CoreLocalization.tr("Localizable", "DATE.ENDED", fallback: "Ended")
     /// Just now
@@ -136,6 +142,8 @@ public enum CoreLocalization {
     public static let discovery = CoreLocalization.tr("Localizable", "MAINSCREEN.DISCOVERY", fallback: "Discover")
     /// In developing
     public static let inDeveloping = CoreLocalization.tr("Localizable", "MAINSCREEN.IN_DEVELOPING", fallback: "In developing")
+    /// Learn
+    public static let learn = CoreLocalization.tr("Localizable", "MAINSCREEN.LEARN", fallback: "Learn")
     /// Profile
     public static let profile = CoreLocalization.tr("Localizable", "MAINSCREEN.PROFILE", fallback: "Profile")
     /// Programs

@@ -11,6 +11,8 @@ import Core
 public protocol DashboardPersistenceProtocol {
     func loadMyCourses() throws -> [CourseItem]
     func saveMyCourses(items: [CourseItem])
+    func loadMyEnrollments() throws -> MyEnrollments
+    func saveMyEnrollments(enrollments: MyEnrollments)
 }
 
 public final class DashboardBundle {
