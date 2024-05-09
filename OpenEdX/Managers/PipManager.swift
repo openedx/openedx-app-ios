@@ -189,9 +189,7 @@ public class PipManager: PipManagerProtocol {
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,
             enrollmentEnd: courseDetails.enrollmentEnd,
-            title: courseDetails.courseTitle,
-            isUpgradeable: false,
-            sku: nil
+            title: courseDetails.courseTitle
         )
         controller.rootView.viewModel.selection = holder.selectedCourseTab
         return controller

@@ -30,8 +30,6 @@ public struct CourseContainerView: View {
     
     private let coordinateBoundaryLower: CGFloat = -115
     private let coordinateBoundaryHigher: CGFloat = 40
-    private let isUpgradeable: Bool
-    private let sku: String?
     
     private struct GeometryName {
         static let backButton = "backButton"
@@ -45,9 +43,7 @@ public struct CourseContainerView: View {
         viewModel: CourseContainerViewModel,
         courseDatesViewModel: CourseDatesViewModel,
         courseID: String,
-        title: String,
-        isUpgradeable: Bool,
-        sku: String?
+        title: String
     ) {
         self.viewModel = viewModel
         Task {
@@ -63,8 +59,6 @@ public struct CourseContainerView: View {
         self.courseID = courseID
         self.title = title
         self.courseDatesViewModel = courseDatesViewModel
-        self.isUpgradeable = isUpgradeable
-        self.sku = sku
     }
     
     public var body: some View {
@@ -92,7 +86,7 @@ public struct CourseContainerView: View {
                     coordinate: $coordinate,
                     collapsed: $collapsed,
                     dateTabIndex: CourseTab.dates.rawValue,
-                    isUpgradeable: isUpgradeable
+                    isUpgradeable: viewModel.isUpgradeable
                 )
             } else {
                 ZStack(alignment: .top) {
@@ -106,9 +100,9 @@ public struct CourseContainerView: View {
                                 containerWidth: proxy.size.width,
                                 animationNamespace: animationNamespace,
                                 isAnimatingForTap: $isAnimatingForTap,
-                                isUpgradeable: isUpgradeable,
+                                isUpgradeable: viewModel.isUpgradeable,
                                 upgradeAction: {
-                                    if let sku = sku, isUpgradeable {
+                                    if let sku = viewModel.sku, viewModel.isUpgradeable {
                                         viewModel.showPaymentsInfo(for: sku)
                                     }
                                 }
@@ -196,7 +190,7 @@ public struct CourseContainerView: View {
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         dateTabIndex: CourseTab.dates.rawValue,
-                        isUpgradeable: isUpgradeable
+                        isUpgradeable: viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -214,7 +208,7 @@ public struct CourseContainerView: View {
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         dateTabIndex: CourseTab.dates.rawValue,
-                        isUpgradeable: isUpgradeable
+                        isUpgradeable: viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -228,7 +222,7 @@ public struct CourseContainerView: View {
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         viewModel: courseDatesViewModel,
-                        isUpgradeable: isUpgradeable
+                        isUpgradeable: viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -244,7 +238,7 @@ public struct CourseContainerView: View {
                         viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                             argument: title)!,
                         router: Container.shared.resolve(DiscussionRouter.self)!,
-                        isUpgradeable: isUpgradeable
+                        isUpgradeable: viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -258,7 +252,7 @@ public struct CourseContainerView: View {
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!,
-                        isUpgradeable: isUpgradeable
+                        isUpgradeable: viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -368,9 +362,7 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseName: "a",
                 analytics: CourseAnalyticsMock()
             ),
-            courseID: "", title: "Title of Course",
-            isUpgradeable: false,
-            sku: nil
+            courseID: "", title: "Title of Course"
         )
     }
 }

@@ -76,6 +76,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
+    var isUpgradeable: Bool {
+        courseStructure?.isUpgradeable ?? false
+    }
+    
+    var sku: String? {
+        courseStructure?.sku
+    }
+    
     let router: CourseRouter
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol

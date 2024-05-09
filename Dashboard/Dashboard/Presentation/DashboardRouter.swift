@@ -16,9 +16,7 @@ public protocol DashboardRouter: BaseRouter {
                            courseEnd: Date?,
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
-                           title: String,
-                           isUpgradeable: Bool,
-                           sku: String?
+                           title: String
     )
     
 }
@@ -34,9 +32,7 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String,
-                                  isUpgradeable: Bool,
-                                  sku: String?
+                                  title: String
     ) {}
 }
 #endif
