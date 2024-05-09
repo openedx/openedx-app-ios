@@ -146,8 +146,10 @@ public class PlayerTracker: PlayerTrackerProtocol {
             }
             .store(in: &cancellations)
 
-        
-        NotificationCenter.default.publisher(for: AVPlayerItem.didPlayToEndTimeNotification, object: player?.currentItem)
+        NotificationCenter.default.publisher(
+            for: AVPlayerItem.didPlayToEndTimeNotification,
+            object: player?.currentItem
+        )
             .sink {[weak self] _ in
                 if self?.player?.currentItem != nil {
                     self?.finishPublisher.send()

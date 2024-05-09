@@ -12,11 +12,7 @@ import _AVKit_SwiftUI
 
 struct PlayerViewController: UIViewControllerRepresentable {
     var playerController: AVPlayerViewController
-    
-    init(playerController: AVPlayerViewController) {
-        self.playerController = playerController
-    }
-    
+
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)

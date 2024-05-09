@@ -1,5 +1,5 @@
 //
-//  SubtittlesView.swift
+//  SubtitlesView.swift
 //  Course
 //
 //  Created by  Stepanok Ivan on 04.04.2023.
@@ -15,7 +15,7 @@ public struct Subtitle {
     var text: String
 }
 
-public struct SubtittlesView: View {
+public struct SubtitlesView: View {
     
     @Environment (\.isHorizontal) private var isHorizontal
     
@@ -117,7 +117,7 @@ import Combine
 struct SubtittlesView_Previews: PreviewProvider {
     static var previews: some View {
         
-        SubtittlesView(
+        SubtitlesView(
             languages: [SubtitleUrl(language: "fr", url: "url"),
                         SubtitleUrl(language: "uk", url: "url2")],
             currentTime: .constant(0),
@@ -128,6 +128,6 @@ struct SubtittlesView_Previews: PreviewProvider {
                 playerHolder: PlayerViewControllerHolder.mock
             ), scrollTo: {_ in }
         )
-    }    
+    }
 }
 #endif

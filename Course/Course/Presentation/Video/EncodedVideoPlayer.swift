@@ -69,7 +69,7 @@ public struct EncodedVideoPlayer: View {
                             }
                         }
                         if isHorizontal {
-                            SubtittlesView(
+                            SubtitlesView(
                                 languages: viewModel.languages,
                                 currentTime: $viewModel.currentTime,
                                 viewModel: viewModel,
@@ -87,7 +87,7 @@ public struct EncodedVideoPlayer: View {
                         }
                     }
                     if !isHorizontal {
-                        SubtittlesView(
+                        SubtitlesView(
                             languages: viewModel.languages,
                             currentTime: $viewModel.currentTime,
                             viewModel: viewModel,

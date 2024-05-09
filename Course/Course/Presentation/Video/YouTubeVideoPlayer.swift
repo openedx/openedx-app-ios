@@ -56,7 +56,7 @@ public struct YouTubeVideoPlayer: View {
                             }
                         }
                         ZStack {
-                            SubtittlesView(
+                            SubtitlesView(
                                 languages: viewModel.languages,
                                 currentTime: $viewModel.currentTime,
                                 viewModel: viewModel,
