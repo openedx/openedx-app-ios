@@ -364,7 +364,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 title: "Course title",
                 courseID: "",
                 isVideo: false,
-                selection: $selection, 
+                selection: $selection,
                 coordinate: .constant(0),
                 collapsed: .constant(false),
                 dateTabIndex: 2

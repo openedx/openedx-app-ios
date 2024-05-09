@@ -12,6 +12,7 @@ private var fontsParser = FontParser()
 
 public struct Theme {
     
+    // swiftlint:disable line_length
     public struct Colors {
         public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
         public private(set) static var accentXColor = ThemeAssets.accentXColor.swiftUIColor
@@ -164,6 +165,7 @@ public struct Theme {
             self.irreversibleAlert = irreversibleAlert
         }
     }
+    // swiftlint:enable line_length
     
     // Use this structure where the computed Color.uiColor() extension is not appropriate.
     public struct UIColors {
