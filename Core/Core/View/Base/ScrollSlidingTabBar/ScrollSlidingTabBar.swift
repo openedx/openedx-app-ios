@@ -9,36 +9,33 @@ import SwiftUI
 import Theme
 
 public struct ScrollSlidingTabBar: View {
-
+    
     @Binding private var selection: Int
     @State private var buttonFrames: [Int: CGRect] = [:]
     private let containerWidth: CGFloat
-    private let tabs: [String]
+    private let tabs: [(String, Image)]
     private let style: Style
     private let onTap: ((Int) -> Void)?
-
+    
     private var containerSpace: String {
         return "container"
     }
     
     public init(
         selection: Binding<Int>,
-        tabs: [String],
+        tabs: [(String, Image)],
         style: Style = .default,
         containerWidth: CGFloat,
         onTap: ((Int) -> Void)? = nil) {
-        self._selection = selection
-        self.tabs = tabs
-        self.style = style
-        self.onTap = onTap
-        self.containerWidth = containerWidth
-    }
+            self._selection = selection
+            self.tabs = tabs
+            self.style = style
+            self.onTap = onTap
+            self.containerWidth = containerWidth
+        }
     
     public var body: some View {
         ZStack(alignment: .bottomLeading) {
-            Rectangle()
-                .fill(style.borderColor)
-                .frame(height: style.borderHeight, alignment: .leading)
             ScrollViewReader { proxy in
                 ScrollView(.horizontal, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
@@ -50,6 +47,8 @@ public struct ScrollSlidingTabBar: View {
                     }
                     .coordinateSpace(name: containerSpace)
                 }
+                .onTapGesture {}
+                // Fix button tapable area bug – https://forums.developer.apple.com/forums/thread/745059
                 .onChange(of: selection) { newValue in
                     withAnimation {
                         proxy.scrollTo(newValue, anchor: .center)
@@ -66,20 +65,53 @@ extension ScrollSlidingTabBar {
     private func buttons() -> some View {
         HStack(spacing: 0) {
             ForEach(Array(tabs.enumerated()), id: \.offset) { obj in
-                Button {
-                    selection = obj.offset
-                    onTap?(obj.offset)
-                } label: {
-                    HStack {
-                        Text(obj.element)
-                            .font(isSelected(index: obj.offset) ? style.selectedFont : style.font)
+                Button(
+                    action: {
+                        selection = obj.offset
+                        onTap?(obj.offset)
+                    },
+                    label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundStyle(
+                                    isSelected(index: obj.offset)
+                                    ? style.activeAccentColor
+                                    : style.inactiveAccentColor
+                                )
+                                .onTapGesture {
+                                    selection = obj.offset
+                                    onTap?(obj.offset)
+                                }
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(
+                                            isSelected(index: obj.offset)
+                                            ? .clear
+                                            : style.borderColor,
+                                            lineWidth: style.borderHeight
+                                        )
+                                )
+                            HStack {
+                                obj.element.1.renderingMode(.template)
+                                    .padding(.leading, 12)
+                                Text(obj.element.0)
+                                    .padding(.trailing, 12)
+                                    .font(isSelected(index: obj.offset) ? style.selectedFont : style.font)
+                            }
+                            .accentColor(
+                                isSelected(index: obj.offset)
+                                ? Theme.Colors.slidingSelectedTextColor
+                                : Theme.Colors.slidingTextColor
+                            )
+                        }
+                        .frame( height: 40)
+                        .fixedSize(horizontal: true, vertical: true)
                     }
-                    .padding(.horizontal, style.buttonHInset)
-                    .padding(.vertical, style.buttonVInset)
-                }
-                .accentColor(
-                    isSelected(index: obj.offset) ? style.activeAccentColor : style.inactiveAccentColor
                 )
+                .padding(.leading, obj.offset == 0 ? style.buttonLeadingPadding : 0)
+                .padding(.trailing, obj.offset == tabs.count - 1 ? style.buttonTrailingPadding : 0)
+                .padding(.horizontal, style.buttonHInset)
+                .padding(.vertical, style.buttonVInset)
                 .readFrame(in: .named(containerSpace)) {
                     buttonFrames[obj.offset] = $0
                 }
@@ -142,6 +174,9 @@ extension ScrollSlidingTabBar {
         public let buttonHInset: CGFloat
         public let buttonVInset: CGFloat
         
+        public let buttonLeadingPadding: CGFloat
+        public let buttonTrailingPadding: CGFloat
+        
         public init(
             font: Font,
             selectedFont: Font,
@@ -151,7 +186,9 @@ extension ScrollSlidingTabBar {
             borderColor: Color,
             borderHeight: CGFloat,
             buttonHInset: CGFloat,
-            buttonVInset: CGFloat
+            buttonVInset: CGFloat,
+            buttonLeadingPadding: CGFloat,
+            buttonTrailingPadding: CGFloat
         ) {
             self.font = font
             self.selectedFont = selectedFont
@@ -162,19 +199,24 @@ extension ScrollSlidingTabBar {
             self.borderHeight = borderHeight
             self.buttonHInset = buttonHInset
             self.buttonVInset = buttonVInset
+            self.buttonLeadingPadding = buttonLeadingPadding
+            self.buttonTrailingPadding = buttonTrailingPadding
         }
         
         public static let `default` = Style(
-            font: Theme.Fonts.bodyLarge,
-            selectedFont: Theme.Fonts.titleMedium,
+            font: Theme.Fonts.titleSmall,
+            selectedFont: Theme.Fonts.titleSmall,
             activeAccentColor: Theme.Colors.accentXColor,
-            inactiveAccentColor: Theme.Colors.textSecondary,
-            indicatorHeight: 2,
-            borderColor: .gray.opacity(0.2),
+            inactiveAccentColor: Theme.Colors.background,
+            indicatorHeight: 0,
+            borderColor: Theme.Colors.slidingStrokeColor,
             borderHeight: 1,
-            buttonHInset: 16,
-            buttonVInset: 10
+            buttonHInset: 4,
+            buttonVInset: 2,
+            buttonLeadingPadding: 8,
+            buttonTrailingPadding: 8
         )
+        
     }
 }
 
@@ -187,7 +229,14 @@ private struct SlidingTabConsumerView: View {
         VStack(alignment: .leading) {
             ScrollSlidingTabBar(
                 selection: $selection,
-                tabs: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth"],
+                tabs: [
+                    ("First", Image(systemName: "1.circle")),
+                    ("Second", Image(systemName: "2.circle")),
+                    ("Third", Image(systemName: "3.circle")),
+                    ("Fourth", Image(systemName: "4.circle")),
+                    ("Fifth", Image(systemName: "5.circle")),
+                    ("Sixth", Image(systemName: "6.circle"))
+                ],
                 containerWidth: 300
             )
             TabView(selection: $selection) {

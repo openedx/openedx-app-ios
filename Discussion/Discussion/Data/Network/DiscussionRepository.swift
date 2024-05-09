@@ -210,8 +210,8 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
 }
 
 // Mark - For testing and SwiftUI preview
-#if DEBUG
 // swiftlint:disable all
+#if DEBUG
 public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
 
     public func getCourseDiscussionInfo(courseID: String) async throws -> DiscussionInfo {
@@ -515,5 +515,5 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
         return stringJSON
     }    
 }
-// swiftlint:enable all
 #endif
+// swiftlint:enable all

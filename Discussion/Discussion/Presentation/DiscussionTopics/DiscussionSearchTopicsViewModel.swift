@@ -161,7 +161,7 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
                 guard let self else { return }
                 self.router.showThread(
                     thread: thread,
-                    postStateSubject: self.postStateSubject, 
+                    postStateSubject: self.postStateSubject,
                     isBlackedOut: false,
                     animated: true
                 )

@@ -194,17 +194,17 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     // MARK: - Private intents
 
-    private func toggleStateIsOn() {
-        let totalCount = courseViewModel.downloadableVerticals.count
-        let availableCount = courseViewModel.downloadableVerticals.filter { $0.state == .available }.count
-        let finishedCount = courseViewModel.downloadableVerticals.filter { $0.state == .finished }.count
-        let downloadingCount = courseViewModel.downloadableVerticals.filter { $0.state == .downloading }.count
+    private func toggleStateIsOn(downloadableVerticals: Set<VerticalsDownloadState>) {
+        let totalCount = downloadableVerticals.count
+        let availableCount = downloadableVerticals.filter { $0.state == .available }.count
+        let finishedCount = downloadableVerticals.filter { $0.state == .finished }.count
+        let downloadingCount = downloadableVerticals.filter { $0.state == .downloading }.count
 
-        if downloadingCount == totalCount {
+        if downloadingCount == totalCount, totalCount > 0 {
             self.isOn = true
             return
         }
-        if totalCount == finishedCount {
+        if totalCount == finishedCount, totalCount > 0 {
             self.isOn = true
             return
         }
@@ -217,18 +217,18 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             return
         }
 
-        let isOn = totalCount - finishedCount == downloadingCount
+        let isOn = totalCount - finishedCount == downloadingCount && totalCount > 0
         self.isOn = isOn
     }
 
     private func observers() {
         currentDownloadTask = courseViewModel.manager.currentDownloadTask
-        toggleStateIsOn()
+        toggleStateIsOn(downloadableVerticals: courseViewModel.downloadableVerticals)
         courseViewModel.$downloadableVerticals
-            .sink { [weak self] _ in
+            .sink { [weak self] value in
                 guard let self else { return }
                 self.currentDownloadTask = self.courseViewModel.manager.currentDownloadTask
-                self.toggleStateIsOn()
+                self.toggleStateIsOn(downloadableVerticals: value)
         }
         .store(in: &cancellables)
         courseViewModel.manager.eventPublisher()
@@ -237,7 +237,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 if case .progress = state {
                     self.currentDownloadTask = self.courseViewModel.manager.currentDownloadTask
                 }
-                self.toggleStateIsOn()
+                self.toggleStateIsOn(downloadableVerticals: self.courseViewModel.downloadableVerticals)
             }
             .store(in: &cancellables)
     }

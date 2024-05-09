@@ -5,6 +5,8 @@
 //
 // Licensed under MIT License
 
+// swiftlint:disable all
+
 import SwiftUI
 
 /// A third-party mail client, offering a custom URL scheme.
@@ -145,3 +147,4 @@ public extension ThirdPartyMailClient {
         }
     }
 }
+// swiftlint:enable all

@@ -9,7 +9,7 @@ import Foundation
 import Core
 import SwiftUI
 
-// swiftlint:disable file_length type_body_length
+// swiftlint:disable type_body_length
 public struct Changes: Equatable {
     public var shortBiography: String
     public var profileType: ProfileType
@@ -141,14 +141,17 @@ public class EditProfileViewModel: ObservableObject {
     
     func checkChanges() {
         withAnimation(.easeIn(duration: 0.1)) {
-            self.isChanged =
-            [spokenLanguageConfiguration.text.isEmpty ? false : spokenLanguageConfiguration.text != userModel.spokenLanguage,
-             yearsConfiguration.text.isEmpty ? false : yearsConfiguration.text != String(userModel.yearOfBirth),
-             countriesConfiguration.text.isEmpty ? false : countriesConfiguration.text != userModel.country,
-             userModel.shortBiography != profileChanges.shortBiography,
-             profileChanges.isAvatarChanged,
-             profileChanges.isAvatarDeleted,
-             userModel.isFullProfile != profileChanges.profileType.boolValue].contains(where: { $0 == true })
+            self.isChanged = [
+                spokenLanguageConfiguration.text.isEmpty
+                ? false
+                : spokenLanguageConfiguration.text != userModel.spokenLanguage,
+                yearsConfiguration.text.isEmpty ? false : yearsConfiguration.text != String(userModel.yearOfBirth),
+                countriesConfiguration.text.isEmpty ? false : countriesConfiguration.text != userModel.country,
+                userModel.shortBiography != profileChanges.shortBiography,
+                profileChanges.isAvatarChanged,
+                profileChanges.isAvatarDeleted,
+                userModel.isFullProfile != profileChanges.profileType.boolValue
+            ].contains(where: { $0 == true })
         }
     }
     
@@ -365,4 +368,4 @@ public class EditProfileViewModel: ObservableObject {
         analytics.profileEditDoneClicked()
     }
 }
-// swiftlint:enable file_length type_body_length
+// swiftlint:enable type_body_length

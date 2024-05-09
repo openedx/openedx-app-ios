@@ -16,11 +16,18 @@ struct VideoDownloadQualityContainerView: View {
     private var downloadQuality: DownloadQuality
     private var didSelect: ((DownloadQuality) -> Void)?
     private let analytics: CoreAnalytics
+    private let router: CourseRouter
 
-    init(downloadQuality: DownloadQuality, didSelect: ((DownloadQuality) -> Void)?, analytics: CoreAnalytics) {
+    init(
+        downloadQuality: DownloadQuality,
+        didSelect: ((DownloadQuality) -> Void)?,
+        analytics: CoreAnalytics,
+        router: CourseRouter
+    ) {
         self.downloadQuality = downloadQuality
         self.didSelect = didSelect
         self.analytics = analytics
+        self.router = router
     }
 
     var body: some View {
@@ -28,7 +35,8 @@ struct VideoDownloadQualityContainerView: View {
             VideoDownloadQualityView(
                 downloadQuality: downloadQuality,
                 didSelect: didSelect,
-                analytics: analytics
+                analytics: analytics,
+                router: router
             )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

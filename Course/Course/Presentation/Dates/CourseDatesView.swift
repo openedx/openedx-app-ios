@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Core
 import Theme
+import SwiftUIIntrospect
 
 public struct CourseDatesView: View {
     
@@ -16,12 +17,18 @@ public struct CourseDatesView: View {
     
     @StateObject
     private var viewModel: CourseDatesViewModel
+    @Binding private var coordinate: CGFloat
+    @Binding private var collapsed: Bool
     
     public init(
         courseID: String,
+        coordinate: Binding<CGFloat>,
+        collapsed: Binding<Bool>,
         viewModel: CourseDatesViewModel
     ) {
         self.courseID = courseID
+        self._coordinate = coordinate
+        self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -35,8 +42,14 @@ public struct CourseDatesView: View {
                             .padding(.horizontal)
                     }
                 } else if let courseDates = viewModel.courseDates, !courseDates.courseDateBlocks.isEmpty {
-                    CourseDateListView(viewModel: viewModel, courseDates: courseDates, courseID: courseID)
-                        .padding(.top, 10)
+                    CourseDateListView(
+                        viewModel: viewModel,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
+                        courseDates: courseDates,
+                        courseID: courseID
+                    )
+                    .padding(.top, 10)
                 }
             }
             
@@ -101,8 +114,7 @@ public struct CourseDatesView: View {
         } else {
             return DatesSuccessView(
                 title: title,
-                message: message,
-                selectedTab: .dates
+                message: message
             ) {
                 viewModel.resetEventState()
             }
@@ -139,13 +151,19 @@ struct TimeLineView: View {
 struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
     @State private var isExpanded = false
+    @Binding var coordinate: CGFloat
+    @Binding var collapsed: Bool
     var courseDates: CourseDates
     let courseID: String
-
+    
     var body: some View {
         GeometryReader { proxy in
             VStack {
                 ScrollView {
+                    DynamicOffsetView(
+                        coordinate: $coordinate,
+                        collapsed: $collapsed
+                    )
                     VStack(alignment: .leading, spacing: 0) {
                         if !courseDates.hasEnded {
                             CalendarSyncView(courseID: courseID, viewModel: viewModel)
@@ -198,6 +216,7 @@ struct CourseDateListView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 5)
                     .frameLimit(width: proxy.size.width)
+                    Spacer(minLength: 200)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
@@ -209,7 +228,7 @@ struct CompletedBlocks: View {
     @Binding var isExpanded: Bool
     let courseDateBlockDict: [Date: [CourseDateBlock]]
     let viewModel: CourseDatesViewModel
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             // Toggle button to expand/collapse the cell
@@ -281,11 +300,10 @@ struct CompletedBlocks: View {
                 .padding(.bottom, 15)
                 .padding(.leading, 16)
             }
-
         }
         .overlay(
-          RoundedRectangle(cornerRadius: 8)
-            .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
         )
         .background(Theme.Colors.datesSectionBackground)
     }
@@ -490,6 +508,8 @@ struct CourseDatesView_Previews: PreviewProvider {
         
         CourseDatesView(
             courseID: "",
+            coordinate: .constant(0),
+            collapsed: .constant(false),
             viewModel: viewModel)
     }
 }
