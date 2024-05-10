@@ -24,7 +24,6 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum ThemeAssets {
-  public static let authBackground = ImageAsset(name: "authBackground")
   public static let accentButtonColor = ColorAsset(name: "AccentButtonColor")
   public static let accentColor = ColorAsset(name: "AccentColor")
   public static let accentXColor = ColorAsset(name: "AccentXColor")
@@ -58,6 +57,7 @@ public enum ThemeAssets {
   public static let secondaryButtonBorderColor = ColorAsset(name: "SecondaryButtonBorderColor")
   public static let secondaryButtonTextColor = ColorAsset(name: "SecondaryButtonTextColor")
   public static let shadowColor = ColorAsset(name: "ShadowColor")
+  public static let slidingSelectedTextColor = ColorAsset(name: "slidingSelectedTextColor")
   public static let slidingStrokeColor = ColorAsset(name: "slidingStrokeColor")
   public static let slidingTextColor = ColorAsset(name: "slidingTextColor")
   public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
@@ -82,6 +82,7 @@ public enum ThemeAssets {
   public static let warningText = ColorAsset(name: "warningText")
   public static let white = ColorAsset(name: "white")
   public static let appLogo = ImageAsset(name: "appLogo")
+  public static let headerBackground = ImageAsset(name: "headerBackground")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

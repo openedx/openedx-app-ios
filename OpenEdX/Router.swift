@@ -403,8 +403,16 @@ public class Router: AuthorizationRouter,
             selection,
             lastVisitedBlockID
         )!
+        
+        let datesVm = Container.shared.resolve(
+            CourseDatesViewModel.self,
+            arguments: courseID,
+            title
+        )!
+        
         let screensView = CourseContainerView(
             viewModel: vm,
+            courseDatesViewModel: datesVm,
             courseID: courseID,
             title: title
         )
@@ -709,6 +717,20 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showVideoSettings() {
+        let viewModel = Container.shared.resolve(SettingsViewModel.self)!
+        let view = VideoSettingsView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showManageAccount() {
+        let viewModel = Container.shared.resolve(ManageAccountViewModel.self)!
+        let view = ManageAccountView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     public func showVideoQualityView(viewModel: SettingsViewModel) {
         let view = VideoQualityView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
@@ -723,7 +745,8 @@ public class Router: AuthorizationRouter,
         let view = VideoDownloadQualityView(
             downloadQuality: downloadQuality,
             didSelect: didSelect,
-            analytics: analytics
+            analytics: analytics,
+            router: self
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)

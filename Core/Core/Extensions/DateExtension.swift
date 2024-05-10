@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public extension Date {
     init(iso8601: String) {
         let formats = ["yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"]

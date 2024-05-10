@@ -17,14 +17,13 @@ import Theme
 
 struct MainScreenView: View {
     
-    @State private var settingsTapped: Bool = false
     @State private var disableAllTabs: Bool = false
-    @State private var updateAvaliable: Bool = false
+    @State private var updateAvailable: Bool = false
     
     @ObservedObject private(set) var viewModel: MainScreenViewModel
     
     private let config = Container.shared.resolve(ConfigProtocol.self)!
-    
+
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
@@ -48,7 +47,7 @@ struct MainScreenView: View {
                         router: Container.shared.resolve(DashboardRouter.self)!
                     )
                     
-                    if updateAvaliable {
+                    if updateAvailable {
                         UpdateNotificationView(config: viewModel.config)
                     }
                 }
@@ -69,7 +68,7 @@ struct MainScreenView: View {
                         ),
                         openDiscoveryPage: { viewModel.selection = .discovery }
                     )
-                    if updateAvaliable {
+                    if updateAvailable {
                         UpdateNotificationView(config: viewModel.config)
                     }
                 }
@@ -98,7 +97,7 @@ struct MainScreenView: View {
                         )
                     }
                     
-                    if updateAvaliable {
+                    if updateAvailable {
                         UpdateNotificationView(config: viewModel.config)
                     }
                 }
@@ -112,7 +111,7 @@ struct MainScreenView: View {
             
             VStack {
                 ProfileView(
-                    viewModel: Container.shared.resolve(ProfileViewModel.self)!, settingsTapped: $settingsTapped
+                    viewModel: Container.shared.resolve(ProfileViewModel.self)!
                 )
             }
             .tabItem {
@@ -127,17 +126,14 @@ struct MainScreenView: View {
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
-                if viewModel.selection == .profile {
-                    Button(action: {
-                        settingsTapped.toggle()
-                    }, label: {
-                        CoreAssets.edit.swiftUIImage.renderingMode(.template)
-                            .foregroundColor(Theme.Colors.navigationBarTintColor)
-                    })
-                    .accessibilityIdentifier("edit_profile_button")
-                } else {
-                    VStack {}
-                }
+                Button(action: {
+                    let router = Container.shared.resolve(ProfileRouter.self)!
+                    router.showSettings()
+                }, label: {
+                    CoreAssets.settings.swiftUIImage.renderingMode(.template)
+                        .foregroundColor(Theme.Colors.accentColor)
+                })
+                .accessibilityIdentifier("edit_profile_button")
             })
         }
         .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
@@ -145,7 +141,7 @@ struct MainScreenView: View {
             disableAllTabs = true
         }
         .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
-            updateAvaliable = true
+            updateAvailable = true
         }
         .onChange(of: viewModel.selection) { _ in
             if disableAllTabs {

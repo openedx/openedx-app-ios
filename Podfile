@@ -4,7 +4,7 @@ use_frameworks! :linkage => :static
 abstract_target "App" do
   
   #Code style
-  pod 'SwiftLint', '~> 0.5'
+  pod 'SwiftLint', '~> 0.54.0'
   #CodeGen for resources
   pod 'SwiftGen', '~> 6.6'
   

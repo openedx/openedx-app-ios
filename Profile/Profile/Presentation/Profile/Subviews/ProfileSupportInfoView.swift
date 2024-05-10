@@ -20,7 +20,7 @@ struct ProfileSupportInfoView: View {
         let title: String
     }
 
-    @ObservedObject var viewModel: ProfileViewModel
+    @ObservedObject var viewModel: SettingsViewModel
 
     var body: some View {
         Text(ProfileLocalization.supportInfo)
@@ -28,6 +28,7 @@ struct ProfileSupportInfoView: View {
             .font(Theme.Fonts.labelLarge)
             .foregroundColor(Theme.Colors.textSecondary)
             .accessibilityIdentifier("support_info_text")
+            .padding(.top, 12)
         
         VStack(alignment: .leading, spacing: 24) {
             viewModel.contactSupport().map(supportInfo)

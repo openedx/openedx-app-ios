@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Dictionary where Key == String, Value == String {
-    public func toJson() -> String? {
+    func toJson() -> String? {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: self, options: []) else {
             return nil
         }

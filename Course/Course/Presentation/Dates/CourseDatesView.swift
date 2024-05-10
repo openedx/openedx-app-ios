@@ -114,8 +114,7 @@ public struct CourseDatesView: View {
         } else {
             return DatesSuccessView(
                 title: title,
-                message: message,
-                selectedTab: .dates
+                message: message
             ) {
                 viewModel.resetEventState()
             }
@@ -510,7 +509,7 @@ struct CourseDatesView_Previews: PreviewProvider {
         CourseDatesView(
             courseID: "",
             coordinate: .constant(0),
-            collapsed: .constant(false), 
+            collapsed: .constant(false),
             viewModel: viewModel)
     }
 }
