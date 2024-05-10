@@ -216,7 +216,7 @@ public struct CourseOutlineView: View {
                 .ignoresSafeArea()
         )
         .sheet(isPresented: $showingDownloads) {
-            DownloadsView(manager: viewModel.manager)
+            DownloadsView(router: viewModel.router, manager: viewModel.manager)
         }
         .sheet(isPresented: $showingVideoDownloadQuality) {
             viewModel.storage.userSettings.map {
