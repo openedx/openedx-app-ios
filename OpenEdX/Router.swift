@@ -820,10 +820,7 @@ extension Router {
 extension Router {
     public func showUpgradeInfo(productName: String, sku: String) {
         let view = UpgradeInfoView(
-            viewModel: UpgradeInfoViewModel(
-                productName: productName,
-                sku: sku
-            )
+            viewModel: Container.shared.resolve(UpgradeInfoViewModel.self, arguments: productName, sku)!
         )
         let controller = UIHostingController(rootView: view)
         if let sheet = controller.sheetPresentationController {

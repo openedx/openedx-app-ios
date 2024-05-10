@@ -11,10 +11,26 @@ import Theme
 public class UpgradeInfoViewModel: ObservableObject {
     let productName: String
     let sku: String
+    let storeInteractor: StoreInteractorProtocol
+    
+    @Published var isLoading: Bool = false
+    @Published var product: StoreProduct?
 
-    public init(productName: String, sku: String) {
+    public init(productName: String, sku: String, storeInteractor: StoreInteractorProtocol ) {
         self.productName = productName
         self.sku = sku
+        self.storeInteractor = storeInteractor
+    }
+    
+    @MainActor
+    func fetchProduct() async {
+        do {
+            isLoading = true
+            self.product = try await storeInteractor.fetchProduct(sku: sku)
+            isLoading = false
+        } catch let error {
+            // TODO: show error state
+        }
     }
 }
 
@@ -69,18 +85,27 @@ public struct UpgradeInfoView: View {
                 .padding(.top, 30)
             }
             Spacer()
-            StyledButton(
-                CoreLocalization.CourseUpgrade.View.Button.upgradeNow,
-                action: {
-                    
-                },
-                color: Theme.Colors.accentButtonColor,
-                textColor: Theme.Colors.primaryButtonTextColor,
-                leftImage: Image(systemName: "lock.fill"),
-                imagesStyle: .attachedToText,
-                isTitleTracking: false,
-                isLimitedOnPad: false)
+            ZStack {
+                StyledButton(
+                    CoreLocalization.CourseUpgrade.View.Button.upgradeNow,
+                    action: {
+                        
+                    },
+                    color: Theme.Colors.accentButtonColor,
+                    textColor: Theme.Colors.primaryButtonTextColor,
+                    leftImage: Image(systemName: "lock.fill"),
+                    imagesStyle: .attachedToText,
+                    isTitleTracking: false,
+                    isLimitedOnPad: false)
+                .opacity(viewModel.isLoading ? 0 : 1)
+                
+                ProgressBar(size: 40, lineWidth: 8)
+                    .opacity(viewModel.isLoading ? 1 : 0)
+            }
             .padding(20)
+        }
+        .task {
+            await viewModel.fetchProduct()
         }
     }
 }
@@ -90,7 +115,8 @@ public struct UpgradeInfoView: View {
     UpgradeInfoView(
         viewModel: UpgradeInfoViewModel(
             productName: "Preview",
-            sku: "SKU"
+            sku: "SKU",
+            storeInteractor: StoreInteractorMock(handler: StoreKitHandlerMock())
         )
     )
 }

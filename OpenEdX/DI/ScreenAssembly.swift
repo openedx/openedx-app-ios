@@ -458,7 +458,7 @@ class ScreenAssembly: Assembly {
             r.resolve(Router.self)!
         }
         
-        container.register(StorekitHandler.self) { _ in
+        container.register(StoreKitHandlerProtocol.self) { _ in
             StorekitHandler()
         }.inObjectScope(.container)
         
@@ -489,6 +489,21 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(CoreAnalytics.self)!
             )
         }.inObjectScope(.container)
+        
+        // MARK: Upgrade info
+        container.register(
+            UpgradeInfoViewModel.self
+        ) { r, productName, sku in
+            UpgradeInfoViewModel(
+                productName: productName,
+                sku: sku,
+                storeInteractor: r.resolve(StoreInteractorProtocol.self)!
+            )
+        }
+        
+        container.register(StoreInteractorProtocol.self) { r in
+            StoreInteractor(handler: r.resolve(StoreKitHandlerProtocol.self)!)
+        }
     }
 }
 // swiftlint:enable function_body_length type_body_length

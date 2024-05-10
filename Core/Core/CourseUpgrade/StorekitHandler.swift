@@ -16,7 +16,7 @@ public enum TransctionType: String {
     case purchase
 }
 
-public enum UpgradeError: String {
+public enum UpgradeError: Error {
     case paymentsNotAvailable // device isn't allowed to make payments
     case paymentError // unable to purchase a product
     case receiptNotAvailable // unable to fetech inapp purchase receipt
@@ -42,7 +42,61 @@ public enum UpgradeError: String {
     }
 }
 
-public class StorekitHandler: NSObject {
+public struct StoreProduct {
+    var price: NSDecimalNumber
+    var localizedPrice: String?
+    var currencySymbol: String?
+}
+
+public protocol StoreInteractorProtocol {
+    init(handler: StoreKitHandlerProtocol)
+    
+    func fetchProduct(sku: String) async throws -> StoreProduct
+    func fetchProduct(sku: String, completion: @escaping (StoreProduct?, Error?) -> Void)
+}
+
+class StoreInteractorMock: StoreInteractorProtocol {
+    required init(handler: StoreKitHandlerProtocol) {}
+    
+    func fetchProduct(sku: String) async throws -> StoreProduct {
+        StoreProduct(price: .zero)
+    }
+    func fetchProduct(sku: String, completion: @escaping (StoreProduct?, (any Error)?) -> Void) {}
+}
+
+public protocol StoreKitHandlerProtocol {
+    func fetchProduct(sku: String) async throws -> StoreProduct
+    func fetchProduct(sku: String, completion: @escaping (StoreProduct?, Error?) -> Void)
+    func completeTransactions()
+}
+
+class StoreKitHandlerMock: StoreKitHandlerProtocol {
+    func fetchProduct(sku: String) async throws -> StoreProduct {
+        StoreProduct(price: .zero)
+    }
+    func fetchProduct(sku: String, completion: @escaping (StoreProduct?, (any Error)?) -> Void) {}
+    func completeTransactions() {}
+}
+
+public class StoreInteractor: StoreInteractorProtocol {
+    
+    private let handler: StoreKitHandlerProtocol
+    
+    required public init(handler: StoreKitHandlerProtocol) {
+        self.handler = handler
+    }
+    
+    public func fetchProduct(sku: String) async throws -> StoreProduct {
+        try await handler.fetchProduct(sku: sku)
+    }
+    
+    public func fetchProduct(sku: String, completion: @escaping (StoreProduct?, (any Error)?) -> Void) {
+        handler.fetchProduct(sku: sku, completion: completion)
+    }
+}
+
+public class StorekitHandler: NSObject, StoreKitHandlerProtocol {
+    
     // Use this dictionary to keep track of inprocess transctions and allow only one transction at a time
     private(set) var purchases: [String: Any] = [:]
 
@@ -108,6 +162,38 @@ public class StorekitHandler: NSObject {
         }
     }
 
+    public func fetchProduct(sku: String) async throws -> StoreProduct {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchPrroduct(sku) { product, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let product = product {
+                    let dataProduct = StoreProduct(
+                        price: product.price,
+                        localizedPrice: product.localizedPrice,
+                        currencySymbol: product.priceLocale.currencySymbol
+                    )
+                    continuation.resume(returning: dataProduct)
+                }
+            }
+        }
+    }
+    
+    public func fetchProduct(sku: String, completion: @escaping (StoreProduct?, Error?) -> Void) {
+        fetchPrroduct(sku) { product, error in
+            if let error = error {
+                completion(nil, error)
+            } else if let product = product {
+                let dataProduct = StoreProduct(
+                    price: product.price,
+                    localizedPrice: product.localizedPrice,
+                    currencySymbol: product.priceLocale.currencySymbol
+                )
+                completion(dataProduct, nil)
+            }
+        }
+    }
+    
     public func fetchPrroduct(_ identifier: String, completion: ((SKProduct?, UpgradeError?) -> Void)? = nil) {
         SwiftyStoreKit.retrieveProductsInfo([identifier]) { result in
             if let product = result.retrievedProducts.first {
