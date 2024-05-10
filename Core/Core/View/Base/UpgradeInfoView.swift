@@ -15,6 +15,11 @@ public class UpgradeInfoViewModel: ObservableObject {
     
     @Published var isLoading: Bool = false
     @Published var product: StoreProduct?
+    @Published var error: Error?
+    var price: String {
+        guard let product = product, let price = product.localizedPrice else { return "" }
+        return price
+    }
 
     public init(productName: String, sku: String, storeInteractor: StoreInteractorProtocol ) {
         self.productName = productName
@@ -29,7 +34,7 @@ public class UpgradeInfoViewModel: ObservableObject {
             self.product = try await storeInteractor.fetchProduct(sku: sku)
             isLoading = false
         } catch let error {
-            // TODO: show error state
+            self.error = error
         }
     }
 }
@@ -65,6 +70,7 @@ struct UpgradeInfoPointView: View {
 }
 
 public struct UpgradeInfoView: View {
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: UpgradeInfoViewModel
     
     public init(viewModel: UpgradeInfoViewModel) {
@@ -72,40 +78,59 @@ public struct UpgradeInfoView: View {
     }
     
     public var body: some View {
-        VStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("\(CoreLocalization.CourseUpgrade.View.title) \(viewModel.productName)")
-                        .font(Theme.Fonts.displaySmall)
-                    UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.first)
-                    UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.second)
-                    UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.third)
+        NavigationView {
+            VStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("\(CoreLocalization.CourseUpgrade.View.title) \(viewModel.productName)")
+                            .font(Theme.Fonts.titleLarge)
+                        UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.first)
+                        UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.second)
+                        UpgradeInfoCellView(title: CoreLocalization.CourseUpgrade.View.Option.third)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 30)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 30)
+                Spacer()
+                ZStack {
+                    StyledButton(
+                        "\(CoreLocalization.CourseUpgrade.View.Button.upgradeNow) \(viewModel.price)",
+                        action: {
+                            
+                        },
+                        color: Theme.Colors.accentButtonColor,
+                        textColor: Theme.Colors.styledButtonText,
+                        leftImage: Image(systemName: "lock.fill"),
+                        imagesStyle: .attachedToText,
+                        isTitleTracking: false,
+                        isLimitedOnPad: false)
+                    .opacity(viewModel.isLoading ? 0 : 1)
+                    
+                    ProgressBar(size: 40, lineWidth: 8)
+                        .opacity(viewModel.isLoading ? 1 : 0)
+                }
+                .padding(20)
             }
-            Spacer()
-            ZStack {
-                StyledButton(
-                    CoreLocalization.CourseUpgrade.View.Button.upgradeNow,
-                    action: {
-                        
-                    },
-                    color: Theme.Colors.accentButtonColor,
-                    textColor: Theme.Colors.primaryButtonTextColor,
-                    leftImage: Image(systemName: "lock.fill"),
-                    imagesStyle: .attachedToText,
-                    isTitleTracking: false,
-                    isLimitedOnPad: false)
-                .opacity(viewModel.isLoading ? 0 : 1)
-                
-                ProgressBar(size: 40, lineWidth: 8)
-                    .opacity(viewModel.isLoading ? 1 : 0)
+            .background {
+                Theme.Colors.background
+                    .ignoresSafeArea()
             }
-            .padding(20)
-        }
-        .task {
-            await viewModel.fetchProduct()
+            .task {
+                await viewModel.fetchProduct()
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundColor(Theme.Colors.accentColor)
+                    }
+                    .accessibilityIdentifier("close_button")
+                }
+            }
         }
     }
 }

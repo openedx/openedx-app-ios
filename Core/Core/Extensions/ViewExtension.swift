@@ -154,7 +154,7 @@ public extension View {
                 .offset(y: 2)
                 .foregroundColor(color)
             self
-                .offset(y: 2)                
+                .offset(y: 2)
         }
     }
     
