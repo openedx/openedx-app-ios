@@ -12,10 +12,9 @@ import Combine
 
 public class PrimaryCourseDashboardViewModel: ObservableObject {
     
-    public var nextPage = 1
-    public var totalPages = 1
-    @Published public private(set) var fetchInProgress = false
-    
+    var nextPage = 1
+    var totalPages = 1
+    @Published public private(set) var fetchInProgress = true
     @Published var enrollments: PrimaryEnrollment?
     @Published var showError: Bool = false
     var errorMessage: String? {
@@ -31,9 +30,14 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     private let analytics: DashboardAnalytics
     private var onCourseEnrolledCancellable: AnyCancellable?
     
-    public init(interactor: DashboardInteractorProtocol,
-                connectivity: ConnectivityProtocol,
-                analytics: DashboardAnalytics) {
+    private let ipadPageSize = 7
+    private let iphonePageSize = 5
+    
+    public init(
+        interactor: DashboardInteractorProtocol,
+        connectivity: ConnectivityProtocol,
+        analytics: DashboardAnalytics
+    ) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
@@ -50,7 +54,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     
     @MainActor
     public func getEnrollments(showProgress: Bool = true) async {
-        let pageSize = UIDevice.current.userInterfaceIdiom == .pad ? 7 : 5
+        let pageSize = UIDevice.current.userInterfaceIdiom == .pad ? ipadPageSize : iphonePageSize
         fetchInProgress = showProgress
         do {
             if connectivity.isInternetAvaliable {

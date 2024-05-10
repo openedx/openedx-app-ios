@@ -365,7 +365,7 @@ public class Router: AuthorizationRouter,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
-        selection: CourseTab,
+        showDates: Bool,
         lastVisitedBlockID: String?
     ) {
         let controller = getCourseScreensController(
@@ -376,7 +376,7 @@ public class Router: AuthorizationRouter,
             enrollmentStart: enrollmentStart,
             enrollmentEnd: enrollmentEnd,
             title: title,
-            selection: selection,
+            showDates: showDates,
             lastVisitedBlockID: lastVisitedBlockID
         )
         navigationController.pushViewController(controller, animated: true)
@@ -390,7 +390,7 @@ public class Router: AuthorizationRouter,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
-        selection: CourseTab,
+        showDates: Bool,
         lastVisitedBlockID: String?
     ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
@@ -400,7 +400,7 @@ public class Router: AuthorizationRouter,
             courseEnd,
             enrollmentStart,
             enrollmentEnd,
-            selection,
+            showDates ? CourseTab.dates : CourseTab.course,
             lastVisitedBlockID
         )!
         

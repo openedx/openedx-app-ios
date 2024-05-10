@@ -32,34 +32,34 @@ public class DashboardRepository: DashboardRepositoryProtocol {
     
     public func getEnrollments(page: Int) async throws -> [CourseItem] {
         let result = try await api.requestData(
-            DashboardEndpoint.getMyCourses(username: storage.user?.username ?? "", page: page)
+            DashboardEndpoint.getEnrollments(username: storage.user?.username ?? "", page: page)
         )
             .mapResponse(DataLayer.CourseEnrollments.self)
             .domain(baseURL: config.baseURL.absoluteString)
-        persistence.saveMyCourses(items: result)
+        persistence.saveEnrollments(items: result)
         return result
         
     }
     
     public func getEnrollmentsOffline() throws -> [CourseItem] {
-        return try persistence.loadMyCourses()
+        return try persistence.loadEnrollments()
     }
     
     public func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment {
         let result = try await api.requestData(
-            DashboardEndpoint.getMyLearnCourses(
+            DashboardEndpoint.getPrimaryEnrollment(
                 username: storage.user?.username ?? "",
                 pageSize: pageSize
             )
         )
             .mapResponse(DataLayer.PrimaryEnrollment.self)
             .domain(baseURL: config.baseURL.absoluteString)
-        persistence.saveMyEnrollments(enrollments: result)
+        persistence.savePrimaryEnrollment(enrollments: result)
         return result
     }
     
     public func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment {
-        return try persistence.loadMyEnrollments()
+        return try persistence.loadPrimaryEnrollment()
     }
     
     public func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment {

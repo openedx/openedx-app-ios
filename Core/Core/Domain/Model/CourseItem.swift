@@ -7,19 +7,6 @@
 
 import Foundation
 
-public enum CourseTab: Int, CaseIterable, Identifiable {
-    public var id: Int {
-        rawValue
-    }
-
-    case course
-    case videos
-    case discussion
-    case dates
-    case handounds
-
-}
-
 public struct CourseItem: Hashable {
     public let name: String
     public let org: String

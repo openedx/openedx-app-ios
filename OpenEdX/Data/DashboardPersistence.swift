@@ -18,7 +18,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         self.context = context
     }
     
-    public func loadMyCourses() throws -> [CourseItem] {
+    public func loadEnrollments() throws -> [CourseItem] {
         let result = try? context.fetch(CDDashboardCourse.fetchRequest())
             .map { CourseItem(name: $0.name ?? "",
                               org: $0.org ?? "",
@@ -41,7 +41,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
     
-    public func saveMyCourses(items: [CourseItem]) {
+    public func saveEnrollments(items: [CourseItem]) {
         for item in items {
             context.performAndWait {
                 let newItem = CDDashboardCourse(context: self.context)
@@ -67,7 +67,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
 
-    public func loadMyEnrollments() throws -> PrimaryEnrollment {
+    public func loadPrimaryEnrollment() throws -> PrimaryEnrollment {
         let request = CDMyEnrollments.fetchRequest()
         if let result = try context.fetch(request).first {
             let primaryCourse = result.primaryCourse.flatMap { cdPrimaryCourse -> PrimaryCourse? in
@@ -145,7 +145,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     }
     
     // swiftlint:disable function_body_length
-    public func saveMyEnrollments(enrollments: PrimaryEnrollment) {
+    public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) {
         context.performAndWait {
             let request: NSFetchRequest<CDMyEnrollments> = CDMyEnrollments.fetchRequest()
             

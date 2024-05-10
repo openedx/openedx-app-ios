@@ -281,7 +281,7 @@ private struct CourseStateView: View {
                         enrollmentStart: courseDetails.enrollmentStart,
                         enrollmentEnd: courseDetails.enrollmentEnd,
                         title: title,
-                        selection: .course,
+                        showDates: false,
                         lastVisitedBlockID: nil
                     )
                 }

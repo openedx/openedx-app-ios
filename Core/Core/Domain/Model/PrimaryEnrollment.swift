@@ -31,8 +31,8 @@ public struct PrimaryCourse: Hashable {
     public let courseBanner: String
     public let futureAssignments: [Assignment]
     public let pastAssignments: [Assignment]
-    public let progressEarned: Int?
-    public let progressPossible: Int?
+    public let progressEarned: Int
+    public let progressPossible: Int
     public let lastVisitedBlockID: String?
     public let resumeTitle: String?
     
@@ -46,8 +46,8 @@ public struct PrimaryCourse: Hashable {
         courseBanner: String,
         futureAssignments: [Assignment],
         pastAssignments: [Assignment],
-        progressEarned: Int?,
-        progressPossible: Int?,
+        progressEarned: Int,
+        progressPossible: Int,
         lastVisitedBlockID: String?,
         resumeTitle: String?
     ) {

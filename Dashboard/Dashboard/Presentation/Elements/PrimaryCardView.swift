@@ -17,8 +17,8 @@ public struct PrimaryCardView: View {
     private let courseImage: String
     private let courseStartDate: Date?
     private let courseEndDate: Date?
-    private var futureAssignments: [Assignment]?
-    private let pastAssignments: [Assignment]?
+    private var futureAssignments: [Assignment]
+    private let pastAssignments: [Assignment]
     private let progressEarned: Int
     private let progressPossible: Int
     private let canResume: Bool
@@ -33,8 +33,8 @@ public struct PrimaryCardView: View {
         courseImage: String,
         courseStartDate: Date?,
         courseEndDate: Date?,
-        futureAssignments: [Assignment]?,
-        pastAssignments: [Assignment]?,
+        futureAssignments: [Assignment],
+        pastAssignments: [Assignment],
         progressEarned: Int,
         progressPossible: Int,
         canResume: Bool,
@@ -77,28 +77,26 @@ public struct PrimaryCardView: View {
     private var assignments: some View {
         VStack(alignment: .leading, spacing: 8) {
             // pastAssignments
-            if let pastAssignments = pastAssignments {
-                if pastAssignments.count == 1, let pastAssignment = pastAssignments.first {
-                    courseButton(
-                        title: pastAssignment.title,
-                        description: DashboardLocalization.Learn.PrimaryCard.onePastAssignment,
-                        icon: CoreAssets.warning.swiftUIImage,
-                        selected: false,
-                        action: { pastAssignmentAction(pastAssignments.first?.firstComponentBlockId) }
-                    )
-                } else if pastAssignments.count > 1 {
-                    courseButton(
-                        title: DashboardLocalization.Learn.PrimaryCard.viewAssignments,
-                        description: DashboardLocalization.Learn.PrimaryCard.pastAssignments(pastAssignments.count),
-                        icon: CoreAssets.warning.swiftUIImage,
-                        selected: false,
-                        action: { pastAssignmentAction(nil) }
-                    )
-                }
+            if pastAssignments.count == 1, let pastAssignment = pastAssignments.first {
+                courseButton(
+                    title: pastAssignment.title,
+                    description: DashboardLocalization.Learn.PrimaryCard.onePastAssignment,
+                    icon: CoreAssets.warning.swiftUIImage,
+                    selected: false,
+                    action: { pastAssignmentAction(pastAssignments.first?.firstComponentBlockId) }
+                )
+            } else if pastAssignments.count > 1 {
+                courseButton(
+                    title: DashboardLocalization.Learn.PrimaryCard.viewAssignments,
+                    description: DashboardLocalization.Learn.PrimaryCard.pastAssignments(pastAssignments.count),
+                    icon: CoreAssets.warning.swiftUIImage,
+                    selected: false,
+                    action: { pastAssignmentAction(nil) }
+                )
             }
             
             // futureAssignment
-            if let futureAssignments, !futureAssignments.isEmpty {
+            if !futureAssignments.isEmpty {
                 if futureAssignments.count == 1, let futureAssignment = futureAssignments.first {
                     let daysRemaining = Calendar.current.dateComponents(
                         [.day],
@@ -163,7 +161,6 @@ public struct PrimaryCardView: View {
         selected: Bool,
         action: @escaping () -> Void
     ) -> some View {
-        
         Button(action: {
             action()
         }, label: {
@@ -255,11 +252,11 @@ struct PrimaryCardView_Previews: PreviewProvider {
             PrimaryCardView(
                 courseName: "Course Title",
                 org: "Organization",
-                courseImage: "https://thumbs.dreamstime.com/b/logo-edx-samsung-tablet-edx-massive-open-online-course-mooc-provider-hosts-online-university-level-courses-wide-117763805.jpg", 
+                courseImage: "https://thumbs.dreamstime.com/b/logo-edx-samsung-tablet-edx-massive-open-online-course-mooc-provider-hosts-online-university-level-courses-wide-117763805.jpg",
                 courseStartDate: nil,
                 courseEndDate: Date(),
-                futureAssignments: nil,
-                pastAssignments: nil,
+                futureAssignments: [],
+                pastAssignments: [],
                 progressEarned: 10,
                 progressPossible: 45,
                 canResume: true,

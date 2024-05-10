@@ -25,7 +25,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        org: "org",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -39,7 +39,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        org: "org2",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -52,11 +52,11 @@ final class ListDashboardViewModelTests: XCTestCase {
         ]
 
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyCourses(page: .any, willReturn: items))
+        Given(interactor, .getEnrollments(page: .any, willReturn: items))
 
         await viewModel.getMyCourses(page: 1)
 
-        Verify(interactor, 1, .getMyCourses(page: .value(1)))
+        Verify(interactor, 1, .getEnrollments(page: .value(1)))
 
         XCTAssertTrue(viewModel.courses == items)
         XCTAssertNil(viewModel.errorMessage)
@@ -74,7 +74,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        org: "org",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -88,7 +88,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        org: "org2",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -101,11 +101,11 @@ final class ListDashboardViewModelTests: XCTestCase {
         ]
         
         Given(connectivity, .isInternetAvaliable(getter: false))
-        Given(interactor, .discoveryOffline(willReturn: items))
+        Given(interactor, .getEnrollmentsOffline(willReturn: items))
         
         await viewModel.getMyCourses(page: 1)
         
-        Verify(interactor, 1, .discoveryOffline())
+        Verify(interactor, 1, .getEnrollmentsOffline())
         
         XCTAssertTrue(viewModel.courses == items)
         XCTAssertNil(viewModel.errorMessage)
@@ -119,11 +119,11 @@ final class ListDashboardViewModelTests: XCTestCase {
         let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyCourses(page: .any, willThrow: NoCachedDataError()) )
+        Given(interactor, .getEnrollments(page: .any, willThrow: NoCachedDataError()) )
         
         await viewModel.getMyCourses(page: 1)
         
-        Verify(interactor, 1, .getMyCourses(page: .value(1)))
+        Verify(interactor, 1, .getEnrollments(page: .value(1)))
         
         XCTAssertTrue(viewModel.courses.isEmpty)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.noCachedData)
@@ -137,11 +137,11 @@ final class ListDashboardViewModelTests: XCTestCase {
         let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyCourses(page: .any, willThrow: NSError()) )
+        Given(interactor, .getEnrollments(page: .any, willThrow: NSError()) )
         
         await viewModel.getMyCourses(page: 1)
         
-        Verify(interactor, 1, .getMyCourses(page: .value(1)))
+        Verify(interactor, 1, .getEnrollments(page: .value(1)))
         
         XCTAssertTrue(viewModel.courses.isEmpty)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)

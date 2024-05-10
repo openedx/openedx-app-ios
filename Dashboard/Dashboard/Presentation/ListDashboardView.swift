@@ -82,7 +82,7 @@ public struct ListDashboardView: View {
                                                 enrollmentStart: course.enrollmentStart,
                                                 enrollmentEnd: course.enrollmentEnd,
                                                 title: course.name,
-                                                selection: .course,
+                                                showDates: false,
                                                 lastVisitedBlockID: nil
                                             )
                                         }

@@ -11,14 +11,14 @@ import Theme
 
 public struct AllCoursesView: View {
     
-    @StateObject
+    @ObservedObject
     private var viewModel: AllCoursesViewModel
     private let router: DashboardRouter
     @Environment (\.isHorizontal) private var isHorizontal
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(viewModel: AllCoursesViewModel, router: DashboardRouter) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.router = router
     }
     
@@ -73,7 +73,7 @@ public struct AllCoursesView: View {
                                             enrollmentStart: course.enrollmentStart,
                                             enrollmentEnd: course.enrollmentEnd,
                                             title: course.name,
-                                            selection: .course,
+                                            showDates: false,
                                             lastVisitedBlockID: nil
                                         )
                                     }, label: {
@@ -114,10 +114,12 @@ public struct AllCoursesView: View {
                 .padding(.top, 8)
                 
                 // MARK: - Offline mode SnackBar
-                OfflineSnackBarView(connectivity: viewModel.connectivity,
-                                    reloadAction: {
-                    await viewModel.getCourses(page: 1, refresh: true)
-                })
+                OfflineSnackBarView(
+                    connectivity: viewModel.connectivity,
+                    reloadAction: {
+                        await viewModel.getCourses(page: 1, refresh: true)
+                    }
+                )
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -175,13 +177,15 @@ public struct AllCoursesView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
                 .accessibilityIdentifier("all_courses_header_text")
             Spacer()
-            Button(action: {
-                router.showDiscoverySearch(searchQuery: "")
-            }, label: {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .accessibilityIdentifier(DashboardLocalization.search)
-            })
+            Button(
+                action: {
+                    router.showDiscoverySearch(searchQuery: "")
+                }, label: {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .accessibilityIdentifier(DashboardLocalization.search)
+                }
+            )
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)

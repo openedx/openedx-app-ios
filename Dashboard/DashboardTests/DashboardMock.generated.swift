@@ -1609,64 +1609,64 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 
 
 
-    open func getMyCourses(page: Int) throws -> [CourseItem] {
-        addInvocation(.m_getMyCourses__page_page(Parameter<Int>.value(`page`)))
-		let perform = methodPerformValue(.m_getMyCourses__page_page(Parameter<Int>.value(`page`))) as? (Int) -> Void
+    open func getEnrollments(page: Int) throws -> [CourseItem] {
+        addInvocation(.m_getEnrollments__page_page(Parameter<Int>.value(`page`)))
+		let perform = methodPerformValue(.m_getEnrollments__page_page(Parameter<Int>.value(`page`))) as? (Int) -> Void
 		perform?(`page`)
 		var __value: [CourseItem]
 		do {
-		    __value = try methodReturnValue(.m_getMyCourses__page_page(Parameter<Int>.value(`page`))).casted()
+		    __value = try methodReturnValue(.m_getEnrollments__page_page(Parameter<Int>.value(`page`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getMyCourses(page: Int). Use given")
-			Failure("Stub return value not specified for getMyCourses(page: Int). Use given")
+			onFatalFailure("Stub return value not specified for getEnrollments(page: Int). Use given")
+			Failure("Stub return value not specified for getEnrollments(page: Int). Use given")
 		} catch {
 		    throw error
 		}
 		return __value
     }
 
-    open func discoveryOffline() throws -> [CourseItem] {
-        addInvocation(.m_discoveryOffline)
-		let perform = methodPerformValue(.m_discoveryOffline) as? () -> Void
+    open func getEnrollmentsOffline() throws -> [CourseItem] {
+        addInvocation(.m_getEnrollmentsOffline)
+		let perform = methodPerformValue(.m_getEnrollmentsOffline) as? () -> Void
 		perform?()
 		var __value: [CourseItem]
 		do {
-		    __value = try methodReturnValue(.m_discoveryOffline).casted()
+		    __value = try methodReturnValue(.m_getEnrollmentsOffline).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for discoveryOffline(). Use given")
-			Failure("Stub return value not specified for discoveryOffline(). Use given")
+			onFatalFailure("Stub return value not specified for getEnrollmentsOffline(). Use given")
+			Failure("Stub return value not specified for getEnrollmentsOffline(). Use given")
 		} catch {
 		    throw error
 		}
 		return __value
     }
 
-    open func getMyLearnCourses(pageSize: Int) throws -> PrimaryEnrollment {
-        addInvocation(.m_getMyLearnCourses__pageSize_pageSize(Parameter<Int>.value(`pageSize`)))
-		let perform = methodPerformValue(.m_getMyLearnCourses__pageSize_pageSize(Parameter<Int>.value(`pageSize`))) as? (Int) -> Void
+    open func getPrimaryEnrollment(pageSize: Int) throws -> PrimaryEnrollment {
+        addInvocation(.m_getPrimaryEnrollment__pageSize_pageSize(Parameter<Int>.value(`pageSize`)))
+		let perform = methodPerformValue(.m_getPrimaryEnrollment__pageSize_pageSize(Parameter<Int>.value(`pageSize`))) as? (Int) -> Void
 		perform?(`pageSize`)
 		var __value: PrimaryEnrollment
 		do {
-		    __value = try methodReturnValue(.m_getMyLearnCourses__pageSize_pageSize(Parameter<Int>.value(`pageSize`))).casted()
+		    __value = try methodReturnValue(.m_getPrimaryEnrollment__pageSize_pageSize(Parameter<Int>.value(`pageSize`))).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getMyLearnCourses(pageSize: Int). Use given")
-			Failure("Stub return value not specified for getMyLearnCourses(pageSize: Int). Use given")
+			onFatalFailure("Stub return value not specified for getPrimaryEnrollment(pageSize: Int). Use given")
+			Failure("Stub return value not specified for getPrimaryEnrollment(pageSize: Int). Use given")
 		} catch {
 		    throw error
 		}
 		return __value
     }
 
-    open func getMyLearnCoursesOffline() throws -> PrimaryEnrollment {
-        addInvocation(.m_getMyLearnCoursesOffline)
-		let perform = methodPerformValue(.m_getMyLearnCoursesOffline) as? () -> Void
+    open func getPrimaryEnrollmentOffline() throws -> PrimaryEnrollment {
+        addInvocation(.m_getPrimaryEnrollmentOffline)
+		let perform = methodPerformValue(.m_getPrimaryEnrollmentOffline) as? () -> Void
 		perform?()
 		var __value: PrimaryEnrollment
 		do {
-		    __value = try methodReturnValue(.m_getMyLearnCoursesOffline).casted()
+		    __value = try methodReturnValue(.m_getPrimaryEnrollmentOffline).casted()
 		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getMyLearnCoursesOffline(). Use given")
-			Failure("Stub return value not specified for getMyLearnCoursesOffline(). Use given")
+			onFatalFailure("Stub return value not specified for getPrimaryEnrollmentOffline(). Use given")
+			Failure("Stub return value not specified for getPrimaryEnrollmentOffline(). Use given")
 		} catch {
 		    throw error
 		}
@@ -1689,76 +1689,55 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getAllCoursesOffline() throws -> PrimaryEnrollment {
-        addInvocation(.m_getAllCoursesOffline)
-		let perform = methodPerformValue(.m_getAllCoursesOffline) as? () -> Void
-		perform?()
-		var __value: PrimaryEnrollment
-		do {
-		    __value = try methodReturnValue(.m_getAllCoursesOffline).casted()
-		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getAllCoursesOffline(). Use given")
-			Failure("Stub return value not specified for getAllCoursesOffline(). Use given")
-		} catch {
-		    throw error
-		}
-		return __value
-    }
-
 
     fileprivate enum MethodType {
-        case m_getMyCourses__page_page(Parameter<Int>)
-        case m_discoveryOffline
-        case m_getMyLearnCourses__pageSize_pageSize(Parameter<Int>)
-        case m_getMyLearnCoursesOffline
+        case m_getEnrollments__page_page(Parameter<Int>)
+        case m_getEnrollmentsOffline
+        case m_getPrimaryEnrollment__pageSize_pageSize(Parameter<Int>)
+        case m_getPrimaryEnrollmentOffline
         case m_getAllCourses__filteredBy_filteredBypage_page(Parameter<String>, Parameter<Int>)
-        case m_getAllCoursesOffline
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_getMyCourses__page_page(let lhsPage), .m_getMyCourses__page_page(let rhsPage)):
+            case (.m_getEnrollments__page_page(let lhsPage), .m_getEnrollments__page_page(let rhsPage)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPage, rhs: rhsPage, with: matcher), lhsPage, rhsPage, "page"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_discoveryOffline, .m_discoveryOffline): return .match
+            case (.m_getEnrollmentsOffline, .m_getEnrollmentsOffline): return .match
 
-            case (.m_getMyLearnCourses__pageSize_pageSize(let lhsPagesize), .m_getMyLearnCourses__pageSize_pageSize(let rhsPagesize)):
+            case (.m_getPrimaryEnrollment__pageSize_pageSize(let lhsPagesize), .m_getPrimaryEnrollment__pageSize_pageSize(let rhsPagesize)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPagesize, rhs: rhsPagesize, with: matcher), lhsPagesize, rhsPagesize, "pageSize"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_getMyLearnCoursesOffline, .m_getMyLearnCoursesOffline): return .match
+            case (.m_getPrimaryEnrollmentOffline, .m_getPrimaryEnrollmentOffline): return .match
 
             case (.m_getAllCourses__filteredBy_filteredBypage_page(let lhsFilteredby, let lhsPage), .m_getAllCourses__filteredBy_filteredBypage_page(let rhsFilteredby, let rhsPage)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFilteredby, rhs: rhsFilteredby, with: matcher), lhsFilteredby, rhsFilteredby, "filteredBy"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPage, rhs: rhsPage, with: matcher), lhsPage, rhsPage, "page"))
 				return Matcher.ComparisonResult(results)
-
-            case (.m_getAllCoursesOffline, .m_getAllCoursesOffline): return .match
             default: return .none
             }
         }
 
         func intValue() -> Int {
             switch self {
-            case let .m_getMyCourses__page_page(p0): return p0.intValue
-            case .m_discoveryOffline: return 0
-            case let .m_getMyLearnCourses__pageSize_pageSize(p0): return p0.intValue
-            case .m_getMyLearnCoursesOffline: return 0
+            case let .m_getEnrollments__page_page(p0): return p0.intValue
+            case .m_getEnrollmentsOffline: return 0
+            case let .m_getPrimaryEnrollment__pageSize_pageSize(p0): return p0.intValue
+            case .m_getPrimaryEnrollmentOffline: return 0
             case let .m_getAllCourses__filteredBy_filteredBypage_page(p0, p1): return p0.intValue + p1.intValue
-            case .m_getAllCoursesOffline: return 0
             }
         }
         func assertionName() -> String {
             switch self {
-            case .m_getMyCourses__page_page: return ".getMyCourses(page:)"
-            case .m_discoveryOffline: return ".discoveryOffline()"
-            case .m_getMyLearnCourses__pageSize_pageSize: return ".getMyLearnCourses(pageSize:)"
-            case .m_getMyLearnCoursesOffline: return ".getMyLearnCoursesOffline()"
+            case .m_getEnrollments__page_page: return ".getEnrollments(page:)"
+            case .m_getEnrollmentsOffline: return ".getEnrollmentsOffline()"
+            case .m_getPrimaryEnrollment__pageSize_pageSize: return ".getPrimaryEnrollment(pageSize:)"
+            case .m_getPrimaryEnrollmentOffline: return ".getPrimaryEnrollmentOffline()"
             case .m_getAllCourses__filteredBy_filteredBypage_page: return ".getAllCourses(filteredBy:page:)"
-            case .m_getAllCoursesOffline: return ".getAllCoursesOffline()"
             }
         }
     }
@@ -1772,60 +1751,57 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
         }
 
 
-        public static func getMyCourses(page: Parameter<Int>, willReturn: [CourseItem]...) -> MethodStub {
-            return Given(method: .m_getMyCourses__page_page(`page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getEnrollments(page: Parameter<Int>, willReturn: [CourseItem]...) -> MethodStub {
+            return Given(method: .m_getEnrollments__page_page(`page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func discoveryOffline(willReturn: [CourseItem]...) -> MethodStub {
-            return Given(method: .m_discoveryOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getEnrollmentsOffline(willReturn: [CourseItem]...) -> MethodStub {
+            return Given(method: .m_getEnrollmentsOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getMyLearnCourses(pageSize: Parameter<Int>, willReturn: PrimaryEnrollment...) -> MethodStub {
-            return Given(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getPrimaryEnrollment(pageSize: Parameter<Int>, willReturn: PrimaryEnrollment...) -> MethodStub {
+            return Given(method: .m_getPrimaryEnrollment__pageSize_pageSize(`pageSize`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getMyLearnCoursesOffline(willReturn: PrimaryEnrollment...) -> MethodStub {
-            return Given(method: .m_getMyLearnCoursesOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getPrimaryEnrollmentOffline(willReturn: PrimaryEnrollment...) -> MethodStub {
+            return Given(method: .m_getPrimaryEnrollmentOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>, willReturn: PrimaryEnrollment...) -> MethodStub {
             return Given(method: .m_getAllCourses__filteredBy_filteredBypage_page(`filteredBy`, `page`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func getAllCoursesOffline(willReturn: PrimaryEnrollment...) -> MethodStub {
-            return Given(method: .m_getAllCoursesOffline, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getEnrollments(page: Parameter<Int>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getEnrollments__page_page(`page`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getMyCourses(page: Parameter<Int>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getMyCourses__page_page(`page`), products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func getMyCourses(page: Parameter<Int>, willProduce: (StubberThrows<[CourseItem]>) -> Void) -> MethodStub {
+        public static func getEnrollments(page: Parameter<Int>, willProduce: (StubberThrows<[CourseItem]>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getMyCourses__page_page(`page`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getEnrollments__page_page(`page`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: ([CourseItem]).self)
 			willProduce(stubber)
 			return given
         }
-        public static func discoveryOffline(willThrow: Error...) -> MethodStub {
-            return Given(method: .m_discoveryOffline, products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getEnrollmentsOffline(willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getEnrollmentsOffline, products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func discoveryOffline(willProduce: (StubberThrows<[CourseItem]>) -> Void) -> MethodStub {
+        public static func getEnrollmentsOffline(willProduce: (StubberThrows<[CourseItem]>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_discoveryOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getEnrollmentsOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: ([CourseItem]).self)
 			willProduce(stubber)
 			return given
         }
-        public static func getMyLearnCourses(pageSize: Parameter<Int>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`), products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getPrimaryEnrollment(pageSize: Parameter<Int>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getPrimaryEnrollment__pageSize_pageSize(`pageSize`), products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getMyLearnCourses(pageSize: Parameter<Int>, willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
+        public static func getPrimaryEnrollment(pageSize: Parameter<Int>, willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getPrimaryEnrollment__pageSize_pageSize(`pageSize`), products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (PrimaryEnrollment).self)
 			willProduce(stubber)
 			return given
         }
-        public static func getMyLearnCoursesOffline(willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getMyLearnCoursesOffline, products: willThrow.map({ StubProduct.throw($0) }))
+        public static func getPrimaryEnrollmentOffline(willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getPrimaryEnrollmentOffline, products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func getMyLearnCoursesOffline(willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
+        public static func getPrimaryEnrollmentOffline(willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getMyLearnCoursesOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
+			let given: Given = { return Given(method: .m_getPrimaryEnrollmentOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
 			let stubber = given.stubThrows(for: (PrimaryEnrollment).self)
 			willProduce(stubber)
 			return given
@@ -1840,50 +1816,36 @@ open class DashboardInteractorProtocolMock: DashboardInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func getAllCoursesOffline(willThrow: Error...) -> MethodStub {
-            return Given(method: .m_getAllCoursesOffline, products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func getAllCoursesOffline(willProduce: (StubberThrows<PrimaryEnrollment>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_getAllCoursesOffline, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (PrimaryEnrollment).self)
-			willProduce(stubber)
-			return given
-        }
     }
 
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func getMyCourses(page: Parameter<Int>) -> Verify { return Verify(method: .m_getMyCourses__page_page(`page`))}
-        public static func discoveryOffline() -> Verify { return Verify(method: .m_discoveryOffline)}
-        public static func getMyLearnCourses(pageSize: Parameter<Int>) -> Verify { return Verify(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`))}
-        public static func getMyLearnCoursesOffline() -> Verify { return Verify(method: .m_getMyLearnCoursesOffline)}
+        public static func getEnrollments(page: Parameter<Int>) -> Verify { return Verify(method: .m_getEnrollments__page_page(`page`))}
+        public static func getEnrollmentsOffline() -> Verify { return Verify(method: .m_getEnrollmentsOffline)}
+        public static func getPrimaryEnrollment(pageSize: Parameter<Int>) -> Verify { return Verify(method: .m_getPrimaryEnrollment__pageSize_pageSize(`pageSize`))}
+        public static func getPrimaryEnrollmentOffline() -> Verify { return Verify(method: .m_getPrimaryEnrollmentOffline)}
         public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>) -> Verify { return Verify(method: .m_getAllCourses__filteredBy_filteredBypage_page(`filteredBy`, `page`))}
-        public static func getAllCoursesOffline() -> Verify { return Verify(method: .m_getAllCoursesOffline)}
     }
 
     public struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func getMyCourses(page: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
-            return Perform(method: .m_getMyCourses__page_page(`page`), performs: perform)
+        public static func getEnrollments(page: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_getEnrollments__page_page(`page`), performs: perform)
         }
-        public static func discoveryOffline(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_discoveryOffline, performs: perform)
+        public static func getEnrollmentsOffline(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_getEnrollmentsOffline, performs: perform)
         }
-        public static func getMyLearnCourses(pageSize: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
-            return Perform(method: .m_getMyLearnCourses__pageSize_pageSize(`pageSize`), performs: perform)
+        public static func getPrimaryEnrollment(pageSize: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_getPrimaryEnrollment__pageSize_pageSize(`pageSize`), performs: perform)
         }
-        public static func getMyLearnCoursesOffline(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_getMyLearnCoursesOffline, performs: perform)
+        public static func getPrimaryEnrollmentOffline(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_getPrimaryEnrollmentOffline, performs: perform)
         }
         public static func getAllCourses(filteredBy: Parameter<String>, page: Parameter<Int>, perform: @escaping (String, Int) -> Void) -> Perform {
             return Perform(method: .m_getAllCourses__filteredBy_filteredBypage_page(`filteredBy`, `page`), performs: perform)
-        }
-        public static func getAllCoursesOffline(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_getAllCoursesOffline, performs: perform)
         }
     }
 

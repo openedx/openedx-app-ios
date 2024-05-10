@@ -34,11 +34,7 @@ struct NoCoursesView: View {
             switch self {
             case .primary:
                 DashboardLocalization.Learn.NoCoursesView.noCoursesDescription
-            case .inProgress:
-                nil
-            case .completed:
-                nil
-            case .expired:
+            case .inProgress, .completed, .expired:
                 nil
             }
         }
@@ -85,9 +81,8 @@ struct NoCoursesView: View {
             }
             Spacer()
             if type == .primary {
-                StyledButton(DashboardLocalization.Learn.NoCoursesView.findACourse, action: {
-                    openDiscovery()
-                }).padding(24)
+                StyledButton(DashboardLocalization.Learn.NoCoursesView.findACourse, action: { openDiscovery() })
+                    .padding(24)
             }
         }
     }
