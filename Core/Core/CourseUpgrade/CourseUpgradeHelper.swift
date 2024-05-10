@@ -42,6 +42,16 @@ public protocol CourseUpgradeHelperDelegate: AnyObject {
     func hideAlertAction()
 }
 
+public protocol CourseUpgradeHelperProtocol {
+    func setData(
+        courseID: String,
+        pacing: String,
+        blockID: String?,
+        localizedCoursePrice: String,
+        screen: CourseUpgradeScreen
+    )
+}
+
 public class CourseUpgradeHelper {
     
     weak private(set) var delegate: CourseUpgradeHelperDelegate?

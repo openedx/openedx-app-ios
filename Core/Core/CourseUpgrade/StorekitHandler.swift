@@ -65,12 +65,23 @@ class StoreInteractorMock: StoreInteractorProtocol {
 }
 
 public protocol StoreKitHandlerProtocol {
+    typealias PurchaseCompletionHandler = ((success: Bool,
+                                                   receipt: String?,
+                                                   error: (type: UpgradeError?,
+                                                           error: Error?)?)) -> Void
     func fetchProduct(sku: String) async throws -> StoreProduct
     func fetchProduct(sku: String, completion: @escaping (StoreProduct?, Error?) -> Void)
     func completeTransactions()
+    
+    func purchaseProduct(_ identifier: String, completion: PurchaseCompletionHandler?)
+    func purchaseReceipt(completion: PurchaseCompletionHandler?)
 }
 
 class StoreKitHandlerMock: StoreKitHandlerProtocol {
+    func purchaseReceipt(completion: PurchaseCompletionHandler?) {}
+    
+    func purchaseProduct(_ identifier: String, completion: PurchaseCompletionHandler?) {}
+    
     func fetchProduct(sku: String) async throws -> StoreProduct {
         StoreProduct(price: .zero)
     }
@@ -100,10 +111,6 @@ public class StorekitHandler: NSObject, StoreKitHandlerProtocol {
     // Use this dictionary to keep track of inprocess transctions and allow only one transction at a time
     private(set) var purchases: [String: Any] = [:]
 
-    public typealias PurchaseCompletionHandler = ((success: Bool,
-                                                   receipt: String?,
-                                                   error: (type: UpgradeError?,
-                                                           error: Error?)?)) -> Void
     private var completion: PurchaseCompletionHandler?
 
     public var unfinishedPurchases: Bool {

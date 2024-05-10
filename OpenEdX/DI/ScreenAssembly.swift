@@ -479,7 +479,7 @@ class ScreenAssembly: Assembly {
             CourseUpgradeHandler(
                 config: r.resolve(ConfigProtocol.self)!,
                 interactor: r.resolve(CourseUpgradeInteractorProtocol.self)!,
-                storeKitHandler: r.resolve(StorekitHandler.self)!
+                storeKitHandler: r.resolve(StoreKitHandlerProtocol.self)!
             )
         }.inObjectScope(.container)
         

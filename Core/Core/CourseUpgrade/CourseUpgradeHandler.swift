@@ -44,7 +44,7 @@ public class CourseUpgradeHandler: ObservableObject {
     private(set) var price: NSDecimalNumber?
     private(set) var currencyCode: String?
     private var interactor: CourseUpgradeInteractorProtocol
-    private var storeKitHandler: StorekitHandler
+    private var storeKitHandler: StoreKitHandlerProtocol
 
     private(set) var state: UpgradeState = .initial {
         didSet {
@@ -54,7 +54,7 @@ public class CourseUpgradeHandler: ObservableObject {
 
     public init(config: ConfigProtocol,
                 interactor: CourseUpgradeInteractorProtocol,
-                storeKitHandler: StorekitHandler
+                storeKitHandler: StoreKitHandlerProtocol
     ) {
         self.interactor = interactor
         self.storeKitHandler = storeKitHandler
