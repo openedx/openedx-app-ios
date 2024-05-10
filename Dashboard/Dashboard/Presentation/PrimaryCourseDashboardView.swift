@@ -146,6 +146,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                         }
                                     case .programs:
                                         programView
+                                            .padding(.top, 50)
                                     }
                                 }
                             }
@@ -283,7 +284,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
        return ZStack(alignment: .top) {
             Theme.Colors.background
                 .frame(height: showDropdown ? 70 : 50)
-            ZStack(alignment: .trailing) {
+            ZStack(alignment: .topTrailing) {
                 VStack {
                     HStack(alignment: .center) {
                         Text(DashboardLocalization.Learn.title)
@@ -293,7 +294,10 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                         Spacer()
                     }
                     if showDropdown {
-                        DropDownMenu(selectedOption: $selectedMenu)
+                        HStack(alignment: .center) {
+                            DropDownMenu(selectedOption: $selectedMenu)
+                            Spacer()
+                        }
                     }
                 }
                     .frameLimit(width: proxy.size.width)
@@ -306,8 +310,10 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                             .foregroundColor(Theme.Colors.accentColor)
                     })
                 }
+                .padding(.top, 8)
+                .offset(x: idiom == .pad ? 1 : 5, y: idiom == .pad ? 4 : -5)
             }
-            .offset(x: idiom == .pad ? 1 : 4, y: idiom == .pad ? 4 : -5)
+            
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
             .accessibilityElement(children: .ignore)
