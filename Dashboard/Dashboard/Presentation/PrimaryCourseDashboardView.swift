@@ -46,7 +46,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     .zIndex(1)
                 // MARK: - Page body
                 VStack(alignment: .leading) {
-                    
+                    Spacer(minLength: 50)
                     RefreshableScrollViewCompat(action: {
                         await viewModel.getEnrollments(showProgress: false)
                     }) {
@@ -59,7 +59,6 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                         maxHeight: .infinity)
                             } else {
                                 LazyVStack(spacing: 0) {
-                                    Spacer(minLength: 40)
                                     switch selectedMenu {
                                     case .courses:
                                         if let enrollments = viewModel.enrollments {
