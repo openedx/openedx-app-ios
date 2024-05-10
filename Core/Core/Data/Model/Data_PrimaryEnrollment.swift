@@ -26,22 +26,6 @@ public extension DataLayer {
         }
     }
     
-    // MARK: - CourseImage
-    struct CourseImage: Codable {
-        public let uri: String
-        public let name: String
-        
-        enum CodingKeys: String, CodingKey {
-            case uri = "uri"
-            case name = "name"
-        }
-        
-        public init(uri: String, name: String) {
-            self.uri = uri
-            self.name = name
-        }
-    }
-    
     // MARK: - Primary
     struct Primary: Codable {
         public let auditAccessExpires: Date?
@@ -197,85 +181,89 @@ public extension DataLayer {
 }
 
 public extension DataLayer.PrimaryEnrollment {
+    
     func domain(baseURL: String) -> PrimaryEnrollment {
-        var primaryCourse: PrimaryCourse?
-        if let primary = self.primary {
-            let futureAssignments: [DataLayer.Assignment] = primary.courseAssignments?.futureAssignments ?? []
-            let pastAssignments: [DataLayer.Assignment] = primary.courseAssignments?.pastAssignments ?? []
-            
-            primaryCourse = PrimaryCourse(
-                name: primary.course?.name ?? "",
-                org: primary.course?.org ?? "",
-                courseID: primary.course?.id ?? "",
-                hasAccess: primary.course?.coursewareAccess.hasAccess ?? true,
-                courseStart: primary.course?.start != nil
-                ? Date(iso8601: primary.course?.start ?? "")
-                : nil,
-                courseEnd: primary.course?.end != nil
-                ? Date(iso8601: primary.course?.end ?? "")
-                : nil,
-                courseBanner: baseURL + (primary.course?.media.courseImage?.url ?? ""),
-                futureAssignments: futureAssignments.map {
-                    Assignment(
-                        type: $0.assignmentType ?? "",
-                        title: $0.title ?? "",
-                        description: $0.description,
-                        date: Date(iso8601: $0.date  ?? ""),
-                        complete: $0.complete ?? false,
-                        firstComponentBlockId: $0.firstComponentBlockID
-                    )
-                },
-                pastAssignments: pastAssignments.map {
-                    Assignment(
-                        type: $0.assignmentType ?? "",
-                        title: $0.title ?? "",
-                        description: $0.description ?? "",
-                        date: Date(iso8601: $0.date ?? ""),
-                        complete: $0.complete ?? false,
-                        firstComponentBlockId: $0.firstComponentBlockID
-                    )
-                },
-                progressEarned: primary.progress?.assignmentsCompleted ?? 0,
-                progressPossible: primary.progress?.totalAssignmentsCount ?? 0,
-                lastVisitedBlockID: primary.courseStatus?.lastVisitedBlockID,
-                resumeTitle: primary.courseStatus?.lastVisitedUnitDisplayName
-            )
-        }
-        let courses = self.enrollments?.results.map {
-            let imageUrl = $0.course.media.courseImage?.url ?? ""
-            let encodedUrl = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            let fullImageURL = baseURL + encodedUrl
-            return CourseItem(
-                name: $0.course.name,
-                org: $0.course.org,
-                shortDescription: "",
-                imageURL: fullImageURL,
-                hasAccess: $0.course.coursewareAccess.hasAccess,
-                courseStart: $0.course.start != nil
-                ? Date(iso8601: $0.course.start!)
-                : nil,
-                courseEnd: $0.course.end != nil
-                ? Date(iso8601: $0.course.end!)
-                : nil,
-                enrollmentStart: $0.course.start != nil
-                ? Date(iso8601: $0.course.start!)
-                : nil,
-                enrollmentEnd: $0.course.end != nil
-                ? Date(iso8601: $0.course.end!)
-                : nil,
-                courseID: $0.course.id,
-                numPages: enrollments?.numPages ?? 1,
-                coursesCount: enrollments?.count ?? 0,
-                progressEarned: $0.progress?.assignmentsCompleted ?? 0,
-                progressPossible: $0.progress?.totalAssignmentsCount ?? 0
-            )
-        }
+        let primaryCourse = createPrimaryCourse(from: self.primary, baseURL: baseURL)
+        let courses = createCourseItems(from: self.enrollments, baseURL: baseURL)
         
         return PrimaryEnrollment(
             primaryCourse: primaryCourse,
-            courses: courses ?? [],
+            courses: courses,
             totalPages: enrollments?.numPages ?? 1,
             count: enrollments?.count ?? 1
+        )
+    }
+    
+    private func createPrimaryCourse(from primary: DataLayer.Primary?, baseURL: String) -> PrimaryCourse? {
+        guard let primary = primary else { return nil }
+        
+        let futureAssignments = primary.courseAssignments?.futureAssignments ?? []
+        let pastAssignments = primary.courseAssignments?.pastAssignments ?? []
+        
+        return PrimaryCourse(
+            name: primary.course?.name ?? "",
+            org: primary.course?.org ?? "",
+            courseID: primary.course?.id ?? "",
+            hasAccess: primary.course?.coursewareAccess.hasAccess ?? true,
+            courseStart: primary.course?.start.flatMap { Date(iso8601: $0) },
+            courseEnd: primary.course?.end.flatMap { Date(iso8601: $0) },
+            courseBanner: baseURL + (primary.course?.media.courseImage?.url ?? ""),
+            futureAssignments: futureAssignments.map { createAssignment(from: $0) },
+            pastAssignments: pastAssignments.map { createAssignment(from: $0) },
+            progressEarned: primary.progress?.assignmentsCompleted ?? 0,
+            progressPossible: primary.progress?.totalAssignmentsCount ?? 0,
+            lastVisitedBlockID: primary.courseStatus?.lastVisitedBlockID,
+            resumeTitle: primary.courseStatus?.lastVisitedUnitDisplayName
+        )
+    }
+    
+    private func createAssignment(from assignment: DataLayer.Assignment) -> Assignment {
+        return Assignment(
+            type: assignment.assignmentType ?? "",
+            title: assignment.title ?? "",
+            description: assignment.description ?? "",
+            date: Date(iso8601: assignment.date ?? ""),
+            complete: assignment.complete ?? false,
+            firstComponentBlockId: assignment.firstComponentBlockID
+        )
+    }
+    
+    private func createCourseItems(from enrollments: DataLayer.Enrollments?, baseURL: String) -> [CourseItem] {
+        return enrollments?.results.map {
+            createCourseItem(
+                from: $0,
+                baseURL: baseURL,
+                numPages: enrollments?.numPages ?? 1,
+                count: enrollments?.count ?? 0
+            )
+        } ?? []
+    }
+
+    private func createCourseItem(
+        from enrollment: DataLayer.Enrollment,
+        baseURL: String,
+        numPages: Int,
+        count: Int
+    ) -> CourseItem {
+        let imageUrl = enrollment.course.media.courseImage?.url ?? ""
+        let encodedUrl = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let fullImageURL = baseURL + encodedUrl
+        
+        return CourseItem(
+            name: enrollment.course.name,
+            org: enrollment.course.org,
+            shortDescription: "",
+            imageURL: fullImageURL,
+            hasAccess: enrollment.course.coursewareAccess.hasAccess,
+            courseStart: enrollment.course.start.flatMap { Date(iso8601: $0) },
+            courseEnd: enrollment.course.end.flatMap { Date(iso8601: $0) },
+            enrollmentStart: enrollment.course.start.flatMap { Date(iso8601: $0) },
+            enrollmentEnd: enrollment.course.end.flatMap { Date(iso8601: $0) },
+            courseID: enrollment.course.id,
+            numPages: numPages,
+            coursesCount: count,
+            progressEarned: enrollment.progress?.assignmentsCompleted ?? 0,
+            progressPossible: enrollment.progress?.totalAssignmentsCount ?? 0
         )
     }
 }

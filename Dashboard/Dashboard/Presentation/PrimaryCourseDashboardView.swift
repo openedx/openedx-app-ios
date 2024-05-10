@@ -15,7 +15,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     @StateObject
     private var viewModel: PrimaryCourseDashboardViewModel
     private let router: DashboardRouter
-    private let config = Container.shared.resolve(ConfigProtocol.self)
+    private let config = Container.shared.resolve(ConfigProtocol.self)!
     @ViewBuilder let programView: ProgramView
     private var openDiscoveryPage: () -> Void
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -42,8 +42,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                         openDiscoveryPage()
                     }).zIndex(1)
                 }
-                learnTitleAndSearch()
-                    .frameLimit(width: proxy.size.width)
+                learnTitleAndSearch(proxy: proxy)
                     .zIndex(1)
                 // MARK: - Page body
                 VStack(alignment: .leading) {
@@ -60,7 +59,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                         maxHeight: .infinity)
                             } else {
                                 LazyVStack(spacing: 0) {
-                                    Spacer(minLength: 50)
+                                    Spacer(minLength: 40)
                                     switch selectedMenu {
                                     case .courses:
                                         if let enrollments = viewModel.enrollments {
@@ -144,8 +143,6 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                 }
                                             }
                                             Spacer(minLength: 100)
-                                        } else {
-                                            EmptyPageIcon()
                                         }
                                     case .programs:
                                         programView
@@ -156,14 +153,13 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                         .frameLimit(width: proxy.size.width)
                     }.accessibilityAction {}
                 }.padding(.top, 8)
-                
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
                     reloadAction: {
                         await viewModel.getEnrollments(showProgress: false)
                     }
-                )
+                ).zIndex(2)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -181,6 +177,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                             viewModel.errorMessage = nil
                         }
                     }
+                    .zIndex(2)
                 }
             }
             .onFirstAppear {
@@ -229,7 +226,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     courseStartDate: nil,
                     courseEndDate: nil,
                     hasAccess: course.hasAccess,
-                    isFullCard: false
+                    showProgress: false
                 ).frame(width: idiom == .pad ? nil : 120)
             }
             )
@@ -270,7 +267,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
             router.showAllCourses(courses: enrollments.courses)
         }, label: {
             HStack {
-                Text(DashboardLocalization.Learn.viewAllCourses(enrollments.count))
+                Text(DashboardLocalization.Learn.viewAllCourses(enrollments.count + 1))
                     .font(Theme.Fonts.titleSmall)
                     .accessibilityIdentifier("courses_welcomeback_text")
                 Image(systemName: "chevron.right")
@@ -281,29 +278,36 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
         })
     }
     
-    private func learnTitleAndSearch() -> some View {
-        ZStack(alignment: .top) {
+    private func learnTitleAndSearch(proxy: GeometryProxy) -> some View {
+        let showDropdown = config.program.enabled && config.program.isWebViewConfigured
+       return ZStack(alignment: .top) {
             Theme.Colors.background
-                .frame(height: 70)
-            VStack(alignment: .leading) {
-                HStack(alignment: .center) {
-                    Text(DashboardLocalization.Learn.title)
-                        .font(Theme.Fonts.displaySmall)
-                        .foregroundColor(Theme.Colors.textPrimary)
-                        .accessibilityIdentifier("courses_header_text")
+                .frame(height: showDropdown ? 70 : 50)
+            ZStack(alignment: .trailing) {
+                VStack {
+                    HStack(alignment: .center) {
+                        Text(DashboardLocalization.Learn.title)
+                            .font(Theme.Fonts.displaySmall)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .accessibilityIdentifier("courses_header_text")
+                        Spacer()
+                    }
+                    if showDropdown {
+                        DropDownMenu(selectedOption: $selectedMenu)
+                    }
+                }
+                    .frameLimit(width: proxy.size.width)
+                HStack {
                     Spacer()
                     Button(action: {
-                        router.showDiscoverySearch(searchQuery: "")
+                        router.showSettings()
                     }, label: {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textPrimary)
-                            .accessibilityIdentifier(DashboardLocalization.search)
+                        CoreAssets.settings.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
                     })
                 }
-                if let config, config.program.enabled, config.program.isWebViewConfigured {
-                    DropDownMenu(selectedOption: $selectedMenu)
-                }
             }
+            .offset(x: idiom == .pad ? 1 : 4, y: idiom == .pad ? 4 : -5)
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
             .accessibilityElement(children: .ignore)

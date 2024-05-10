@@ -33,8 +33,8 @@ public struct AllCoursesView: View {
                         }
                     )
                     .backViewStyle()
-                    .padding(.leading, isHorizontal ? 48 : 9)
-                    .padding(.top, 13)
+                    .padding(.top, isHorizontal ? 32 : 16)
+                    .padding(.leading, 7)
                     
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
@@ -42,18 +42,21 @@ public struct AllCoursesView: View {
                 .zIndex(1)
                 
                 if let myEnrollments = viewModel.myEnrollments,
-                            myEnrollments.courses.isEmpty,
-                            !viewModel.fetchInProgress {
+                   myEnrollments.courses.isEmpty,
+                   !viewModel.fetchInProgress,
+                   !viewModel.refresh {
                     NoCoursesView(selectedMenu: viewModel.selectedMenu)
                 }
                 // MARK: - Page body
                 VStack(alignment: .center) {
+                    learnTitleAndSearch()
+                        .frameLimit(width: proxy.size.width)
                     RefreshableScrollViewCompat(action: {
                         await viewModel.getCourses(page: 1, refresh: true)
                     }) {
-                        learnTitleAndSearch()
                         CategoryFilterView(selectedOption: $viewModel.selectedMenu)
                             .disabled(viewModel.fetchInProgress)
+                            .frameLimit(width: proxy.size.width)
                         if let myEnrollments = viewModel.myEnrollments {
                             LazyVGrid(columns: columns(), spacing: 15) {
                                 ForEach(
@@ -85,7 +88,7 @@ public struct AllCoursesView: View {
                                             courseStartDate: course.courseStart,
                                             courseEndDate: course.courseEnd,
                                             hasAccess: course.hasAccess,
-                                            isFullCard: false
+                                            showProgress: true
                                         ).padding(8)
                                     })
                                     .accessibilityIdentifier("course_item")
@@ -100,7 +103,7 @@ public struct AllCoursesView: View {
                             .frameLimit(width: proxy.size.width)
                         }
                         // MARK: - ProgressBar
-                        if viewModel.nextPage <= viewModel.totalPages {
+                        if viewModel.nextPage <= viewModel.totalPages, !viewModel.refresh {
                             VStack(alignment: .center) {
                                 ProgressBar(size: 40, lineWidth: 8)
                                     .padding(.top, 20)
@@ -144,7 +147,8 @@ public struct AllCoursesView: View {
             }
             .onChange(of: viewModel.selectedMenu) { _ in
                 Task {
-                    await viewModel.getCourses(page: 1, refresh: true)
+                    viewModel.myEnrollments?.courses = []
+                    await viewModel.getCourses(page: 1, refresh: false)
                 }
             }
             .background(
@@ -188,9 +192,10 @@ public struct AllCoursesView: View {
             )
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 20)
+        .padding(.top, 20)
+        .padding(.bottom, 10)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(DashboardLocalization.Header.courses + DashboardLocalization.Header.welcomeBack)
+        .accessibilityLabel(DashboardLocalization.Learn.allCourses)
     }
 }
 

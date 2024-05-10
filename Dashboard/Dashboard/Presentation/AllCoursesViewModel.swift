@@ -15,6 +15,7 @@ public class AllCoursesViewModel: ObservableObject {
     var nextPage = 1
     var totalPages = 1
     @Published private(set) var fetchInProgress = false
+    @Published private(set) var refresh = false
     @Published var selectedMenu: CategoryOption = .all
     
     @Published var myEnrollments: PrimaryEnrollment?
@@ -53,15 +54,17 @@ public class AllCoursesViewModel: ObservableObject {
     
     @MainActor
     public func getCourses(page: Int, refresh: Bool = false) async {
-        fetchInProgress = true
+        self.refresh = refresh
         do {
             if refresh || page == 1 {
+                fetchInProgress = true
                 myEnrollments?.courses = []
                 nextPage = 1
                 myEnrollments = try await interactor.getAllCourses(filteredBy: selectedMenu.status, page: page)
                 self.totalPages = myEnrollments?.totalPages ?? 1
                 self.nextPage = 2
             } else {
+                fetchInProgress = true
                 myEnrollments?.courses += try await interactor.getAllCourses(
                     filteredBy: selectedMenu.status, page: page
                 ).courses
@@ -69,8 +72,10 @@ public class AllCoursesViewModel: ObservableObject {
             }
             totalPages = myEnrollments?.totalPages ?? 1
             fetchInProgress = false
+            self.refresh = false
         } catch let error {
             fetchInProgress = false
+            self.refresh = false
             if error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.noCachedData
             } else {

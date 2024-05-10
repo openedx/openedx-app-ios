@@ -19,7 +19,7 @@ struct CourseCardView: View {
     private let courseStartDate: Date?
     private let courseEndDate: Date?
     private let hasAccess: Bool
-    private let isFullCard: Bool
+    private let showProgress: Bool
     
     init(
         courseName: String,
@@ -29,7 +29,7 @@ struct CourseCardView: View {
         courseStartDate: Date?,
         courseEndDate: Date?,
         hasAccess: Bool,
-        isFullCard: Bool
+        showProgress: Bool
     ) {
         self.courseName = courseName
         self.courseImage = courseImage
@@ -38,14 +38,14 @@ struct CourseCardView: View {
         self.courseStartDate = courseStartDate
         self.courseEndDate = courseEndDate
         self.hasAccess = hasAccess
-        self.isFullCard = isFullCard
+        self.showProgress = showProgress
     }
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .leading, spacing: 0) {
                 courseBanner
-                if isFullCard {
+                if showProgress {
                     ProgressLineView(
                         progressEarned: progressEarned,
                         progressPossible: progressPossible,
@@ -101,7 +101,7 @@ struct CourseCardView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
         }
-        .frame(height: isFullCard ? 51 : 40, alignment: .topLeading)
+        .frame(height: showProgress ? 51 : 40, alignment: .topLeading)
         .fixedSize(horizontal: false, vertical: true)
         .padding(.top, 10)
         .padding(.horizontal, 12)
@@ -119,7 +119,7 @@ struct CourseCardView: View {
         courseStartDate: nil,
         courseEndDate: Date(),
         hasAccess: true,
-        isFullCard: true
+        showProgress: true
     ).frame(width: 170)
 }
 #endif

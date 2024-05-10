@@ -61,8 +61,8 @@ public enum DashboardLocalization {
       public static let noCompletedCourses = DashboardLocalization.tr("Localizable", "LEARN.NO_COURSES_VIEW.NO_COMPLETED_COURSES", fallback: "No Completed Courses")
       /// No Courses
       public static let noCourses = DashboardLocalization.tr("Localizable", "LEARN.NO_COURSES_VIEW.NO_COURSES", fallback: "No Courses")
-      /// ou are not currently enrolled in any courses, would you like to explore the course catalog?
-      public static let noCoursesDescription = DashboardLocalization.tr("Localizable", "LEARN.NO_COURSES_VIEW.NO_COURSES_DESCRIPTION", fallback: "ou are not currently enrolled in any courses, would you like to explore the course catalog?")
+      /// You are not currently enrolled in any courses, would you like to explore the course catalog?
+      public static let noCoursesDescription = DashboardLocalization.tr("Localizable", "LEARN.NO_COURSES_VIEW.NO_COURSES_DESCRIPTION", fallback: "You are not currently enrolled in any courses, would you like to explore the course catalog?")
       /// No Courses in Progress
       public static let noCoursesInProgress = DashboardLocalization.tr("Localizable", "LEARN.NO_COURSES_VIEW.NO_COURSES_IN_PROGRESS", fallback: "No Courses in Progress")
       /// No Expired Courses

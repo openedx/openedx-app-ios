@@ -29,7 +29,7 @@ public extension DataLayer {
         public let numPages: Int?
         public let currentPage: Int?
         public let start: Int?
-        public let results: [Result]
+        public let results: [Enrollment]
 
         enum CodingKeys: String, CodingKey {
             case next
@@ -48,7 +48,7 @@ public extension DataLayer {
             numPages: Int?,
             currentPage: Int?,
             start: Int?,
-            results: [Result]
+            results: [Enrollment]
         ) {
             self.next = next
             self.previous = previous
@@ -60,8 +60,8 @@ public extension DataLayer {
         }
     }
 
-    // MARK: - Result
-    struct Result: Codable {
+    // MARK: - Enrollment
+    struct Enrollment: Codable {
         public let auditAccessExpires: String?
         public let created: String
         public let mode: Mode
@@ -77,7 +77,7 @@ public extension DataLayer {
             case isActive = "is_active"
             case course
             case courseModes = "course_modes"
-            case progress
+            case progress = "course_progress"
         }
 
         public init(
