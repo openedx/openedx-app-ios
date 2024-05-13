@@ -256,7 +256,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                 }
                 .frame(width: idiom == .pad ? nil : 120)
             }
-            .background(Theme.Colors.background)
+            .background(Theme.Colors.cardViewBackground)
             .cornerRadius(8)
             .shadow(color: Theme.Colors.courseCardShadow, radius: 6, x: 2, y: 2)
         })
@@ -279,7 +279,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     }
     
     private func learnTitleAndSearch(proxy: GeometryProxy) -> some View {
-        let showDropdown = config.program.enabled && config.program.isWebViewConfigured
+        let showDropdown = true//config.program.enabled && config.program.isWebViewConfigured
        return ZStack(alignment: .top) {
             Theme.Colors.background
                 .frame(height: showDropdown ? 70 : 50)

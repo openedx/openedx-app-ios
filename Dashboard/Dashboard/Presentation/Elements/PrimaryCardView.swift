@@ -165,7 +165,7 @@ public struct PrimaryCardView: View {
             action()
         }, label: {
             ZStack(alignment: .top) {
-                Rectangle().frame(height: 1)
+                Rectangle().frame(height: selected ? 0 : 1)
                     .foregroundStyle(Theme.Colors.cardViewStroke)
                 HStack(alignment: .center) {
                     VStack(alignment: .leading) {

@@ -33,7 +33,11 @@ struct DropDownMenu: View {
                 Text(selectedOption.text)
                     .font(Theme.Fonts.titleSmall)
                     .accessibilityIdentifier("dropdown_menu_text")
-                Image(systemName: expanded ? "chevron.up" : "chevron.down")
+                Image(systemName: "chevron.up")
+                    .rotation3DEffect(
+                        .degrees(expanded ? 180 : 0),
+                        axis: (x: 1.0, y: 0.0, z: 0.0)
+                    )
             }
             .foregroundColor(Theme.Colors.textPrimary)
             .onTapGesture {
@@ -65,7 +69,7 @@ struct DropDownMenu: View {
                                                        br: index == MenuOption.allCases.count-1 ? 8 : 0)
                                         .foregroundStyle(option == selectedOption
                                                          ? Theme.Colors.accentColor
-                                                         : Theme.Colors.background)
+                                                         : Theme.Colors.cardViewBackground)
                                         RoundedCorners(bl: index == MenuOption.allCases.count-1 ? 8 : 0,
                                                        br: index == MenuOption.allCases.count-1 ? 8 : 0)
                                         .stroke(Theme.Colors.cardViewStroke, style: .init(lineWidth: 1))

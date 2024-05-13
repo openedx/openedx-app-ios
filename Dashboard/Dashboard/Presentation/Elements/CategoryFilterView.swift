@@ -44,19 +44,25 @@ enum CategoryOption: String, CaseIterable {
 
 struct CategoryFilterView: View {
     @Binding var selectedOption: CategoryOption
+    @Environment (\.colorScheme) var colorScheme
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
-                ForEach(Array(CategoryOption.allCases.enumerated()), id: \.offset) { index, option in
+                ForEach(Array(CategoryOption.allCases.enumerated()), id: \.offset) {
+                    index,
+                    option in
                     Button(action: {
                         selectedOption = option
-                    }, label: {
+                    },
+                           label: {
                         HStack {
                             Text(option.text)
                                 .font(Theme.Fonts.titleSmall)
                                 .foregroundColor(
-                                    option == selectedOption ? Theme.Colors.white : Theme.Colors.accentColor
+                                    option == selectedOption ? Theme.Colors.white : (
+                                        colorScheme == .light ? Theme.Colors.accentColor : .white
+                                    )
                                 )
                         }
                         .padding(.horizontal, 17)
@@ -67,10 +73,13 @@ struct CategoryFilterView: View {
                                     .foregroundStyle(
                                         option == selectedOption
                                         ? Theme.Colors.accentColor
-                                        : Theme.Colors.background
+                                        : Theme.Colors.cardViewBackground
                                     )
                                 RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Theme.Colors.cardViewStroke, style: .init(lineWidth: 1))
+                                    .stroke(
+                                        colorScheme == .light ? Theme.Colors.accentColor : .clear,
+                                        style: .init(lineWidth: 1)
+                                    )
                             }
                             .padding(.vertical, 1)
                         }
