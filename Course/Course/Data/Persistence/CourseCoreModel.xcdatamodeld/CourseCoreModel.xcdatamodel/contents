@@ -80,7 +80,6 @@
         <attribute name="certificate" optional="YES" attributeType="String"/>
         <attribute name="courseSKU" optional="YES" attributeType="String"/>
         <attribute name="courseStart" optional="YES" attributeType="String"/>
-        <attribute name="dynamicUpgradeDeadline" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isSelfPaced" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="mediaLarge" optional="YES" attributeType="String"/>

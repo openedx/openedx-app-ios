@@ -142,7 +142,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
             org: structure.org ?? "",
             isSelfPaced: structure.isSelfPaced,
             courseStart: structure.courseStart,
-            dynamicUpgradeDeadline: structure.dynamicUpgradeDeadline,
             courseSKU: structure.courseSKU,
             courseMode: DataLayer.Mode(rawValue: structure.mode ?? "")
         )
@@ -159,7 +158,6 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.rootItem = structure.rootItem
             newStructure.isSelfPaced = structure.isSelfPaced
             newStructure.courseStart = structure.courseStart
-            newStructure.dynamicUpgradeDeadline = structure.dynamicUpgradeDeadline
             newStructure.courseSKU = structure.courseSKU
             newStructure.mode = structure.courseMode?.rawValue
             
