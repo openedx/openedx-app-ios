@@ -33,7 +33,7 @@ struct DropDownMenu: View {
                 Text(selectedOption.text)
                     .font(Theme.Fonts.titleSmall)
                     .accessibilityIdentifier("dropdown_menu_text")
-                Image(systemName: "chevron.up")
+                Image(systemName: "chevron.down")
                     .rotation3DEffect(
                         .degrees(expanded ? 180 : 0),
                         axis: (x: 1.0, y: 0.0, z: 0.0)

@@ -279,7 +279,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     }
     
     private func learnTitleAndSearch(proxy: GeometryProxy) -> some View {
-        let showDropdown = true//config.program.enabled && config.program.isWebViewConfigured
+        let showDropdown = config.program.enabled && config.program.isWebViewConfigured
        return ZStack(alignment: .top) {
             Theme.Colors.background
                 .frame(height: showDropdown ? 70 : 50)
