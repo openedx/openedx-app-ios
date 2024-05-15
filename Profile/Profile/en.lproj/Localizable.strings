@@ -80,5 +80,3 @@
 "SETTINGS.UP_TO_DATE" = "Up-to-date";
 "SETTINGS.TAP_TO_UPDATE" = "Tap to update to version";
 "SETTINGS.TAP_TO_INSTALL" = "Tap to install required app update";
-
-"ERROR.CANNOT_SEND_EMAIL" = "Cannot send email. It seems your email client is not set up.";

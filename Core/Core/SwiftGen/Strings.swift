@@ -14,6 +14,8 @@ public enum CoreLocalization {
   public static let close = CoreLocalization.tr("Localizable", "CLOSE", fallback: "Close")
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
+  /// Feedback
+  public static let feedbackEmailSubject = CoreLocalization.tr("Localizable", "FEEDBACK_EMAIL_SUBJECT", fallback: "Feedback")
   /// Ok
   public static let ok = CoreLocalization.tr("Localizable", "OK", fallback: "Ok")
   /// View in Safari
@@ -87,12 +89,12 @@ public enum CoreLocalization {
     public static let emailNotSetupMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.EMAIL_NOT_SETUP_MESSAGE", fallback: "Your email is not set up on this device. Please reach out to {email} for support processing your payment.")
     /// Email not set up
     public static let emailNotSetupTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.EMAIL_NOT_SETUP_TITLE", fallback: "Email not set up")
-    /// Error upgrading course in app
-    public static let getSupportEmailSubject = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.GET_SUPPORT_EMAIL_SUBJECT", fallback: "Error upgrading course in app")
     /// Unlock graded assignments
     public static let learnHowToUnlock = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.LEARN_HOW_TO_UNLOCK", fallback: "Unlock graded assignments")
     /// Thank you for your purchase. Enjoy full access to your course!
     public static let successMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_MESSAGE", fallback: "Thank you for your purchase. Enjoy full access to your course!")
+    /// Error upgrading course in app
+    public static let supportEmailSubject = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUPPORT_EMAIL_SUBJECT", fallback: "Error upgrading course in app")
     /// full access 
     public static let unlockingFullAccess = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.UNLOCKING_FULL_ACCESS", fallback: "full access ")
     /// Unlocking 
@@ -175,6 +177,8 @@ public enum CoreLocalization {
   public enum Error {
     /// Authorization failed.
     public static let authorizationFailed = CoreLocalization.tr("Localizable", "ERROR.AUTHORIZATION_FAILED", fallback: "Authorization failed.")
+    /// Cannot send email. It seems your email client is not set up.
+    public static let cannotSendEmail = CoreLocalization.tr("Localizable", "ERROR.CANNOT_SEND_EMAIL", fallback: "Cannot send email. It seems your email client is not set up.")
     /// Invalid credentials
     public static let invalidCredentials = CoreLocalization.tr("Localizable", "ERROR.INVALID_CREDENTIALS", fallback: "Invalid credentials")
     /// No cached data for offline mode

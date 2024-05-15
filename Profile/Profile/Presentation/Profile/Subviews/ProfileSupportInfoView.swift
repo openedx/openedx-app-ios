@@ -165,7 +165,7 @@ struct ProfileSupportInfoView: View {
         Button {
             guard UIApplication.shared.canOpenURL(linkViewModel.url) else {
                 viewModel.errorMessage = isEmailSupport ?
-                ProfileLocalization.Error.cannotSendEmail :
+                CoreLocalization.Error.cannotSendEmail :
                 CoreLocalization.Error.unknownError
                 return
             }
