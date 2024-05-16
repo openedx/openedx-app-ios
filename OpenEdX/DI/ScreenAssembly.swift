@@ -173,7 +173,8 @@ class ScreenAssembly: Assembly {
             PrimaryCourseDashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
         

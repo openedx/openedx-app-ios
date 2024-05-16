@@ -26,7 +26,6 @@ struct ProgressLineView: View {
     
     var body: some View {
         ZStack(alignment: .leading) {
-//            if progressPossible != 0 {
                 GeometryReader { geometry in
                     Rectangle()
                         .foregroundStyle(Theme.Colors.cardViewStroke)
@@ -34,7 +33,6 @@ struct ProgressLineView: View {
                         .foregroundStyle(Theme.Colors.accentColor)
                         .frame(width: geometry.size.width * progressValue)
                 }.frame(height: height)
-//            }
         }
     }
 }

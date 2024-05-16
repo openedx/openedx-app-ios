@@ -12,10 +12,8 @@ import Swinject
 
 public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     
-    @StateObject
-    private var viewModel: PrimaryCourseDashboardViewModel
+    @StateObject private var viewModel: PrimaryCourseDashboardViewModel
     private let router: DashboardRouter
-    private let config = Container.shared.resolve(ConfigProtocol.self)!
     @ViewBuilder let programView: ProgramView
     private var openDiscoveryPage: () -> Void
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -75,7 +73,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                     progressPossible: primary.progressPossible,
                                                     canResume: primary.lastVisitedBlockID != nil,
                                                     resumeTitle: primary.resumeTitle,
-                                                    pastAssignmentAction: { lastVisitedBlockID in
+                                                    assignmentAction: { lastVisitedBlockID in
                                                         router.showCourseScreens(
                                                             courseID: primary.courseID,
                                                             hasAccess: primary.hasAccess,
@@ -88,7 +86,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                             lastVisitedBlockID: lastVisitedBlockID
                                                         )
                                                     },
-                                                    futureAssignmentAction: { lastVisitedBlockID in
+                                                    openCourseAction: {
                                                         router.showCourseScreens(
                                                             courseID: primary.courseID,
                                                             hasAccess: primary.hasAccess,
@@ -97,8 +95,8 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                             enrollmentStart: nil,
                                                             enrollmentEnd: nil,
                                                             title: primary.name,
-                                                            showDates: lastVisitedBlockID == nil,
-                                                            lastVisitedBlockID: lastVisitedBlockID
+                                                            showDates: false,
+                                                            lastVisitedBlockID: nil
                                                         )
                                                     },
                                                     resumeAction: {
@@ -279,7 +277,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     }
     
     private func learnTitleAndSearch(proxy: GeometryProxy) -> some View {
-        let showDropdown = config.program.enabled && config.program.isWebViewConfigured
+        let showDropdown = viewModel.config.program.enabled && viewModel.config.program.isWebViewConfigured
        return ZStack(alignment: .top) {
             Theme.Colors.background
                 .frame(height: showDropdown ? 70 : 50)
@@ -327,7 +325,8 @@ struct PrimaryCourseDashboardView_Previews: PreviewProvider {
         let vm = PrimaryCourseDashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock()
+            analytics: DashboardAnalyticsMock(), 
+            config: ConfigMock()
         )
         
         PrimaryCourseDashboardView(

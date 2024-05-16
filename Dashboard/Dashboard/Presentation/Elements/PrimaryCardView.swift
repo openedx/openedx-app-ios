@@ -23,8 +23,8 @@ public struct PrimaryCardView: View {
     private let progressPossible: Int
     private let canResume: Bool
     private let resumeTitle: String?
-    private var pastAssignmentAction: (String?) -> Void
-    private var futureAssignmentAction: (String?) -> Void
+    private var assignmentAction: (String?) -> Void
+    private var openCourseAction: () -> Void
     private var resumeAction: () -> Void
     
     public init(
@@ -39,8 +39,8 @@ public struct PrimaryCardView: View {
         progressPossible: Int,
         canResume: Bool,
         resumeTitle: String?,
-        pastAssignmentAction: @escaping (String?) -> Void,
-        futureAssignmentAction: @escaping (String?) -> Void,
+        assignmentAction: @escaping (String?) -> Void,
+        openCourseAction: @escaping () -> Void,
         resumeAction: @escaping () -> Void
     ) {
         self.courseName = courseName
@@ -54,17 +54,22 @@ public struct PrimaryCardView: View {
         self.progressPossible = progressPossible
         self.canResume = canResume
         self.resumeTitle = resumeTitle
-        self.pastAssignmentAction = pastAssignmentAction
-        self.futureAssignmentAction = futureAssignmentAction
+        self.assignmentAction = assignmentAction
+        self.openCourseAction = openCourseAction
         self.resumeAction = resumeAction
     }
     
     public var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
-                courseBanner
-                ProgressLineView(progressEarned: progressEarned, progressPossible: progressPossible)
-                courseTitle
+                Group {
+                    courseBanner
+                    ProgressLineView(progressEarned: progressEarned, progressPossible: progressPossible)
+                    courseTitle
+                }
+                .onTapGesture {
+                    openCourseAction()
+                }
                 assignments
             }
         }
@@ -83,7 +88,7 @@ public struct PrimaryCardView: View {
                     description: DashboardLocalization.Learn.PrimaryCard.onePastAssignment,
                     icon: CoreAssets.warning.swiftUIImage,
                     selected: false,
-                    action: { pastAssignmentAction(pastAssignments.first?.firstComponentBlockId) }
+                    action: { assignmentAction(pastAssignments.first?.firstComponentBlockId) }
                 )
             } else if pastAssignments.count > 1 {
                 courseButton(
@@ -91,7 +96,7 @@ public struct PrimaryCardView: View {
                     description: DashboardLocalization.Learn.PrimaryCard.pastAssignments(pastAssignments.count),
                     icon: CoreAssets.warning.swiftUIImage,
                     selected: false,
-                    action: { pastAssignmentAction(nil) }
+                    action: { assignmentAction(nil) }
                 )
             }
             
@@ -112,7 +117,7 @@ public struct PrimaryCardView: View {
                         icon: CoreAssets.chapter.swiftUIImage,
                         selected: false,
                         action: {
-                            futureAssignmentAction(futureAssignments.first?.firstComponentBlockId)
+                            assignmentAction(futureAssignments.first?.firstComponentBlockId)
                         }
                     )
                 } else if futureAssignments.count > 1 {
@@ -126,7 +131,7 @@ public struct PrimaryCardView: View {
                             icon: CoreAssets.chapter.swiftUIImage,
                             selected: false,
                             action: {
-                                futureAssignmentAction(nil)
+                                assignmentAction(nil)
                             }
                         )
                     }
@@ -214,7 +219,6 @@ public struct PrimaryCardView: View {
             .aspectRatio(contentMode: .fill)
             .frame(height: 140)
             .clipped()
-            .allowsHitTesting(false)
             .accessibilityElement(children: .ignore)
             .accessibilityIdentifier("course_image")
     }
@@ -261,8 +265,8 @@ struct PrimaryCardView_Previews: PreviewProvider {
                 progressPossible: 45,
                 canResume: true,
                 resumeTitle: "Course Chapter 1",
-                pastAssignmentAction: {_ in },
-                futureAssignmentAction: {_ in },
+                assignmentAction: {_ in },
+                openCourseAction: {},
                 resumeAction: {}
             )
             .loadFonts()

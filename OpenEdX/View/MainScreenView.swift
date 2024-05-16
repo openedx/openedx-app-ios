@@ -22,8 +22,6 @@ struct MainScreenView: View {
     
     @ObservedObject private(set) var viewModel: MainScreenViewModel
     
-    private let config = Container.shared.resolve(ConfigProtocol.self)!
-
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
@@ -39,7 +37,7 @@ struct MainScreenView: View {
     
     var body: some View {
         TabView(selection: $viewModel.selection) {
-            switch config.dashboard.type {
+            switch viewModel.config.dashboard.type {
             case .list:
                 ZStack {
                     ListDashboardView(
@@ -80,15 +78,15 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("dashboard_tabitem")
             }
             
-            if config.discovery.enabled {
+            if viewModel.config.discovery.enabled {
                 ZStack {
-                    if config.discovery.type == .native {
+                    if viewModel.config.discovery.type == .native {
                         DiscoveryView(
                             viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
                             router: Container.shared.resolve(DiscoveryRouter.self)!,
                             sourceScreen: viewModel.sourceScreen
                         )
-                    } else if config.discovery.type == .webview {
+                    } else if viewModel.config.discovery.type == .webview {
                         DiscoveryWebview(
                             viewModel: Container.shared.resolve(
                                 DiscoveryWebviewViewModel.self,
@@ -173,7 +171,7 @@ struct MainScreenView: View {
         case .discovery:
             return DiscoveryLocalization.title
         case .dashboard:
-            return config.dashboard.type == .list
+            return viewModel.config.dashboard.type == .list
             ? DashboardLocalization.title
             : DashboardLocalization.Learn.title
         case .programs:

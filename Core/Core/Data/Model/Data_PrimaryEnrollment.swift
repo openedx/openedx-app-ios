@@ -15,8 +15,8 @@ public extension DataLayer {
         
         enum CodingKeys: String, CodingKey {
             case userTimezone = "user_timezone"
-            case enrollments = "enrollments"
-            case primary = "primary"
+            case enrollments
+            case primary
         }
         
         public init(userTimezone: String?, enrollments: Enrollments?, primary: Primary?) {
@@ -41,11 +41,11 @@ public extension DataLayer {
         
         enum CodingKeys: String, CodingKey {
             case auditAccessExpires = "audit_access_expires"
-            case created = "created"
-            case mode = "mode"
+            case created
+            case mode
             case isActive = "is_active"
-            case course = "course"
-            case certificate = "certificate"
+            case course
+            case certificate
             case courseModes = "course_modes"
             case courseStatus = "course_status"
             case progress = "course_progress"
@@ -124,14 +124,14 @@ public extension DataLayer {
         
         enum CodingKeys: String, CodingKey {
             case assignmentType = "assignment_type"
-            case complete = "complete"
-            case date = "date"
+            case complete
+            case date
             case dateType = "date_type"
-            case description = "description"
+            case description
             case learnerHasAccess = "learner_has_access"
-            case link = "link"
+            case link
             case linkText = "link_text"
-            case title = "title"
+            case title
             case extraInfo = "extra_info"
             case firstComponentBlockID = "first_component_block_id"
         }
