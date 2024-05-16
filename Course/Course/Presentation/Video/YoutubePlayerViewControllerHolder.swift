@@ -1,43 +1,15 @@
 //
-//  PlayerViewControllerHolder.swift
-//  Core
+//  YoutubePlayerViewControllerHolder.swift
+//  Course
 //
-//  Created by Vadim Kuznetsov on 20.03.24.
+//  Created by Vadim Kuznetsov on 22.04.24.
 //
 
-import AVKit
 import Combine
+import Foundation
+import YouTubePlayerKit
 
-public protocol PlayerViewControllerHolderProtocol: AnyObject {
-    var url: URL? { get }
-    var blockID: String { get }
-    var courseID: String { get }
-    var selectedCourseTab: Int { get }
-    var playerController: PlayerControllerProtocol? { get }
-    var isPlaying: Bool { get }
-    var isPlayingInPip: Bool { get }
-    var isOtherPlayerInPipPlaying: Bool { get }
-
-    init(
-        url: URL?,
-        blockID: String,
-        courseID: String,
-        selectedCourseTab: Int,
-        videoResolution: CGSize,
-        pipManager: PipManagerProtocol,
-        playerTracker: any PlayerTrackerProtocol,
-        playerDelegate: PlayerDelegateProtocol?,
-        playerService: PlayerServiceProtocol
-    )
-    func getTimePublisher() -> AnyPublisher<Double, Never>
-    func getErrorPublisher() -> AnyPublisher<Error, Never>
-    func getRatePublisher() -> AnyPublisher<Float, Never>
-    func getReadyPublisher() -> AnyPublisher<Bool, Never>
-    func getService() -> PlayerServiceProtocol
-    func sendCompletion() async
-}
-
-public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
+public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     public let url: URL?
     public let blockID: String
     public let courseID: String
@@ -50,24 +22,16 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
         playerTracker.getTimePublisher()
     }
 
-    public var isPlayingInPip: Bool {
-        playerDelegate?.isPlayingInPip ?? false
-    }
+    public let isPlayingInPip: Bool = false
 
     public var isOtherPlayerInPipPlaying: Bool {
-        let holder = pipManager.holder(
-            for: url,
-            blockID: blockID,
-            courseID: courseID,
-            selectedCourseTab: selectedCourseTab
-        )
-        return holder == nil && pipManager.isPipActive && pipManager.isPipPlaying
+        pipManager.isPipActive && pipManager.isPipPlaying
     }
+
     public var duration: Double {
         playerTracker.duration
     }
     private let playerTracker: any PlayerTrackerProtocol
-    private let playerDelegate: PlayerDelegateProtocol?
     private let playerService: PlayerServiceProtocol
     private let videoResolution: CGSize
     private let errorPublisher = PassthroughSubject<Error, Never>()
@@ -76,16 +40,9 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
 
     let pipManager: PipManagerProtocol
 
-    public lazy var playerController: PlayerControllerProtocol? = {
-        let playerController = AVPlayerViewController()
-        playerController.modalPresentationStyle = .fullScreen
-        playerController.allowsPictureInPicturePlayback = true
-        playerController.canStartPictureInPictureAutomaticallyFromInline = true
-        playerController.delegate = playerDelegate
-        playerController.player = playerTracker.player as? AVPlayer
-        playerController.player?.currentItem?.preferredMaximumResolution = videoResolution
-        return playerController
-    }()
+    public var playerController: PlayerControllerProtocol? {
+        playerTracker.player as? YouTubePlayer
+    }
 
     required public init(
         url: URL?,
@@ -105,8 +62,13 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
         self.videoResolution = videoResolution
         self.pipManager = pipManager
         self.playerTracker = playerTracker
-        self.playerDelegate = playerDelegate
         self.playerService = playerService
+        let youtubePlayer = playerTracker.player as? YouTubePlayer
+        var configuration = youtubePlayer?.configuration
+        configuration?.autoPlay = !pipManager.isPipActive
+        if let configuration = configuration {
+            youtubePlayer?.update(configuration: configuration)
+        }
         addObservers()
     }
     
@@ -160,7 +122,7 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     public func getRatePublisher() -> AnyPublisher<Float, Never> {
         playerTracker.getRatePublisher()
     }
-    
+
     public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
         playerTracker.getReadyPublisher()
     }
@@ -178,9 +140,9 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     }
 }
 
-extension PlayerViewControllerHolder {
-    static var mock: PlayerViewControllerHolder {
-        PlayerViewControllerHolder(
+extension YoutubePlayerViewControllerHolder {
+    static var mock: YoutubePlayerViewControllerHolder {
+        YoutubePlayerViewControllerHolder(
             url: URL(string: "")!,
             blockID: "",
             courseID: "",
@@ -199,20 +161,23 @@ extension PlayerViewControllerHolder {
     }
 }
 
-extension AVPlayerViewController: PlayerControllerProtocol {
+extension YouTubePlayer: PlayerControllerProtocol {
     public func play() {
-        player?.play()
+        self.play(completion: nil)
     }
     
     public func pause() {
-        player?.pause()
+        self.pause(completion: nil)
     }
     
     public func seekTo(to date: Date) {
-        player?.seek(to: date)
+        self.seek(
+            to: Measurement(value: date.secondsSinceMidnight(), unit: UnitDuration.seconds),
+            allowSeekAhead: true
+        )
     }
     
     public func stop() {
-        player?.replaceCurrentItem(with: nil)
+        self.stop(completion: nil)
     }
 }

@@ -11,7 +11,7 @@ import Discovery
 import SwiftUI
 
 public class PipManager: PipManagerProtocol {
-    var controllerHolder: PlayerViewControllerHolder?
+    var controllerHolder: PlayerViewControllerHolderProtocol?
     let discoveryInteractor: DiscoveryInteractorProtocol
     let courseInteractor: CourseInteractorProtocol
     let router: Router
@@ -19,10 +19,10 @@ public class PipManager: PipManagerProtocol {
     public var isPipActive: Bool {
         controllerHolder != nil
     }
-    
-    private var ratePublisher: PassthroughSubject<Float, Never>?
-    private var cancellations: [AnyCancellable] = []
-    
+    public var isPipPlaying: Bool {
+        controllerHolder?.isPlaying ?? false
+    }
+
     public init(
         router: Router,
         discoveryInteractor: DiscoveryInteractorProtocol,
@@ -40,7 +40,7 @@ public class PipManager: PipManagerProtocol {
         blockID: String,
         courseID: String,
         selectedCourseTab: Int
-    ) -> PlayerViewControllerHolder? {
+    ) -> PlayerViewControllerHolderProtocol? {
         if controllerHolder?.blockID == blockID,
            controllerHolder?.courseID == courseID,
            controllerHolder?.selectedCourseTab == selectedCourseTab {
@@ -50,32 +50,29 @@ public class PipManager: PipManagerProtocol {
         return nil
     }
     
-    public func set(holder: PlayerViewControllerHolder) {
+    public func set(holder: PlayerViewControllerHolderProtocol) {
         controllerHolder = holder
-        ratePublisher = PassthroughSubject<Float, Never>()
-        cancellations.removeAll()
-        holder.playerController.player?.publisher(for: \.rate)
-            .sink { [weak self] rate in
-                self?.ratePublisher?.send(rate)
-            }
-            .store(in: &cancellations)
     }
     
-    public func remove(holder: PlayerViewControllerHolder) {
-        if controllerHolder == holder {
+    public func remove(holder: PlayerViewControllerHolderProtocol) {
+        if isCurrentHolderEqualTo(holder) {
             controllerHolder = nil
-            cancellations.removeAll()
-            ratePublisher = nil
         }
+    }
+
+    private func isCurrentHolderEqualTo(_ holder: PlayerViewControllerHolderProtocol) -> Bool {
+        controllerHolder?.blockID == holder.blockID &&
+        controllerHolder?.courseID == holder.courseID &&
+        controllerHolder?.url == holder.url &&
+        controllerHolder?.selectedCourseTab == holder.selectedCourseTab
     }
     
     public func pipRatePublisher() -> AnyPublisher<Float, Never>? {
-        ratePublisher?
-            .eraseToAnyPublisher()
+        controllerHolder?.getRatePublisher()
     }
     
     @MainActor
-    public func restore(holder: PlayerViewControllerHolder) async throws {
+    public func restore(holder: PlayerViewControllerHolderProtocol) async throws {
         let courseID = holder.courseID
         
         // if we are on CourseUnitView, and tab is same with holder
@@ -94,11 +91,11 @@ public class PipManager: PipManagerProtocol {
     
     public func pauseCurrentPipVideo() {
         guard let holder = controllerHolder else { return }
-        holder.playerController.player?.pause()
+        holder.playerController?.pause()
     }
     
     @MainActor
-    private func navigate(to holder: PlayerViewControllerHolder) async throws {
+    private func navigate(to holder: PlayerViewControllerHolderProtocol) async throws {
         let currentControllers = router.getNavigationController().viewControllers
         guard let mainController = currentControllers.first as? UIHostingController<MainScreenView> else {
             return
@@ -127,7 +124,7 @@ public class PipManager: PipManagerProtocol {
 
     @MainActor
     private func courseVerticalController(
-        for holder: PlayerViewControllerHolder
+        for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseVerticalView> {
         var courseStructure = try await courseInteractor.getLoadedCourseBlocks(courseID: holder.courseID)
         if holder.selectedCourseTab == CourseTab.videos.rawValue {
@@ -150,7 +147,7 @@ public class PipManager: PipManagerProtocol {
     
     @MainActor
     private func courseUnitController(
-        for holder: PlayerViewControllerHolder
+        for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseUnitView> {
 
         var courseStructure = try await courseInteractor.getLoadedCourseBlocks(courseID: holder.courseID)
@@ -178,7 +175,7 @@ public class PipManager: PipManagerProtocol {
     
     @MainActor
     private func containerController(
-        for holder: PlayerViewControllerHolder
+        for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseContainerView> {
         let courseDetails = try await getCourseDetails(for: holder)
         let isActive: Bool? = nil
@@ -195,7 +192,7 @@ public class PipManager: PipManagerProtocol {
         return controller
     }
     
-    private func getCourseDetails(for holder: PlayerViewControllerHolder) async throws -> CourseDetails {
+    private func getCourseDetails(for holder: PlayerViewControllerHolderProtocol) async throws -> CourseDetails {
         if let value = try? await discoveryInteractor.getLoadedCourseDetails(
             courseID: holder.courseID
         ) {

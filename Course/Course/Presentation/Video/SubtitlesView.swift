@@ -1,5 +1,5 @@
 //
-//  SubtittlesView.swift
+//  SubtitlesView.swift
 //  Course
 //
 //  Created by  Stepanok Ivan on 04.04.2023.
@@ -15,7 +15,7 @@ public struct Subtitle {
     var text: String
 }
 
-public struct SubtittlesView: View {
+public struct SubtitlesView: View {
     
     @Environment (\.isHorizontal) private var isHorizontal
     
@@ -113,20 +113,19 @@ public struct SubtittlesView: View {
 }
 
 #if DEBUG
+import Combine
 struct SubtittlesView_Previews: PreviewProvider {
     static var previews: some View {
         
-        SubtittlesView(
+        SubtitlesView(
             languages: [SubtitleUrl(language: "fr", url: "url"),
                         SubtitleUrl(language: "uk", url: "url2")],
             currentTime: .constant(0),
             viewModel: VideoPlayerViewModel(
-                blockID: "", courseID: "",
                 languages: [],
-                interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
-                appStorage: CoreStorageMock(),
-                connectivity: Connectivity()
+                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
+                connectivity: Connectivity(),
+                playerHolder: PlayerViewControllerHolder.mock
             ), scrollTo: {_ in }
         )
     }
