@@ -117,6 +117,7 @@ struct CourseStructureView: View {
                             }
                         }
                         Image(systemName: "chevron.right")
+                            .flipsForRightToLeftLayoutDirection(true)
                             .foregroundColor(Theme.Colors.accentColor)
                     }
                     .padding(.horizontal, 36)
