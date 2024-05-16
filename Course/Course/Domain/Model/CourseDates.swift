@@ -286,6 +286,23 @@ public enum CompletionStatus: String {
     case thisWeek = "This Week"
     case nextWeek = "Next Week"
     case upcoming = "Upcoming"
+    
+    var localized: String {
+        switch self {
+        case .completed:
+            return CourseLocalization.CourseDates.completed
+        case .pastDue:
+            return CourseLocalization.CourseDates.pastDue
+        case .today:
+            return CourseLocalization.CourseDates.today
+        case .thisWeek:
+            return CourseLocalization.CourseDates.today
+        case .nextWeek:
+            return CourseLocalization.CourseDates.today
+        case .upcoming:
+            return CourseLocalization.CourseDates.today
+        }
+    }
 }
 
 extension Array {
