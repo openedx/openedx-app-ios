@@ -111,16 +111,10 @@ public class SettingsViewModel: ObservableObject {
     }
     
     func contactSupport() -> URL? {
-        let osVersion = UIDevice.current.systemVersion
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        let deviceModel = UIDevice.current.model
-        let feedbackDetails = "OS version: \(osVersion)\nApp version: \(appVersion)\nDevice model: \(deviceModel)"
-        
-        let recipientAddress = config.feedbackEmail
-        let emailSubject = "Feedback"
-        let emailBody = "\n\n\(feedbackDetails)\n".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let emailURL = URL(string: "mailto:\(recipientAddress)?subject=\(emailSubject)&body=\(emailBody)")
-        return emailURL
+        return EmailTemplates.contactSupport(
+            email: config.feedbackEmail,
+            emailSubject: CoreLocalization.feedbackEmailSubject
+        )
     }
 
     func update(downloadQuality: DownloadQuality) {

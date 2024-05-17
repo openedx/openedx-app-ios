@@ -136,6 +136,7 @@
 		0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE6028D0B2CB006D8A5D /* Assets.swift */; };
 		07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */; };
 		07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */; };
+		141DB4662BF4A1F900BDA069 /* EmailTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141DB4652BF4A1F900BDA069 /* EmailTemplates.swift */; };
 		141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */; };
 		142EDD6C2B831D1400F9F320 /* BranchSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 142EDD6B2B831D1400F9F320 /* BranchSDK */; };
 		14769D3C2B9822EE00AB36D4 /* CoreAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */; };
@@ -337,6 +338,7 @@
 		07DDFCBC29A780BB00572595 /* UINavigationController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Animation.swift"; sourceTree = "<group>"; };
 		07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Certificate.swift; sourceTree = "<group>"; };
 		0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugstage.xcconfig"; sourceTree = "<group>"; };
+		141DB4652BF4A1F900BDA069 /* EmailTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTemplates.swift; sourceTree = "<group>"; };
 		141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewCookiesUpdateProtocol.swift; sourceTree = "<group>"; };
 		14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAnalytics.swift; sourceTree = "<group>"; };
 		149936CD2BEB4F8900B4C89F /* CourseUpgradeUnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUpgradeUnlockView.swift; sourceTree = "<group>"; };
@@ -731,6 +733,7 @@
 			children = (
 				0770DE7728D0C49E006D8A5D /* Base */,
 				072787B528D37A0E002E9142 /* Validator.swift */,
+				141DB4652BF4A1F900BDA069 /* EmailTemplates.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1217,6 +1220,7 @@
 				14A832682BDA8B6000E5654D /* UIAlertController+BlockActions.swift in Sources */,
 				A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */,
 				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
+				141DB4662BF4A1F900BDA069 /* EmailTemplates.swift in Sources */,
 				BA8FA6612AD5974300EA029A /* AppleAuthProvider.swift in Sources */,
 				BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */,
 				BA76135C2B21BC7300B599B7 /* SocialAuthResponse.swift in Sources */,

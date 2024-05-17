@@ -22,9 +22,8 @@ public extension DataLayer {
         public let org: String?
         public let isSelfPaced: Bool
         public let courseModes: [CourseMode]?
-        public let enrollment: EnrollmentDetail?
+        public let enrollmentDetails: EnrollmentDetail?
         public let courseStart: String?
-        public let dynamicUpgradeDeadline: String?
         public var courseSKU: String?
         public var courseMode: Mode?
         public let coursewareAccessDetails: CoursewareAccessDetails?
@@ -39,7 +38,6 @@ public extension DataLayer {
             case isSelfPaced = "is_self_paced"
             case enrollmentDetails = "enrollment_details"
             case courseStart = "start"
-            case dynamicUpgradeDeadline = "dynamic_upgrade_deadline"
             case courseModes = "course_modes"
             case coursewareAccessDetails = "course_access_details"
         }
@@ -55,7 +53,6 @@ public extension DataLayer {
             courseModes: [CourseMode]? = nil,
             enrollmentDetails: EnrollmentDetail? = nil,
             courseStart: String? = nil,
-            dynamicUpgradeDeadline: String? = nil,
             courseSKU: String? = nil,
             courseMode: Mode? = .unknown,
             coursewareAccessDetails: CoursewareAccessDetails? = nil
@@ -68,9 +65,8 @@ public extension DataLayer {
             self.org = org
             self.isSelfPaced = isSelfPaced
             self.courseModes = courseModes
-            self.enrollment = enrollmentDetails
+            self.enrollmentDetails = enrollmentDetails
             self.courseStart = courseStart
-            self.dynamicUpgradeDeadline = dynamicUpgradeDeadline
             self.coursewareAccessDetails = coursewareAccessDetails
             
             if enrollmentDetails?.mode != nil {
@@ -91,9 +87,8 @@ public extension DataLayer {
             org = try values.decode(String.self, forKey: .org)
             isSelfPaced = try values.decode(Bool.self, forKey: .isSelfPaced)
             courseModes = try values.decode([CourseMode].self, forKey: .courseModes)
-            enrollment = try values.decode(EnrollmentDetail.self, forKey: .enrollmentDetails)
+            enrollmentDetails = try values.decode(EnrollmentDetail.self, forKey: .enrollmentDetails)
             courseStart = try values.decode(String.self, forKey: .courseStart)
-            dynamicUpgradeDeadline = try? values.decode(String.self, forKey: .dynamicUpgradeDeadline)
             coursewareAccessDetails = try values.decode(CoursewareAccessDetails.self, forKey: .coursewareAccessDetails)
             
             populateCourseSKU()
@@ -203,17 +198,20 @@ public extension DataLayer {
         let created: String
         let isActive: Bool
         let mode: Mode
+        let upgradeDeadline: String
         
         public enum CodingKeys: String, CodingKey {
             case created
             case isActive = "is_active"
             case mode
+            case upgradeDeadline = "upgrade_deadline"
         }
         
-        init(created: String, isActive: Bool, mode: Mode) {
+        init(created: String, isActive: Bool, mode: Mode, upgradeDeadline: String) {
             self.created = created
             self.isActive = isActive
             self.mode = mode
+            self.upgradeDeadline = upgradeDeadline
         }
     }
     
@@ -296,18 +294,15 @@ public extension DataLayer {
 extension DataLayer.CourseStructure {
     var isUpgradeable: Bool {
         guard let start = courseStart,
-//                let upgradeDeadline = dynamicUpgradeDeadline,
-              enrollment?.mode == .audit
+              let upgradeDeadline = enrollmentDetails?.upgradeDeadline,
+              enrollmentDetails?.mode == .audit
         else { return false }
         
         let startDate = Date(iso8601: start)
-//        let dynamicUpgradeDeadline = Date(iso8601: upgradeDeadline)
+        let dynamicUpgradeDeadline = Date(iso8601: upgradeDeadline)
         
         return startDate.isInPast()
         && courseSKU?.isEmpty == false
-       // && !dynamicUpgradeDeadline.isInPast()
-        
-        // TODO: uncomment !dynamicUpgradeDeadline.isInPast() and related code
-        // when it will be available in API response
+        && !dynamicUpgradeDeadline.isInPast()
     }
 }

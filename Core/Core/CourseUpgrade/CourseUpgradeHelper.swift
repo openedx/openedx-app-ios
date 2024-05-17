@@ -8,6 +8,7 @@
 import Foundation
 import StoreKit
 import SwiftUI
+import MessageUI
 
 public struct CourseUpgradeHelperModel {
     let courseID: String
@@ -52,7 +53,7 @@ public protocol CourseUpgradeHelperProtocol {
     )
 }
 
-public class CourseUpgradeHelper {
+public class CourseUpgradeHelper: NSObject {
     
     weak private(set) var delegate: CourseUpgradeHelperDelegate?
     private(set) var completion: (() -> Void)?
@@ -237,7 +238,7 @@ extension CourseUpgradeHelper {
 
         alertController.addButton(withTitle: CoreLocalization.CourseUpgrade.FailureAlert.getHelp) { [weak self] _ in
             self?.trackUpgradeErrorAction(errorAction: .emailSupport)
-//            self?.launchEmailComposer(errorMessage: "Error: \(self?.upgradeHadler?.formattedError ?? "")")
+            self?.launchEmailComposer(errorMessage: "Error: \(self?.upgradeHadler?.formattedError ?? "")")
         }
 
         alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
@@ -246,8 +247,7 @@ extension CourseUpgradeHelper {
             if self?.unlockController != nil {
                 self?.removeLoader()
                 self?.hideAlertAction()
-            }
-            else {
+            } else {
                 self?.hideAlertAction()
             }
         }
@@ -339,6 +339,27 @@ extension CourseUpgradeHelper {
             error: upgradeHadler?.formattedError ?? "",
             flowType: upgradeHadler?.upgradeMode.rawValue ?? ""
         )
+    }
+}
+
+extension CourseUpgradeHelper {
+    func launchEmailComposer(errorMessage: String) {
+        guard let emailURL = EmailTemplates.contactSupport(
+            email: config.feedbackEmail,
+            emailSubject: CoreLocalization.CourseUpgrade.supportEmailSubject,
+            errorMessage: errorMessage
+        ), UIApplication.shared.canOpenURL(emailURL) else {
+            
+            UIAlertController().showAlert(
+                withTitle: CoreLocalization.CourseUpgrade.emailNotSetupTitle,
+                message: CoreLocalization.Error.cannotSendEmail,
+                onViewController: topController!
+            )
+            
+            return
+        }
+        
+        UIApplication.shared.open(emailURL)
     }
 }
 

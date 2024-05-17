@@ -107,10 +107,6 @@ public enum ProfileLocalization {
       public static let yearOfBirth = ProfileLocalization.tr("Localizable", "EDIT.FIELDS.YEAR_OF_BIRTH", fallback: "Year of birth")
     }
   }
-  public enum Error {
-    /// Cannot send email. It seems your email client is not set up.
-    public static let cannotSendEmail = ProfileLocalization.tr("Localizable", "ERROR.CANNOT_SEND_EMAIL", fallback: "Cannot send email. It seems your email client is not set up.")
-  }
   public enum LogoutAlert {
     /// Are you sure you want to log out?
     public static let text = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TEXT", fallback: "Are you sure you want to log out?")

@@ -242,6 +242,6 @@ extension CourseUpgradeHandler {
     }
 
     fileprivate func error(message: String) -> Error {
-        return NSError(domain:"edx.app.courseupgrade", code: 1010, userInfo: [NSLocalizedDescriptionKey: message])
+        return NSError(domain: "edx.app.courseupgrade", code: 1010, userInfo: [NSLocalizedDescriptionKey: message])
     }
 }
