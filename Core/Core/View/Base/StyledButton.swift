@@ -69,6 +69,7 @@ public struct StyledButton: View {
                 }
                 Spacer()
             }
+            .padding(.horizontal, 20)
         }
         .disabled(!isActive)
         .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: isTransparent ? 36 : 42)

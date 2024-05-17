@@ -701,6 +701,28 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showDatesAndCalendar() {
+        let vm = DatesAndCalendarViewModel(
+            router: self
+        )
+        
+        let view = DatesAndCalendarView(viewModel: vm)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showSyncCalendarOptions(viewModel: DatesAndCalendarViewModel) {
+        let view = SyncCalendarOptionsView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showCoursesToSync(viewModel: DatesAndCalendarViewModel) {
+        let view = CoursesToSyncView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     public func showManageAccount() {
         let viewModel = Container.shared.resolve(ManageAccountViewModel.self)!
         let view = ManageAccountView(viewModel: viewModel)

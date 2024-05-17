@@ -64,6 +64,7 @@
 		028F9F37293A44C700DE65D0 /* Data_ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */; };
 		028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F9F38293A452B00DE65D0 /* ResetPassword.swift */; };
 		0295C885299B99DD00ABE571 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */; };
+		029EE3ED2BF6650500F64F33 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029EE3EC2BF6650500F64F33 /* Bundle.swift */; };
 		02A463112AEA966C00331037 /* AppReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A463102AEA966C00331037 /* AppReviewView.swift */; };
 		02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */; };
 		02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */; };
@@ -246,6 +247,7 @@
 		028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_ResetPassword.swift; sourceTree = "<group>"; };
 		028F9F38293A452B00DE65D0 /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
+		029EE3EC2BF6650500F64F33 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		02A463102AEA966C00331037 /* AppReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewView.swift; sourceTree = "<group>"; };
 		02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorePersistenceProtocol.swift; sourceTree = "<group>"; };
 		02A4833729B8A8F800D33F33 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				02D400602B0678190029D168 /* SKStoreReviewControllerExtension.swift */,
 				E0D5861B2B2FF85B009B4BA7 /* RawStringExtactable.swift */,
 				BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */,
+				029EE3EC2BF6650500F64F33 /* Bundle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1192,6 +1195,7 @@
 				0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */,
 				064987982B4D69FF0071642A /* CSSInjectionProtocol.swift in Sources */,
 				BAAD62C62AFCF00B000E6103 /* CustomDisclosureGroup.swift in Sources */,
+				029EE3ED2BF6650500F64F33 /* Bundle.swift in Sources */,
 				BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */,
 				0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */,
 				023A1136291432B200D0D354 /* RegistrationTextField.swift in Sources */,

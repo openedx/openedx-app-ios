@@ -24,6 +24,12 @@ public protocol ProfileRouter: BaseRouter {
     
     func showManageAccount()
     
+    func showDatesAndCalendar()
+    
+    func showSyncCalendarOptions(viewModel: DatesAndCalendarViewModel)
+    
+    func showCoursesToSync(viewModel: DatesAndCalendarViewModel)
+    
     func showVideoQualityView(viewModel: SettingsViewModel)
 
     func showVideoDownloadQualityView(
@@ -51,6 +57,12 @@ public class ProfileRouterMock: BaseRouterMock, ProfileRouter {
     public func showSettings() {}
     
     public func showVideoSettings() {}
+    
+    public func showDatesAndCalendar() {}
+    
+    public func showSyncCalendarOptions(viewModel: DatesAndCalendarViewModel) {}
+    
+    public func showCoursesToSync(viewModel: DatesAndCalendarViewModel) {}
     
     public func showManageAccount() {}
     

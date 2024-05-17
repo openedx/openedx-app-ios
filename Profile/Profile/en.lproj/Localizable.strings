@@ -82,3 +82,61 @@
 "SETTINGS.TAP_TO_INSTALL" = "Tap to install required app update";
 
 "ERROR.CANNOT_SEND_EMAIL" = "Cannot send email. It seems your email client is not set up.";
+
+"CALENDAR.NEW_CALENDAR" = "New Calendar";
+"CALENDAR.CHANGE_SYNC_OPTIONS" = "Change Sync Options";
+"CALENDAR.ACCOUNT" = "Account";
+"CALENDAR.CALENDAR_NAME" = "Calendar Name";
+"CALENDAR.COLOR" = "Color";
+"CALENDAR.UPCOMING_ASSIGNMENTS" = "Upcoming assignments for active courses will appear on this calendar";
+"CALENDAR.CANCEL" = "Cancel";
+"CALENDAR.BEGIN_SYNCING" = "Begin Syncing";
+
+"ASSIGNMENT_STATUS.SYNCED" = "Synced";
+"ASSIGNMENT_STATUS.FAILED" = "Sync Failed";
+"ASSIGNMENT_STATUS.OFFLINE" = "Offline";
+
+"CALENDAR_DIALOG.CALENDAR_ACCESS" = "Calendar Access";
+"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC" = "Change Sync Options";
+"CALENDAR_DIALOG.CALENDAR_ACCESS_DESCRIPTION" = "To show upcoming assignments and course milestones on your calendar, we need permission to access your calendar.";
+"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION" = "Disabling calendar sync will delete the calendar “My Assignments.” You can turn calendar sync back on at any time.";
+"CALENDAR_DIALOG.GRANT_CALENDAR_ACCESS" = "Grant Calendar Access";
+"CALENDAR_DIALOG.DISABLE_SYNCING" = "Disable Syncing";
+"CALENDAR_DIALOG.CANCEL" = "Cancel";
+
+"DATES_AND_CALENDAR.TITLE" = "Dates & Calendar";
+"CALENDAR_SYNC.TITLE" = "Calendar Sync";
+"CALENDAR_SYNC.DESCRIPTION" = "Set up calendar sync to show your upcoming assignments and course milestones on your calendar. New assignments and shifted course dates will sync automatically";
+"CALENDAR_SYNC.BUTTON" = "Set Up Calendar Sync";
+"OPTIONS.TITLE" = "Options";
+"OPTIONS.USE_RELATIVE_DATES" = "Use relative dates";
+"OPTIONS.SHOW_RELATIVE_DATES" = "Show relative dates like “Tomorrow” and “Yesterday”";
+
+"DATES_AND_CALENDAR.TITLE" = "Dates & Calendar";
+"COURSE_CALENDAR_SYNC.TITLE" = "Course Calendar Sync";
+"COURSE_CALENDAR_SYNC.DESCRIPTION.RECONNECT_REQUIRED" = "Please reconnect your calendar to resume syncing";
+"COURSE_CALENDAR_SYNC.DESCRIPTION.SYNCING" = "Currently syncing events to your calendar";
+"COURSE_CALENDAR_SYNC.BUTTON.RECONNECT" = "Reconnect Calendar";
+"COURSE_CALENDAR_SYNC.BUTTON.CHANGE_SYNC_OPTIONS" = "Change Sync Options";
+"COURSES_TO_SYNC.SYNCING_COURSES" = "Syncing %d Courses";
+"OPTIONS.TITLE" = "Options";
+"OPTIONS.USE_RELATIVE_DATES" = "Use relative dates";
+"OPTIONS.SHOW_RELATIVE_DATES" = "Show relative dates like “Tomorrow” and “Yesterday”";
+
+"COURSES_TO_SYNC.TITLE" = "Courses to Sync";
+"COURSES_TO_SYNC.DESCRIPTION" = "Disabling sync for a course will remove all events connected to the course from your synced calendar.";
+"COURSES_TO_SYNC.HIDE_INACTIVE_COURSES" = "Hide Inactive Courses";
+"COURSES_TO_SYNC.HIDE_INACTIVE_COURSES_DESCRIPTION" = "Automatically remove events from courses you haven’t viewed in the last month";
+"COURSES_TO_SYNC.INACTIVE" = "Inactive";
+
+"CALENDAR.DROPDOWN.ICLOUD" = "iCloud";
+"CALENDAR.DROPDOWN.LOCAL" = "Local";
+
+"CALENDAR.DROPDOWN_COLOR.ACCENT" = "Accent";
+"CALENDAR.DROPDOWN_COLOR.RED" = "Red";
+"CALENDAR.DROPDOWN_COLOR.ORANGE" = "Orange";
+"CALENDAR.DROPDOWN_COLOR.YELLOW" = "Yellow";
+"CALENDAR.DROPDOWN_COLOR.GREEN" = "Green";
+"CALENDAR.DROPDOWN_COLOR.BLUE" = "Blue";
+"CALENDAR.DROPDOWN_COLOR.PURPLE" = "Purple";
+"CALENDAR.DROPDOWN_COLOR.BROWN" = "Brown";

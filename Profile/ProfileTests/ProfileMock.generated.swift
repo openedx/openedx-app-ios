@@ -3057,6 +3057,24 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 		perform?()
     }
 
+    open func showDatesAndCalendar() {
+        addInvocation(.m_showDatesAndCalendar)
+		let perform = methodPerformValue(.m_showDatesAndCalendar) as? () -> Void
+		perform?()
+    }
+
+    open func showSyncCalendarOptions(viewModel: DatesAndCalendarViewModel) {
+        addInvocation(.m_showSyncCalendarOptions__viewModel_viewModel(Parameter<DatesAndCalendarViewModel>.value(`viewModel`)))
+		let perform = methodPerformValue(.m_showSyncCalendarOptions__viewModel_viewModel(Parameter<DatesAndCalendarViewModel>.value(`viewModel`))) as? (DatesAndCalendarViewModel) -> Void
+		perform?(`viewModel`)
+    }
+
+    open func showCoursesToSync(viewModel: DatesAndCalendarViewModel) {
+        addInvocation(.m_showCoursesToSync__viewModel_viewModel(Parameter<DatesAndCalendarViewModel>.value(`viewModel`)))
+		let perform = methodPerformValue(.m_showCoursesToSync__viewModel_viewModel(Parameter<DatesAndCalendarViewModel>.value(`viewModel`))) as? (DatesAndCalendarViewModel) -> Void
+		perform?(`viewModel`)
+    }
+
     open func showVideoQualityView(viewModel: SettingsViewModel) {
         addInvocation(.m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>.value(`viewModel`)))
 		let perform = methodPerformValue(.m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>.value(`viewModel`))) as? (SettingsViewModel) -> Void
@@ -3177,6 +3195,9 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         case m_showSettings
         case m_showVideoSettings
         case m_showManageAccount
+        case m_showDatesAndCalendar
+        case m_showSyncCalendarOptions__viewModel_viewModel(Parameter<DatesAndCalendarViewModel>)
+        case m_showCoursesToSync__viewModel_viewModel(Parameter<DatesAndCalendarViewModel>)
         case m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>)
         case m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(Parameter<DownloadQuality>, Parameter<((DownloadQuality) -> Void)?>, Parameter<CoreAnalytics>)
         case m_showDeleteProfileView
@@ -3211,6 +3232,18 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             case (.m_showVideoSettings, .m_showVideoSettings): return .match
 
             case (.m_showManageAccount, .m_showManageAccount): return .match
+
+            case (.m_showDatesAndCalendar, .m_showDatesAndCalendar): return .match
+
+            case (.m_showSyncCalendarOptions__viewModel_viewModel(let lhsViewmodel), .m_showSyncCalendarOptions__viewModel_viewModel(let rhsViewmodel)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsViewmodel, rhs: rhsViewmodel, with: matcher), lhsViewmodel, rhsViewmodel, "viewModel"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_showCoursesToSync__viewModel_viewModel(let lhsViewmodel), .m_showCoursesToSync__viewModel_viewModel(let rhsViewmodel)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsViewmodel, rhs: rhsViewmodel, with: matcher), lhsViewmodel, rhsViewmodel, "viewModel"))
+				return Matcher.ComparisonResult(results)
 
             case (.m_showVideoQualityView__viewModel_viewModel(let lhsViewmodel), .m_showVideoQualityView__viewModel_viewModel(let rhsViewmodel)):
 				var results: [Matcher.ParameterComparisonResult] = []
@@ -3324,6 +3357,9 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             case .m_showSettings: return 0
             case .m_showVideoSettings: return 0
             case .m_showManageAccount: return 0
+            case .m_showDatesAndCalendar: return 0
+            case let .m_showSyncCalendarOptions__viewModel_viewModel(p0): return p0.intValue
+            case let .m_showCoursesToSync__viewModel_viewModel(p0): return p0.intValue
             case let .m_showVideoQualityView__viewModel_viewModel(p0): return p0.intValue
             case let .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case .m_showDeleteProfileView: return 0
@@ -3351,6 +3387,9 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             case .m_showSettings: return ".showSettings()"
             case .m_showVideoSettings: return ".showVideoSettings()"
             case .m_showManageAccount: return ".showManageAccount()"
+            case .m_showDatesAndCalendar: return ".showDatesAndCalendar()"
+            case .m_showSyncCalendarOptions__viewModel_viewModel: return ".showSyncCalendarOptions(viewModel:)"
+            case .m_showCoursesToSync__viewModel_viewModel: return ".showCoursesToSync(viewModel:)"
             case .m_showVideoQualityView__viewModel_viewModel: return ".showVideoQualityView(viewModel:)"
             case .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics: return ".showVideoDownloadQualityView(downloadQuality:didSelect:analytics:)"
             case .m_showDeleteProfileView: return ".showDeleteProfileView()"
@@ -3392,6 +3431,9 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         public static func showSettings() -> Verify { return Verify(method: .m_showSettings)}
         public static func showVideoSettings() -> Verify { return Verify(method: .m_showVideoSettings)}
         public static func showManageAccount() -> Verify { return Verify(method: .m_showManageAccount)}
+        public static func showDatesAndCalendar() -> Verify { return Verify(method: .m_showDatesAndCalendar)}
+        public static func showSyncCalendarOptions(viewModel: Parameter<DatesAndCalendarViewModel>) -> Verify { return Verify(method: .m_showSyncCalendarOptions__viewModel_viewModel(`viewModel`))}
+        public static func showCoursesToSync(viewModel: Parameter<DatesAndCalendarViewModel>) -> Verify { return Verify(method: .m_showCoursesToSync__viewModel_viewModel(`viewModel`))}
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>) -> Verify { return Verify(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`))}
         public static func showVideoDownloadQualityView(downloadQuality: Parameter<DownloadQuality>, didSelect: Parameter<((DownloadQuality) -> Void)?>, analytics: Parameter<CoreAnalytics>) -> Verify { return Verify(method: .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(`downloadQuality`, `didSelect`, `analytics`))}
         public static func showDeleteProfileView() -> Verify { return Verify(method: .m_showDeleteProfileView)}
@@ -3428,6 +3470,15 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         }
         public static func showManageAccount(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showManageAccount, performs: perform)
+        }
+        public static func showDatesAndCalendar(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showDatesAndCalendar, performs: perform)
+        }
+        public static func showSyncCalendarOptions(viewModel: Parameter<DatesAndCalendarViewModel>, perform: @escaping (DatesAndCalendarViewModel) -> Void) -> Perform {
+            return Perform(method: .m_showSyncCalendarOptions__viewModel_viewModel(`viewModel`), performs: perform)
+        }
+        public static func showCoursesToSync(viewModel: Parameter<DatesAndCalendarViewModel>, perform: @escaping (DatesAndCalendarViewModel) -> Void) -> Perform {
+            return Perform(method: .m_showCoursesToSync__viewModel_viewModel(`viewModel`), performs: perform)
         }
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>, perform: @escaping (SettingsViewModel) -> Void) -> Perform {
             return Perform(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`), performs: perform)
