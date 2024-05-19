@@ -17,7 +17,7 @@ struct SyncSelector: View {
             Button(action: {
                     sync = true
             }) {
-                Text("Synced")
+                Text(ProfileLocalization.SyncSelector.synced)
                     .font(Theme.Fonts.bodyMedium)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -33,7 +33,7 @@ struct SyncSelector: View {
             Button(action: {
                     sync = false
             }) {
-                Text("Not Synced")
+                Text(ProfileLocalization.SyncSelector.notSynced)
                     .font(Theme.Fonts.bodyMedium)
                     .frame(maxWidth: .infinity)
                     .padding()

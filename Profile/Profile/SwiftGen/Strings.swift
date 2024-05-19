@@ -189,6 +189,10 @@ public enum ProfileLocalization {
     /// Warning!
     public static let title = ProfileLocalization.tr("Localizable", "DELETE_ALERT.TITLE", fallback: "Warning!")
   }
+  public enum DropDownPicker {
+    /// Select
+    public static let select = ProfileLocalization.tr("Localizable", "DROP_DOWN_PICKER.SELECT", fallback: "Select")
+  }
   public enum Edit {
     /// Delete Account
     public static let deleteAccount = ProfileLocalization.tr("Localizable", "EDIT.DELETE_ACCOUNT", fallback: "Delete Account")
@@ -268,6 +272,12 @@ public enum ProfileLocalization {
     public static let wifiDescription = ProfileLocalization.tr("Localizable", "SETTINGS.WIFI_DESCRIPTION", fallback: "Only download content when wi-fi is turned on")
     /// Wi-fi only download
     public static let wifiTitle = ProfileLocalization.tr("Localizable", "SETTINGS.WIFI_TITLE", fallback: "Wi-fi only download")
+  }
+  public enum SyncSelector {
+    /// Not Synced
+    public static let notSynced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.NOT_SYNCED", fallback: "Not Synced")
+    /// Synced
+    public static let synced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.SYNCED", fallback: "Synced")
   }
   public enum UnsavedDataAlert {
     /// Changes you have made will be discarded.

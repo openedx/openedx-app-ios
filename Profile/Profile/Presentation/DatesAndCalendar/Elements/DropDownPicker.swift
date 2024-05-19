@@ -29,7 +29,6 @@ struct DropDownPicker: View {
             hasher.combine(title)
         }
         
-        @_disfavoredOverload
         static func == (lhs: DownPickerOption, rhs: DownPickerOption) -> Bool {
             lhs.title == rhs.title
         }
@@ -61,7 +60,11 @@ struct DropDownPicker: View {
                     if let image = selection?.image {
                         image
                     }
-                    Text(selection == nil ? "Select" : selection!.title)
+                    Text(
+                        selection == nil
+                        ? ProfileLocalization.DropDownPicker.select
+                        : selection!.title
+                    )
                         .foregroundStyle(Theme.Colors.textPrimary)
                         .font(Theme.Fonts.bodyMedium)
                     Spacer(minLength: 0)

@@ -101,7 +101,6 @@ public struct CoursesToSyncView: View {
     }
     
     private var coursesList: some View {
-        
         VStack(alignment: .leading, spacing: 24) {
             ForEach(
                 Array(
@@ -125,12 +124,13 @@ public struct CoursesToSyncView: View {
                         Text(ProfileLocalization.CoursesToSync.inactive)
                             .font(Theme.Fonts.labelSmall)
                             .foregroundStyle(Theme.Colors.textPrimary.opacity(course.active ? 1 : 0.8))
-                            
                     }
                 }
-                .frame(minWidth: 0,
-                       maxWidth: .infinity,
-                       alignment: .leading)
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    alignment: .leading
+                )
             }
         }
         .padding(.horizontal, 24)
@@ -153,7 +153,7 @@ public struct CoursesToSyncView: View {
     }
 }
 
-
+#if DEBUG
 struct CoursesToSyncView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DatesAndCalendarViewModel(
@@ -165,3 +165,4 @@ struct CoursesToSyncView_Previews: PreviewProvider {
             .loadFonts()
     }
 }
+#endif
