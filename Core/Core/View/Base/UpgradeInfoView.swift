@@ -56,12 +56,12 @@ struct UpgradeInfoPointView: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(Theme.Colors.accentColor)
+                .fill(Theme.Colors.success)
                 .opacity(0.1)
             Image(systemName: "checkmark")
                 .renderingMode(.template)
                 .resizable()
-                .foregroundStyle(Theme.Colors.accentColor)
+                .foregroundStyle(Theme.Colors.success)
                 .font(.title.bold())
                 .padding(8)
         }
