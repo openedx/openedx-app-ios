@@ -66,7 +66,7 @@ struct CalendarDialogView: View {
                         .padding(24)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Theme.Colors.background)
                         )
                         .padding(24)
                 }
@@ -76,7 +76,7 @@ struct CalendarDialogView: View {
                     .padding(24)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Theme.Colors.background)
                     )
                     .padding(24)
             }

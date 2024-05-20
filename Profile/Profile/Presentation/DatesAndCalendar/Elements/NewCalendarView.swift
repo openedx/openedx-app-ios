@@ -56,7 +56,7 @@ struct NewCalendarView: View {
                         .padding(24)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Theme.Colors.background)
                         )
                         .padding(24)
                 }
@@ -66,7 +66,7 @@ struct NewCalendarView: View {
                     .padding(24)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Theme.Colors.background)
                     )
                     .padding(24)
             }

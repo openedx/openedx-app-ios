@@ -160,7 +160,6 @@ struct CoursesToSyncView_Previews: PreviewProvider {
             router: ProfileRouterMock()
         )
         return CoursesToSyncView(viewModel: vm)
-            .preferredColorScheme(.light)
             .previewDisplayName("Courses to Sync")
             .loadFonts()
     }
