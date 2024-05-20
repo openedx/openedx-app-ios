@@ -41,18 +41,20 @@ struct AssignmentStatusView: View {
     
     private let title: String
     @Binding private var status: AssignmentStatus
-    private let calendarColorImage: Image
+    private let calendarColor: Color
     
-    init(title: String, status: Binding<AssignmentStatus>, calendarColorImage: Image) {
+    init(title: String, status: Binding<AssignmentStatus>, calendarColor: Color) {
         self.title = title
         self._status = status
-        self.calendarColorImage = calendarColorImage
+        self.calendarColor = calendarColor
     }
     
     var body: some View {
         ZStack {
             HStack {
-                calendarColorImage
+                Circle()
+                    .frame(width: 18, height: 18)
+                    .foregroundStyle(calendarColor)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(Theme.Fonts.labelLarge)
@@ -81,7 +83,7 @@ struct AssignmentStatusView: View {
     AssignmentStatusView(
         title: "My Assignments",
         status: .constant(.synced),
-        calendarColorImage: CoreAssets.blueCircle.swiftUIImage
+        calendarColor: .blue
     )
         .loadFonts()
 }

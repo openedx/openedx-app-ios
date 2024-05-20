@@ -38,13 +38,13 @@ public struct SyncCalendarOptionsView: View {
                     // MARK: Body
                     ScrollView {
                         Group {
-                            if let colorSelectionImage = viewModel.colorSelection?.image {
+                            if let colorSelectionColor = viewModel.colorSelection?.color {
                                 optionTitle(ProfileLocalization.CalendarSync.title)
                                     .padding(.top, 24)
                                 AssignmentStatusView(
                                     title: viewModel.calendarName,
                                     status: $viewModel.assignmentStatus,
-                                    calendarColorImage: colorSelectionImage
+                                    calendarColor: colorSelectionColor
                                 )
                                 .padding(.horizontal, 24)
                             }

@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import Core
 import EventKit
+import Theme
 
 public struct CourseForSync: Identifiable {
     public let id: UUID
@@ -40,7 +41,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     @Published var calendarName: String = ""
     @Published var colorSelection: DropDownPicker.DownPickerOption? = .init(
         title: ProfileLocalization.Calendar.DropdownColor.accent,
-        image: CoreAssets.accentCircle.swiftUIImage
+        color: Theme.Colors.accentColor
     )
     
     // SyncCalendarOptions
@@ -54,14 +55,14 @@ public class DatesAndCalendarViewModel: ObservableObject {
         .init(title: ProfileLocalization.Calendar.Dropdown.local)
     ]
     let colors: [DropDownPicker.DownPickerOption] = [
-        .init(title: ProfileLocalization.Calendar.DropdownColor.accent, image: CoreAssets.accentCircle.swiftUIImage),
-        .init(title: ProfileLocalization.Calendar.DropdownColor.red, image: CoreAssets.redCircle.swiftUIImage),
-        .init(title: ProfileLocalization.Calendar.DropdownColor.orange, image: CoreAssets.orangeCircle.swiftUIImage),
-        .init(title: ProfileLocalization.Calendar.DropdownColor.yellow, image: CoreAssets.yellowCircle.swiftUIImage),
-        .init(title: ProfileLocalization.Calendar.DropdownColor.green, image: CoreAssets.greenCircle.swiftUIImage),
-        .init(title: ProfileLocalization.Calendar.DropdownColor.blue, image: CoreAssets.blueCircle.swiftUIImage),
-        .init(title: ProfileLocalization.Calendar.DropdownColor.purple, image: CoreAssets.purpleCircle.swiftUIImage),
-        .init(title: ProfileLocalization.Calendar.DropdownColor.brown, image: CoreAssets.brownCircle.swiftUIImage)
+        .init(title: ProfileLocalization.Calendar.DropdownColor.accent, color: Theme.Colors.accentColor),
+        .init(title: ProfileLocalization.Calendar.DropdownColor.red, color: .red),
+        .init(title: ProfileLocalization.Calendar.DropdownColor.orange, color: .orange),
+        .init(title: ProfileLocalization.Calendar.DropdownColor.yellow, color: .yellow),
+        .init(title: ProfileLocalization.Calendar.DropdownColor.green, color: .green),
+        .init(title: ProfileLocalization.Calendar.DropdownColor.blue, color: .blue),
+        .init(title: ProfileLocalization.Calendar.DropdownColor.purple, color: .purple),
+        .init(title: ProfileLocalization.Calendar.DropdownColor.brown, color: .brown)
     ]
     
     var router: ProfileRouter

@@ -18,11 +18,11 @@ struct DropDownPicker: View {
     
     struct DownPickerOption: Hashable {
         let title: String
-        let image: Image?
+        let color: Color?
         
-        init(title: String, image: Image? = nil) {
+        init(title: String, color: Color? = nil) {
             self.title = title
-            self.image = image
+            self.color = color
         }
         
         func hash(into hasher: inout Hasher) {
@@ -57,8 +57,10 @@ struct DropDownPicker: View {
                     optionsView()
                 }
                 HStack {
-                    if let image = selection?.image {
-                        image
+                    if let color = selection?.color {
+                        Circle()
+                            .frame(width: 18, height: 18)
+                            .foregroundStyle(color)
                     }
                     Text(
                         selection == nil
@@ -125,8 +127,10 @@ struct DropDownPicker: View {
                 ForEach(options, id: \.self) { option in
                     ZStack {
                         HStack {
-                            if let image = option.image {
-                                image
+                            if let color = option.color {
+                                Circle()
+                                    .frame(width: 18, height: 18)
+                                    .foregroundStyle(color)
                             }
                             Text(option.title)
                                 .font(Theme.Fonts.bodyMedium)

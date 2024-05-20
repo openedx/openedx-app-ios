@@ -38,18 +38,18 @@ struct CalendarDialogView: View {
     private var onCloseTapped: (() -> Void) = {}
     private var action: (() -> Void) = {}
     private let type: CalendarDialogType
-    private let calendarCircleImage: Image?
+    private let calendarCircleColor: Color?
     private let calendarName: String?
     
     init(
         type: CalendarDialogType,
-        calendarCircleImage: Image? = nil,
+        calendarCircleColor: Color? = nil,
         calendarName: String? = nil,
         action: @escaping () -> Void,
         onCloseTapped: @escaping () -> Void
     ) {
         self.type = type
-        self.calendarCircleImage = calendarCircleImage
+        self.calendarCircleColor = calendarCircleColor
         self.calendarName = calendarName
         self.action = action
         self.onCloseTapped = onCloseTapped
@@ -102,9 +102,11 @@ struct CalendarDialogView: View {
                 })
             }
             
-            if let calendarName, let calendarCircleImage {
+            if let calendarName, let calendarCircleColor {
                 HStack {
-                    calendarCircleImage
+                    Circle()
+                        .frame(width: 18, height: 18)
+                        .foregroundStyle(calendarCircleColor)
                     Text(calendarName)
                         .strikethrough()
                         .font(Theme.Fonts.labelLarge)
@@ -175,7 +177,7 @@ struct CalendarDialogView: View {
 #Preview {
     CalendarDialogView(
         type: .calendarAccess,
-        calendarCircleImage: CoreAssets.blueCircle.swiftUIImage,
+        calendarCircleColor: .blue,
         calendarName: "My Assignments",
         action: {},
         onCloseTapped: {}
