@@ -138,33 +138,32 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     func openLastVisitedBlock() {
-        if let continueWith = continueWith,
-           let courseStructure = courseStructure {
-            let chapter = courseStructure.childs[continueWith.chapterIndex]
-            let sequential = chapter.childs[continueWith.sequentialIndex]
-            let continueUnit = sequential.childs[continueWith.verticalIndex]
-            
-            var continueBlock: CourseBlock?
-            continueUnit.childs.forEach { block in
-                if block.id == continueWith.lastVisitedBlockId {
-                    continueBlock = block
-                }
+        guard let continueWith = continueWith,
+              let courseStructure = courseStructure else { return }
+        let chapter = courseStructure.childs[continueWith.chapterIndex]
+        let sequential = chapter.childs[continueWith.sequentialIndex]
+        let continueUnit = sequential.childs[continueWith.verticalIndex]
+        
+        var continueBlock: CourseBlock?
+        continueUnit.childs.forEach { block in
+            if block.id == continueWith.lastVisitedBlockId {
+                continueBlock = block
             }
-            
-            trackResumeCourseClicked(
-                blockId: continueBlock?.id ?? ""
-            )
-            
-            router.showCourseUnit(
-                courseName: courseStructure.displayName,
-                blockId: continueBlock?.id ?? "",
-                courseID: courseStructure.id,
-                verticalIndex: continueWith.verticalIndex,
-                chapters: courseStructure.childs,
-                chapterIndex: continueWith.chapterIndex,
-                sequentialIndex: continueWith.sequentialIndex
-            )
         }
+        
+        trackResumeCourseClicked(
+            blockId: continueBlock?.id ?? ""
+        )
+        
+        router.showCourseUnit(
+            courseName: courseStructure.displayName,
+            blockId: continueBlock?.id ?? "",
+            courseID: courseStructure.id,
+            verticalIndex: continueWith.verticalIndex,
+            chapters: courseStructure.childs,
+            chapterIndex: continueWith.chapterIndex,
+            sequentialIndex: continueWith.sequentialIndex
+        )
     }
     
     @MainActor

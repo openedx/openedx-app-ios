@@ -29,8 +29,8 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     private let interactor: DashboardInteractorProtocol
     private let analytics: DashboardAnalytics
     let config: ConfigProtocol
-    private var onCourseEnrolledCancellable: AnyCancellable?
-    
+    private var cancellables = Set<AnyCancellable>()
+
     private let ipadPageSize = 7
     private let iphonePageSize = 5
     
@@ -45,14 +45,18 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
         self.analytics = analytics
         self.config = config
         
-        onCourseEnrolledCancellable = NotificationCenter.default
-            .publisher(for: .onCourseEnrolled)
+        let enrollmentPublisher = NotificationCenter.default.publisher(for: .onCourseEnrolled)
+        let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
+        
+        enrollmentPublisher
+            .merge(with: completionPublisher)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
                     await self.getEnrollments()
                 }
             }
+            .store(in: &cancellables)
     }
     
     @MainActor

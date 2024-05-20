@@ -64,6 +64,7 @@ public class CourseInteractor: CourseInteractorProtocol {
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
+        NotificationCenter.default.post(name: .onblockCompletionRequested, object: courseID)
         return try await repository.blockCompletionRequest(courseID: courseID, blockID: blockID)
     }
     

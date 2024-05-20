@@ -49,9 +49,7 @@ struct CategoryFilterView: View {
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
-                ForEach(Array(CategoryOption.allCases.enumerated()), id: \.offset) {
-                    index,
-                    option in
+                ForEach(Array(CategoryOption.allCases.enumerated()), id: \.offset) { index, option in
                     Button(action: {
                         selectedOption = option
                     },

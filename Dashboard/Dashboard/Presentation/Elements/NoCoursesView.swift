@@ -51,15 +51,15 @@ struct NoCoursesView: View {
     init(selectedMenu: CategoryOption) {
         switch selectedMenu {
         case .all:
-            self.type = .inProgress
+            type = .inProgress
         case .inProgress:
-            self.type = .inProgress
+            type = .inProgress
         case .completed:
-            self.type = .completed
+            type = .completed
         case .expired:
-            self.type = .expired
+            type = .expired
         }
-        self.openDiscovery = {}
+        openDiscovery = {}
     }
     
     var body: some View {

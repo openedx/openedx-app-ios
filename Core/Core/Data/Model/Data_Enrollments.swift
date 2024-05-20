@@ -68,7 +68,7 @@ public extension DataLayer {
         public let isActive: Bool
         public let course: DashboardCourse
         public let courseModes: [CourseMode]
-        public let progress: Progress?
+        public let progress: CourseProgress?
 
         enum CodingKeys: String, CodingKey {
             case auditAccessExpires = "audit_access_expires"
@@ -87,7 +87,7 @@ public extension DataLayer {
             isActive: Bool,
             course: DashboardCourse,
             courseModes: [CourseMode],
-            progress: Progress?
+            progress: CourseProgress?
         ) {
             self.auditAccessExpires = auditAccessExpires
             self.created = created

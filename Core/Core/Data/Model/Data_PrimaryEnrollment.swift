@@ -11,7 +11,7 @@ public extension DataLayer {
     struct PrimaryEnrollment: Codable {
         public let userTimezone: String?
         public let enrollments: Enrollments?
-        public let primary: Primary?
+        public let primary: ActiveEnrollment?
         
         enum CodingKeys: String, CodingKey {
             case userTimezone = "user_timezone"
@@ -19,7 +19,7 @@ public extension DataLayer {
             case primary
         }
         
-        public init(userTimezone: String?, enrollments: Enrollments?, primary: Primary?) {
+        public init(userTimezone: String?, enrollments: Enrollments?, primary: ActiveEnrollment?) {
             self.userTimezone = userTimezone
             self.enrollments = enrollments
             self.primary = primary
@@ -27,7 +27,7 @@ public extension DataLayer {
     }
     
     // MARK: - Primary
-    struct Primary: Codable {
+    struct ActiveEnrollment: Codable {
         public let auditAccessExpires: Date?
         public let created: String?
         public let mode: String?
@@ -36,7 +36,7 @@ public extension DataLayer {
         public let certificate: DataLayer.Certificate?
         public let courseModes: [CourseMode]?
         public let courseStatus: CourseStatus?
-        public let progress: Progress?
+        public let progress: CourseProgress?
         public let courseAssignments: CourseAssignments?
         
         enum CodingKeys: String, CodingKey {
@@ -61,7 +61,7 @@ public extension DataLayer {
             certificate: DataLayer.Certificate?,
             courseModes: [CourseMode]?,
             courseStatus: CourseStatus?,
-            progress: Progress?,
+            progress: CourseProgress?,
             courseAssignments: CourseAssignments?
         ) {
             self.auditAccessExpires = auditAccessExpires
@@ -163,8 +163,8 @@ public extension DataLayer {
         }
     }
     
-    // MARK: - Progress
-    struct Progress: Codable {
+    // MARK: - CourseProgress
+    struct CourseProgress: Codable {
         public let assignmentsCompleted: Int?
         public let totalAssignmentsCount: Int?
         
@@ -194,7 +194,7 @@ public extension DataLayer.PrimaryEnrollment {
         )
     }
     
-    private func createPrimaryCourse(from primary: DataLayer.Primary?, baseURL: String) -> PrimaryCourse? {
+    private func createPrimaryCourse(from primary: DataLayer.ActiveEnrollment?, baseURL: String) -> PrimaryCourse? {
         guard let primary = primary else { return nil }
         
         let futureAssignments = primary.courseAssignments?.futureAssignments ?? []

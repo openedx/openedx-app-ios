@@ -115,7 +115,7 @@ struct CourseCardView: View {
         courseName: "Six Sigma Part 2: Analyze, Improve, Control",
         courseImage: "https://thumbs.dreamstime.com/b/logo-edx-samsung-tablet-edx-massive-open-online-course-mooc-provider-hosts-online-university-level-courses-wide-117763805.jpg",
         progressEarned: 4,
-        progressPossible: 8, 
+        progressPossible: 8,
         courseStartDate: nil,
         courseEndDate: Date(),
         hasAccess: true,

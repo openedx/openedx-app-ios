@@ -83,5 +83,6 @@ struct DropDownMenu: View {
                 .fixedSize()
             }
         }
+        .onTapBackground(enabled: expanded, { expanded = false })
     }
 }

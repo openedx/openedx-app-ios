@@ -62,14 +62,13 @@ public class AllCoursesViewModel: ObservableObject {
                 nextPage = 1
                 myEnrollments = try await interactor.getAllCourses(filteredBy: selectedMenu.status, page: page)
                 self.totalPages = myEnrollments?.totalPages ?? 1
-                self.nextPage = 2
             } else {
                 fetchInProgress = true
                 myEnrollments?.courses += try await interactor.getAllCourses(
                     filteredBy: selectedMenu.status, page: page
                 ).courses
-                self.nextPage += 1
             }
+            self.nextPage += 1
             totalPages = myEnrollments?.totalPages ?? 1
             fetchInProgress = false
             self.refresh = false
