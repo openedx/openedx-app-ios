@@ -181,15 +181,6 @@ public struct AllCoursesView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
                 .accessibilityIdentifier("all_courses_header_text")
             Spacer()
-            Button(
-                action: {
-                    router.showDiscoverySearch(searchQuery: "")
-                }, label: {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(Theme.Colors.textPrimary)
-                        .accessibilityIdentifier(DashboardLocalization.search)
-                }
-            )
         }
         .padding(.horizontal, 20)
         .padding(.top, 20)

@@ -17,6 +17,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     @Published public private(set) var fetchInProgress = true
     @Published var enrollments: PrimaryEnrollment?
     @Published var showError: Bool = false
+    @Published var updateNeeded: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -49,7 +50,6 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
         let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
         
         enrollmentPublisher
-            .merge(with: completionPublisher)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
@@ -57,6 +57,21 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        
+        completionPublisher
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                updateEnrollmentsIfNeeded()
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateEnrollmentsIfNeeded() {
+        guard updateNeeded else { return }
+        Task {
+            await getEnrollments()
+            updateNeeded = false
+        }
     }
     
     @MainActor
