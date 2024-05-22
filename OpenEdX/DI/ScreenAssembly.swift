@@ -479,7 +479,7 @@ class ScreenAssembly: Assembly {
             CourseUpgradeHandler(
                 config: r.resolve(ConfigProtocol.self)!,
                 interactor: r.resolve(CourseUpgradeInteractorProtocol.self)!,
-                storeKitHandler: r.resolve(StoreKitHandlerProtocol.self)!, 
+                storeKitHandler: r.resolve(StoreKitHandlerProtocol.self)!,
                 helper: r.resolve(CourseUpgradeHelperProtocol.self)!
             )
         }.inObjectScope(.container)
@@ -502,7 +502,7 @@ class ScreenAssembly: Assembly {
                 courseID: courseID,
                 screen: screen, handler: r.resolve(CourseUpgradeHandlerProtocol.self)!
             )
-        }        
+        }
     }
 }
 // swiftlint:enable function_body_length type_body_length
