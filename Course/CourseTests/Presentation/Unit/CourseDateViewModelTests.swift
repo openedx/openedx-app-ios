@@ -46,7 +46,9 @@ final class CourseDateViewModelTests: XCTestCase {
                                                                 large: "")),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            isUpgradeable: false,
+            sku: nil
         )
         
         Given(interactor, .getCourseDates(courseID: .any, willReturn: courseDates))
