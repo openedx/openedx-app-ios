@@ -9,7 +9,7 @@ import Foundation
 
 //sourcery: AutoMockable
 public protocol CourseUpgradeInteractorProtocol {
-    func addbasket(sku: String) async throws -> UpgradeBasket
+    func addBasket(sku: String) async throws -> UpgradeBasket
     func checkoutBasket(basketID: Int) async throws -> CheckoutBasket
     @discardableResult
     func fulfillCheckout(
@@ -28,7 +28,7 @@ public class CourseUpgradeInteractor: CourseUpgradeInteractorProtocol {
         self.repository = repository
     }
     
-    public func addbasket(sku: String) async throws -> UpgradeBasket {
+    public func addBasket(sku: String) async throws -> UpgradeBasket {
         return try await repository.addbasket(sku: sku)
     }
     

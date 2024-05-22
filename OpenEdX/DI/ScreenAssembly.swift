@@ -475,29 +475,32 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(CourseUpgradeHandler.self) { r in
+        container.register(CourseUpgradeHandlerProtocol.self) { r in
             CourseUpgradeHandler(
                 config: r.resolve(ConfigProtocol.self)!,
                 interactor: r.resolve(CourseUpgradeInteractorProtocol.self)!,
-                storeKitHandler: r.resolve(StoreKitHandlerProtocol.self)!
+                storeKitHandler: r.resolve(StoreKitHandlerProtocol.self)!, 
+                helper: r.resolve(CourseUpgradeHelperProtocol.self)!
             )
         }.inObjectScope(.container)
         
-        container.register(CourseUpgradeHelper.self) { r in
+        container.register(CourseUpgradeHelperProtocol.self) { r in
             CourseUpgradeHelper(
                 config: r.resolve(ConfigProtocol.self)!,
-                analytics: r.resolve(CoreAnalytics.self)!
+                analytics: r.resolve(CoreAnalytics.self)!,
+                router: r.resolve(CourseRouter.self)!
             )
         }.inObjectScope(.container)
         
         // MARK: Upgrade info
         container.register(
             UpgradeInfoViewModel.self
-        ) { r, productName, sku in
+        ) { r, productName, sku, courseID, screen in
             UpgradeInfoViewModel(
                 productName: productName,
                 sku: sku,
-                storeInteractor: r.resolve(StoreInteractorProtocol.self)!
+                courseID: courseID,
+                screen: screen, handler: r.resolve(CourseUpgradeHandlerProtocol.self)!
             )
         }
         

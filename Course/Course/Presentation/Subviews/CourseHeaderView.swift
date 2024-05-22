@@ -19,16 +19,12 @@ struct CourseHeaderView: View {
     @Binding private var collapsed: Bool
     @Binding private var isAnimatingForTap: Bool
     @Environment(\.isHorizontal) private var isHorizontal
-    private var isUpgradeable: Bool
     
-    private var collapsedHorizontalHeight: CGFloat {
-        230 + (isUpgradeable ? 42+20 : 0)
-    }
-    private var collapsedVerticalHeight: CGFloat {
-        260 + (isUpgradeable ? 42+20 : 0)
-    }
+    private let collapsedHorizontalHeight: CGFloat = 230
+    private var collapsedVerticalHeight: CGFloat = 260
+
     private var expandedHeight: CGFloat {
-        300 + (isUpgradeable ? 42+20 : 0)
+        300 + (viewModel.isUpgradeable ? 42+20 : 0)
     }
     private var upgradeAction: (() -> Void)?
     
@@ -47,7 +43,6 @@ struct CourseHeaderView: View {
         containerWidth: CGFloat,
         animationNamespace: Namespace.ID,
         isAnimatingForTap: Binding<Bool>,
-        isUpgradeable: Bool,
         upgradeAction: (() -> Void)? = nil
     ) {
         self.viewModel = viewModel
@@ -56,7 +51,6 @@ struct CourseHeaderView: View {
         self.containerWidth = containerWidth
         self.animationNamespace = animationNamespace
         self._isAnimatingForTap = isAnimatingForTap
-        self.isUpgradeable = isUpgradeable
         self.upgradeAction = upgradeAction
     }
     
@@ -100,11 +94,6 @@ struct CourseHeaderView: View {
                         }
                         .padding(.top, 46)
                         .padding(.leading, 12)
-                        if isUpgradeable {
-                            upgradeButton
-                                .padding(.horizontal, 20)
-                                .frameLimit(width: containerWidth)
-                        }
                         courseMenuBar(containerWidth: containerWidth)
                             .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
                             .padding(.bottom, 12)
@@ -145,7 +134,7 @@ struct CourseHeaderView: View {
                                 .padding(.horizontal, 24)
                                 .allowsHitTesting(false)
                                 .frameLimit(width: containerWidth)
-                            if isUpgradeable {
+                            if viewModel.isUpgradeable {
                                 upgradeButton
                                     .padding(.horizontal, 24)
                                     .frameLimit(width: containerWidth)

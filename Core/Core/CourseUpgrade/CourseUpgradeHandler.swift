@@ -8,103 +8,170 @@
 import Foundation
 
 public enum CourseUpgradeScreen: String {
-    case dashbaord
+    case dashboard
     case courseDashboard = "course_dashboard"
     case courseComponent = "course_component"
     case unknown
 }
 
-public class CourseUpgradeHandler: ObservableObject {
+public enum UpgradeMode: String {
+    case silent
+    case userInitiated = "user_initiated"
+    case restore
+}
+
+public enum UpgradeState {
+    case initial
+    case basket
+    case checkout
+    case payment
+    case verify
+    case complete
+    case error(UpgradeError)
+}
+
+public protocol CourseUpgradeHandlerProtocol {
+    typealias UpgradeCompletionHandler = (UpgradeState) -> Void
     
+    func upgradeCourse(
+        sku: String?,
+        mode: UpgradeMode,
+        productInfo: StoreProductInfo?,
+        pacing: String,
+        courseID: String,
+        componentID: String?,
+        screen: CourseUpgradeScreen,
+        completion: UpgradeCompletionHandler?
+    ) async
+    
+    func fetchProduct(sku: String) async throws -> StoreProductInfo
+}
+
+class CourseUpgradeHandlerProtocolMock: CourseUpgradeHandlerProtocol {
+    init() {}
+    func upgradeCourse(
+        sku: String?,
+        mode: UpgradeMode,
+        productInfo: StoreProductInfo?,
+        pacing: String,
+        courseID: String,
+        componentID: String?,
+        screen: CourseUpgradeScreen,
+        completion: UpgradeCompletionHandler?
+    ) async {}
+    
+    func fetchProduct(sku: String) async throws -> StoreProductInfo {
+        StoreProductInfo(price: NSDecimalNumber(value: 1))
+    }
+}
+
+public class CourseUpgradeHandler: CourseUpgradeHandlerProtocol {
     static var ecommereceURL: String = ""
     
-    public enum UpgradeState {
-        case initial
-        case basket
-        case checkout
-        case payment
-        case verify
-        case complete
-        case error(type: UpgradeError, error: Error?)
-    }
-
-    public enum UpgradeMode: String {
-        case silent
-        case userInitiated = "user_initiated"
-        case restore
-    }
-    
-    public typealias UpgradeCompletionHandler = (UpgradeState) -> Void
-    
     private var completion: UpgradeCompletionHandler?
-    private(set) var course: CourseItem?
     private var basketID: Int = 0
     private var courseSku: String = ""
     private(set) var upgradeMode: UpgradeMode = .userInitiated
-    private(set) var price: NSDecimalNumber?
-    private(set) var currencyCode: String?
+    private(set) var productInfo: StoreProductInfo?
     private var interactor: CourseUpgradeInteractorProtocol
     private var storeKitHandler: StoreKitHandlerProtocol
+    private let helper: CourseUpgradeHelperProtocol
+    private var courseID: String = ""
+    private var componentID: String?
 
     private(set) var state: UpgradeState = .initial {
         didSet {
+            helper.handleCourseUpgrade(
+                upgradeHadler: self,
+                state: upgradeState,
+                delegate: nil)
             completion?(state)
+        }
+    }
+    
+    private var upgradeState: UpgradeCompletionState {
+        switch state {
+        case .initial:
+            return .initial
+        case .basket, .checkout, .payment:
+            return .payment
+        case .verify:
+            return .fulfillment(showLoader: upgradeMode == .userInitiated)
+        case .complete:
+            return .success(courseID, componentID)
+        case .error(let error):
+            return .error(error)
         }
     }
 
     public init(config: ConfigProtocol,
                 interactor: CourseUpgradeInteractorProtocol,
-                storeKitHandler: StoreKitHandlerProtocol
+                storeKitHandler: StoreKitHandlerProtocol,
+                helper: CourseUpgradeHelperProtocol
     ) {
         self.interactor = interactor
         self.storeKitHandler = storeKitHandler
-        
+        self.helper = helper
         CourseUpgradeHandler.ecommereceURL = config.ecommerceURL ?? ""
     }
     
     public func upgradeCourse(
-        _ course: CourseItem,
+        sku: String?,
         mode: UpgradeMode = .userInitiated,
-        price: NSDecimalNumber?,
-        currencyCode: String?,
+        productInfo: StoreProductInfo?,
+        pacing: String,
+        courseID: String,
+        componentID: String?,
+        screen: CourseUpgradeScreen,
         completion: UpgradeCompletionHandler?
     ) async {
-        self.course = course
         self.completion = completion
         self.upgradeMode = mode
-        self.price = price
-        self.currencyCode = currencyCode
-        
-        guard let course = self.course, !course.sku.isEmpty else {
-            state = .error(type: .generalError, error: error(message: "course sku is missing"))
+        self.courseID = courseID
+        self.componentID = componentID
+        self.productInfo = productInfo
+        guard let sku = sku, !sku.isEmpty else {
+            state = .error(.generalError(error(message: "course sku is missing")))
             return
         }
+        
+        guard let productInfo = productInfo else {
+            state = .error(.generalError(error(message: "product info is missing")))
+            return
+        }
+        
+        helper.setData(
+            courseID: courseID,
+            pacing: pacing,
+            blockID: componentID,
+            localizedCoursePrice: productInfo.localizedPrice ?? "",
+            screen: screen
+        )
         state = .initial
-        courseSku = course.sku
-        await proceedWithUpgrade()
+        await proceedWithUpgrade(sku: sku)
     }
     
     @MainActor
-    private func proceedWithUpgrade() async {
+    private func proceedWithUpgrade(sku: String) async {
         do {
-            let basket = try await interactor.addbasket(sku: courseSku)
+            let basket = try await interactor.addBasket(sku: sku)
             basketID = basket.basketID
-            await checkout(basketID: basketID)
+            await checkout(basketID: basketID, sku: sku)
             
         } catch let error {
             if error.isInternetError {
                 
             } else {
-                state = .error(type: .basketError, error: error)
+                state = .error(.basketError(error))
             }
         }
     }
     
     @MainActor
-    private func checkout(basketID: Int) async {
+    private func checkout(basketID: Int, sku: String) async {
         // Checkout API
         guard basketID > 0 else {
-            state = .error(type: .checkoutError, error: error(message: "invalid basket id < zero"))
+            state = .error(.checkoutError(error(message: "invalid basket id < zero")))
             return
         }
         
@@ -112,30 +179,33 @@ public class CourseUpgradeHandler: ObservableObject {
         do {
             _ = try await interactor.checkoutBasket(basketID: basketID)
             if upgradeMode != .userInitiated {
-                reverifyPayment()
+                await reverifyPayment()
             } else {
-                await makePayment()
+                let response = await makePayment(sku: sku)
+                await verifyResponse(response)
             }
             
         } catch let error {
             if error.isInternetError {
                 
             } else {
-                state = .error(type: .checkoutError, error: error)
+                state = .error(.checkoutError(error))
             }
         }
     }
     
     @MainActor
-    private func makePayment() async {
+    private func makePayment(sku: String) async -> StoreKitUpgradeResponse {
         state = .payment
-        storeKitHandler.purchaseProduct(courseSku) { [weak self] success, receipt, error in
-            Task {
-                if let receipt = receipt, success {
-                    await self?.verifyPayment(receipt)
-                } else {
-                    self?.state = .error(type: (error?.type ?? .paymentError), error: error?.error)
-                }
+        return await storeKitHandler.purchaseProduct(sku)
+    }
+    
+    private func verifyResponse(_ response: StoreKitUpgradeResponse) async {
+        if let receipt = response.receipt, response.success {
+            await verifyPayment(receipt)
+        } else {
+            await MainActor.run {
+                state = .error(response.error ?? .paymentError(nil))
             }
         }
     }
@@ -147,8 +217,8 @@ public class CourseUpgradeHandler: ObservableObject {
         do {
             try await interactor.fulfillCheckout(
                 basketID: basketID,
-                price: price ?? 0.0,
-                currencyCode: currencyCode ?? "",
+                price: productInfo?.price ?? 0.0,
+                currencyCode: productInfo?.currencySymbol ?? "",
                 receipt: receipt
             )
             state = .complete
@@ -157,89 +227,24 @@ public class CourseUpgradeHandler: ObservableObject {
             if error.isInternetError {
                 
             } else {
-                state = .error(type: .checkoutError, error: error)
+                state = .error(.verifyReceiptError(error))
             }
         }
     }
     
     // Give an option of retry to learner
-    @MainActor
-    func reverifyPayment() {
-        storeKitHandler.purchaseReceipt { [weak self] (success, receipt, error) in
-            if let receipt = receipt, success {
-                Task {
-                    await self?.verifyPayment(receipt)
-                }
-            } else {
-                self?.state = .error(type: (error?.type ?? .receiptNotAvailable), error: error?.error)
-            }
-        }
+    func reverifyPayment() async {
+        let response = await storeKitHandler.purchaseReceipt()
+        await verifyResponse(response)
+    }
+    
+    public func fetchProduct(sku: String) async throws -> StoreProductInfo {
+        try await storeKitHandler.fetchProduct(sku: sku)
     }
 }
 
 extension CourseUpgradeHandler {
     // IAP error messages
-    var errorMessage: String {
-        if case .error(let type, let error) = state {
-            guard let error = error as NSError? else {
-                return CoreLocalization.CourseUpgrade.FailureAlert.generalErrorMessage
-            }
-            switch type {
-            case .basketError:
-                return basketErrorMessage(for: error)
-            case .checkoutError:
-                return checkoutErrorMessage(for: error)
-            case .paymentError:
-                return CoreLocalization.CourseUpgrade.FailureAlert.paymentNotProcessed
-            case .verifyReceiptError:
-                return executeErrorMessage(for: error)
-            default:
-                return CoreLocalization.CourseUpgrade.FailureAlert.paymentNotProcessed
-            }
-        }
-        return CoreLocalization.CourseUpgrade.FailureAlert.generalErrorMessage
-    }
-
-    private func basketErrorMessage(for error: NSError) -> String {
-        switch error.code {
-        case 400:
-            return CoreLocalization.CourseUpgrade.FailureAlert.courseNotFount
-        case 403:
-            return CoreLocalization.CourseUpgrade.FailureAlert.authenticationErrorMessage
-        case 406:
-            return CoreLocalization.CourseUpgrade.FailureAlert.courseAlreadyPaid
-        default:
-            return CoreLocalization.CourseUpgrade.FailureAlert.paymentNotProcessed
-        }
-    }
-
-    private func checkoutErrorMessage(for error: NSError) -> String {
-        switch error.code {
-        case 403:
-            return CoreLocalization.CourseUpgrade.FailureAlert.authenticationErrorMessage
-        default:
-            return CoreLocalization.CourseUpgrade.FailureAlert.paymentNotProcessed
-        }
-    }
-
-    private func executeErrorMessage(for error: NSError) -> String {
-        switch error.code {
-        case 409:
-            return CoreLocalization.CourseUpgrade.FailureAlert.courseAlreadyPaid
-        default:
-            return CoreLocalization.CourseUpgrade.FailureAlert.courseNotFullfilled
-        }
-    }
-
-    var formattedError: String {
-        let unhandledError = "unhandledError"
-        if case .error(let type, let error) = state {
-            guard let error = error as NSError? else { return unhandledError }
-            return "\(type.errorString)-\(error.code)-\(error.localizedDescription)"
-        }
-        
-        return unhandledError
-    }
 
     fileprivate func error(message: String) -> Error {
         return NSError(domain: "edx.app.courseupgrade", code: 1010, userInfo: [NSLocalizedDescriptionKey: message])

@@ -59,7 +59,10 @@ public protocol BaseRouter {
     
     func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
 
-    func showUpgradeInfo(productName: String, sku: String)
+    func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen)
+    func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?)
+    func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?)
+    func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?)
 }
 
 extension BaseRouter {
@@ -126,6 +129,12 @@ open class BaseRouterMock: BaseRouter {
 
     public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {}
     
-    public func showUpgradeInfo(productName: String, sku: String) {}
+    public func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {}
+    
+    public func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?) {}
+    
+    public func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {}
+        
+    public func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {}
 }
 #endif

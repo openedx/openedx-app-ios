@@ -29,7 +29,6 @@ public struct CourseOutlineView: View {
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
-    private let isUpgradeable: Bool
     
     public init(
         viewModel: CourseContainerViewModel,
@@ -39,8 +38,7 @@ public struct CourseOutlineView: View {
         selection: Binding<Int>,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
-        dateTabIndex: Int,
-        isUpgradeable: Bool
+        dateTabIndex: Int
     ) {
         self.title = title
         self.viewModel = viewModel//StateObject(wrappedValue: { viewModel }())
@@ -50,7 +48,6 @@ public struct CourseOutlineView: View {
         self._coordinate = coordinate
         self._collapsed = collapsed
         self.dateTabIndex = dateTabIndex
-        self.isUpgradeable = isUpgradeable
     }
     
     public var body: some View {
@@ -72,7 +69,7 @@ public struct CourseOutlineView: View {
                         DynamicOffsetView(
                             coordinate: $coordinate,
                             collapsed: $collapsed,
-                            isUpgradeable: isUpgradeable
+                            isUpgradeable: $viewModel.isUpgradeable
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         VStack(alignment: .leading) {
@@ -214,6 +211,7 @@ public struct CourseOutlineView: View {
                             maxHeight: .infinity)
                 }
             }
+            .paymentSnackbar()
         }
         .background(
             Theme.Colors.background
@@ -371,8 +369,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 selection: $selection,
                 coordinate: .constant(0),
                 collapsed: .constant(false),
-                dateTabIndex: 2,
-                isUpgradeable: false
+                dateTabIndex: 2
             )
             .preferredColorScheme(.light)
             .previewDisplayName("CourseOutlineView Light")
@@ -385,8 +382,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 selection: $selection,
                 coordinate: .constant(0),
                 collapsed: .constant(false),
-                dateTabIndex: 2,
-                isUpgradeable: true
+                dateTabIndex: 2
             )
             .preferredColorScheme(.dark)
             .previewDisplayName("CourseOutlineView Dark")

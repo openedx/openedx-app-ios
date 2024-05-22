@@ -8,6 +8,19 @@
 import SwiftUI
 import Theme
 
+public struct AlertViewButton: Identifiable, Equatable {
+    public var id: String {
+        title
+    }
+    
+    public var title: String
+    public var block: () -> Void
+    
+    public static func == (lhs: AlertViewButton, rhs: AlertViewButton) -> Bool {
+        lhs.title == rhs.title
+    }
+}
+
 public enum AlertViewType: Equatable {
     case `default`(positiveAction: String, image: SwiftUI.Image?)
     case action(String, SwiftUI.Image)
@@ -19,10 +32,11 @@ public enum AlertViewType: Equatable {
     case removeCalendar
     case updateCalendar
     case calendarAdded
+    case paymentError(buttons: [AlertViewButton])
 
     var contentPadding: CGFloat {
         switch self {
-        case .`default`, .calendarAdded:
+        case .`default`, .calendarAdded, .paymentError:
             return 16
         case .action, .logOut, .leaveProfile, .deleteVideo, .deepLink, .addCalendar, .removeCalendar, .updateCalendar:
             return 36
@@ -397,6 +411,16 @@ public struct AlertView: View {
                     StyledButton(CoreLocalization.done, action: { onCloseTapped() })
                         .frame(maxWidth: 135)
                         .saturation(0)
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .padding(.bottom, 10)
+            case .paymentError(let actions):
+                VStack {
+                    ForEach(actions) { action in
+                        StyledButton(action.title, action: action.block)
+                            .frame(maxWidth: 135)
+                    }
                 }
                 .padding(.leading, 10)
                 .padding(.trailing, 10)

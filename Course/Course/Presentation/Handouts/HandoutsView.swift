@@ -17,20 +17,20 @@ struct HandoutsView: View {
     
     @StateObject
     private var viewModel: HandoutsViewModel
-    private let isUpgradeable: Bool
+    @Binding private var isUpgradeable: Bool
     
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
         viewModel: HandoutsViewModel,
-        isUpgradeable: Bool
+        isUpgradeable: Binding<Bool>
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: { viewModel }())
-        self.isUpgradeable = isUpgradeable
+        self._isUpgradeable = isUpgradeable
     }
     
     public var body: some View {
@@ -42,7 +42,7 @@ struct HandoutsView: View {
                         DynamicOffsetView(
                             coordinate: $coordinate,
                             collapsed: $collapsed,
-                            isUpgradeable: isUpgradeable
+                            isUpgradeable: $isUpgradeable
                         )
                         if viewModel.isShowProgress {
                             HStack(alignment: .center) {
@@ -142,7 +142,7 @@ struct HandoutsView_Previews: PreviewProvider {
             coordinate: .constant(0),
             collapsed: .constant(false),
             viewModel: viewModel,
-            isUpgradeable: false
+            isUpgradeable: .constant(false)
         )
     }
 }

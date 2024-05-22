@@ -19,20 +19,20 @@ public struct CourseDatesView: View {
     private var viewModel: CourseDatesViewModel
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
-    private let isUpgradeable: Bool
+    @Binding private var isUpgradeable: Bool
     
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
         viewModel: CourseDatesViewModel,
-        isUpgradeable: Bool
+        isUpgradeable: Binding<Bool>
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: viewModel)
-        self.isUpgradeable = isUpgradeable
+        self._isUpgradeable = isUpgradeable
     }
     
     public var body: some View {
@@ -51,7 +51,7 @@ public struct CourseDatesView: View {
                         collapsed: $collapsed,
                         courseDates: courseDates,
                         courseID: courseID,
-                        isUpgradeable: isUpgradeable
+                        isUpgradeable: $isUpgradeable
                     )
                     .padding(.top, 10)
                 }
@@ -159,7 +159,7 @@ struct CourseDateListView: View {
     @Binding var collapsed: Bool
     var courseDates: CourseDates
     let courseID: String
-    let isUpgradeable: Bool
+    @Binding var isUpgradeable: Bool
     
     var body: some View {
         GeometryReader { proxy in
@@ -168,7 +168,7 @@ struct CourseDateListView: View {
                     DynamicOffsetView(
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        isUpgradeable: isUpgradeable
+                        isUpgradeable: $isUpgradeable
                     )
                     VStack(alignment: .leading, spacing: 0) {
                         if !courseDates.hasEnded {
@@ -517,7 +517,7 @@ struct CourseDatesView_Previews: PreviewProvider {
             coordinate: .constant(0),
             collapsed: .constant(false),
             viewModel: viewModel,
-            isUpgradeable: false
+            isUpgradeable: .constant(false)
         )
     }
 }

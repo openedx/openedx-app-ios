@@ -12,6 +12,8 @@ public struct SnackBarView: View {
     
     var message: String
     var action: (() -> Void)?
+    var bgColor: Color
+    var textColor: Color
     
     private var safeArea: CGFloat {
         UIApplication.shared.windows.first { $0.isKeyWindow }?.safeAreaInsets.bottom ?? 0
@@ -19,16 +21,18 @@ public struct SnackBarView: View {
     
     private let minHeight: CGFloat = 50
     
-    public init(message: String?, action: (() -> Void)? = nil) {
+    public init(message: String?, textColor: Color = Theme.Colors.snackbarTextColor, bgColor: Color = Theme.Colors.snackbarErrorColor, action: (() -> Void)? = nil) {
         self.message = message ?? ""
         self.action = action
+        self.textColor = textColor
+        self.bgColor = bgColor
     }
     
     public var body: some View {
         HStack {
             Text(message)
                 .font(Theme.Fonts.titleSmall)
-                .foregroundColor(Theme.Colors.snackbarTextColor)
+                .foregroundColor(textColor)
                 .accessibilityIdentifier("snackbar_text")
             Spacer()
             
@@ -40,7 +44,7 @@ public struct SnackBarView: View {
                 .accessibilityIdentifier("snackbar_button")
             }
             
-        }.shadowCardStyle(bgColor: Theme.Colors.snackbarErrorColor,
+        }.shadowCardStyle(bgColor: bgColor,
                           textColor: Theme.Colors.white)
         .padding(.bottom, 10)
     }

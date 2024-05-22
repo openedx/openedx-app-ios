@@ -62,7 +62,12 @@ public struct DashboardView: View {
                                             index: index,
                                             cellsCount: viewModel.courses.count,
                                             upgradeAction: {
-                                                self.router.showUpgradeInfo(productName: course.name, sku: course.sku)
+                                                self.router.showUpgradeInfo(
+                                                    productName: course.name,
+                                                    sku: course.sku,
+                                                    courseID: course.courseID,
+                                                    screen: .dashboard
+                                                )
                                             }
                                         )
                                         .padding(.horizontal, 20)
@@ -137,6 +142,7 @@ public struct DashboardView: View {
                     .ignoresSafeArea()
             )
         }
+        .paymentSnackbar()
     }
 }
 

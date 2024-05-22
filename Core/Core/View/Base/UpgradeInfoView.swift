@@ -5,36 +5,136 @@
 //  Created by Vadim Kuznetsov on 8.05.24.
 //
 
+import Swinject
 import SwiftUI
 import Theme
+
+import Combine
+class PaymentSnackbarModifierViewModel: ObservableObject {
+    @Published var showPaymentSuccess: Bool = false
+    var isOnScreen: Bool = false
+    private var cancellations: [AnyCancellable] = []
+    init() {
+        NotificationCenter.default
+            .publisher(for: .courseUpgradeCompletionNotification)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    if self.isOnScreen {
+                        self.showPaymentSuccess = true
+                    }
+                }
+            }
+            .store(in: &cancellations)
+    }
+}
+
+extension View {
+    public func paymentSnackbar() -> some View {
+        modifier(PaymentSnackbarModifier())
+    }
+}
+
+private struct PaymentSnackbarModifier: ViewModifier {
+    @StateObject var viewModel: PaymentSnackbarModifierViewModel = .init()
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+                .onAppear {
+                    viewModel.isOnScreen = true
+                }
+                .onDisappear {
+                    viewModel.isOnScreen = false
+                }
+            if viewModel.showPaymentSuccess {
+                VStack {
+                    Spacer()
+                    SnackBarView(
+                        message: CoreLocalization.CourseUpgrade.successMessage,
+                        textColor: Theme.Colors.white,
+                        bgColor: Theme.Colors.success
+                    )
+                }
+                .onAppear {
+                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                        viewModel.showPaymentSuccess = false
+                    }
+                }
+                .transition(.move(edge: .bottom))
+            }
+        }
+        .animation(.easeInOut, value: viewModel.showPaymentSuccess)
+    }
+}
 
 public class UpgradeInfoViewModel: ObservableObject {
     let productName: String
     let sku: String
-    let storeInteractor: StoreInteractorProtocol
+    let courseID: String
+    let screen: CourseUpgradeScreen
+    let handler: CourseUpgradeHandlerProtocol
     
     @Published var isLoading: Bool = false
-    @Published var product: StoreProduct?
+    @Published var product: StoreProductInfo?
     @Published var error: Error?
     var price: String {
         guard let product = product, let price = product.localizedPrice else { return "" }
         return price
     }
 
-    public init(productName: String, sku: String, storeInteractor: StoreInteractorProtocol ) {
+    public init(
+        productName: String,
+        sku: String,
+        courseID: String,
+        screen: CourseUpgradeScreen,
+        handler: CourseUpgradeHandlerProtocol
+    ) {
         self.productName = productName
         self.sku = sku
-        self.storeInteractor = storeInteractor
+        self.courseID = courseID
+        self.screen = screen
+        self.handler = handler
     }
     
     @MainActor
     func fetchProduct() async {
         do {
             isLoading = true
-            self.product = try await storeInteractor.fetchProduct(sku: sku)
+            self.product = try await handler.fetchProduct(sku: sku)
             isLoading = false
         } catch let error {
             self.error = error
+        }
+    }
+    
+    func purchase() {
+        isLoading = true
+        Task {
+            await handler.upgradeCourse(
+                sku: sku,
+                mode: .userInitiated,
+                productInfo: product,
+                pacing: "pacing",
+                courseID: courseID,
+                componentID: nil,
+                screen: screen,
+                completion: {
+                    [weak self] state in
+                    guard let self = self else { return }
+                    switch state {
+                    case .verify:
+                        DispatchQueue.main.async {
+                            self.isLoading = false
+                        }
+                    case .error:
+                        DispatchQueue.main.async {
+                            self.isLoading = false
+                        }
+                    default:
+                        print("Upgrade state changed: \(state)")
+                    }
+                }
+            )
         }
     }
 }
@@ -77,6 +177,22 @@ public struct UpgradeInfoView: View {
         self.viewModel = viewModel
     }
     
+    private var shouldHideText: Bool {
+        viewModel.isLoading && !viewModel.price.isEmpty
+    }
+    
+    private var shouldHideButton: Bool {
+        viewModel.isLoading && viewModel.price.isEmpty
+    }
+    
+    private var buttonText: String {
+        shouldHideText ? "" : "\(CoreLocalization.CourseUpgrade.View.Button.upgradeNow) \(viewModel.price)"
+    }
+    
+    private var buttonImage: Image? {
+        shouldHideText ? nil : Image(systemName: "lock.fill")
+    }
+    
     public var body: some View {
         NavigationView {
             VStack {
@@ -94,21 +210,24 @@ public struct UpgradeInfoView: View {
                 }
                 Spacer()
                 ZStack {
-                    StyledButton(
-                        "\(CoreLocalization.CourseUpgrade.View.Button.upgradeNow) \(viewModel.price)",
-                        action: {
-                            
-                        },
-                        color: Theme.Colors.accentButtonColor,
-                        textColor: Theme.Colors.styledButtonText,
-                        leftImage: Image(systemName: "lock.fill"),
-                        imagesStyle: .attachedToText,
-                        isTitleTracking: false,
-                        isLimitedOnPad: false)
-                    .opacity(viewModel.isLoading ? 0 : 1)
-                    
-                    ProgressBar(size: 40, lineWidth: 8)
-                        .opacity(viewModel.isLoading ? 1 : 0)
+                    if viewModel.error == nil {
+                        StyledButton(
+                            buttonText,
+                            action: {
+                                viewModel.purchase()
+                            },
+                            color: Theme.Colors.accentButtonColor,
+                            textColor: Theme.Colors.styledButtonText,
+                            leftImage: buttonImage,
+                            imagesStyle: .attachedToText,
+                            isTitleTracking: false,
+                            isLimitedOnPad: false)
+                        .opacity(shouldHideButton ? 0 : 1)
+                        .disabled(viewModel.isLoading)
+                        
+                        ProgressBar(size: 30, lineWidth: 8)
+                            .opacity(viewModel.isLoading ? 1 : 0)
+                    }
                 }
                 .padding(20)
             }
@@ -141,7 +260,9 @@ public struct UpgradeInfoView: View {
         viewModel: UpgradeInfoViewModel(
             productName: "Preview",
             sku: "SKU",
-            storeInteractor: StoreInteractorMock(handler: StoreKitHandlerMock())
+            courseID: "",
+            screen: .dashboard,
+            handler: CourseUpgradeHandlerProtocolMock()
         )
     )
 }

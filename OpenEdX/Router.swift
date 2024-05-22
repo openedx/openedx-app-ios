@@ -818,9 +818,9 @@ extension Router {
 
 // MARK: Payments
 extension Router {
-    public func showUpgradeInfo(productName: String, sku: String) {
+    public func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
         let view = UpgradeInfoView(
-            viewModel: Container.shared.resolve(UpgradeInfoViewModel.self, arguments: productName, sku)!
+            viewModel: Container.shared.resolve(UpgradeInfoViewModel.self, arguments: productName, sku, courseID, screen)!
         )
         let controller = UIHostingController(rootView: view)
         if let sheet = controller.sheetPresentationController {
@@ -830,5 +830,29 @@ extension Router {
             sheet.prefersGrabberVisible = true
         }
         navigationController.present(controller, animated: true)
+    }
+    
+    public func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?) {
+        if let controller = navigationController.presentedViewController as? UIHostingController<UpgradeInfoView> {
+            controller.dismiss(animated: animated, completion: completion)
+        } else {
+            completion?()
+        }
+    }
+    
+    public func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
+        let unlockView = CourseUpgradeUnlockView()
+        let controller = UIHostingController(rootView: unlockView)
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .overFullScreen
+        navigationController.present(controller, animated: animated, completion: completion)
+    }
+        
+    public func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
+        if let controller = navigationController.presentedViewController as? UIHostingController<CourseUpgradeUnlockView> {
+            controller.dismiss(animated: animated, completion: completion)
+        } else {
+            completion?()
+        }
     }
 }

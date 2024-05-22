@@ -104,13 +104,13 @@ public extension DataLayer {
     struct CoursewareAccessDetails: Codable {
         let hasUNMETPrerequisites: Bool
         let isTooEarly: Bool
-        let auditAccessExpires: String
+        let auditAccessExpires: String?
         let coursewareAccess: CoursewareAccess
         
         init(
             hasUNMETPrerequisites: Bool,
             isTooEarly: Bool,
-            auditAccessExpires: String,
+            auditAccessExpires: String?,
             coursewareAccess: CoursewareAccess
         ) {
             self.hasUNMETPrerequisites = hasUNMETPrerequisites
@@ -198,7 +198,7 @@ public extension DataLayer {
         let created: String
         let isActive: Bool
         let mode: Mode
-        let upgradeDeadline: String
+        let upgradeDeadline: String?
         
         public enum CodingKeys: String, CodingKey {
             case created
@@ -207,7 +207,7 @@ public extension DataLayer {
             case upgradeDeadline = "upgrade_deadline"
         }
         
-        init(created: String, isActive: Bool, mode: Mode, upgradeDeadline: String) {
+        init(created: String, isActive: Bool, mode: Mode, upgradeDeadline: String?) {
             self.created = created
             self.isActive = isActive
             self.mode = mode

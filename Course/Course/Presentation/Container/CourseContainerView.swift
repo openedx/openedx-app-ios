@@ -46,19 +46,13 @@ public struct CourseContainerView: View {
         title: String
     ) {
         self.viewModel = viewModel
-        Task {
-            await withTaskGroup(of: Void.self) { group in
-                group.addTask {
-                    await viewModel.getCourseBlocks(courseID: courseID)
-                }
-                group.addTask {
-                    await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
-                }
-            }
-        }
         self.courseID = courseID
         self.title = title
         self.courseDatesViewModel = courseDatesViewModel
+        
+        Task {
+            await viewModel.reload(courseID: courseID)
+        }
     }
     
     public var body: some View {
@@ -85,8 +79,7 @@ public struct CourseContainerView: View {
                     selection: $viewModel.selection,
                     coordinate: $coordinate,
                     collapsed: $collapsed,
-                    dateTabIndex: CourseTab.dates.rawValue,
-                    isUpgradeable: viewModel.isUpgradeable
+                    dateTabIndex: CourseTab.dates.rawValue
                 )
             } else {
                 ZStack(alignment: .top) {
@@ -100,7 +93,6 @@ public struct CourseContainerView: View {
                                 containerWidth: proxy.size.width,
                                 animationNamespace: animationNamespace,
                                 isAnimatingForTap: $isAnimatingForTap,
-                                isUpgradeable: viewModel.isUpgradeable,
                                 upgradeAction: {
                                     viewModel.showPaymentsInfo()
                                 }
@@ -187,8 +179,7 @@ public struct CourseContainerView: View {
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        dateTabIndex: CourseTab.dates.rawValue,
-                        isUpgradeable: viewModel.isUpgradeable
+                        dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
                         tab.image
@@ -205,8 +196,7 @@ public struct CourseContainerView: View {
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        dateTabIndex: CourseTab.dates.rawValue,
-                        isUpgradeable: viewModel.isUpgradeable
+                        dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
                         tab.image
@@ -220,7 +210,7 @@ public struct CourseContainerView: View {
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         viewModel: courseDatesViewModel,
-                        isUpgradeable: viewModel.isUpgradeable
+                        isUpgradeable: $viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -236,7 +226,7 @@ public struct CourseContainerView: View {
                         viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                             argument: title)!,
                         router: Container.shared.resolve(DiscussionRouter.self)!,
-                        isUpgradeable: viewModel.isUpgradeable
+                        isUpgradeable: $viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -250,7 +240,7 @@ public struct CourseContainerView: View {
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!,
-                        isUpgradeable: viewModel.isUpgradeable
+                        isUpgradeable: $viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
