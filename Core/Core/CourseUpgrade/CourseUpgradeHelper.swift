@@ -215,21 +215,6 @@ extension CourseUpgradeHelper {
     
     func showError() {
         guard let topController = UIApplication.topViewController() else { return }
-        /*
-
-
-
-         if case .error(let type, let error) = upgradeHadler?.state,
-            type == .verifyReceiptError && error?.errorCode != 409 {
-            
-         }
-
-         if case .complete = upgradeHadler?.state, completion != nil {
-            
-         }
-
-         
-         */
         // not showing any error if payment is canceled by user
         if case .error(let error) = upgradeHadler?.state {
             if error.isCancelled { return }
