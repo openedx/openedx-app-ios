@@ -73,7 +73,6 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
     private var screen: CourseUpgradeScreen = .unknown
     private var localizedCoursePrice: String?
     weak private(set) var upgradeHadler: CourseUpgradeHandler?
-    private var unlockController: UIHostingController<CourseUpgradeUnlockView>?
     private let router: BaseRouter
     
     public init(
@@ -219,7 +218,6 @@ extension CourseUpgradeHelper {
         if case .error(let error) = upgradeHadler?.state {
             if error.isCancelled { return }
             
-            
             let alertController = UIAlertController().showAlert(
                 withTitle: CoreLocalization.CourseUpgrade.FailureAlert.alertTitle,
                 message: error.localizedDescription,
@@ -256,13 +254,7 @@ extension CourseUpgradeHelper {
             alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
                 self?.router.hideUpgradeLoaderView(animated: true, completion: nil)
                 self?.trackUpgradeErrorAction(errorAction: .close, error: error)
-                
-                if self?.unlockController != nil {
-                    self?.removeLoader()
-                    self?.hideAlertAction()
-                } else {
-                    self?.hideAlertAction()
-                }
+                self?.hideAlertAction()
             }
         }
     }
@@ -290,8 +282,7 @@ extension CourseUpgradeHelper {
             helperModel = nil
         }
         
-        if unlockController != nil, removeView == true {
-            unlockController = nil
+        if removeView == true {
             
             router.hideUpgradeLoaderView(animated: true, completion: nil)
             
