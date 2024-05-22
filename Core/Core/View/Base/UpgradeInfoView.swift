@@ -106,7 +106,7 @@ public class UpgradeInfoViewModel: ObservableObject {
             self.error = error
         }
     }
-    
+
     func purchase() {
         isLoading = true
         Task {
@@ -118,8 +118,7 @@ public class UpgradeInfoViewModel: ObservableObject {
                 courseID: courseID,
                 componentID: nil,
                 screen: screen,
-                completion: {
-                    [weak self] state in
+                completion: {[weak self] state in
                     guard let self = self else { return }
                     switch state {
                     case .verify:

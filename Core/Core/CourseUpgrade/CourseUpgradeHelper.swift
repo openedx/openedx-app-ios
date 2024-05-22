@@ -116,6 +116,7 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
         case .success(let courseID, let blockID):
             helperModel = CourseUpgradeHelperModel(courseID: courseID, blockID: blockID, screen: screen)
             if upgradeHadler.upgradeMode == .userInitiated {
+                removeLoader(success: true, removeView: true)
                 postSuccessNotification()
             } else {
                 showSilentRefreshAlert()
@@ -172,7 +173,7 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
     }
     
     private func postSuccessNotification() {
-        NotificationCenter.default.post(name: .unfullfilledTransctionsNotification, object: nil)
+        NotificationCenter.default.post(name: .courseUpgradeCompletionNotification, object: nil)
     }
     
     public func resetUpgradeModel() {
@@ -213,68 +214,71 @@ extension CourseUpgradeHelper {
     }
     
     func showError() {
+        guard let topController = UIApplication.topViewController() else { return }
+        /*
+
+
+
+         if case .error(let type, let error) = upgradeHadler?.state,
+            type == .verifyReceiptError && error?.errorCode != 409 {
+            
+         }
+
+         if case .complete = upgradeHadler?.state, completion != nil {
+            
+         }
+
+         
+         */
         // not showing any error if payment is canceled by user
         if case .error(let error) = upgradeHadler?.state {
             if error.isCancelled { return }
             
-            var buttons: [AlertViewButton] = []
+            
+            let alertController = UIAlertController().showAlert(
+                withTitle: CoreLocalization.CourseUpgrade.FailureAlert.alertTitle,
+                message: error.localizedDescription,
+                onViewController: topController) { _, _, _ in }
             
             if case .verifyReceiptError(let nestedError) = error, nestedError.errorCode != 409 {
-                buttons.append(
-                    AlertViewButton(
-                        title: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
-                        block: {[weak self] in
-                            guard let self = self else { return }
-                            self.trackUpgradeErrorAction(errorAction: .refreshToRetry, error: error)
-                            Task {
-                                await self.upgradeHadler?.reverifyPayment()
-                            }
+                alertController.addButton(
+                    withTitle: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
+                    style: .default) {[weak self] _ in
+                        guard let self = self else { return }
+                        self.trackUpgradeErrorAction(errorAction: .refreshToRetry, error: error)
+                        Task {
+                            await self.upgradeHadler?.reverifyPayment()
                         }
-                    )
-                )
-            }
-
-            if case .complete = upgradeHadler?.state, completion != nil {
-                buttons.append(
-                    AlertViewButton(
-                        title: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
-                        block: {[weak self] in
-                            self?.trackUpgradeErrorAction(errorAction: .refreshToRetry, error: error)
-                            self?.showLoader()
-                            self?.completion?()
-                            self?.completion = nil
-                        }
-                    )
-                )
-            }
-
-            buttons.append(
-                AlertViewButton(
-                    title: CoreLocalization.CourseUpgrade.FailureAlert.getHelp,
-                    block: {[weak self] in
-                        self?.trackUpgradeErrorAction(errorAction: .emailSupport, error: error)
-                        self?.launchEmailComposer(errorMessage: "Error: \(error.formattedError)")
                     }
-                )
-            )
+            }
             
-            router.presentAlert(
-                alertTitle: CoreLocalization.CourseUpgrade.FailureAlert.alertTitle,
-                alertMessage: error.localizedDescription,
-                positiveAction: "",
-                onCloseTapped: {[weak self] in
-                    self?.trackUpgradeErrorAction(errorAction: .close, error: error)
-                    
-                    if self?.unlockController != nil {
-                        self?.removeLoader()
-                        self?.hideAlertAction()
-                    } else {
-                        self?.hideAlertAction()
+            if case .complete = upgradeHadler?.state, completion != nil {
+                alertController.addButton(
+                    withTitle: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
+                    style: .default) {[weak self] _ in
+                        self?.trackUpgradeErrorAction(errorAction: .refreshToRetry, error: error)
+                        self?.showLoader()
+                        self?.completion?()
+                        self?.completion = nil
                     }
-                },
-                okTapped: {},
-                type: .paymentError(buttons: buttons)
-            )
+            }
+            
+            alertController.addButton(withTitle: CoreLocalization.CourseUpgrade.FailureAlert.getHelp) { [weak self] _ in
+                self?.trackUpgradeErrorAction(errorAction: .emailSupport, error: error)
+                self?.launchEmailComposer(errorMessage: "Error: \(error.formattedError)")
+            }
+
+            alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
+                self?.router.hideUpgradeLoaderView(animated: true, completion: nil)
+                self?.trackUpgradeErrorAction(errorAction: .close, error: error)
+                
+                if self?.unlockController != nil {
+                    self?.removeLoader()
+                    self?.hideAlertAction()
+                } else {
+                    self?.hideAlertAction()
+                }
+            }
         }
     }
     
@@ -286,7 +290,9 @@ extension CourseUpgradeHelper {
 
 extension CourseUpgradeHelper {
     public func showLoader(animated: Bool = false, completion: (() -> Void)? = nil) {
-        router.showUpgradeLoaderView(animated: animated, completion: completion)
+        router.hideUpgradeInfo(animated: false) {[weak self] in
+            self?.router.showUpgradeLoaderView(animated: animated, completion: completion)
+        }
     }
     
     public func removeLoader(
