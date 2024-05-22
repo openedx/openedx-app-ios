@@ -502,11 +502,7 @@ class ScreenAssembly: Assembly {
                 courseID: courseID,
                 screen: screen, handler: r.resolve(CourseUpgradeHandlerProtocol.self)!
             )
-        }
-        
-        container.register(StoreInteractorProtocol.self) { r in
-            StoreInteractor(handler: r.resolve(StoreKitHandlerProtocol.self)!)
-        }
+        }        
     }
 }
 // swiftlint:enable function_body_length type_body_length
