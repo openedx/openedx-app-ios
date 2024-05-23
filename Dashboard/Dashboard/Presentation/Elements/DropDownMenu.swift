@@ -84,5 +84,8 @@ struct DropDownMenu: View {
             }
         }
         .onTapBackground(enabled: expanded, { expanded = false })
+        .onDisappear {
+            expanded = false
+        }
     }
 }
