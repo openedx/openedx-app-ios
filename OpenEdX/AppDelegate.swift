@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             configureDeepLinkServices(launchOptions: launchOptions)
         }
         
-        if let storekitHandler = Container.shared.resolve(StorekitHandler.self) {
+        if let storekitHandler = Container.shared.resolve(StoreKitHandlerProtocol.self) {
             storekitHandler.completeTransactions()
         }
 

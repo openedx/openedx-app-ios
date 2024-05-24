@@ -21,8 +21,12 @@ struct CourseHeaderView: View {
     @Environment(\.isHorizontal) private var isHorizontal
     
     private let collapsedHorizontalHeight: CGFloat = 230
-    private let collapsedVerticalHeight: CGFloat = 260
-    private let expandedHeight: CGFloat = 300
+    private var collapsedVerticalHeight: CGFloat = 260
+
+    private var expandedHeight: CGFloat {
+        300 + (viewModel.isUpgradeable ? 42+20 : 0)
+    }
+    private var upgradeAction: (() -> Void)?
     
     private enum GeometryName {
         case backButton
@@ -38,7 +42,8 @@ struct CourseHeaderView: View {
         collapsed: Binding<Bool>,
         containerWidth: CGFloat,
         animationNamespace: Namespace.ID,
-        isAnimatingForTap: Binding<Bool>
+        isAnimatingForTap: Binding<Bool>,
+        upgradeAction: (() -> Void)? = nil
     ) {
         self.viewModel = viewModel
         self.title = title
@@ -46,6 +51,7 @@ struct CourseHeaderView: View {
         self.containerWidth = containerWidth
         self.animationNamespace = animationNamespace
         self._isAnimatingForTap = isAnimatingForTap
+        self.upgradeAction = upgradeAction
     }
     
     var body: some View {
@@ -128,6 +134,11 @@ struct CourseHeaderView: View {
                                 .padding(.horizontal, 24)
                                 .allowsHitTesting(false)
                                 .frameLimit(width: containerWidth)
+                            if viewModel.isUpgradeable {
+                                upgradeButton
+                                    .padding(.horizontal, 24)
+                                    .frameLimit(width: containerWidth)
+                            }
                             courseMenuBar(containerWidth: containerWidth)
                                 .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
                                 .padding(.bottom, 12)
@@ -171,5 +182,20 @@ struct CourseHeaderView: View {
                 isAnimatingForTap = false
             }
         }
+    }
+    
+    var upgradeButton: some View {
+        StyledButton(
+            CoreLocalization.CourseUpgrade.Button.upgrade,
+            action: {
+                upgradeAction?()
+            },
+            color: Theme.Colors.accentColor,
+            textColor: Theme.Colors.primaryButtonTextColor,
+            leftImage: Image(systemName: "lock.fill"),
+            imagesStyle: .attachedToText,
+            isTitleTracking: false,
+            isLimitedOnPad: false
+        )
     }
 }

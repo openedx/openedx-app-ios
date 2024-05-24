@@ -17,17 +17,20 @@ struct HandoutsView: View {
     
     @StateObject
     private var viewModel: HandoutsViewModel
+    @Binding private var isUpgradeable: Bool
     
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
-        viewModel: HandoutsViewModel
+        viewModel: HandoutsViewModel,
+        isUpgradeable: Binding<Bool>
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
         self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self._isUpgradeable = isUpgradeable
     }
     
     public var body: some View {
@@ -38,7 +41,8 @@ struct HandoutsView: View {
                     ScrollView {
                         DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed
+                            collapsed: $collapsed,
+                            isUpgradeable: $isUpgradeable
                         )
                         if viewModel.isShowProgress {
                             HStack(alignment: .center) {
@@ -137,7 +141,8 @@ struct HandoutsView_Previews: PreviewProvider {
             courseID: "",
             coordinate: .constant(0),
             collapsed: .constant(false),
-            viewModel: viewModel
+            viewModel: viewModel,
+            isUpgradeable: .constant(false)
         )
     }
 }

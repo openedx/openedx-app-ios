@@ -196,7 +196,9 @@ public struct PostsView: View {
                                                                 })
                                                             })
                                                         },
-                                                        isTransparent: true)
+                                                        isTransparent: true,
+                                                        isTitleTracking: false
+                                                    )
                                                     .frame(width: 215)
                                                     .padding(.top, 40)
                                                     .colorMultiply(Theme.Colors.accentColor)

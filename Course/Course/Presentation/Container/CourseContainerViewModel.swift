@@ -76,6 +76,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
+    @Published var isUpgradeable: Bool = false
+    
+    var sku: String? {
+        courseStructure?.sku
+    }
+    
     let router: CourseRouter
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
@@ -94,6 +100,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let analytics: CourseAnalytics
     let coreAnalytics: CoreAnalytics
     private(set) var storage: CourseStorage
+    private var courseID: String?
 
     public init(
         interactor: CourseInteractorProtocol,
@@ -132,6 +139,20 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
+    func reload(courseID: String) async {
+        self.courseID = courseID
+        await withTaskGroup(of: Void.self) {[weak self] group in
+            guard let self = self else { return }
+            group.addTask {
+                await self.getCourseBlocks(courseID: courseID)
+            }
+            group.addTask {
+                await self.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+            }
+        }
+    }
+    
+    @MainActor
     func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
         guard let courseStart, courseStart < Date() else { return }
         
@@ -140,6 +161,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         do {
             if isInternetAvaliable {
                 courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
+                isUpgradeable = courseStructure?.isUpgradeable ?? false
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
                 isShowProgress = false
                 isShowRefresh = false
@@ -154,6 +176,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 }
             } else {
                 courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
+                isUpgradeable = courseStructure?.isUpgradeable ?? false
             }
             courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
             await setDownloadsStates()
@@ -277,6 +300,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         await download(state: state, blocks: blocks)
     }
 
+    @MainActor
+    func showPaymentsInfo() {
+        guard let structure = courseStructure, let sku = courseStructure?.sku else { return }
+        router.showUpgradeInfo(productName: structure.displayName, sku: sku, courseID: structure.id, screen: .courseDashboard)
+    }
+    
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {
         let verticals = downloadableVerticals.filter { verticalState in
             courseSequential.childs.contains(where: { item in
@@ -565,6 +594,20 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             selector: #selector(handleShiftDueDates),
             name: .shiftCourseDates, object: nil
         )
+        
+        NotificationCenter.default
+            .publisher(for: .courseUpgradeCompletionNotification)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    Task {
+                        if let courseID = self.courseID {
+                            await self.reload(courseID: courseID)
+                        }
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
     
     deinit {

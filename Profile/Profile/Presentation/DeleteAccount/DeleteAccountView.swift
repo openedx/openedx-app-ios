@@ -130,8 +130,7 @@ public struct DeleteAccountView: View {
                             },
                             color: Theme.Colors.accentColor,
                             textColor: Theme.Colors.primaryButtonTextColor,
-                            iconImage: CoreAssets.arrowLeft.swiftUIImage,
-                            iconPosition: .left
+                            leftImage: CoreAssets.arrowLeft.swiftUIImage
                         )
                         .padding(.top, 35)
                         .accessibilityIdentifier("back_button")

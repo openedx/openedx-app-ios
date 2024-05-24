@@ -21,7 +21,7 @@ public enum UpgradeCompletionState {
     case payment
     case fulfillment(showLoader: Bool)
     case success(_ courseID: String, _ componentID: String?)
-    case error(UpgradeError, Error?)
+    case error(UpgradeError)
 }
 
 // These error actions are used to send in analytics
@@ -43,7 +43,23 @@ public protocol CourseUpgradeHelperDelegate: AnyObject {
     func hideAlertAction()
 }
 
-public class CourseUpgradeHelper: NSObject {
+public protocol CourseUpgradeHelperProtocol {
+    func setData(
+        courseID: String,
+        pacing: String,
+        blockID: String?,
+        localizedCoursePrice: String,
+        screen: CourseUpgradeScreen
+    )
+    
+    func handleCourseUpgrade(
+        upgradeHadler: CourseUpgradeHandler,
+        state: UpgradeCompletionState,
+        delegate: CourseUpgradeHelperDelegate?
+    )
+}
+
+public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
     
     weak private(set) var delegate: CourseUpgradeHelperDelegate?
     private(set) var completion: (() -> Void)?
@@ -57,16 +73,16 @@ public class CourseUpgradeHelper: NSObject {
     private var screen: CourseUpgradeScreen = .unknown
     private var localizedCoursePrice: String?
     weak private(set) var upgradeHadler: CourseUpgradeHandler?
-    private var unlockController: UIHostingController<CourseUpgradeUnlockView>?
-    private var topController: UIViewController?
+    private let router: BaseRouter
     
     public init(
         config: ConfigProtocol,
-        analytics: CoreAnalytics
+        analytics: CoreAnalytics,
+        router: BaseRouter
     ) {
         self.config = config
         self.analytics = analytics
-        
+        self.router = router
     }
     
     public func setData(
@@ -90,7 +106,6 @@ public class CourseUpgradeHelper: NSObject {
     ) {
         self.delegate = delegate
         self.upgradeHadler = upgradeHadler
-        topController = UIApplication.topViewController()
         
         switch state {
         case .fulfillment(let show):
@@ -100,13 +115,14 @@ public class CourseUpgradeHelper: NSObject {
         case .success(let courseID, let blockID):
             helperModel = CourseUpgradeHelperModel(courseID: courseID, blockID: blockID, screen: screen)
             if upgradeHadler.upgradeMode == .userInitiated {
+                removeLoader(success: true, removeView: true)
                 postSuccessNotification()
             } else {
                 showSilentRefreshAlert()
             }
-        case .error(let type, let error):
-            if type == .paymentError {
-                if let error = error as? SKError, error.code == .paymentCancelled {
+        case .error(let error):
+            if case .paymentError = error {
+                if error.isCancelled {
                     analytics.trackCourseUpgradePaymentError(
                         .courseUpgradePaymentCancelError,
                         biValue: .courseUpgradePaymentCancelError,
@@ -115,7 +131,7 @@ public class CourseUpgradeHelper: NSObject {
                         pacing: pacing ?? "",
                         coursePrice: localizedCoursePrice ?? "",
                         screen: screen,
-                        error: upgradeHadler.formattedError
+                        error: error.formattedError
                     )
                 } else {
                     analytics.trackCourseUpgradePaymentError(
@@ -126,7 +142,7 @@ public class CourseUpgradeHelper: NSObject {
                         pacing: pacing ?? "",
                         coursePrice: localizedCoursePrice ?? "",
                         screen: screen,
-                        error: upgradeHadler.formattedError
+                        error: error.formattedError
                     )
                 }
             } else {
@@ -136,12 +152,19 @@ public class CourseUpgradeHelper: NSObject {
                     pacing: pacing ?? "",
                     coursePrice: localizedCoursePrice ?? "",
                     screen: screen,
-                    error: upgradeHadler.formattedError,
+                    error: error.formattedError,
                     flowType: upgradeHadler.upgradeMode.rawValue
                 )
             }
             
-            removeLoader(success: false, removeView: type != .verifyReceiptError)
+            var shouldRemove: Bool = false
+            if case .verifyReceiptError = error {
+                shouldRemove = false
+            } else {
+                shouldRemove = true
+            }
+            
+            removeLoader(success: false, removeView: shouldRemove)
         
         default:
             break
@@ -149,7 +172,7 @@ public class CourseUpgradeHelper: NSObject {
     }
     
     private func postSuccessNotification() {
-        NotificationCenter.default.post(name: .unfullfilledTransctionsNotification, object: nil)
+        NotificationCenter.default.post(name: .courseUpgradeCompletionNotification, object: nil)
     }
     
     public func resetUpgradeModel() {
@@ -169,7 +192,7 @@ public class CourseUpgradeHelper: NSObject {
 
 extension CourseUpgradeHelper {
     func showSuccess() {
-        guard let topController = topController else { return }
+        //TODO: show snack bar via router
         
 //        topController.showBottomActionSnackBar(
 //            message: CoreLocalization.CourseUpgrade.successMessage,
@@ -190,54 +213,47 @@ extension CourseUpgradeHelper {
     }
     
     func showError() {
-        guard let topController = topController else { return }
-        
+        guard let topController = UIApplication.topViewController() else { return }
         // not showing any error if payment is canceled by user
-        if case .error(let type, let error) = upgradeHadler?.state, type == .paymentError,
-           let error = error as? SKError, error.code == .paymentCancelled {
-            return
-        }
-
-        let alertController = UIAlertController().showAlert(
-            withTitle: CoreLocalization.CourseUpgrade.FailureAlert.alertTitle,
-            message: upgradeHadler?.errorMessage,
-            onViewController: topController) { _, _, _ in }
-
-        if case .error(let type, let error) = upgradeHadler?.state,
-           type == .verifyReceiptError && error?.errorCode != 409 {
-            alertController.addButton(
-                withTitle: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
-                style: .default) { _ in
-                    self.trackUpgradeErrorAction(errorAction: .refreshToRetry)
-                    Task {
-                        await self.upgradeHadler?.reverifyPayment()
-                    }
-                }
-        }
-
-        if case .complete = upgradeHadler?.state, completion != nil {
-            alertController.addButton(
-                withTitle: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
-                style: .default) {[weak self] _ in
-                    self?.trackUpgradeErrorAction(errorAction: .refreshToRetry)
-                    self?.showLoader()
-                    self?.completion?()
-                    self?.completion = nil
-                }
-        }
-
-        alertController.addButton(withTitle: CoreLocalization.CourseUpgrade.FailureAlert.getHelp) { [weak self] _ in
-            self?.trackUpgradeErrorAction(errorAction: .emailSupport)
-            self?.launchEmailComposer(errorMessage: "Error: \(self?.upgradeHadler?.formattedError ?? "")")
-        }
-
-        alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
-            self?.trackUpgradeErrorAction(errorAction: .close)
+        if case .error(let error) = upgradeHadler?.state {
+            if error.isCancelled { return }
             
-            if self?.unlockController != nil {
-                self?.removeLoader()
-                self?.hideAlertAction()
-            } else {
+            let alertController = UIAlertController().showAlert(
+                withTitle: CoreLocalization.CourseUpgrade.FailureAlert.alertTitle,
+                message: error.localizedDescription,
+                onViewController: topController) { _, _, _ in }
+            
+            if case .verifyReceiptError(let nestedError) = error, nestedError.errorCode != 409 {
+                alertController.addButton(
+                    withTitle: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
+                    style: .default) {[weak self] _ in
+                        guard let self = self else { return }
+                        self.trackUpgradeErrorAction(errorAction: .refreshToRetry, error: error)
+                        Task {
+                            await self.upgradeHadler?.reverifyPayment()
+                        }
+                    }
+            }
+            
+            if case .complete = upgradeHadler?.state, completion != nil {
+                alertController.addButton(
+                    withTitle: CoreLocalization.CourseUpgrade.FailureAlert.refreshToRetry,
+                    style: .default) {[weak self] _ in
+                        self?.trackUpgradeErrorAction(errorAction: .refreshToRetry, error: error)
+                        self?.showLoader()
+                        self?.completion?()
+                        self?.completion = nil
+                    }
+            }
+            
+            alertController.addButton(withTitle: CoreLocalization.CourseUpgrade.FailureAlert.getHelp) { [weak self] _ in
+                self?.trackUpgradeErrorAction(errorAction: .emailSupport, error: error)
+                self?.launchEmailComposer(errorMessage: "Error: \(error.formattedError)")
+            }
+
+            alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
+                self?.router.hideUpgradeLoaderView(animated: true, completion: nil)
+                self?.trackUpgradeErrorAction(errorAction: .close, error: error)
                 self?.hideAlertAction()
             }
         }
@@ -250,15 +266,10 @@ extension CourseUpgradeHelper {
 }
 
 extension CourseUpgradeHelper {
-    public func showLoader(forceShow: Bool = false) {
-        guard let topController = topController, unlockController == nil else { return }
-        let unlockView = CourseUpgradeUnlockView()
-        
-        unlockController = UIHostingController(rootView: unlockView)
-        unlockController?.modalTransitionStyle = .crossDissolve
-        unlockController?.modalPresentationStyle = .overFullScreen
-        
-        topController.navigationController?.present(unlockController!, animated: true)
+    public func showLoader(animated: Bool = false, completion: (() -> Void)? = nil) {
+        router.hideUpgradeInfo(animated: false) {[weak self] in
+            self?.router.showUpgradeLoaderView(animated: animated, completion: completion)
+        }
     }
     
     public func removeLoader(
@@ -271,13 +282,9 @@ extension CourseUpgradeHelper {
             helperModel = nil
         }
         
-        if unlockController != nil, removeView == true {
-            unlockController = nil
+        if removeView == true {
             
-            if let controller = topController?.navigationController?
-                .presentedViewController as? UIHostingController<CourseUpgradeUnlockView> {
-                controller.dismiss(animated: true)
-            }
+            router.hideUpgradeLoaderView(animated: true, completion: nil)
             
             helperModel = nil
             
@@ -303,7 +310,8 @@ extension CourseUpgradeHelper {
         alertController.addButton(
             withTitle: CoreLocalization.CourseUpgrade.SuccessAlert.silentAlertRefresh,
             style: .default) {[weak self] _ in
-                self?.showLoader(forceShow: true)
+                self?.showLoader(animated: false)
+//                self?.showLoader(forceShow: true)
                 //            self?.popToEnrolledCourses()
             }
 
@@ -318,7 +326,7 @@ extension CourseUpgradeHelper {
 }
 
 extension CourseUpgradeHelper {
-    private func trackUpgradeErrorAction(errorAction: UpgradeErrorAction) {
+    private func trackUpgradeErrorAction(errorAction: UpgradeErrorAction, error: UpgradeError) {
         analytics.trackCourseUpgradeErrorAction(
             courseID: courseID ?? "",
             blockID: blockID,
@@ -326,7 +334,7 @@ extension CourseUpgradeHelper {
             coursePrice: localizedCoursePrice,
             screen: screen,
             errorAction: errorAction.rawValue,
-            error: upgradeHadler?.formattedError ?? "",
+            error: error.formattedError,
             flowType: upgradeHadler?.upgradeMode.rawValue ?? ""
         )
     }
@@ -340,12 +348,14 @@ extension CourseUpgradeHelper {
             errorMessage: errorMessage
         ), UIApplication.shared.canOpenURL(emailURL) else {
             
-            UIAlertController().showAlert(
-                withTitle: CoreLocalization.CourseUpgrade.emailNotSetupTitle,
-                message: CoreLocalization.Error.cannotSendEmail,
-                onViewController: topController!
+            router.presentAlert(
+                alertTitle: CoreLocalization.CourseUpgrade.emailNotSetupTitle,
+                alertMessage: CoreLocalization.Error.cannotSendEmail,
+                positiveAction: "",
+                onCloseTapped: {},
+                okTapped: {},
+                type: .paymentError(buttons: [AlertViewButton(title: CoreLocalization.ok, block: {})])
             )
-            
             return
         }
         
@@ -354,7 +364,7 @@ extension CourseUpgradeHelper {
 }
 
 extension Error {
-    var errorCode: Int? {
+    var errorCode: Int {
         return (self as NSError).code
     }
 }

@@ -68,7 +68,8 @@ public struct CourseOutlineView: View {
                     }) {
                         DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed
+                            collapsed: $collapsed,
+                            isUpgradeable: $viewModel.isUpgradeable
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         VStack(alignment: .leading) {
@@ -210,6 +211,7 @@ public struct CourseOutlineView: View {
                             maxHeight: .infinity)
                 }
             }
+            .paymentSnackbar()
         }
         .background(
             Theme.Colors.background
@@ -364,7 +366,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 title: "Course title",
                 courseID: "",
                 isVideo: false,
-                selection: $selection, 
+                selection: $selection,
                 coordinate: .constant(0),
                 collapsed: .constant(false),
                 dateTabIndex: 2

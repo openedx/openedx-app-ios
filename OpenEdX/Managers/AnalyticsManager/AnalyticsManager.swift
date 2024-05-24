@@ -800,7 +800,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.price: coursePrice,
             EventParamKey.error: error,
             EventParamKey.category: EventCategory.inAppPurchases,
-            EventParamKey.name: biValue
+            EventParamKey.name: biValue.rawValue
         ]
         
         parameters.setObjectOrNil(blockID, forKey: EventParamKey.blockID)

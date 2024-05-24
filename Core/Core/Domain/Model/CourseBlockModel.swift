@@ -24,6 +24,8 @@ public struct CourseStructure: Equatable {
     public let certificate: Certificate?
     public let org: String
     public let isSelfPaced: Bool
+    public let isUpgradeable: Bool
+    public let sku: String?
     
     public init(
         id: String,
@@ -37,7 +39,9 @@ public struct CourseStructure: Equatable {
         media: DataLayer.CourseMedia,
         certificate: Certificate?,
         org: String,
-        isSelfPaced: Bool
+        isSelfPaced: Bool,
+        isUpgradeable: Bool,
+        sku: String?
     ) {
         self.id = id
         self.graded = graded
@@ -51,6 +55,8 @@ public struct CourseStructure: Equatable {
         self.certificate = certificate
         self.org = org
         self.isSelfPaced = isSelfPaced
+        self.isUpgradeable = isUpgradeable
+        self.sku = sku
     }
 
     public func totalVideosSizeInBytes(downloadQuality: DownloadQuality) -> Int {

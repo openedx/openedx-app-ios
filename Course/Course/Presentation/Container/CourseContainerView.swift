@@ -46,19 +46,13 @@ public struct CourseContainerView: View {
         title: String
     ) {
         self.viewModel = viewModel
-        Task {
-            await withTaskGroup(of: Void.self) { group in
-                group.addTask {
-                    await viewModel.getCourseBlocks(courseID: courseID)
-                }
-                group.addTask {
-                    await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
-                }
-            }
-        }
         self.courseID = courseID
         self.title = title
         self.courseDatesViewModel = courseDatesViewModel
+        
+        Task {
+            await viewModel.reload(courseID: courseID)
+        }
     }
     
     public var body: some View {
@@ -98,7 +92,10 @@ public struct CourseContainerView: View {
                                 collapsed: $collapsed,
                                 containerWidth: proxy.size.width,
                                 animationNamespace: animationNamespace,
-                                isAnimatingForTap: $isAnimatingForTap
+                                isAnimatingForTap: $isAnimatingForTap,
+                                upgradeAction: {
+                                    viewModel.showPaymentsInfo()
+                                }
                             )
                         }
                         .offset(
@@ -212,7 +209,8 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewModel: courseDatesViewModel
+                        viewModel: courseDatesViewModel,
+                        isUpgradeable: $viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -227,7 +225,8 @@ public struct CourseContainerView: View {
                         collapsed: $collapsed,
                         viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                             argument: title)!,
-                        router: Container.shared.resolve(DiscussionRouter.self)!
+                        router: Container.shared.resolve(DiscussionRouter.self)!,
+                        isUpgradeable: $viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -240,7 +239,8 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!
+                        viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!,
+                        isUpgradeable: $viewModel.isUpgradeable
                     )
                     .tabItem {
                         tab.image
@@ -350,7 +350,8 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseName: "a",
                 analytics: CourseAnalyticsMock()
             ),
-            courseID: "", title: "Title of Course")
+            courseID: "", title: "Title of Course"
+        )
     }
 }
 #endif

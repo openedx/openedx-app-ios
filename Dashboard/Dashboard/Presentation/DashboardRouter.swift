@@ -16,14 +16,14 @@ public protocol DashboardRouter: BaseRouter {
                            courseEnd: Date?,
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
-                           title: String)
+                           title: String
+    )
     
 }
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
-    
     public override init() {}
     
     public func showCourseScreens(courseID: String,
@@ -32,7 +32,7 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String) {}
-    
+                                  title: String
+    ) {}
 }
 #endif

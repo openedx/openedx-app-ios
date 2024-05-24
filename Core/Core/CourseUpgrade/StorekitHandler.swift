@@ -11,45 +11,16 @@ import StoreKit
 
 // In case of completeTransctions SDK returns SwiftyStoreKit.Purchase
 // And on the in-app purchase SDK returns SwiftyStoreKit.PurchaseDetails
-public enum TransctionType: String {
+public enum TransactionType: String {
     case transction
     case purchase
 }
 
-public enum UpgradeError: String {
-    case paymentsNotAvailable // device isn't allowed to make payments
-    case paymentError // unable to purchase a product
-    case receiptNotAvailable // unable to fetech inapp purchase receipt
-    case basketError // basket API returns error
-    case checkoutError // checkout API returns error
-    case verifyReceiptError // verify receipt API returns error
-    case productNotExist // product not existed on app appstore
-    case generalError // general error
+public class StorekitHandler: NSObject, StoreKitHandlerProtocol {
     
-    var errorString: String {
-        switch self {
-        case .basketError:
-            return "basket"
-        case .checkoutError:
-            return "checkout"
-        case .paymentError:
-            return "payment"
-        case .verifyReceiptError:
-            return "execute"
-        default:
-            return ""
-        }
-    }
-}
-
-public class StorekitHandler: NSObject {
     // Use this dictionary to keep track of inprocess transctions and allow only one transction at a time
     private(set) var purchases: [String: Any] = [:]
 
-    public typealias PurchaseCompletionHandler = ((success: Bool,
-                                                   receipt: String?,
-                                                   error: (type: UpgradeError?,
-                                                           error: Error?)?)) -> Void
     private var completion: PurchaseCompletionHandler?
 
     public var unfinishedPurchases: Bool {
@@ -85,10 +56,19 @@ public class StorekitHandler: NSObject {
             }
         }
     }
+    
+    public func purchaseProduct(_ identifier: String) async -> StoreKitUpgradeResponse {
+        await withCheckedContinuation { continuation in
+            purchaseProduct(identifier) { response in
+                continuation.resume(returning: response)
+            }
+        }
+    }
 
     public func purchaseProduct(_ identifier: String, completion: PurchaseCompletionHandler?) {
         guard SwiftyStoreKit.canMakePayments else {
-            completion?((false, receipt: nil, error: (type: .paymentsNotAvailable, error: nil)))
+            let response = StoreKitUpgradeResponse(success: false, receipt: nil, error: .paymentsNotAvailable)
+            completion?(response)
             return
         }
 
@@ -100,14 +80,48 @@ public class StorekitHandler: NSObject {
                 self?.purchases[purchase.productId] = purchase
                 self?.purchaseReceipt()
             case .error(let error):
-                completion?((false, receipt: nil, error: (type: .paymentError, error: error)))
-                debugLog(((error as NSError).localizedDescription))
+                let response = StoreKitUpgradeResponse(success: false, receipt: nil, error: .paymentError(error))
+                completion?(response)
+                debugLog(error.localizedDescription)
             default:
-                completion?((false, receipt: nil, error: nil))
+                let response = StoreKitUpgradeResponse(success: false, receipt: nil, error: nil)
+                completion?(response)
             }
         }
     }
 
+    public func fetchProduct(sku: String) async throws -> StoreProductInfo {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchPrroduct(sku) { product, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let product = product {
+                    let dataProduct = StoreProductInfo(
+                        price: product.price,
+                        localizedPrice: product.localizedPrice,
+                        currencySymbol: product.priceLocale.currencySymbol
+                    )
+                    continuation.resume(returning: dataProduct)
+                }
+            }
+        }
+    }
+    
+    public func fetchProduct(sku: String, completion: @escaping (StoreProductInfo?, Error?) -> Void) {
+        fetchPrroduct(sku) { product, error in
+            if let error = error {
+                completion(nil, error)
+            } else if let product = product {
+                let dataProduct = StoreProductInfo(
+                    price: product.price,
+                    localizedPrice: product.localizedPrice,
+                    currencySymbol: product.priceLocale.currencySymbol
+                )
+                completion(dataProduct, nil)
+            }
+        }
+    }
+    
     public func fetchPrroduct(_ identifier: String, completion: ((SKProduct?, UpgradeError?) -> Void)? = nil) {
         SwiftyStoreKit.retrieveProductsInfo([identifier]) { result in
             if let product = result.retrievedProducts.first {
@@ -115,7 +129,15 @@ public class StorekitHandler: NSObject {
             } else if result.invalidProductIDs.count > 0 {
                 completion?(nil, .productNotExist)
             } else {
-                completion?(nil, .generalError)
+                completion?(nil, .generalError(nil))
+            }
+        }
+    }
+    
+    public func purchaseReceipt() async -> StoreKitUpgradeResponse {
+        await withCheckedContinuation { continuation in
+            purchaseReceipt { response in
+                continuation.resume(returning: response)
             }
         }
     }
@@ -129,14 +151,16 @@ public class StorekitHandler: NSObject {
             switch result {
             case .success(let receiptData):
                 let encryptedReceipt = receiptData.base64EncodedString(options: [])
-                self?.completion?((true, receipt: encryptedReceipt, error: nil))
+                let response = StoreKitUpgradeResponse(success: true, receipt: encryptedReceipt)
+                self?.completion?(response)
             case .error(let error):
-                self?.completion?((false, receipt: nil, error: (type: .receiptNotAvailable, error: error)))
+                let response = StoreKitUpgradeResponse(success: true, receipt: nil, error: .receiptNotAvailable(error))
+                self?.completion?(response)
             }
         }
     }
 
-    public func markPurchaseComplete(_ productID: String, type: TransctionType) {
+    public func markPurchaseComplete(_ productID: String, type: TransactionType) {
         // Mark the purchase complete
         switch type {
         case .transction:

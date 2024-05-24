@@ -29,7 +29,7 @@ public class DashboardViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DashboardInteractorProtocol
     private let analytics: DashboardAnalytics
-    private var onCourseEnrolledCancellable: AnyCancellable?
+    private var cancellations: [AnyCancellable] = []
     
     public init(interactor: DashboardInteractorProtocol,
                 connectivity: ConnectivityProtocol,
@@ -38,7 +38,7 @@ public class DashboardViewModel: ObservableObject {
         self.connectivity = connectivity
         self.analytics = analytics
         
-        onCourseEnrolledCancellable = NotificationCenter.default
+        NotificationCenter.default
             .publisher(for: .onCourseEnrolled)
             .sink { [weak self] _ in
                 guard let self = self else { return }
@@ -46,6 +46,7 @@ public class DashboardViewModel: ObservableObject {
                     await self.getMyCourses(page: 1, refresh: true)
                 }
             }
+            .store(in: &cancellations)
     }
     
     @MainActor

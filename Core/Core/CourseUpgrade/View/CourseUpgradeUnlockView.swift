@@ -9,6 +9,10 @@ import SwiftUI
 import Theme
 
 public struct CourseUpgradeUnlockView: View {
+    
+    public init() {
+    }
+    
     public var body: some View {
         ZStack(alignment: .center) {
             Theme.Colors.background

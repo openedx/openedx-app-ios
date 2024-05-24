@@ -8,13 +8,12 @@
 import SwiftUI
 import Theme
 
-public enum IconImagePosition {
-    case left
-    case right
-    case none
-}
-
 public struct StyledButton: View {
+    public enum ImagesStyle {
+        case onSides
+        case attachedToText
+    }
+
     private let title: String
     private let action: () -> Void
     private let isTransparent: Bool
@@ -23,8 +22,11 @@ public struct StyledButton: View {
     private let textColor: Color
     private let isActive: Bool
     private let borderColor: Color
-    private let iconImage: Image?
-    private let iconPosition: IconImagePosition
+    private let leftImage: Image?
+    private let rightImage: Image?
+    private let imagesStyle: ImagesStyle
+    private let isTitleTracking: Bool
+    private let isLimitedOnPad: Bool
     
     public init(_ title: String,
                 action: @escaping () -> Void,
@@ -32,9 +34,13 @@ public struct StyledButton: View {
                 color: Color = Theme.Colors.accentButtonColor,
                 textColor: Color = Theme.Colors.styledButtonText,
                 borderColor: Color = .clear,
-                iconImage: Image? = nil,
-                iconPosition: IconImagePosition = .none,
-                isActive: Bool = true) {
+                leftImage: Image? = nil,
+                rightImage: Image? = nil,
+                imagesStyle: ImagesStyle = .attachedToText,
+                isActive: Bool = true,
+                isTitleTracking: Bool = true,
+                isLimitedOnPad: Bool = true
+    ) {
         self.title = title
         self.action = action
         self.isTransparent = isTransparent
@@ -42,36 +48,49 @@ public struct StyledButton: View {
         self.borderColor = borderColor
         self.buttonColor = color
         self.isActive = isActive
-        self.iconImage = iconImage
-        self.iconPosition = iconPosition
+        self.leftImage = leftImage
+        self.rightImage = rightImage
+        self.imagesStyle = imagesStyle
+        self.isTitleTracking = isTitleTracking
+        self.isLimitedOnPad = isLimitedOnPad
     }
     
     public var body: some View {
         Button(action: action) {
             HStack {
-                Spacer()
-                if let icon = iconImage,
-                    iconPosition == .left {
+                if imagesStyle == .attachedToText {
+                    Spacer()
+                }
+
+                if let icon = leftImage {
                     icon
                         .renderingMode(.template)
                         .foregroundStyle(textColor)
                 }
                 Text(title)
-                    .tracking(isTransparent ? 0 : 1.3)
+                    .tracking(isTitleTracking ? 1.3 : 0)
                     .foregroundColor(textColor)
                     .font(Theme.Fonts.labelLarge)
                     .opacity(isActive ? 1.0 : 0.6)
-                if let icon = iconImage,
-                    iconPosition == .right {
+
+                if imagesStyle == .onSides {
+                    Spacer()
+                }
+
+                if let icon = rightImage {
                     icon
                         .renderingMode(.template)
                         .foregroundStyle(textColor)
                 }
-                Spacer()
+                
+                if imagesStyle == .attachedToText {
+                    Spacer()
+                }
             }
+            .padding(.horizontal, imagesStyle == .onSides ? 10 : 0)
         }
         .disabled(!isActive)
-        .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: isTransparent ? 36 : 42)
+        .frame(maxWidth: idiom == .pad && isLimitedOnPad ? 260: .infinity, minHeight: isTransparent ? 36 : 42)
         .background(
             Theme.Shapes.buttonShape
                 .fill(isTransparent ? .clear : buttonColor)
@@ -97,8 +116,7 @@ struct StyledButton_Previews: PreviewProvider {
             StyledButton(
                 "Back Button",
                 action: {},
-                iconImage: CoreAssets.arrowLeft.swiftUIImage,
-                iconPosition: .left,
+                leftImage: CoreAssets.arrowLeft.swiftUIImage,
                 isActive: true
             )
         }
