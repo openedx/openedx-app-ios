@@ -79,6 +79,7 @@ public class UpgradeInfoViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var product: StoreProductInfo?
     @Published var error: Error?
+    @Published var interactiveDismissDisabled: Bool = false
     var price: String {
         guard let product = product, let price = product.localizedPrice else { return "" }
         return price
@@ -111,6 +112,7 @@ public class UpgradeInfoViewModel: ObservableObject {
 
     func purchase() {
         isLoading = true
+        interactiveDismissDisabled = true
         Task {
             await handler.upgradeCourse(
                 sku: sku,
@@ -123,13 +125,15 @@ public class UpgradeInfoViewModel: ObservableObject {
                 completion: {[weak self] state in
                     guard let self = self else { return }
                     switch state {
-                    case .verify:
-                        DispatchQueue.main.async {
-                            self.isLoading = false
-                        }
                     case .error:
                         DispatchQueue.main.async {
                             self.isLoading = false
+                            self.interactiveDismissDisabled = false
+                        }
+                    case .complete:
+                        DispatchQueue.main.async {
+                            self.isLoading = false
+                            self.interactiveDismissDisabled = false
                         }
                     default:
                         print("Upgrade state changed: \(state)")
@@ -215,6 +219,8 @@ public struct UpgradeInfoView: View {
                         StyledButton(
                             buttonText,
                             action: {
+                                dismiss()
+                                NotificationCenter.default.post(name: .courseUpgradeCompletionNotification, object: nil)
                                 viewModel.purchase()
                             },
                             color: Theme.Colors.accentButtonColor,
@@ -252,6 +258,7 @@ public struct UpgradeInfoView: View {
                 }
             }
         }
+        .interactiveDismissDisabled(viewModel.interactiveDismissDisabled)
     }
 }
 
