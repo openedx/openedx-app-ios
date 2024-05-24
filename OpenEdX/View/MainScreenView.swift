@@ -55,6 +55,27 @@ struct MainScreenView: View {
                 }
                 .tag(MainTab.dashboard)
                 .accessibilityIdentifier("dashboard_tabitem")
+                if viewModel.config.program.enabled {
+                    ZStack {
+                        if viewModel.config.program.type == .webview {
+                            ProgramWebviewView(
+                                viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+                                router: Container.shared.resolve(DiscoveryRouter.self)!
+                            )
+                        } else if viewModel.config.program.type == .native {
+                            Text(CoreLocalization.Mainscreen.inDeveloping)
+                        }
+                        
+                        if updateAvailable {
+                            UpdateNotificationView(config: viewModel.config)
+                        }
+                    }
+                    .tabItem {
+                        CoreAssets.programs.swiftUIImage.renderingMode(.template)
+                        Text(CoreLocalization.Mainscreen.programs)
+                    }
+                    .tag(MainTab.programs)
+                }
             case .primaryCourse:
                 ZStack {
                     PrimaryCourseDashboardView(
