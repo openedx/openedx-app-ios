@@ -219,8 +219,6 @@ public struct UpgradeInfoView: View {
                         StyledButton(
                             buttonText,
                             action: {
-                                dismiss()
-                                NotificationCenter.default.post(name: .courseUpgradeCompletionNotification, object: nil)
                                 viewModel.purchase()
                             },
                             color: Theme.Colors.accentButtonColor,
@@ -249,7 +247,9 @@ public struct UpgradeInfoView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        dismiss()
+                        if !viewModel.interactiveDismissDisabled {
+                            dismiss()
+                        }
                     } label: {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentColor)
