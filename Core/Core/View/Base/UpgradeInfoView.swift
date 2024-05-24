@@ -38,7 +38,6 @@ extension View {
 private struct PaymentSnackbarModifier: ViewModifier {
     @StateObject var viewModel: PaymentSnackbarModifierViewModel = .init()
     func body(content: Content) -> some View {
-        ZStack {
             content
                 .onAppear {
                     viewModel.isOnScreen = true
@@ -46,24 +45,27 @@ private struct PaymentSnackbarModifier: ViewModifier {
                 .onDisappear {
                     viewModel.isOnScreen = false
                 }
-            if viewModel.showPaymentSuccess {
-                VStack {
-                    Spacer()
-                    SnackBarView(
-                        message: CoreLocalization.CourseUpgrade.successMessage,
-                        textColor: Theme.Colors.white,
-                        bgColor: Theme.Colors.success
-                    )
-                }
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.showPaymentSuccess = false
+                .overlay(alignment: .bottom) {
+                    ZStack(alignment: .bottom) {
+                        if viewModel.showPaymentSuccess {
+                            SnackBarView(
+                                message: CoreLocalization.CourseUpgrade.successMessage,
+                                textColor: Theme.Colors.white,
+                                bgColor: Theme.Colors.success
+                            )
+                                .transition(.move(edge: .bottom))
+                                .onAppear {
+                                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                                        viewModel.showPaymentSuccess = false
+                                    }
+                                }
+                        }
                     }
-                }
-                .transition(.move(edge: .bottom))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .animation(.easeInOut, value: viewModel.showPaymentSuccess)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
             }
-        }
-        .animation(.easeInOut, value: viewModel.showPaymentSuccess)
     }
 }
 
