@@ -35,6 +35,31 @@ extension View {
     }
 }
 
+private struct PaymentSnakbarView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(CoreLocalization.CourseUpgrade.Snackbar.title)
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+            
+            Text(CoreLocalization.CourseUpgrade.Snackbar.successMessage)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+        }
+        .padding(20)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+        )
+        .background(Theme.Colors.datesSectionBackground)
+        .clipShape(
+            RoundedRectangle(cornerRadius: 8)
+        )
+        .padding(16)
+    }
+}
+
 private struct PaymentSnackbarModifier: ViewModifier {
     @StateObject var viewModel: PaymentSnackbarModifierViewModel = .init()
     func body(content: Content) -> some View {
@@ -48,11 +73,7 @@ private struct PaymentSnackbarModifier: ViewModifier {
                 .overlay(alignment: .bottom) {
                     ZStack(alignment: .bottom) {
                         if viewModel.showPaymentSuccess {
-                            SnackBarView(
-                                message: CoreLocalization.CourseUpgrade.successMessage,
-                                textColor: Theme.Colors.white,
-                                bgColor: Theme.Colors.success
-                            )
+                            PaymentSnakbarView()
                                 .transition(.move(edge: .bottom))
                                 .onAppear {
                                     doAfter(Theme.Timeout.snackbarMessageLongTimeout) {

@@ -122,7 +122,6 @@
 "COURSE_UPGRADE.LEARN_HOW_TO_UNLOCK"= "Unlock graded assignments";
 "COURSE_UPGRADE.EMAIL_NOT_SETUP_TITLE"= "Email not set up";
 "COURSE_UPGRADE.EMAIL_NOT_SETUP_MESSAGE"= "Your email is not set up on this device. Please reach out to {email} for support processing your payment.";
-"COURSE_UPGRADE.SUCCESS_MESSAGE"="Thank you for your purchase. Enjoy full access to your course!";
 "COURSE_UPGRADE.SUCCESS_ALERT.TITLE"="Upgrade complete";
 "COURSE_UPGRADE.SUCCESS_ALERT.MESSAGE"="Thank you for your purchase. You can pick up right where you left off and enjoy full access to your course content.";
 "COURSE_UPGRADE.SUCCESS_ALERT.CONTINUE_BUTTON_TITLE"="Continue";
@@ -154,3 +153,5 @@
 "COURSE_UPGRADE.VIEW.OPTION.FIRST"="Earn a certificate of completion to showcase on your resume";
 "COURSE_UPGRADE.VIEW.OPTION.SECOND"="Unlock access to all course activities, including graded assignments";
 "COURSE_UPGRADE.VIEW.OPTION.THIRD"="Full access to course content and course material even after the course ends";
+"COURSE_UPGRADE.SNACKBAR.TITLE"="Course upgraded";
+"COURSE_UPGRADE.SNACKBAR.SUCCESS_MESSAGE"="Thank you for your purchase. Enjoy full access to your course!";
