@@ -126,7 +126,7 @@ public struct CoursesToSyncView: View {
                     if !course.active {
                         Text(ProfileLocalization.CoursesToSync.inactive)
                             .font(Theme.Fonts.labelSmall)
-                            .foregroundStyle(Theme.Colors.textPrimary.opacity(course.active ? 1 : 0.8))
+                            .foregroundStyle(Theme.Colors.textPrimary.opacity(0.8))
                     }
                 }
                 .frame(

@@ -52,23 +52,10 @@ struct NewCalendarView: View {
             if isHorizontal {
                 ScrollView {
                     content
-                        .frame(maxWidth: 400)
-                        .padding(24)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .foregroundStyle(Theme.Colors.background)
-                        )
-                        .padding(24)
+                       
                 }
             } else {
                 content
-                    .frame(maxWidth: 400)
-                    .padding(24)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .foregroundStyle(Theme.Colors.background)
-                    )
-                    .padding(24)
             }
         }
     }
@@ -145,6 +132,12 @@ struct NewCalendarView: View {
             )
         }
         .frame(maxWidth: 360)
+        .padding(24)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .foregroundStyle(Theme.Colors.background)
+        )
+        .padding(24)
     }
 }
 

@@ -74,6 +74,10 @@ public enum ProfileLocalization {
     public static let changeSyncOptions = ProfileLocalization.tr("Localizable", "CALENDAR.CHANGE_SYNC_OPTIONS", fallback: "Change Sync Options")
     /// Color
     public static let color = ProfileLocalization.tr("Localizable", "CALENDAR.COLOR", fallback: "Color")
+    /// %@ Course Dates
+    public static func courseDates(_ p1: Any) -> String {
+      return ProfileLocalization.tr("Localizable", "CALENDAR.COURSE_DATES", String(describing: p1), fallback: "%@ Course Dates")
+    }
     /// New Calendar
     public static let newCalendar = ProfileLocalization.tr("Localizable", "CALENDAR.NEW_CALENDAR", fallback: "New Calendar")
     /// Upcoming assignments for active courses will appear on this calendar

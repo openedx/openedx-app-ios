@@ -94,7 +94,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     public init(router: ProfileRouter) {
         self.router = router
-        self.calendarNameHint = (Bundle.main.applicationName ?? "") + " Course Dates"
+        self.calendarNameHint = ProfileLocalization.Calendar.courseDates((Bundle.main.applicationName ?? ""))
     }
         
     // MARK: - Request Calendar Permission
@@ -112,11 +112,9 @@ public class DatesAndCalendarViewModel: ObservableObject {
     }
     
     func openAppSettings() {
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-               if UIApplication.shared.canOpenURL(url) {
-                   UIApplication.shared.open(url, options: [:], completionHandler: nil)
-               }
-           }
+        if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
     
     private func showCalendarAccessDenided() {

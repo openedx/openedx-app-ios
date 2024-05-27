@@ -70,7 +70,7 @@ public struct DatesAndCalendarView: View {
                             if viewModel.calendarName == "" {
                                 viewModel.calendarName = viewModel.calendarNameHint
                             }
-                            viewModel.router.showSyncCalendarOptions(viewModel: viewModel) },
+                            viewModel.router.showSyncCalendarOptions() },
                         onCloseTapped: {
                             viewModel.openNewCalendarView = false
                             screenDimmed = false
@@ -158,7 +158,7 @@ public struct DatesAndCalendarView: View {
                     
                     StyledButton(ProfileLocalization.CalendarSync.button, action: {
                         viewModel.requestCalendarPermission()
-                    })
+                    }, horizontalPadding: true)
                     .fixedSize()
                     .accessibilityIdentifier("calendar_sync_button")
                 }

@@ -170,7 +170,7 @@ public struct SyncCalendarOptionsView: View {
         VStack(alignment: .leading, spacing: 27) {
             Button(action: {
                 //                viewModel.trackProfileVideoSettingsClicked()
-                viewModel.router.showCoursesToSync(viewModel: viewModel)
+                viewModel.router.showCoursesToSync()
             },
                    label: {
                 HStack {
@@ -186,7 +186,7 @@ public struct SyncCalendarOptionsView: View {
                     Image(systemName: "chevron.right")
                 }
             })
-            .accessibilityIdentifier("courses_to_Sync_cell")
+            .accessibilityIdentifier("courses_to_sync_cell")
             
         }
         .accessibilityElement(children: .ignore)

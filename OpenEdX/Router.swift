@@ -702,22 +702,21 @@ public class Router: AuthorizationRouter,
     }
     
     public func showDatesAndCalendar() {
-        let vm = DatesAndCalendarViewModel(
-            router: self
-        )
-        
-        let view = DatesAndCalendarView(viewModel: vm)
+        let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
+        let view = DatesAndCalendarView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showSyncCalendarOptions(viewModel: DatesAndCalendarViewModel) {
+    public func showSyncCalendarOptions() {
+        let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
         let view = SyncCalendarOptionsView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func showCoursesToSync(viewModel: DatesAndCalendarViewModel) {
+    public func showCoursesToSync() {
+        let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
         let view = CoursesToSyncView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)

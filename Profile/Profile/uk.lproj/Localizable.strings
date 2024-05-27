@@ -140,4 +140,6 @@
 "CALENDAR.DROPDOWN_COLOR.PURPLE" = "Фіолетовий";
 "CALENDAR.DROPDOWN_COLOR.BROWN" = "Коричневий";
 
+"CALENDAR.COURSE_DATES" = "%@ Дати курсу";
+
 "DROP_DOWN_PICKER.SELECT" = "Оберіть";
