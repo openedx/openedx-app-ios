@@ -47,6 +47,16 @@ public class DashboardViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellations)
+
+        NotificationCenter.default
+            .publisher(for: .courseUpgradeCompletionNotification)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                Task {
+                    await self.getMyCourses(page: 1, refresh: true)
+                }
+            }
+            .store(in: &cancellations)
     }
     
     @MainActor
