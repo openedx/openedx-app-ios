@@ -147,103 +147,13 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     // swiftlint:disable function_body_length
     public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) {
         context.performAndWait {
-            let request: NSFetchRequest<CDMyEnrollments> = CDMyEnrollments.fetchRequest()
+            // Deleting all old data before saving new ones
+            clearOldEnrollmentsData()
             
-            let existingEnrollment: CDMyEnrollments?
-            do {
-                existingEnrollment = try context.fetch(request).first
-            } catch {
-                existingEnrollment = nil
-            }
-            
-            let newEnrollment: CDMyEnrollments
-            if let existingEnrollment {
-                newEnrollment = existingEnrollment
-            } else {
-                newEnrollment = CDMyEnrollments(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            }
+            let newEnrollment = CDMyEnrollments(context: context)
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 
-            // saving PrimaryCourse
-            if let primaryCourse = enrollments.primaryCourse {
-                let cdPrimaryCourse: CDPrimaryCourse
-                if let existingPrimaryCourse = newEnrollment.primaryCourse {
-                    cdPrimaryCourse = existingPrimaryCourse
-                } else {
-                    cdPrimaryCourse = CDPrimaryCourse(context: context)
-                }
-                
-                let futureAssignments = primaryCourse.futureAssignments
-                    let uniqueFutureAssignments = Set(futureAssignments.map { assignment in
-                        let assignmentRequest: NSFetchRequest<CDAssignment> = CDAssignment.fetchRequest()
-                        assignmentRequest.predicate = NSPredicate(format: "title == %@", assignment.title)
-                        let existingAssignment = try? self.context.fetch(assignmentRequest).first
-                        
-                        let cdAssignment: CDAssignment
-                        if let existingAssignment {
-                            cdAssignment = existingAssignment
-                        } else {
-                            cdAssignment = CDAssignment(context: self.context)
-                        }
-
-                        cdAssignment.type = assignment.type
-                        cdAssignment.title = assignment.title
-                        cdAssignment.descript = assignment.description
-                        cdAssignment.date = assignment.date
-                        cdAssignment.complete = assignment.complete
-                        cdAssignment.firstComponentBlockId = assignment.firstComponentBlockId
-                        return cdAssignment
-                    })
-                
-                cdPrimaryCourse.futureAssignments = NSSet(array: Array(uniqueFutureAssignments))
-
-                let pastAssignments = primaryCourse.pastAssignments
-                    let uniqueAssignments = Set(pastAssignments.map { assignment in
-                        let assignmentRequest: NSFetchRequest<CDAssignment> = CDAssignment.fetchRequest()
-                        assignmentRequest.predicate = NSPredicate(format: "title == %@", assignment.title)
-                        let existingAssignment = try? self.context.fetch(assignmentRequest).first
-                        
-                        let cdAssignment: CDAssignment
-                        if let existingAssignment {
-                            cdAssignment = existingAssignment
-                        } else {
-                            cdAssignment = CDAssignment(context: self.context)
-                        }
-
-                        cdAssignment.type = assignment.type
-                        cdAssignment.title = assignment.title
-                        cdAssignment.descript = assignment.description
-                        cdAssignment.date = assignment.date
-                        cdAssignment.complete = assignment.complete
-                        cdAssignment.firstComponentBlockId = assignment.firstComponentBlockId
-                        return cdAssignment
-                    })
-
-                    cdPrimaryCourse.pastAssignments = NSSet(array: Array(uniqueAssignments))
-                
-                // saving PrimaryCourse
-                cdPrimaryCourse.name = primaryCourse.name
-                cdPrimaryCourse.org = primaryCourse.org
-                cdPrimaryCourse.courseID = primaryCourse.courseID
-                cdPrimaryCourse.hasAccess = primaryCourse.hasAccess
-                cdPrimaryCourse.courseStart = primaryCourse.courseStart
-                cdPrimaryCourse.courseEnd = primaryCourse.courseEnd
-                cdPrimaryCourse.courseBanner = primaryCourse.courseBanner
-                cdPrimaryCourse.progressEarned = Int32(primaryCourse.progressEarned ?? 0)
-                cdPrimaryCourse.progressPossible = Int32(primaryCourse.progressPossible ?? 0)
-                cdPrimaryCourse.lastVisitedBlockID = primaryCourse.lastVisitedBlockID
-                cdPrimaryCourse.resumeTitle = primaryCourse.resumeTitle
-
-                newEnrollment.primaryCourse = cdPrimaryCourse
-            }
-
-            // saving courses
-            if let existingCourses = newEnrollment.courses {
-                for course in existingCourses {
-                    context.delete(course as! CDDashboardCourse)
-                }
-            }
-
+            // Saving new courses
             newEnrollment.courses = NSSet(array: enrollments.courses.map { course in
                 let cdCourse = CDDashboardCourse(context: self.context)
                 cdCourse.name = course.name
@@ -256,8 +166,54 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 cdCourse.enrollmentEnd = course.enrollmentEnd
                 cdCourse.courseID = course.courseID
                 cdCourse.numPages = Int32(course.numPages)
+                cdCourse.hasAccess = course.hasAccess
+                cdCourse.progressEarned = Int32(course.progressEarned)
+                cdCourse.progressPossible = Int32(course.progressPossible)
                 return cdCourse
             })
+
+            // Saving PrimaryCourse
+            if let primaryCourse = enrollments.primaryCourse {
+                let cdPrimaryCourse = CDPrimaryCourse(context: context)
+                
+                let futureAssignments = primaryCourse.futureAssignments.map { assignment in
+                    let cdAssignment = CDAssignment(context: self.context)
+                    cdAssignment.type = assignment.type
+                    cdAssignment.title = assignment.title
+                    cdAssignment.descript = assignment.description
+                    cdAssignment.date = assignment.date
+                    cdAssignment.complete = assignment.complete
+                    cdAssignment.firstComponentBlockId = assignment.firstComponentBlockId
+                    return cdAssignment
+                }
+                cdPrimaryCourse.futureAssignments = NSSet(array: futureAssignments)
+                
+                let pastAssignments = primaryCourse.pastAssignments.map { assignment in
+                    let cdAssignment = CDAssignment(context: self.context)
+                    cdAssignment.type = assignment.type
+                    cdAssignment.title = assignment.title
+                    cdAssignment.descript = assignment.description
+                    cdAssignment.date = assignment.date
+                    cdAssignment.complete = assignment.complete
+                    cdAssignment.firstComponentBlockId = assignment.firstComponentBlockId
+                    return cdAssignment
+                }
+                cdPrimaryCourse.pastAssignments = NSSet(array: pastAssignments)
+                
+                cdPrimaryCourse.name = primaryCourse.name
+                cdPrimaryCourse.org = primaryCourse.org
+                cdPrimaryCourse.courseID = primaryCourse.courseID
+                cdPrimaryCourse.hasAccess = primaryCourse.hasAccess
+                cdPrimaryCourse.courseStart = primaryCourse.courseStart
+                cdPrimaryCourse.courseEnd = primaryCourse.courseEnd
+                cdPrimaryCourse.courseBanner = primaryCourse.courseBanner
+                cdPrimaryCourse.progressEarned = Int32(primaryCourse.progressEarned)
+                cdPrimaryCourse.progressPossible = Int32(primaryCourse.progressPossible)
+                cdPrimaryCourse.lastVisitedBlockID = primaryCourse.lastVisitedBlockID
+                cdPrimaryCourse.resumeTitle = primaryCourse.resumeTitle
+
+                newEnrollment.primaryCourse = cdPrimaryCourse
+            }
 
             newEnrollment.totalPages = Int32(enrollments.totalPages)
             newEnrollment.count = Int32(enrollments.count)
@@ -265,9 +221,28 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
             do {
                 try context.save()
             } catch {
-                print("Ошибка при сохранении MyEnrollments:", error)
+                print("Error when saving MyEnrollments:", error)
             }
         }
     }
     // swiftlint:enable function_body_length
+    
+    func clearOldEnrollmentsData() {
+        let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
+        let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
+
+        let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = CDPrimaryCourse.fetchRequest()
+        let batchDeleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
+
+        let fetchRequest3: NSFetchRequest<NSFetchRequestResult> = CDMyEnrollments.fetchRequest()
+        let batchDeleteRequest3 = NSBatchDeleteRequest(fetchRequest: fetchRequest3)
+
+        do {
+            try context.execute(batchDeleteRequest1)
+            try context.execute(batchDeleteRequest2)
+            try context.execute(batchDeleteRequest3)
+        } catch {
+            print("Error when deleting old data:", error)
+        }
+    }
 }
