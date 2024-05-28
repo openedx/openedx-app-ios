@@ -248,6 +248,8 @@ extension CourseUpgradeHelper {
             
             alertController.addButton(withTitle: CoreLocalization.CourseUpgrade.FailureAlert.getHelp) { [weak self] _ in
                 self?.trackUpgradeErrorAction(errorAction: .emailSupport, error: error)
+                self?.hideAlertAction()
+                self?.router.hideUpgradeLoaderView(animated: true, completion: nil)
                 self?.launchEmailComposer(errorMessage: "Error: \(error.formattedError)")
             }
 

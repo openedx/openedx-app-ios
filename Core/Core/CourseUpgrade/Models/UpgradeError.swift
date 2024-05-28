@@ -7,7 +7,11 @@
 
 import StoreKit
 
-public enum UpgradeError: Error, LocalizedError {
+public enum UpgradeError: Error, LocalizedError, Equatable {
+    public static func == (lhs: UpgradeError, rhs: UpgradeError) -> Bool {
+        lhs.errorString == rhs.errorString
+    }
+    
     case paymentsNotAvailable // device isn't allowed to make payments
     case paymentError(Error?) // unable to purchase a product
     case receiptNotAvailable(Error?) // unable to fetech inapp purchase receipt

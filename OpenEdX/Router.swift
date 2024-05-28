@@ -820,7 +820,13 @@ extension Router {
 extension Router {
     public func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
         let view = UpgradeInfoView(
-            viewModel: Container.shared.resolve(UpgradeInfoViewModel.self, arguments: productName, sku, courseID, screen)!
+            viewModel: Container.shared.resolve(
+                UpgradeInfoViewModel.self,
+                arguments: productName,
+                sku,
+                courseID,
+                screen
+            )!
         )
         let controller = UIHostingController(rootView: view)
         if let sheet = controller.sheetPresentationController {
@@ -849,7 +855,8 @@ extension Router {
     }
         
     public func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
-        if let controller = navigationController.presentedViewController as? UIHostingController<CourseUpgradeUnlockView> {
+        if let controller = navigationController.presentedViewController
+            as? UIHostingController<CourseUpgradeUnlockView> {
             controller.dismiss(animated: animated, completion: completion)
         } else {
             completion?()

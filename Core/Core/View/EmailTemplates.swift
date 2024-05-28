@@ -15,7 +15,7 @@ public class EmailTemplates {
         let deviceModel = UIDevice.current.model
         let feedbackDetails = "OS version: \(osVersion)\nApp version: \(appVersion)\nDevice model: \(deviceModel)"
         
-        var emailBody = "\n\n\(email)\n".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        var emailBody = "\n\n\(feedbackDetails)\n"
         
         if let errorMessage {
             emailBody.append(errorMessage)

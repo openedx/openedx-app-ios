@@ -500,7 +500,9 @@ class ScreenAssembly: Assembly {
                 productName: productName,
                 sku: sku,
                 courseID: courseID,
-                screen: screen, handler: r.resolve(CourseUpgradeHandlerProtocol.self)!
+                screen: screen,
+                handler: r.resolve(CourseUpgradeHandlerProtocol.self)!,
+                analytics: r.resolve(CoreAnalytics.self)!
             )
         }
     }
