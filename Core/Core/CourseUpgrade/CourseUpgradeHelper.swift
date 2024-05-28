@@ -39,6 +39,12 @@ public enum UpgradeAlertAction: String {
     case getHelp = "get_help"
     case refresh
 }
+
+public enum Pacing: String {
+    case selfPace = "self"
+    case instructor
+}
+
 public protocol CourseUpgradeHelperDelegate: AnyObject {
     func hideAlertAction()
 }

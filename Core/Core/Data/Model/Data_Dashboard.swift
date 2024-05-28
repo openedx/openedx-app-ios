@@ -123,7 +123,7 @@ public extension DataLayer {
         public let courseAbout: String
         public let courseSharingUtmParameters: CourseSharingUtmParameters
         public let videoOutline: String?
-        public let isSelfPaced: Bool
+        public let isSelfPaced: Bool?
 
         enum CodingKeys: String, CodingKey {
             case id
@@ -290,7 +290,8 @@ public extension DataLayer.CourseEnrollments {
                 coursesCount: enrollments.count ?? 0,
                 sku: sku,
                 dynamicUpgradeDeadline: dynamicUpgradeDeadline,
-                mode: result.mode
+                mode: result.mode,
+                isSelfPaced: course.isSelfPaced
             )
         }, configs)
     }

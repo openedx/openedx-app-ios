@@ -73,6 +73,7 @@ public class UpgradeInfoViewModel: ObservableObject {
     let courseID: String
     let screen: CourseUpgradeScreen
     let handler: CourseUpgradeHandlerProtocol
+    let pacing: String
     let analytics: CoreAnalytics
     
     @Published var isLoading: Bool = false
@@ -89,6 +90,7 @@ public class UpgradeInfoViewModel: ObservableObject {
         courseID: String,
         screen: CourseUpgradeScreen,
         handler: CourseUpgradeHandlerProtocol,
+        pacing: String,
         analytics: CoreAnalytics
     ) {
         self.productName = productName
@@ -96,6 +98,7 @@ public class UpgradeInfoViewModel: ObservableObject {
         self.courseID = courseID
         self.screen = screen
         self.handler = handler
+        self.pacing = pacing
         self.analytics = analytics
     }
     
@@ -131,7 +134,7 @@ public class UpgradeInfoViewModel: ObservableObject {
                     self.analytics.trackCourseUpgradeErrorAction(
                         courseID: self.courseID,
                         blockID: "",
-                        pacing: "pacing",
+                        pacing: pacing,
                         coursePrice: "",
                         screen: self.screen,
                         errorAction: UpgradeErrorAction.reloadPrice.rawValue,
@@ -148,7 +151,7 @@ public class UpgradeInfoViewModel: ObservableObject {
             self.analytics.trackCourseUpgradeErrorAction(
                 courseID: self.courseID,
                 blockID: "",
-                pacing: "pacing",
+                pacing: pacing,
                 coursePrice: "",
                 screen: self.screen,
                 errorAction: UpgradeErrorAction.close.rawValue,
@@ -161,12 +164,20 @@ public class UpgradeInfoViewModel: ObservableObject {
     @MainActor
     func purchase() {
         isLoading = true
+        analytics.trackUpgradeNow(
+            courseID: courseID,
+            blockID: "",
+            pacing: pacing,
+            screen: screen,
+            coursePrice: product?.localizedPrice ?? ""
+        )
+        
         Task {
             await handler.upgradeCourse(
                 sku: sku,
                 mode: .userInitiated,
                 productInfo: product,
-                pacing: "pacing",
+                pacing: pacing,
                 courseID: courseID,
                 componentID: nil,
                 screen: screen,
@@ -314,6 +325,7 @@ public struct UpgradeInfoView: View {
             courseID: "",
             screen: .dashboard,
             handler: CourseUpgradeHandlerProtocolMock(),
+            pacing: "self",
             analytics: CoreAnalyticsMock()
         )
     )

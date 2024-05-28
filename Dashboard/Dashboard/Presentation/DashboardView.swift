@@ -66,7 +66,9 @@ public struct DashboardView: View {
                                                     productName: course.name,
                                                     sku: course.sku,
                                                     courseID: course.courseID,
-                                                    screen: .dashboard
+                                                    screen: .dashboard,
+                                                    pacing: course.isSelfPaced != false ? Pacing.selfPace.rawValue
+                                                    : Pacing.instructor.rawValue
                                                 )
                                             }
                                         )

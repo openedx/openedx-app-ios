@@ -87,7 +87,8 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
                     numPages: 1,
-                    coursesCount: 0
+                    coursesCount: 0,
+                    isSelfPaced: false
                 )
             )
         }

@@ -818,14 +818,21 @@ extension Router {
 
 // MARK: Payments
 extension Router {
-    public func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
+    public func showUpgradeInfo(
+        productName: String,
+        sku: String,
+        courseID: String,
+        screen: CourseUpgradeScreen,
+        pacing: String
+    ) {
         let view = UpgradeInfoView(
             viewModel: Container.shared.resolve(
                 UpgradeInfoViewModel.self,
                 arguments: productName,
                 sku,
                 courseID,
-                screen
+                screen,
+                pacing
             )!
         )
         let controller = UIHostingController(rootView: view)
@@ -853,7 +860,7 @@ extension Router {
         controller.modalPresentationStyle = .overFullScreen
         navigationController.present(controller, animated: animated, completion: completion)
     }
-        
+    
     public func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
         if let controller = navigationController.presentedViewController
             as? UIHostingController<CourseUpgradeUnlockView> {

@@ -303,7 +303,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func showPaymentsInfo() {
         guard let structure = courseStructure, let sku = courseStructure?.sku else { return }
-        router.showUpgradeInfo(productName: structure.displayName, sku: sku, courseID: structure.id, screen: .courseDashboard)
+        router.showUpgradeInfo(
+            productName: structure.displayName,
+            sku: sku,
+            courseID: structure.id,
+            screen: .courseDashboard,
+            pacing: courseStructure?.isSelfPaced ?? false ? Pacing.selfPace.rawValue : Pacing.instructor.rawValue
+        )
     }
     
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {
