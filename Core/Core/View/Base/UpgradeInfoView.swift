@@ -121,7 +121,7 @@ public class UpgradeInfoViewModel: ObservableObject {
     }
     
     @MainActor
-    func fetchProduct() async {
+    public func fetchProduct() async {
         do {
             isLoading = true
             self.product = try await handler.fetchProduct(sku: sku)
@@ -131,37 +131,35 @@ public class UpgradeInfoViewModel: ObservableObject {
         }
     }
 
-    func purchase() {
+    public func purchase() async {
         isLoading = true
         interactiveDismissDisabled = true
-        Task {
-            await handler.upgradeCourse(
-                sku: sku,
-                mode: .userInitiated,
-                productInfo: product,
-                pacing: "pacing",
-                courseID: courseID,
-                componentID: nil,
-                screen: screen,
-                completion: {[weak self] state in
-                    guard let self = self else { return }
-                    switch state {
-                    case .error:
-                        DispatchQueue.main.async {
-                            self.isLoading = false
-                            self.interactiveDismissDisabled = false
-                        }
-                    case .complete:
-                        DispatchQueue.main.async {
-                            self.isLoading = false
-                            self.interactiveDismissDisabled = false
-                        }
-                    default:
-                        print("Upgrade state changed: \(state)")
+        await handler.upgradeCourse(
+            sku: sku,
+            mode: .userInitiated,
+            productInfo: product,
+            pacing: "pacing",
+            courseID: courseID,
+            componentID: nil,
+            screen: screen,
+            completion: {[weak self] state in
+                guard let self = self else { return }
+                switch state {
+                case .error:
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.interactiveDismissDisabled = false
                     }
+                case .complete:
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.interactiveDismissDisabled = false
+                    }
+                default:
+                    print("Upgrade state changed: \(state)")
                 }
-            )
-        }
+            }
+        )
     }
 }
 
@@ -240,7 +238,9 @@ public struct UpgradeInfoView: View {
                         StyledButton(
                             buttonText,
                             action: {
-                                viewModel.purchase()
+                                Task {
+                                    await viewModel.purchase()
+                                }
                             },
                             color: Theme.Colors.accentButtonColor,
                             textColor: Theme.Colors.styledButtonText,
