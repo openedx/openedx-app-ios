@@ -45,6 +45,8 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                 // MARK: - Page body
                 VStack(alignment: .leading) {
                     Spacer(minLength: 50)
+                    switch selectedMenu {
+                    case .courses:
                     RefreshableScrollViewCompat(action: {
                         await viewModel.getEnrollments(showProgress: false)
                     }) {
@@ -57,8 +59,6 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                         maxHeight: .infinity)
                             } else {
                                 LazyVStack(spacing: 0) {
-                                    switch selectedMenu {
-                                    case .courses:
                                         if let enrollments = viewModel.enrollments {
                                             if let primary = enrollments.primaryCourse {
                                                 PrimaryCardView(
@@ -141,15 +141,15 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                             }
                                             Spacer(minLength: 100)
                                         }
-                                    case .programs:
-                                        programView
-                                            .padding(.top, 50)
-                                    }
                                 }
                             }
                         }
                         .frameLimit(width: proxy.size.width)
                     }.accessibilityAction {}
+                    case .programs:
+                        programView
+                            .padding(.top, 50)
+                    }
                 }.padding(.top, 8)
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
