@@ -237,10 +237,13 @@ extension CourseUpgradeHelper {
             }
             
             alertController.addButton(withTitle: CoreLocalization.CourseUpgrade.FailureAlert.getHelp) { [weak self] _ in
-                self?.trackUpgradeErrorAction(errorAction: .emailSupport, error: error)
-                self?.hideAlertAction()
-                self?.router.hideUpgradeLoaderView(animated: true, completion: nil)
-                self?.launchEmailComposer(errorMessage: "Error: \(error.formattedError)")
+                guard let self = self else { return }
+                self.trackUpgradeErrorAction(errorAction: .emailSupport, error: error)
+                self.hideAlertAction()
+                Task { @MainActor in
+                    await self.router.hideUpgradeLoaderView(animated: true)
+                }
+                self.launchEmailComposer(errorMessage: "Error: \(error.formattedError)")
             }
 
             alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
