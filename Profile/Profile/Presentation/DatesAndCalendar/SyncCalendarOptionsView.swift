@@ -216,20 +216,6 @@ public struct SyncCalendarOptionsView: View {
         )
         .padding(.horizontal, 24)
     }
-    
-    // MARK: - Error Alert View
-    private var errorAlertView: some View {
-        VStack {
-            Spacer()
-            SnackBarView(message: viewModel.errorMessage)
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
-                    }
-                }
-        }
-    }
 }
 
 #if DEBUG
