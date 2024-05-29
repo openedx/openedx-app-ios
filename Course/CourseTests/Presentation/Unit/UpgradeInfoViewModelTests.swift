@@ -77,7 +77,9 @@ final class UpgradeInfoViewModelTests: XCTestCase {
             sku: "sku1",
             courseID: "course1",
             screen: .dashboard,
-            handler: handler
+            handler: handler,
+            pacing: Pacing.selfPace.rawValue,
+            analytics: CoreAnalyticsMock()
         )
     }
     
@@ -117,7 +119,7 @@ final class UpgradeInfoViewModelTests: XCTestCase {
         
         await viewModel.fetchProduct()
         try verifyFetchProduct()
-        XCTAssertEqual(viewModel.error?.localizedDescription, error.localizedDescription)
+        XCTAssertTrue(viewModel.product == nil)
     }
     
     typealias FlowData = (sku: String, product: StoreProductInfo, basketID: Int, symbol: String, receipt: String )
@@ -212,7 +214,7 @@ final class UpgradeInfoViewModelTests: XCTestCase {
             helper,
             1,
             .setData(courseID: .value(viewModel.courseID),
-                     pacing: .value("pacing"),
+                     pacing: .value(viewModel.pacing),
                      blockID: .value(nil),
                      localizedCoursePrice: .value(localizedPrice),
                      screen: .value(viewModel.screen)

@@ -606,10 +606,10 @@ open class BaseRouterMock: BaseRouter, Mock {
     }
 
     @MainActor
-	open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
-        addInvocation(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`)))
-		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`))) as? (String, String, String, CourseUpgradeScreen) -> Void
-		perform?(`productName`, `sku`, `courseID`, `screen`)
+	open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen, pacing: String) {
+        addInvocation(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`)))
+		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`))) as? (String, String, String, CourseUpgradeScreen, String) -> Void
+		perform?(`productName`, `sku`, `courseID`, `screen`, `pacing`)
     }
 
     @MainActor
@@ -651,7 +651,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
         case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
-        case m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>)
+        case m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
         case m_hideUpgradeInfo__animated_animated(Parameter<Bool>)
         case m_showUpgradeLoaderView__animated_animated(Parameter<Bool>)
         case m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>)
@@ -747,12 +747,13 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsContent, rhs: rhsContent, with: matcher), lhsContent, rhsContent, "content"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(let lhsProductname, let lhsSku, let lhsCourseid, let lhsScreen), .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(let rhsProductname, let rhsSku, let rhsCourseid, let rhsScreen)):
+            case (.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(let lhsProductname, let lhsSku, let lhsCourseid, let lhsScreen, let lhsPacing), .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(let rhsProductname, let rhsSku, let rhsCourseid, let rhsScreen, let rhsPacing)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsProductname, rhs: rhsProductname, with: matcher), lhsProductname, rhsProductname, "productName"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSku, rhs: rhsSku, with: matcher), lhsSku, rhsSku, "sku"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsScreen, rhs: rhsScreen, with: matcher), lhsScreen, rhsScreen, "screen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPacing, rhs: rhsPacing, with: matcher), lhsPacing, rhsPacing, "pacing"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_hideUpgradeInfo__animated_animated(let lhsAnimated), .m_hideUpgradeInfo__animated_animated(let rhsAnimated)):
@@ -791,7 +792,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
-            case let .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_hideUpgradeInfo__animated_animated(p0): return p0.intValue
             case let .m_showUpgradeLoaderView__animated_animated(p0): return p0.intValue
             case let .m_hideUpgradeLoaderView__animated_animated(p0): return p0.intValue
@@ -815,7 +816,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"
             case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
-            case .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen: return ".showUpgradeInfo(productName:sku:courseID:screen:)"
+            case .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing: return ".showUpgradeInfo(productName:sku:courseID:screen:pacing:)"
             case .m_hideUpgradeInfo__animated_animated: return ".hideUpgradeInfo(animated:)"
             case .m_showUpgradeLoaderView__animated_animated: return ".showUpgradeLoaderView(animated:)"
             case .m_hideUpgradeLoaderView__animated_animated: return ".hideUpgradeLoaderView(animated:)"
@@ -854,7 +855,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(`transitionStyle`, `view`, `completion`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
         @MainActor
-		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`))}
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `sku`, `courseID`, `screen`, `pacing`))}
         @MainActor
 		public static func hideUpgradeInfo(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeInfo__animated_animated(`animated`))}
         @MainActor
@@ -916,8 +917,8 @@ open class BaseRouterMock: BaseRouter, Mock {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
         @MainActor
-		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, perform: @escaping (String, String, String, CourseUpgradeScreen) -> Void) -> Perform {
-            return Perform(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`), performs: perform)
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>, perform: @escaping (String, String, String, CourseUpgradeScreen, String) -> Void) -> Perform {
+            return Perform(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `sku`, `courseID`, `screen`, `pacing`), performs: perform)
         }
         @MainActor
 		public static func hideUpgradeInfo(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
@@ -3627,10 +3628,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
     }
 
     @MainActor
-	open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
-        addInvocation(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`)))
-		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`))) as? (String, String, String, CourseUpgradeScreen) -> Void
-		perform?(`productName`, `sku`, `courseID`, `screen`)
+	open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen, pacing: String) {
+        addInvocation(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`)))
+		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`))) as? (String, String, String, CourseUpgradeScreen, String) -> Void
+		perform?(`productName`, `sku`, `courseID`, `screen`, `pacing`)
     }
 
     @MainActor
@@ -3678,7 +3679,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
         case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
-        case m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>)
+        case m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
         case m_hideUpgradeInfo__animated_animated(Parameter<Bool>)
         case m_showUpgradeLoaderView__animated_animated(Parameter<Bool>)
         case m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>)
@@ -3819,12 +3820,13 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsContent, rhs: rhsContent, with: matcher), lhsContent, rhsContent, "content"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(let lhsProductname, let lhsSku, let lhsCourseid, let lhsScreen), .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(let rhsProductname, let rhsSku, let rhsCourseid, let rhsScreen)):
+            case (.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(let lhsProductname, let lhsSku, let lhsCourseid, let lhsScreen, let lhsPacing), .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(let rhsProductname, let rhsSku, let rhsCourseid, let rhsScreen, let rhsPacing)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsProductname, rhs: rhsProductname, with: matcher), lhsProductname, rhsProductname, "productName"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSku, rhs: rhsSku, with: matcher), lhsSku, rhsSku, "sku"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsScreen, rhs: rhsScreen, with: matcher), lhsScreen, rhsScreen, "screen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPacing, rhs: rhsPacing, with: matcher), lhsPacing, rhsPacing, "pacing"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_hideUpgradeInfo__animated_animated(let lhsAnimated), .m_hideUpgradeInfo__animated_animated(let rhsAnimated)):
@@ -3869,7 +3871,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
-            case let .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_hideUpgradeInfo__animated_animated(p0): return p0.intValue
             case let .m_showUpgradeLoaderView__animated_animated(p0): return p0.intValue
             case let .m_hideUpgradeLoaderView__animated_animated(p0): return p0.intValue
@@ -3899,7 +3901,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"
             case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
-            case .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen: return ".showUpgradeInfo(productName:sku:courseID:screen:)"
+            case .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing: return ".showUpgradeInfo(productName:sku:courseID:screen:pacing:)"
             case .m_hideUpgradeInfo__animated_animated: return ".hideUpgradeInfo(animated:)"
             case .m_showUpgradeLoaderView__animated_animated: return ".showUpgradeLoaderView(animated:)"
             case .m_hideUpgradeLoaderView__animated_animated: return ".hideUpgradeLoaderView(animated:)"
@@ -3944,7 +3946,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(`transitionStyle`, `view`, `completion`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
         @MainActor
-		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`))}
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `sku`, `courseID`, `screen`, `pacing`))}
         @MainActor
 		public static func hideUpgradeInfo(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeInfo__animated_animated(`animated`))}
         @MainActor
@@ -4024,8 +4026,8 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
         @MainActor
-		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, perform: @escaping (String, String, String, CourseUpgradeScreen) -> Void) -> Perform {
-            return Perform(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`), performs: perform)
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>, perform: @escaping (String, String, String, CourseUpgradeScreen, String) -> Void) -> Perform {
+            return Perform(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `sku`, `courseID`, `screen`, `pacing`), performs: perform)
         }
         @MainActor
 		public static func hideUpgradeInfo(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {

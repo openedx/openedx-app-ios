@@ -45,7 +45,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "123",
                        numPages: 2,
-                       coursesCount: 2),
+                       coursesCount: 2,
+                       isSelfPaced: false),
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
@@ -57,7 +58,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "1243",
                        numPages: 1,
-                       coursesCount: 2)
+                       coursesCount: 2,
+                       isSelfPaced: false)
         ]
         viewModel.courses = items + items + items
         viewModel.totalPages = 2
@@ -94,7 +96,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "123",
                        numPages: 2,
-                       coursesCount: 0),
+                       coursesCount: 0,
+                       isSelfPaced: false),
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
@@ -106,7 +109,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "1243",
                        numPages: 1,
-                       coursesCount: 0)
+                       coursesCount: 0,
+                       isSelfPaced: false)
         ]
 
         Given(interactor, .discovery(page: 1, willReturn: items))
@@ -142,7 +146,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "123",
                        numPages: 2,
-                       coursesCount: 2),
+                       coursesCount: 2,
+                       isSelfPaced: false),
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
@@ -154,7 +159,8 @@ final class DiscoveryViewModelTests: XCTestCase {
                        enrollmentEnd: Date(),
                        courseID: "1243",
                        numPages: 1,
-                       coursesCount: 2)
+                       coursesCount: 2,
+                       isSelfPaced: false)
         ]
         
         Given(connectivity, .isInternetAvaliable(getter: false))
