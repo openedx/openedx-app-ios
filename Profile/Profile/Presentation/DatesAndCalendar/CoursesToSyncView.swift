@@ -31,7 +31,12 @@ public struct CoursesToSyncView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     // MARK: Navigation and Title
-                    navigationAndTitle
+                    NavigationTitle(
+                        title: ProfileLocalization.CoursesToSync.title,
+                        backAction: {
+                            viewModel.router.back()
+                        }
+                    )
                     
                     // MARK: Body
                     ScrollView {
@@ -70,36 +75,10 @@ public struct CoursesToSyncView: View {
                 .navigationBarBackButtonHidden(true)
                 
                 if viewModel.showError {
-                    errorAlertView
+                    ErrorAlertView(errorMessage: $viewModel.errorMessage)
                 }
             }
             .ignoresSafeArea(.all, edges: .horizontal)
-        }
-    }
-    
-    // MARK: - Navigation and Title
-    private var navigationAndTitle: some View {
-        ZStack {
-            HStack {
-                Text(ProfileLocalization.CoursesToSync.title)
-                    .titleSettings(color: Theme.Colors.loginNavigationText)
-                    .accessibilityIdentifier("courses_to_sync_text")
-            }
-            VStack {
-                Button(
-                    action: { viewModel.router.back() },
-                    label: {
-                        CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                            .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                    }
-                )
-                .foregroundColor(Theme.Colors.styledButtonText)
-                .padding(.leading, isHorizontal ? 48 : 0)
-                .accessibilityIdentifier("back_button")
-                
-            }.frame(minWidth: 0,
-                    maxWidth: .infinity,
-                    alignment: .topLeading)
         }
     }
     
@@ -138,21 +117,6 @@ public struct CoursesToSyncView: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-
-    }
-    
-    // MARK: - Error Alert View
-    private var errorAlertView: some View {
-        VStack {
-            Spacer()
-            SnackBarView(message: viewModel.errorMessage)
-                .transition(.move(edge: .bottom))
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
-                    }
-                }
-        }
     }
 }
 

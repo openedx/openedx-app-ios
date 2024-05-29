@@ -33,7 +33,12 @@ public struct DatesAndCalendarView: View {
                 
                 VStack {
                     // MARK: Navigation and Title
-                    navigationAndTitle
+                    NavigationTitle(
+                        title: ProfileLocalization.DatesAndCalendar.title,
+                        backAction: {
+                            viewModel.router.back()
+                        }
+                    )
                     
                     // MARK: Body
                     ScrollView {
@@ -52,7 +57,7 @@ public struct DatesAndCalendarView: View {
                 
                 // Error Alert if needed
                 if viewModel.showError {
-                    errorAlertView
+                    ErrorAlertView(errorMessage: $viewModel.errorMessage)
                 }
                 if screenDimmed {
                     Color.black.opacity(0.3)
@@ -105,29 +110,6 @@ public struct DatesAndCalendarView: View {
                 
             }
             .ignoresSafeArea(.all, edges: .horizontal)
-        }
-    }
-
-    // MARK: - Navigation and Title
-    private var navigationAndTitle: some View {
-        ZStack {
-            HStack {
-                Text(ProfileLocalization.DatesAndCalendar.title)
-                    .titleSettings(color: Theme.Colors.loginNavigationText)
-                    .accessibilityIdentifier("dates_and_calendar_text")
-            }
-            VStack {
-                Button(action: { viewModel.router.back() }, label: {
-                    CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                        .backButtonStyle(color: Theme.Colors.loginNavigationText)
-                })
-                .foregroundColor(Theme.Colors.styledButtonText)
-                .padding(.leading, isHorizontal ? 48 : 0)
-                .accessibilityIdentifier("back_button")
-                
-            }.frame(minWidth: 0,
-                    maxWidth: .infinity,
-                    alignment: .topLeading)
         }
     }
 
@@ -224,3 +206,4 @@ struct DatesAndCalendarView_Previews: PreviewProvider {
     }
 }
 #endif
+
