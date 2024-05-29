@@ -300,10 +300,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         await download(state: state, blocks: blocks)
     }
 
-    @MainActor
     func showPaymentsInfo() {
         guard let structure = courseStructure, let sku = courseStructure?.sku else { return }
-        router.showUpgradeInfo(productName: structure.displayName, sku: sku, courseID: structure.id, screen: .courseDashboard)
+        Task {@MainActor in
+            await router.showUpgradeInfo(
+                productName: structure.displayName,
+                sku: sku, courseID: structure.id, screen: .courseDashboard
+            )
+        }
     }
     
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {

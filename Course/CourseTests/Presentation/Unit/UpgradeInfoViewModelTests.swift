@@ -149,6 +149,7 @@ final class UpgradeInfoViewModelTests: XCTestCase {
         return (sku: sku, product: product, basketID: basket.basketID, symbol: symbol, receipt: receipt)
     }
     
+    @MainActor 
     private func verifySuccessFlow(flowData: FlowData) throws {
         guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
         Verify(interactor, 1, .addBasket(sku: .value(flowData.sku)))
@@ -165,6 +166,11 @@ final class UpgradeInfoViewModelTests: XCTestCase {
                 receipt: .value(flowData.receipt)
             )
         )
+        // Check router flow
+        guard let router else { throw UpgradeInfoViewModelTestsError.routerIsNil }
+        Verify(router, 1, .hideUpgradeInfo(animated: .any))
+        Verify(router, 1, .showUpgradeLoaderView(animated: .any))
+        Verify(router, 1, .hideUpgradeLoaderView(animated: .any))
     }
 
     func testUpgradeHandlerSuccess() async throws {
@@ -178,7 +184,7 @@ final class UpgradeInfoViewModelTests: XCTestCase {
         await viewModel.purchase()
         
         // Verify purchase backend processing
-        try verifySuccessFlow(flowData: flowData)
+        try await verifySuccessFlow(flowData: flowData)
         
         var stateIsSuccess: Bool = false
         if case .complete = handler.state {
@@ -212,7 +218,5 @@ final class UpgradeInfoViewModelTests: XCTestCase {
                      screen: .value(viewModel.screen)
                     )
         )
-        
-        
     }
 }

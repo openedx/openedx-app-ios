@@ -22,12 +22,4 @@ public protocol CourseUpgradeHelperProtocol {
         state: UpgradeCompletionState,
         delegate: CourseUpgradeHelperDelegate?
     )
-    
-    func showLoader(animated: Bool, completion: (() -> Void)?)
-    
-    func removeLoader(
-        success: Bool?,
-        removeView: Bool?,
-        completion: (() -> Void)?
-    )
 }

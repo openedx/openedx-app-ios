@@ -932,28 +932,32 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 		perform?(`transitionStyle`, `animated`, `content`)
     }
 
-    open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
+    @MainActor
+	open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
         addInvocation(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`)))
 		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`))) as? (String, String, String, CourseUpgradeScreen) -> Void
 		perform?(`productName`, `sku`, `courseID`, `screen`)
     }
 
-    open func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?) {
-        addInvocation(.m_hideUpgradeInfo__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_hideUpgradeInfo__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool, (() -> Void)?) -> Void
-		perform?(`animated`, `completion`)
+    @MainActor
+	open func hideUpgradeInfo(animated: Bool) {
+        addInvocation(.m_hideUpgradeInfo__animated_animated(Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_hideUpgradeInfo__animated_animated(Parameter<Bool>.value(`animated`))) as? (Bool) -> Void
+		perform?(`animated`)
     }
 
-    open func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
-        addInvocation(.m_showUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_showUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool, (() -> Void)?) -> Void
-		perform?(`animated`, `completion`)
+    @MainActor
+	open func showUpgradeLoaderView(animated: Bool) {
+        addInvocation(.m_showUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_showUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`))) as? (Bool) -> Void
+		perform?(`animated`)
     }
 
-    open func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
-        addInvocation(.m_hideUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_hideUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool, (() -> Void)?) -> Void
-		perform?(`animated`, `completion`)
+    @MainActor
+	open func hideUpgradeLoaderView(animated: Bool) {
+        addInvocation(.m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`))) as? (Bool) -> Void
+		perform?(`animated`)
     }
 
 
@@ -976,9 +980,9 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
         case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
         case m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>)
-        case m_hideUpgradeInfo__animated_animatedcompletion_completion(Parameter<Bool>, Parameter<(() -> Void)?>)
-        case m_showUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>, Parameter<(() -> Void)?>)
-        case m_hideUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>, Parameter<(() -> Void)?>)
+        case m_hideUpgradeInfo__animated_animated(Parameter<Bool>)
+        case m_showUpgradeLoaderView__animated_animated(Parameter<Bool>)
+        case m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1084,22 +1088,19 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsScreen, rhs: rhsScreen, with: matcher), lhsScreen, rhsScreen, "screen"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_hideUpgradeInfo__animated_animatedcompletion_completion(let lhsAnimated, let lhsCompletion), .m_hideUpgradeInfo__animated_animatedcompletion_completion(let rhsAnimated, let rhsCompletion)):
+            case (.m_hideUpgradeInfo__animated_animated(let lhsAnimated), .m_hideUpgradeInfo__animated_animated(let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showUpgradeLoaderView__animated_animatedcompletion_completion(let lhsAnimated, let lhsCompletion), .m_showUpgradeLoaderView__animated_animatedcompletion_completion(let rhsAnimated, let rhsCompletion)):
+            case (.m_showUpgradeLoaderView__animated_animated(let lhsAnimated), .m_showUpgradeLoaderView__animated_animated(let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_hideUpgradeLoaderView__animated_animatedcompletion_completion(let lhsAnimated, let lhsCompletion), .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(let rhsAnimated, let rhsCompletion)):
+            case (.m_hideUpgradeLoaderView__animated_animated(let lhsAnimated), .m_hideUpgradeLoaderView__animated_animated(let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
 				return Matcher.ComparisonResult(results)
             default: return .none
             }
@@ -1125,9 +1126,9 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
-            case let .m_hideUpgradeInfo__animated_animatedcompletion_completion(p0, p1): return p0.intValue + p1.intValue
-            case let .m_showUpgradeLoaderView__animated_animatedcompletion_completion(p0, p1): return p0.intValue + p1.intValue
-            case let .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+            case let .m_hideUpgradeInfo__animated_animated(p0): return p0.intValue
+            case let .m_showUpgradeLoaderView__animated_animated(p0): return p0.intValue
+            case let .m_hideUpgradeLoaderView__animated_animated(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -1150,9 +1151,9 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"
             case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
             case .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen: return ".showUpgradeInfo(productName:sku:courseID:screen:)"
-            case .m_hideUpgradeInfo__animated_animatedcompletion_completion: return ".hideUpgradeInfo(animated:completion:)"
-            case .m_showUpgradeLoaderView__animated_animatedcompletion_completion: return ".showUpgradeLoaderView(animated:completion:)"
-            case .m_hideUpgradeLoaderView__animated_animatedcompletion_completion: return ".hideUpgradeLoaderView(animated:completion:)"
+            case .m_hideUpgradeInfo__animated_animated: return ".hideUpgradeInfo(animated:)"
+            case .m_showUpgradeLoaderView__animated_animated: return ".showUpgradeLoaderView(animated:)"
+            case .m_hideUpgradeLoaderView__animated_animated: return ".hideUpgradeLoaderView(animated:)"
             }
         }
     }
@@ -1188,10 +1189,14 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(`transitionStyle`, `view`, `completion`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
-        public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`))}
-        public static func hideUpgradeInfo(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_hideUpgradeInfo__animated_animatedcompletion_completion(`animated`, `completion`))}
-        public static func showUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_showUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`))}
-        public static func hideUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`))}
+        @MainActor
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`))}
+        @MainActor
+		public static func hideUpgradeInfo(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeInfo__animated_animated(`animated`))}
+        @MainActor
+		public static func showUpgradeLoaderView(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showUpgradeLoaderView__animated_animated(`animated`))}
+        @MainActor
+		public static func hideUpgradeLoaderView(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeLoaderView__animated_animated(`animated`))}
     }
 
     public struct Perform {
@@ -1249,17 +1254,21 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, Bool, () -> any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
-        public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, perform: @escaping (String, String, String, CourseUpgradeScreen) -> Void) -> Perform {
+        @MainActor
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, perform: @escaping (String, String, String, CourseUpgradeScreen) -> Void) -> Perform {
             return Perform(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`), performs: perform)
         }
-        public static func hideUpgradeInfo(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_hideUpgradeInfo__animated_animatedcompletion_completion(`animated`, `completion`), performs: perform)
+        @MainActor
+		public static func hideUpgradeInfo(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_hideUpgradeInfo__animated_animated(`animated`), performs: perform)
         }
-        public static func showUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_showUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`), performs: perform)
+        @MainActor
+		public static func showUpgradeLoaderView(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_showUpgradeLoaderView__animated_animated(`animated`), performs: perform)
         }
-        public static func hideUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`), performs: perform)
+        @MainActor
+		public static func hideUpgradeLoaderView(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_hideUpgradeLoaderView__animated_animated(`animated`), performs: perform)
         }
     }
 
@@ -1476,28 +1485,32 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`transitionStyle`, `animated`, `content`)
     }
 
-    open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
+    @MainActor
+	open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) {
         addInvocation(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`)))
 		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`))) as? (String, String, String, CourseUpgradeScreen) -> Void
 		perform?(`productName`, `sku`, `courseID`, `screen`)
     }
 
-    open func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?) {
-        addInvocation(.m_hideUpgradeInfo__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_hideUpgradeInfo__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool, (() -> Void)?) -> Void
-		perform?(`animated`, `completion`)
+    @MainActor
+	open func hideUpgradeInfo(animated: Bool) {
+        addInvocation(.m_hideUpgradeInfo__animated_animated(Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_hideUpgradeInfo__animated_animated(Parameter<Bool>.value(`animated`))) as? (Bool) -> Void
+		perform?(`animated`)
     }
 
-    open func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
-        addInvocation(.m_showUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_showUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool, (() -> Void)?) -> Void
-		perform?(`animated`, `completion`)
+    @MainActor
+	open func showUpgradeLoaderView(animated: Bool) {
+        addInvocation(.m_showUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_showUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`))) as? (Bool) -> Void
+		perform?(`animated`)
     }
 
-    open func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
-        addInvocation(.m_hideUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_hideUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool, (() -> Void)?) -> Void
-		perform?(`animated`, `completion`)
+    @MainActor
+	open func hideUpgradeLoaderView(animated: Bool) {
+        addInvocation(.m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>.value(`animated`))) as? (Bool) -> Void
+		perform?(`animated`)
     }
 
 
@@ -1519,9 +1532,9 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
         case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
         case m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>)
-        case m_hideUpgradeInfo__animated_animatedcompletion_completion(Parameter<Bool>, Parameter<(() -> Void)?>)
-        case m_showUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>, Parameter<(() -> Void)?>)
-        case m_hideUpgradeLoaderView__animated_animatedcompletion_completion(Parameter<Bool>, Parameter<(() -> Void)?>)
+        case m_hideUpgradeInfo__animated_animated(Parameter<Bool>)
+        case m_showUpgradeLoaderView__animated_animated(Parameter<Bool>)
+        case m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1622,22 +1635,19 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsScreen, rhs: rhsScreen, with: matcher), lhsScreen, rhsScreen, "screen"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_hideUpgradeInfo__animated_animatedcompletion_completion(let lhsAnimated, let lhsCompletion), .m_hideUpgradeInfo__animated_animatedcompletion_completion(let rhsAnimated, let rhsCompletion)):
+            case (.m_hideUpgradeInfo__animated_animated(let lhsAnimated), .m_hideUpgradeInfo__animated_animated(let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showUpgradeLoaderView__animated_animatedcompletion_completion(let lhsAnimated, let lhsCompletion), .m_showUpgradeLoaderView__animated_animatedcompletion_completion(let rhsAnimated, let rhsCompletion)):
+            case (.m_showUpgradeLoaderView__animated_animated(let lhsAnimated), .m_showUpgradeLoaderView__animated_animated(let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_hideUpgradeLoaderView__animated_animatedcompletion_completion(let lhsAnimated, let lhsCompletion), .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(let rhsAnimated, let rhsCompletion)):
+            case (.m_hideUpgradeLoaderView__animated_animated(let lhsAnimated), .m_hideUpgradeLoaderView__animated_animated(let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
 				return Matcher.ComparisonResult(results)
             default: return .none
             }
@@ -1662,9 +1672,9 @@ open class BaseRouterMock: BaseRouter, Mock {
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
-            case let .m_hideUpgradeInfo__animated_animatedcompletion_completion(p0, p1): return p0.intValue + p1.intValue
-            case let .m_showUpgradeLoaderView__animated_animatedcompletion_completion(p0, p1): return p0.intValue + p1.intValue
-            case let .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+            case let .m_hideUpgradeInfo__animated_animated(p0): return p0.intValue
+            case let .m_showUpgradeLoaderView__animated_animated(p0): return p0.intValue
+            case let .m_hideUpgradeLoaderView__animated_animated(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -1686,9 +1696,9 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"
             case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
             case .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen: return ".showUpgradeInfo(productName:sku:courseID:screen:)"
-            case .m_hideUpgradeInfo__animated_animatedcompletion_completion: return ".hideUpgradeInfo(animated:completion:)"
-            case .m_showUpgradeLoaderView__animated_animatedcompletion_completion: return ".showUpgradeLoaderView(animated:completion:)"
-            case .m_hideUpgradeLoaderView__animated_animatedcompletion_completion: return ".hideUpgradeLoaderView(animated:completion:)"
+            case .m_hideUpgradeInfo__animated_animated: return ".hideUpgradeInfo(animated:)"
+            case .m_showUpgradeLoaderView__animated_animated: return ".showUpgradeLoaderView(animated:)"
+            case .m_hideUpgradeLoaderView__animated_animated: return ".hideUpgradeLoaderView(animated:)"
             }
         }
     }
@@ -1723,10 +1733,14 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(`transitionStyle`, `view`, `completion`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
-        public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`))}
-        public static func hideUpgradeInfo(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_hideUpgradeInfo__animated_animatedcompletion_completion(`animated`, `completion`))}
-        public static func showUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_showUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`))}
-        public static func hideUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`))}
+        @MainActor
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`))}
+        @MainActor
+		public static func hideUpgradeInfo(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeInfo__animated_animated(`animated`))}
+        @MainActor
+		public static func showUpgradeLoaderView(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showUpgradeLoaderView__animated_animated(`animated`))}
+        @MainActor
+		public static func hideUpgradeLoaderView(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeLoaderView__animated_animated(`animated`))}
     }
 
     public struct Perform {
@@ -1781,17 +1795,21 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, Bool, () -> any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
-        public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, perform: @escaping (String, String, String, CourseUpgradeScreen) -> Void) -> Perform {
+        @MainActor
+		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, perform: @escaping (String, String, String, CourseUpgradeScreen) -> Void) -> Perform {
             return Perform(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screen(`productName`, `sku`, `courseID`, `screen`), performs: perform)
         }
-        public static func hideUpgradeInfo(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_hideUpgradeInfo__animated_animatedcompletion_completion(`animated`, `completion`), performs: perform)
+        @MainActor
+		public static func hideUpgradeInfo(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_hideUpgradeInfo__animated_animated(`animated`), performs: perform)
         }
-        public static func showUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_showUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`), performs: perform)
+        @MainActor
+		public static func showUpgradeLoaderView(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_showUpgradeLoaderView__animated_animated(`animated`), performs: perform)
         }
-        public static func hideUpgradeLoaderView(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_hideUpgradeLoaderView__animated_animatedcompletion_completion(`animated`, `completion`), performs: perform)
+        @MainActor
+		public static func hideUpgradeLoaderView(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_hideUpgradeLoaderView__animated_animated(`animated`), performs: perform)
         }
     }
 
@@ -2794,24 +2812,10 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
 		perform?(`upgradeHadler`, `state`, `delegate`)
     }
 
-    open func showLoader(animated: Bool, completion: (() -> Void)?) {
-        addInvocation(.m_showLoader__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_showLoader__animated_animatedcompletion_completion(Parameter<Bool>.value(`animated`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool, (() -> Void)?) -> Void
-		perform?(`animated`, `completion`)
-    }
-
-    open func removeLoader(success: Bool?, removeView: Bool?, completion: (() -> Void)?) {
-        addInvocation(.m_removeLoader__success_successremoveView_removeViewcompletion_completion(Parameter<Bool?>.value(`success`), Parameter<Bool?>.value(`removeView`), Parameter<(() -> Void)?>.value(`completion`)))
-		let perform = methodPerformValue(.m_removeLoader__success_successremoveView_removeViewcompletion_completion(Parameter<Bool?>.value(`success`), Parameter<Bool?>.value(`removeView`), Parameter<(() -> Void)?>.value(`completion`))) as? (Bool?, Bool?, (() -> Void)?) -> Void
-		perform?(`success`, `removeView`, `completion`)
-    }
-
 
     fileprivate enum MethodType {
         case m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<CourseUpgradeScreen>)
         case m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(Parameter<CourseUpgradeHandler>, Parameter<UpgradeCompletionState>, Parameter<CourseUpgradeHelperDelegate?>)
-        case m_showLoader__animated_animatedcompletion_completion(Parameter<Bool>, Parameter<(() -> Void)?>)
-        case m_removeLoader__success_successremoveView_removeViewcompletion_completion(Parameter<Bool?>, Parameter<Bool?>, Parameter<(() -> Void)?>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -2830,19 +2834,6 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsState, rhs: rhsState, with: matcher), lhsState, rhsState, "state"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDelegate, rhs: rhsDelegate, with: matcher), lhsDelegate, rhsDelegate, "delegate"))
 				return Matcher.ComparisonResult(results)
-
-            case (.m_showLoader__animated_animatedcompletion_completion(let lhsAnimated, let lhsCompletion), .m_showLoader__animated_animatedcompletion_completion(let rhsAnimated, let rhsCompletion)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_removeLoader__success_successremoveView_removeViewcompletion_completion(let lhsSuccess, let lhsRemoveview, let lhsCompletion), .m_removeLoader__success_successremoveView_removeViewcompletion_completion(let rhsSuccess, let rhsRemoveview, let rhsCompletion)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSuccess, rhs: rhsSuccess, with: matcher), lhsSuccess, rhsSuccess, "success"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsRemoveview, rhs: rhsRemoveview, with: matcher), lhsRemoveview, rhsRemoveview, "removeView"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
-				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -2851,16 +2842,12 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
             switch self {
             case let .m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
-            case let .m_showLoader__animated_animatedcompletion_completion(p0, p1): return p0.intValue + p1.intValue
-            case let .m_removeLoader__success_successremoveView_removeViewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen: return ".setData(courseID:pacing:blockID:localizedCoursePrice:screen:)"
             case .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate: return ".handleCourseUpgrade(upgradeHadler:state:delegate:)"
-            case .m_showLoader__animated_animatedcompletion_completion: return ".showLoader(animated:completion:)"
-            case .m_removeLoader__success_successremoveView_removeViewcompletion_completion: return ".removeLoader(success:removeView:completion:)"
             }
         }
     }
@@ -2881,8 +2868,6 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
 
         public static func setData(courseID: Parameter<String>, pacing: Parameter<String>, blockID: Parameter<String?>, localizedCoursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen(`courseID`, `pacing`, `blockID`, `localizedCoursePrice`, `screen`))}
         public static func handleCourseUpgrade(upgradeHadler: Parameter<CourseUpgradeHandler>, state: Parameter<UpgradeCompletionState>, delegate: Parameter<CourseUpgradeHelperDelegate?>) -> Verify { return Verify(method: .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(`upgradeHadler`, `state`, `delegate`))}
-        public static func showLoader(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_showLoader__animated_animatedcompletion_completion(`animated`, `completion`))}
-        public static func removeLoader(success: Parameter<Bool?>, removeView: Parameter<Bool?>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_removeLoader__success_successremoveView_removeViewcompletion_completion(`success`, `removeView`, `completion`))}
     }
 
     public struct Perform {
@@ -2894,12 +2879,6 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
         }
         public static func handleCourseUpgrade(upgradeHadler: Parameter<CourseUpgradeHandler>, state: Parameter<UpgradeCompletionState>, delegate: Parameter<CourseUpgradeHelperDelegate?>, perform: @escaping (CourseUpgradeHandler, UpgradeCompletionState, CourseUpgradeHelperDelegate?) -> Void) -> Perform {
             return Perform(method: .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(`upgradeHadler`, `state`, `delegate`), performs: perform)
-        }
-        public static func showLoader(animated: Parameter<Bool>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_showLoader__animated_animatedcompletion_completion(`animated`, `completion`), performs: perform)
-        }
-        public static func removeLoader(success: Parameter<Bool?>, removeView: Parameter<Bool?>, completion: Parameter<(() -> Void)?>, perform: @escaping (Bool?, Bool?, (() -> Void)?) -> Void) -> Perform {
-            return Perform(method: .m_removeLoader__success_successremoveView_removeViewcompletion_completion(`success`, `removeView`, `completion`), performs: perform)
         }
     }
 

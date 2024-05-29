@@ -236,9 +236,12 @@ extension CourseUpgradeHelper {
             }
 
             alertController.addButton(withTitle: CoreLocalization.close, style: .default) { [weak self] _ in
-                self?.router.hideUpgradeLoaderView(animated: true, completion: nil)
-                self?.trackUpgradeErrorAction(errorAction: .close, error: error)
-                self?.hideAlertAction()
+                guard let self = self else { return }
+                Task { @MainActor in
+                    await self.router.hideUpgradeLoaderView(animated: true)
+                    self.trackUpgradeErrorAction(errorAction: .close, error: error)
+                    self.hideAlertAction()
+                }
             }
         }
     }
@@ -251,8 +254,11 @@ extension CourseUpgradeHelper {
 
 extension CourseUpgradeHelper {
     public func showLoader(animated: Bool = false, completion: (() -> Void)? = nil) {
-        router.hideUpgradeInfo(animated: false) {[weak self] in
-            self?.router.showUpgradeLoaderView(animated: animated, completion: completion)
+        Task {@MainActor [weak self] in
+            guard let self = self else { return }
+            await self.router.hideUpgradeInfo(animated: false)
+            await self.router.showUpgradeLoaderView(animated: animated)
+            completion?()
         }
     }
     
@@ -267,8 +273,9 @@ extension CourseUpgradeHelper {
         }
         
         if removeView == true {
-            
-            router.hideUpgradeLoaderView(animated: true, completion: nil)
+            Task {@MainActor in
+                await router.hideUpgradeLoaderView(animated: true)
+            }
             
             helperModel = nil
             
