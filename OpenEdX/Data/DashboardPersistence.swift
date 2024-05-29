@@ -34,7 +34,9 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                               coursesCount: Int($0.courseCount),
                               sku: $0.courseSku ?? "",
                               dynamicUpgradeDeadline: $0.dynamicUpgradeDeadline,
-                              mode: DataLayer.Mode(rawValue: $0.mode ?? "") ?? .unknown)}
+                              mode: DataLayer.Mode(rawValue: $0.mode ?? "") ?? .unknown,
+                              isSelfPaced: $0.isSelfPaced)
+            }
         if let result, !result.isEmpty {
             return result
         } else {

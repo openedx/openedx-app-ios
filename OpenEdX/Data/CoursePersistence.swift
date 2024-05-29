@@ -32,7 +32,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
                            enrollmentEnd: $0.enrollmentEnd,
                            courseID: $0.courseID ?? "",
                            numPages: Int($0.numPages),
-                           coursesCount: Int($0.courseCount))}
+                           coursesCount: Int($0.courseCount),
+                           isSelfPaced: $0.isSelfPaced)}
         if let result, !result.isEmpty {
             return result
         } else {

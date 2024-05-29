@@ -59,7 +59,13 @@ public protocol BaseRouter {
     
     func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
     @MainActor
-    func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) async
+    func showUpgradeInfo(
+        productName: String, 
+        sku: String,
+        courseID: String,
+        screen: CourseUpgradeScreen,
+        pacing: String
+    ) async
     @MainActor
     func hideUpgradeInfo(animated: Bool) async
     @MainActor
@@ -133,7 +139,13 @@ open class BaseRouterMock: BaseRouter {
     public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {}
     
     @MainActor
-    public func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) async {}
+    public func showUpgradeInfo(
+        productName: String,
+        sku: String,
+        courseID: String,
+        screen: CourseUpgradeScreen,
+        pacing: String
+    ) async {}
     @MainActor
     public func hideUpgradeInfo(animated: Bool) async {}
     @MainActor

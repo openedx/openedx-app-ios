@@ -819,12 +819,18 @@ extension Router {
 // MARK: Payments
 extension Router {
     @MainActor
-    public func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen) async {
+    public func showUpgradeInfo(
+        productName: String,
+        sku: String,
+        courseID: String,
+        screen: CourseUpgradeScreen,
+        pacing: String
+    ) async {
         await withCheckedContinuation { continuation in
             let view = UpgradeInfoView(
                 viewModel: Container.shared.resolve(
                     UpgradeInfoViewModel.self,
-                    arguments: productName, sku, courseID, screen
+                    arguments: productName, sku, courseID, screen, pacing
                 )!
             )
             let controller = UIHostingController(rootView: view)
@@ -852,6 +858,7 @@ extension Router {
             }
         }
     }
+    
     @MainActor
     public func showUpgradeLoaderView(animated: Bool) async {
         await withCheckedContinuation { continuation in
@@ -864,6 +871,7 @@ extension Router {
             }
         }
     }
+    
     @MainActor
     public func hideUpgradeLoaderView(animated: Bool) async {
         await withCheckedContinuation { continuation in

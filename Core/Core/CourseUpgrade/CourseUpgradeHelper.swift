@@ -39,6 +39,12 @@ public enum UpgradeAlertAction: String {
     case getHelp = "get_help"
     case refresh
 }
+
+public enum Pacing: String {
+    case selfPace = "self"
+    case instructor
+}
+
 public protocol CourseUpgradeHelperDelegate: AnyObject {
     func hideAlertAction()
 }
@@ -232,6 +238,8 @@ extension CourseUpgradeHelper {
             
             alertController.addButton(withTitle: CoreLocalization.CourseUpgrade.FailureAlert.getHelp) { [weak self] _ in
                 self?.trackUpgradeErrorAction(errorAction: .emailSupport, error: error)
+                self?.hideAlertAction()
+                self?.router.hideUpgradeLoaderView(animated: true, completion: nil)
                 self?.launchEmailComposer(errorMessage: "Error: \(error.formattedError)")
             }
 

@@ -305,7 +305,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         Task {@MainActor in
             await router.showUpgradeInfo(
                 productName: structure.displayName,
-                sku: sku, courseID: structure.id, screen: .courseDashboard
+                sku: sku, 
+                courseID: structure.id,
+                screen: .courseDashboard,
+                pacing: structure.isSelfPaced ? Pacing.selfPace.rawValue : Pacing.instructor.rawValue
             )
         }
     }

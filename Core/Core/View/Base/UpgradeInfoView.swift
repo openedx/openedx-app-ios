@@ -96,6 +96,8 @@ public class UpgradeInfoViewModel: ObservableObject {
     let courseID: String
     let screen: CourseUpgradeScreen
     let handler: CourseUpgradeHandlerProtocol
+    let pacing: String
+    let analytics: CoreAnalytics
     
     @Published var isLoading: Bool = false
     @Published var product: StoreProductInfo?
@@ -111,34 +113,93 @@ public class UpgradeInfoViewModel: ObservableObject {
         sku: String,
         courseID: String,
         screen: CourseUpgradeScreen,
-        handler: CourseUpgradeHandlerProtocol
+        handler: CourseUpgradeHandlerProtocol,
+        pacing: String,
+        analytics: CoreAnalytics
     ) {
         self.productName = productName
         self.sku = sku
         self.courseID = courseID
         self.screen = screen
         self.handler = handler
+        self.pacing = pacing
+        self.analytics = analytics
     }
     
     @MainActor
     public func fetchProduct() async {
         do {
             isLoading = true
-            self.product = try await handler.fetchProduct(sku: sku)
+            product = try await handler.fetchProduct(sku: sku)
             isLoading = false
         } catch let error {
+            showPriceLoadError(error: error)
+        }
+    }
+    
+    @MainActor
+    private func showPriceLoadError(error: Error) {
+        guard let topController = UIApplication.topViewController(),
+        let error = error as? UpgradeError else { return }
+
+        let alertController = UIAlertController().showAlert(
+            withTitle: CoreLocalization.CourseUpgrade.FailureAlert.alertTitle,
+            message: CoreLocalization.CourseUpgrade.FailureAlert.priceFetchErrorMessage,
+            onViewController: topController) { _, _, _ in }
+
+        if error != .productNotExist {
+            alertController.addButton(
+                withTitle: CoreLocalization.CourseUpgrade.FailureAlert.priceFetchError) { [weak self] _ in
+                    guard let self else { return }
+                    Task {
+                        await self.fetchProduct()
+                    }
+                    
+                    self.analytics.trackCourseUpgradeErrorAction(
+                        courseID: self.courseID,
+                        blockID: "",
+                        pacing: pacing,
+                        coursePrice: "",
+                        screen: self.screen,
+                        errorAction: UpgradeErrorAction.reloadPrice.rawValue,
+                        error: "price",
+                        flowType: UpgradeMode.userInitiated.rawValue
+                    )
+                }
+        }
+
+        let cancelButtonTitle = error == .productNotExist ? CoreLocalization.ok : CoreLocalization.Alert.cancel
+        alertController.addButton(withTitle: cancelButtonTitle, style: .default) { [weak self] _ in
+            guard let self else { return }
             self.error = error
+            self.analytics.trackCourseUpgradeErrorAction(
+                courseID: self.courseID,
+                blockID: "",
+                pacing: pacing,
+                coursePrice: "",
+                screen: self.screen,
+                errorAction: UpgradeErrorAction.close.rawValue,
+                error: "price",
+                flowType: UpgradeMode.userInitiated.rawValue
+            )
         }
     }
 
     public func purchase() async {
         isLoading = true
         interactiveDismissDisabled = true
+        analytics.trackUpgradeNow(
+            courseID: courseID,
+            blockID: "",
+            pacing: pacing,
+            screen: screen,
+            coursePrice: product?.localizedPrice ?? ""
+        )
         await handler.upgradeCourse(
             sku: sku,
             mode: .userInitiated,
             productInfo: product,
-            pacing: "pacing",
+            pacing: pacing,
             courseID: courseID,
             componentID: nil,
             screen: screen,
@@ -291,7 +352,9 @@ public struct UpgradeInfoView: View {
             sku: "SKU",
             courseID: "",
             screen: .dashboard,
-            handler: CourseUpgradeHandlerProtocolMock()
+            handler: CourseUpgradeHandlerProtocolMock(),
+            pacing: "self",
+            analytics: CoreAnalyticsMock()
         )
     )
 }
