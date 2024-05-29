@@ -58,17 +58,20 @@ public protocol BaseRouter {
     func presentView(transitionStyle: UIModalTransitionStyle, view: any View, completion: (() -> Void)?)
     
     func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
-
+    @MainActor
     func showUpgradeInfo(
-        productName: String,
+        productName: String, 
         sku: String,
         courseID: String,
         screen: CourseUpgradeScreen,
         pacing: String
-    )
-    func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?)
-    func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?)
-    func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?)
+    ) async
+    @MainActor
+    func hideUpgradeInfo(animated: Bool) async
+    @MainActor
+    func showUpgradeLoaderView(animated: Bool) async
+    @MainActor
+    func hideUpgradeLoaderView(animated: Bool) async
 }
 
 extension BaseRouter {
@@ -135,18 +138,19 @@ open class BaseRouterMock: BaseRouter {
 
     public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {}
     
+    @MainActor
     public func showUpgradeInfo(
         productName: String,
         sku: String,
         courseID: String,
         screen: CourseUpgradeScreen,
         pacing: String
-    ) {}
-    
-    public func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?) {}
-    
-    public func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {}
-        
-    public func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {}
+    ) async {}
+    @MainActor
+    public func hideUpgradeInfo(animated: Bool) async {}
+    @MainActor
+    public func showUpgradeLoaderView(animated: Bool) async {}
+    @MainActor
+    public func hideUpgradeLoaderView(animated: Bool) async {}
 }
 #endif

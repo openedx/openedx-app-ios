@@ -91,8 +91,6 @@ public enum CoreLocalization {
     public static let emailNotSetupTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.EMAIL_NOT_SETUP_TITLE", fallback: "Email not set up")
     /// Unlock graded assignments
     public static let learnHowToUnlock = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.LEARN_HOW_TO_UNLOCK", fallback: "Unlock graded assignments")
-    /// Thank you for your purchase. Enjoy full access to your course!
-    public static let successMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_MESSAGE", fallback: "Thank you for your purchase. Enjoy full access to your course!")
     /// Error upgrading course in app
     public static let supportEmailSubject = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUPPORT_EMAIL_SUBJECT", fallback: "Error upgrading course in app")
     /// full access 
@@ -136,6 +134,12 @@ public enum CoreLocalization {
       public static let alertTitle = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.RESTORE.ALERT_TITLE", fallback: "Purchases have been successfully restored")
       /// Checking purchases...
       public static let inprogressText = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.RESTORE.INPROGRESS_TEXT", fallback: "Checking purchases...")
+    }
+    public enum Snackbar {
+      /// Thank you for your purchase. Enjoy full access to your course!
+      public static let successMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SNACKBAR.SUCCESS_MESSAGE", fallback: "Thank you for your purchase. Enjoy full access to your course!")
+      /// Course upgraded
+      public static let title = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SNACKBAR.TITLE", fallback: "Course upgraded")
     }
     public enum SuccessAlert {
       /// Continue

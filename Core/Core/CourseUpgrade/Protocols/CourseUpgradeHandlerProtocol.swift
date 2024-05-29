@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol CourseUpgradeHandlerProtocol {
     typealias UpgradeCompletionHandler = (UpgradeState) -> Void
     
@@ -24,20 +25,11 @@ public protocol CourseUpgradeHandlerProtocol {
     func fetchProduct(sku: String) async throws -> StoreProductInfo
 }
 
-class CourseUpgradeHandlerProtocolMock: CourseUpgradeHandlerProtocol {
-    init() {}
-    func upgradeCourse(
-        sku: String?,
-        mode: UpgradeMode,
-        productInfo: StoreProductInfo?,
-        pacing: String,
-        courseID: String,
-        componentID: String?,
-        screen: CourseUpgradeScreen,
-        completion: UpgradeCompletionHandler?
-    ) async {}
+class CourseUpgradeHandlerProtocolMock: CourseUpgradeHandlerProtocol {    
+    func upgradeCourse(sku: String?, mode: UpgradeMode, productInfo: StoreProductInfo?, pacing: String, courseID: String, componentID: String?, screen: CourseUpgradeScreen, completion: UpgradeCompletionHandler?) async {
+    }
     
     func fetchProduct(sku: String) async throws -> StoreProductInfo {
-        StoreProductInfo(price: NSDecimalNumber(value: 1))
+        StoreProductInfo(price: .zero)
     }
 }

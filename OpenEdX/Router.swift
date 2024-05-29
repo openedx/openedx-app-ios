@@ -818,55 +818,70 @@ extension Router {
 
 // MARK: Payments
 extension Router {
+    @MainActor
     public func showUpgradeInfo(
         productName: String,
         sku: String,
         courseID: String,
         screen: CourseUpgradeScreen,
         pacing: String
-    ) {
-        let view = UpgradeInfoView(
-            viewModel: Container.shared.resolve(
-                UpgradeInfoViewModel.self,
-                arguments: productName,
-                sku,
-                courseID,
-                screen,
-                pacing
-            )!
-        )
-        let controller = UIHostingController(rootView: view)
-        if let sheet = controller.sheetPresentationController {
-            sheet.detents = [.large()]
-            sheet.prefersEdgeAttachedInCompactHeight = true
-            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-            sheet.prefersGrabberVisible = true
-        }
-        navigationController.present(controller, animated: true)
-    }
-    
-    public func hideUpgradeInfo(animated: Bool, completion: (() -> Void)?) {
-        if let controller = navigationController.presentedViewController as? UIHostingController<UpgradeInfoView> {
-            controller.dismiss(animated: animated, completion: completion)
-        } else {
-            completion?()
+    ) async {
+        await withCheckedContinuation { continuation in
+            let view = UpgradeInfoView(
+                viewModel: Container.shared.resolve(
+                    UpgradeInfoViewModel.self,
+                    arguments: productName, sku, courseID, screen, pacing
+                )!
+            )
+            let controller = UIHostingController(rootView: view)
+            if let sheet = controller.sheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersEdgeAttachedInCompactHeight = true
+                sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+                sheet.prefersGrabberVisible = true
+            }
+            navigationController.present(controller, animated: true) {
+                continuation.resume()
+            }
         }
     }
     
-    public func showUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
-        let unlockView = CourseUpgradeUnlockView()
-        let controller = UIHostingController(rootView: unlockView)
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .overFullScreen
-        navigationController.present(controller, animated: animated, completion: completion)
+    @MainActor
+    public func hideUpgradeInfo(animated: Bool) async {
+        await withCheckedContinuation { continuation in
+            if let controller = navigationController.presentedViewController as? UIHostingController<UpgradeInfoView> {
+                controller.dismiss(animated: animated) {
+                    continuation.resume()
+                }
+            } else {
+                continuation.resume()
+            }
+        }
     }
     
-    public func hideUpgradeLoaderView(animated: Bool, completion: (() -> Void)?) {
-        if let controller = navigationController.presentedViewController
-            as? UIHostingController<CourseUpgradeUnlockView> {
-            controller.dismiss(animated: animated, completion: completion)
-        } else {
-            completion?()
+    @MainActor
+    public func showUpgradeLoaderView(animated: Bool) async {
+        await withCheckedContinuation { continuation in
+            let unlockView = CourseUpgradeUnlockView()
+            let controller = UIHostingController(rootView: unlockView)
+            controller.modalTransitionStyle = .crossDissolve
+            controller.modalPresentationStyle = .overFullScreen
+            navigationController.present(controller, animated: animated) {
+                continuation.resume()
+            }
+        }
+    }
+    
+    @MainActor
+    public func hideUpgradeLoaderView(animated: Bool) async {
+        await withCheckedContinuation { continuation in
+            if let controller = navigationController.presentedViewController as? UIHostingController<CourseUpgradeUnlockView> {
+                controller.dismiss(animated: animated) {
+                    continuation.resume()
+                }
+            } else {
+                continuation.resume()
+            }
         }
     }
 }

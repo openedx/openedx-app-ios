@@ -300,16 +300,17 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         await download(state: state, blocks: blocks)
     }
 
-    @MainActor
     func showPaymentsInfo() {
         guard let structure = courseStructure, let sku = courseStructure?.sku else { return }
-        router.showUpgradeInfo(
-            productName: structure.displayName,
-            sku: sku,
-            courseID: structure.id,
-            screen: .courseDashboard,
-            pacing: courseStructure?.isSelfPaced ?? false ? Pacing.selfPace.rawValue : Pacing.instructor.rawValue
-        )
+        Task {@MainActor in
+            await router.showUpgradeInfo(
+                productName: structure.displayName,
+                sku: sku, 
+                courseID: structure.id,
+                screen: .courseDashboard,
+                pacing: structure.isSelfPaced ? Pacing.selfPace.rawValue : Pacing.instructor.rawValue
+            )
+        }
     }
     
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {

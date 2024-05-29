@@ -35,10 +35,34 @@ extension View {
     }
 }
 
+private struct PaymentSnakbarView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(CoreLocalization.CourseUpgrade.Snackbar.title)
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+            
+            Text(CoreLocalization.CourseUpgrade.Snackbar.successMessage)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+        }
+        .padding(20)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+        )
+        .background(Theme.Colors.datesSectionBackground)
+        .clipShape(
+            RoundedRectangle(cornerRadius: 8)
+        )
+        .padding(16)
+    }
+}
+
 private struct PaymentSnackbarModifier: ViewModifier {
     @StateObject var viewModel: PaymentSnackbarModifierViewModel = .init()
     func body(content: Content) -> some View {
-        ZStack {
             content
                 .onAppear {
                     viewModel.isOnScreen = true
@@ -46,24 +70,23 @@ private struct PaymentSnackbarModifier: ViewModifier {
                 .onDisappear {
                     viewModel.isOnScreen = false
                 }
-            if viewModel.showPaymentSuccess {
-                VStack {
-                    Spacer()
-                    SnackBarView(
-                        message: CoreLocalization.CourseUpgrade.successMessage,
-                        textColor: Theme.Colors.white,
-                        bgColor: Theme.Colors.success
-                    )
-                }
-                .onAppear {
-                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.showPaymentSuccess = false
+                .overlay(alignment: .bottom) {
+                    ZStack(alignment: .bottom) {
+                        if viewModel.showPaymentSuccess {
+                            PaymentSnakbarView()
+                                .transition(.move(edge: .bottom))
+                                .onAppear {
+                                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                                        viewModel.showPaymentSuccess = false
+                                    }
+                                }
+                        }
                     }
-                }
-                .transition(.move(edge: .bottom))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .animation(.easeInOut, value: viewModel.showPaymentSuccess)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
             }
-        }
-        .animation(.easeInOut, value: viewModel.showPaymentSuccess)
     }
 }
 
@@ -79,6 +102,7 @@ public class UpgradeInfoViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var product: StoreProductInfo?
     @Published var error: Error?
+    @Published var interactiveDismissDisabled: Bool = false
     var price: String {
         guard let product = product, let price = product.localizedPrice else { return "" }
         return price
@@ -103,7 +127,7 @@ public class UpgradeInfoViewModel: ObservableObject {
     }
     
     @MainActor
-    func fetchProduct() async {
+    public func fetchProduct() async {
         do {
             isLoading = true
             product = try await handler.fetchProduct(sku: sku)
@@ -168,9 +192,9 @@ public class UpgradeInfoViewModel: ObservableObject {
         }
     }
 
-    @MainActor
-    func purchase() {
+    public func purchase() async {
         isLoading = true
+        interactiveDismissDisabled = true
         analytics.trackUpgradeNow(
             courseID: courseID,
             blockID: "",
@@ -178,33 +202,32 @@ public class UpgradeInfoViewModel: ObservableObject {
             screen: screen,
             coursePrice: product?.localizedPrice ?? ""
         )
-        
-        Task {
-            await handler.upgradeCourse(
-                sku: sku,
-                mode: .userInitiated,
-                productInfo: product,
-                pacing: pacing,
-                courseID: courseID,
-                componentID: nil,
-                screen: screen,
-                completion: {[weak self] state in
-                    guard let self else { return }
-                    switch state {
-                    case .verify:
-                        DispatchQueue.main.async {
-                            self.isLoading = false
-                        }
-                    case .error:
-                        DispatchQueue.main.async {
-                            self.isLoading = false
-                        }
-                    default:
-                        debugPrint("Upgrade state changed: \(state)")
+        await handler.upgradeCourse(
+            sku: sku,
+            mode: .userInitiated,
+            productInfo: product,
+            pacing: pacing,
+            courseID: courseID,
+            componentID: nil,
+            screen: screen,
+            completion: {[weak self] state in
+                guard let self = self else { return }
+                switch state {
+                case .error:
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.interactiveDismissDisabled = false
                     }
+                case .complete:
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.interactiveDismissDisabled = false
+                    }
+                default:
+                    print("Upgrade state changed: \(state)")
                 }
-            )
-        }
+            }
+        )
     }
 }
 
@@ -283,7 +306,9 @@ public struct UpgradeInfoView: View {
                         StyledButton(
                             buttonText,
                             action: {
-                                viewModel.purchase()
+                                Task {
+                                    await viewModel.purchase()
+                                }
                             },
                             color: Theme.Colors.accentButtonColor,
                             textColor: Theme.Colors.styledButtonText,
@@ -311,7 +336,9 @@ public struct UpgradeInfoView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        dismiss()
+                        if !viewModel.interactiveDismissDisabled {
+                            dismiss()
+                        }
                     } label: {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentColor)
@@ -320,6 +347,7 @@ public struct UpgradeInfoView: View {
                 }
             }
         }
+        .interactiveDismissDisabled(viewModel.interactiveDismissDisabled)
     }
 }
 

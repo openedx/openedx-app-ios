@@ -61,6 +61,7 @@
 		068DDA602B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068DDA5C2B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift */; };
 		068DDA612B1E198700FF8CCB /* CourseUnitDropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068DDA5D2B1E198700FF8CCB /* CourseUnitDropDownCell.swift */; };
 		068DDA622B1E198700FF8CCB /* CourseUnitDropDownTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068DDA5E2B1E198700FF8CCB /* CourseUnitDropDownTitle.swift */; };
+		06C022C42C0626C20046ABD3 /* UpgradeInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C022C32C0626C20046ABD3 /* UpgradeInfoViewModelTests.swift */; };
 		06FD7EDF2B1F29F3008D632B /* CourseVerticalImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FD7EDE2B1F29F3008D632B /* CourseVerticalImageView.swift */; };
 		06FD7EE32B1F3FF6008D632B /* DropdownAnimationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FD7EE22B1F3FF6008D632B /* DropdownAnimationModifier.swift */; };
 		073512E229C0E400005CFA41 /* BaseCourseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073512E129C0E400005CFA41 /* BaseCourseViewModel.swift */; };
@@ -160,6 +161,7 @@
 		068DDA5C2B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseUnitVerticalsDropdownView.swift; sourceTree = "<group>"; };
 		068DDA5D2B1E198700FF8CCB /* CourseUnitDropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseUnitDropDownCell.swift; sourceTree = "<group>"; };
 		068DDA5E2B1E198700FF8CCB /* CourseUnitDropDownTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseUnitDropDownTitle.swift; sourceTree = "<group>"; };
+		06C022C32C0626C20046ABD3 /* UpgradeInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpgradeInfoViewModelTests.swift; path = CourseTests/Presentation/Unit/UpgradeInfoViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		06FD7EDE2B1F29F3008D632B /* CourseVerticalImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVerticalImageView.swift; sourceTree = "<group>"; };
 		06FD7EE22B1F3FF6008D632B /* DropdownAnimationModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownAnimationModifier.swift; sourceTree = "<group>"; };
 		073512E129C0E400005CFA41 /* BaseCourseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCourseViewModel.swift; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 		0766DFD5299ADA4700EBEF6A /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				06C022C32C0626C20046ABD3 /* UpgradeInfoViewModelTests.swift */,
 				02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */,
 				022EA8CA297AD63B0014A8F7 /* CourseContainerViewModelTests.swift */,
 			);
@@ -834,6 +837,7 @@
 				DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */,
 				022EA8CB297AD63B0014A8F7 /* CourseContainerViewModelTests.swift in Sources */,
 				0262148F29AE17C4008BD75A /* HandoutsViewModelTests.swift in Sources */,
+				06C022C42C0626C20046ABD3 /* UpgradeInfoViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
