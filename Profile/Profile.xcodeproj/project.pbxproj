@@ -11,6 +11,8 @@
 		020306C82932B13F000949EA /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020306C72932B13F000949EA /* EditProfileView.swift */; };
 		020306CA2932B14D000949EA /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020306C92932B14D000949EA /* EditProfileViewModel.swift */; };
 		020CBD8D2BC53E1B003D6B4E /* VideoSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020CBD8C2BC53E1B003D6B4E /* VideoSettingsView.swift */; };
+		021C90D52BC986B3004876AF /* DatesAndCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021C90D42BC986B3004876AF /* DatesAndCalendarView.swift */; };
+		021C90D72BC98734004876AF /* DatesAndCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021C90D62BC98734004876AF /* DatesAndCalendarViewModel.swift */; };
 		021D924628DC634300ACC565 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924528DC634300ACC565 /* ProfileView.swift */; };
 		021D924C28DC884A00ACC565 /* ProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924B28DC884A00ACC565 /* ProfileEndpoint.swift */; };
 		021D924E28DC88BB00ACC565 /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924D28DC88BB00ACC565 /* ProfileRepository.swift */; };
@@ -18,6 +20,9 @@
 		021D925528DC92F800ACC565 /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D925428DC92F800ACC565 /* ProfileInteractor.swift */; };
 		021D925C28DDADBD00ACC565 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 021D925B28DDADBD00ACC565 /* swiftgen.yml */; };
 		021D925F28DDADE600ACC565 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 021D926128DDADE600ACC565 /* Localizable.strings */; };
+		022301E42BF4B7610028A287 /* SyncCalendarOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022301E32BF4B7610028A287 /* SyncCalendarOptionsView.swift */; };
+		022301E62BF4B7A20028A287 /* AssignmentStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022301E52BF4B7A20028A287 /* AssignmentStatusView.swift */; };
+		022301E82BF4C4E70028A287 /* ToggleWithDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022301E72BF4C4E70028A287 /* ToggleWithDescriptionView.swift */; };
 		0248F9B128DDB09D0041327E /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0248F9B028DDB09D0041327E /* Strings.swift */; };
 		0259104429C39C9E004B5A55 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259104329C39C9E004B5A55 /* SettingsView.swift */; };
 		0259104629C39CCF004B5A55 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259104529C39CCF004B5A55 /* SettingsViewModel.swift */; };
@@ -25,6 +30,8 @@
 		025DE1A028DB4D9D0053E0F4 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE19F28DB4D9D0053E0F4 /* Core.framework */; };
 		0262149229AE57A1008BD75A /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262149129AE57A1008BD75A /* DeleteAccountView.swift */; };
 		0262149429AE57B1008BD75A /* DeleteAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262149329AE57B1008BD75A /* DeleteAccountViewModel.swift */; };
+		0281D1532BEA9A40006DAD7A /* NewCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0281D1522BEA9A40006DAD7A /* NewCalendarView.swift */; };
+		0281D1552BEBA8D9006DAD7A /* DropDownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0281D1542BEBA8D9006DAD7A /* DropDownPicker.swift */; };
 		0288C4EA2BC6AE2D009158B9 /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */; };
 		0288C4EC2BC6AE82009158B9 /* ManageAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288C4EB2BC6AE82009158B9 /* ManageAccountViewModel.swift */; };
 		029301DA2938948500E99AB8 /* ProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029301D92938948500E99AB8 /* ProfileType.swift */; };
@@ -37,6 +44,9 @@
 		02D0FD0B2AD6984D0020D752 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */; };
 		02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */; };
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
+		02F81DDF2BF4D83E002D3604 /* CalendarDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F81DDE2BF4D83E002D3604 /* CalendarDialogView.swift */; };
+		02F81DE12BF4F009002D3604 /* CoursesToSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F81DE02BF4F009002D3604 /* CoursesToSyncView.swift */; };
+		02F81DE32BF502B9002D3604 /* SyncSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F81DE22BF502B9002D3604 /* SyncSelector.swift */; };
 		02FE9A802BC707D500B3C206 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FE9A7F2BC707D400B3C206 /* SettingsViewModelTests.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
 		25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */; };
@@ -60,6 +70,8 @@
 		020306C92932B14D000949EA /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		020CBD8C2BC53E1B003D6B4E /* VideoSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSettingsView.swift; sourceTree = "<group>"; };
 		020F834A28DB4CCD0062FA70 /* Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		021C90D42BC986B3004876AF /* DatesAndCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesAndCalendarView.swift; sourceTree = "<group>"; };
+		021C90D62BC98734004876AF /* DatesAndCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesAndCalendarViewModel.swift; sourceTree = "<group>"; };
 		021D924528DC634300ACC565 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		021D924B28DC884A00ACC565 /* ProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEndpoint.swift; sourceTree = "<group>"; };
 		021D924D28DC88BB00ACC565 /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
@@ -67,6 +79,9 @@
 		021D925428DC92F800ACC565 /* ProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
 		021D925B28DDADBD00ACC565 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		021D926028DDADE600ACC565 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		022301E32BF4B7610028A287 /* SyncCalendarOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCalendarOptionsView.swift; sourceTree = "<group>"; };
+		022301E52BF4B7A20028A287 /* AssignmentStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentStatusView.swift; sourceTree = "<group>"; };
+		022301E72BF4C4E70028A287 /* ToggleWithDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleWithDescriptionView.swift; sourceTree = "<group>"; };
 		0248F9B028DDB09D0041327E /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		0259104329C39C9E004B5A55 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0259104529C39CCF004B5A55 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -74,6 +89,8 @@
 		025DE19F28DB4D9D0053E0F4 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0262149129AE57A1008BD75A /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		0262149329AE57B1008BD75A /* DeleteAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewModel.swift; sourceTree = "<group>"; };
+		0281D1522BEA9A40006DAD7A /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
+		0281D1542BEBA8D9006DAD7A /* DropDownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownPicker.swift; sourceTree = "<group>"; };
 		0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
 		0288C4EB2BC6AE82009158B9 /* ManageAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewModel.swift; sourceTree = "<group>"; };
 		029301D92938948500E99AB8 /* ProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileType.swift; sourceTree = "<group>"; };
@@ -87,6 +104,9 @@
 		02ED50CE29A64BAD008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE6292539850051930C /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
+		02F81DDE2BF4D83E002D3604 /* CalendarDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDialogView.swift; sourceTree = "<group>"; };
+		02F81DE02BF4F009002D3604 /* CoursesToSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesToSyncView.swift; sourceTree = "<group>"; };
+		02F81DE22BF502B9002D3604 /* SyncSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSelector.swift; sourceTree = "<group>"; };
 		02FE9A7F2BC707D400B3C206 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewModelTests.swift; path = ProfileTests/Presentation/Settings/SettingsViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBottomSheet.swift; sourceTree = "<group>"; };
 		0E5054C44435557666B6D885 /* Pods-App-Profile.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugstage.xcconfig"; sourceTree = "<group>"; };
@@ -188,9 +208,22 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		021C90D32BC986A4004876AF /* DatesAndCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				0281D1512BEA9A2D006DAD7A /* Elements */,
+				021C90D42BC986B3004876AF /* DatesAndCalendarView.swift */,
+				022301E32BF4B7610028A287 /* SyncCalendarOptionsView.swift */,
+				02F81DE02BF4F009002D3604 /* CoursesToSyncView.swift */,
+				021C90D62BC98734004876AF /* DatesAndCalendarViewModel.swift */,
+			);
+			path = DatesAndCalendar;
+			sourceTree = "<group>";
+		};
 		021D924428DC631800ACC565 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				021C90D32BC986A4004876AF /* DatesAndCalendar */,
 				0259104229C39C84004B5A55 /* Settings */,
 				0203DC3D29AE79F80017BD05 /* Profile */,
 				0203DC3C29AE79EB0017BD05 /* EditProfile */,
@@ -263,6 +296,19 @@
 				0262149329AE57B1008BD75A /* DeleteAccountViewModel.swift */,
 			);
 			path = DeleteAccount;
+			sourceTree = "<group>";
+		};
+		0281D1512BEA9A2D006DAD7A /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				0281D1522BEA9A40006DAD7A /* NewCalendarView.swift */,
+				0281D1542BEBA8D9006DAD7A /* DropDownPicker.swift */,
+				022301E52BF4B7A20028A287 /* AssignmentStatusView.swift */,
+				022301E72BF4C4E70028A287 /* ToggleWithDescriptionView.swift */,
+				02F81DDE2BF4D83E002D3604 /* CalendarDialogView.swift */,
+				02F81DE22BF502B9002D3604 /* SyncSelector.swift */,
+			);
+			path = Elements;
 			sourceTree = "<group>";
 		};
 		02A4832F29B770B600D33F33 /* Profile */ = {
@@ -585,13 +631,21 @@
 			files = (
 				021D924E28DC88BB00ACC565 /* ProfileRepository.swift in Sources */,
 				0288C4EC2BC6AE82009158B9 /* ManageAccountViewModel.swift in Sources */,
+				0281D1552BEBA8D9006DAD7A /* DropDownPicker.swift in Sources */,
 				0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */,
 				021D924C28DC884A00ACC565 /* ProfileEndpoint.swift in Sources */,
+				02F81DE12BF4F009002D3604 /* CoursesToSyncView.swift in Sources */,
+				0281D1532BEA9A40006DAD7A /* NewCalendarView.swift in Sources */,
 				BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */,
+				022301E82BF4C4E70028A287 /* ToggleWithDescriptionView.swift in Sources */,
+				022301E42BF4B7610028A287 /* SyncCalendarOptionsView.swift in Sources */,
+				021C90D52BC986B3004876AF /* DatesAndCalendarView.swift in Sources */,
 				020306C82932B13F000949EA /* EditProfileView.swift in Sources */,
 				0262149229AE57A1008BD75A /* DeleteAccountView.swift in Sources */,
+				02F81DE32BF502B9002D3604 /* SyncSelector.swift in Sources */,
 				02D0FD092AD698380020D752 /* UserProfileView.swift in Sources */,
 				0259104629C39CCF004B5A55 /* SettingsViewModel.swift in Sources */,
+				021C90D72BC98734004876AF /* DatesAndCalendarViewModel.swift in Sources */,
 				021D925528DC92F800ACC565 /* ProfileInteractor.swift in Sources */,
 				029301DA2938948500E99AB8 /* ProfileType.swift in Sources */,
 				0259104429C39C9E004B5A55 /* SettingsView.swift in Sources */,
@@ -601,11 +655,13 @@
 				020306CA2932B14D000949EA /* EditProfileViewModel.swift in Sources */,
 				0259104829C3A5F0004B5A55 /* VideoQualityView.swift in Sources */,
 				0288C4EA2BC6AE2D009158B9 /* ManageAccountView.swift in Sources */,
+				022301E62BF4B7A20028A287 /* AssignmentStatusView.swift in Sources */,
 				021D924628DC634300ACC565 /* ProfileView.swift in Sources */,
 				02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */,
 				02D0FD0B2AD6984D0020D752 /* UserProfileViewModel.swift in Sources */,
 				020CBD8D2BC53E1B003D6B4E /* VideoSettingsView.swift in Sources */,
 				02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */,
+				02F81DDF2BF4D83E002D3604 /* CalendarDialogView.swift in Sources */,
 				0262149429AE57B1008BD75A /* DeleteAccountViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

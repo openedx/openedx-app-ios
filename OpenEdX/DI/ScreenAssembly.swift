@@ -216,6 +216,12 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(DatesAndCalendarViewModel.self) { r in
+            DatesAndCalendarViewModel(
+                router: r.resolve(ProfileRouter.self)!
+            )
+        }
+        
         container.register(ManageAccountViewModel.self) { r in
             ManageAccountViewModel(
                 router: r.resolve(ProfileRouter.self)!,
