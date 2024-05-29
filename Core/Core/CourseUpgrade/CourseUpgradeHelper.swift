@@ -10,6 +10,8 @@ import StoreKit
 import SwiftUI
 import MessageUI
 
+private let IAPSaveKey = "IAPCourseSaveKey"
+
 public struct CourseUpgradeHelperModel {
     let courseID: String
     let blockID: String?
@@ -113,6 +115,8 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
         self.delegate = delegate
         self.upgradeHadler = upgradeHadler
         
+        updateInProgressIAP()
+        
         switch state {
         case .fulfillment(let show):
             if show {
@@ -172,6 +176,29 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
             
             removeLoader(success: false, removeView: shouldRemove)
         
+        default:
+            break
+        }
+    }
+    
+    private func updateInProgressIAP() {
+        guard let state = upgradeHadler?.state,
+              let courseID = courseID,
+              let upgradeMode = upgradeHadler?.upgradeMode,
+              let sku = upgradeHadler?.courseSku, sku.isEmpty == false
+        else { return }
+        
+        switch state {
+        case .basket:
+            saveInProgressIAP(courseID: courseID, sku: sku)
+        case .complete:
+            removeInProgressIAP()
+        case .error(let error):
+            if case .verifyReceiptError = error, upgradeMode == .userInitiated {
+                // keep entry for retry on app launch
+            } else {
+                removeInProgressIAP()
+            }
         default:
             break
         }
@@ -318,8 +345,7 @@ extension CourseUpgradeHelper {
         alertController.addButton(
             withTitle: CoreLocalization.CourseUpgrade.SuccessAlert.silentAlertRefresh,
             style: .default) {[weak self] _ in
-                self?.showLoader(animated: false)
-//                self?.showLoader(forceShow: true)
+                self?.postSuccessNotification()
                 //            self?.popToEnrolledCourses()
             }
 
@@ -368,6 +394,64 @@ extension CourseUpgradeHelper {
         }
         
         UIApplication.shared.open(emailURL)
+    }
+}
+
+// Save course upgrade data in user deualts for unfulfilled cases if any
+// Enrollments API is paginated so it's not sure the course will be available in first response
+
+extension CourseUpgradeHelper {
+    private func saveInProgressIAP(courseID: String, sku: String) {
+        let IAP = InProgressIAP(courseID: courseID, sku: sku, pacing: pacing ?? "")
+        
+        if let data = try? NSKeyedArchiver.archivedData(withRootObject: IAP, requiringSecureCoding: true) {
+            UserDefaults.standard.set(data, forKey: IAPSaveKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    public func getInProgressIAP() -> InProgressIAP? {
+        guard let data = UserDefaults.standard.object(forKey: IAPSaveKey) as? Data else {
+            return nil
+        }
+        
+        let IAP = try? NSKeyedUnarchiver.unarchivedObject(ofClass: InProgressIAP.self, from: data)
+        
+        return IAP
+    }
+    
+    private func removeInProgressIAP() {
+        UserDefaults.standard.removeObject(forKey: IAPSaveKey)
+        UserDefaults.standard.synchronize()
+    }
+}
+
+public class InProgressIAP: NSObject, NSCoding, NSSecureCoding {
+    
+    var courseID: String = ""
+    var sku: String = ""
+    var pacing: String = ""
+    
+    init(courseID: String, sku: String, pacing: String) {
+        self.courseID = courseID
+        self.sku = sku
+        self.pacing = pacing
+    }
+    
+    public func encode(with coder: NSCoder) {
+        coder.encode(courseID, forKey: "courseID")
+        coder.encode(sku, forKey: "sku")
+        coder.encode(pacing, forKey: "pacing")
+    }
+    
+    public required init?(coder: NSCoder) {
+        courseID = coder.decodeObject(forKey: "courseID") as? String ?? ""
+        sku = coder.decodeObject(forKey: "sku") as? String ?? ""
+        pacing = coder.decodeObject(forKey: "pacing") as? String ?? ""
+    }
+    
+    public static var supportsSecureCoding: Bool {
+        return true
     }
 }
 

@@ -35,7 +35,7 @@ public class CourseUpgradeHandler: CourseUpgradeHandlerProtocol {
     
     private var completion: UpgradeCompletionHandler?
     private var basketID: Int = 0
-    private var courseSku: String = ""
+    private(set) var courseSku: String?
     private(set) var upgradeMode: UpgradeMode = .userInitiated
     private(set) var productInfo: StoreProductInfo?
     private var interactor: CourseUpgradeInteractorProtocol
@@ -95,6 +95,7 @@ public class CourseUpgradeHandler: CourseUpgradeHandlerProtocol {
         self.courseID = courseID
         self.componentID = componentID
         self.productInfo = productInfo
+        courseSku = sku
         guard let sku = sku, !sku.isEmpty else {
             state = .error(.generalError(error(message: "course sku is missing")))
             return
@@ -118,6 +119,8 @@ public class CourseUpgradeHandler: CourseUpgradeHandlerProtocol {
     
     @MainActor
     private func proceedWithUpgrade(sku: String) async {
+        state = .basket
+        
         do {
             let basket = try await interactor.addBasket(sku: sku)
             basketID = basket.basketID

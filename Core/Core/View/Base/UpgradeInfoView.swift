@@ -118,6 +118,13 @@ public class UpgradeInfoViewModel: ObservableObject {
         guard let topController = UIApplication.topViewController(),
         let error = error as? UpgradeError else { return }
 
+        analytics.trackCourseUpgradeLoadError(
+            courseID: courseID,
+            blockID: "",
+            pacing: pacing,
+            screen: screen
+        )
+        
         let alertController = UIAlertController().showAlert(
             withTitle: CoreLocalization.CourseUpgrade.FailureAlert.alertTitle,
             message: CoreLocalization.CourseUpgrade.FailureAlert.priceFetchErrorMessage,
