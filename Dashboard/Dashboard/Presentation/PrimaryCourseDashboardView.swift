@@ -148,7 +148,6 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     }.accessibilityAction {}
                     case .programs:
                         programView
-                            .padding(.top, 50)
                     }
                 }.padding(.top, 8)
                 // MARK: - Offline mode SnackBar
