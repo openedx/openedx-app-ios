@@ -35,7 +35,9 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                if viewModel.enrollments?.primaryCourse == nil && !viewModel.fetchInProgress {
+                if viewModel.enrollments?.primaryCourse == nil 
+                    && !viewModel.fetchInProgress 
+                    && selectedMenu == .courses {
                     NoCoursesView(openDiscovery: {
                         openDiscoveryPage()
                     }).zIndex(1)
