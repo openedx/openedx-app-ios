@@ -8,7 +8,7 @@
 import Foundation
 
 public enum DiscoveryConfigType: String {
-    case native
+    case gallery
     case webview
     case none
 }
@@ -45,7 +45,7 @@ public class DiscoveryConfig: NSObject {
     init(dictionary: [String: AnyObject]) {
         type = (dictionary[DiscoveryKeys.discoveryType] as? String).flatMap {
             DiscoveryConfigType(rawValue: $0)
-        } ?? .native
+        } ?? .gallery
         webview = DiscoveryWebviewConfig(dictionary: dictionary[DiscoveryKeys.webview] as? [String: AnyObject] ?? [:])
     }
     
