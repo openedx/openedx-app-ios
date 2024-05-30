@@ -14,6 +14,7 @@ import Dashboard
 import Profile
 import Course
 import Discussion
+import Combine
 
 // swiftlint:disable function_body_length type_body_length
 class ScreenAssembly: Assembly {
@@ -232,6 +233,12 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(DatesAndCalendarViewModel.self) { r in
+            DatesAndCalendarViewModel(
+                router: r.resolve(ProfileRouter.self)!
+            )
+        }
+        
         container.register(ManageAccountViewModel.self) { r in
             ManageAccountViewModel(
                 router: r.resolve(ProfileRouter.self)!,
@@ -345,38 +352,104 @@ class ScreenAssembly: Assembly {
         
         container.register(
             YouTubeVideoPlayerViewModel.self
-        ) { r, url, blockID, courseID, languages, playerStateSubject in
-            YouTubeVideoPlayerViewModel(
-                url: url,
-                blockID: blockID,
-                courseID: courseID,
+        ) { (r, url: URL?, blockID: String, courseID: String, languages, playerStateSubject) in
+            let router: Router = r.resolve(Router.self)!
+            return YouTubeVideoPlayerViewModel(
                 languages: languages,
                 playerStateSubject: playerStateSubject,
-                interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
-                appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                pipManager: r.resolve(PipManagerProtocol.self)!
+                playerHolder: r.resolve(
+                    YoutubePlayerViewControllerHolder.self,
+                    arguments: url,
+                    blockID,
+                    courseID,
+                    router.currentCourseTabSelection
+                )!
             )
         }
         
-        container.register(
-            EncodedVideoPlayerViewModel.self
-        ) { r, url, blockID, courseID, languages, playerStateSubject in
+        container.register(EncodedVideoPlayerViewModel.self) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) in
             let router: Router = r.resolve(Router.self)!
+
+            let holder = r.resolve(
+                PlayerViewControllerHolder.self,
+                arguments: url,
+                blockID,
+                courseID,
+                router.currentCourseTabSelection
+            )!
             return EncodedVideoPlayerViewModel(
+                languages: languages,
+                playerStateSubject: playerStateSubject,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                playerHolder: holder
+            )
+        }
+        
+        container.register(PlayerDelegateProtocol.self) { _, manager in
+            PlayerDelegate(pipManager: manager)
+        }
+        
+        container.register(YoutubePlayerTracker.self) { (_, url) in
+            YoutubePlayerTracker(url: url)
+        }
+        
+        container.register(PlayerTracker.self) { (_, url) in
+            PlayerTracker(url: url)
+        }
+        
+        container.register(
+            YoutubePlayerViewControllerHolder.self
+        ) { r, url, blockID, courseID, selectedCourseTab in
+            YoutubePlayerViewControllerHolder(
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
-                languages: languages,
-                playerStateSubject: playerStateSubject,
-                interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
-                appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                selectedCourseTab: selectedCourseTab,
+                videoResolution: .zero,
                 pipManager: r.resolve(PipManagerProtocol.self)!,
-                selectedCourseTab: router.currentCourseTabSelection
+                playerTracker: r.resolve(YoutubePlayerTracker.self, argument: url)!,
+                playerDelegate: nil,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
             )
+        }
+
+        container.register(
+            PlayerViewControllerHolder.self
+        ) { (r, url: URL?, blockID: String, courseID: String, selectedCourseTab: Int) in
+            let pipManager = r.resolve(PipManagerProtocol.self)!
+            if let holder = pipManager.holder(
+                for: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab
+            ) as? PlayerViewControllerHolder {
+                return holder
+            }
+
+            let storage = r.resolve(CoreStorage.self)!
+            let quality = storage.userSettings?.streamingQuality ?? .auto
+            let tracker = r.resolve(PlayerTracker.self, argument: url)!
+            let delegate = r.resolve(PlayerDelegateProtocol.self, argument: pipManager)!
+            let holder = PlayerViewControllerHolder(
+                url: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab,
+                videoResolution: quality.resolution,
+                pipManager: pipManager,
+                playerTracker: tracker,
+                playerDelegate: delegate,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+            )
+            delegate.playerHolder = holder
+            return holder
+        }
+        
+        container.register(PlayerServiceProtocol.self) { r, courseID, blockID in
+            let interactor = r.resolve(CourseInteractorProtocol.self)!
+            let router = r.resolve(CourseRouter.self)!
+            return PlayerService(courseID: courseID, blockID: blockID, interactor: interactor, router: router)
         }
         
         container.register(HandoutsViewModel.self) { r, courseID in

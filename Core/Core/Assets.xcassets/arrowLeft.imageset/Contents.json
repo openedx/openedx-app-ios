@@ -2,7 +2,8 @@
   "images" : [
     {
       "filename" : "icon left.svg",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "language-direction" : "left-to-right"
     },
     {
       "appearances" : [
@@ -12,7 +13,8 @@
         }
       ],
       "filename" : "icon left-2.svg",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "language-direction" : "left-to-right"
     }
   ],
   "info" : {
