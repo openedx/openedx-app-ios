@@ -39,21 +39,21 @@ public enum UpgradeError: Error, LocalizedError, Equatable {
     public var errorDescription: String? {
         switch self {
         case .basketError(let error):
-            return basketErrorMessage(for: error as NSError)
+            return basketErrorMessage(for: error)
         case .checkoutError(let error):
-            return checkoutErrorMessage(for: error as NSError)
+            return checkoutErrorMessage(for: error)
         case .paymentError:
             return CoreLocalization.CourseUpgrade.FailureAlert.paymentNotProcessed
         case .verifyReceiptError(let error):
-            return executeErrorMessage(for: error as NSError)
+            return executeErrorMessage(for: error)
         default:
             break
         }
         return nil
     }
     
-    private func basketErrorMessage(for error: NSError) -> String {
-        switch error.code {
+    private func basketErrorMessage(for error: Error) -> String {
+        switch error.errorCode {
         case 400:
             return CoreLocalization.CourseUpgrade.FailureAlert.courseNotFount
         case 403:
@@ -65,8 +65,8 @@ public enum UpgradeError: Error, LocalizedError, Equatable {
         }
     }
 
-    private func checkoutErrorMessage(for error: NSError) -> String {
-        switch error.code {
+    private func checkoutErrorMessage(for error: Error) -> String {
+        switch error.errorCode {
         case 403:
             return CoreLocalization.CourseUpgrade.FailureAlert.authenticationErrorMessage
         default:
@@ -74,8 +74,8 @@ public enum UpgradeError: Error, LocalizedError, Equatable {
         }
     }
 
-    private func executeErrorMessage(for error: NSError) -> String {
-        switch error.code {
+    private func executeErrorMessage(for error: Error) -> String {
+        switch error.errorCode {
         case 409:
             return CoreLocalization.CourseUpgrade.FailureAlert.courseAlreadyPaid
         default:
@@ -105,7 +105,7 @@ public enum UpgradeError: Error, LocalizedError, Equatable {
     public var formattedError: String {
         let unhandledError = "unhandledError"
         guard let error = nestedError else { return unhandledError }
-        return "\(errorString)-\((error as NSError).code)-\(error.localizedDescription)"
+        return "\(errorString)-\(error.errorCode)-\(error.errorMessage)"
     }
     
     public var isCancelled: Bool {

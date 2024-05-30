@@ -52,7 +52,7 @@ public class StorekitHandler: NSObject, StoreKitHandlerProtocol {
             }
 
             if !purchases.isEmpty {
-                NotificationCenter.default.post(name: .unfullfilledTransctionsNotification, object: purchases)
+                NotificationCenter.default.post(name: .unfullfilledTransctionsNotification, object: nil)
             }
         }
     }

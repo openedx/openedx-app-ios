@@ -25,11 +25,22 @@ public protocol CourseUpgradeHandlerProtocol {
     func fetchProduct(sku: String) async throws -> StoreProductInfo
 }
 
-class CourseUpgradeHandlerProtocolMock: CourseUpgradeHandlerProtocol {    
-    func upgradeCourse(sku: String?, mode: UpgradeMode, productInfo: StoreProductInfo?, pacing: String, courseID: String, componentID: String?, screen: CourseUpgradeScreen, completion: UpgradeCompletionHandler?) async {
-    }
+#if DEBUG
+public class CourseUpgradeHandlerProtocolMock: CourseUpgradeHandlerProtocol {
+    public init() {}
     
-    func fetchProduct(sku: String) async throws -> StoreProductInfo {
+    public func upgradeCourse(
+        sku: String?,
+        mode: UpgradeMode,
+        productInfo: StoreProductInfo?,
+        pacing: String,
+        courseID: String,
+        componentID: String?,
+        screen: CourseUpgradeScreen,
+        completion: UpgradeCompletionHandler?) async {}
+    
+    public func fetchProduct(sku: String) async throws -> StoreProductInfo {
         StoreProductInfo(price: .zero)
     }
 }
+#endif

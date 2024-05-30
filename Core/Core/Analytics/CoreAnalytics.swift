@@ -37,7 +37,7 @@ public protocol CoreAnalytics {
         coursePrice: String?,
         screen: CourseUpgradeScreen,
         error: String,
-        flowType: String
+        flowType: UpgradeMode
     )
     
     func trackCourseUpgradeErrorAction(
@@ -48,7 +48,7 @@ public protocol CoreAnalytics {
         screen: CourseUpgradeScreen,
         errorAction: String,
         error: String,
-        flowType: String
+        flowType: UpgradeMode
     )
     
     func trackCourseUpgradeSuccess(
@@ -57,7 +57,7 @@ public protocol CoreAnalytics {
         pacing: String,
         coursePrice: String,
         screen: CourseUpgradeScreen,
-        flowType: String
+        flowType: UpgradeMode
     )
     
     func trackUpgradeNow(
@@ -79,7 +79,7 @@ public protocol CoreAnalytics {
         courseID: String,
         pacing: String,
         screen: CourseUpgradeScreen,
-        flowType: String
+        flowType: UpgradeMode
     )
     
     func trackRestorePurchaseClicked()
@@ -126,7 +126,7 @@ public class CoreAnalyticsMock: CoreAnalytics {
         coursePrice: String? = nil,
         screen: CourseUpgradeScreen,
         error: String,
-        flowType: String
+        flowType: UpgradeMode
     ) {}
     
     public func trackCourseUpgradeErrorAction(
@@ -137,7 +137,7 @@ public class CoreAnalyticsMock: CoreAnalytics {
         screen: CourseUpgradeScreen,
         errorAction: String,
         error: String,
-        flowType: String
+        flowType: UpgradeMode
     ) {}
     
     public func trackCourseUpgradeSuccess(
@@ -146,7 +146,7 @@ public class CoreAnalyticsMock: CoreAnalytics {
         pacing: String,
         coursePrice: String,
         screen: CourseUpgradeScreen,
-        flowType: String) {}
+        flowType: UpgradeMode) {}
     
     public func trackUpgradeNow(
         courseID: String,
@@ -167,7 +167,7 @@ public class CoreAnalyticsMock: CoreAnalytics {
         courseID: String,
         pacing: String,
         screen: CourseUpgradeScreen,
-        flowType: String
+        flowType: UpgradeMode
     ) {}
     
     public func trackRestorePurchaseClicked() {}

@@ -170,7 +170,7 @@ public class UpgradeInfoViewModel: ObservableObject {
                         screen: self.screen,
                         errorAction: UpgradeErrorAction.reloadPrice.rawValue,
                         error: "price",
-                        flowType: UpgradeMode.userInitiated.rawValue
+                        flowType: .userInitiated
                     )
                 }
         }
@@ -187,7 +187,7 @@ public class UpgradeInfoViewModel: ObservableObject {
                 screen: self.screen,
                 errorAction: UpgradeErrorAction.close.rawValue,
                 error: "price",
-                flowType: UpgradeMode.userInitiated.rawValue
+                flowType: .userInitiated
             )
         }
     }

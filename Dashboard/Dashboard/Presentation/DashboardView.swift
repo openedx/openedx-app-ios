@@ -139,6 +139,7 @@ public struct DashboardView: View {
             .onFirstAppear {
                 Task {
                     await viewModel.getMyCourses(page: 1)
+                    await viewModel.resolveUnfinishedPayment()
                 }
             }
             .background(
@@ -156,7 +157,9 @@ struct DashboardView_Previews: PreviewProvider {
         let vm = DashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock()
+            analytics: DashboardAnalyticsMock(),
+            upgradehandler: CourseUpgradeHandlerProtocolMock(),
+            coreAnalytics: CoreAnalyticsMock()
         )
         let router = DashboardRouterMock()
         

@@ -815,7 +815,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         coursePrice: String? = nil,
         screen: CourseUpgradeScreen,
         error: String,
-        flowType: String
+        flowType: UpgradeMode
     ) {
         var parameters: [String: Any] = [
             EventParamKey.pacing: pacing,
@@ -823,7 +823,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseID,
             EventParamKey.screenName: screen.rawValue,
             EventParamKey.error: error,
-            EventParamKey.flowType: flowType,
+            EventParamKey.flowType: flowType.rawValue,
             EventParamKey.category: EventCategory.inAppPurchases
         ]
         
@@ -841,7 +841,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         screen: CourseUpgradeScreen,
         errorAction: String,
         error: String,
-        flowType: String
+        flowType: UpgradeMode
     ) {
         var parameters: [String: Any] = [
             EventParamKey.pacing: pacing,
@@ -850,7 +850,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.screenName: screen.rawValue,
             EventParamKey.error: error,
             EventParamKey.errorAction: errorAction,
-            EventParamKey.flowType: flowType,
+            EventParamKey.flowType: flowType.rawValue,
             EventParamKey.category: EventCategory.inAppPurchases
         ]
         
@@ -866,7 +866,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         pacing: String,
         coursePrice: String,
         screen: CourseUpgradeScreen,
-        flowType: String
+        flowType: UpgradeMode
     ) {
         var parameters: [String: Any] = [
             EventParamKey.pacing: pacing,
@@ -874,7 +874,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseID,
             EventParamKey.price: coursePrice,
             EventParamKey.screenName: screen.rawValue,
-            EventParamKey.flowType: flowType,
+            EventParamKey.flowType: flowType.rawValue,
             EventParamKey.category: EventCategory.inAppPurchases
         ]
         
@@ -926,14 +926,14 @@ class AnalyticsManager: AuthorizationAnalytics,
         courseID: String,
         pacing: String,
         screen: CourseUpgradeScreen,
-        flowType: String
+        flowType: UpgradeMode
     ) {
         let parameters = [
             EventParamKey.pacing: pacing,
             EventParamKey.name: EventBIValue.courseUpgradeUnfulfilledPurchaseInitiated.rawValue,
             EventParamKey.courseID: courseID,
             EventParamKey.screenName: screen.rawValue,
-            EventParamKey.flowType: flowType,
+            EventParamKey.flowType: flowType.rawValue,
             EventParamKey.category: EventCategory.inAppPurchases
         ]
         

@@ -9,8 +9,9 @@ import Foundation
 import StoreKit
 import SwiftUI
 import MessageUI
+import Alamofire
 
-private let IAPSaveKey = "IAPCourseSaveKey"
+private let InProgressIAPKey = "InProgressIAPKey"
 
 public struct CourseUpgradeHelperModel {
     let courseID: String
@@ -147,7 +148,7 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
                     coursePrice: localizedCoursePrice ?? "",
                     screen: screen,
                     error: error.formattedError,
-                    flowType: upgradeHadler.upgradeMode.rawValue
+                    flowType: upgradeHadler.upgradeMode
                 )
             }
             
@@ -177,10 +178,12 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
             saveInProgressIAP(courseID: courseID, sku: sku)
         case .complete:
             removeInProgressIAP()
-        case .error(let error):
-            if case .verifyReceiptError = error, upgradeMode == .userInitiated {
-                // keep entry for retry on app launch
-            } else {
+        case .error(let upgradeError):
+            if case .verifyReceiptError(let error) = upgradeError, error.errorCode == 409 {
+                removeInProgressIAP()
+            }
+            
+            if upgradeError != .verifyReceiptError(upgradeError), upgradeMode == .userInitiated {
                 removeInProgressIAP()
             }
         default:
@@ -224,7 +227,7 @@ extension CourseUpgradeHelper {
             pacing: pacing ?? "",
             coursePrice: localizedCoursePrice ?? "",
             screen: screen,
-            flowType: upgradeHadler?.upgradeMode.rawValue ?? ""
+            flowType: upgradeHadler?.upgradeMode ?? .userInitiated
         )
         reset()
     }
@@ -363,7 +366,7 @@ extension CourseUpgradeHelper {
             screen: screen,
             errorAction: errorAction.rawValue,
             error: error.formattedError,
-            flowType: upgradeHadler?.upgradeMode.rawValue ?? ""
+            flowType: upgradeHadler?.upgradeMode ?? .userInitiated
         )
     }
 }
@@ -399,13 +402,13 @@ extension CourseUpgradeHelper {
         let IAP = InProgressIAP(courseID: courseID, sku: sku, pacing: pacing ?? "")
         
         if let data = try? NSKeyedArchiver.archivedData(withRootObject: IAP, requiringSecureCoding: true) {
-            UserDefaults.standard.set(data, forKey: IAPSaveKey)
+            UserDefaults.standard.set(data, forKey: InProgressIAPKey)
             UserDefaults.standard.synchronize()
         }
     }
     
-    public func getInProgressIAP() -> InProgressIAP? {
-        guard let data = UserDefaults.standard.object(forKey: IAPSaveKey) as? Data else {
+    public class func getInProgressIAP() -> InProgressIAP? {
+        guard let data = UserDefaults.standard.object(forKey: InProgressIAPKey) as? Data else {
             return nil
         }
         
@@ -415,16 +418,16 @@ extension CourseUpgradeHelper {
     }
     
     private func removeInProgressIAP() {
-        UserDefaults.standard.removeObject(forKey: IAPSaveKey)
+        UserDefaults.standard.removeObject(forKey: InProgressIAPKey)
         UserDefaults.standard.synchronize()
     }
 }
 
 public class InProgressIAP: NSObject, NSCoding, NSSecureCoding {
     
-    var courseID: String = ""
-    var sku: String = ""
-    var pacing: String = ""
+    public var courseID: String = ""
+    public var sku: String = ""
+    public var pacing: String = ""
     
     init(courseID: String, sku: String, pacing: String) {
         self.courseID = courseID
@@ -446,11 +449,5 @@ public class InProgressIAP: NSObject, NSCoding, NSSecureCoding {
     
     public static var supportsSecureCoding: Bool {
         return true
-    }
-}
-
-extension Error {
-    var errorCode: Int {
-        return (self as NSError).code
     }
 }
