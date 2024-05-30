@@ -329,7 +329,7 @@ struct PrimaryCourseDashboardView_Previews: PreviewProvider {
         let vm = PrimaryCourseDashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock(), 
+            analytics: DashboardAnalyticsMock(),
             config: ConfigMock()
         )
         
