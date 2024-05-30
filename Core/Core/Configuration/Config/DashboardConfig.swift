@@ -8,7 +8,7 @@
 import Foundation
 
 public enum DashboardConfigType: String {
-    case primaryCourse = "primary_course"
+    case gallery
     case list
 }
 
@@ -22,7 +22,7 @@ public class DashboardConfig: NSObject {
     init(dictionary: [String: AnyObject]) {
         type = (dictionary[DashboardKeys.dashboardType] as? String).flatMap {
             DashboardConfigType(rawValue: $0)
-        } ?? .primaryCourse
+        } ?? .gallery
     }
 }
 

@@ -281,7 +281,7 @@ public class Router: AuthorizationRouter,
     
     public func showDiscoveryScreen(searchQuery: String? = nil, sourceScreen: LogistrationSourceScreen) {
         let config = Container.shared.resolve(ConfigProtocol.self)
-        if config?.discovery.type == .gallery {
+        if config?.discovery.type == .native {
             let view = DiscoveryView(
                 viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
                 router: Container.shared.resolve(DiscoveryRouter.self)!,

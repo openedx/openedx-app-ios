@@ -62,7 +62,7 @@ struct MainScreenView: View {
                                 viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
                                 router: Container.shared.resolve(DiscoveryRouter.self)!
                             )
-                        } else if viewModel.config.program.type == .gallery {
+                        } else if viewModel.config.program.type == .native {
                             Text(CoreLocalization.Mainscreen.inDeveloping)
                         }
                         
@@ -76,7 +76,7 @@ struct MainScreenView: View {
                     }
                     .tag(MainTab.programs)
                 }
-            case .primaryCourse:
+            case .gallery:
                 ZStack {
                     PrimaryCourseDashboardView(
                         viewModel: Container.shared.resolve(PrimaryCourseDashboardViewModel.self)!,
@@ -101,7 +101,7 @@ struct MainScreenView: View {
             
             if viewModel.config.discovery.enabled {
                 ZStack {
-                    if viewModel.config.discovery.type == .gallery {
+                    if viewModel.config.discovery.type == .native {
                         DiscoveryView(
                             viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
                             router: Container.shared.resolve(DiscoveryRouter.self)!,
