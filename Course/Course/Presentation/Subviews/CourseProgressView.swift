@@ -12,7 +12,7 @@ import Core
 public struct CourseProgressView: View {
     private var progress: CourseProgress
     
-    public  init(progress: CourseProgress) {
+    public init(progress: CourseProgress) {
         self.progress = progress
     }
     
@@ -33,7 +33,6 @@ public struct CourseProgressView: View {
                 }
                 .frame(height: 10)
             }
-            
             .cornerRadius(10)
             
             if let total = progress.totalAssignmentsCount,

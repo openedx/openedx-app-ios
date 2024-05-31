@@ -13,7 +13,7 @@ import SwiftUIIntrospect
 
 public struct CourseOutlineView: View {
     
-    @ObservedObject private var viewModel: CourseContainerViewModel
+    @StateObject private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -43,7 +43,7 @@ public struct CourseOutlineView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection
@@ -128,7 +128,7 @@ public struct CourseOutlineView: View {
                                 ? viewModel.courseVideosStructure
                                 : viewModel.courseStructure {
                                 
-                                if !isVideo, let progress = course.courseProgress {
+                                if !isVideo, let progress = course.courseProgress, progress.totalAssignmentsCount != 0 {
                                     CourseProgressView(progress: progress)
                                         .padding(.horizontal, 24)
                                         .padding(.top, 16)
@@ -209,12 +209,7 @@ public struct CourseOutlineView: View {
             }
         }
         .onAppear {
-            if viewModel.updateCourseProgress {
-                Task {
-                    await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-                }
-                viewModel.updateCourseProgress = false
-            }
+            viewModel.updateCourseIfNeeded(courseID: courseID)
         }
         .background(
             Theme.Colors.background

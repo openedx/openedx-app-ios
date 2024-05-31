@@ -134,6 +134,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         addObservers()
     }
     
+    func updateCourseIfNeeded(courseID: String) {
+        if updateCourseProgress {
+            Task {
+                await getCourseBlocks(courseID: courseID, withProgress: false)
+            }
+            updateCourseProgress = false
+        }
+    }
+    
     @MainActor
     func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
         guard let courseStart, courseStart < Date() else { return }

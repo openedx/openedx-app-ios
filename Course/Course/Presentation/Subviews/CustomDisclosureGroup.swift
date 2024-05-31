@@ -28,99 +28,105 @@ struct CustomDisclosureGroup: View {
             ForEach(course.childs) { chapter in
                 let chapterIndex = course.childs.firstIndex(where: { $0.id == chapter.id })
                 VStack(alignment: .leading) {
-                    Button(action: {
-                        withAnimation(.linear(duration: 0.2)) {
-                            expandedSections[chapter.id, default: false].toggle()
-                        }
-                    }, label: {
-                        HStack {
-                            CoreAssets.chevronRight.swiftUIImage
-                                .rotationEffect(.degrees(expandedSections[chapter.id] ?? false ? 90 : -90))
-                                .foregroundColor(Theme.Colors.textPrimary)
-                            if chapter.childs.allSatisfy({ $0.completion == 1 }) {
-                                CoreAssets.finishedSequence.swiftUIImage
+                    Button(
+                        action: {
+                            withAnimation(.linear(duration: course.childs.count > 1 ? 0.2 : 0.05)) {
+                                expandedSections[chapter.id, default: false].toggle()
                             }
-                            Text(chapter.displayName)
-                                .font(Theme.Fonts.titleMedium)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                                .lineLimit(1)
-                            Spacer()
-                            if canDownloadAllSections(in: chapter),
-                                let state = downloadAllButtonState(for: chapter) {
-                                Button(action: {
-                                    downloadAllSubsections(in: chapter, state: state)
-                                }, label: {
-                                    switch state {
-                                    case .available:
-                                        DownloadAvailableView()
-                                    case .downloading:
-                                        DownloadProgressView()
-                                    case .finished:
-                                        DownloadFinishedView()
-                                    }
-                                    
-                                })
+                        }, label: {
+                            HStack {
+                                CoreAssets.chevronRight.swiftUIImage
+                                    .rotationEffect(.degrees(expandedSections[chapter.id] ?? false ? -90 : 90))
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                if chapter.childs.allSatisfy({ $0.completion == 1 }) {
+                                    CoreAssets.finishedSequence.swiftUIImage
+                                }
+                                Text(chapter.displayName)
+                                    .font(Theme.Fonts.titleMedium)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .lineLimit(1)
+                                Spacer()
+                                if canDownloadAllSections(in: chapter),
+                                   let state = downloadAllButtonState(for: chapter) {
+                                    Button(
+                                        action: {
+                                            downloadAllSubsections(in: chapter, state: state)
+                                        }, label: {
+                                            switch state {
+                                            case .available:
+                                                DownloadAvailableView()
+                                            case .downloading:
+                                                DownloadProgressView()
+                                            case .finished:
+                                                DownloadFinishedView()
+                                            }
+                                            
+                                        }
+                                    )
+                                }
                             }
                         }
-                    })
+                    )
                     if expandedSections[chapter.id] ?? false {
                         VStack(alignment: .leading) {
                             ForEach(chapter.childs) { sequential in
                                 let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == sequential.id })
                                 VStack(alignment: .leading) {
                                     HStack {
-                                        Button(action: {
-                                            if let chapterIndex, let sequentialIndex {
-                                                viewModel.trackSequentialClicked(sequential)
-                                                viewModel.router.showCourseVerticalView(
-                                                    courseID: viewModel.courseStructure?.id ?? "",
-                                                    courseName: viewModel.courseStructure?.displayName ?? "",
-                                                    title: sequential.displayName,
-                                                    chapters: course.childs,
-                                                    chapterIndex: chapterIndex,
-                                                    sequentialIndex: sequentialIndex
-                                                )
-                                            }
-                                        }, label: {
-                                            VStack(alignment: .leading) {
-                                                HStack {
-                                                    if sequential.completion == 1 {
-                                                        CoreAssets.finishedSequence.swiftUIImage
-                                                            .resizable()
-                                                            .frame(width: 20, height: 20)
-                                                    } else {
-                                                        sequential.type.image
+                                        Button(
+                                            action: {
+                                                if let chapterIndex, let sequentialIndex {
+                                                    viewModel.trackSequentialClicked(sequential)
+                                                    viewModel.router.showCourseVerticalView(
+                                                        courseID: viewModel.courseStructure?.id ?? "",
+                                                        courseName: viewModel.courseStructure?.displayName ?? "",
+                                                        title: sequential.displayName,
+                                                        chapters: course.childs,
+                                                        chapterIndex: chapterIndex,
+                                                        sequentialIndex: sequentialIndex
+                                                    )
+                                                }
+                                            }, label: {
+                                                VStack(alignment: .leading) {
+                                                    HStack {
+                                                        if sequential.completion == 1 {
+                                                            CoreAssets.finishedSequence.swiftUIImage
+                                                                .resizable()
+                                                                .frame(width: 20, height: 20)
+                                                        } else {
+                                                            sequential.type.image
+                                                        }
+                                                        Text(sequential.displayName)
+                                                            .font(Theme.Fonts.titleSmall)
+                                                            .multilineTextAlignment(.leading)
+                                                            .lineLimit(1)
+                                                            .frame(
+                                                                maxWidth: idiom == .pad
+                                                                ? proxy.size.width * 0.5
+                                                                : proxy.size.width * 0.6,
+                                                                alignment: .leading
+                                                            )
                                                     }
-                                                    Text(sequential.displayName)
-                                                        .font(Theme.Fonts.titleSmall)
-                                                        .multilineTextAlignment(.leading)
-                                                        .lineLimit(1)
-                                                        .frame(
-                                                            maxWidth: idiom == .pad
-                                                            ? proxy.size.width * 0.5
-                                                            : proxy.size.width * 0.6,
-                                                            alignment: .leading
-                                                        )
+                                                    if let sequentialProgress = sequential.sequentialProgress,
+                                                       let assignmentType = sequentialProgress.assignmentType,
+                                                       let numPointsEarned = sequentialProgress.numPointsEarned,
+                                                       let numPointsPossible = sequentialProgress.numPointsPossible,
+                                                       let due = sequential.due {
+                                                        let daysRemaining = getAssignmentStatus(for: due)
+                                                        Text("\(assignmentType) - \(daysRemaining) - \(numPointsEarned) / \(numPointsPossible)")
+                                                            .font(Theme.Fonts.bodySmall)
+                                                            .multilineTextAlignment(.leading)
+                                                            .lineLimit(2)
+                                                    }
                                                 }
-                                                if let sequentialProgress = sequential.sequentialProgress,
-                                                   let assignmentType = sequentialProgress.assignmentType,
-                                                   let numPointsEarned = sequentialProgress.numPointsEarned,
-                                                   let numPointsPossible = sequentialProgress.numPointsPossible,
-                                                   let due = sequential.due {
-                                                    let daysRemaining = getAssignmentStatus(for: due)
-                                                    Text("\(assignmentType) - \(daysRemaining) - \(numPointsEarned) / \(numPointsPossible)")
-                                                        .font(Theme.Fonts.bodySmall)
-                                                        .multilineTextAlignment(.leading)
-                                                        .lineLimit(2)
-                                                }
+                                                .foregroundColor(Theme.Colors.textPrimary)
+                                                .accessibilityElement(children: .ignore)
+                                                .accessibilityLabel(sequential.displayName)
+                                                
                                             }
-                                            .foregroundColor(Theme.Colors.textPrimary)
-                                            .accessibilityElement(children: .ignore)
-                                            .accessibilityLabel(sequential.displayName)
-                                            
-                                        })
+                                        )
                                         Spacer()
-                                        if sequential.sequentialProgress?.assignmentType != nil {
+                                        if sequential.due != nil {
                                             CoreAssets.chevronRight.swiftUIImage
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                         }
@@ -135,7 +141,7 @@ struct CustomDisclosureGroup: View {
                 .padding(.vertical, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                    .fill(Theme.Colors.cardViewBackground)
+                        .fill(Theme.Colors.cardViewBackground)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
@@ -210,7 +216,7 @@ struct CustomDisclosureGroup: View {
 
 #if DEBUG
 struct CustomDisclosureGroup_Previews: PreviewProvider {
-  
+    
     static var previews: some View {
         
         // Sample data models
@@ -246,7 +252,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                                 completion: 1.0,
                                 childs: []
                             )
-                        ], 
+                        ],
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Advanced Assessment Tools",
                             numPointsEarned: 1,
@@ -349,7 +355,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                 }
             }
         }
-
+        
         return GeometryReader { proxy in
             ScrollView {
                 CustomDisclosureGroup(
@@ -364,7 +370,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         media: DataLayer.CourseMedia.init(image: DataLayer.Image(raw: "", small: "", large: "")),
                         certificate: nil,
                         org: "org",
-                        isSelfPaced: false, 
+                        isSelfPaced: false,
                         courseProgress: nil
                     ),
                     proxy: proxy,
