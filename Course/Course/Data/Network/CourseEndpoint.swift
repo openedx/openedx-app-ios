@@ -86,7 +86,7 @@ enum CourseEndpoint: EndPointType {
                 "nav_depth": "4",
                 "requested_fields": """
                 contains_gated_content,show_gated_sections,special_exam_info,graded,
-                format,student_view_multi_device,due,completion
+                format,student_view_multi_device,due,completion,assignment_progress
                 """,
                 "block_counts": "video"
             ]

@@ -15,7 +15,6 @@ public class PipManager: PipManagerProtocol {
     let discoveryInteractor: DiscoveryInteractorProtocol
     let courseInteractor: CourseInteractorProtocol
     let router: Router
-    let isNestedListEnabled: Bool
     public var isPipActive: Bool {
         controllerHolder != nil
     }
@@ -26,13 +25,11 @@ public class PipManager: PipManagerProtocol {
     public init(
         router: Router,
         discoveryInteractor: DiscoveryInteractorProtocol,
-        courseInteractor: CourseInteractorProtocol,
-        isNestedListEnabled: Bool
+        courseInteractor: CourseInteractorProtocol
     ) {
         self.discoveryInteractor = discoveryInteractor
         self.courseInteractor = courseInteractor
         self.router = router
-        self.isNestedListEnabled = isNestedListEnabled
     }
     
     public func holder(
@@ -116,7 +113,7 @@ public class PipManager: PipManagerProtocol {
             viewControllers.append(try await containerController(for: holder))
         }
         
-        if !isNestedListEnabled && holder.selectedCourseTab != CourseTab.dates.rawValue {
+        if holder.selectedCourseTab != CourseTab.dates.rawValue {
             viewControllers.append(try await courseVerticalController(for: holder))
         }
         

@@ -21,6 +21,7 @@ public extension DataLayer {
         public let certificate: Certificate?
         public let org: String?
         public let isSelfPaced: Bool
+        public let courseProgress: CourseProgress?
         
         enum CodingKeys: String, CodingKey {
             case blocks
@@ -30,6 +31,7 @@ public extension DataLayer {
             case certificate
             case org
             case isSelfPaced = "is_self_paced"
+            case courseProgress = "course_progress"
         }
         
         public init(
@@ -39,7 +41,8 @@ public extension DataLayer {
             media: DataLayer.CourseMedia,
             certificate: Certificate?,
             org: String?,
-            isSelfPaced: Bool
+            isSelfPaced: Bool,
+            courseProgress: CourseProgress?
         ) {
             self.rootItem = rootItem
             self.dict = dict
@@ -48,6 +51,7 @@ public extension DataLayer {
             self.certificate = certificate
             self.org = org
             self.isSelfPaced = isSelfPaced
+            self.courseProgress = courseProgress
         }
         
         public init(from decoder: Decoder) throws {
@@ -60,6 +64,7 @@ public extension DataLayer {
             certificate = try values.decode(Certificate.self, forKey: .certificate)
             org = try values.decode(String.self, forKey: .org)
             isSelfPaced = try values.decode(Bool.self, forKey: .isSelfPaced)
+            courseProgress = try values.decode(DataLayer.CourseProgress.self, forKey: .courseProgress)
         }
     }
 }
@@ -68,6 +73,7 @@ public extension DataLayer {
         public let blockId: String
         public let id: String
         public let graded: Bool
+        public let due: String?
         public let completion: Double?
         public let studentUrl: String
         public let webUrl: String
@@ -77,11 +83,13 @@ public extension DataLayer {
         public let allSources: [String]?
         public let userViewData: CourseDetailUserViewData?
         public let multiDevice: Bool?
+        public let assignmentProgress: AssignmentProgress?
         
         public init(
             blockId: String,
             id: String,
             graded: Bool,
+            due: String?,
             completion: Double?,
             studentUrl: String,
             webUrl: String,
@@ -90,11 +98,13 @@ public extension DataLayer {
             descendants: [String]?,
             allSources: [String]?,
             userViewData: CourseDetailUserViewData?,
-            multiDevice: Bool?
+            multiDevice: Bool?,
+            assignmentProgress: AssignmentProgress?
         ) {
             self.blockId = blockId
             self.id = id
             self.graded = graded
+            self.due = due
             self.completion = completion
             self.studentUrl = studentUrl
             self.webUrl = webUrl
@@ -104,10 +114,11 @@ public extension DataLayer {
             self.allSources = allSources
             self.userViewData = userViewData
             self.multiDevice = multiDevice
+            self.assignmentProgress = assignmentProgress
         }
         
         public enum CodingKeys: String, CodingKey {
-            case id, type, descendants, graded, completion
+            case id, type, descendants, graded, completion, due
             case blockId = "block_id"
             case studentUrl = "student_view_url"
             case webUrl = "lms_web_url"
@@ -115,9 +126,28 @@ public extension DataLayer {
             case userViewData = "student_view_data"
             case allSources = "all_sources"
             case multiDevice = "student_view_multi_device"
+            case assignmentProgress = "assignment_progress"
         }
     }
+    
+    struct AssignmentProgress: Codable {
+        public let assignmentType: String?
+        public let numPointsEarned: Double?
+        public let numPointsPossible: Double?
+
+        public enum CodingKeys: String, CodingKey {
+            case assignmentType = "assignment_type"
+            case numPointsEarned = "num_points_earned"
+            case numPointsPossible = "num_points_possible"
+        }
         
+        public init(assignmentType: String?, numPointsEarned: Double?, numPointsPossible: Double?) {
+            self.assignmentType = assignmentType
+            self.numPointsEarned = numPointsEarned
+            self.numPointsPossible = numPointsPossible
+        }
+    }
+
     struct Transcripts: Codable {
         public let en: String?
 
@@ -202,6 +232,20 @@ public extension DataLayer {
             case fileSize = "file_size"
             case streamPriority = "stream_priority"
         }
-
+    }
+    
+    struct CourseProgress: Codable {
+        public let totalAssignmentsCount: Int?
+        public let assignmentsCompleted: Int?
+        
+        public init(totalAssignmentsCount: Int, assignmentsCompleted: Int) {
+            self.totalAssignmentsCount = totalAssignmentsCount
+            self.assignmentsCompleted = assignmentsCompleted
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case totalAssignmentsCount = "total_assignments_count"
+            case assignmentsCompleted = "assignments_completed"
+        }
     }
 }

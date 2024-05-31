@@ -30,6 +30,8 @@ public struct CourseOutlineView: View {
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
     
+    @State private var expandedChapters: [String: Bool] = [:]
+    
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
@@ -41,7 +43,7 @@ public struct CourseOutlineView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self.viewModel = viewModel//StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection
@@ -52,10 +54,8 @@ public struct CourseOutlineView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            // MARK: - Page name
             GeometryReader { proxy in
                 VStack(alignment: .center) {
-                    // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
                         await withTaskGroup(of: Void.self) { group in
                             group.addTask {
@@ -95,7 +95,6 @@ public struct CourseOutlineView: View {
                                 let sequential = chapter.childs[continueWith.sequentialIndex]
                                 let continueUnit = sequential.childs[continueWith.verticalIndex]
                                 
-                                // MARK: - ContinueWith button
                                 ContinueWithView(
                                     data: continueWith,
                                     courseContinueUnit: continueUnit
@@ -129,21 +128,19 @@ public struct CourseOutlineView: View {
                                 ? viewModel.courseVideosStructure
                                 : viewModel.courseStructure {
                                 
-                                // MARK: - Sections
-                                if viewModel.config.uiComponents.courseNestedListEnabled {
-                                    CourseStructureNestedListView(
-                                        proxy: proxy,
-                                        course: course,
-                                        viewModel: viewModel
-                                    )
-                                } else {
-                                    CourseStructureView(
-                                        proxy: proxy,
-                                        course: course,
-                                        viewModel: viewModel
-                                    )
+                                if !isVideo, let progress = course.courseProgress {
+                                    CourseProgressView(progress: progress)
+                                        .padding(.horizontal, 24)
+                                        .padding(.top, 16)
+                                        .padding(.bottom, 8)
                                 }
                                 
+                                // MARK: - Sections
+                                CustomDisclosureGroup(
+                                    course: course,
+                                    proxy: proxy,
+                                    viewModel: viewModel
+                                )
                             } else {
                                 if let courseStart = viewModel.courseStart {
                                     Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
@@ -209,6 +206,14 @@ public struct CourseOutlineView: View {
                     }.frame(maxWidth: .infinity,
                             maxHeight: .infinity)
                 }
+            }
+        }
+        .onAppear {
+            if viewModel.updateCourseProgress {
+                Task {
+                    await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                }
+                viewModel.updateCourseProgress = false
             }
         }
         .background(

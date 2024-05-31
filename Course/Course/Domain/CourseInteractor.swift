@@ -55,7 +55,11 @@ public class CourseInteractor: CourseInteractorProtocol {
             media: course.media,
             certificate: course.certificate,
             org: course.org,
-            isSelfPaced: course.isSelfPaced
+            isSelfPaced: course.isSelfPaced,
+            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
+                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
+                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
+            )
         )
     }
     
@@ -64,6 +68,7 @@ public class CourseInteractor: CourseInteractorProtocol {
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
+        NotificationCenter.default.post(name: .onblockCompletionRequested, object: courseID)
         return try await repository.blockCompletionRequest(courseID: courseID, blockID: blockID)
     }
     
@@ -127,7 +132,9 @@ public class CourseInteractor: CourseInteractorProtocol {
             displayName: sequential.displayName,
             type: sequential.type,
             completion: sequential.completion,
-            childs: newChilds
+            childs: newChilds,
+            sequentialProgress: sequential.sequentialProgress, 
+            due: sequential.due
         )
     }
     

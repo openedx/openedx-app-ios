@@ -10,6 +10,14 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum CourseLocalization {
+  /// Plural format key: "%#@due_in@"
+  public static func dueIn(_ p1: Int) -> String {
+    return CourseLocalization.tr("Localizable", "due_in", p1, fallback: "Plural format key: \"%#@due_in@\"")
+  }
+  /// Plural format key: "%#@past_due@"
+  public static func pastDue(_ p1: Int) -> String {
+    return CourseLocalization.tr("Localizable", "past_due", p1, fallback: "Plural format key: \"%#@past_due@\"")
+  }
   public enum Accessibility {
     /// Cancel download
     public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
@@ -29,6 +37,16 @@ public enum CourseLocalization {
     public static let rotateDevice = CourseLocalization.tr("Localizable", "ALERT.ROTATE_DEVICE", fallback: "Rotate your device to view this video in full screen.")
     /// Turning off the switch will stop downloading and delete all downloaded videos for
     public static let stopDownloading = CourseLocalization.tr("Localizable", "ALERT.STOP_DOWNLOADING", fallback: "Turning off the switch will stop downloading and delete all downloaded videos for")
+  }
+  public enum Course {
+    /// Due Today
+    public static let dueToday = CourseLocalization.tr("Localizable", "COURSE.DUE_TODAY", fallback: "Due Today")
+    /// Due Tomorrow
+    public static let dueTomorrow = CourseLocalization.tr("Localizable", "COURSE.DUE_TOMORROW", fallback: "Due Tomorrow")
+    /// %@ of %@ assignments complete
+    public static func progressCompleted(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@ of %@ assignments complete")
+    }
   }
   public enum Courseware {
     /// Back to outline

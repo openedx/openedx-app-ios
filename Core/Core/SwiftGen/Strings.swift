@@ -79,6 +79,12 @@ public enum CoreLocalization {
     }
   }
   public enum Date {
+    /// Course Ended
+    public static let courseEnded = CoreLocalization.tr("Localizable", "DATE.COURSE_ENDED", fallback: "Course Ended")
+    /// Course Ends
+    public static let courseEnds = CoreLocalization.tr("Localizable", "DATE.COURSE_ENDS", fallback: "Course Ends")
+    /// Course Starts
+    public static let courseStarts = CoreLocalization.tr("Localizable", "DATE.COURSE_STARTS", fallback: "Course Starts")
     /// Ended
     public static let ended = CoreLocalization.tr("Localizable", "DATE.ENDED", fallback: "Ended")
     /// Just now
