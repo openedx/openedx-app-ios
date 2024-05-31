@@ -60,7 +60,7 @@ public protocol BaseRouter {
     func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
     @MainActor
     func showUpgradeInfo(
-        productName: String, 
+        productName: String,
         sku: String,
         courseID: String,
         screen: CourseUpgradeScreen,

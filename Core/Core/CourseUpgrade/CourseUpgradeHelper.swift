@@ -191,8 +191,12 @@ public class CourseUpgradeHelper: CourseUpgradeHelperProtocol {
         }
     }
     
-    private func postSuccessNotification() {
-        NotificationCenter.default.post(name: .courseUpgradeCompletionNotification, object: nil)
+    private func postSuccessNotification(showLoader: Bool = false) {
+        NotificationCenter.default.post(name: .courseUpgradeCompletionNotification, object: showLoader)
+    }
+    
+    private func showDashboardScreen() {
+        router.backToRoot(animated: true)
     }
     
     public func resetUpgradeModel() {
@@ -342,8 +346,8 @@ extension CourseUpgradeHelper {
         alertController.addButton(
             withTitle: CoreLocalization.CourseUpgrade.SuccessAlert.silentAlertRefresh,
             style: .default) {[weak self] _ in
+                self?.showDashboardScreen()
                 self?.postSuccessNotification()
-                //            self?.popToEnrolledCourses()
             }
 
         alertController.addButton(

@@ -14,7 +14,7 @@ private enum Keys: String, RawStringExtractable {
 public protocol ServerConfigProtocol {
     var valuePropEnabled: Bool { get }
     var iapConfig: IAPConfig { get }
-    func initialize(config: DataLayer.ServerConfigs)
+    func initialize(serverConfig: String)
 }
 
 public class ServerConfig: ServerConfigProtocol {
@@ -22,9 +22,8 @@ public class ServerConfig: ServerConfigProtocol {
     
     public init () {}
     
-    public func initialize(config: DataLayer.ServerConfigs) {
-        let configSring = config.config
-        guard let configData = configSring.data(using: .utf8),
+    public func initialize(serverConfig: String) {
+        guard let configData = serverConfig.data(using: .utf8),
               let config = try? JSONSerialization.jsonObject(with: configData, options: []) as? [String: Any]
         else { return }
         

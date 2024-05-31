@@ -44,7 +44,7 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         persistence.saveMyCourses(items: result.0)
         persistence.saveServerConfig(configs: result.1)
         
-        serverConfig.initialize(config: result.1)
+        serverConfig.initialize(serverConfig: result.1.config)
         
         return result.0
         

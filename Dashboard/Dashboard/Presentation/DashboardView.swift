@@ -99,7 +99,7 @@ public struct DashboardView: View {
                                         .accessibilityIdentifier("course_item")
                                     }
                                     // MARK: - ProgressBar
-                                    if viewModel.nextPage <= viewModel.totalPages {
+                                    if viewModel.nextPage <= viewModel.totalPages || viewModel.showLoader {
                                         VStack(alignment: .center) {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(.top, 20)

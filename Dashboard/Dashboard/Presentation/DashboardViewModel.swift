@@ -15,6 +15,7 @@ public class DashboardViewModel: ObservableObject {
     public var nextPage = 1
     public var totalPages = 1
     @Published public private(set) var fetchInProgress = false
+    @Published public private(set) var showLoader = false
     
     @Published var courses: [CourseItem] = []
     @Published var showError: Bool = false
@@ -60,20 +61,28 @@ public class DashboardViewModel: ObservableObject {
 
         NotificationCenter.default
             .publisher(for: .courseUpgradeCompletionNotification)
-            .sink { [weak self] _ in
+            .sink { [weak self] object in
+                
+                let showLoader = object.object as? Bool ?? false
                 guard let self else { return }
                 Task {
-                    await self.getMyCourses(page: 1, refresh: true)
+                    await self.getMyCourses(page: 1, refresh: true, showLoader: showLoader)
                 }
             }
             .store(in: &cancellations)
     }
     
     @MainActor
-    public func getMyCourses(page: Int, refresh: Bool = false) async {
+    public func getMyCourses(
+        page: Int,
+        refresh: Bool = false,
+        showLoader: Bool = false
+    ) async {
         do {
+            self.showLoader = showLoader
             fetchInProgress = true
             if connectivity.isInternetAvaliable {
+                
                 if refresh {
                     courses = try await interactor.getMyCourses(page: page)
                     self.totalPages = 1
