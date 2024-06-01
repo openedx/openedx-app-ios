@@ -40,6 +40,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -148,6 +149,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -207,6 +209,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -250,6 +253,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -290,6 +294,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -330,6 +335,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -462,6 +468,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
@@ -583,6 +590,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
@@ -704,6 +712,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
@@ -826,6 +835,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
@@ -956,6 +966,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
@@ -1086,6 +1097,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
@@ -1236,6 +1248,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure

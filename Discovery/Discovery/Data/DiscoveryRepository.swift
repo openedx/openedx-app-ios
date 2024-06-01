@@ -128,13 +128,15 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }
@@ -150,13 +152,15 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: nil,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }
@@ -172,14 +176,16 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
                     numPages: 1,
-                    coursesCount: 10
+                    coursesCount: 10,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }

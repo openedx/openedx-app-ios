@@ -247,7 +247,7 @@ public extension View {
                 .onTapGesture(perform: action)
         }
     }
-    
+
     func onTapBackground(enabled: Bool, _ action: @escaping () -> Void) -> some View {
         background(
             onTapBackgroundContent(enabled: enabled, action)

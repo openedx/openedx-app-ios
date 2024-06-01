@@ -275,12 +275,14 @@ private struct CourseStateView: View {
                     )
                     viewModel.router.showCourseScreens(
                         courseID: courseDetails.courseID,
-                        isActive: nil,
+                        hasAccess: nil,
                         courseStart: courseDetails.courseStart,
                         courseEnd: courseDetails.courseEnd,
                         enrollmentStart: courseDetails.enrollmentStart,
                         enrollmentEnd: courseDetails.enrollmentEnd,
-                        title: title
+                        title: title,
+                        showDates: false,
+                        lastVisitedBlockID: nil
                     )
                 }
             })

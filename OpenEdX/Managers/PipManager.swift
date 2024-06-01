@@ -6,6 +6,7 @@
 //
 
 import Course
+import Core
 import Combine
 import Discovery
 import SwiftUI
@@ -178,15 +179,17 @@ public class PipManager: PipManagerProtocol {
         for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseContainerView> {
         let courseDetails = try await getCourseDetails(for: holder)
-        let isActive: Bool? = nil
+        let hasAccess: Bool? = nil
         let controller = router.getCourseScreensController(
             courseID: courseDetails.courseID,
-            isActive: isActive,
+            hasAccess: hasAccess,
             courseStart: courseDetails.courseStart,
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,
             enrollmentEnd: courseDetails.enrollmentEnd,
-            title: courseDetails.courseTitle
+            title: courseDetails.courseTitle,
+            showDates: false,
+            lastVisitedBlockID: nil
         )
         controller.rootView.viewModel.selection = holder.selectedCourseTab
         return controller
