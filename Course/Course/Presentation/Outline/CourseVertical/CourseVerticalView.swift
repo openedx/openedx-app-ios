@@ -125,6 +125,7 @@ public struct CourseVerticalView: View {
                                             }
                                         }
                                         Image(systemName: "chevron.right")
+                                        .flipsForRightToLeftLayoutDirection(true)
                                             .padding(.vertical, 8)
                                     }
                                 .padding(.horizontal, 36)

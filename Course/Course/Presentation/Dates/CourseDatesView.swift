@@ -239,7 +239,7 @@ struct CompletedBlocks: View {
             }) {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(CompletionStatus.completed.rawValue)
+                        Text(CompletionStatus.completed.localized)
                             .font(Theme.Fonts.titleSmall)
                             .foregroundColor(Theme.Colors.textPrimary)
                         
@@ -286,6 +286,7 @@ struct CompletedBlocks: View {
                                 Spacer()
                                 if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                                     Image(systemName: "chevron.right")
+                                        .flipsForRightToLeftLayoutDirection(true)
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 6.55, height: 11.15)
@@ -325,6 +326,7 @@ struct BlockStatusView: View {
                     Spacer()
                     if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                         Image(systemName: "chevron.right")
+                            .flipsForRightToLeftLayoutDirection(true)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 6.55, height: 11.15)
