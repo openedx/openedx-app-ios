@@ -126,6 +126,8 @@ public struct DiscoveryWebview: View {
                         switch buttonAction {
                         case .signIn:
                             viewModel.router.showLoginScreen(sourceScreen: sourceScreen)
+                        case .signInWithSSO:
+                            viewModel.router.showLoginScreen(sourceScreen: sourceScreen)
                         case .register:
                             viewModel.router.showRegisterScreen(sourceScreen: sourceScreen)
                         }

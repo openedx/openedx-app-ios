@@ -798,6 +798,16 @@ public class Router: AuthorizationRouter,
         let controller = UIHostingController(rootView: webBrowser)
         navigationController.pushViewController(controller, animated: true)
     }
+    
+    public func showSSOWebBrowser(title: String) {
+        let config = Container.shared.resolve(ConfigProtocol.self)!
+        let webBrowser = ContainerWebView(
+            config.SSOBaseURL.absoluteString,
+            title: title
+        )
+        let controller = UIHostingController(rootView: webBrowser)
+        navigationController.pushViewController(controller, animated: true)
+    }
 }
 
 // MARK: BackNavigationProtocol

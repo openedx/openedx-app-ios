@@ -13,6 +13,7 @@ public protocol AuthInteractorProtocol {
     func login(username: String, password: String) async throws -> User
     @discardableResult
     func login(externalToken: String, backend: String) async throws -> User
+    func SSOlogin(jwtToken: String) async throws -> User
     func resetPassword(email: String) async throws -> ResetPassword
     func getCookies(force: Bool) async throws
     func getRegistrationFields() async throws -> [PickerFields]
@@ -37,6 +38,11 @@ public class AuthInteractor: AuthInteractorProtocol {
         return try await repository.login(externalToken: externalToken, backend: backend)
     }
 
+    @discardableResult
+    public func SSOlogin(jwtToken: String) async throws -> User {
+        return try await repository.SSOlogin(jwtToken: jwtToken)
+    }
+    
     public func resetPassword(email: String) async throws -> ResetPassword {
         try await repository.resetPassword(email: email)
     }

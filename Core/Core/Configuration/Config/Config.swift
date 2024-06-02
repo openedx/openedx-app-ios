@@ -9,6 +9,7 @@ import Foundation
 
 public protocol ConfigProtocol {
     var baseURL: URL { get }
+    var SSOBaseURL: URL { get }
     var oAuthClientId: String { get }
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
@@ -39,6 +40,7 @@ public enum TokenType: String {
 
 private enum ConfigKeys: String {
     case baseURL = "API_HOST_URL"
+    case SSOBaseURL = "SSO_URL"
     case oAuthClientID = "OAUTH_CLIENT_ID"
     case tokenType = "TOKEN_TYPE"
     case feedbackEmailAddress = "FEEDBACK_EMAIL_ADDRESS"
@@ -118,6 +120,14 @@ extension Config: ConfigProtocol {
         return url
     }
     
+    public var SSOBaseURL: URL {
+        guard let urlString = string(for: ConfigKeys.SSOBaseURL.rawValue),
+              let url = URL(string: urlString) else {
+            fatalError("Unable to find SSO base url in config.")
+        }
+        return url
+    }
+    
     public var oAuthClientId: String {
         guard let clientID = string(for: ConfigKeys.oAuthClientID.rawValue) else {
             fatalError("Unable to find OAuth ClientID in config.")
@@ -166,6 +176,7 @@ extension Config: ConfigProtocol {
 public class ConfigMock: Config {
     private let config: [String: Any] = [
         "API_HOST_URL": "https://www.example.com",
+        "SSO_URL" : "https://www.example.com",
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
         "PLATFORM_NAME": "OpenEdx",

@@ -162,6 +162,13 @@ public struct CourseDetailsView: View {
                                     viewModel.courseDetails?.courseTitle ?? ""
                                 )
                             )
+                        case .signInWithSSO:
+                            viewModel.router.showLoginScreen(
+                                sourceScreen: .courseDetail(
+                                    courseID,
+                                    viewModel.courseDetails?.courseTitle ?? ""
+                                )
+                            )
                         }
                     }
                 }
