@@ -146,7 +146,7 @@ public struct DiscoveryView: View {
                         }
                     }
                 }.accessibilityAction {}
-                
+
                 if !viewModel.userloggedIn {
                     LogistrationBottomView { buttonAction in
                         switch buttonAction {
@@ -154,18 +154,20 @@ public struct DiscoveryView: View {
                             viewModel.router.showLoginScreen(sourceScreen: .discovery)
                         case .register:
                             viewModel.router.showRegisterScreen(sourceScreen: .discovery)
+                        case .signInWithSSO:
+                            viewModel.router.showLoginScreen(sourceScreen: .discovery)
                         }
                     }
                 }
             }.padding(.top, 8)
-            
+
             // MARK: - Offline mode SnackBar
             OfflineSnackBarView(
                 connectivity: viewModel.connectivity,
                 reloadAction: {
                     await viewModel.discovery(page: 1, withProgress: false)
                 })
-            
+
             // MARK: - Error Alert
             if viewModel.showError {
                 VStack {

@@ -34,6 +34,8 @@ public protocol BaseRouter {
     func showDiscoveryScreen(searchQuery: String?, sourceScreen: LogistrationSourceScreen)
 
     func showWebBrowser(title: String, url: URL)
+    
+    func showSSOWebBrowser(title: String)
 
     func presentAlert(
         alertTitle: String,
@@ -100,6 +102,8 @@ open class BaseRouterMock: BaseRouter {
     public func removeLastView(controllers: Int) {}
 
     public func showWebBrowser(title: String, url: URL) {}
+    
+    public func showSSOWebBrowser(title: String) {}
 
     public func presentAlert(
         alertTitle: String,

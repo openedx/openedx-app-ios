@@ -121,7 +121,7 @@ public struct SignInView: View {
                                     .accessibilityIdentifier("password_textfield")
                                 HStack {
                                     if !viewModel.config.features.startupScreenEnabled {
-                                        Button(CoreLocalization.register) {
+                                        Button(CoreLocalization.SignIn.registerBtn) {
                                             viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
                                         }
                                         .foregroundColor(Theme.Colors.accentColor)
@@ -154,6 +154,13 @@ public struct SignInView: View {
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding(.top, 40)
+                                    .accessibilityIdentifier("signin_button")
+                                    
+                                    StyledButton(CoreLocalization.SignIn.logInWithSsoBtn) {
+                                        viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.top, 20)
                                     .accessibilityIdentifier("signin_button")
                                 }
                             }
