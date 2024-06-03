@@ -233,19 +233,4 @@ public extension DataLayer {
             case streamPriority = "stream_priority"
         }
     }
-    
-    struct CourseProgress: Codable {
-        public let totalAssignmentsCount: Int?
-        public let assignmentsCompleted: Int?
-        
-        public init(totalAssignmentsCount: Int, assignmentsCompleted: Int) {
-            self.totalAssignmentsCount = totalAssignmentsCount
-            self.assignmentsCompleted = assignmentsCompleted
-        }
-        
-        enum CodingKeys: String, CodingKey {
-            case totalAssignmentsCount = "total_assignments_count"
-            case assignmentsCompleted = "assignments_completed"
-        }
-    }
 }

@@ -75,7 +75,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
         
         let requestBlocks = CDCourseBlock.fetchRequest()
         requestBlocks.predicate = NSPredicate(format: "courseID = %@", courseID)
-
+        
         let blocks = try? context.fetch(requestBlocks).map {
             let userViewData = DataLayer.CourseDetailUserViewData(
                 transcripts: $0.transcripts?.jsonStringToDictionary() as? [String: String],
@@ -148,8 +148,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
             org: structure.org ?? "",
             isSelfPaced: structure.isSelfPaced,
             courseProgress: DataLayer.CourseProgress(
-                totalAssignmentsCount: Int(structure.totalAssignmentsCount),
-                assignmentsCompleted: Int(structure.assignmentsCompleted)
+                assignmentsCompleted: Int(structure.assignmentsCompleted),
+                totalAssignmentsCount: Int(structure.totalAssignmentsCount)
             )
         )
     }
