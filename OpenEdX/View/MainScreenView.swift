@@ -37,16 +37,77 @@ struct MainScreenView: View {
     
     var body: some View {
         TabView(selection: $viewModel.selection) {
-            let config = Container.shared.resolve(ConfigProtocol.self)
-            if config?.discovery.enabled ?? false {
+            switch viewModel.config.dashboard.type {
+            case .list:
                 ZStack {
-                    if config?.discovery.type == .native {
+                    ListDashboardView(
+                        viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
+                        router: Container.shared.resolve(DashboardRouter.self)!
+                    )
+                    
+                    if updateAvailable {
+                        UpdateNotificationView(config: viewModel.config)
+                    }
+                }
+                .tabItem {
+                    CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
+                    Text(CoreLocalization.Mainscreen.dashboard)
+                }
+                .tag(MainTab.dashboard)
+                .accessibilityIdentifier("dashboard_tabitem")
+                if viewModel.config.program.enabled {
+                    ZStack {
+                        if viewModel.config.program.type == .webview {
+                            ProgramWebviewView(
+                                viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+                                router: Container.shared.resolve(DiscoveryRouter.self)!
+                            )
+                        } else if viewModel.config.program.type == .native {
+                            Text(CoreLocalization.Mainscreen.inDeveloping)
+                        }
+                        
+                        if updateAvailable {
+                            UpdateNotificationView(config: viewModel.config)
+                        }
+                    }
+                    .tabItem {
+                        CoreAssets.programs.swiftUIImage.renderingMode(.template)
+                        Text(CoreLocalization.Mainscreen.programs)
+                    }
+                    .tag(MainTab.programs)
+                }
+            case .gallery:
+                ZStack {
+                    PrimaryCourseDashboardView(
+                        viewModel: Container.shared.resolve(PrimaryCourseDashboardViewModel.self)!,
+                        router: Container.shared.resolve(DashboardRouter.self)!,
+                        programView: ProgramWebviewView(
+                            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+                            router: Container.shared.resolve(DiscoveryRouter.self)!
+                        ),
+                        openDiscoveryPage: { viewModel.selection = .discovery }
+                    )
+                    if updateAvailable {
+                        UpdateNotificationView(config: viewModel.config)
+                    }
+                }
+                .tabItem {
+                    CoreAssets.learn.swiftUIImage.renderingMode(.template)
+                    Text(CoreLocalization.Mainscreen.learn)
+                }
+                .tag(MainTab.dashboard)
+                .accessibilityIdentifier("dashboard_tabitem")
+            }
+            
+            if viewModel.config.discovery.enabled {
+                ZStack {
+                    if viewModel.config.discovery.type == .native {
                         DiscoveryView(
                             viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
                             router: Container.shared.resolve(DiscoveryRouter.self)!,
                             sourceScreen: viewModel.sourceScreen
                         )
-                    } else if config?.discovery.type == .webview {
+                    } else if viewModel.config.discovery.type == .webview {
                         DiscoveryWebview(
                             viewModel: Container.shared.resolve(
                                 DiscoveryWebviewViewModel.self,
@@ -67,46 +128,6 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
-            ZStack {
-                DashboardView(
-                    viewModel: Container.shared.resolve(DashboardViewModel.self)!,
-                    router: Container.shared.resolve(DashboardRouter.self)!
-                )
-                if updateAvailable {
-                    UpdateNotificationView(config: viewModel.config)
-                }
-            }
-            .tabItem {
-                CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
-                Text(CoreLocalization.Mainscreen.dashboard)
-            }
-            .tag(MainTab.dashboard)
-            .accessibilityIdentifier("dashboard_tabitem")
-            
-            if config?.program.enabled ?? false {
-                ZStack {
-                    if config?.program.type == .webview {
-                        ProgramWebviewView(
-                            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
-                            router: Container.shared.resolve(DiscoveryRouter.self)!
-                        )
-                    } else if config?.program.type == .native {
-                        Text(CoreLocalization.Mainscreen.inDeveloping)
-                            .accessibilityIdentifier("indevelopment_program_text")
-                    }
-                    
-                    if updateAvailable {
-                        UpdateNotificationView(config: viewModel.config)
-                    }
-                }
-                .tabItem {
-                    CoreAssets.programs.swiftUIImage.renderingMode(.template)
-                    Text(CoreLocalization.Mainscreen.programs)
-                }
-                .tag(MainTab.programs)
-                .accessibilityIdentifier("programs_tabitem")
-            }
-            
             VStack {
                 ProfileView(
                     viewModel: Container.shared.resolve(ProfileViewModel.self)!
@@ -119,8 +140,8 @@ struct MainScreenView: View {
             .tag(MainTab.profile)
             .accessibilityIdentifier("profile_tabitem")
         }
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarHidden(viewModel.selection == .dashboard)
+        .navigationBarBackButtonHidden(viewModel.selection == .dashboard)
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
@@ -171,7 +192,9 @@ struct MainScreenView: View {
         case .discovery:
             return DiscoveryLocalization.title
         case .dashboard:
-            return DashboardLocalization.title
+            return viewModel.config.dashboard.type == .list
+            ? DashboardLocalization.title
+            : DashboardLocalization.Learn.title
         case .programs:
             return CoreLocalization.Mainscreen.programs
         case .profile:

@@ -359,41 +359,49 @@ public class Router: AuthorizationRouter,
     
     public func showCourseScreens(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        showDates: Bool,
+        lastVisitedBlockID: String?
     ) {
         let controller = getCourseScreensController(
             courseID: courseID,
-            isActive: isActive,
+            hasAccess: hasAccess,
             courseStart: courseStart,
             courseEnd: courseEnd,
             enrollmentStart: enrollmentStart,
             enrollmentEnd: enrollmentEnd,
-            title: title
+            title: title,
+            showDates: showDates,
+            lastVisitedBlockID: lastVisitedBlockID
         )
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func getCourseScreensController(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        showDates: Bool,
+        lastVisitedBlockID: String?
     ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
-            arguments: isActive,
+            arguments: hasAccess,
             courseStart,
             courseEnd,
             enrollmentStart,
-            enrollmentEnd
+            enrollmentEnd,
+            showDates ? CourseTab.dates : CourseTab.course,
+            lastVisitedBlockID
         )!
         
         let datesVm = Container.shared.resolve(
@@ -410,6 +418,13 @@ public class Router: AuthorizationRouter,
         )
         
         return UIHostingController(rootView: screensView)
+    }
+    
+    public func showAllCourses(courses: [CourseItem]) {
+        let vm = Container.shared.resolve(AllCoursesViewModel.self)!
+        let view = AllCoursesView(viewModel: vm, router: self)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showHandoutsUpdatesView(

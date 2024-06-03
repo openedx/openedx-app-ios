@@ -99,6 +99,8 @@ public enum CoreLocalization {
     public static let mmmDdYyyy = CoreLocalization.tr("Localizable", "DATE_FORMAT.MMM_DD_YYYY", fallback: "MMM dd, yyyy")
     /// MMMM dd
     public static let mmmmDd = CoreLocalization.tr("Localizable", "DATE_FORMAT.MMMM_DD", fallback: "MMMM dd")
+    /// MMMM dd, yyyy
+    public static let mmmmDdYyyy = CoreLocalization.tr("Localizable", "DATE_FORMAT.MMMM_DD_YYYY", fallback: "MMMM dd, yyyy")
   }
   public enum DownloadManager {
     /// Completed
@@ -142,6 +144,8 @@ public enum CoreLocalization {
     public static let discovery = CoreLocalization.tr("Localizable", "MAINSCREEN.DISCOVERY", fallback: "Discover")
     /// In developing
     public static let inDeveloping = CoreLocalization.tr("Localizable", "MAINSCREEN.IN_DEVELOPING", fallback: "In developing")
+    /// Learn
+    public static let learn = CoreLocalization.tr("Localizable", "MAINSCREEN.LEARN", fallback: "Learn")
     /// Profile
     public static let profile = CoreLocalization.tr("Localizable", "MAINSCREEN.PROFILE", fallback: "Profile")
     /// Programs

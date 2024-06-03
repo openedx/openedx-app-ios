@@ -20,12 +20,14 @@ public protocol DiscoveryRouter: BaseRouter {
     func showDiscoverySearch(searchQuery: String?)
     func showCourseScreens(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        showDates: Bool,
+        lastVisitedBlockID: String?
     )
     
     func showWebProgramDetails(
@@ -51,12 +53,14 @@ public class DiscoveryRouterMock: BaseRouterMock, DiscoveryRouter {
     public func showDiscoverySearch(searchQuery: String? = nil) {}
     public func showCourseScreens(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        showDates: Bool,
+        lastVisitedBlockID: String?
     ) {}
     
     public func showWebProgramDetails(

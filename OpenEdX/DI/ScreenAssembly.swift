@@ -162,8 +162,25 @@ class ScreenAssembly: Assembly {
                 repository: r.resolve(DashboardRepositoryProtocol.self)!
             )
         }
-        container.register(DashboardViewModel.self) { r in
-            DashboardViewModel(
+        container.register(ListDashboardViewModel.self) { r in
+            ListDashboardViewModel(
+                interactor: r.resolve(DashboardInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(DashboardAnalytics.self)!
+            )
+        }
+        
+        container.register(PrimaryCourseDashboardViewModel.self) { r in
+            PrimaryCourseDashboardViewModel(
+                interactor: r.resolve(DashboardInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }
+        
+        container.register(AllCoursesViewModel.self) { r in
+            AllCoursesViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DashboardAnalytics.self)!
@@ -274,7 +291,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
+        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, selection, lastVisitedBlockID in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -289,7 +306,9 @@ class ScreenAssembly: Assembly {
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
                 enrollmentEnd: enrollmentEnd,
-                coreAnalytics: r.resolve(CoreAnalytics.self)!
+                lastVisitedBlockID: lastVisitedBlockID,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!,
+                selection: selection
             )
         }
         
