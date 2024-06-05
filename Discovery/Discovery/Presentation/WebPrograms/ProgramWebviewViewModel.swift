@@ -14,6 +14,7 @@ public class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProt
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
+    @Published var webViewError: Bool = false
     @Published public var updatingCookies: Bool = false
     @Published public var cookiesReady: Bool = false
     
@@ -234,5 +235,11 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
     
     private func isValidAppURLScheme(_ url: URL) -> Bool {
         return url.scheme ?? "" == config.URIScheme
+    }
+    
+    public func showWebViewError() {
+        DispatchQueue.main.async {
+            self.webViewError = true
+        }
     }
 }

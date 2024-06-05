@@ -17,6 +17,8 @@ public protocol WebViewNavigationDelegate: AnyObject {
         shouldLoad request: URLRequest,
         navigationAction: WKNavigationAction
     ) async -> Bool
+    
+    func showWebViewError()
 }
 
 public struct WebView: UIViewRepresentable {
@@ -70,6 +72,10 @@ public struct WebView: UIViewRepresentable {
         
         public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             webView.isHidden = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+            }
+            parent.webViewNavDelegate?.showWebViewError()
         }
         
         public func webView(
@@ -78,6 +84,10 @@ public struct WebView: UIViewRepresentable {
             withError error: Error
         ) {
             webView.isHidden = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+            }
+            parent.webViewNavDelegate?.showWebViewError()
         }
         
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -189,7 +199,14 @@ public struct WebView: UIViewRepresentable {
         
         @objc private func reload() {
             parent.isLoading = true
-            webview?.reload()
+            if webview?.url?.absoluteString.isEmpty ?? true {
+                if let url = URL(string: parent.viewModel.url) {
+                    let request = URLRequest(url: url)
+                    webview?.load(request)
+                }
+            } else {
+                webview?.reload()
+            }
         }
 
         public func userContentController(
