@@ -183,7 +183,7 @@ public class UpgradeInfoViewModel: ObservableObject {
                 courseID: self.courseID,
                 blockID: "",
                 pacing: pacing,
-                coursePrice: "",
+                coursePrice: nil,
                 screen: self.screen,
                 errorAction: UpgradeErrorAction.close.rawValue,
                 error: "price",

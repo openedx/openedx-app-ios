@@ -15,9 +15,9 @@ public class IAPConfig: NSObject {
         case restoreEnabled = "restore_enabled"
     }
 
-    private(set) var enabled: Bool = false
+    public var enabled: Bool = false
     private var disabledVersions: [String] = []
-    private(set) var restoreEnabled: Bool = false
+    public var restoreEnabled: Bool = false
     
     init(dictionary: [String: Any]) {
         enabled = dictionary[Keys.enabled] as? Bool ?? false

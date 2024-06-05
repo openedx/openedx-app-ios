@@ -34,3 +34,27 @@ public class ServerConfig: ServerConfigProtocol {
         return config[Keys.valuePropEnabled] as? Bool ?? false
     }
 }
+
+// Mark - For testing and SwiftUI preview
+#if DEBUG
+public class ServerConfigProtocolMock: ServerConfigProtocol {
+    
+    let configString = "{\"iap_config\":{\"enabled\":true,\"experiment_enabled\":false,\"android_product_prefix\":\"mobile.android.usd\",\"allowed_users\":[\"all_users\"]},\"value_prop_enabled\":true,\"feedback_form_url\":\"https://bit.ly/edx-apps-feedback\",\"course_dates_calendar_sync\":{\"ios\":{\"enabled\":true,\"self_paced_enabled\":true,\"instructor_paced_enabled\":true,\"deep_links_enabled\":true},\"android\":{\"enabled\":true,\"self_paced_enabled\":true,\"instructor_paced_enabled\":true,\"deep_links_enabled\":true}}}"
+    
+    var config: [String: Any] = [:]
+    
+    public var valuePropEnabled: Bool
+    
+    public var iapConfig: IAPConfig
+    
+    public func initialize(serverConfig: String) {
+        
+    }
+    
+    public init() {
+        valuePropEnabled = false
+        iapConfig = IAPConfig(dictionary: ["enabled": true, "restore_enabled": true])
+        initialize(serverConfig: configString)
+    }
+}
+#endif

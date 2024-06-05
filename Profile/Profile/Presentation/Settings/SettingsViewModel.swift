@@ -70,6 +70,9 @@ public class SettingsViewModel: ObservableObject {
     let analytics: ProfileAnalytics
     let coreAnalytics: CoreAnalytics
     let config: ConfigProtocol
+    let serverConfig: ServerConfigProtocol
+    let upgradeHandler: CourseUpgradeHandlerProtocol
+    let upgradeHelper: CourseUpgradeHelperProtocol?
     
     public init(
         interactor: ProfileInteractorProtocol,
@@ -77,7 +80,10 @@ public class SettingsViewModel: ObservableObject {
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         coreAnalytics: CoreAnalytics,
-        config: ConfigProtocol
+        config: ConfigProtocol,
+        serverConfig: ServerConfigProtocol,
+        upgradeHandler: CourseUpgradeHandlerProtocol,
+        upgradeHelper: CourseUpgradeHelperProtocol? = nil
     ) {
         self.interactor = interactor
         self.downloadManager = downloadManager
@@ -85,11 +91,15 @@ public class SettingsViewModel: ObservableObject {
         self.analytics = analytics
         self.coreAnalytics = coreAnalytics
         self.config = config
+        self.serverConfig = serverConfig
+        self.upgradeHandler = upgradeHandler
+        self.upgradeHelper = upgradeHelper
         
         let userSettings = interactor.getSettings()
         self.userSettings = userSettings
         self.wifiOnly = userSettings.wifiOnly
         self.selectedQuality = userSettings.streamingQuality
+        
         generateVersionState()
     }
     
@@ -171,6 +181,65 @@ public class SettingsViewModel: ObservableObject {
         analytics.profileEvent(.userLogoutClicked, biValue: .userLogoutClicked)
     }
     
+    @MainActor
+    func restorePurchases() async {
+        coreAnalytics.trackRestorePurchaseClicked()
+        router.showRestoreProgressView()
+        
+        guard let inprogressIAP = CourseUpgradeHelper.getInProgressIAP() else {
+            hideRestoreProgressView(showAlert: true, delay: 3)
+            return
+        }
+        
+        do {
+            let product = try await upgradeHandler.fetchProduct(sku: inprogressIAP.sku)
+            await fulfillPurchase(inprogressIAP: inprogressIAP, product: product)
+        } catch _ {
+            hideRestoreProgressView(showAlert: true)
+        }
+    }
+    
+    private func fulfillPurchase(inprogressIAP: InProgressIAP, product: StoreProductInfo) async {
+        coreAnalytics.trackCourseUnfulfilledPurchaseInitiated(
+            courseID: inprogressIAP.courseID,
+            pacing: inprogressIAP.pacing,
+            screen: .dashboard,
+            flowType: .restore)
+
+        await upgradeHandler.upgradeCourse(
+            sku: inprogressIAP.sku,
+            mode: .silent,
+            productInfo: product,
+            pacing: inprogressIAP.pacing,
+            courseID: inprogressIAP.courseID,
+            componentID: nil,
+            screen: .dashboard,
+            completion: {[weak self] state in
+                print("Saeed: \(state)")
+                guard let self else { return }
+                switch state {
+                
+                case .error:
+                        self.hideRestoreProgressView()
+                case .complete:
+                    self.hideRestoreProgressView()
+                default:
+                   debugPrint("Upgrade state changed: \(state)")
+                }
+            }
+        )
+    }
+    
+    private func hideRestoreProgressView(showAlert: Bool = false, delay: TimeInterval = 0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            Task {
+                self?.router.hideRestoreProgressView()
+                if showAlert {
+                    self?.upgradeHelper?.showRestorePurchasesAlert()
+                }
+            }
+        }
+    }
 }
 
 public extension StreamingQuality {

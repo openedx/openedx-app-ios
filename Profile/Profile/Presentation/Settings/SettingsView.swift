@@ -67,6 +67,10 @@ public struct SettingsView: View {
                             } else {
                                 manageAccount
                                 settings
+                                if viewModel.serverConfig.iapConfig.enabled &&
+                                    viewModel.serverConfig.iapConfig.restoreEnabled {
+                                    restorePurchases
+                                }
                                 ProfileSupportInfoView(viewModel: viewModel)
                                 logOutButton
                             }
@@ -167,6 +171,51 @@ public struct SettingsView: View {
         )
     }
     
+    @ViewBuilder
+    private var restorePurchases: some View {
+        Text("Purchases")
+            .padding(.horizontal, 24)
+            .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.textSecondary)
+            .accessibilityIdentifier("purchases_heading_text")
+            .padding(.top, 12)
+        
+        VStack(alignment: .leading, spacing: 12) {
+            
+            Text("Restore purchases")
+                .font(Theme.Fonts.titleMedium)
+                .foregroundColor(Theme.Colors.textPrimary)
+                .accessibilityIdentifier("restore_title_text")
+            
+            Text("Sign into the app store to restore access to courses you have previously paid to upgrade")
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textSecondary)
+                .accessibilityIdentifier("restore_message_text")
+
+            Spacer()
+            
+            StyledButton(
+                "Restore purchases",
+                action: {
+                    Task {
+                        await viewModel.restorePurchases()
+                    }
+                },
+                color: .clear,
+                textColor: Theme.Colors.secondaryButtonTextColor,
+                borderColor: Theme.Colors.secondaryButtonBorderColor
+            )
+            .accessibilityIdentifier("video_settings_button")
+            
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ProfileLocalization.settingsVideo)
+        .cardStyle(
+            bgColor: Theme.Colors.textInputUnfocusedBackground,
+            strokeColor: .clear
+        )
+    }
+    
     // MARK: - Log out
     
     private var logOutButton: some View {
@@ -221,7 +270,9 @@ struct SettingsView_Previews: PreviewProvider {
             router: router,
             analytics: ProfileAnalyticsMock(),
             coreAnalytics: CoreAnalyticsMock(),
-            config: ConfigMock()
+            config: ConfigMock(),
+            serverConfig: ServerConfigProtocolMock(),
+            upgradeHandler: CourseUpgradeHandlerProtocolMock()
         )
         
         SettingsView(viewModel: vm)

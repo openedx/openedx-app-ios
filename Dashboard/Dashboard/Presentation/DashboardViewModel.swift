@@ -95,13 +95,16 @@ public class DashboardViewModel: ObservableObject {
                     totalPages = courses[0].numPages
                 }
                 fetchInProgress = false
+                self.showLoader = false
             } else {
                 courses = try interactor.discoveryOffline()
                 self.nextPage += 1
                 fetchInProgress = false
+                self.showLoader = false
             }
         } catch let error {
             fetchInProgress = false
+            self.showLoader = false
             if error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.noCachedData
             } else {
@@ -145,7 +148,7 @@ extension DashboardViewModel {
         }
     }
     
-    public func fulfillPurchase(inprogressIAP: InProgressIAP, product: StoreProductInfo) async {
+    private func fulfillPurchase(inprogressIAP: InProgressIAP, product: StoreProductInfo) async {
         
         coreAnalytics.trackCourseUnfulfilledPurchaseInitiated(
             courseID: inprogressIAP.courseID,

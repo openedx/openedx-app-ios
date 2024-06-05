@@ -214,7 +214,10 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                serverConfig: r.resolve(ServerConfigProtocol.self)!,
+                upgradeHandler: r.resolve(CourseUpgradeHandlerProtocol.self)!,
+                upgradeHelper: r.resolve(CourseUpgradeHelperProtocol.self)!
             )
         }
         

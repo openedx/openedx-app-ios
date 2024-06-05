@@ -10,8 +10,27 @@ import Theme
 
 extension UIApplication {
     
-    public var keyWindow: UIWindow? {
-        UIApplication.shared.windows.first { $0.isKeyWindow }
+    public var window: UIWindow? {
+        if Thread.isMainThread {
+            return UIApplication
+                .shared
+                .connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .flatMap { $0.windows }
+                .first { $0.isKeyWindow }
+        } else {
+            var win: UIWindow?
+            DispatchQueue.main.sync {
+                win = UIApplication
+                    .shared
+                    .connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+            }
+            
+            return win
+        }
     }
     
     public func endEditing(force: Bool = true) {
@@ -19,7 +38,7 @@ extension UIApplication {
     }
     
     public class func topViewController(
-        controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController
+        controller: UIViewController? = UIApplication.shared.window?.rootViewController
     ) -> UIViewController? {
         if let navigationController = controller as? UINavigationController {
             return topViewController(controller: navigationController.visibleViewController)

@@ -22,4 +22,6 @@ public protocol CourseUpgradeHelperProtocol {
         state: UpgradeCompletionState,
         delegate: CourseUpgradeHelperDelegate?
     )
+    
+    func showRestorePurchasesAlert()
 }

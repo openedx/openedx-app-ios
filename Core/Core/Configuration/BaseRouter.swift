@@ -72,6 +72,10 @@ public protocol BaseRouter {
     func showUpgradeLoaderView(animated: Bool) async
     @MainActor
     func hideUpgradeLoaderView(animated: Bool) async
+    @MainActor
+    func showRestoreProgressView()
+    @MainActor
+    func hideRestoreProgressView()
 }
 
 extension BaseRouter {
@@ -152,5 +156,9 @@ open class BaseRouterMock: BaseRouter {
     public func showUpgradeLoaderView(animated: Bool) async {}
     @MainActor
     public func hideUpgradeLoaderView(animated: Bool) async {}
+    @MainActor
+    public func showRestoreProgressView() {}
+    @MainActor
+    public func hideRestoreProgressView() {}
 }
 #endif
