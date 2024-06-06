@@ -202,8 +202,8 @@ public struct SettingsView: View {
                     }
                 },
                 color: .clear,
-                textColor: Theme.Colors.secondaryButtonTextColor,
-                borderColor: Theme.Colors.secondaryButtonBorderColor
+                textColor: Theme.Colors.accentColor,
+                borderColor: Theme.Colors.accentColor
             )
             .accessibilityIdentifier("video_settings_button")
             

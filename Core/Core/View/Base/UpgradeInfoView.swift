@@ -179,6 +179,7 @@ public class UpgradeInfoViewModel: ObservableObject {
         alertController.addButton(withTitle: cancelButtonTitle, style: .default) { [weak self] _ in
             guard let self else { return }
             self.error = error
+            self.isLoading = false
             self.analytics.trackCourseUpgradeErrorAction(
                 courseID: self.courseID,
                 blockID: "",
@@ -274,7 +275,7 @@ public struct UpgradeInfoView: View {
     }
     
     private var shouldHideButton: Bool {
-        viewModel.isLoading && viewModel.price.isEmpty
+        viewModel.isLoading
     }
     
     private var buttonText: String {
