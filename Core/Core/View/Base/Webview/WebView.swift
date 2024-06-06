@@ -199,11 +199,10 @@ public struct WebView: UIViewRepresentable {
         
         @objc private func reload() {
             parent.isLoading = true
-            if webview?.url?.absoluteString.isEmpty ?? true {
-                if let url = URL(string: parent.viewModel.url) {
-                    let request = URLRequest(url: url)
-                    webview?.load(request)
-                }
+            if webview?.url?.absoluteString.isEmpty ?? true,
+               let url = URL(string: parent.viewModel.url) {
+                let request = URLRequest(url: url)
+                webview?.load(request)
             } else {
                 webview?.reload()
             }
