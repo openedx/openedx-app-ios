@@ -188,7 +188,9 @@ public struct CourseOutlineView: View {
             }
         }
         .onAppear {
-            viewModel.updateCourseIfNeeded(courseID: courseID)
+            Task {
+               await viewModel.updateCourseIfNeeded(courseID: courseID)
+            }
         }
         .background(
             Theme.Colors.background

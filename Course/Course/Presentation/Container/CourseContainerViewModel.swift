@@ -140,11 +140,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         addObservers()
     }
     
-    func updateCourseIfNeeded(courseID: String) {
+    func updateCourseIfNeeded(courseID: String) async {
         if updateCourseProgress {
-            Task {
-                await getCourseBlocks(courseID: courseID, withProgress: false)
-            }
+            await getCourseBlocks(courseID: courseID, withProgress: false)
             updateCourseProgress = false
         }
     }
