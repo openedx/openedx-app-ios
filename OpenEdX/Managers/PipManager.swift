@@ -114,7 +114,7 @@ public class PipManager: PipManagerProtocol {
             viewControllers.append(try await containerController(for: holder))
         }
         
-        if !courseDropDownNavigationEnabled || holder.selectedCourseTab != CourseTab.dates.rawValue {
+        if !courseDropDownNavigationEnabled && holder.selectedCourseTab != CourseTab.dates.rawValue {
             viewControllers.append(try await courseVerticalController(for: holder))
         }
         
