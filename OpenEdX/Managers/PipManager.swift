@@ -16,6 +16,7 @@ public class PipManager: PipManagerProtocol {
     let discoveryInteractor: DiscoveryInteractorProtocol
     let courseInteractor: CourseInteractorProtocol
     let router: Router
+    let courseDropDownNavigationEnabled: Bool
     public var isPipActive: Bool {
         controllerHolder != nil
     }
@@ -26,11 +27,13 @@ public class PipManager: PipManagerProtocol {
     public init(
         router: Router,
         discoveryInteractor: DiscoveryInteractorProtocol,
-        courseInteractor: CourseInteractorProtocol
+        courseInteractor: CourseInteractorProtocol,
+        courseDropDownNavigationEnabled: Bool
     ) {
         self.discoveryInteractor = discoveryInteractor
         self.courseInteractor = courseInteractor
         self.router = router
+        self.courseDropDownNavigationEnabled = courseDropDownNavigationEnabled
     }
     
     public func holder(
@@ -111,7 +114,7 @@ public class PipManager: PipManagerProtocol {
             viewControllers.append(try await containerController(for: holder))
         }
         
-        if holder.selectedCourseTab != CourseTab.dates.rawValue {
+        if !courseDropDownNavigationEnabled || holder.selectedCourseTab != CourseTab.dates.rawValue {
             viewControllers.append(try await courseVerticalController(for: holder))
         }
         

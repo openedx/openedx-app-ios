@@ -592,8 +592,10 @@ public class Router: AuthorizationRouter,
         )
         
         var controllers = navigationController.viewControllers
+        let config = Container.shared.resolve(ConfigProtocol.self)!
+        let courseDropDownNavigationEnabled = config.uiComponents.courseDropDownNavigationEnabled
 
-        if currentCourseTabSelection == CourseTab.dates.rawValue {
+        if !courseDropDownNavigationEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {
