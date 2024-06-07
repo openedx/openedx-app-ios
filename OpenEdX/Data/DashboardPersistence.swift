@@ -19,32 +19,31 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     }
     
     public func loadEnrollments() throws -> [CourseItem] {
-        let result = try? context.fetch(CDDashboardCourse.fetchRequest())
-            .map { CourseItem(name: $0.name ?? "",
-                              org: $0.org ?? "",
-                              shortDescription: $0.desc ?? "",
-                              imageURL: $0.imageURL ?? "",
-                              hasAccess: $0.hasAccess,
-                              courseStart: $0.courseStart,
-                              courseEnd: $0.courseEnd,
-                              enrollmentStart: $0.enrollmentStart,
-                              enrollmentEnd: $0.enrollmentEnd,
-                              courseID: $0.courseID ?? "",
-                              numPages: Int($0.numPages),
-                              coursesCount: Int($0.courseCount),
-                              sku: $0.courseSku ?? "",
-                              dynamicUpgradeDeadline: $0.dynamicUpgradeDeadline,
-                              mode: DataLayer.Mode(rawValue: $0.mode ?? "") ?? .unknown,
-                              isSelfPaced: $0.isSelfPaced,
-                              progressEarned: 0,
-                              progressPossible: 0)}
-        
-        if let result, !result.isEmpty {
-            return result
-        } else {
-            throw NoCachedDataError()
+            let result = try? context.fetch(CDDashboardCourse.fetchRequest())
+                .map { CourseItem(name: $0.name ?? "",
+                                  org: $0.org ?? "",
+                                  shortDescription: $0.desc ?? "",
+                                  imageURL: $0.imageURL ?? "",
+                                  hasAccess: $0.hasAccess,
+                                  courseStart: $0.courseStart,
+                                  courseEnd: $0.courseEnd,
+                                  enrollmentStart: $0.enrollmentStart,
+                                  enrollmentEnd: $0.enrollmentEnd,
+                                  courseID: $0.courseID ?? "",
+                                  numPages: Int($0.numPages),
+                                  coursesCount: Int($0.courseCount),
+                                  sku: $0.courseSku ?? "",
+                                  dynamicUpgradeDeadline: $0.dynamicUpgradeDeadline,
+                                  mode: DataLayer.Mode(rawValue: $0.mode ?? "") ?? .unknown,
+                                  isSelfPaced: $0.isSelfPaced,
+                                  progressEarned: 0,
+                                  progressPossible: 0)}
+            if let result, !result.isEmpty {
+                return result
+            } else {
+                throw NoCachedDataError()
+            }
         }
-    }
     
     public func saveEnrollments(items: [CourseItem]) {
         for item in items {
@@ -65,6 +64,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.courseSku = item.sku
                 newItem.dynamicUpgradeDeadline = item.dynamicUpgradeDeadline
                 newItem.mode = item.mode.rawValue
+                newItem.isSelfPaced = item.isSelfPaced ?? false
                 do {
                     try context.save()
                 } catch {
@@ -74,18 +74,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
     
-    public func loadServerConfig() throws -> DataLayer.ServerConfigs? {
-        let result = try? context.fetch(CDServerConfigs.fetchRequest())
-            .map { DataLayer.ServerConfigs(config: $0.config ?? "")}
-        
-        if let result, !result.isEmpty {
-            return result.first
-            
-        } else {
-            throw NoCachedDataError()
-        }
-    }
-    
+    // swiftlint:disable function_body_length
     public func loadPrimaryEnrollment() throws -> PrimaryEnrollment {
         let request = CDMyEnrollments.fetchRequest()
         if let result = try context.fetch(request).first {
@@ -147,6 +136,10 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                         courseID: cdCourse.courseID ?? "",
                         numPages: Int(cdCourse.numPages),
                         coursesCount: Int(cdCourse.courseCount),
+                        sku: cdCourse.courseSku ?? "",
+                        dynamicUpgradeDeadline: cdCourse.dynamicUpgradeDeadline,
+                        mode: DataLayer.Mode(rawValue: cdCourse.mode ?? "") ?? .unknown,
+                        isSelfPaced: cdCourse.isSelfPaced,
                         progressEarned: Int(cdCourse.progressEarned),
                         progressPossible: Int(cdCourse.progressPossible)
                     )
@@ -158,38 +151,17 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 totalPages: Int(result.totalPages),
                 count: Int(result.count)
             )
+        } else {
+            throw NoCachedDataError()
         }
     }
     
-    public func saveServerConfig(configs: DataLayer.ServerConfigs) {
-        context.performAndWait {
-            let result = try? context.fetch(CDServerConfigs.fetchRequest())
-            var item: CDServerConfigs?
-            
-            if let result, !result.isEmpty {
-                item = result.first
-                item?.config = configs.config
-            } else {
-                item = CDServerConfigs(context: context)
-            }
-            
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            item?.config = configs.config
-            do {
-                try context.save()
-            } catch {
-                print("⛔️⛔️⛔️⛔️⛔️", error)
-            }
-        }
-    }
-    
-    // swiftlint:disable function_body_length
     public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) {
         context.performAndWait {
             // Deleting all old data before saving new ones
             clearOldEnrollmentsData()
             
-            let newEnrollment = CDMyEnrollments(context: context)
+            let newEnrollment = CDMyEnrollments(context: self.context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             
             // Saving new courses
@@ -206,6 +178,10 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 cdCourse.courseID = course.courseID
                 cdCourse.numPages = Int32(course.numPages)
                 cdCourse.hasAccess = course.hasAccess
+                cdCourse.courseSku = course.sku
+                cdCourse.dynamicUpgradeDeadline = course.dynamicUpgradeDeadline
+                cdCourse.mode = course.mode.rawValue
+                cdCourse.isSelfPaced = course.isSelfPaced ?? false
                 cdCourse.progressEarned = Int32(course.progressEarned)
                 cdCourse.progressPossible = Int32(course.progressPossible)
                 return cdCourse
@@ -213,7 +189,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
             
             // Saving PrimaryCourse
             if let primaryCourse = enrollments.primaryCourse {
-                let cdPrimaryCourse = CDPrimaryCourse(context: context)
+                let cdPrimaryCourse = CDPrimaryCourse(context: self.context)
                 
                 let futureAssignments = primaryCourse.futureAssignments.map { assignment in
                     let cdAssignment = CDAssignment(context: self.context)
@@ -282,6 +258,40 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
             try context.execute(batchDeleteRequest3)
         } catch {
             print("Error when deleting old data:", error)
+        }
+    }
+    
+    public func saveServerConfig(configs: DataLayer.ServerConfigs) {
+        context.performAndWait {
+            let result = try? context.fetch(CDServerConfigs.fetchRequest())
+            var item: CDServerConfigs?
+            
+            if let result, !result.isEmpty {
+                item = result.first
+                item?.config = configs.config
+            } else {
+                item = CDServerConfigs(context: context)
+            }
+            
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            item?.config = configs.config
+            do {
+                try context.save()
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
+            }
+        }
+    }
+    
+    public func loadServerConfig() throws -> DataLayer.ServerConfigs? {
+        let result = try? context.fetch(CDServerConfigs.fetchRequest())
+            .map { DataLayer.ServerConfigs(config: $0.config ?? "")}
+        
+        if let result, !result.isEmpty {
+            return result.first
+            
+        } else {
+            throw NoCachedDataError()
         }
     }
 }

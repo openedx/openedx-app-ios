@@ -134,8 +134,8 @@ struct CalendarDialogView: View {
                         action: {
                             action()
                         },
-                        iconImage: CoreAssets.calendarAccess.swiftUIImage,
-                        iconPosition: .right
+                        rightImage: CoreAssets.calendarAccess.swiftUIImage,
+                        imagesStyle: .onSides
                     )
                     StyledButton(
                         ProfileLocalization.CalendarDialog.cancel,

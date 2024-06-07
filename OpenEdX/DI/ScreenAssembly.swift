@@ -167,7 +167,9 @@ class ScreenAssembly: Assembly {
             ListDashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                upgradehandler: r.resolve(CourseUpgradeHandlerProtocol.self)!,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!
             )
         }
         
@@ -184,9 +186,7 @@ class ScreenAssembly: Assembly {
             AllCoursesViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!,
-                upgradehandler: r.resolve(CourseUpgradeHandlerProtocol.self)!,
-                coreAnalytics: r.resolve(CoreAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!
             )
         }
         

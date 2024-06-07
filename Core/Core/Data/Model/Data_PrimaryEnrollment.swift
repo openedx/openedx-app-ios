@@ -262,6 +262,7 @@ public extension DataLayer.PrimaryEnrollment {
             courseID: enrollment.course.id,
             numPages: numPages,
             coursesCount: count,
+            isSelfPaced: enrollment.course.isSelfPaced,
             progressEarned: enrollment.progress?.assignmentsCompleted ?? 0,
             progressPossible: enrollment.progress?.totalAssignmentsCount ?? 0
         )

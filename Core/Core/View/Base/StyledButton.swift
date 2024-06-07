@@ -49,7 +49,7 @@ public struct StyledButton: View {
         self.borderColor = borderColor
         self.buttonColor = color
         self.isActive = isActive
-        self.leftImage = leftImage1
+        self.leftImage = leftImage
         self.rightImage = rightImage
         self.imagesStyle = imagesStyle
         self.isTitleTracking = isTitleTracking
@@ -89,11 +89,8 @@ public struct StyledButton: View {
                     Spacer()
                 }
             }
+            .padding(.horizontal, imagesStyle == .onSides ? 10 : horizontalPadding ? 20 : 0)
             
-            
-            //TODO: Saeed Fix me
-            .padding(.horizontal, imagesStyle == .onSides ? 10 : 0)
-            .padding(.horizontal, horizontalPadding ? 20 : 0)
         }
         .disabled(!isActive)
         .frame(maxWidth: idiom == .pad && isLimitedOnPad ? 260: .infinity, minHeight: isTransparent ? 36 : 42)

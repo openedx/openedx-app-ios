@@ -134,7 +134,7 @@ public class ListDashboardViewModel: ObservableObject {
 }
 
 // Course upgrade
-extension DashboardViewModel {
+extension ListDashboardViewModel {
     
     @MainActor
     func resolveUnfinishedPayment() async {
