@@ -75,30 +75,31 @@ struct CustomDisclosureGroup: View {
                                     HStack {
                                         Button(
                                             action: {
-                                                if let chapterIndex,
-                                                   let sequentialIndex,
-                                                   let blockId = sequential.childs.first?.blockId {
-                                                    viewModel.trackSequentialClicked(sequential)
-                                                    if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
-                                                        viewModel.router.showCourseUnit(
-                                                            courseName: viewModel.courseStructure?.displayName ?? "",
-                                                            blockId: blockId,
-                                                            courseID: viewModel.courseStructure?.id ?? "",
-                                                            verticalIndex: 0,
-                                                            chapters: course.childs,
-                                                            chapterIndex: chapterIndex,
-                                                            sequentialIndex: sequentialIndex
-                                                        )
-                                                    } else {
-                                                        viewModel.router.showCourseVerticalView(
-                                                            courseID: viewModel.courseStructure?.id ?? "",
-                                                            courseName: viewModel.courseStructure?.displayName ?? "",
-                                                            title: sequential.displayName,
-                                                            chapters: course.childs,
-                                                            chapterIndex: chapterIndex,
-                                                            sequentialIndex: sequentialIndex
-                                                        )
-                                                    }
+                                                guard let chapterIndex = chapterIndex else { return }
+                                                guard let sequentialIndex else { return }
+                                                guard let courseVertical = sequential.childs.first else { return }
+                                                guard let block = courseVertical.childs.first else { return }
+
+                                                viewModel.trackSequentialClicked(sequential)
+                                                if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
+                                                    viewModel.router.showCourseUnit(
+                                                        courseName: viewModel.courseStructure?.displayName ?? "",
+                                                        blockId: block.id,
+                                                        courseID: viewModel.courseStructure?.id ?? "",
+                                                        verticalIndex: 0,
+                                                        chapters: course.childs,
+                                                        chapterIndex: chapterIndex,
+                                                        sequentialIndex: sequentialIndex
+                                                    )
+                                                } else {
+                                                    viewModel.router.showCourseVerticalView(
+                                                        courseID: viewModel.courseStructure?.id ?? "",
+                                                        courseName: viewModel.courseStructure?.displayName ?? "",
+                                                        title: sequential.displayName,
+                                                        chapters: course.childs,
+                                                        chapterIndex: chapterIndex,
+                                                        sequentialIndex: sequentialIndex
+                                                    )
                                                 }
                                             },
                                             label: {
@@ -137,7 +138,6 @@ struct CustomDisclosureGroup: View {
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                                 .accessibilityElement(children: .ignore)
                                                 .accessibilityLabel(sequential.displayName)
-                                                
                                             }
                                         )
                                         Spacer()
@@ -150,6 +150,7 @@ struct CustomDisclosureGroup: View {
                                 }
                             }
                         }
+
                     }
                 }
                 .padding(.horizontal, 16)
