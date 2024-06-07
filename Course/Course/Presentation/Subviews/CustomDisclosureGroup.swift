@@ -77,12 +77,12 @@ struct CustomDisclosureGroup: View {
                                             action: {
                                                 if let chapterIndex,
                                                    let sequentialIndex,
-                                                   let block = sequential.childs[sequentialIndex].childs.first {
+                                                   let blockId = sequential.childs.first?.blockId {
                                                     viewModel.trackSequentialClicked(sequential)
                                                     if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
                                                         viewModel.router.showCourseUnit(
                                                             courseName: viewModel.courseStructure?.displayName ?? "",
-                                                            blockId: block.id,
+                                                            blockId: blockId,
                                                             courseID: viewModel.courseStructure?.id ?? "",
                                                             verticalIndex: 0,
                                                             chapters: course.childs,

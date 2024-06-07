@@ -64,7 +64,7 @@ public extension DataLayer {
             certificate = try values.decode(Certificate.self, forKey: .certificate)
             org = try values.decode(String.self, forKey: .org)
             isSelfPaced = try values.decode(Bool.self, forKey: .isSelfPaced)
-            courseProgress = try values.decode(DataLayer.CourseProgress.self, forKey: .courseProgress)
+            courseProgress = try? values.decode(DataLayer.CourseProgress.self, forKey: .courseProgress)
         }
     }
 }
