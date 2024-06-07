@@ -75,18 +75,33 @@ struct CustomDisclosureGroup: View {
                                     HStack {
                                         Button(
                                             action: {
-                                                if let chapterIndex, let sequentialIndex {
+                                                if let chapterIndex,
+                                                   let sequentialIndex,
+                                                   let block = sequential.childs[sequentialIndex].childs.first {
                                                     viewModel.trackSequentialClicked(sequential)
-                                                    viewModel.router.showCourseVerticalView(
-                                                        courseID: viewModel.courseStructure?.id ?? "",
-                                                        courseName: viewModel.courseStructure?.displayName ?? "",
-                                                        title: sequential.displayName,
-                                                        chapters: course.childs,
-                                                        chapterIndex: chapterIndex,
-                                                        sequentialIndex: sequentialIndex
-                                                    )
+                                                    if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
+                                                        viewModel.router.showCourseUnit(
+                                                            courseName: viewModel.courseStructure?.displayName ?? "",
+                                                            blockId: block.id,
+                                                            courseID: viewModel.courseStructure?.id ?? "",
+                                                            verticalIndex: 0,
+                                                            chapters: course.childs,
+                                                            chapterIndex: chapterIndex,
+                                                            sequentialIndex: sequentialIndex
+                                                        )
+                                                    } else {
+                                                        viewModel.router.showCourseVerticalView(
+                                                            courseID: viewModel.courseStructure?.id ?? "",
+                                                            courseName: viewModel.courseStructure?.displayName ?? "",
+                                                            title: sequential.displayName,
+                                                            chapters: course.childs,
+                                                            chapterIndex: chapterIndex,
+                                                            sequentialIndex: sequentialIndex
+                                                        )
+                                                    }
                                                 }
-                                            }, label: {
+                                            },
+                                            label: {
                                                 VStack(alignment: .leading) {
                                                     HStack {
                                                         if sequential.completion == 1 {
