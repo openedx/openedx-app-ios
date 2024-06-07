@@ -178,6 +178,25 @@ public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     }
 }
 
+extension AVPlayerViewController: PlayerControllerProtocol {
+    public func play() {
+        player?.play()
+    }
+    
+    public func pause() {
+        player?.pause()
+    }
+    
+    public func seekTo(to date: Date) {
+        player?.seek(to: date)
+    }
+    
+    public func stop() {
+        player?.replaceCurrentItem(with: nil)
+    }
+}
+
+#if DEBUG
 extension PlayerViewControllerHolder {
     static var mock: PlayerViewControllerHolder {
         PlayerViewControllerHolder(
@@ -198,21 +217,4 @@ extension PlayerViewControllerHolder {
         )
     }
 }
-
-extension AVPlayerViewController: PlayerControllerProtocol {
-    public func play() {
-        player?.play()
-    }
-    
-    public func pause() {
-        player?.pause()
-    }
-    
-    public func seekTo(to date: Date) {
-        player?.seek(to: date)
-    }
-    
-    public func stop() {
-        player?.replaceCurrentItem(with: nil)
-    }
-}
+#endif
