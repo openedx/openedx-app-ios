@@ -140,27 +140,6 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
     }
 }
 
-extension YoutubePlayerViewControllerHolder {
-    static var mock: YoutubePlayerViewControllerHolder {
-        YoutubePlayerViewControllerHolder(
-            url: URL(string: "")!,
-            blockID: "",
-            courseID: "",
-            selectedCourseTab: 0,
-            videoResolution: .zero,
-            pipManager: PipManagerProtocolMock(),
-            playerTracker: PlayerTrackerProtocolMock(url: URL(string: "")),
-            playerDelegate: nil,
-            playerService: PlayerService(
-                courseID: "",
-                blockID: "",
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock()
-            )
-        )
-    }
-}
-
 extension YouTubePlayer: PlayerControllerProtocol {
     public func play() {
         self.play(completion: nil)
@@ -181,3 +160,26 @@ extension YouTubePlayer: PlayerControllerProtocol {
         self.stop(completion: nil)
     }
 }
+
+#if DEBUG
+extension YoutubePlayerViewControllerHolder {
+    static var mock: YoutubePlayerViewControllerHolder {
+        YoutubePlayerViewControllerHolder(
+            url: URL(string: "")!,
+            blockID: "",
+            courseID: "",
+            selectedCourseTab: 0,
+            videoResolution: .zero,
+            pipManager: PipManagerProtocolMock(),
+            playerTracker: PlayerTrackerProtocolMock(url: URL(string: "")),
+            playerDelegate: nil,
+            playerService: PlayerService(
+                courseID: "",
+                blockID: "",
+                interactor: CourseInteractor.mock,
+                router: CourseRouterMock()
+            )
+        )
+    }
+}
+#endif
