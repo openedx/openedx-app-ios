@@ -12,7 +12,7 @@ public struct CourseItem: Hashable {
     public let org: String
     public let shortDescription: String
     public let imageURL: String
-    public let isActive: Bool?
+    public let hasAccess: Bool
     public let courseStart: Date?
     public let courseEnd: Date?
     public let enrollmentStart: Date?
@@ -24,12 +24,14 @@ public struct CourseItem: Hashable {
     public let dynamicUpgradeDeadline: Date?
     public let mode: DataLayer.Mode
     public let isSelfPaced: Bool?
+    public let progressEarned: Int
+    public let progressPossible: Int
     
     public init(name: String,
                 org: String,
                 shortDescription: String,
                 imageURL: String,
-                isActive: Bool?,
+                hasAccess: Bool,
                 courseStart: Date?,
                 courseEnd: Date?,
                 enrollmentStart: Date?,
@@ -40,12 +42,14 @@ public struct CourseItem: Hashable {
                 sku: String = "",
                 dynamicUpgradeDeadline: Date? = nil,
                 mode: DataLayer.Mode = .audit,
-                isSelfPaced: Bool?) {
+                isSelfPaced: Bool?,
+                progressEarned: Int,
+                progressPossible: Int) {
         self.name = name
         self.org = org
         self.shortDescription = shortDescription
         self.imageURL = imageURL
-        self.isActive = isActive
+        self.hasAccess = hasAccess
         self.courseStart = courseStart
         self.courseEnd = courseEnd
         self.enrollmentStart = enrollmentStart
@@ -57,6 +61,8 @@ public struct CourseItem: Hashable {
         self.dynamicUpgradeDeadline = dynamicUpgradeDeadline
         self.mode = mode
         self.isSelfPaced = isSelfPaced
+        self.progressEarned = progressEarned
+        self.progressPossible = progressPossible
     }
 }
 

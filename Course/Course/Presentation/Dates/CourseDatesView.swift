@@ -519,6 +519,7 @@ struct CourseDatesView_Previews: PreviewProvider {
             viewModel: viewModel,
             isUpgradeable: .constant(false)
         )
+
     }
 }
 #endif

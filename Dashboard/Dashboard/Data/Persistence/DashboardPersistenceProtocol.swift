@@ -9,10 +9,12 @@ import CoreData
 import Core
 
 public protocol DashboardPersistenceProtocol {
-    func loadMyCourses() throws -> [CourseItem]
-    func saveMyCourses(items: [CourseItem])
     func loadServerConfig() throws -> DataLayer.ServerConfigs?
     func saveServerConfig(configs: DataLayer.ServerConfigs)
+    func loadEnrollments() throws -> [CourseItem]
+    func saveEnrollments(items: [CourseItem])
+    func loadPrimaryEnrollment() throws -> PrimaryEnrollment
+    func savePrimaryEnrollment(enrollments: PrimaryEnrollment)
 }
 
 public final class DashboardBundle {

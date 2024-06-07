@@ -551,6 +551,7 @@ public final class BackgroundTaskProvider {
 }
 
 // Mark - For testing and SwiftUI preview
+// swiftlint:disable file_length
 #if DEBUG
 public class DownloadManagerMock: DownloadManagerProtocol {
 
@@ -639,3 +640,4 @@ public class DownloadManagerMock: DownloadManagerProtocol {
 
 }
 #endif
+// swiftlint:enable file_length

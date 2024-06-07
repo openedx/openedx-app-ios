@@ -56,10 +56,10 @@ public struct YouTubeVideoPlayer: View {
                             }
                         }
                         ZStack {
-                            SubtittlesView(
+                            SubtitlesView(
                                 languages: viewModel.languages,
                                 currentTime: $viewModel.currentTime,
-                                viewModel: viewModel, 
+                                viewModel: viewModel,
                                 scrollTo: { date in
                                     viewModel.youtubePlayer.seek(
                                         to: Measurement(value: date.secondsSinceMidnight(), unit: UnitDuration.seconds),
@@ -86,16 +86,10 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
         YouTubeVideoPlayer(
             viewModel: YouTubeVideoPlayerViewModel(
-                url: "",
-                blockID: "",
-                courseID: "",
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
-                interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
-                appStorage: CoreStorageMock(),
                 connectivity: Connectivity(),
-                pipManager: PipManagerProtocolMock()
+                playerHolder: YoutubePlayerViewControllerHolder.mock
             ),
             isOnScreen: true
         )

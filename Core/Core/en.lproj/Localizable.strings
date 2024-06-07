@@ -11,6 +11,7 @@
 "MAINSCREEN.IN_DEVELOPING" = "In developing";
 "MAINSCREEN.PROGRAMS" = "Programs";
 "MAINSCREEN.PROFILE" = "Profile";
+"MAINSCREEN.LEARN" = "Learn";
 
 "VIEW.SNACKBAR.TRY_AGAIN_BTN" = "Try Again";
 
@@ -44,6 +45,9 @@
 
 "ERROR.RELOAD" = "Reload";
 
+"DATE.COURSE_STARTS" = "Course Starts";
+"DATE.COURSE_ENDS" = "Course Ends";
+"DATE.COURSE_ENDED" = "Course Ended";
 "DATE.ENDED" = "Ended";
 "DATE.START" = "Start";
 "DATE.STARTED" = "Started";
@@ -65,6 +69,7 @@
 
 "DATE_FORMAT.MMMM_DD" = "MMMM dd";
 "DATE_FORMAT.MMM_DD_YYYY" = "MMM dd, yyyy";
+"DATE_FORMAT.MMMM_DD_YYYY" = "MMMM dd, yyyy";
 
 "DOWNLOAD_MANAGER.DOWNLOAD" = "Download";
 "DOWNLOAD_MANAGER.DOWNLOADED" = "Downloaded";

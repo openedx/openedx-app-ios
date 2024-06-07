@@ -101,28 +101,7 @@ public struct CourseOutlineView: View {
                                     data: continueWith,
                                     courseContinueUnit: continueUnit
                                 ) {
-                                    var continueBlock: CourseBlock?
-                                    continueUnit.childs.forEach { block in
-                                        if block.id == continueWith.lastVisitedBlockId {
-                                            continueBlock = block
-                                        }
-                                    }
-                                    
-                                    viewModel.trackResumeCourseClicked(
-                                        blockId: continueBlock?.id ?? ""
-                                    )
-                                    
-                                    if let course = viewModel.courseStructure {
-                                        viewModel.router.showCourseUnit(
-                                            courseName: course.displayName,
-                                            blockId: continueBlock?.id ?? "",
-                                            courseID: course.id,
-                                            verticalIndex: continueWith.verticalIndex,
-                                            chapters: course.childs,
-                                            chapterIndex: continueWith.chapterIndex,
-                                            sequentialIndex: continueWith.sequentialIndex
-                                        )
-                                    }
+                                    viewModel.openLastVisitedBlock()
                                 }
                             }
                             
@@ -218,7 +197,7 @@ public struct CourseOutlineView: View {
                 .ignoresSafeArea()
         )
         .sheet(isPresented: $showingDownloads) {
-            DownloadsView(manager: viewModel.manager)
+            DownloadsView(router: viewModel.router, manager: viewModel.manager)
         }
         .sheet(isPresented: $showingVideoDownloadQuality) {
             viewModel.storage.userSettings.map {
@@ -347,6 +326,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
             courseEnd: nil,
             enrollmentStart: Date(),
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         Task {

@@ -71,6 +71,7 @@ public struct SettingsView: View {
                                     viewModel.serverConfig.iapConfig.restoreEnabled {
                                     restorePurchases
                                 }
+                                datesAndCalendar
                                 ProfileSupportInfoView(viewModel: viewModel)
                                 logOutButton
                             }
@@ -110,6 +111,34 @@ public struct SettingsView: View {
                 .ignoresSafeArea()
         )
         .ignoresSafeArea(.all, edges: .horizontal)
+    }
+    
+    // MARK: - Dates & Calendar
+    
+    @ViewBuilder
+    private var datesAndCalendar: some View {
+
+        VStack(alignment: .leading, spacing: 27) {
+            Button(action: {
+//                viewModel.trackProfileVideoSettingsClicked()
+                viewModel.router.showDatesAndCalendar()
+            }, label: {
+                HStack {
+                    Text("Dates & Calendar") // TODO: add ProfileLocalization...
+                        .font(Theme.Fonts.titleMedium)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                }
+            })
+            .accessibilityIdentifier("dates_and_calendar_cell")
+
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ProfileLocalization.settingsVideo)
+        .cardStyle(
+            bgColor: Theme.Colors.textInputUnfocusedBackground,
+            strokeColor: .clear
+        )
     }
     
     // MARK: - Manage Account

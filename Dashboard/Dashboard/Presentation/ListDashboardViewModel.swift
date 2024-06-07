@@ -1,5 +1,5 @@
 //
-//  DashboardViewModel.swift
+//  ListDashboardViewModel.swift
 //  Dashboard
 //
 //  Created by  Stepanok Ivan on 19.09.2022.
@@ -10,7 +10,7 @@ import Core
 import SwiftUI
 import Combine
 
-public class DashboardViewModel: ObservableObject {
+public class ListDashboardViewModel: ObservableObject {
     
     public var nextPage = 1
     public var totalPages = 1
@@ -84,11 +84,11 @@ public class DashboardViewModel: ObservableObject {
             if connectivity.isInternetAvaliable {
                 
                 if refresh {
-                    courses = try await interactor.getMyCourses(page: page)
+                    courses = try await interactor.getEnrollments(page: page)
                     self.totalPages = 1
                     self.nextPage = 2
                 } else {
-                    courses += try await interactor.getMyCourses(page: page)
+                    courses += try await interactor.getEnrollments(page: page)
                     self.nextPage += 1
                 }
                 if !courses.isEmpty {
@@ -97,7 +97,7 @@ public class DashboardViewModel: ObservableObject {
                 fetchInProgress = false
                 self.showLoader = false
             } else {
-                courses = try interactor.discoveryOffline()
+                courses = try interactor.getEnrollmentsOffline()
                 self.nextPage += 1
                 fetchInProgress = false
                 self.showLoader = false

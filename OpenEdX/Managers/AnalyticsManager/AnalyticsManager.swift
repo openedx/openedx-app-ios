@@ -22,6 +22,7 @@ protocol AnalyticsService {
     func logEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
 }
 
+// swiftlint:disable type_body_length file_length
 class AnalyticsManager: AuthorizationAnalytics,
                         MainScreenAnalytics,
                         DiscoveryAnalytics,
@@ -31,6 +32,7 @@ class AnalyticsManager: AuthorizationAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
                         WhatsNewAnalytics {
+    
     private var services: [AnalyticsService] = []
     
     // Init Analytics Manager
@@ -331,7 +333,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         let parameters: [String: Any] = [
             EventParamKey.name: EventBIValue.userLogout.rawValue,
             EventParamKey.category: EventCategory.profile,
-            EventParamKey.force: force
+            EventParamKey.force: "\(force)"
         ]
         logEvent(.userLogout, parameters: parameters)
     }

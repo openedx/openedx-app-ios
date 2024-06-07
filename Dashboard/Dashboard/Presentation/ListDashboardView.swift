@@ -1,5 +1,5 @@
 //
-//  DashboardView.swift
+//  ListDashboardView.swift
 //  Dashboard
 //
 //  Created by  Stepanok Ivan on 19.09.2022.
@@ -9,7 +9,7 @@ import SwiftUI
 import Core
 import Theme
 
-public struct DashboardView: View {
+public struct ListDashboardView: View {
     private let dashboardCourses: some View = VStack(alignment: .leading) {
         Text(DashboardLocalization.Header.courses)
             .font(Theme.Fonts.displaySmall)
@@ -25,10 +25,10 @@ public struct DashboardView: View {
         .accessibilityLabel(DashboardLocalization.Header.courses + DashboardLocalization.Header.welcomeBack)
     
     @StateObject
-    private var viewModel: DashboardViewModel
+    private var viewModel: ListDashboardViewModel
     private let router: DashboardRouter
     
-    public init(viewModel: DashboardViewModel, router: DashboardRouter) {
+    public init(viewModel: ListDashboardViewModel, router: DashboardRouter) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.router = router
     }
@@ -88,12 +88,14 @@ public struct DashboardView: View {
                                             )
                                             router.showCourseScreens(
                                                 courseID: course.courseID,
-                                                isActive: course.isActive,
+                                                hasAccess: course.hasAccess,
                                                 courseStart: course.courseStart,
                                                 courseEnd: course.courseEnd,
                                                 enrollmentStart: course.enrollmentStart,
                                                 enrollmentEnd: course.enrollmentEnd,
-                                                title: course.name
+                                                title: course.name,
+                                                showDates: false,
+                                                lastVisitedBlockID: nil
                                             )
                                         }
                                         .accessibilityIdentifier("course_item")
@@ -152,9 +154,9 @@ public struct DashboardView: View {
 }
 
 #if DEBUG
-struct DashboardView_Previews: PreviewProvider {
+struct ListDashboardView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = DashboardViewModel(
+        let vm = ListDashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
             analytics: DashboardAnalyticsMock(),
@@ -163,13 +165,13 @@ struct DashboardView_Previews: PreviewProvider {
         )
         let router = DashboardRouterMock()
         
-        DashboardView(viewModel: vm, router: router)
+        ListDashboardView(viewModel: vm, router: router)
             .preferredColorScheme(.light)
-            .previewDisplayName("DashboardView Light")
+            .previewDisplayName("ListDashboardView Light")
         
-        DashboardView(viewModel: vm, router: router)
+        ListDashboardView(viewModel: vm, router: router)
             .preferredColorScheme(.dark)
-            .previewDisplayName("DashboardView Dark")
+            .previewDisplayName("ListDashboardView Dark")
     }
 }
 #endif

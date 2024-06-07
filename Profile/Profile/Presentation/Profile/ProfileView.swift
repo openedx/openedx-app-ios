@@ -141,7 +141,7 @@ public struct ProfileView: View {
             }
         }
     }
-    
+
     // MARK: - Profile Info
     @ViewBuilder
     private var profileInfo: some View {

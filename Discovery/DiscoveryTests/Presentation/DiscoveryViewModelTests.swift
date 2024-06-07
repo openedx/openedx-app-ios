@@ -38,7 +38,7 @@ final class DiscoveryViewModelTests: XCTestCase {
                        org: "org",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -46,12 +46,15 @@ final class DiscoveryViewModelTests: XCTestCase {
                        courseID: "123",
                        numPages: 2,
                        coursesCount: 2,
-                       isSelfPaced: false),
+                       isSelfPaced: false,
+                       progressEarned: 0,
+                       progressPossible: 0),
+
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -59,7 +62,9 @@ final class DiscoveryViewModelTests: XCTestCase {
                        courseID: "1243",
                        numPages: 1,
                        coursesCount: 2,
-                       isSelfPaced: false)
+                       isSelfPaced: false,
+                       progressEarned: 0,
+                       progressPossible: 0)
         ]
         viewModel.courses = items + items + items
         viewModel.totalPages = 2
@@ -89,7 +94,7 @@ final class DiscoveryViewModelTests: XCTestCase {
                        org: "org",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -97,12 +102,15 @@ final class DiscoveryViewModelTests: XCTestCase {
                        courseID: "123",
                        numPages: 2,
                        coursesCount: 0,
-                       isSelfPaced: false),
+                       isSelfPaced: false,
+                       progressEarned: 0,
+                       progressPossible: 0),
+            
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -110,7 +118,9 @@ final class DiscoveryViewModelTests: XCTestCase {
                        courseID: "1243",
                        numPages: 1,
                        coursesCount: 0,
-                       isSelfPaced: false)
+                       isSelfPaced: false,
+                       progressEarned: 0,
+                       progressPossible: 0)
         ]
 
         Given(interactor, .discovery(page: 1, willReturn: items))
@@ -139,7 +149,7 @@ final class DiscoveryViewModelTests: XCTestCase {
                        org: "org",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -147,12 +157,15 @@ final class DiscoveryViewModelTests: XCTestCase {
                        courseID: "123",
                        numPages: 2,
                        coursesCount: 2,
-                       isSelfPaced: false),
+                       isSelfPaced: false,
+                       progressEarned: 0,
+                       progressPossible: 0),
+
             CourseItem(name: "Test2",
                        org: "org2",
                        shortDescription: "",
                        imageURL: "",
-                       isActive: true,
+                       hasAccess: true,
                        courseStart: Date(),
                        courseEnd: nil,
                        enrollmentStart: Date(),
@@ -160,7 +173,9 @@ final class DiscoveryViewModelTests: XCTestCase {
                        courseID: "1243",
                        numPages: 1,
                        coursesCount: 2,
-                       isSelfPaced: false)
+                       isSelfPaced: false,
+                       progressEarned: 0,
+                       progressPossible: 0)
         ]
         
         Given(connectivity, .isInternetAvaliable(getter: false))

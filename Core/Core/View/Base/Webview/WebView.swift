@@ -302,8 +302,8 @@ extension WKWebView {
 
 extension Array where Element == WebviewInjection {
     func handle(message: WKScriptMessage) {
-        let messages = compactMap{ $0.messages }
-            .flatMap{ $0 }
+        let messages = compactMap { $0.messages }
+            .flatMap { $0 }
         if let currentMessage = messages.first(where: { $0.name == message.name }) {
             currentMessage.handler(message.body, message.webView)
         }

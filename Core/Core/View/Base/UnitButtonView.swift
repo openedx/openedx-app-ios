@@ -199,7 +199,8 @@ public struct UnitButtonView: View {
                                             miterLimit: 1
                                         ))
                                         .foregroundColor(
-                                            type == .continueLesson ? Theme.Colors.accentButtonColor 
+                                            type == .continueLesson
+                                            ? Theme.Colors.accentButtonColor
                                             : Theme.Colors.secondaryButtonBorderColor
                                         )
                                 )

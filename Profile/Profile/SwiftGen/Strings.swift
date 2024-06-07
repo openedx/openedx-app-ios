@@ -53,6 +53,120 @@ public enum ProfileLocalization {
   public static let title = ProfileLocalization.tr("Localizable", "TITLE", fallback: "Profile")
   /// Year of birth:
   public static let yearOfBirth = ProfileLocalization.tr("Localizable", "YEAR_OF_BIRTH", fallback: "Year of birth:")
+  public enum AssignmentStatus {
+    /// Sync Failed
+    public static let failed = ProfileLocalization.tr("Localizable", "ASSIGNMENT_STATUS.FAILED", fallback: "Sync Failed")
+    /// Offline
+    public static let offline = ProfileLocalization.tr("Localizable", "ASSIGNMENT_STATUS.OFFLINE", fallback: "Offline")
+    /// Synced
+    public static let synced = ProfileLocalization.tr("Localizable", "ASSIGNMENT_STATUS.SYNCED", fallback: "Synced")
+  }
+  public enum Calendar {
+    /// Account
+    public static let account = ProfileLocalization.tr("Localizable", "CALENDAR.ACCOUNT", fallback: "Account")
+    /// Begin Syncing
+    public static let beginSyncing = ProfileLocalization.tr("Localizable", "CALENDAR.BEGIN_SYNCING", fallback: "Begin Syncing")
+    /// Calendar Name
+    public static let calendarName = ProfileLocalization.tr("Localizable", "CALENDAR.CALENDAR_NAME", fallback: "Calendar Name")
+    /// Cancel
+    public static let cancel = ProfileLocalization.tr("Localizable", "CALENDAR.CANCEL", fallback: "Cancel")
+    /// Change Sync Options
+    public static let changeSyncOptions = ProfileLocalization.tr("Localizable", "CALENDAR.CHANGE_SYNC_OPTIONS", fallback: "Change Sync Options")
+    /// Color
+    public static let color = ProfileLocalization.tr("Localizable", "CALENDAR.COLOR", fallback: "Color")
+    /// %@ Course Dates
+    public static func courseDates(_ p1: Any) -> String {
+      return ProfileLocalization.tr("Localizable", "CALENDAR.COURSE_DATES", String(describing: p1), fallback: "%@ Course Dates")
+    }
+    /// New Calendar
+    public static let newCalendar = ProfileLocalization.tr("Localizable", "CALENDAR.NEW_CALENDAR", fallback: "New Calendar")
+    /// Upcoming assignments for active courses will appear on this calendar
+    public static let upcomingAssignments = ProfileLocalization.tr("Localizable", "CALENDAR.UPCOMING_ASSIGNMENTS", fallback: "Upcoming assignments for active courses will appear on this calendar")
+    public enum Dropdown {
+      /// iCloud
+      public static let icloud = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN.ICLOUD", fallback: "iCloud")
+      /// Local
+      public static let local = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN.LOCAL", fallback: "Local")
+    }
+    public enum DropdownColor {
+      /// Accent
+      public static let accent = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.ACCENT", fallback: "Accent")
+      /// Blue
+      public static let blue = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.BLUE", fallback: "Blue")
+      /// Brown
+      public static let brown = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.BROWN", fallback: "Brown")
+      /// Green
+      public static let green = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.GREEN", fallback: "Green")
+      /// Orange
+      public static let orange = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.ORANGE", fallback: "Orange")
+      /// Purple
+      public static let purple = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.PURPLE", fallback: "Purple")
+      /// Red
+      public static let red = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.RED", fallback: "Red")
+      /// Yellow
+      public static let yellow = ProfileLocalization.tr("Localizable", "CALENDAR.DROPDOWN_COLOR.YELLOW", fallback: "Yellow")
+    }
+  }
+  public enum CalendarDialog {
+    /// Calendar Access
+    public static let calendarAccess = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.CALENDAR_ACCESS", fallback: "Calendar Access")
+    /// To show upcoming assignments and course milestones on your calendar, we need permission to access your calendar.
+    public static let calendarAccessDescription = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.CALENDAR_ACCESS_DESCRIPTION", fallback: "To show upcoming assignments and course milestones on your calendar, we need permission to access your calendar.")
+    /// Cancel
+    public static let cancel = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.CANCEL", fallback: "Cancel")
+    /// Change Sync Options
+    public static let disableCalendarSync = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC", fallback: "Change Sync Options")
+    /// Disabling calendar sync will delete the calendar “My Assignments.” You can turn calendar sync back on at any time.
+    public static let disableCalendarSyncDescription = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION", fallback: "Disabling calendar sync will delete the calendar “My Assignments.” You can turn calendar sync back on at any time.")
+    /// Disable Syncing
+    public static let disableSyncing = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_SYNCING", fallback: "Disable Syncing")
+    /// Grant Calendar Access
+    public static let grantCalendarAccess = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.GRANT_CALENDAR_ACCESS", fallback: "Grant Calendar Access")
+  }
+  public enum CalendarSync {
+    /// Set Up Calendar Sync
+    public static let button = ProfileLocalization.tr("Localizable", "CALENDAR_SYNC.BUTTON", fallback: "Set Up Calendar Sync")
+    /// Set up calendar sync to show your upcoming assignments and course milestones on your calendar. New assignments and shifted course dates will sync automatically
+    public static let description = ProfileLocalization.tr("Localizable", "CALENDAR_SYNC.DESCRIPTION", fallback: "Set up calendar sync to show your upcoming assignments and course milestones on your calendar. New assignments and shifted course dates will sync automatically")
+    /// Calendar Sync
+    public static let title = ProfileLocalization.tr("Localizable", "CALENDAR_SYNC.TITLE", fallback: "Calendar Sync")
+  }
+  public enum CoursesToSync {
+    /// Disabling sync for a course will remove all events connected to the course from your synced calendar.
+    public static let description = ProfileLocalization.tr("Localizable", "COURSES_TO_SYNC.DESCRIPTION", fallback: "Disabling sync for a course will remove all events connected to the course from your synced calendar.")
+    /// Hide Inactive Courses
+    public static let hideInactiveCourses = ProfileLocalization.tr("Localizable", "COURSES_TO_SYNC.HIDE_INACTIVE_COURSES", fallback: "Hide Inactive Courses")
+    /// Automatically remove events from courses you haven’t viewed in the last month
+    public static let hideInactiveCoursesDescription = ProfileLocalization.tr("Localizable", "COURSES_TO_SYNC.HIDE_INACTIVE_COURSES_DESCRIPTION", fallback: "Automatically remove events from courses you haven’t viewed in the last month")
+    /// Inactive
+    public static let inactive = ProfileLocalization.tr("Localizable", "COURSES_TO_SYNC.INACTIVE", fallback: "Inactive")
+    /// Syncing %d Courses
+    public static func syncingCourses(_ p1: Int) -> String {
+      return ProfileLocalization.tr("Localizable", "COURSES_TO_SYNC.SYNCING_COURSES", p1, fallback: "Syncing %d Courses")
+    }
+    /// Courses to Sync
+    public static let title = ProfileLocalization.tr("Localizable", "COURSES_TO_SYNC.TITLE", fallback: "Courses to Sync")
+  }
+  public enum CourseCalendarSync {
+    /// Course Calendar Sync
+    public static let title = ProfileLocalization.tr("Localizable", "COURSE_CALENDAR_SYNC.TITLE", fallback: "Course Calendar Sync")
+    public enum Button {
+      /// Change Sync Options
+      public static let changeSyncOptions = ProfileLocalization.tr("Localizable", "COURSE_CALENDAR_SYNC.BUTTON.CHANGE_SYNC_OPTIONS", fallback: "Change Sync Options")
+      /// Reconnect Calendar
+      public static let reconnect = ProfileLocalization.tr("Localizable", "COURSE_CALENDAR_SYNC.BUTTON.RECONNECT", fallback: "Reconnect Calendar")
+    }
+    public enum Description {
+      /// Please reconnect your calendar to resume syncing
+      public static let reconnectRequired = ProfileLocalization.tr("Localizable", "COURSE_CALENDAR_SYNC.DESCRIPTION.RECONNECT_REQUIRED", fallback: "Please reconnect your calendar to resume syncing")
+      /// Currently syncing events to your calendar
+      public static let syncing = ProfileLocalization.tr("Localizable", "COURSE_CALENDAR_SYNC.DESCRIPTION.SYNCING", fallback: "Currently syncing events to your calendar")
+    }
+  }
+  public enum DatesAndCalendar {
+    /// Dates & Calendar
+    public static let title = ProfileLocalization.tr("Localizable", "DATES_AND_CALENDAR.TITLE", fallback: "Dates & Calendar")
+  }
   public enum DeleteAccount {
     /// Are you sure you want to 
     public static let areYouSure = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.ARE_YOU_SURE", fallback: "Are you sure you want to ")
@@ -78,6 +192,10 @@ public enum ProfileLocalization {
     public static let text = ProfileLocalization.tr("Localizable", "DELETE_ALERT.TEXT", fallback: "Do you really want to delete your account?")
     /// Warning!
     public static let title = ProfileLocalization.tr("Localizable", "DELETE_ALERT.TITLE", fallback: "Warning!")
+  }
+  public enum DropDownPicker {
+    /// Select
+    public static let select = ProfileLocalization.tr("Localizable", "DROP_DOWN_PICKER.SELECT", fallback: "Select")
   }
   public enum Edit {
     /// Delete Account
@@ -113,6 +231,14 @@ public enum ProfileLocalization {
     /// Comfirm log out
     public static let title = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TITLE", fallback: "Comfirm log out")
   }
+  public enum Options {
+    /// Show relative dates like “Tomorrow” and “Yesterday”
+    public static let showRelativeDates = ProfileLocalization.tr("Localizable", "OPTIONS.SHOW_RELATIVE_DATES", fallback: "Show relative dates like “Tomorrow” and “Yesterday”")
+    /// Options
+    public static let title = ProfileLocalization.tr("Localizable", "OPTIONS.TITLE", fallback: "Options")
+    /// Use relative dates
+    public static let useRelativeDates = ProfileLocalization.tr("Localizable", "OPTIONS.USE_RELATIVE_DATES", fallback: "Use relative dates")
+  }
   public enum Settings {
     /// Lower data usage
     public static let quality360Description = ProfileLocalization.tr("Localizable", "SETTINGS.QUALITY_360_DESCRIPTION", fallback: "Lower data usage")
@@ -146,6 +272,12 @@ public enum ProfileLocalization {
     public static let wifiDescription = ProfileLocalization.tr("Localizable", "SETTINGS.WIFI_DESCRIPTION", fallback: "Only download content when wi-fi is turned on")
     /// Wi-fi only download
     public static let wifiTitle = ProfileLocalization.tr("Localizable", "SETTINGS.WIFI_TITLE", fallback: "Wi-fi only download")
+  }
+  public enum SyncSelector {
+    /// Not Synced
+    public static let notSynced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.NOT_SYNCED", fallback: "Not Synced")
+    /// Synced
+    public static let synced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.SYNCED", fallback: "Synced")
   }
   public enum UnsavedDataAlert {
     /// Changes you have made will be discarded.

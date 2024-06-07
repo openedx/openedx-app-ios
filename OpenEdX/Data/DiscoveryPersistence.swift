@@ -24,7 +24,7 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
                               org: $0.org ?? "",
                               shortDescription: $0.desc ?? "",
                               imageURL: $0.imageURL ?? "",
-                              isActive: $0.isActive,
+                              hasAccess: $0.hasAccess,
                               courseStart: $0.courseStart,
                               courseEnd: $0.courseEnd,
                               enrollmentStart: $0.enrollmentStart,
@@ -32,7 +32,10 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
                               courseID: $0.courseID ?? "",
                               numPages: Int($0.numPages),
                               coursesCount: Int($0.courseCount),
-                              isSelfPaced: $0.isSelfPaced)}
+                              isSelfPaced: $0.isSelfPaced,
+                              progressEarned: 0,
+                              progressPossible: 0)}
+        
         if let result, !result.isEmpty {
             return result
         } else {
@@ -49,9 +52,7 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
                 newItem.org = item.org
                 newItem.desc = item.shortDescription
                 newItem.imageURL = item.imageURL
-                if let isActive = item.isActive {
-                    newItem.isActive = isActive
-                }
+                newItem.hasAccess = item.hasAccess
                 newItem.courseStart = item.courseStart
                 newItem.courseEnd = item.courseEnd
                 newItem.enrollmentStart = item.enrollmentStart

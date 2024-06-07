@@ -173,8 +173,8 @@ public struct SearchView: View {
             .onDisappear {
                 viewModel.searchText = ""
             }
-            .background(Theme.Colors.background.ignoresSafeArea())
             .avoidKeyboard(dismissKeyboardByTap: true)
+            .background(Theme.Colors.background.ignoresSafeArea())
         }
     }
     
