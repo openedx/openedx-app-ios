@@ -139,7 +139,11 @@ public class CourseRepository: CourseRepositoryProtocol {
             media: course.media,
             certificate: course.certificate?.domain,
             org: course.org ?? "",
-            isSelfPaced: course.isSelfPaced
+            isSelfPaced: course.isSelfPaced,
+            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
+                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
+                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
+            )
         )
     }
     
@@ -173,7 +177,13 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: sequential.displayName,
             type: BlockType(rawValue: sequential.type) ?? .unknown,
             completion: sequential.completion ?? 0,
-            childs: childs
+            childs: childs,
+            sequentialProgress: SequentialProgress(
+                assignmentType: sequential.assignmentProgress?.assignmentType,
+                numPointsEarned: Int(sequential.assignmentProgress?.numPointsEarned ?? 0),
+                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0)
+            ),
+            due: sequential.due == nil ? nil : Date(iso8601: sequential.due!)
         )
     }
     
@@ -211,6 +221,7 @@ public class CourseRepository: CourseRepositoryProtocol {
             courseId: courseId,
             topicId: block.userViewData?.topicID,
             graded: block.graded,
+            due: block.due == nil ? nil : Date(iso8601: block.due!),
             completion: block.completion ?? 0,
             type: BlockType(rawValue: block.type) ?? .unknown,
             displayName: block.displayName,
@@ -350,7 +361,11 @@ And there are various ways of describing it-- call it oral poetry or
             media: course.media,
             certificate: course.certificate?.domain,
             org: course.org ?? "",
-            isSelfPaced: course.isSelfPaced
+            isSelfPaced: course.isSelfPaced, 
+            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
+                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
+                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
+            )
         )
     }
     
@@ -385,7 +400,13 @@ And there are various ways of describing it-- call it oral poetry or
             displayName: sequential.displayName,
             type: BlockType(rawValue: sequential.type) ?? .unknown,
             completion: sequential.completion ?? 0,
-            childs: childs
+            childs: childs, 
+            sequentialProgress: SequentialProgress(
+                assignmentType: sequential.assignmentProgress?.assignmentType,
+                numPointsEarned: Int(sequential.assignmentProgress?.numPointsEarned ?? 0),
+                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0)
+            ),
+            due: sequential.due == nil ? nil : Date(iso8601: sequential.due!)
         )
     }
     
@@ -421,6 +442,7 @@ And there are various ways of describing it-- call it oral poetry or
             courseId: courseId,
             topicId: block.userViewData?.topicID,
             graded: block.graded,
+            due: block.due == nil ? nil : Date(iso8601: block.due!),
             completion: block.completion ?? 0,
             type: BlockType(rawValue: block.type) ?? .unknown,
             displayName: block.displayName,

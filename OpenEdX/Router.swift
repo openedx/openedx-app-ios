@@ -485,7 +485,7 @@ public class Router: AuthorizationRouter,
         )!
         
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
+        let isDropdownActive = config?.uiComponents.courseDropDownNavigationEnabled ?? false
 
         let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
         return UIHostingController(rootView: view)
@@ -590,13 +590,12 @@ public class Router: AuthorizationRouter,
             chapterIndex: chapterIndex,
             sequentialIndex: sequentialIndex
         )
-
-        let config = Container.shared.resolve(ConfigProtocol.self)
-        let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
         
         var controllers = navigationController.viewControllers
+        let config = Container.shared.resolve(ConfigProtocol.self)!
+        let courseDropDownNavigationEnabled = config.uiComponents.courseDropDownNavigationEnabled
 
-        if isCourseNestedListEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
+        if courseDropDownNavigationEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {

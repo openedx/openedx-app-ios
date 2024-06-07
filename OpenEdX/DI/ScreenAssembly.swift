@@ -352,7 +352,7 @@ class ScreenAssembly: Assembly {
         
         container.register(
             YouTubeVideoPlayerViewModel.self
-        ) { (r, url: URL?, blockID: String, courseID: String, languages, playerStateSubject) in
+        ) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) in
             let router: Router = r.resolve(Router.self)!
             return YouTubeVideoPlayerViewModel(
                 languages: languages,

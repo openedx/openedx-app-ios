@@ -16,8 +16,8 @@ public enum CourseTab: Int, CaseIterable, Identifiable {
     }
     case course
     case videos
-    case discussion
     case dates
+    case discussion
     case handounds
 }
 
@@ -68,6 +68,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var userSettings: UserSettings?
     @Published var isInternetAvaliable: Bool = true
     @Published var dueDatesShifted: Bool = false
+    @Published var updateCourseProgress: Bool = false
+    
+    let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
 
     var errorMessage: String? {
         didSet {
@@ -137,6 +140,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         addObservers()
     }
     
+    func updateCourseIfNeeded(courseID: String) async {
+        if updateCourseProgress {
+            await getCourseBlocks(courseID: courseID, withProgress: false)
+            updateCourseProgress = false
+        }
+    }
+
     func openLastVisitedBlock() {
         guard let continueWith = continueWith,
               let courseStructure = courseStructure else { return }
@@ -607,6 +617,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             selector: #selector(handleShiftDueDates),
             name: .shiftCourseDates, object: nil
         )
+        
+        completionPublisher
+              .sink { [weak self] _ in
+                  guard let self = self else { return }
+                  updateCourseProgress = true
+              }
+              .store(in: &cancellables)
     }
     
     deinit {

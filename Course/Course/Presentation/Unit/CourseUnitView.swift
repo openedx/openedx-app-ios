@@ -442,6 +442,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "1",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .video,
                 displayName: "Lesson 1",
@@ -456,6 +457,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "2",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .video,
                 displayName: "Lesson 2",
@@ -470,6 +472,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "3",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .unknown,
                 displayName: "Lesson 3",
@@ -484,6 +487,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "4",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .unknown,
                 displayName: "4",
@@ -517,10 +521,17 @@ struct CourseUnitView_Previews: PreviewProvider {
                                 completion: 0,
                                 childs: blocks
                             )
-                        ]
+                        ],
+                        sequentialProgress: SequentialProgress(
+                            assignmentType: "Advanced Assessment Tools",
+                            numPointsEarned: 1,
+                            numPointsPossible: 3
+                        ),
+                        due: Date()
                     )
                     
-                ]),
+                ]
+            ),
             CourseChapter(
                 blockId: "2",
                 id: "2",
@@ -543,7 +554,13 @@ struct CourseUnitView_Previews: PreviewProvider {
                                 completion: 0,
                                 childs: blocks
                             )
-                        ]
+                        ],
+                        sequentialProgress: SequentialProgress(
+                            assignmentType: "Basic Assessment Tools",
+                            numPointsEarned: 1,
+                            numPointsPossible: 3
+                        ),
+                        due: Date()
                     )
                     
                 ])
