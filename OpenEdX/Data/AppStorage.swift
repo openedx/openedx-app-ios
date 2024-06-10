@@ -203,7 +203,20 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
             }
         }
     }
-
+    
+    public var resetAppSupportDirectoryUserData: Bool? {
+        get {
+            return userDefaults.bool(forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+            } else {
+                userDefaults.removeObject(forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+            }
+        }
+    }
+    
     public func clear() {
         accessToken = nil
         refreshToken = nil
@@ -223,4 +236,5 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
     private let KEY_APPLE_SIGN_FULLNAME = "appleSignFullName"
     private let KEY_APPLE_SIGN_EMAIL = "appleSignEmail"
     private let KEY_ALLOWED_DOWNLOAD_LARGE_FILE = "allowedDownloadLargeFile"
+    private let KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA = "resetAppSupportDirectoryUserData"
 }

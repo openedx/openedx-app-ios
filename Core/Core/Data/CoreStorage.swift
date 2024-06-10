@@ -17,6 +17,7 @@ public protocol CoreStorage {
     var lastReviewDate: Date? {get set}
     var user: DataLayer.User? {get set}
     var userSettings: UserSettings? {get set}
+    var resetAppSupportDirectoryUserData: Bool? {get set}
     func clear()
 }
 
@@ -31,6 +32,7 @@ public class CoreStorageMock: CoreStorage {
     public var lastReviewDate: Date?
     public var user: DataLayer.User?
     public var userSettings: UserSettings?
+    public var resetAppSupportDirectoryUserData: Bool?
     public func clear() {}
     
     public init() {}

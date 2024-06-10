@@ -44,6 +44,7 @@ class RouteController: UIViewController {
             }
         }
         
+        resetAppSupportDirectoryUserData()
         coreAnalytics.trackEvent(.launch, biValue: .launch)
     }
     
@@ -98,5 +99,23 @@ class RouteController: UIViewController {
             navigation.viewControllers = [controller]
         }
         present(navigation, animated: false)
+    }
+
+    /**
+     This code will delete any old application’s downloaded user data, such as video files,
+     from the Application Support directory to optimize storage. This activity will be performed
+     only once during the upgrade from the old Open edX application to the new one or during
+     fresh installation. We can consider removing this code once we are confident that most or
+     all users have transitioned to the new application.
+     */
+    private func resetAppSupportDirectoryUserData() {
+        if var upgradationValue = Container.shared.resolve(CoreStorage.self) {
+            if upgradationValue.resetAppSupportDirectoryUserData == false {
+                Task {
+                    Container.shared.resolve(DownloadManagerProtocol.self)?.removeAppSupportDirectoryDeprecatedContent()
+                    upgradationValue.resetAppSupportDirectoryUserData = true
+                }
+            }
+        }
     }
 }
