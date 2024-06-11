@@ -20,7 +20,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     id: "1",
                     courseId: "123",
                     topicId: "1",
-                    graded: false,
+                    graded: false, 
+                    due: Date(),
                     completion: 0,
                     type: .video,
                     displayName: "Lesson 1",
@@ -34,6 +35,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                     courseId: "123",
                     topicId: "2",
                     graded: false,
+                    due: Date(),
                     completion: 0,
                     type: .video,
                     displayName: "Lesson 2",
@@ -47,6 +49,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                     courseId: "123",
                     topicId: "3",
                     graded: false,
+                    due: Date(),
                     completion: 0,
                     type: .unknown,
                     displayName: "Lesson 3",
@@ -60,6 +63,7 @@ final class CourseUnitViewModelTests: XCTestCase {
                     courseId: "123",
                     topicId: "4",
                     graded: false,
+                    due: Date(),
                     completion: 0,
                     type: .unknown,
                     displayName: "4",
@@ -90,7 +94,10 @@ final class CourseUnitViewModelTests: XCTestCase {
                                                type: .vertical,
                                                completion: 0,
                                                childs: blocks)
-                             ])
+                             ], 
+                             sequentialProgress: nil, 
+                             due: Date()
+                            )
             
         ]),
         CourseChapter(
@@ -112,7 +119,10 @@ final class CourseUnitViewModelTests: XCTestCase {
                                                type: .vertical,
                                                completion: 0,
                                                childs: blocks)
-                             ])
+                             ],
+                             sequentialProgress: nil,
+                             due: Date()
+                            )
             
         ])
         ]

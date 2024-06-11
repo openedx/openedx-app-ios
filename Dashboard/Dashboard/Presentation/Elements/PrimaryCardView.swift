@@ -179,9 +179,7 @@ public struct PrimaryCardView: View {
                                 .renderingMode(.template)
                                 .resizable()
                                 .frame(width: 24, height: 24)
-                                .foregroundStyle(
-                                    selected ? Theme.Colors.white : Theme.Colors.textPrimary
-                                )
+                                .foregroundStyle(foregroundColor(selected))
                                 .padding(12)
                             
                             VStack(alignment: .leading, spacing: 6) {
@@ -190,26 +188,30 @@ public struct PrimaryCardView: View {
                                         .font(Theme.Fonts.labelSmall)
                                         .multilineTextAlignment(.leading)
                                         .lineLimit(1)
-                                        .foregroundStyle(selected ? Theme.Colors.white : Theme.Colors.textPrimary)
+                                        .foregroundStyle(foregroundColor(selected))
                                 }
                                 Text(title)
                                     .font(Theme.Fonts.titleSmall)
                                     .multilineTextAlignment(.leading)
                                     .lineLimit(1)
-                                    .foregroundStyle(selected ? Theme.Colors.white : Theme.Colors.textPrimary)
+                                    .foregroundStyle(foregroundColor(selected))
                             }
                             .padding(.top, 2)
                         }
                     }
                     Spacer()
                     CoreAssets.chevronRight.swiftUIImage
-                        .foregroundStyle(selected ? Theme.Colors.white : Theme.Colors.textPrimary)
+                        .foregroundStyle(foregroundColor(selected))
                         .padding(8)
                 }
                 .padding(.top, 8)
                 .padding(.bottom, selected ? 10 : 0)
             }.background(selected ? Theme.Colors.accentColor : .clear)
         })
+    }
+    
+    private func foregroundColor(_ selected: Bool) -> SwiftUI.Color {
+        return selected ? Theme.Colors.primaryButtonTextColor : Theme.Colors.textPrimary
     }
     
     private var courseBanner: some View {

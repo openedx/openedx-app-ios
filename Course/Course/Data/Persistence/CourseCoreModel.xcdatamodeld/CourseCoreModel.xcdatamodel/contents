@@ -2,14 +2,18 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CDCourseBlock" representedClassName="CDCourseBlock" syncable="YES" codeGenerationType="class">
         <attribute name="allSources" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="assignmentType" optional="YES" attributeType="String"/>
         <attribute name="blockId" optional="YES" attributeType="String"/>
         <attribute name="completion" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="courseID" optional="YES" attributeType="String"/>
         <attribute name="descendants" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="displayName" optional="YES" attributeType="String"/>
+        <attribute name="due" optional="YES" attributeType="String"/>
         <attribute name="graded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="multiDevice" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="numPointsEarned" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="numPointsPossible" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="studentUrl" optional="YES" attributeType="String"/>
         <attribute name="transcripts" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
@@ -79,6 +83,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="CDCourseStructure" representedClassName="CDCourseStructure" syncable="YES" codeGenerationType="class">
+        <attribute name="assignmentsCompleted" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="certificate" optional="YES" attributeType="String"/>
         <attribute name="courseSKU" optional="YES" attributeType="String"/>
         <attribute name="courseStart" optional="YES" attributeType="String"/>
@@ -90,6 +95,7 @@
         <attribute name="mode" optional="YES" attributeType="String"/>
         <attribute name="org" optional="YES" attributeType="String"/>
         <attribute name="rootItem" optional="YES" attributeType="String"/>
+        <attribute name="totalAssignmentsCount" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>

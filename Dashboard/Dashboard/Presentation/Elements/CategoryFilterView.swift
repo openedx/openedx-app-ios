@@ -58,7 +58,7 @@ struct CategoryFilterView: View {
                             Text(option.text)
                                 .font(Theme.Fonts.titleSmall)
                                 .foregroundColor(
-                                    option == selectedOption ? Theme.Colors.white : (
+                                    option == selectedOption ? Theme.Colors.slidingSelectedTextColor : (
                                         colorScheme == .light ? Theme.Colors.accentColor : .white
                                     )
                                 )

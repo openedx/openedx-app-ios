@@ -120,3 +120,8 @@
 "COURSE_DATES.RESET_DATE.ERROR_MESSAGE" = "Your dates could not be shifted. Please try again.";
 "COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE" = "Your dates have been successfully shifted.";
 "COURSE_DATES.RESET_DATE.TITLE" = "Course Dates";
+
+"COURSE.DUE_TODAY" = "Due Today";
+"COURSE.DUE_TOMORROW" = "Due Tomorrow";
+
+"COURSE.PROGRESS_COMPLETED" = "%@ of %@ assignments complete";

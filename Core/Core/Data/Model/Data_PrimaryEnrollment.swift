@@ -36,7 +36,7 @@ public extension DataLayer {
         public let certificate: DataLayer.Certificate?
         public let courseModes: [CourseMode]?
         public let courseStatus: CourseStatus?
-        public let progress: CourseProgress?
+        public let progress: DataLayer.CourseProgress?
         public let courseAssignments: CourseAssignments?
         
         enum CodingKeys: String, CodingKey {

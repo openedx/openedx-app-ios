@@ -57,7 +57,11 @@ public class CourseInteractor: CourseInteractorProtocol {
             org: course.org,
             isSelfPaced: course.isSelfPaced,
             isUpgradeable: course.isUpgradeable,
-            sku: course.sku
+            sku: course.sku,
+            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
+                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
+                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
+            )
         )
     }
     
@@ -130,7 +134,9 @@ public class CourseInteractor: CourseInteractorProtocol {
             displayName: sequential.displayName,
             type: sequential.type,
             completion: sequential.completion,
-            childs: newChilds
+            childs: newChilds,
+            sequentialProgress: sequential.sequentialProgress, 
+            due: sequential.due
         )
     }
     

@@ -77,7 +77,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
         
         let requestBlocks = CDCourseBlock.fetchRequest()
         requestBlocks.predicate = NSPredicate(format: "courseID = %@", courseID)
-
+        
         let blocks = try? context.fetch(requestBlocks).map {
             let userViewData = DataLayer.CourseDetailUserViewData(
                 transcripts: $0.transcripts?.jsonStringToDictionary() as? [String: String],
@@ -113,6 +113,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 blockId: $0.blockId ?? "",
                 id: $0.id ?? "",
                 graded: $0.graded,
+                due: $0.due,
                 completion: $0.completion,
                 studentUrl: $0.studentUrl ?? "",
                 webUrl: $0.webUrl ?? "",
@@ -121,7 +122,12 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 descendants: $0.descendants,
                 allSources: $0.allSources,
                 userViewData: userViewData,
-                multiDevice: $0.multiDevice
+                multiDevice: $0.multiDevice,
+                assignmentProgress: DataLayer.AssignmentProgress(
+                    assignmentType: $0.assignmentType,
+                    numPointsEarned: $0.numPointsEarned,
+                    numPointsPossible: $0.numPointsPossible
+                )
             )
         }
         
@@ -145,7 +151,11 @@ public class CoursePersistence: CoursePersistenceProtocol {
             isSelfPaced: structure.isSelfPaced,
             courseStart: structure.courseStart,
             courseSKU: structure.courseSKU,
-            courseMode: DataLayer.Mode(rawValue: structure.mode ?? "")
+            courseMode: DataLayer.Mode(rawValue: structure.mode ?? ""),
+            courseProgress: DataLayer.CourseProgress(
+                assignmentsCompleted: Int(structure.assignmentsCompleted),
+                totalAssignmentsCount: Int(structure.totalAssignmentsCount)
+            )
         )
     }
     
@@ -163,6 +173,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.courseStart = structure.courseStart
             newStructure.courseSKU = structure.courseSKU
             newStructure.mode = structure.courseMode?.rawValue
+            newStructure.totalAssignmentsCount = Int32(structure.courseProgress?.totalAssignmentsCount ?? 0)
+            newStructure.assignmentsCompleted = Int32(structure.courseProgress?.assignmentsCompleted ?? 0)
             
             for block in Array(structure.dict.values) {
                 let courseDetail = CDCourseBlock(context: self.context)
@@ -177,6 +189,18 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 courseDetail.type = block.type
                 courseDetail.completion = block.completion ?? 0
                 courseDetail.multiDevice = block.multiDevice ?? false
+                if let numPointsEarned = block.assignmentProgress?.numPointsEarned {
+                    courseDetail.numPointsEarned = numPointsEarned
+                }
+                if let numPointsPossible = block.assignmentProgress?.numPointsPossible {
+                    courseDetail.numPointsPossible = numPointsPossible
+                }
+                if let assignmentType = block.assignmentProgress?.assignmentType {
+                    courseDetail.assignmentType = assignmentType
+                }
+                if let due = block.due {
+                    courseDetail.due = due
+                }
 
                 if block.userViewData?.encodedVideo?.youTube != nil {
                     let youTube = CDCourseBlockVideo(context: self.context)

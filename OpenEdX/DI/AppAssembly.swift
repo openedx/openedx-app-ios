@@ -207,11 +207,12 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { r in
-            PipManager(
+            let config = r.resolve(ConfigProtocol.self)!
+            return PipManager(
                 router: r.resolve(Router.self)!,
                 discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
-                isNestedListEnabled: r.resolve(ConfigProtocol.self)?.uiComponents.courseNestedListEnabled ?? false
+                courseDropDownNavigationEnabled: config.uiComponents.courseDropDownNavigationEnabled
             )
         }.inObjectScope(.container)
     }

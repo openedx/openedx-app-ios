@@ -48,6 +48,7 @@
 "DATE.COURSE_STARTS" = "Course Starts";
 "DATE.COURSE_ENDS" = "Course Ends";
 "DATE.COURSE_ENDED" = "Course Ended";
+
 "DATE.ENDED" = "Ended";
 "DATE.START" = "Start";
 "DATE.STARTED" = "Started";
