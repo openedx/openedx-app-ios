@@ -274,11 +274,11 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteFile(blocks: [CourseBlock]) async {
         for block in blocks {
             do {
-                try persistence.deleteDownloadDataTask(id: block.id)
-                currentDownloadEventPublisher.send(.deletedFile(block.id))
                 if let fileURL = await fileUrl(for: block.id) {
                     try FileManager.default.removeItem(at: fileURL)
                 }
+                try persistence.deleteDownloadDataTask(id: block.id)
+                currentDownloadEventPublisher.send(.deletedFile(block.id))
             } catch {
                 debugLog("Error deleting file: \(error.localizedDescription)")
             }
