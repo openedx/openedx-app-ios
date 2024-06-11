@@ -109,13 +109,14 @@ class RouteController: UIViewController {
      all users have transitioned to the new application.
      */
     private func resetAppSupportDirectoryUserData() {
-        if var upgradationValue = Container.shared.resolve(CoreStorage.self) {
-            if upgradationValue.resetAppSupportDirectoryUserData == false {
-                Task {
-                    Container.shared.resolve(DownloadManagerProtocol.self)?.removeAppSupportDirectoryDeprecatedContent()
-                    upgradationValue.resetAppSupportDirectoryUserData = true
-                }
-            }
+        guard var upgradationValue = Container.shared.resolve(CoreStorage.self),
+              let downloadManager = Container.shared.resolve(DownloadManagerProtocol.self),
+              upgradationValue.resetAppSupportDirectoryUserData == false
+        else { return }
+        
+        Task {
+            downloadManager.removeAppSupportDirectoryUnusedContent()
+            upgradationValue.resetAppSupportDirectoryUserData = true
         }
     }
 }

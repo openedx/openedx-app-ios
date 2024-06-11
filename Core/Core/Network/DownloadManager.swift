@@ -125,7 +125,7 @@ public protocol DownloadManagerProtocol {
     func fileUrl(for blockId: String) -> URL?
     func isLargeVideosSize(blocks: [CourseBlock]) -> Bool
     
-    func removeAppSupportDirectoryDeprecatedContent()
+    func removeAppSupportDirectoryUnusedContent()
 }
 
 public enum DownloadManagerEvent {
@@ -473,7 +473,7 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
     
-    public func removeAppSupportDirectoryDeprecatedContent() {
+    public func removeAppSupportDirectoryUnusedContent() {
         deleteMD5HashedFolders()
     }
     
@@ -488,7 +488,7 @@ public class DownloadManager: DownloadManagerProtocol {
             )
             return appSupportDirectory
         } catch {
-            print("Error getting Application Support Directory: \(error)")
+            debugPrint("Error getting Application Support Directory: \(error)")
             return nil
         }
     }
@@ -516,14 +516,14 @@ public class DownloadManager: DownloadManagerProtocol {
                 if isMD5Hash(folderName) {
                     do {
                         try fileManager.removeItem(at: folderURL)
-                        print("Deleted folder: \(folderName)")
+                        debugPrint("Deleted folder: \(folderName)")
                     } catch {
-                        print("Error deleting folder \(folderName): \(error)")
+                        debugPrint("Error deleting folder \(folderName): \(error)")
                     }
                 }
             }
         } catch {
-            print("Error reading contents of Application Support directory: \(error)")
+            debugPrint("Error reading contents of Application Support directory: \(error)")
         }
     }
 }
@@ -694,7 +694,7 @@ public class DownloadManagerMock: DownloadManagerProtocol {
         false
     }
 
-    public func removeAppSupportDirectoryDeprecatedContent() {
+    public func removeAppSupportDirectoryUnusedContent() {
         
     }
 }
