@@ -40,17 +40,18 @@ public struct ProgressBar: View {
             Circle()
                 .stroke(lineWidth: lineWidth)
                 .foregroundColor(Theme.Colors.accentColor.opacity(0.3))
-                .frame(width: size, height: size)
             
             Circle()
                 .trim(from: 0.0, to: 0.7)
                 .stroke(gradient, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-                .frame(width: size, height: size)
-                .rotationEffect(Angle.degrees(isAnimating ? 360 : 0), anchor: .center)
-                .animation(animation, value: isAnimating)
         }
+        .frame(width: size, height: size)
+        .rotationEffect(Angle.degrees(isAnimating ? 360 : 0), anchor: .center)
+        .animation(animation, value: isAnimating)
         .onAppear {
-            isAnimating = true
+            DispatchQueue.main.async {
+                isAnimating = true
+            }
         }
     }
 }
