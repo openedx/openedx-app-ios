@@ -9,5 +9,8 @@ import Foundation
 
 class FCMListener: PushNotificationsListener {
     // check if userinfo contains data for this Listener
-    func shouldListenNotification(userinfo: [AnyHashable: Any]) -> Bool { false }
+    func shouldListenNotification(userinfo: [AnyHashable: Any]) -> Bool {
+        let data = userinfo["gcm.message_id"]
+        return userinfo.count > 0 && data != nil
+    }
 }

@@ -196,10 +196,8 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(FirebaseAnalyticsService.self) { r in
-            FirebaseAnalyticsService(
-                config: r.resolve(ConfigProtocol.self)!
-            )
+        container.register(FirebaseAnalyticsService.self) { _ in
+            FirebaseAnalyticsService()
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { r in
