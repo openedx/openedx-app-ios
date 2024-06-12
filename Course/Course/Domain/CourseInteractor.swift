@@ -58,6 +58,7 @@ public class CourseInteractor: CourseInteractorProtocol {
             isSelfPaced: course.isSelfPaced,
             isUpgradeable: course.isUpgradeable,
             sku: course.sku,
+            coursewareAccessDetails: course.coursewareAccessDetails,
             courseProgress: course.courseProgress == nil ? nil : CourseProgress(
                 totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
                 assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0

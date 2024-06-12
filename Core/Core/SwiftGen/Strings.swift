@@ -100,6 +100,10 @@ public enum CoreLocalization {
     /// to your course
     public static let unlockingToCourse = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.UNLOCKING_TO_COURSE", fallback: "to your course")
     public enum Button {
+      /// Back
+      public static let back = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.BUTTON.BACK", fallback: "Back")
+      /// Find a new course
+      public static let findCourse = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.BUTTON.FIND_COURSE", fallback: "Find a new course")
       /// Upgrade to access more features
       public static let upgrade = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.BUTTON.UPGRADE", fallback: "Upgrade to access more features")
     }
@@ -158,6 +162,14 @@ public enum CoreLocalization {
       public static let title = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.SUCCESS_ALERT.TITLE", fallback: "Upgrade complete")
     }
     public enum View {
+      /// Your free audit access to this course expired on #####. Please upgrade to continue learning and receive a verified certificate.
+      public static let auditMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.AUDIT_MESSAGE", fallback: "Your free audit access to this course expired on #####. Please upgrade to continue learning and receive a verified certificate.")
+      /// #####
+      public static let datePlaceholder = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.DATE_PLACEHOLDER", fallback: "#####")
+      /// Your free audit access to this course expired on #####.
+      public static let endDateMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.END_DATE_MESSAGE", fallback: "Your free audit access to this course expired on #####.")
+      /// This course will begin on #####. Come back then to start learning!
+      public static let startDateMessage = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.START_DATE_MESSAGE", fallback: "This course will begin on #####. Come back then to start learning!")
       /// Upgrade
       public static let title = CoreLocalization.tr("Localizable", "COURSE_UPGRADE.VIEW.TITLE", fallback: "Upgrade")
       public enum Button {

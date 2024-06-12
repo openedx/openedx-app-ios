@@ -10,6 +10,8 @@ import XCTest
 import SwiftyMocky
 
 final class UpgradeInfoViewModelTests: XCTestCase {
+    typealias FlowData = (sku: String, product: StoreProductInfo, basketID: Int, symbol: String, receipt: String )
+    
     enum UpgradeInfoViewModelTestsError: Error {
         case cantSetup
         case handlerIsNil
@@ -73,13 +75,15 @@ final class UpgradeInfoViewModelTests: XCTestCase {
     
     private func viewModel(with handler: CourseUpgradeHandlerProtocol) throws -> UpgradeInfoViewModel {
         return UpgradeInfoViewModel(
-            productName: "TestProduct",
+            productName: "TestProduct", 
+            message: "Message",
             sku: "sku1",
             courseID: "course1",
             screen: .dashboard,
             handler: handler,
             pacing: Pacing.selfPace.rawValue,
-            analytics: CoreAnalyticsMock()
+            analytics: CoreAnalyticsMock(),
+            router: router ?? BaseRouterMock()
         )
     }
     
@@ -120,9 +124,10 @@ final class UpgradeInfoViewModelTests: XCTestCase {
         await viewModel.fetchProduct()
         try verifyFetchProduct()
         XCTAssertTrue(viewModel.product == nil)
+        guard let router else { throw UpgradeInfoViewModelTestsError.routerIsNil }
+        Verify(router, 1, .presentNativeAlert(title: .any, message: .any, actions: .any))
     }
-    
-    typealias FlowData = (sku: String, product: StoreProductInfo, basketID: Int, symbol: String, receipt: String )
+
     private func prepareSuccessFlow(for sku: String, product: StoreProductInfo) throws -> FlowData {
         guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
         
@@ -220,5 +225,221 @@ final class UpgradeInfoViewModelTests: XCTestCase {
                      screen: .value(viewModel.screen)
                     )
         )
+    }
+    
+    enum UknownTestError: Error {
+        case unknown
+    }
+    
+    private func prepareFailureAddBasketFlow(for sku: String, product: StoreProductInfo) throws -> FlowData {
+        guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
+        
+        Given(interactor, .addBasket(sku: .value(sku), willThrow: UknownTestError.unknown))
+
+        guard let symbol = product.currencySymbol
+        else { throw UpgradeInfoViewModelTestsError.incorrectValuesReturned }
+        
+        return (sku: sku, product: product, basketID: .zero, symbol: symbol, receipt: "")
+    }
+    
+    @MainActor
+    private func verifyFailureBasketFlow(flowData: FlowData) throws {
+        guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
+        Verify(interactor, 1, .addBasket(sku: .value(flowData.sku)))
+    }
+
+    @MainActor
+    private func verifyFailureRouterFlow(flowData: FlowData) throws {
+        // Check router flow
+        guard let router else { throw UpgradeInfoViewModelTestsError.routerIsNil }
+        Verify(router, 1, .hideUpgradeLoaderView(animated: .any))
+        Verify(router, 1, .presentNativeAlert(title: .any, message: .any, actions: .any))
+    }
+
+    
+    @MainActor
+    private func verifyFailureCheckoutFlow(flowData: FlowData) throws {
+        guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
+        Verify(interactor, 1, .checkoutBasket(basketID: .value(flowData.basketID)))
+    }
+    
+    func testUpgradeHandlerAddBasketFailure() async throws {
+        guard let handler else { throw UpgradeInfoViewModelTestsError.handlerIsNil }
+        let viewModel = try self.viewModel(with: handler)
+
+        let product = productInfo()
+        viewModel.product = product
+        let flowData = try prepareFailureAddBasketFlow(for: viewModel.sku, product: product)
+        
+        await viewModel.purchase()
+        
+        // Verify purchase backend processing
+        try await verifyFailureBasketFlow(flowData: flowData)
+        try await verifyFailureRouterFlow(flowData: flowData)
+        
+        var stateIsSuccess: Bool = false
+        if case .error = handler.state {
+            stateIsSuccess = true
+        }
+        XCTAssertTrue(stateIsSuccess)
+        XCTAssertEqual(viewModel.isLoading, false)
+        XCTAssertEqual(viewModel.interactiveDismissDisabled, false)
+    }
+    
+    private func prepareFailureCheckoutBasketFlow(for sku: String, product: StoreProductInfo) throws -> FlowData {
+        guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
+        
+        let basket = UpgradeBasket(success: "true", basketID: 99)
+        Given(interactor, .addBasket(sku: .value(sku), willReturn: basket))
+        Given(interactor, .checkoutBasket(basketID: .value(basket.basketID), willThrow: UknownTestError.unknown))
+
+        guard let symbol = product.currencySymbol
+        else { throw UpgradeInfoViewModelTestsError.incorrectValuesReturned }
+        
+        return (sku: sku, product: product, basketID: basket.basketID, symbol: symbol, receipt: "")
+    }
+    
+    func testUpgradeHandlerCheckoutBasketFailure() async throws {
+        guard let handler else { throw UpgradeInfoViewModelTestsError.handlerIsNil }
+        let viewModel = try self.viewModel(with: handler)
+
+        let product = productInfo()
+        viewModel.product = product
+        let flowData = try prepareFailureCheckoutBasketFlow(for: viewModel.sku, product: product)
+        
+        await viewModel.purchase()
+        
+        // Verify purchase backend processing
+        try await verifyFailureBasketFlow(flowData: flowData)
+        try await verifyFailureCheckoutFlow(flowData: flowData)
+        try await verifyFailureRouterFlow(flowData: flowData)
+        
+        var stateIsSuccess: Bool = false
+        if case .error = handler.state {
+            stateIsSuccess = true
+        }
+        XCTAssertTrue(stateIsSuccess)
+        XCTAssertEqual(viewModel.isLoading, false)
+        XCTAssertEqual(viewModel.interactiveDismissDisabled, false)
+    }
+    
+    private func prepareFailurePurchaseFlow(for sku: String, product: StoreProductInfo) throws -> FlowData {
+        guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
+        
+        let basket = UpgradeBasket(success: "true", basketID: 99)
+        Given(interactor, .addBasket(sku: .value(sku), willReturn: basket))
+        
+        let checkoutBasket = CheckoutBasket(paymentPageURL: "paymentURL")
+        Given(interactor, .checkoutBasket(basketID: .value(basket.basketID), willReturn: checkoutBasket))
+        
+        let response = StoreKitUpgradeResponse(success: false, receipt: nil, error: .paymentError(UknownTestError.unknown))
+        guard let storeHandler else { throw UpgradeInfoViewModelTestsError.storeMockIsNil }
+        Given(storeHandler, .purchaseProduct(.value(sku), willReturn: response))
+               
+        guard let symbol = product.currencySymbol
+        else { throw UpgradeInfoViewModelTestsError.incorrectValuesReturned }
+        
+        return (sku: sku, product: product, basketID: basket.basketID, symbol: symbol, receipt: "")
+    }
+    
+    private func verifyFailurePurchaseFlow(flowData: FlowData) throws {
+        guard let storeHandler else { throw UpgradeInfoViewModelTestsError.storeMockIsNil }
+        Verify(storeHandler, 1, .purchaseProduct(.value(flowData.sku)))
+    }
+    
+    func testUpgradeHandlerPurchaseFailure() async throws {
+        guard let handler else { throw UpgradeInfoViewModelTestsError.handlerIsNil }
+        let viewModel = try self.viewModel(with: handler)
+
+        let product = productInfo()
+        viewModel.product = product
+        let flowData = try prepareFailurePurchaseFlow(for: viewModel.sku, product: product)
+        
+        await viewModel.purchase()
+        
+        // Verify purchase backend processing
+        try await verifyFailureBasketFlow(flowData: flowData)
+        try await verifyFailureCheckoutFlow(flowData: flowData)
+        try verifyFailurePurchaseFlow(flowData: flowData)
+        try await verifyFailureRouterFlow(flowData: flowData)
+
+        
+        var stateIsSuccess: Bool = false
+        if case .error = handler.state {
+            stateIsSuccess = true
+        }
+        XCTAssertTrue(stateIsSuccess)
+        XCTAssertEqual(viewModel.isLoading, false)
+        XCTAssertEqual(viewModel.interactiveDismissDisabled, false)
+    }
+    
+
+    private func prepareFailureFullfillCheckoutFlow(for sku: String, product: StoreProductInfo) throws -> FlowData {
+        guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
+        
+        let basket = UpgradeBasket(success: "true", basketID: 99)
+        Given(interactor, .addBasket(sku: .value(sku), willReturn: basket))
+        
+        let checkoutBasket = CheckoutBasket(paymentPageURL: "paymentURL")
+        Given(interactor, .checkoutBasket(basketID: .value(basket.basketID), willReturn: checkoutBasket))
+        
+        guard let storeHandler else { throw UpgradeInfoViewModelTestsError.storeMockIsNil }
+        let response = StoreKitUpgradeResponse(success: true, receipt: "Some receipt here")
+        Given(storeHandler, .purchaseProduct(.value(sku), willReturn: response))
+        
+        guard let receipt = response.receipt,
+              let symbol = product.currencySymbol
+        else { throw UpgradeInfoViewModelTestsError.incorrectValuesReturned }
+        
+        Given(interactor, .fulfillCheckout(
+            basketID: .value(basket.basketID),
+            price: .value(product.price),
+            currencyCode: .value(symbol),
+            receipt: .value(receipt),
+            willThrow: UknownTestError.unknown)
+        )
+        return (sku: sku, product: product, basketID: basket.basketID, symbol: symbol, receipt: receipt)
+    }
+    
+    private func verifyFullfillCheckoutFlow(flowData: FlowData) throws {
+        guard let interactor else { throw UpgradeInfoViewModelTestsError.interactorIsNil }
+        Verify(
+            interactor,
+            1,
+            .fulfillCheckout(
+                basketID: .value(flowData.basketID),
+                price: .value(flowData.product.price),
+                currencyCode: .value(flowData.symbol),
+                receipt: .value(flowData.receipt)
+            )
+        )
+    }
+    
+    func testFullfillCheckoutFailure() async throws {
+        guard let handler else { throw UpgradeInfoViewModelTestsError.handlerIsNil }
+        let viewModel = try self.viewModel(with: handler)
+
+        let product = productInfo()
+        viewModel.product = product
+        let flowData = try prepareFailureFullfillCheckoutFlow(for: viewModel.sku, product: product)
+        
+        await viewModel.purchase()
+        
+        // Verify purchase backend processing
+        try await verifyFailureBasketFlow(flowData: flowData)
+        try await verifyFailureCheckoutFlow(flowData: flowData)
+        try verifyFailurePurchaseFlow(flowData: flowData)
+        try verifyFullfillCheckoutFlow(flowData: flowData)
+        guard let router else { throw UpgradeInfoViewModelTestsError.routerIsNil }
+        Verify(router, 1, .presentNativeAlert(title: .any, message: .any, actions: .any))
+
+        
+        var stateIsSuccess: Bool = false
+        if case .error = handler.state {
+            stateIsSuccess = true
+        }
+        XCTAssertTrue(stateIsSuccess)
+        XCTAssertEqual(viewModel.isLoading, false)
+        XCTAssertEqual(viewModel.interactiveDismissDisabled, false)
     }
 }

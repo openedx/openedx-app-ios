@@ -17,8 +17,12 @@ public protocol DashboardRouter: BaseRouter {
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
                            title: String,
+                           org: String?,
+                           courseRawImage: String?,
+                           coursewareAccess: CoursewareAccess?,
                            showDates: Bool,
-                           lastVisitedBlockID: String?)
+                           lastVisitedBlockID: String?
+    )
     
     func showAllCourses(courses: [CourseItem])
     
@@ -40,6 +44,9 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
                                   title: String,
+                                  org: String?,
+                                  courseRawImage: String?,
+                                  coursewareAccess: CoursewareAccess?,
                                   showDates: Bool,
                                   lastVisitedBlockID: String?) {}
     

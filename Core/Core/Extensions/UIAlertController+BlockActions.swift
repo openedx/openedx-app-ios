@@ -197,8 +197,8 @@ public extension UIAlertController {
     }
     
     func addButton(
-        withTitle title: String,
-        style: UIAlertAction.Style,
+        withTitle title: String?,
+        style: UIAlertAction.Style = .default,
         actionBlock: ((_ action: UIAlertAction) -> Void)?
     ) {
         let alertAction = UIAlertAction(
@@ -211,20 +211,6 @@ public extension UIAlertController {
             })
         addAction(alertAction)
     }
-    
-    func addButton(
-        withTitle title: String,
-        actionBlock: ((_ action: UIAlertAction) -> Void)?) {
-            let alertAction = UIAlertAction(
-                title: title,
-                style: .default,
-                handler: { (action) in
-                    if let tap = actionBlock {
-                        tap(action)
-                    }
-                })
-            addAction(alertAction)
-        }
     
     var isVisible: Bool {
         return view != nil

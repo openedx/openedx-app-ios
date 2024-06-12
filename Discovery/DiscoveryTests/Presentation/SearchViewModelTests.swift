@@ -49,6 +49,8 @@ final class SearchViewModelTests: XCTestCase {
                        numPages: 2,
                        coursesCount: 0,
                        isSelfPaced: false,
+                       courseRawImage: nil,
+                       coursewareAccess: nil,
                        progressEarned: 0,
                        progressPossible: 0),
             
@@ -65,6 +67,8 @@ final class SearchViewModelTests: XCTestCase {
                        numPages: 1,
                        coursesCount: 0,
                        isSelfPaced: false,
+                       courseRawImage: nil,
+                       coursewareAccess: nil,
                        progressEarned: 0,
                        progressPossible: 0)
         ]

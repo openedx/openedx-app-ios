@@ -161,3 +161,9 @@
 "COURSE_UPGRADE.VIEW.OPTION.THIRD"="Full access to course content and course material even after the course ends";
 "COURSE_UPGRADE.SNACKBAR.TITLE"="Course upgraded";
 "COURSE_UPGRADE.SNACKBAR.SUCCESS_MESSAGE"="Thank you for your purchase. Enjoy full access to your course!";
+"COURSE_UPGRADE.BUTTON.BACK" = "Back";
+"COURSE_UPGRADE.BUTTON.FIND_COURSE" = "Find a new course";
+"COURSE_UPGRADE.VIEW.DATE_PLACEHOLDER" = "#####";
+"COURSE_UPGRADE.VIEW.AUDIT_MESSAGE" = "Your free audit access to this course expired on #####. Please upgrade to continue learning and receive a verified certificate.";
+"COURSE_UPGRADE.VIEW.START_DATE_MESSAGE" = "This course will begin on #####. Come back then to start learning!";
+"COURSE_UPGRADE.VIEW.END_DATE_MESSAGE" = "Your free audit access to this course expired on #####.";

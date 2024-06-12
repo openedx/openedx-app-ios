@@ -9,13 +9,6 @@ import Foundation
 import Core
 import Profile
 
-public enum MainTab {
-    case discovery
-    case dashboard
-    case programs
-    case profile
-}
-
 final class MainScreenViewModel: ObservableObject {
 
     private let analytics: MainScreenAnalytics

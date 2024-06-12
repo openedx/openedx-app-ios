@@ -239,6 +239,22 @@ public extension DataLayer {
             case additionalContextUserMessage = "additional_context_user_message"
             case userFragment = "user_fragment"
         }
+        
+        public init(
+            hasAccess: Bool,
+            errorCode: CourseAccessError?,
+            developerMessage: String?,
+            userMessage: String?,
+            additionalContextUserMessage: String?,
+            userFragment: String?
+        ) {
+            self.hasAccess = hasAccess
+            self.errorCode = errorCode
+            self.developerMessage = developerMessage
+            self.userMessage = userMessage
+            self.additionalContextUserMessage = additionalContextUserMessage
+            self.userFragment = userFragment
+        }
     }
     
     enum CourseAccessError: String, Codable {
@@ -275,6 +291,22 @@ public extension DataLayer.CourseEnrollments {
                 dynamicUpgradeDeadline = Date(iso8601: dynamicDeadline)
             }
             
+            var coursewareError: CourseAccessError?
+            
+            let access = course.coursewareAccess
+            if let error = access.errorCode {
+                coursewareError = CourseAccessError(rawValue: error.rawValue) ?? .unknown
+            }
+            
+            let coursewareAccess = CoursewareAccess(
+                hasAccess: access.hasAccess,
+                errorCode: coursewareError,
+                developerMessage: access.developerMessage,
+                userMessage: access.userMessage,
+                additionalContextUserMessage: access.additionalContextUserMessage,
+                userFragment: access.userFragment
+            )
+            
             return CourseItem(
                 name: course.name,
                 org: course.org,
@@ -296,6 +328,8 @@ public extension DataLayer.CourseEnrollments {
                 dynamicUpgradeDeadline: dynamicUpgradeDeadline,
                 mode: result.mode,
                 isSelfPaced: course.isSelfPaced,
+                courseRawImage: course.media.courseImage?.url,
+                coursewareAccess: coursewareAccess,
                 progressEarned: 0,
                 progressPossible: 0
             )

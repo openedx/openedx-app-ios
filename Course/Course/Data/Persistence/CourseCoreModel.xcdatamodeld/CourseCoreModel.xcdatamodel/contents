@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CDCourseBlock" representedClassName="CDCourseBlock" syncable="YES" codeGenerationType="class">
         <attribute name="allSources" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="assignmentType" optional="YES" attributeType="String"/>
@@ -65,6 +65,7 @@
         <attribute name="courseCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="courseEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="courseID" optional="YES" attributeType="String"/>
+        <attribute name="courseRawImage" optional="YES" attributeType="String"/>
         <attribute name="courseStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="desc" optional="YES" attributeType="String"/>
         <attribute name="enrollmentEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -76,6 +77,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="numPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="org" optional="YES" attributeType="String"/>
+        <relationship name="coursewareAccess" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCoursewareAccess"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>
@@ -96,11 +98,26 @@
         <attribute name="org" optional="YES" attributeType="String"/>
         <attribute name="rootItem" optional="YES" attributeType="String"/>
         <attribute name="totalAssignmentsCount" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="coursewareAccessDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCoursewareAccessDetails"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="CDCoursewareAccess" representedClassName="CDCoursewareAccess" syncable="YES" codeGenerationType="class">
+        <attribute name="additionalContextUserMessage" optional="YES" attributeType="String"/>
+        <attribute name="developerMessage" optional="YES" attributeType="String"/>
+        <attribute name="errorCode" optional="YES" attributeType="String"/>
+        <attribute name="hasAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="userFragment" optional="YES" attributeType="String"/>
+        <attribute name="userMessage" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="CDCoursewareAccessDetails" representedClassName="CDCoursewareAccessDetails" syncable="YES" codeGenerationType="class">
+        <attribute name="auditAccessExpires" optional="YES" attributeType="String"/>
+        <attribute name="hasUNMETPrerequisites" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isTooEarly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="coursewareAccess" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCoursewareAccess"/>
     </entity>
     <entity name="CDSubtitle" representedClassName="CDSubtitle" syncable="YES" codeGenerationType="class">
         <attribute name="subtitle" optional="YES" attributeType="String"/>

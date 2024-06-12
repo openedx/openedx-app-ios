@@ -115,10 +115,8 @@ public struct CourseCellView: View {
                     rightImage: Image(systemName: "info.circle"),
                     imagesStyle: .onSides,
                     isTitleTracking: false,
-                    isLimitedOnPad: false
-                )
-                .clipShape(
-                    RoundedCorners(
+                    isLimitedOnPad: false,
+                    shape: RoundedCorners(
                         tl: 0,
                         tr: 0,
                         bl: Theme.Shapes.cardImageRadius,
@@ -173,6 +171,8 @@ struct CourseCellView_Previews: PreviewProvider {
         numPages: 1,
         coursesCount: 10,
         isSelfPaced: false,
+        courseRawImage: nil,
+        coursewareAccess: nil,
         progressEarned: 4,
         progressPossible: 10
     )

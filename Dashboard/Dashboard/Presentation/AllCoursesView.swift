@@ -76,6 +76,9 @@ public struct AllCoursesView: View {
                                             enrollmentStart: course.enrollmentStart,
                                             enrollmentEnd: course.enrollmentEnd,
                                             title: course.name,
+                                            org: course.org,
+                                            courseRawImage: course.courseRawImage,
+                                            coursewareAccess: course.coursewareAccess,
                                             showDates: false,
                                             lastVisitedBlockID: nil
                                         )

@@ -106,16 +106,16 @@ public extension DataLayer {
     }
     
     struct CoursewareAccessDetails: Codable {
-        let hasUNMETPrerequisites: Bool
-        let isTooEarly: Bool
-        let auditAccessExpires: String?
-        let coursewareAccess: CoursewareAccess
+        public let hasUNMETPrerequisites: Bool
+        public let isTooEarly: Bool
+        public let auditAccessExpires: String?
+        public let coursewareAccess: CoursewareAccess?
         
-        init(
+        public init(
             hasUNMETPrerequisites: Bool,
             isTooEarly: Bool,
             auditAccessExpires: String?,
-            coursewareAccess: CoursewareAccess
+            coursewareAccess: CoursewareAccess?
         ) {
             self.hasUNMETPrerequisites = hasUNMETPrerequisites
             self.isTooEarly = isTooEarly

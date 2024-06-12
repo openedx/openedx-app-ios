@@ -37,7 +37,10 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            serverConfig: ServerConfigProtocolMock(),
+            upgradeHandler: CourseUpgradeHandlerProtocolMock(),
+            upgradeHelper: CourseUpgradeHelperProtocolMock()
         )
         
         await viewModel.logOut()
@@ -69,7 +72,10 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            serverConfig: ServerConfigProtocolMock(),
+            upgradeHandler: CourseUpgradeHandlerProtocolMock(),
+            upgradeHelper: CourseUpgradeHelperProtocolMock()
         )
         
         viewModel.trackProfileVideoSettingsClicked()
@@ -100,7 +106,10 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            serverConfig: ServerConfigProtocolMock(),
+            upgradeHandler: CourseUpgradeHandlerProtocolMock(),
+            upgradeHelper: CourseUpgradeHelperProtocolMock()
         )
         
         viewModel.trackEmailSupportClicked()
@@ -131,7 +140,10 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            serverConfig: ServerConfigProtocolMock(),
+            upgradeHandler: CourseUpgradeHandlerProtocolMock(),
+            upgradeHelper: CourseUpgradeHelperProtocolMock()
         )
         
         viewModel.trackCookiePolicyClicked()
@@ -162,7 +174,10 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            serverConfig: ServerConfigProtocolMock(),
+            upgradeHandler: CourseUpgradeHandlerProtocolMock(),
+            upgradeHelper: CourseUpgradeHelperProtocolMock()
         )
         
         viewModel.trackPrivacyPolicyClicked()
@@ -193,7 +208,10 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            serverConfig: ServerConfigProtocolMock(),
+            upgradeHandler: CourseUpgradeHandlerProtocolMock(),
+            upgradeHelper: CourseUpgradeHelperProtocolMock()
         )
         
         viewModel.trackProfileEditClicked()

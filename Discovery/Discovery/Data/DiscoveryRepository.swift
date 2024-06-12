@@ -94,7 +94,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
             courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
+            courseVideoURL: nil,
+            courseRawImage: nil
         )
     }
     
@@ -111,7 +112,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
             courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
+            courseVideoURL: nil,
+            courseRawImage: nil
         )
     }
     
@@ -137,6 +139,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     numPages: 1, 
                     coursesCount: 10,
                     isSelfPaced: false,
+                    courseRawImage: nil,
+                    coursewareAccess: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )
@@ -163,6 +167,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     numPages: 1,
                     coursesCount: 10,
                     isSelfPaced: false,
+                    courseRawImage: nil,
+                    coursewareAccess: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )
@@ -189,6 +195,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     numPages: 1,
                     coursesCount: 10,
                     isSelfPaced: false,
+                    courseRawImage: nil,
+                    coursewareAccess: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )

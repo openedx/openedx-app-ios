@@ -75,6 +75,8 @@ public extension DataLayer.CourseDetailsResponse {
             isEnrolled: isEnrolled,
             overviewHTML: overview,
             courseBannerURL: imageURL,
-            courseVideoURL: media.courseVideo?.url)
+            courseVideoURL: media.courseVideo?.url,
+            courseRawImage: media.image?.raw
+        )
     }
 }

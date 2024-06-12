@@ -1,23 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "campaign_launch.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "campaign_launch@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "campaign_launch@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "rocket_launch_48dp_FILL0_wght200_GRAD0_opsz48.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }

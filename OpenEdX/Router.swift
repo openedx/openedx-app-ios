@@ -365,6 +365,9 @@ public class Router: AuthorizationRouter,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
+        org: String?,
+        courseRawImage: String?,
+        coursewareAccess: CoursewareAccess?,
         showDates: Bool,
         lastVisitedBlockID: String?
     ) {
@@ -376,6 +379,9 @@ public class Router: AuthorizationRouter,
             enrollmentStart: enrollmentStart,
             enrollmentEnd: enrollmentEnd,
             title: title,
+            org: org,
+            courseRawImage: courseRawImage,
+            coursewareAccess: coursewareAccess,
             showDates: showDates,
             lastVisitedBlockID: lastVisitedBlockID
         )
@@ -390,6 +396,9 @@ public class Router: AuthorizationRouter,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
+        org: String?,
+        courseRawImage: String?,
+        coursewareAccess: CoursewareAccess?,
         showDates: Bool,
         lastVisitedBlockID: String?
     ) -> UIHostingController<CourseContainerView> {
@@ -414,7 +423,10 @@ public class Router: AuthorizationRouter,
             viewModel: vm,
             courseDatesViewModel: datesVm,
             courseID: courseID,
-            title: title
+            title: title,
+            org: org,
+            courseRawImage: courseRawImage,
+            coursewareAccess: coursewareAccess
         )
         
         return UIHostingController(rootView: screensView)
@@ -854,23 +866,38 @@ extension Router {
         navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
-// swiftlint:enable file_length type_body_length
+
+// MARK: Native alerts
+extension Router {
+    public func presentNativeAlert(title: String?, message: String?, actions: [UIAlertAction]) {
+        guard let topController = UIApplication.topViewController() else { return }
+        
+        let alertController = UIAlertController().showAlert(
+            withTitle: title,
+            message: message,
+            onViewController: topController) { _, _, _ in }
+        for action in actions {
+            alertController.addAction(action)
+        }
+    }
+}
 
 // MARK: Payments
 extension Router {
     @MainActor
     public func showUpgradeInfo(
         productName: String,
+        message: String,
         sku: String,
         courseID: String,
         screen: CourseUpgradeScreen,
         pacing: String
     ) async {
         await withCheckedContinuation { continuation in
-            let view = UpgradeInfoView(
+            let view = UpgradeInfoSheetView(
                 viewModel: Container.shared.resolve(
                     UpgradeInfoViewModel.self,
-                    arguments: productName, sku, courseID, screen, pacing
+                    arguments: productName, message, sku, courseID, screen, pacing
                 )!
             )
             let controller = UIHostingController(rootView: view)
@@ -889,7 +916,7 @@ extension Router {
     @MainActor
     public func hideUpgradeInfo(animated: Bool) async {
         await withCheckedContinuation { continuation in
-            if let controller = navigationController.presentedViewController as? UIHostingController<UpgradeInfoView> {
+            if let controller = navigationController.presentedViewController as? UIHostingController<UpgradeInfoSheetView> {
                 controller.dismiss(animated: animated) {
                     continuation.resume()
                 }
@@ -915,8 +942,8 @@ extension Router {
     @MainActor
     public func hideUpgradeLoaderView(animated: Bool) async {
         await withCheckedContinuation { continuation in
-            if let controller = navigationController.presentedViewController as?
-                UIHostingController<CourseUpgradeUnlockView> {
+            let presentedController = navigationController.presentedViewController
+            if let controller = presentedController as? UIHostingController<CourseUpgradeUnlockView> {
                 controller.dismiss(animated: animated) {
                     continuation.resume()
                 }
@@ -947,3 +974,4 @@ extension Router {
         view.removeFromSuperview()
     }
 }
+// swiftlint:enable file_length type_body_length

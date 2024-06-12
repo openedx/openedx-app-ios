@@ -59,6 +59,8 @@ public protocol CourseRouter: BaseRouter {
         downloads: [DownloadDataTask],
         manager: DownloadManagerProtocol
     )
+    
+    func showTabScreen(tab: MainTab)
 }
 
 // Mark - For testing and SwiftUI preview
@@ -116,5 +118,7 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         downloads: [Core.DownloadDataTask],
         manager: Core.DownloadManagerProtocol
     ) {}
+    
+    public func showTabScreen(tab: MainTab){}
 }
 #endif

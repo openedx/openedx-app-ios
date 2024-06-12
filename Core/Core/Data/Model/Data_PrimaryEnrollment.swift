@@ -249,6 +249,21 @@ public extension DataLayer.PrimaryEnrollment {
         let encodedUrl = imageUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let fullImageURL = baseURL + encodedUrl
         
+        let access = enrollment.course.coursewareAccess
+        var coursewareError: CourseAccessError?
+        if let error = access.errorCode {
+            coursewareError = CourseAccessError(rawValue: error.rawValue) ?? .unknown
+        }
+        
+        let coursewareAccess = CoursewareAccess(
+            hasAccess: access.hasAccess,
+            errorCode: coursewareError,
+            developerMessage: access.developerMessage,
+            userMessage: access.userMessage,
+            additionalContextUserMessage: access.additionalContextUserMessage,
+            userFragment: access.userFragment
+        )
+        
         return CourseItem(
             name: enrollment.course.name,
             org: enrollment.course.org,
@@ -263,6 +278,8 @@ public extension DataLayer.PrimaryEnrollment {
             numPages: numPages,
             coursesCount: count,
             isSelfPaced: enrollment.course.isSelfPaced,
+            courseRawImage: enrollment.course.media.image?.raw,
+            coursewareAccess: coursewareAccess,
             progressEarned: enrollment.progress?.assignmentsCompleted ?? 0,
             progressPossible: enrollment.progress?.totalAssignmentsCount ?? 0
         )

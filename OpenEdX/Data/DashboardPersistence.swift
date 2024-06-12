@@ -19,8 +19,25 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     }
     
     public func loadEnrollments() throws -> [CourseItem] {
-            let result = try? context.fetch(CDDashboardCourse.fetchRequest())
-                .map { CourseItem(name: $0.name ?? "",
+        let result = try? context.fetch(CDDashboardCourse.fetchRequest())
+            .map {
+                var coursewareAccess: CoursewareAccess?
+                if let access = $0.coursewareAccess {
+                    var coursewareError: CourseAccessError?
+                    if let error = access.errorCode {
+                        coursewareError = CourseAccessError(rawValue: error) ?? .unknown
+                    }
+                    
+                    coursewareAccess = CoursewareAccess(
+                        hasAccess: access.hasAccess,
+                        errorCode: coursewareError,
+                        developerMessage: access.developerMessage,
+                        userMessage: access.userMessage,
+                        additionalContextUserMessage: access.additionalContextUserMessage,
+                        userFragment: access.userFragment
+                    )
+                }
+                return CourseItem(name: $0.name ?? "",
                                   org: $0.org ?? "",
                                   shortDescription: $0.desc ?? "",
                                   imageURL: $0.imageURL ?? "",
@@ -36,14 +53,16 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                                   dynamicUpgradeDeadline: $0.dynamicUpgradeDeadline,
                                   mode: DataLayer.Mode(rawValue: $0.mode ?? "") ?? .unknown,
                                   isSelfPaced: $0.isSelfPaced,
+                                  courseRawImage: $0.courseRawImage,
+                                  coursewareAccess: coursewareAccess,
                                   progressEarned: 0,
                                   progressPossible: 0)}
-            if let result, !result.isEmpty {
-                return result
-            } else {
-                throw NoCachedDataError()
-            }
+        if let result, !result.isEmpty {
+            return result
+        } else {
+            throw NoCachedDataError()
         }
+    }
     
     public func saveEnrollments(items: [CourseItem]) {
         for item in items {
@@ -64,6 +83,18 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.courseSku = item.sku
                 newItem.dynamicUpgradeDeadline = item.dynamicUpgradeDeadline
                 newItem.mode = item.mode.rawValue
+                newItem.courseRawImage = item.courseRawImage
+                
+                if let access = item.coursewareAccess {
+                    let newAccess = CDDashboardCoursewareAccess(context: self.context)
+                    newAccess.hasAccess = access.hasAccess
+                    newAccess.errorCode = access.errorCode?.rawValue
+                    newAccess.developerMessage = access.developerMessage
+                    newAccess.userMessage = access.userMessage
+                    newAccess.additionalContextUserMessage = access.additionalContextUserMessage
+                    newAccess.userFragment = access.userFragment
+                    newItem.coursewareAccess = newAccess
+                }
                 newItem.isSelfPaced = item.isSelfPaced ?? false
                 do {
                     try context.save()
@@ -123,6 +154,23 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
             
             let courses = (result.courses as? Set<CDDashboardCourse> ?? [])
                 .map { cdCourse in
+                    var coursewareAccess: CoursewareAccess?
+                    if let access = cdCourse.coursewareAccess {
+                        var coursewareError: CourseAccessError?
+                        if let error = access.errorCode {
+                            coursewareError = CourseAccessError(rawValue: error) ?? .unknown
+                        }
+                        
+                        coursewareAccess = CoursewareAccess(
+                            hasAccess: access.hasAccess,
+                            errorCode: coursewareError,
+                            developerMessage: access.developerMessage,
+                            userMessage: access.userMessage,
+                            additionalContextUserMessage: access.additionalContextUserMessage,
+                            userFragment: access.userFragment
+                        )
+                    }
+                    
                     return CourseItem(
                         name: cdCourse.name ?? "",
                         org: cdCourse.org ?? "",
@@ -140,6 +188,8 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                         dynamicUpgradeDeadline: cdCourse.dynamicUpgradeDeadline,
                         mode: DataLayer.Mode(rawValue: cdCourse.mode ?? "") ?? .unknown,
                         isSelfPaced: cdCourse.isSelfPaced,
+                        courseRawImage: cdCourse.courseRawImage,
+                        coursewareAccess: coursewareAccess,
                         progressEarned: Int(cdCourse.progressEarned),
                         progressPossible: Int(cdCourse.progressPossible)
                     )

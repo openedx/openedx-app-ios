@@ -390,6 +390,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         isSelfPaced: false,
                         isUpgradeable: false,
                         sku: nil,
+                        coursewareAccessDetails: nil,
                         courseProgress: nil
                     ),
                     proxy: proxy,

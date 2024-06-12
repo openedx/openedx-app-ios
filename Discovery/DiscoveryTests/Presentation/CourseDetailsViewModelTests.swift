@@ -44,7 +44,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
             isEnrolled: true,
             overviewHTML: "",
             courseBannerURL: "",
-            courseVideoURL: nil
+            courseVideoURL: nil,
+            courseRawImage: nil
         )
         
         
@@ -90,7 +91,8 @@ final class CourseDetailsViewModelTests: XCTestCase {
             isEnrolled: true,
             overviewHTML: "",
             courseBannerURL: "",
-            courseVideoURL: nil
+            courseVideoURL: nil, 
+            courseRawImage: nil
         )
         
         Given(interactor, .getLoadedCourseDetails(courseID: "123",

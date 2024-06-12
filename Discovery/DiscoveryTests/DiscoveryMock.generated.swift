@@ -605,11 +605,17 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`transitionStyle`, `animated`, `content`)
     }
 
+    open func presentNativeAlert(title: String?, message: String?, actions: [UIAlertAction]) {
+        addInvocation(.m_presentNativeAlert__title_titlemessage_messageactions_actions(Parameter<String?>.value(`title`), Parameter<String?>.value(`message`), Parameter<[UIAlertAction]>.value(`actions`)))
+		let perform = methodPerformValue(.m_presentNativeAlert__title_titlemessage_messageactions_actions(Parameter<String?>.value(`title`), Parameter<String?>.value(`message`), Parameter<[UIAlertAction]>.value(`actions`))) as? (String?, String?, [UIAlertAction]) -> Void
+		perform?(`title`, `message`, `actions`)
+    }
+
     @MainActor
-	open func showUpgradeInfo(productName: String, sku: String, courseID: String, screen: CourseUpgradeScreen, pacing: String) {
-        addInvocation(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`)))
-		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`))) as? (String, String, String, CourseUpgradeScreen, String) -> Void
-		perform?(`productName`, `sku`, `courseID`, `screen`, `pacing`)
+	open func showUpgradeInfo(productName: String, message: String, sku: String, courseID: String, screen: CourseUpgradeScreen, pacing: String) {
+        addInvocation(.m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`message`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`)))
+		let perform = methodPerformValue(.m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>.value(`productName`), Parameter<String>.value(`message`), Parameter<String>.value(`sku`), Parameter<String>.value(`courseID`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`pacing`))) as? (String, String, String, String, CourseUpgradeScreen, String) -> Void
+		perform?(`productName`, `message`, `sku`, `courseID`, `screen`, `pacing`)
     }
 
     @MainActor
@@ -633,6 +639,20 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`animated`)
     }
 
+    @MainActor
+	open func showRestoreProgressView() {
+        addInvocation(.m_showRestoreProgressView)
+		let perform = methodPerformValue(.m_showRestoreProgressView) as? () -> Void
+		perform?()
+    }
+
+    @MainActor
+	open func hideRestoreProgressView() {
+        addInvocation(.m_hideRestoreProgressView)
+		let perform = methodPerformValue(.m_hideRestoreProgressView) as? () -> Void
+		perform?()
+    }
+
 
     fileprivate enum MethodType {
         case m_backToRoot__animated_animated(Parameter<Bool>)
@@ -651,10 +671,13 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
         case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
-        case m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
+        case m_presentNativeAlert__title_titlemessage_messageactions_actions(Parameter<String?>, Parameter<String?>, Parameter<[UIAlertAction]>)
+        case m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
         case m_hideUpgradeInfo__animated_animated(Parameter<Bool>)
         case m_showUpgradeLoaderView__animated_animated(Parameter<Bool>)
         case m_hideUpgradeLoaderView__animated_animated(Parameter<Bool>)
+        case m_showRestoreProgressView
+        case m_hideRestoreProgressView
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -747,9 +770,17 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsContent, rhs: rhsContent, with: matcher), lhsContent, rhsContent, "content"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(let lhsProductname, let lhsSku, let lhsCourseid, let lhsScreen, let lhsPacing), .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(let rhsProductname, let rhsSku, let rhsCourseid, let rhsScreen, let rhsPacing)):
+            case (.m_presentNativeAlert__title_titlemessage_messageactions_actions(let lhsTitle, let lhsMessage, let lhsActions), .m_presentNativeAlert__title_titlemessage_messageactions_actions(let rhsTitle, let rhsMessage, let rhsActions)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTitle, rhs: rhsTitle, with: matcher), lhsTitle, rhsTitle, "title"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsMessage, rhs: rhsMessage, with: matcher), lhsMessage, rhsMessage, "message"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsActions, rhs: rhsActions, with: matcher), lhsActions, rhsActions, "actions"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(let lhsProductname, let lhsMessage, let lhsSku, let lhsCourseid, let lhsScreen, let lhsPacing), .m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(let rhsProductname, let rhsMessage, let rhsSku, let rhsCourseid, let rhsScreen, let rhsPacing)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsProductname, rhs: rhsProductname, with: matcher), lhsProductname, rhsProductname, "productName"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsMessage, rhs: rhsMessage, with: matcher), lhsMessage, rhsMessage, "message"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSku, rhs: rhsSku, with: matcher), lhsSku, rhsSku, "sku"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsScreen, rhs: rhsScreen, with: matcher), lhsScreen, rhsScreen, "screen"))
@@ -770,6 +801,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAnimated, rhs: rhsAnimated, with: matcher), lhsAnimated, rhsAnimated, "animated"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_showRestoreProgressView, .m_showRestoreProgressView): return .match
+
+            case (.m_hideRestoreProgressView, .m_hideRestoreProgressView): return .match
             default: return .none
             }
         }
@@ -792,10 +827,13 @@ open class BaseRouterMock: BaseRouter, Mock {
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
-            case let .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
+            case let .m_presentNativeAlert__title_titlemessage_messageactions_actions(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_hideUpgradeInfo__animated_animated(p0): return p0.intValue
             case let .m_showUpgradeLoaderView__animated_animated(p0): return p0.intValue
             case let .m_hideUpgradeLoaderView__animated_animated(p0): return p0.intValue
+            case .m_showRestoreProgressView: return 0
+            case .m_hideRestoreProgressView: return 0
             }
         }
         func assertionName() -> String {
@@ -816,10 +854,13 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"
             case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
-            case .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing: return ".showUpgradeInfo(productName:sku:courseID:screen:pacing:)"
+            case .m_presentNativeAlert__title_titlemessage_messageactions_actions: return ".presentNativeAlert(title:message:actions:)"
+            case .m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing: return ".showUpgradeInfo(productName:message:sku:courseID:screen:pacing:)"
             case .m_hideUpgradeInfo__animated_animated: return ".hideUpgradeInfo(animated:)"
             case .m_showUpgradeLoaderView__animated_animated: return ".showUpgradeLoaderView(animated:)"
             case .m_hideUpgradeLoaderView__animated_animated: return ".hideUpgradeLoaderView(animated:)"
+            case .m_showRestoreProgressView: return ".showRestoreProgressView()"
+            case .m_hideRestoreProgressView: return ".hideRestoreProgressView()"
             }
         }
     }
@@ -854,14 +895,19 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(`transitionStyle`, `view`, `completion`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
+        public static func presentNativeAlert(title: Parameter<String?>, message: Parameter<String?>, actions: Parameter<[UIAlertAction]>) -> Verify { return Verify(method: .m_presentNativeAlert__title_titlemessage_messageactions_actions(`title`, `message`, `actions`))}
         @MainActor
-		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `sku`, `courseID`, `screen`, `pacing`))}
+		public static func showUpgradeInfo(productName: Parameter<String>, message: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>) -> Verify { return Verify(method: .m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `message`, `sku`, `courseID`, `screen`, `pacing`))}
         @MainActor
 		public static func hideUpgradeInfo(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeInfo__animated_animated(`animated`))}
         @MainActor
 		public static func showUpgradeLoaderView(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showUpgradeLoaderView__animated_animated(`animated`))}
         @MainActor
 		public static func hideUpgradeLoaderView(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_hideUpgradeLoaderView__animated_animated(`animated`))}
+        @MainActor
+		public static func showRestoreProgressView() -> Verify { return Verify(method: .m_showRestoreProgressView)}
+        @MainActor
+		public static func hideRestoreProgressView() -> Verify { return Verify(method: .m_hideRestoreProgressView)}
     }
 
     public struct Perform {
@@ -916,9 +962,12 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, Bool, () -> any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
+        public static func presentNativeAlert(title: Parameter<String?>, message: Parameter<String?>, actions: Parameter<[UIAlertAction]>, perform: @escaping (String?, String?, [UIAlertAction]) -> Void) -> Perform {
+            return Perform(method: .m_presentNativeAlert__title_titlemessage_messageactions_actions(`title`, `message`, `actions`), performs: perform)
+        }
         @MainActor
-		public static func showUpgradeInfo(productName: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>, perform: @escaping (String, String, String, CourseUpgradeScreen, String) -> Void) -> Perform {
-            return Perform(method: .m_showUpgradeInfo__productName_productNamesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `sku`, `courseID`, `screen`, `pacing`), performs: perform)
+		public static func showUpgradeInfo(productName: Parameter<String>, message: Parameter<String>, sku: Parameter<String>, courseID: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, pacing: Parameter<String>, perform: @escaping (String, String, String, String, CourseUpgradeScreen, String) -> Void) -> Perform {
+            return Perform(method: .m_showUpgradeInfo__productName_productNamemessage_messagesku_skucourseID_courseIDscreen_screenpacing_pacing(`productName`, `message`, `sku`, `courseID`, `screen`, `pacing`), performs: perform)
         }
         @MainActor
 		public static func hideUpgradeInfo(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
@@ -931,6 +980,14 @@ open class BaseRouterMock: BaseRouter, Mock {
         @MainActor
 		public static func hideUpgradeLoaderView(animated: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
             return Perform(method: .m_hideUpgradeLoaderView__animated_animated(`animated`), performs: perform)
+        }
+        @MainActor
+		public static func showRestoreProgressView(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showRestoreProgressView, performs: perform)
+        }
+        @MainActor
+		public static func hideRestoreProgressView(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_hideRestoreProgressView, performs: perform)
         }
     }
 
@@ -1277,21 +1334,21 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 		perform?(`event`, `biValue`, `courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `error`)
     }
 
-    open func trackCourseUpgradeError(courseID: String, blockID: String?, pacing: String, coursePrice: String?, screen: CourseUpgradeScreen, error: String, flowType: String) {
-        addInvocation(.m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`error`), Parameter<String>.value(`flowType`)))
-		let perform = methodPerformValue(.m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`error`), Parameter<String>.value(`flowType`))) as? (String, String?, String, String?, CourseUpgradeScreen, String, String) -> Void
+    open func trackCourseUpgradeError(courseID: String, blockID: String?, pacing: String, coursePrice: String?, screen: CourseUpgradeScreen, error: String, flowType: UpgradeMode) {
+        addInvocation(.m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`error`), Parameter<UpgradeMode>.value(`flowType`)))
+		let perform = methodPerformValue(.m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`error`), Parameter<UpgradeMode>.value(`flowType`))) as? (String, String?, String, String?, CourseUpgradeScreen, String, UpgradeMode) -> Void
 		perform?(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `error`, `flowType`)
     }
 
-    open func trackCourseUpgradeErrorAction(courseID: String, blockID: String?, pacing: String, coursePrice: String?, screen: CourseUpgradeScreen, errorAction: String, error: String, flowType: String) {
-        addInvocation(.m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`errorAction`), Parameter<String>.value(`error`), Parameter<String>.value(`flowType`)))
-		let perform = methodPerformValue(.m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`errorAction`), Parameter<String>.value(`error`), Parameter<String>.value(`flowType`))) as? (String, String?, String, String?, CourseUpgradeScreen, String, String, String) -> Void
+    open func trackCourseUpgradeErrorAction(courseID: String, blockID: String?, pacing: String, coursePrice: String?, screen: CourseUpgradeScreen, errorAction: String, error: String, flowType: UpgradeMode) {
+        addInvocation(.m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`errorAction`), Parameter<String>.value(`error`), Parameter<UpgradeMode>.value(`flowType`)))
+		let perform = methodPerformValue(.m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String?>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`errorAction`), Parameter<String>.value(`error`), Parameter<UpgradeMode>.value(`flowType`))) as? (String, String?, String, String?, CourseUpgradeScreen, String, String, UpgradeMode) -> Void
 		perform?(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `errorAction`, `error`, `flowType`)
     }
 
-    open func trackCourseUpgradeSuccess(courseID: String, blockID: String?, pacing: String, coursePrice: String, screen: CourseUpgradeScreen, flowType: String) {
-        addInvocation(.m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`flowType`)))
-		let perform = methodPerformValue(.m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`flowType`))) as? (String, String?, String, String, CourseUpgradeScreen, String) -> Void
+    open func trackCourseUpgradeSuccess(courseID: String, blockID: String?, pacing: String, coursePrice: String, screen: CourseUpgradeScreen, flowType: UpgradeMode) {
+        addInvocation(.m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<UpgradeMode>.value(`flowType`)))
+		let perform = methodPerformValue(.m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String?>.value(`blockID`), Parameter<String>.value(`pacing`), Parameter<String>.value(`coursePrice`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<UpgradeMode>.value(`flowType`))) as? (String, String?, String, String, CourseUpgradeScreen, UpgradeMode) -> Void
 		perform?(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `flowType`)
     }
 
@@ -1307,9 +1364,9 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 		perform?(`courseID`, `blockID`, `pacing`, `screen`)
     }
 
-    open func trackCourseUnfulfilledPurchaseInitiated(courseID: String, pacing: String, screen: CourseUpgradeScreen, flowType: String) {
-        addInvocation(.m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String>.value(`pacing`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`flowType`)))
-		let perform = methodPerformValue(.m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String>.value(`pacing`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<String>.value(`flowType`))) as? (String, String, CourseUpgradeScreen, String) -> Void
+    open func trackCourseUnfulfilledPurchaseInitiated(courseID: String, pacing: String, screen: CourseUpgradeScreen, flowType: UpgradeMode) {
+        addInvocation(.m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String>.value(`pacing`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<UpgradeMode>.value(`flowType`)))
+		let perform = methodPerformValue(.m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(Parameter<String>.value(`courseID`), Parameter<String>.value(`pacing`), Parameter<CourseUpgradeScreen>.value(`screen`), Parameter<UpgradeMode>.value(`flowType`))) as? (String, String, CourseUpgradeScreen, UpgradeMode) -> Void
 		perform?(`courseID`, `pacing`, `screen`, `flowType`)
     }
 
@@ -1338,12 +1395,12 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
         case m_appreview__eventbiValue_biValueaction_actionrating_rating(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String?>, Parameter<Int?>)
         case m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String>, Parameter<String>)
         case m_trackCourseUpgradePaymentError__eventbiValue_biValuecourseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_error(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
-        case m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<String?>, Parameter<CourseUpgradeScreen>, Parameter<String>, Parameter<String>)
-        case m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<String?>, Parameter<CourseUpgradeScreen>, Parameter<String>, Parameter<String>, Parameter<String>)
-        case m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
+        case m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<String?>, Parameter<CourseUpgradeScreen>, Parameter<String>, Parameter<UpgradeMode>)
+        case m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<String?>, Parameter<CourseUpgradeScreen>, Parameter<String>, Parameter<String>, Parameter<UpgradeMode>)
+        case m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<UpgradeMode>)
         case m_trackUpgradeNow__courseID_courseIDblockID_blockIDpacing_pacingscreen_screencoursePrice_coursePrice(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
         case m_trackCourseUpgradeLoadError__courseID_courseIDblockID_blockIDpacing_pacingscreen_screen(Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<CourseUpgradeScreen>)
-        case m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<String>)
+        case m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(Parameter<String>, Parameter<String>, Parameter<CourseUpgradeScreen>, Parameter<UpgradeMode>)
         case m_trackRestorePurchaseClicked
         case m_trackEvent__event(Parameter<AnalyticsEvent>)
         case m_trackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
@@ -1522,12 +1579,12 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
         public static func appreview(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, action: Parameter<String?>, rating: Parameter<Int?>) -> Verify { return Verify(method: .m_appreview__eventbiValue_biValueaction_actionrating_rating(`event`, `biValue`, `action`, `rating`))}
         public static func videoQualityChanged(_ event: Parameter<AnalyticsEvent>, bivalue: Parameter<EventBIValue>, value: Parameter<String>, oldValue: Parameter<String>) -> Verify { return Verify(method: .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(`event`, `bivalue`, `value`, `oldValue`))}
         public static func trackCourseUpgradePaymentError(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, error: Parameter<String>) -> Verify { return Verify(method: .m_trackCourseUpgradePaymentError__eventbiValue_biValuecourseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_error(`event`, `biValue`, `courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `error`))}
-        public static func trackCourseUpgradeError(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, error: Parameter<String>, flowType: Parameter<String>) -> Verify { return Verify(method: .m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `error`, `flowType`))}
-        public static func trackCourseUpgradeErrorAction(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, errorAction: Parameter<String>, error: Parameter<String>, flowType: Parameter<String>) -> Verify { return Verify(method: .m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `errorAction`, `error`, `flowType`))}
-        public static func trackCourseUpgradeSuccess(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<String>) -> Verify { return Verify(method: .m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `flowType`))}
+        public static func trackCourseUpgradeError(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, error: Parameter<String>, flowType: Parameter<UpgradeMode>) -> Verify { return Verify(method: .m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `error`, `flowType`))}
+        public static func trackCourseUpgradeErrorAction(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, errorAction: Parameter<String>, error: Parameter<String>, flowType: Parameter<UpgradeMode>) -> Verify { return Verify(method: .m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `errorAction`, `error`, `flowType`))}
+        public static func trackCourseUpgradeSuccess(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<UpgradeMode>) -> Verify { return Verify(method: .m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `flowType`))}
         public static func trackUpgradeNow(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, coursePrice: Parameter<String>) -> Verify { return Verify(method: .m_trackUpgradeNow__courseID_courseIDblockID_blockIDpacing_pacingscreen_screencoursePrice_coursePrice(`courseID`, `blockID`, `pacing`, `screen`, `coursePrice`))}
         public static func trackCourseUpgradeLoadError(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_trackCourseUpgradeLoadError__courseID_courseIDblockID_blockIDpacing_pacingscreen_screen(`courseID`, `blockID`, `pacing`, `screen`))}
-        public static func trackCourseUnfulfilledPurchaseInitiated(courseID: Parameter<String>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<String>) -> Verify { return Verify(method: .m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(`courseID`, `pacing`, `screen`, `flowType`))}
+        public static func trackCourseUnfulfilledPurchaseInitiated(courseID: Parameter<String>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<UpgradeMode>) -> Verify { return Verify(method: .m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(`courseID`, `pacing`, `screen`, `flowType`))}
         public static func trackRestorePurchaseClicked() -> Verify { return Verify(method: .m_trackRestorePurchaseClicked)}
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>) -> Verify { return Verify(method: .m_trackEvent__event(`event`))}
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_trackEvent__eventbiValue_biValue(`event`, `biValue`))}
@@ -1552,13 +1609,13 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
         public static func trackCourseUpgradePaymentError(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, error: Parameter<String>, perform: @escaping (AnalyticsEvent, EventBIValue, String, String?, String, String, CourseUpgradeScreen, String) -> Void) -> Perform {
             return Perform(method: .m_trackCourseUpgradePaymentError__eventbiValue_biValuecourseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_error(`event`, `biValue`, `courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `error`), performs: perform)
         }
-        public static func trackCourseUpgradeError(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, error: Parameter<String>, flowType: Parameter<String>, perform: @escaping (String, String?, String, String?, CourseUpgradeScreen, String, String) -> Void) -> Perform {
+        public static func trackCourseUpgradeError(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, error: Parameter<String>, flowType: Parameter<UpgradeMode>, perform: @escaping (String, String?, String, String?, CourseUpgradeScreen, String, UpgradeMode) -> Void) -> Perform {
             return Perform(method: .m_trackCourseUpgradeError__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerror_errorflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `error`, `flowType`), performs: perform)
         }
-        public static func trackCourseUpgradeErrorAction(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, errorAction: Parameter<String>, error: Parameter<String>, flowType: Parameter<String>, perform: @escaping (String, String?, String, String?, CourseUpgradeScreen, String, String, String) -> Void) -> Perform {
+        public static func trackCourseUpgradeErrorAction(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String?>, screen: Parameter<CourseUpgradeScreen>, errorAction: Parameter<String>, error: Parameter<String>, flowType: Parameter<UpgradeMode>, perform: @escaping (String, String?, String, String?, CourseUpgradeScreen, String, String, UpgradeMode) -> Void) -> Perform {
             return Perform(method: .m_trackCourseUpgradeErrorAction__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenerrorAction_errorActionerror_errorflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `errorAction`, `error`, `flowType`), performs: perform)
         }
-        public static func trackCourseUpgradeSuccess(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<String>, perform: @escaping (String, String?, String, String, CourseUpgradeScreen, String) -> Void) -> Perform {
+        public static func trackCourseUpgradeSuccess(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, coursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<UpgradeMode>, perform: @escaping (String, String?, String, String, CourseUpgradeScreen, UpgradeMode) -> Void) -> Perform {
             return Perform(method: .m_trackCourseUpgradeSuccess__courseID_courseIDblockID_blockIDpacing_pacingcoursePrice_coursePricescreen_screenflowType_flowType(`courseID`, `blockID`, `pacing`, `coursePrice`, `screen`, `flowType`), performs: perform)
         }
         public static func trackUpgradeNow(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, coursePrice: Parameter<String>, perform: @escaping (String, String?, String, CourseUpgradeScreen, String) -> Void) -> Perform {
@@ -1567,7 +1624,7 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
         public static func trackCourseUpgradeLoadError(courseID: Parameter<String>, blockID: Parameter<String?>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, perform: @escaping (String, String?, String, CourseUpgradeScreen) -> Void) -> Perform {
             return Perform(method: .m_trackCourseUpgradeLoadError__courseID_courseIDblockID_blockIDpacing_pacingscreen_screen(`courseID`, `blockID`, `pacing`, `screen`), performs: perform)
         }
-        public static func trackCourseUnfulfilledPurchaseInitiated(courseID: Parameter<String>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<String>, perform: @escaping (String, String, CourseUpgradeScreen, String) -> Void) -> Perform {
+        public static func trackCourseUnfulfilledPurchaseInitiated(courseID: Parameter<String>, pacing: Parameter<String>, screen: Parameter<CourseUpgradeScreen>, flowType: Parameter<UpgradeMode>, perform: @escaping (String, String, CourseUpgradeScreen, UpgradeMode) -> Void) -> Perform {
             return Perform(method: .m_trackCourseUnfulfilledPurchaseInitiated__courseID_courseIDpacing_pacingscreen_screenflowType_flowType(`courseID`, `pacing`, `screen`, `flowType`), performs: perform)
         }
         public static func trackRestorePurchaseClicked(perform: @escaping () -> Void) -> Perform {
@@ -1933,10 +1990,17 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
 		perform?(`upgradeHadler`, `state`, `delegate`)
     }
 
+    open func showRestorePurchasesAlert() {
+        addInvocation(.m_showRestorePurchasesAlert)
+		let perform = methodPerformValue(.m_showRestorePurchasesAlert) as? () -> Void
+		perform?()
+    }
+
 
     fileprivate enum MethodType {
         case m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<CourseUpgradeScreen>)
         case m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(Parameter<CourseUpgradeHandler>, Parameter<UpgradeCompletionState>, Parameter<CourseUpgradeHelperDelegate?>)
+        case m_showRestorePurchasesAlert
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1955,6 +2019,8 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsState, rhs: rhsState, with: matcher), lhsState, rhsState, "state"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDelegate, rhs: rhsDelegate, with: matcher), lhsDelegate, rhsDelegate, "delegate"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_showRestorePurchasesAlert, .m_showRestorePurchasesAlert): return .match
             default: return .none
             }
         }
@@ -1963,12 +2029,14 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
             switch self {
             case let .m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
             case let .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case .m_showRestorePurchasesAlert: return 0
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen: return ".setData(courseID:pacing:blockID:localizedCoursePrice:screen:)"
             case .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate: return ".handleCourseUpgrade(upgradeHadler:state:delegate:)"
+            case .m_showRestorePurchasesAlert: return ".showRestorePurchasesAlert()"
             }
         }
     }
@@ -1989,6 +2057,7 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
 
         public static func setData(courseID: Parameter<String>, pacing: Parameter<String>, blockID: Parameter<String?>, localizedCoursePrice: Parameter<String>, screen: Parameter<CourseUpgradeScreen>) -> Verify { return Verify(method: .m_setData__courseID_courseIDpacing_pacingblockID_blockIDlocalizedCoursePrice_localizedCoursePricescreen_screen(`courseID`, `pacing`, `blockID`, `localizedCoursePrice`, `screen`))}
         public static func handleCourseUpgrade(upgradeHadler: Parameter<CourseUpgradeHandler>, state: Parameter<UpgradeCompletionState>, delegate: Parameter<CourseUpgradeHelperDelegate?>) -> Verify { return Verify(method: .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(`upgradeHadler`, `state`, `delegate`))}
+        public static func showRestorePurchasesAlert() -> Verify { return Verify(method: .m_showRestorePurchasesAlert)}
     }
 
     public struct Perform {
@@ -2000,6 +2069,9 @@ open class CourseUpgradeHelperProtocolMock: CourseUpgradeHelperProtocol, Mock {
         }
         public static func handleCourseUpgrade(upgradeHadler: Parameter<CourseUpgradeHandler>, state: Parameter<UpgradeCompletionState>, delegate: Parameter<CourseUpgradeHelperDelegate?>, perform: @escaping (CourseUpgradeHandler, UpgradeCompletionState, CourseUpgradeHelperDelegate?) -> Void) -> Perform {
             return Perform(method: .m_handleCourseUpgrade__upgradeHadler_upgradeHadlerstate_statedelegate_delegate(`upgradeHadler`, `state`, `delegate`), performs: perform)
+        }
+        public static func showRestorePurchasesAlert(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showRestorePurchasesAlert, performs: perform)
         }
     }
 

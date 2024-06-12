@@ -65,6 +65,7 @@ public struct ListDashboardView: View {
                                                 Task {@MainActor in
                                                     await self.router.showUpgradeInfo(
                                                         productName: course.name,
+                                                        message: "",
                                                         sku: course.sku,
                                                         courseID: course.courseID,
                                                         screen: .dashboard,
@@ -94,6 +95,9 @@ public struct ListDashboardView: View {
                                                 enrollmentStart: course.enrollmentStart,
                                                 enrollmentEnd: course.enrollmentEnd,
                                                 title: course.name,
+                                                org: course.org,
+                                                courseRawImage: course.courseRawImage,
+                                                coursewareAccess: course.coursewareAccess,
                                                 showDates: false,
                                                 lastVisitedBlockID: nil
                                             )

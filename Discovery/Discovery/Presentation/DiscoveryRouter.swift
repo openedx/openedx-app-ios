@@ -26,6 +26,9 @@ public protocol DiscoveryRouter: BaseRouter {
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
+        org: String?,
+        courseRawImage: String?,
+        coursewareAccess: CoursewareAccess?,
         showDates: Bool,
         lastVisitedBlockID: String?
     )
@@ -59,6 +62,9 @@ public class DiscoveryRouterMock: BaseRouterMock, DiscoveryRouter {
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
+        org: String?,
+        courseRawImage: String?,
+        coursewareAccess: CoursewareAccess?,
         showDates: Bool,
         lastVisitedBlockID: String?
     ) {}

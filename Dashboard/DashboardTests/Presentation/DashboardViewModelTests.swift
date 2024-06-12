@@ -40,6 +40,8 @@ final class ListDashboardViewModelTests: XCTestCase {
                        numPages: 2,
                        coursesCount: 2,
                         isSelfPaced: false,
+                       courseRawImage: nil,
+                       coursewareAccess: nil,
                        progressEarned: 0,
                        progressPossible: 0),
             
@@ -56,6 +58,8 @@ final class ListDashboardViewModelTests: XCTestCase {
                        numPages: 1,
                        coursesCount: 2,
                        isSelfPaced: false,
+                       courseRawImage: nil,
+                       coursewareAccess: nil,
                        progressEarned: 0,
                        progressPossible: 0)
         ]
@@ -98,6 +102,8 @@ final class ListDashboardViewModelTests: XCTestCase {
                        numPages: 2,
                        coursesCount: 2,
                        isSelfPaced: false,
+                       courseRawImage: nil,
+                       coursewareAccess: nil,
                        progressEarned: 0,
                        progressPossible: 0),
             
@@ -114,6 +120,8 @@ final class ListDashboardViewModelTests: XCTestCase {
                        numPages: 1,
                        coursesCount: 2,
                        isSelfPaced: false,
+                       courseRawImage: nil,
+                       coursewareAccess: nil,
                        progressEarned: 0,
                        progressPossible: 0)
         ]

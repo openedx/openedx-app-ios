@@ -121,6 +121,8 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     numPages: 1,
                     coursesCount: 0,
                     isSelfPaced: false,
+                    courseRawImage: nil,
+                    coursewareAccess: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )
@@ -150,6 +152,8 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     numPages: 1,
                     coursesCount: 0,
                     isSelfPaced: false,
+                    courseRawImage: nil,
+                    coursewareAccess: nil,
                     progressEarned: 4,
                     progressPossible: 10
                 )
@@ -205,6 +209,8 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     numPages: 1,
                     coursesCount: 0,
                     isSelfPaced: false,
+                    courseRawImage: nil,
+                    coursewareAccess: nil,
                     progressEarned: 4,
                     progressPossible: 10
                 )

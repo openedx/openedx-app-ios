@@ -49,6 +49,7 @@ final class CourseDateViewModelTests: XCTestCase {
             isSelfPaced: true,
             isUpgradeable: false,
             sku: nil,
+            coursewareAccessDetails: nil,
             courseProgress: nil
         )
         

@@ -592,15 +592,17 @@ class ScreenAssembly: Assembly {
         // MARK: Upgrade info
         container.register(
             UpgradeInfoViewModel.self
-        ) { r, productName, sku, courseID, screen, pacing in
+        ) { r, productName, message, sku, courseID, screen, pacing in
             UpgradeInfoViewModel(
                 productName: productName,
+                message: message,
                 sku: sku,
                 courseID: courseID,
                 screen: screen,
                 handler: r.resolve(CourseUpgradeHandlerProtocol.self)!,
                 pacing: pacing,
-                analytics: r.resolve(CoreAnalytics.self)!
+                analytics: r.resolve(CoreAnalytics.self)!,
+                router: r.resolve(CourseRouter.self)!
             )
         }
     }
