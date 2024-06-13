@@ -219,7 +219,7 @@ public extension DownloadQuality {
 }
 
 #if DEBUG
-struct AddTopic_Previews: PreviewProvider {
+struct VideoDownloadQualityView_Previews: PreviewProvider {
     static var previews: some View {
         VideoDownloadQualityView(
             downloadQuality: .auto,
