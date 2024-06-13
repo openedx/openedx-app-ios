@@ -34,13 +34,15 @@ public struct VideoDownloadQualityView: View {
     private var viewModel: VideoDownloadQualityViewModel
     private var analytics: CoreAnalytics
     private var router: BaseRouter
+    private var isModal: Bool
     @Environment (\.isHorizontal) private var isHorizontal
 
     public init(
         downloadQuality: DownloadQuality,
         didSelect: ((DownloadQuality) -> Void)?,
         analytics: CoreAnalytics,
-        router: BaseRouter
+        router: BaseRouter,
+        isModal: Bool = false
     ) {
         self._viewModel = StateObject(
             wrappedValue: .init(
@@ -50,41 +52,46 @@ public struct VideoDownloadQualityView: View {
         )
         self.analytics = analytics
         self.router = router
+        self.isModal = isModal
     }
 
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                VStack {
-                    ThemeAssets.headerBackground.swiftUIImage
-                        .resizable()
-                        .edgesIgnoringSafeArea(.top)
+                if !isModal {
+                    VStack {
+                        ThemeAssets.headerBackground.swiftUIImage
+                            .resizable()
+                            .edgesIgnoringSafeArea(.top)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: 200)
+                    .accessibilityIdentifier("auth_bg_image")
                 }
-                .frame(maxWidth: .infinity, maxHeight: 200)
-                .accessibilityIdentifier("auth_bg_image")
                 
                 // MARK: - Page name
                 VStack(alignment: .center) {
-                    ZStack {
-                        HStack {
-                            Text(CoreLocalization.Settings.videoDownloadQualityTitle)
-                                .titleSettings(color: Theme.Colors.loginNavigationText)
-                                .accessibilityIdentifier("manage_account_text")
+                    if !isModal {
+                        ZStack {
+                            HStack {
+                                Text(CoreLocalization.Settings.videoDownloadQualityTitle)
+                                    .titleSettings(color: Theme.Colors.loginNavigationText)
+                                    .accessibilityIdentifier("manage_account_text")
+                            }
+                            VStack {
+                                BackNavigationButton(
+                                    color: Theme.Colors.loginNavigationText,
+                                    action: {
+                                        router.back()
+                                    }
+                                )
+                                .backViewStyle()
+                                .padding(.leading, isHorizontal ? 48 : 0)
+                                .accessibilityIdentifier("back_button")
+                                
+                            }.frame(minWidth: 0,
+                                    maxWidth: .infinity,
+                                    alignment: .topLeading)
                         }
-                        VStack {
-                            BackNavigationButton(
-                                color: Theme.Colors.loginNavigationText,
-                                action: {
-                                    router.back()
-                                }
-                            )
-                            .backViewStyle()
-                            .padding(.leading, isHorizontal ? 48 : 0)
-                            .accessibilityIdentifier("back_button")
-                            
-                        }.frame(minWidth: 0,
-                                maxWidth: .infinity,
-                                alignment: .topLeading)
                     }
                     // MARK: - Page Body
                     ScrollView {
@@ -129,8 +136,8 @@ public struct VideoDownloadQualityView: View {
                 }
             }
         }
-        .navigationBarHidden(true)
-        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(!isModal)
+        .navigationBarBackButtonHidden(!isModal)
         .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(
@@ -210,3 +217,17 @@ public extension DownloadQuality {
         }
     }
 }
+
+#if DEBUG
+struct VideoDownloadQualityView_Previews: PreviewProvider {
+    static var previews: some View {
+        VideoDownloadQualityView(
+            downloadQuality: .auto,
+            didSelect: nil,
+            analytics: CoreAnalyticsMock(),
+            router: BaseRouterMock(),
+            isModal: true
+        )
+    }
+}
+#endif
