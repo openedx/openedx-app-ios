@@ -105,7 +105,7 @@ public struct DiscoveryWebview: View {
                     }
                     
                     // MARK: - Show Error
-                    if viewModel.showError {
+                    if viewModel.showError && viewModel.shouldRefresh {
                         VStack {
                             SnackBarView(message: viewModel.errorMessage)
                         }
@@ -134,11 +134,13 @@ public struct DiscoveryWebview: View {
                     FullScreenErrorView(
                         type: viewModel.connectivity.isInternetAvaliable ? .generic : .noInternetWithReload
                     ) {
-                        viewModel.webViewError = false
-                        NotificationCenter.default.post(
-                            name: .webviewReloadNotification,
-                            object: nil
-                        )
+                        if viewModel.connectivity.isInternetAvaliable {
+                            viewModel.webViewError = false
+                            NotificationCenter.default.post(
+                                name: .webviewReloadNotification,
+                                object: nil
+                            )
+                        }
                     }
                 }
             }
@@ -147,16 +149,12 @@ public struct DiscoveryWebview: View {
                     viewModel.request = URLRequest(url: url)
                 }
             }
-            
-            // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(
-                connectivity: viewModel.connectivity,
-                reloadAction: {
-                    NotificationCenter.default.post(
-                        name: .webviewReloadNotification,
-                        object: nil
-                    )
-                })
+            .onAppear {
+                viewModel.shouldRefresh = true
+            }
+            .onDisappear {
+                viewModel.shouldRefresh = false
+            }
         }
         .navigationBarHidden(viewModel.sourceScreen == .default && discoveryType == .discovery)
         .navigationTitle(CoreLocalization.Mainscreen.discovery)

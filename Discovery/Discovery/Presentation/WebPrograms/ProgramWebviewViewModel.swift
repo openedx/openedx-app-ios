@@ -31,6 +31,7 @@ public class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProt
     private let analytics: DiscoveryAnalytics
     var request: URLRequest?
     public let authInteractor: AuthInteractorProtocol
+    var shouldRefresh: Bool = true
     
     public init(
         router: DiscoveryRouter,

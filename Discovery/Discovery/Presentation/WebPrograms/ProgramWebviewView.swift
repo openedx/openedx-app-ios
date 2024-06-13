@@ -68,7 +68,12 @@ public struct ProgramWebviewView: View {
                     )
                     .accessibilityIdentifier("program_webview")
                     
-                    if isLoading || viewModel.showProgress || viewModel.updatingCookies {
+                    let shouldShowProgress = (
+                        isLoading ||
+                        viewModel.showProgress ||
+                        viewModel.updatingCookies
+                    ) && viewModel.shouldRefresh
+                    if shouldShowProgress {
                         HStack(alignment: .center) {
                             ProgressBar(
                                 size: 40,
@@ -99,11 +104,13 @@ public struct ProgramWebviewView: View {
                     FullScreenErrorView(
                         type: viewModel.connectivity.isInternetAvaliable ? .generic : .noInternetWithReload
                     ) {
-                        viewModel.webViewError = false
-                        NotificationCenter.default.post(
-                            name: .webviewReloadNotification,
-                            object: nil
-                        )
+                        if viewModel.connectivity.isInternetAvaliable {
+                            viewModel.webViewError = false
+                            NotificationCenter.default.post(
+                                name: .webviewReloadNotification,
+                                object: nil
+                            )
+                        }
                     }
                 }
             }
@@ -112,17 +119,12 @@ public struct ProgramWebviewView: View {
                     viewModel.request = URLRequest(url: url)
                 }
             }
-            
-            // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(
-                connectivity: viewModel.connectivity,
-                reloadAction: {
-                    viewModel.webViewError = false
-                    NotificationCenter.default.post(
-                        name: .webviewReloadNotification,
-                        object: nil
-                    )
-                })
+            .onAppear {
+                viewModel.shouldRefresh = true
+            }
+            .onDisappear {
+                viewModel.shouldRefresh = false
+            }
         }
         .navigationBarHidden(viewType == .program)
         .navigationTitle(CoreLocalization.Mainscreen.programs)
@@ -132,7 +134,6 @@ public struct ProgramWebviewView: View {
 }
 
 #if DEBUG
-//swiftlint:disable all
 struct ProgramWebviewView_Previews: PreviewProvider {
     static var previews: some View {
         ProgramWebviewView(
@@ -150,5 +151,4 @@ struct ProgramWebviewView_Previews: PreviewProvider {
         )
     }
 }
-//swiftlint:enable all
 #endif

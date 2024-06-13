@@ -45,8 +45,8 @@ public struct FullScreenErrorView: View {
                         .scaledToFit()
                     
                     Text(CoreLocalization.Error.Internet.noInternetTitle)
-                                    .font(Theme.Fonts.titleLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                        .font(Theme.Fonts.titleLarge)
+                        .foregroundColor(Theme.Colors.textPrimary)
                     
                     Text(CoreLocalization.Error.Internet.noInternetDescription)
                         .font(Theme.Fonts.bodyLarge)
@@ -60,8 +60,8 @@ public struct FullScreenErrorView: View {
                         .scaledToFit()
                     
                     Text(CoreLocalization.View.Snackbar.tryAgainBtn)
-                                    .font(Theme.Fonts.titleLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                        .font(Theme.Fonts.titleLarge)
+                        .foregroundColor(Theme.Colors.textPrimary)
                     
                     Text(CoreLocalization.Error.unknownError)
                         .font(Theme.Fonts.bodyLarge)
@@ -86,11 +86,9 @@ public struct FullScreenErrorView: View {
 }
 
 #if DEBUG
-//swiftlint:disable all
 struct FullScreenErrorView_Previews: PreviewProvider {
     static var previews: some View {
         FullScreenErrorView(type: .noInternetWithReload)
     }
 }
-//swiftlint:enable all
 #endif
