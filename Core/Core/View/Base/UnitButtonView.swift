@@ -162,7 +162,7 @@ public struct UnitButtonView: View {
                         case .first, .next, .nextBig, .previous, .last:
                             Theme.Shapes.buttonShape
                                 .fill(type == .previous
-                                      ? Theme.Colors.background
+                                      ? Theme.Colors.secondaryButtonBGColor
                                       : Theme.Colors.accentButtonColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 .overlay(

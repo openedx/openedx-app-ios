@@ -54,6 +54,7 @@ public enum ThemeAssets {
   public static let progressDone = ColorAsset(name: "ProgressDone")
   public static let progressSkip = ColorAsset(name: "ProgressSkip")
   public static let selectedAndDone = ColorAsset(name: "SelectedAndDone")
+  public static let secondaryButtonBGColor = ColorAsset(name: "SecondaryButtonBGColor")
   public static let secondaryButtonBorderColor = ColorAsset(name: "SecondaryButtonBorderColor")
   public static let secondaryButtonTextColor = ColorAsset(name: "SecondaryButtonTextColor")
   public static let shadowColor = ColorAsset(name: "ShadowColor")

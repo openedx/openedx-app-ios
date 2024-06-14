@@ -57,6 +57,7 @@ public struct Theme {
         public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
         public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
         public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
+        public private(set) static var secondaryButtonBGColor = ThemeAssets.secondaryButtonBGColor.swiftUIColor
         public private(set) static var success = ThemeAssets.success.swiftUIColor
         public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
         public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor

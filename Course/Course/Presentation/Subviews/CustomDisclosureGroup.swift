@@ -157,7 +157,7 @@ struct CustomDisclosureGroup: View {
                 .padding(.vertical, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Theme.Colors.tabbarColor)
+                        .fill(Theme.Colors.datesSectionBackground)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)

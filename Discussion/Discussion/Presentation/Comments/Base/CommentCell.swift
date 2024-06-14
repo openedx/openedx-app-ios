@@ -118,13 +118,13 @@ public struct CommentCell: View {
                     onLikeTap()
                 }, label: {
                     comment.voted
-                    ? CoreAssets.voted.swiftUIImage
-                    : CoreAssets.vote.swiftUIImage
+                    ? (CoreAssets.voted.swiftUIImage.renderingMode(.template))
+                    : CoreAssets.vote.swiftUIImage.renderingMode(.template)
                     Text("\(comment.votesCount)")
                     Text(DiscussionLocalization.votesCount(comment.votesCount))
                         .font(Theme.Fonts.labelLarge)
                 }).foregroundColor(comment.voted
-                                   ? Theme.Colors.accentColor
+                                   ? Theme.Colors.accentXColor
                                    : Theme.Colors.textSecondary)
 
                 Spacer()
