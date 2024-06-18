@@ -126,6 +126,7 @@ public struct DownloadsView: View {
                         }
                     } label: {
                         DownloadProgressView()
+                            .id("cirle loading indicator " + task.id)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                             .accessibilityIdentifier("cancel_download_button")
