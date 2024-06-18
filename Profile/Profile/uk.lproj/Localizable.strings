@@ -95,9 +95,9 @@
 "ASSIGNMENT_STATUS.OFFLINE" = "Офлайн";
 
 "CALENDAR_DIALOG.CALENDAR_ACCESS" = "Доступ до календаря";
-"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC" = "Змінити параметри синхронізації";
+"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC" = "Cкасувати синхронізацію календаря";
 "CALENDAR_DIALOG.CALENDAR_ACCESS_DESCRIPTION" = "Щоб показати майбутні завдання та віхи курсу у вашому календарі, нам потрібен дозвіл на доступ до вашого календаря.";
-"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION" = "Вимкнення синхронізації календаря видалить календар “Мої завдання”. Ви можете знову увімкнути синхронізацію календаря в будь-який час.";
+"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION" = "Вимкнення синхронізації календаря видалить календар “%@”. Ви можете знову увімкнути синхронізацію календаря в будь-який час.";
 "CALENDAR_DIALOG.GRANT_CALENDAR_ACCESS" = "Надати доступ до календаря";
 "CALENDAR_DIALOG.DISABLE_SYNCING" = "Вимкнути синхронізацію";
 "CALENDAR_DIALOG.CANCEL" = "Скасувати";

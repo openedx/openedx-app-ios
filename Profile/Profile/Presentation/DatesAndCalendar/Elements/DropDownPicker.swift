@@ -9,27 +9,88 @@ import SwiftUI
 import Core
 import Theme
 
-enum DropDownPickerState {
+public enum DropDownPickerState {
     case top
     case bottom
 }
 
-struct DropDownPicker: View {
+public enum DropDownColor: String {
+    case accent
+    case red
+    case orange
+    case yellow
+    case green
+    case blue
+    case purple
+    case brown
     
-    struct DownPickerOption: Hashable {
+    var title: String {
+        switch self {
+        case .accent:
+            ProfileLocalization.Calendar.DropdownColor.accent
+        case .red:
+            ProfileLocalization.Calendar.DropdownColor.red
+        case .orange:
+            ProfileLocalization.Calendar.DropdownColor.orange
+        case .yellow:
+            ProfileLocalization.Calendar.DropdownColor.yellow
+        case .green:
+            ProfileLocalization.Calendar.DropdownColor.green
+        case .blue:
+            ProfileLocalization.Calendar.DropdownColor.blue
+        case .purple:
+            ProfileLocalization.Calendar.DropdownColor.purple
+        case .brown:
+            ProfileLocalization.Calendar.DropdownColor.brown
+        }
+    }
+    
+    var color: Color {
+        switch self {
+        case .accent:
+                .accentColor
+        case .red:
+                .red
+        case .orange:
+                .orange
+        case .yellow:
+                .yellow
+        case .green:
+                .green
+        case .blue:
+                .blue
+        case .purple:
+                .purple
+        case .brown:
+                .brown
+        }
+    }
+}
+
+public struct DropDownPicker: View {
+        
+    public struct DownPickerOption: Hashable {
         let title: String
         let color: Color?
+        let colorString: String?
         
-        init(title: String, color: Color? = nil) {
+        public init(title: String) {
             self.title = title
-            self.color = color
+            self.color = nil
+            self.colorString = nil
         }
         
-        func hash(into hasher: inout Hasher) {
+        public init(color: DropDownColor) {
+            self.title = color.title
+            self.color = color.color
+            self.colorString = color.rawValue
+        }
+        
+        public func hash(into hasher: inout Hasher) {
             hasher.combine(title)
         }
         
-        static func == (lhs: DownPickerOption, rhs: DownPickerOption) -> Bool {
+        public static func == (lhs: DownPickerOption, rhs: DownPickerOption) -> Bool {
             lhs.title == rhs.title
         }
     }
@@ -43,13 +104,13 @@ struct DropDownPicker: View {
     @State private var index = 1000.0
     @State var zindex = 1000.0
     
-    init(selection: Binding<DownPickerOption?>, state: DropDownPickerState, options: [DownPickerOption]) {
+    public init(selection: Binding<DownPickerOption?>, state: DropDownPickerState, options: [DownPickerOption]) {
         self._selection = selection
         self.state = state
         self.options = options
     }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader {
             let size = $0.size
             VStack(spacing: 0) {
@@ -136,8 +197,6 @@ struct DropDownPicker: View {
                                 .font(Theme.Fonts.bodyMedium)
                                 .foregroundStyle(Theme.Colors.textPrimary)
                             Spacer()
-//                        Image(systemName: "checkmark")
-//                            .opacity(selection == option ? 1 : 0)
                         }
                         VStack {
                             Spacer()

@@ -23,6 +23,8 @@ public protocol ProfileInteractorProtocol {
     func deleteAccount(password: String) async throws -> Bool
     func getSettings() -> UserSettings
     func saveSettings(_ settings: UserSettings)
+    func enrollmentsStatus() async throws -> [CourseForSync]
+    func getCourseDates(courseID: String) async throws -> CourseDates
 }
 
 public class ProfileInteractor: ProfileInteractorProtocol {
@@ -79,6 +81,14 @@ public class ProfileInteractor: ProfileInteractorProtocol {
     
     public func saveSettings(_ settings: UserSettings) {
         return repository.saveSettings(settings)
+    }
+    
+    public func enrollmentsStatus() async throws -> [CourseForSync] {
+        return try await repository.enrollmentsStatus()
+    }
+    
+    public func getCourseDates(courseID: String) async throws -> CourseDates {
+        return try await repository.getCourseDates(courseID: courseID)
     }
 }
 

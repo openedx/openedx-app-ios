@@ -730,7 +730,15 @@ public class Router: AuthorizationRouter,
     
     public func showDatesAndCalendar() {
         let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
-        let view = DatesAndCalendarView(viewModel: viewModel)
+        let storage = Container.shared.resolve(ProfileStorage.self)
+        
+        let view: AnyView
+        if storage?.calendarSettings == nil {
+            view = AnyView(DatesAndCalendarView(viewModel: viewModel))
+        } else {
+            view = AnyView(SyncCalendarOptionsView(viewModel: viewModel))
+        }
+        
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }

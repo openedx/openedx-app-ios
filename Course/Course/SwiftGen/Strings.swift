@@ -38,6 +38,14 @@ public enum CourseLocalization {
     /// Turning off the switch will stop downloading and delete all downloaded videos for
     public static let stopDownloading = CourseLocalization.tr("Localizable", "ALERT.STOP_DOWNLOADING", fallback: "Turning off the switch will stop downloading and delete all downloaded videos for")
   }
+  public enum CalendarSyncStatus {
+    /// Calendar Sync Failed
+    public static let failed = CourseLocalization.tr("Localizable", "CALENDAR_SYNC_STATUS.FAILED", fallback: "Calendar Sync Failed")
+    /// Offline
+    public static let offline = CourseLocalization.tr("Localizable", "CALENDAR_SYNC_STATUS.OFFLINE", fallback: "Offline")
+    /// Synced to Calendar
+    public static let synced = CourseLocalization.tr("Localizable", "CALENDAR_SYNC_STATUS.SYNCED", fallback: "Synced to Calendar")
+  }
   public enum Course {
     /// Due Today
     public static let dueToday = CourseLocalization.tr("Localizable", "COURSE.DUE_TODAY", fallback: "Due Today")
@@ -163,36 +171,6 @@ public enum CourseLocalization {
       public static let successMessage = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE", fallback: "Your dates have been successfully shifted.")
       /// Course Dates
       public static let title = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.TITLE", fallback: "Course Dates")
-      public enum ResetDateBanner {
-        /// Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.
-        public static let body = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY", fallback: "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.")
-        /// Shift due dates
-        public static let button = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON", fallback: "Shift due dates")
-        /// Missed some deadlines?
-        public static let header = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.HEADER", fallback: "Missed some deadlines?")
-      }
-      public enum TabInfoBanner {
-        /// We built a suggested schedule to help you stay on track. But don’t worry – it’s flexible so you can learn at your own pace. If you happen to fall behind, you’ll be able to adjust the dates to keep yourself on track.
-        public static let body = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.BODY", fallback: "We built a suggested schedule to help you stay on track. But don’t worry – it’s flexible so you can learn at your own pace. If you happen to fall behind, you’ll be able to adjust the dates to keep yourself on track.")
-        /// 
-        public static let header = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.HEADER", fallback: "")
-      }
-      public enum UpgradeToCompleteGradedBanner {
-        /// To complete graded assignments as part of this course, you can upgrade today.
-        public static let body = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BODY", fallback: "To complete graded assignments as part of this course, you can upgrade today.")
-        /// 
-        public static let button = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BUTTON", fallback: "")
-        /// 
-        public static let header = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.HEADER", fallback: "")
-      }
-      public enum UpgradeToResetBanner {
-        /// You are auditing this course, which means that you are unable to participate in graded assignments. It looks like you missed some important deadlines based on our suggested schedule. To complete graded assignments as part of this course and shift the past due assignments into the future, you can upgrade today.
-        public static let body = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BODY", fallback: "You are auditing this course, which means that you are unable to participate in graded assignments. It looks like you missed some important deadlines based on our suggested schedule. To complete graded assignments as part of this course and shift the past due assignments into the future, you can upgrade today.")
-        /// 
-        public static let button = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BUTTON", fallback: "")
-        /// 
-        public static let header = CourseLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.HEADER", fallback: "")
-      }
     }
   }
   public enum Download {

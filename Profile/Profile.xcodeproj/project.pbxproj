@@ -20,6 +20,10 @@
 		021D925528DC92F800ACC565 /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D925428DC92F800ACC565 /* ProfileInteractor.swift */; };
 		021D925C28DDADBD00ACC565 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 021D925B28DDADBD00ACC565 /* swiftgen.yml */; };
 		021D925F28DDADE600ACC565 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 021D926128DDADE600ACC565 /* Localizable.strings */; };
+		022213CD2C0E050B00B917E6 /* CalendarSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022213CC2C0E050B00B917E6 /* CalendarSettings.swift */; };
+		022213D02C0E072400B917E6 /* ProfilePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022213CF2C0E072400B917E6 /* ProfilePersistenceProtocol.swift */; };
+		022213D52C0E092300B917E6 /* ProfileCoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 022213D32C0E092300B917E6 /* ProfileCoreModel.xcdatamodeld */; };
+		022213D72C0E18A300B917E6 /* CourseCalendarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022213D62C0E18A200B917E6 /* CourseCalendarState.swift */; };
 		022301E42BF4B7610028A287 /* SyncCalendarOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022301E32BF4B7610028A287 /* SyncCalendarOptionsView.swift */; };
 		022301E62BF4B7A20028A287 /* AssignmentStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022301E52BF4B7A20028A287 /* AssignmentStatusView.swift */; };
 		022301E82BF4C4E70028A287 /* ToggleWithDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022301E72BF4C4E70028A287 /* ToggleWithDescriptionView.swift */; };
@@ -30,6 +34,7 @@
 		025DE1A028DB4D9D0053E0F4 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE19F28DB4D9D0053E0F4 /* Core.framework */; };
 		0262149229AE57A1008BD75A /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262149129AE57A1008BD75A /* DeleteAccountView.swift */; };
 		0262149429AE57B1008BD75A /* DeleteAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0262149329AE57B1008BD75A /* DeleteAccountViewModel.swift */; };
+		027FEF372C1710040037807E /* CourseCalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027FEF362C1710040037807E /* CourseCalendarEvent.swift */; };
 		0281D1532BEA9A40006DAD7A /* NewCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0281D1522BEA9A40006DAD7A /* NewCalendarView.swift */; };
 		0281D1552BEBA8D9006DAD7A /* DropDownPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0281D1542BEBA8D9006DAD7A /* DropDownPicker.swift */; };
 		0288C4EA2BC6AE2D009158B9 /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */; };
@@ -42,6 +47,7 @@
 		02B089432A9F832200754BD4 /* ProfileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B089422A9F832200754BD4 /* ProfileStorage.swift */; };
 		02D0FD092AD698380020D752 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FD082AD698380020D752 /* UserProfileView.swift */; };
 		02D0FD0B2AD6984D0020D752 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */; };
+		02EBC7532C19CD1800BE182C /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EBC7522C19CD1700BE182C /* CalendarManager.swift */; };
 		02F175352A4DAD030019CD70 /* ProfileAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */; };
 		02F3BFE7292539850051930C /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE6292539850051930C /* ProfileRouter.swift */; };
 		02F81DDF2BF4D83E002D3604 /* CalendarDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F81DDE2BF4D83E002D3604 /* CalendarDialogView.swift */; };
@@ -79,6 +85,10 @@
 		021D925428DC92F800ACC565 /* ProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
 		021D925B28DDADBD00ACC565 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		021D926028DDADE600ACC565 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		022213CC2C0E050B00B917E6 /* CalendarSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSettings.swift; sourceTree = "<group>"; };
+		022213CF2C0E072400B917E6 /* ProfilePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistenceProtocol.swift; sourceTree = "<group>"; };
+		022213D42C0E092300B917E6 /* ProfileCoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProfileCoreModel.xcdatamodel; sourceTree = "<group>"; };
+		022213D62C0E18A200B917E6 /* CourseCalendarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCalendarState.swift; sourceTree = "<group>"; };
 		022301E32BF4B7610028A287 /* SyncCalendarOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCalendarOptionsView.swift; sourceTree = "<group>"; };
 		022301E52BF4B7A20028A287 /* AssignmentStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentStatusView.swift; sourceTree = "<group>"; };
 		022301E72BF4C4E70028A287 /* ToggleWithDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleWithDescriptionView.swift; sourceTree = "<group>"; };
@@ -89,6 +99,7 @@
 		025DE19F28DB4D9D0053E0F4 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0262149129AE57A1008BD75A /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		0262149329AE57B1008BD75A /* DeleteAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewModel.swift; sourceTree = "<group>"; };
+		027FEF362C1710040037807E /* CourseCalendarEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCalendarEvent.swift; sourceTree = "<group>"; };
 		0281D1522BEA9A40006DAD7A /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
 		0281D1542BEBA8D9006DAD7A /* DropDownPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownPicker.swift; sourceTree = "<group>"; };
 		0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
@@ -101,6 +112,7 @@
 		02B089422A9F832200754BD4 /* ProfileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStorage.swift; sourceTree = "<group>"; };
 		02D0FD082AD698380020D752 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
+		02EBC7522C19CD1700BE182C /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
 		02ED50CE29A64BAD008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE6292539850051930C /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
@@ -211,11 +223,13 @@
 		021C90D32BC986A4004876AF /* DatesAndCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				022213CB2C0E04FB00B917E6 /* Models */,
 				0281D1512BEA9A2D006DAD7A /* Elements */,
 				021C90D42BC986B3004876AF /* DatesAndCalendarView.swift */,
 				022301E32BF4B7610028A287 /* SyncCalendarOptionsView.swift */,
 				02F81DE02BF4F009002D3604 /* CoursesToSyncView.swift */,
 				021C90D62BC98734004876AF /* DatesAndCalendarViewModel.swift */,
+				02EBC7522C19CD1700BE182C /* CalendarManager.swift */,
 			);
 			path = DatesAndCalendar;
 			sourceTree = "<group>";
@@ -237,6 +251,7 @@
 		021D924928DC882B00ACC565 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				022213CE2C0E070F00B917E6 /* Persistence */,
 				021D924A28DC883000ACC565 /* Network */,
 				021D924D28DC88BB00ACC565 /* ProfileRepository.swift */,
 			);
@@ -266,6 +281,25 @@
 				0248F9B028DDB09D0041327E /* Strings.swift */,
 			);
 			path = SwiftGen;
+			sourceTree = "<group>";
+		};
+		022213CB2C0E04FB00B917E6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				022213CC2C0E050B00B917E6 /* CalendarSettings.swift */,
+				022213D62C0E18A200B917E6 /* CourseCalendarState.swift */,
+				027FEF362C1710040037807E /* CourseCalendarEvent.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		022213CE2C0E070F00B917E6 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				022213CF2C0E072400B917E6 /* ProfilePersistenceProtocol.swift */,
+				022213D32C0E092300B917E6 /* ProfileCoreModel.xcdatamodeld */,
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 		02362C8329350C0C00134A5B /* Model */ = {
@@ -635,7 +669,9 @@
 				0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */,
 				021D924C28DC884A00ACC565 /* ProfileEndpoint.swift in Sources */,
 				02F81DE12BF4F009002D3604 /* CoursesToSyncView.swift in Sources */,
+				027FEF372C1710040037807E /* CourseCalendarEvent.swift in Sources */,
 				0281D1532BEA9A40006DAD7A /* NewCalendarView.swift in Sources */,
+				02EBC7532C19CD1800BE182C /* CalendarManager.swift in Sources */,
 				BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */,
 				022301E82BF4C4E70028A287 /* ToggleWithDescriptionView.swift in Sources */,
 				022301E42BF4B7610028A287 /* SyncCalendarOptionsView.swift in Sources */,
@@ -650,7 +686,11 @@
 				029301DA2938948500E99AB8 /* ProfileType.swift in Sources */,
 				0259104429C39C9E004B5A55 /* SettingsView.swift in Sources */,
 				02B089432A9F832200754BD4 /* ProfileStorage.swift in Sources */,
+				022213D72C0E18A300B917E6 /* CourseCalendarState.swift in Sources */,
 				021D925228DC918D00ACC565 /* ProfileViewModel.swift in Sources */,
+				022213D52C0E092300B917E6 /* ProfileCoreModel.xcdatamodeld in Sources */,
+				022213CD2C0E050B00B917E6 /* CalendarSettings.swift in Sources */,
+				022213D02C0E072400B917E6 /* ProfilePersistenceProtocol.swift in Sources */,
 				0248F9B128DDB09D0041327E /* Strings.swift in Sources */,
 				020306CA2932B14D000949EA /* EditProfileViewModel.swift in Sources */,
 				0259104829C3A5F0004B5A55 /* VideoQualityView.swift in Sources */,
@@ -1675,6 +1715,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		022213D32C0E092300B917E6 /* ProfileCoreModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				022213D42C0E092300B917E6 /* ProfileCoreModel.xcdatamodel */,
+			);
+			currentVersion = 022213D42C0E092300B917E6 /* ProfileCoreModel.xcdatamodel */;
+			name = ProfileCoreModel.xcdatamodeld;
+			path = "/Users/stepanokivan/Developer/RaccoonGang/OPENEDX/openedx-app-ios/Profile/Profile/Data/Persistence/ProfileCoreModel.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 020F834128DB4CCD0062FA70 /* Project object */;
 }

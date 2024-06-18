@@ -16,6 +16,8 @@ enum ProfileEndpoint: EndPointType {
     case deleteProfilePicture(username: String)
     case logOut(refreshToken: String, clientID: String)
     case deleteAccount(password: String)
+    case enrollmentsStatus(username: String)
+    case getCourseDates(courseID: String)
 
     var path: String {
         switch self {
@@ -31,12 +33,16 @@ enum ProfileEndpoint: EndPointType {
             return "/api/user/v1/accounts/\(username)/image"
         case .deleteAccount:
             return "/api/user/v1/accounts/deactivate_logout/"
+        case let .enrollmentsStatus(username):
+            return "/api/mobile/v1/users/\(username)/enrollments_status/"
+        case .getCourseDates(let courseID):
+            return "/api/course_home/v1/dates/\(courseID)"
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .getUserProfile:
+        case .getUserProfile, .enrollmentsStatus, .getCourseDates:
             return .get
         case .logOut:
             return .post
@@ -87,6 +93,10 @@ enum ProfileEndpoint: EndPointType {
                 "password": password
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
+        case .enrollmentsStatus(username: let username):
+            return .requestParameters(parameters: nil, encoding: JSONEncoding.default)
+        case .getCourseDates:
+            return .requestParameters(encoding: JSONEncoding.default)
         }
     }
 }

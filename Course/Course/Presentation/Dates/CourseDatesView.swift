@@ -114,7 +114,8 @@ public struct CourseDatesView: View {
         } else {
             return DatesSuccessView(
                 title: title,
-                message: message
+                message: message,
+                selectedTab: .dates
             ) {
                 viewModel.resetEventState()
             }
@@ -165,10 +166,11 @@ struct CourseDateListView: View {
                         collapsed: $collapsed
                     )
                     VStack(alignment: .leading, spacing: 0) {
+                        
+                        CalendarSyncStatusView(status: viewModel.syncStatus())
+                            .padding(.bottom, 16)
+                        
                         if !courseDates.hasEnded {
-                            CalendarSyncView(courseID: courseID, viewModel: viewModel)
-                                .padding(.bottom, 16)
-                            
                             DatesStatusInfoView(
                                 datesBannerInfo: courseDates.datesBannerInfo,
                                 courseID: courseID,
@@ -404,42 +406,6 @@ struct StyleBlock: View {
     }
 }
 
-struct CalendarSyncView: View {
-    let courseID: String
-    @ObservedObject var viewModel: CourseDatesViewModel
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Spacer()
-            HStack {
-                CoreAssets.syncToCalendar.swiftUIImage
-                Text(CourseLocalization.CourseDates.syncToCalendar)
-                    .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(Theme.Colors.textPrimary)
-                Toggle("", isOn: .constant(viewModel.isOn))
-                    .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentButtonColor))
-                    .padding(.trailing, 0)
-                    .onTapGesture {
-                        viewModel.calendarState = !viewModel.isOn
-                    }
-            }
-            .padding(.horizontal, 16)
-            
-            Text(CourseLocalization.CourseDates.syncToCalendarMessage)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Theme.Fonts.labelLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .padding(.horizontal, 16)
-            Spacer()
-        }
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
-        )
-        .background(Theme.Colors.datesSectionBackground)
-    }
-}
-
 fileprivate extension BlockStatus {
     var title: String {
         switch self {
@@ -503,13 +469,14 @@ struct CourseDatesView_Previews: PreviewProvider {
             config: ConfigMock(),
             courseID: "",
             courseName: "",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(), 
+            calendarManager: CalendarManagerMock()
         )
         
         CourseDatesView(
             courseID: "",
             coordinate: .constant(0),
-            collapsed: .constant(false),
+            collapsed: .constant(false), 
             viewModel: viewModel)
     }
 }

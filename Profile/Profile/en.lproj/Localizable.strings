@@ -95,11 +95,12 @@
 "ASSIGNMENT_STATUS.SYNCED" = "Synced";
 "ASSIGNMENT_STATUS.FAILED" = "Sync Failed";
 "ASSIGNMENT_STATUS.OFFLINE" = "Offline";
+"ASSIGNMENT_STATUS.SYNCING" = "Syncing to calendar...";
 
 "CALENDAR_DIALOG.CALENDAR_ACCESS" = "Calendar Access";
-"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC" = "Change Sync Options";
+"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC" = "Disable Calendar Sync";
 "CALENDAR_DIALOG.CALENDAR_ACCESS_DESCRIPTION" = "To show upcoming assignments and course milestones on your calendar, we need permission to access your calendar.";
-"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION" = "Disabling calendar sync will delete the calendar “My Assignments.” You can turn calendar sync back on at any time.";
+"CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION" = "Disabling calendar sync will delete the calendar “%@”. You can turn calendar sync back on at any time.";
 "CALENDAR_DIALOG.GRANT_CALENDAR_ACCESS" = "Grant Calendar Access";
 "CALENDAR_DIALOG.DISABLE_SYNCING" = "Disable Syncing";
 "CALENDAR_DIALOG.CANCEL" = "Cancel";
