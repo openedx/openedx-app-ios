@@ -67,30 +67,30 @@ public enum DropDownColor: String {
     }
 }
 
-public struct DropDownPicker: View {
+struct DropDownPicker: View {
         
-    public struct DownPickerOption: Hashable {
+    struct DownPickerOption: Hashable {
         let title: String
         let color: Color?
         let colorString: String?
         
-        public init(title: String) {
+        init(title: String) {
             self.title = title
             self.color = nil
             self.colorString = nil
         }
         
-        public init(color: DropDownColor) {
+        init(color: DropDownColor) {
             self.title = color.title
             self.color = color.color
             self.colorString = color.rawValue
         }
         
-        public func hash(into hasher: inout Hasher) {
+        func hash(into hasher: inout Hasher) {
             hasher.combine(title)
         }
         
-        public static func == (lhs: DownPickerOption, rhs: DownPickerOption) -> Bool {
+        static func == (lhs: DownPickerOption, rhs: DownPickerOption) -> Bool {
             lhs.title == rhs.title
         }
     }
@@ -104,13 +104,13 @@ public struct DropDownPicker: View {
     @State private var index = 1000.0
     @State var zindex = 1000.0
     
-    public init(selection: Binding<DownPickerOption?>, state: DropDownPickerState, options: [DownPickerOption]) {
+    init(selection: Binding<DownPickerOption?>, state: DropDownPickerState, options: [DownPickerOption]) {
         self._selection = selection
         self.state = state
         self.options = options
     }
     
-    public var body: some View {
+    var body: some View {
         GeometryReader {
             let size = $0.size
             VStack(spacing: 0) {

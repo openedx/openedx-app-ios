@@ -200,7 +200,7 @@ public struct CourseContainerView: View {
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        dateTabIndex: 1//CourseTab.dates.rawValue
+                        dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
                         tab.image

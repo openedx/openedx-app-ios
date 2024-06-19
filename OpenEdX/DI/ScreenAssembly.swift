@@ -41,7 +41,7 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 profileInteractor: r.resolve(ProfileInteractorProtocol.self)!,
                 appStorage: r.resolve(AppStorage.self)!, 
-                calendarManager: r.resolve(CalendarManager.self)!,
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!,
                 sourceScreen: sourceScreen
             )
         }
@@ -246,7 +246,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 profileStorage: r.resolve(ProfileStorage.self)!,
                 persistence: r.resolve(ProfilePersistenceProtocol.self)!,
-                calendarManager: r.resolve(CalendarManager.self)!,
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }

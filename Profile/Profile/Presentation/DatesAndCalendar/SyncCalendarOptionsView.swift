@@ -140,7 +140,7 @@ public struct SyncCalendarOptionsView: View {
                             }
 
                             Task {
-                                viewModel.deleteOldCalendarIfNeeded()
+                                await viewModel.deleteOldCalendarIfNeeded()
                             }
                         },
                         onCloseTapped: {

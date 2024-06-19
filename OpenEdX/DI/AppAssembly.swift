@@ -99,14 +99,6 @@ class AppAssembly: Assembly {
                             connectivity: r.resolve(ConnectivityProtocol.self)!)
         }).inObjectScope(.container)
         
-        container.register(CalendarManager.self) { r in
-            CalendarManager(
-                persistence: r.resolve(ProfilePersistenceProtocol.self)!,
-                interactor: r.resolve(ProfileInteractorProtocol.self)!,
-                profileStorage: r.resolve(ProfileStorage.self)!
-            )
-        }.inObjectScope(.container)
-        
         container.register(AuthorizationRouter.self) { r in
             r.resolve(Router.self)!
         }.inObjectScope(.container)
@@ -193,7 +185,7 @@ class AppAssembly: Assembly {
                 profileStorage: r.resolve(ProfileStorage.self)!
             )
         }
-        .inObjectScope(.weak)
+        .inObjectScope(.container)
 
         container.register(DeepLinkManager.self) { r in
             DeepLinkManager(

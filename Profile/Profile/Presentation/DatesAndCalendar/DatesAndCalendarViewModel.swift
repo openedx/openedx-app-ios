@@ -38,10 +38,10 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     @Published var coursesForSync = [CourseForSync]()
     
-    var coursesForSyncBeforeChanges = [CourseForSync]()
+    private var coursesForSyncBeforeChanges = [CourseForSync]()
     
-    var coursesForDeleting = [CourseForSync]()
-    var coursesForAdding = [CourseForSync]()
+    private var coursesForDeleting = [CourseForSync]()
+    private var coursesForAdding = [CourseForSync]()
     
     @Published var synced: Bool = true
     @Published var hideInactiveCourses: Bool = false
@@ -56,7 +56,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         }
     }
     
-    let accounts: [DropDownPicker.DownPickerOption] = [
+    private let accounts: [DropDownPicker.DownPickerOption] = [
         .init(title: ProfileLocalization.Calendar.Dropdown.icloud),
         .init(title: ProfileLocalization.Calendar.Dropdown.local)
     ]
@@ -291,7 +291,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         return syncedCourses
     }
     
-    func deleteOldCalendarIfNeeded() {
+    func deleteOldCalendarIfNeeded() async {
         guard let calSettings = profileStorage.calendarSettings else { return }
         let courseCalendarStates = persistence.getAllCourseStates()
         let courseCountChanges = courseCalendarStates.count != coursesForSync.count
@@ -304,9 +304,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         calendarManager.removeOldCalendar()
         saveCalendarOptions()
         persistence.removeAllCourseCalendarEvents()
-        Task {
-            await fetchCourses()
-        }
+        await fetchCourses()
     }
     
     private func syncSelectedCourse(
@@ -344,7 +342,6 @@ public class DatesAndCalendarViewModel: ObservableObject {
             await calendarManager.removeOutdatedEvents(courseID: course.courseID)
             persistence.removeCourseState(courseID: course.courseID)
             persistence.removeCourseCalendarEvents(for: course.courseID)
-            // Обновляем статус синхронизации курса
             if let index = self.coursesForSync.firstIndex(where: { $0.courseID == course.courseID }) {
                 self.coursesForSync[index].synced = false
             }
@@ -387,7 +384,6 @@ public class DatesAndCalendarViewModel: ObservableObject {
                 }
             }
         } else {
-            // Убираем из массивов, если состояние курса совпадает с начальным
             if let index = coursesForAdding.firstIndex(where: { $0.courseID == course.courseID }) {
                 coursesForAdding.remove(at: index)
             }

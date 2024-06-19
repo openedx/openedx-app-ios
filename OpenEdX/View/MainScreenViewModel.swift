@@ -25,7 +25,7 @@ final class MainScreenViewModel: ObservableObject {
     private let profileInteractor: ProfileInteractorProtocol
     var sourceScreen: LogistrationSourceScreen
     private var appStorage: CoreStorage & ProfileStorage
-    private let calendarManager: CalendarManager
+    private let calendarManager: CalendarManagerProtocol
     private var cancellables = Set<AnyCancellable>()
     
     @Published var selection: MainTab = .dashboard
@@ -34,7 +34,7 @@ final class MainScreenViewModel: ObservableObject {
          config: ConfigProtocol,
          profileInteractor: ProfileInteractorProtocol,
          appStorage: CoreStorage & ProfileStorage,
-         calendarManager: CalendarManager,
+         calendarManager: CalendarManagerProtocol,
          sourceScreen: LogistrationSourceScreen = .default
     ) {
         self.analytics = analytics
@@ -43,6 +43,15 @@ final class MainScreenViewModel: ObservableObject {
         self.appStorage = appStorage
         self.calendarManager = calendarManager
         self.sourceScreen = sourceScreen
+        
+        NotificationCenter.default.publisher(for: .shiftCourseDates, object: nil)
+            .sink { notification in
+                guard let (courseID, courseName) = notification.object as? (String, String) else { return }
+                Task {
+                    await self.updateCourseDates(courseID: courseID, courseName: courseName)
+                }
+            }
+            .store(in: &cancellables)
     }
     
     public func select(tab: MainTab) {
@@ -73,17 +82,6 @@ final class MainScreenViewModel: ObservableObject {
         if let username = appStorage.user?.username {
             await updateCalendarIfNeeded(for: username)
         }
-    }
-    
-    func addShiftCourseDatesObserver() {
-        NotificationCenter.default.publisher(for: .shiftCourseDates, object: nil)
-            .sink { notification in
-                guard let (courseID, courseName) = notification.object as? (String, String) else { return }
-                Task {
-                    await self.updateCourseDates(courseID: courseID, courseName: courseName)
-                }
-            }
-            .store(in: &cancellables)
     }
 }
 

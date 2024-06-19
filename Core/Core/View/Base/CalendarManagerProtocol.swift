@@ -16,8 +16,10 @@ public protocol CalendarManagerProtocol {
     func requestAccess() async -> Bool
     func courseStatus(courseID: String) -> SyncStatus
     func clearAllData(removeCalendar: Bool)
+    func isDatesChanged(courseID: String, checksum: String) -> Bool
 }
 
+#if DEBUG
 public struct CalendarManagerMock: CalendarManagerProtocol {
     public func createCalendarIfNeeded() {}
     public func filterCoursesBySelected(fetchedCourses: [CourseForSync]) async -> [CourseForSync] {[]}
@@ -27,6 +29,8 @@ public struct CalendarManagerMock: CalendarManagerProtocol {
     public func requestAccess() async -> Bool { true }
     public func courseStatus(courseID: String) -> SyncStatus { .synced }
     public func clearAllData(removeCalendar: Bool) {}
+    public func isDatesChanged(courseID: String, checksum: String) -> Bool {false}
     
     public init() {}
 }
+#endif

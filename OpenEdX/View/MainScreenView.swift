@@ -184,7 +184,6 @@ struct MainScreenView: View {
                 await viewModel.prefetchDataForOffline()
                 await viewModel.loadCalendar()
             }
-            viewModel.addShiftCourseDatesObserver()
         }
         .accentColor(Theme.Colors.accentXColor)
     }

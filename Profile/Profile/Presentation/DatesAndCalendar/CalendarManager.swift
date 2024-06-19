@@ -62,7 +62,7 @@ public class CalendarManager: CalendarManagerProtocol {
         case ProfileLocalization.Calendar.Dropdown.icloud:
             return iCloud ?? local ?? fallback
         case ProfileLocalization.Calendar.Dropdown.local:
-            return  fallback ?? local
+            return fallback ?? local
         default:
             return iCloud ?? local ?? fallback
         }
@@ -176,7 +176,6 @@ public class CalendarManager: CalendarManagerProtocol {
         let events = generateEvents(for: dateBlocks, courseName: courseName, calendar: calendar)
         var saveSuccessful = true
         events.forEach { event in
-            //            if !alreadyExist(event: event) {
             do {
                 try eventStore.save(event, span: .thisEvent)
                 persistence.saveCourseCalendarEvent(
@@ -245,7 +244,7 @@ public class CalendarManager: CalendarManagerProtocol {
     private func calendarEvent(for block: CourseDateBlock, courseName: String, calendar: EKCalendar) -> EKEvent? {
         guard !block.title.isEmpty else { return nil }
         
-        let title = block.title// + ": " + courseName//calendar.title
+        let title = block.title
         let startDate = block.date.addingTimeInterval(Double(alertOffset) * 3600)
         let secondAlert = startDate.addingTimeInterval(Double(alertOffset) * 86400)
         let endDate = block.date
@@ -269,7 +268,7 @@ public class CalendarManager: CalendarManagerProtocol {
     private func calendarEvent(for blocks: [CourseDateBlock], courseName: String, calendar: EKCalendar) -> EKEvent? {
         guard let block = blocks.first, !block.title.isEmpty else { return nil }
         
-        let title = block.title// + ": " + courseName//calendar.title
+        let title = block.title
         let startDate = block.date.addingTimeInterval(Double(alertOffset) * 3600)
         let secondAlert = startDate.addingTimeInterval(Double(alertOffset) * 86400)
         let endDate = block.date
@@ -336,13 +335,15 @@ public class CalendarManager: CalendarManagerProtocol {
         return shortUrl
     }
 
-    private func generateEvent(title: String,
-                               startDate: Date,
-                               endDate: Date,
-                               secondAlert: Date,
-                               notes: String,
-                               location: String,
-                               calendar: EKCalendar) -> EKEvent {
+    private func generateEvent(
+        title: String,
+        startDate: Date,
+        endDate: Date,
+        secondAlert: Date,
+        notes: String,
+        location: String,
+        calendar: EKCalendar
+    ) -> EKEvent {
         let event = EKEvent(eventStore: eventStore)
         event.title = title
         event.location = location

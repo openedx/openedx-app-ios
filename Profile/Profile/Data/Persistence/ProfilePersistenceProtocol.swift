@@ -20,6 +20,7 @@ public protocol ProfilePersistenceProtocol {
     func getCourseCalendarEvents(for courseId: String) -> [CourseCalendarEvent]
 }
 
+#if DEBUG
 public struct ProfilePersistenceMock: ProfilePersistenceProtocol {
     public func getCourseState(courseID: String) -> CourseCalendarState? { nil }
     public func getAllCourseStates() -> [CourseCalendarState] {[]}
@@ -31,6 +32,7 @@ public struct ProfilePersistenceMock: ProfilePersistenceProtocol {
     public func removeAllCourseCalendarEvents() {}
     public func getCourseCalendarEvents(for courseId: String) -> [CourseCalendarEvent] { [] }
 }
+#endif
 
 public final class ProfileBundle {
     private init() {}

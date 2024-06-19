@@ -5,7 +5,7 @@
 //  Created by  Stepanok Ivan on 03.06.2024.
 //
 
-import UIKit
+import Foundation
 
 public struct CalendarSettings: Codable {
     public var colorSelection: String

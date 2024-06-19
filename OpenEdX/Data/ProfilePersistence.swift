@@ -86,7 +86,6 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func deleteAllCourseStatesAndEvents() {
-
         let fetchRequestCalendarStates: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarState.fetchRequest()
         let deleteRequestCalendarStates = NSBatchDeleteRequest(fetchRequest: fetchRequestCalendarStates)
         let fetchRequestCalendarEvents: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarEvent.fetchRequest()

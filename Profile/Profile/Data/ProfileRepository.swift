@@ -266,7 +266,7 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
             DataLayer.EnrollmentsStatusElement(courseID: "7", courseName: "Course 7", isActive: true),
             DataLayer.EnrollmentsStatusElement(courseID: "8", courseName: "Course 8", isActive: true),
             DataLayer.EnrollmentsStatusElement(courseID: "9", courseName: "Course 9", isActive: true),
-            ]
+        ]
         
         return result.domain
     }
