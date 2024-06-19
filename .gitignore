@@ -116,3 +116,9 @@ venv/
 Podfile.lock
 config_settings.yaml
 default_config/
+
+# Translations ignored files
+.venv/
+I18N/
+*.lproj/
+!en.lproj/

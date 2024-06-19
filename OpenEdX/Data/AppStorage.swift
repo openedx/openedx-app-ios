@@ -223,6 +223,19 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
             }
         }
     }
+                
+    public var resetAppSupportDirectoryUserData: Bool? {
+        get {
+            return userDefaults.bool(forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+            } else {
+                userDefaults.removeObject(forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+            }
+        }
+    }
     
     public var lastCalendarName: String? {
         get {
@@ -317,4 +330,5 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
     private let KEY_LAST_CALENDAR_UPDATE_DATE = "lastCalendarUpdateDate"
     private let KEY_HIDE_INACTIVE_COURSES = "hideInactiveCourses"
     private let KEY_FIRST_CALENDAR_UPDATE = "firstCalendarUpdate"
+    private let KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA = "resetAppSupportDirectoryUserData"
 }

@@ -179,7 +179,8 @@ public struct CourseOutlineView: View {
                     downloadQuality: $0.downloadQuality,
                     didSelect: viewModel.update(downloadQuality:),
                     analytics: viewModel.coreAnalytics,
-                    router: viewModel.router
+                    router: viewModel.router,
+                    isModal: true
                 )
             }
         }
