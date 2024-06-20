@@ -14,6 +14,17 @@ public enum DiscoveryWebviewType: Equatable {
     case discovery
     case courseDetail(String)
     case programDetail(String)
+    
+    var rawValue: String {
+        switch self {
+        case .discovery:
+            return "discovery"
+        case .courseDetail(let value):
+            return "courseDetail(\(value))"
+        case .programDetail(let value):
+            return "programDetail(\(value))"
+        }
+    }
 }
 
 public struct DiscoveryWebview: View {
@@ -88,7 +99,8 @@ public struct DiscoveryWebview: View {
                         ),
                         isLoading: $isLoading,
                         refreshCookies: {},
-                        navigationDelegate: viewModel
+                        navigationDelegate: viewModel,
+                        webViewType: discoveryType.rawValue
                     )
                     .accessibilityIdentifier("discovery_webview")
                     
@@ -105,7 +117,7 @@ public struct DiscoveryWebview: View {
                     }
                     
                     // MARK: - Show Error
-                    if viewModel.showError && viewModel.shouldRefresh {
+                    if viewModel.showError {
                         VStack {
                             SnackBarView(message: viewModel.errorMessage)
                         }
@@ -137,7 +149,7 @@ public struct DiscoveryWebview: View {
                         if viewModel.connectivity.isInternetAvaliable {
                             viewModel.webViewError = false
                             NotificationCenter.default.post(
-                                name: .webviewReloadNotification,
+                                name: Notification.Name(discoveryType.rawValue),
                                 object: nil
                             )
                         }
@@ -148,12 +160,6 @@ public struct DiscoveryWebview: View {
                 if let url = URL(string: URLString) {
                     viewModel.request = URLRequest(url: url)
                 }
-            }
-            .onAppear {
-                viewModel.shouldRefresh = true
-            }
-            .onDisappear {
-                viewModel.shouldRefresh = false
             }
         }
         .navigationBarHidden(viewModel.sourceScreen == .default && discoveryType == .discovery)

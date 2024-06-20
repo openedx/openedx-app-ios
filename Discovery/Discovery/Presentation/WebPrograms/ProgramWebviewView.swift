@@ -10,7 +10,7 @@ import SwiftUI
 import Theme
 import Core
 
-public enum ProgramViewType: Equatable {
+public enum ProgramViewType: String, Equatable {
     case program
     case programDetail
 }
@@ -64,7 +64,8 @@ public struct ProgramWebviewView: View {
                                 force: true
                             )
                         },
-                        navigationDelegate: viewModel
+                        navigationDelegate: viewModel,
+                        webViewType: viewType.rawValue
                     )
                     .accessibilityIdentifier("program_webview")
                     
@@ -72,7 +73,7 @@ public struct ProgramWebviewView: View {
                         isLoading ||
                         viewModel.showProgress ||
                         viewModel.updatingCookies
-                    ) && viewModel.shouldRefresh
+                    )
                     if shouldShowProgress {
                         HStack(alignment: .center) {
                             ProgressBar(
@@ -107,7 +108,7 @@ public struct ProgramWebviewView: View {
                         if viewModel.connectivity.isInternetAvaliable {
                             viewModel.webViewError = false
                             NotificationCenter.default.post(
-                                name: .webviewReloadNotification,
+                                name: Notification.Name(viewType.rawValue),
                                 object: nil
                             )
                         }
@@ -118,12 +119,6 @@ public struct ProgramWebviewView: View {
                 if let url = URL(string: URLString) {
                     viewModel.request = URLRequest(url: url)
                 }
-            }
-            .onAppear {
-                viewModel.shouldRefresh = true
-            }
-            .onDisappear {
-                viewModel.shouldRefresh = false
             }
         }
         .navigationBarHidden(viewType == .program)

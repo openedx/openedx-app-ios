@@ -32,7 +32,6 @@ public class DiscoveryWebviewViewModel: ObservableObject {
     var request: URLRequest?
     private let storage: CoreStorage
     var sourceScreen: LogistrationSourceScreen
-    var shouldRefresh: Bool = true
     
     var userloggedIn: Bool {
         return storage.user?.username?.isEmpty == false
