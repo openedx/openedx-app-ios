@@ -841,6 +841,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         pacing: String,
         coursePrice: String? = nil,
         screen: CourseUpgradeScreen,
+        alertType: UpgradeAlertType,
         errorAction: String,
         error: String,
         flowType: UpgradeMode
@@ -853,7 +854,8 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.error: error,
             EventParamKey.errorAction: errorAction,
             EventParamKey.flowType: flowType.rawValue,
-            EventParamKey.category: EventCategory.inAppPurchases
+            EventParamKey.category: EventCategory.inAppPurchases,
+            EventParamKey.alertType: alertType.rawValue
         ]
         
         parameters.setObjectOrNil(blockID, forKey: EventParamKey.blockID)

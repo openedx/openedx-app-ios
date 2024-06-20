@@ -31,7 +31,7 @@ public enum UpgradeState {
 }
 
 public class CourseUpgradeHandler: CourseUpgradeHandlerProtocol {
-    static var ecommereceURL: String = ""
+    static var ecommerceURL: String = ""
     
     private var completion: UpgradeCompletionHandler?
     private var basketID: Int = 0
@@ -77,7 +77,7 @@ public class CourseUpgradeHandler: CourseUpgradeHandlerProtocol {
         self.interactor = interactor
         self.storeKitHandler = storeKitHandler
         self.helper = helper
-        CourseUpgradeHandler.ecommereceURL = config.ecommerceURL ?? ""
+        CourseUpgradeHandler.ecommerceURL = config.ecommerceURL ?? ""
     }
     
     public func upgradeCourse(

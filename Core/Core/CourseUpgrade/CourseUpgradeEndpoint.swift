@@ -47,7 +47,7 @@ enum CourseUpgradeEndpoint: EndPointType {
     }
     
     var baseURL: String {
-        return CourseUpgradeHandler.ecommereceURL
+        return CourseUpgradeHandler.ecommerceURL
     }
     
     var task: HTTPTask {

@@ -46,6 +46,7 @@ public protocol CoreAnalytics {
         pacing: String,
         coursePrice: String?,
         screen: CourseUpgradeScreen,
+        alertType: UpgradeAlertType,
         errorAction: String,
         error: String,
         flowType: UpgradeMode
@@ -135,6 +136,7 @@ public class CoreAnalyticsMock: CoreAnalytics {
         pacing: String,
         coursePrice: String? = nil,
         screen: CourseUpgradeScreen,
+        alertType: UpgradeAlertType,
         errorAction: String,
         error: String,
         flowType: UpgradeMode
@@ -393,6 +395,7 @@ public struct EventParamKey {
     public static let error = "error"
     public static let errorAction = "error_action"
     public static let flowType = "flow_type"
+    public static let alertType = "alert_type"
 }
 
 public struct EventCategory {

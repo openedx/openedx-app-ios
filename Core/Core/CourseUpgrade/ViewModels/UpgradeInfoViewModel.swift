@@ -94,6 +94,7 @@ public class UpgradeInfoViewModel: ObservableObject {
                         pacing: pacing,
                         coursePrice: "",
                         screen: self.screen,
+                        alertType: .priceFetch,
                         errorAction: UpgradeErrorAction.reloadPrice.rawValue,
                         error: "price",
                         flowType: .userInitiated
@@ -117,6 +118,7 @@ public class UpgradeInfoViewModel: ObservableObject {
                     pacing: pacing,
                     coursePrice: nil,
                     screen: self.screen,
+                    alertType: .priceFetch,
                     errorAction: UpgradeErrorAction.close.rawValue,
                     error: "price",
                     flowType: .userInitiated
