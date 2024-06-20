@@ -25,18 +25,9 @@ protocol PushNotificationsListener {
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any])
 }
 
-extension PushNotificationsListener {
-    func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-        guard let dictionary = userInfo as? [String: AnyHashable],
-             shouldListenNotification(userinfo: userInfo),
-             let deepLinkManager = Container.shared.resolve(DeepLinkManager.self)
-        else { return }
-        let link = PushLink(dictionary: dictionary)
-        deepLinkManager.processLinkFromNotification(link)
-   }
-}
-
 class PushNotificationsManager: NSObject {
+    
+    private let deepLinkManager: DeepLinkManager
     private var providers: [PushNotificationsProvider] = []
     private var listeners: [PushNotificationsListener] = []
     
@@ -45,7 +36,8 @@ class PushNotificationsManager: NSObject {
     }
     
     // Init manager
-    public init(config: ConfigProtocol) {
+    public init(deepLinkManager: DeepLinkManager, config: ConfigProtocol) {
+        self.deepLinkManager = deepLinkManager
         super.init()
         providers = providersFor(config: config)
         listeners = listenersFor(config: config)
@@ -65,10 +57,10 @@ class PushNotificationsManager: NSObject {
     private func listenersFor(config: ConfigProtocol) -> [PushNotificationsListener] {
         var pushListeners: [PushNotificationsListener] = []
         if config.braze.pushNotificationsEnabled {
-            pushListeners.append(BrazeListener())
+            pushListeners.append(BrazeListener(deepLinkManager: deepLinkManager))
         }
         if config.firebase.cloudMessagingEnabled {
-            pushListeners.append(FCMListener())
+            pushListeners.append(FCMListener(deepLinkManager: deepLinkManager))
         }
         return pushListeners
     }
@@ -132,13 +124,8 @@ extension PushNotificationsManager: UNUserNotificationCenterDelegate {
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        Messaging.messaging().appDidReceiveMessage(notification.request.content.userInfo)
-        
-        // Show alert if application is active
-        if let pushManager = Container.shared.resolve(PushNotificationsManager.self),
-           UIApplication.shared.applicationState == .active {
-            pushManager.didReceiveRemoteNotification(userInfo: notification.request.content.userInfo)
+        if UIApplication.shared.applicationState == .active {
+            didReceiveRemoteNotification(userInfo: notification.request.content.userInfo)
         }
         
         return [[.list, .banner, .sound]]
@@ -150,10 +137,6 @@ extension PushNotificationsManager: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse
     ) async {
         let userInfo = response.notification.request.content.userInfo
-        
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        Messaging.messaging().appDidReceiveMessage(userInfo)
-        
         didReceiveRemoteNotification(userInfo: userInfo)
     }
 }
