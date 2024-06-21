@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Swinject
 
 class BrazeListener: PushNotificationsListener {
     

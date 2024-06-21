@@ -175,6 +175,8 @@ class AppAssembly: Assembly {
         container.register(PushNotificationsManager.self) { r in
             PushNotificationsManager(
                 deepLinkManager: r.resolve(DeepLinkManager.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                api: r.resolve(API.self)!,
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)

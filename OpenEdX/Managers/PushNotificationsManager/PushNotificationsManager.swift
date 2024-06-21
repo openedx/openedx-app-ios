@@ -8,7 +8,6 @@
 import Foundation
 import Core
 import UIKit
-import Swinject
 import UserNotifications
 import FirebaseCore
 import FirebaseMessaging
@@ -28,6 +27,8 @@ protocol PushNotificationsListener {
 class PushNotificationsManager: NSObject {
     
     private let deepLinkManager: DeepLinkManager
+    private let storage: CoreStorage
+    private let api: API
     private var providers: [PushNotificationsProvider] = []
     private var listeners: [PushNotificationsListener] = []
     
@@ -36,8 +37,10 @@ class PushNotificationsManager: NSObject {
     }
     
     // Init manager
-    public init(deepLinkManager: DeepLinkManager, config: ConfigProtocol) {
+    public init(deepLinkManager: DeepLinkManager, storage: CoreStorage, api: API, config: ConfigProtocol) {
         self.deepLinkManager = deepLinkManager
+        self.storage = storage
+        self.api = api
         super.init()
         providers = providersFor(config: config)
         listeners = listenersFor(config: config)
@@ -49,7 +52,7 @@ class PushNotificationsManager: NSObject {
             pushProviders.append(BrazeProvider())
         }
         if config.firebase.cloudMessagingEnabled {
-            pushProviders.append(FCMProvider())
+            pushProviders.append(FCMProvider(storage: storage, api: api))
         }
         return pushProviders
     }

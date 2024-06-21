@@ -9,12 +9,16 @@ import Foundation
 import Core
 import FirebaseCore
 import FirebaseMessaging
-import Swinject
 
 class FCMProvider: NSObject, PushNotificationsProvider, MessagingDelegate {
     
-    private var storage = Container.shared.resolve(CoreStorage.self)!
-    private let api = Container.shared.resolve(API.self)!
+    private var storage: CoreStorage
+    private let api: API
+    
+    init(storage: CoreStorage, api: API) {
+        self.storage = storage
+        self.api = api
+    }
     
     func didRegisterWithDeviceToken(deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken

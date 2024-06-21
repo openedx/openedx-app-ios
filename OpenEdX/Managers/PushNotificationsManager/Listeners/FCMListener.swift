@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Swinject
 import FirebaseMessaging
 
 class FCMListener: PushNotificationsListener {
