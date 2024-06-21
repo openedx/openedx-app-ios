@@ -61,7 +61,8 @@ final class CourseDateViewModelTests: XCTestCase {
             config: config,
             courseID: "1",
             courseName: "a",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(), 
+            calendarManager: CalendarManagerMock()
         )
         
         await viewModel.getCourseDates(courseID: "1")
@@ -91,7 +92,8 @@ final class CourseDateViewModelTests: XCTestCase {
             config: config,
             courseID: "1",
             courseName: "a",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(),
+            calendarManager: CalendarManagerMock()
         )
         
         await viewModel.getCourseDates(courseID: "1")
@@ -121,7 +123,8 @@ final class CourseDateViewModelTests: XCTestCase {
             config: config,
             courseID: "1",
             courseName: "a",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(),
+            calendarManager: CalendarManagerMock()
         )
         
         await viewModel.getCourseDates(courseID: "1")

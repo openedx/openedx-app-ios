@@ -11,6 +11,7 @@ import Core
 import Discovery
 import Dashboard
 import Course
+import Profile
 
 class DatabaseManager: CoreDataHandlerProtocol {
     
@@ -20,7 +21,8 @@ class DatabaseManager: CoreDataHandlerProtocol {
         Bundle(for: CoreBundle.self),
         Bundle(for: DiscoveryBundle.self),
         Bundle(for: DashboardBundle.self),
-        Bundle(for: CourseBundle.self)
+        Bundle(for: CourseBundle.self),
+        Bundle(for: ProfileBundle.self)
     ]
             
     private lazy var persistentContainer: NSPersistentContainer = {

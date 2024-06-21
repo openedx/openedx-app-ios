@@ -61,9 +61,6 @@ public struct CourseOutlineView: View {
                             group.addTask {
                                 await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
                             }
-                            group.addTask {
-                                await viewModel.getCourseDeadlineInfo(courseID: courseID, withProgress: false)
-                            }
                         }
                     }) {
                         DynamicOffsetView(
@@ -72,18 +69,6 @@ public struct CourseOutlineView: View {
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         VStack(alignment: .leading) {
-                            if let courseDeadlineInfo = viewModel.courseDeadlineInfo,
-                               courseDeadlineInfo.datesBannerInfo.status == .resetDatesBanner,
-                               !courseDeadlineInfo.hasEnded,
-                               !isVideo {
-                                DatesStatusInfoView(
-                                    datesBannerInfo: courseDeadlineInfo.datesBannerInfo,
-                                    courseID: courseID,
-                                    courseContainerViewModel: viewModel,
-                                    screen: .courseDashbaord
-                                )
-                                .padding(.horizontal, 16)
-                            }
                             
                             downloadQualityBars
                             certificateView
@@ -136,17 +121,6 @@ public struct CourseOutlineView: View {
                     }
                 }
                 .accessibilityAction {}
-                
-                if viewModel.dueDatesShifted && !isVideo {
-                    DatesSuccessView(
-                        title: CourseLocalization.CourseDates.toastSuccessTitle,
-                        message: CourseLocalization.CourseDates.toastSuccessMessage,
-                        selectedTab: .course,
-                        courseContainerViewModel: viewModel
-                    ) {
-                        selection = dateTabIndex
-                    }
-                }
                 
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(

@@ -88,7 +88,9 @@ public struct CoursesToSyncView: View {
                 Array(
                     viewModel.coursesForSync.filter({ course in
                         course.synced == viewModel.synced && (!viewModel.hideInactiveCourses || course.active)
-                    }).enumerated()
+                    })
+                    .sorted { $0.active && !$1.active }
+                    .enumerated()
                 ),
                 id: \.offset
             ) { _, course in
@@ -114,6 +116,7 @@ public struct CoursesToSyncView: View {
                     alignment: .leading
                 )
             }
+            Spacer(minLength: 100)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
@@ -124,7 +127,12 @@ public struct CoursesToSyncView: View {
 struct CoursesToSyncView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DatesAndCalendarViewModel(
-            router: ProfileRouterMock()
+            router: ProfileRouterMock(),
+            interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
+            profileStorage: ProfileStorageMock(),
+            persistence: ProfilePersistenceMock(),
+            calendarManager: CalendarManagerMock(), 
+            connectivity: Connectivity()
         )
         return CoursesToSyncView(viewModel: vm)
             .previewDisplayName("Courses to Sync")

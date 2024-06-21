@@ -379,7 +379,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
             courseStart: Date(),
             courseEnd: nil,
             enrollmentStart: Date(),
-            enrollmentEnd: nil, 
+            enrollmentEnd: nil,
             lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )

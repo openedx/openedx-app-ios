@@ -136,7 +136,8 @@ public struct CourseContainerView: View {
     private func showDatesSuccessView(title: String, message: String) -> some View {
         return DatesSuccessView(
             title: title,
-            message: message
+            message: message, 
+            selectedTab: .dates
         ) {
             courseDatesViewModel.resetEventState()
         }
@@ -212,7 +213,8 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewModel: courseDatesViewModel
+                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
+                                                            arguments: courseID, title)!
                     )
                     .tabItem {
                         tab.image
@@ -349,7 +351,8 @@ struct CourseScreensView_Previews: PreviewProvider {
                 config: ConfigMock(),
                 courseID: "1",
                 courseName: "a",
-                analytics: CourseAnalyticsMock()
+                analytics: CourseAnalyticsMock(), 
+                calendarManager: CalendarManagerMock()
             ),
             courseID: "",
             title: "Title of Course"

@@ -13,7 +13,7 @@ struct CalendarDialogView: View {
     
     enum CalendarDialogType {
         case calendarAccess
-        case disableCalendarSync
+        case disableCalendarSync(calendarName: String)
         
         var title: String {
             switch self {
@@ -28,8 +28,8 @@ struct CalendarDialogView: View {
             switch self {
             case .calendarAccess:
                 ProfileLocalization.CalendarDialog.calendarAccessDescription
-            case .disableCalendarSync:
-                ProfileLocalization.CalendarDialog.disableCalendarSyncDescription
+            case .disableCalendarSync(let calendarName):
+                ProfileLocalization.CalendarDialog.disableCalendarSyncDescription(calendarName)
             }
         }
     }
@@ -176,9 +176,9 @@ struct CalendarDialogView: View {
 #if DEBUG
 #Preview {
     CalendarDialogView(
-        type: .calendarAccess,
-        calendarCircleColor: .blue,
-        calendarName: "My Assignments",
+        type: .disableCalendarSync(calendarName: "Demo Calendar"),
+        calendarCircleColor: .red,
+        calendarName: "Demo Calendar",
         action: {},
         onCloseTapped: {}
     )

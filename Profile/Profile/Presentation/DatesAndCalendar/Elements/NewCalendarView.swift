@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Theme
+import Combine
 
 struct NewCalendarView: View {
     
@@ -30,6 +31,7 @@ struct NewCalendarView: View {
     @Environment(\.isHorizontal) private var isHorizontal
     private var beginSyncingTapped: (() -> Void) = {}
     private var onCloseTapped: (() -> Void) = {}
+    @State private var calendarName: String = ""
     
     private let title: Title
     
@@ -58,6 +60,9 @@ struct NewCalendarView: View {
                 content
             }
         }
+        .onAppear {
+            calendarName = viewModel.calendarName
+        }
     }
     
     private var content: some View {
@@ -76,14 +81,14 @@ struct NewCalendarView: View {
                 })
             }
             .padding(.bottom, 20)
-            Text(ProfileLocalization.Calendar.account)
-                .font(Theme.Fonts.bodySmall).bold()
-            DropDownPicker(selection: $viewModel.accountSelection, state: .bottom, options: viewModel.accounts)
             
             Text(ProfileLocalization.Calendar.calendarName)
                 .font(Theme.Fonts.bodySmall).bold()
                 .padding(.top, 16)
-            TextField(viewModel.calendarNameHint, text: $viewModel.calendarName)
+            TextField(viewModel.calendarNameHint, text: $calendarName)
+                .onReceive(Just(calendarName), perform: { _ in
+                    limitText(40)
+                })
                 .font(Theme.Fonts.bodyLarge)
                 .padding()
                 .background(Theme.Colors.background)
@@ -103,13 +108,14 @@ struct NewCalendarView: View {
             Text(ProfileLocalization.Calendar.upcomingAssignments)
                 .font(Theme.Fonts.bodySmall)
                 .foregroundColor(Theme.Colors.textPrimary)
-                .padding(.vertical, 16)
+                .padding(.vertical, 13)
                 .multilineTextAlignment(.center)
                 .frame(
                     minWidth: 0,
                     maxWidth: .infinity,
                     alignment: .center
                 )
+                .frame(height: 65)
             
             VStack(spacing: 16) {
                 StyledButton(ProfileLocalization.Calendar.cancel,
@@ -122,6 +128,7 @@ struct NewCalendarView: View {
                 )
                 
                 StyledButton(ProfileLocalization.Calendar.beginSyncing) {
+                    viewModel.calendarName = calendarName
                     beginSyncingTapped()
                 }
             }
@@ -139,14 +146,30 @@ struct NewCalendarView: View {
         )
         .padding(24)
     }
+    
+    func limitText(_ upper: Int) {
+        if calendarName.count > upper {
+            calendarName = String(calendarName.prefix(upper))
+        }
+    }
 }
 
 #if DEBUG
 #Preview {
     NewCalendarView(
-        title: .newCalendar,
-        viewModel: DatesAndCalendarViewModel(router: ProfileRouterMock()),
-        beginSyncingTapped: {},
+        title: .changeSyncOptions,
+        viewModel: DatesAndCalendarViewModel(
+            router: ProfileRouterMock(),
+            interactor: ProfileInteractor(
+                repository: ProfileRepositoryMock()
+            ),
+            profileStorage: ProfileStorageMock(),
+            persistence: ProfilePersistenceMock(),
+            calendarManager: CalendarManagerMock(),
+            connectivity: Connectivity()
+        ),
+        beginSyncingTapped: {
+        },
         onCloseTapped: {}
     )
     .loadFonts()

@@ -13,6 +13,7 @@ enum AssignmentStatus {
     case synced
     case failed
     case offline
+    case loading
     
     var statusText: String {
         switch self {
@@ -22,10 +23,12 @@ enum AssignmentStatus {
             ProfileLocalization.AssignmentStatus.failed
         case .offline:
             ProfileLocalization.AssignmentStatus.offline
+        case .loading:
+            ProfileLocalization.AssignmentStatus.syncing
         }
     }
     
-    var image: Image {
+    var image: Image? {
         switch self {
         case .synced:
             CoreAssets.synced.swiftUIImage
@@ -33,6 +36,8 @@ enum AssignmentStatus {
             CoreAssets.syncFailed.swiftUIImage
         case .offline:
             CoreAssets.syncOffline.swiftUIImage
+        case .loading:
+            nil
         }
     }
 }
@@ -67,8 +72,12 @@ struct AssignmentStatusView: View {
                 .multilineTextAlignment(.leading)
                 Spacer()
                 status.image
+                if status == .loading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                }
             }
-            
+            .frame(height: 52)
             .padding(.horizontal, 16)
         }
         .background(
@@ -82,9 +91,9 @@ struct AssignmentStatusView: View {
 #Preview {
     AssignmentStatusView(
         title: "My Assignments",
-        status: .constant(.synced),
+        status: .constant(.loading),
         calendarColor: .blue
     )
-        .loadFonts()
+    .loadFonts()
 }
 #endif

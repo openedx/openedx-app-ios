@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CDCourseCalendarEvent" representedClassName="CDCourseCalendarEvent" syncable="YES" codeGenerationType="class">
+        <attribute name="courseID" optional="YES" attributeType="String"/>
+        <attribute name="eventIdentifier" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="eventIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CDCourseCalendarState" representedClassName="CDCourseCalendarState" syncable="YES" codeGenerationType="class">
+        <attribute name="checksum" optional="YES" attributeType="String"/>
+        <attribute name="courseID" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="courseID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+</model>

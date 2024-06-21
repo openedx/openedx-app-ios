@@ -18,7 +18,7 @@ public struct DatesSuccessView: View {
 
     private var title: String
     private var message: String
-    var selectedTab: Tab?
+    var selectedTab: Tab
     var courseDatesViewModel: CourseDatesViewModel?
     var courseContainerViewModel: CourseContainerViewModel?
     var action: () -> Void = {}
@@ -29,10 +29,12 @@ public struct DatesSuccessView: View {
     init (
         title: String,
         message: String,
+        selectedTab: Tab,
         dismissAction: @escaping () -> Void
     ) {
         self.title = title
         self.message = message
+        self.selectedTab = selectedTab
         self.dismissAction = dismissAction
     }
     
@@ -147,7 +149,8 @@ struct DatesSuccessView_Previews: PreviewProvider {
     static var previews: some View {
         DatesSuccessView(
             title: CourseLocalization.CourseDates.toastSuccessTitle,
-            message: CourseLocalization.CourseDates.toastSuccessMessage
+            message: CourseLocalization.CourseDates.toastSuccessMessage,
+            selectedTab: .course
         ) {}
     }
 }
