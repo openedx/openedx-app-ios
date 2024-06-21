@@ -19,6 +19,7 @@ import Swinject
 protocol AnalyticsService {
     func identify(id: String, username: String?, email: String?)
     func logEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
+    func logScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
 }
 
 // swiftlint:disable type_body_length file_length
@@ -52,6 +53,12 @@ class AnalyticsManager: AuthorizationAnalytics,
            let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
             analyticsServices.append(segmentService)
         }
+        
+        if config.fullStory.enabled,
+           let fullStoryService = Container.shared.resolve(FullStoryAnalyticsService.self) {
+            analyticsServices.append(fullStoryService)
+        }
+        
         return analyticsServices
     }
     

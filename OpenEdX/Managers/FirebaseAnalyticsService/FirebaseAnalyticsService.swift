@@ -26,6 +26,15 @@ class FirebaseAnalyticsService: AnalyticsService {
         
         Analytics.logEvent(name, parameters: formatParamaters(params: parameters))
     }
+    
+    func logScreenEvent(_ event: Core.AnalyticsEvent, parameters: [String: Any]?) {
+        guard let name = try? formatFirebaseName(event.rawValue) else {
+            debugLog("Firebase: event name is not supported: \(event.rawValue)")
+            return
+        }
+        
+        Analytics.logEvent(name, parameters: formatParamaters(params: parameters))
+    }
 }
 
 extension FirebaseAnalyticsService {
