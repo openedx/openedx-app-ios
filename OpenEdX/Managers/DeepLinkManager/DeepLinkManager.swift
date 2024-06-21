@@ -38,11 +38,11 @@ public class DeepLinkManager {
     private let discussionInteractor: DiscussionInteractorProtocol
     private let courseInteractor: CourseInteractorProtocol
     private let profileInteractor: ProfileInteractorProtocol
-
+    
     var userloggedIn: Bool {
-       return !(storage.user?.username?.isEmpty ?? true)
-   }
-
+        return !(storage.user?.username?.isEmpty ?? true)
+    }
+    
     public init(
         config: ConfigProtocol,
         router: DeepLinkRouter,
@@ -59,7 +59,7 @@ public class DeepLinkManager {
         self.discussionInteractor = discussionInteractor
         self.courseInteractor = courseInteractor
         self.profileInteractor = profileInteractor
-
+        
         services = servicesFor(config: config)
     }
     
@@ -102,9 +102,9 @@ public class DeepLinkManager {
         guard link.type != .none else {
             return
         }
-
+        
         let isAppActive = UIApplication.shared.applicationState == .active
-
+        
         Task {
             if isAppActive {
                 await showNotificationAlert(link)
@@ -124,11 +124,11 @@ public class DeepLinkManager {
             }
         }
     }
-
+    
     @MainActor
     private func showNotificationAlert(_ link: PushLink) {
         router.dismissPresentedViewController()
-
+        
         router.presentAlert(
             alertTitle: link.title ?? "",
             alertMessage: link.body ?? "",
@@ -148,17 +148,19 @@ public class DeepLinkManager {
             type: .deepLink
         )
     }
-
+    
     private func isDiscovery(type: DeepLinkType) -> Bool {
         type == .discovery ||
         type == .discoveryCourseDetail ||
         type == .discoveryProgramDetail
     }
-
+    
     private func isDiscussionThreads(type: DeepLinkType) -> Bool {
         type == .discussionPost ||
         type == .discussionTopic ||
-        type == .discussionComment
+        type == .discussionComment ||
+        type == .forumResponse ||
+        type == .forumComment
     }
 
     private func isHandout(type: DeepLinkType) -> Bool {
@@ -195,9 +197,14 @@ public class DeepLinkManager {
             .courseAnnouncement,
             .discussionTopic,
             .discussionPost,
+            .forumResponse,
+            .forumComment,
             .discussionComment,
             .courseComponent:
             await showCourseScreen(with: type, link: link)
+        case .enroll, .addBetaTester:
+            await showCourseScreen(with: type, link: link)
+            NotificationCenter.default.post(name: .refreshEnrollments, object: nil)
         case .program, .programDetail:
             guard config.program.enabled else { return }
             if let pathID = link.pathID, !pathID.isEmpty {
@@ -209,6 +216,9 @@ public class DeepLinkManager {
             router.showTabScreen(tab: .profile)
         case .userProfile:
             await showEditProfile()
+        case .unenroll, .removeBetaTester:
+            router.showTabScreen(tab: .dashboard)
+            NotificationCenter.default.post(name: .refreshEnrollments, object: nil)
         default:
             break
         }
@@ -248,9 +258,8 @@ public class DeepLinkManager {
                 link: link,
                 courseDetails: courseDetails
             ) { [weak self] in
-                guard let self else {
-                    return
-                }
+                guard let self else { return }
+                guard courseDetails.isEnrolled else { return }
 
                 if self.isHandout(type: type) {
                     self.router.showProgress()
@@ -344,7 +353,6 @@ public class DeepLinkManager {
                 isBlackedOut: isBlackedOut
             )
         case .discussionPost:
-
             if let topicID = link.topicID,
                !topicID.isEmpty,
                 let topics = try? await discussionInteractor.getTopic(
@@ -367,8 +375,7 @@ public class DeepLinkManager {
                     isBlackedOut: isBlackedOut
                 )
             }
-
-        case .discussionComment:
+        case .discussionComment, .forumResponse:
             if let topicID = link.topicID,
                !topicID.isEmpty,
                 let topics = try? await discussionInteractor.getTopic(
@@ -398,6 +405,42 @@ public class DeepLinkManager {
                let parentID = comment.parentID,
                !parentID.isEmpty,
                let parentComment = try? await self.discussionInteractor.getResponse(responseID: parentID) {
+                router.showComment(
+                    comment: comment,
+                    parentComment: parentComment.post,
+                    isBlackedOut: isBlackedOut
+                )
+            }
+        case .forumComment:
+            if let topicID = link.topicID,
+               !topicID.isEmpty,
+                let topics = try? await discussionInteractor.getTopic(
+                courseID: courseDetails.courseID,
+                topicID: topicID
+            ) {
+                router.showThreads(
+                    topicID: topicID,
+                    courseDetails: courseDetails,
+                    topics: topics,
+                    isBlackedOut: isBlackedOut
+                )
+            }
+
+            if let threadID = link.threadID,
+                !threadID.isEmpty,
+                let userThread = try? await discussionInteractor.getThread(threadID: threadID) {
+                router.showThread(
+                    userThread: userThread,
+                    isBlackedOut: isBlackedOut
+                )
+            }
+            
+            if let parentID = link.parentID,
+               !parentID.isEmpty,
+               let comment = try? await self.discussionInteractor.getResponse(responseID: parentID),
+               let commentParentID = comment.parentID,
+               !commentParentID.isEmpty,
+               let parentComment = try? await self.discussionInteractor.getResponse(responseID: commentParentID) {
                 router.showComment(
                     comment: comment,
                     parentComment: parentComment.post,

@@ -174,6 +174,9 @@ class AppAssembly: Assembly {
         
         container.register(PushNotificationsManager.self) { r in
             PushNotificationsManager(
+                deepLinkManager: r.resolve(DeepLinkManager.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                api: r.resolve(API.self)!,
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
@@ -196,10 +199,8 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(FirebaseAnalyticsService.self) { r in
-            FirebaseAnalyticsService(
-                config: r.resolve(ConfigProtocol.self)!
-            )
+        container.register(FirebaseAnalyticsService.self) { _ in
+            FirebaseAnalyticsService()
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { r in

@@ -82,6 +82,7 @@ public class SignInViewModel: ObservableObject {
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: .password)
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             failure(error)
         }
@@ -113,6 +114,7 @@ public class SignInViewModel: ObservableObject {
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             failure(error, authMethod: authMethod)
         }
