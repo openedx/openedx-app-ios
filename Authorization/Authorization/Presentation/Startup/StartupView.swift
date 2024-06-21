@@ -105,6 +105,8 @@ public struct StartupView: View {
                         switch buttonAction {
                         case .signIn:
                             viewModel.router.showLoginScreen(sourceScreen: .startup)
+                        case .signInWithSSO:
+                            viewModel.router.showLoginScreen(sourceScreen: .startup)
                         case .register:
                             viewModel.router.showRegisterScreen(sourceScreen: .startup)
                         }

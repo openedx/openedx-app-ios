@@ -151,6 +151,8 @@ public struct DiscoveryView: View {
                                 viewModel.router.showLoginScreen(sourceScreen: .discovery)
                             case .register:
                                 viewModel.router.showRegisterScreen(sourceScreen: .discovery)
+                            case .signInWithSSO:
+                                viewModel.router.showLoginScreen(sourceScreen: .discovery)
                             }
                         }
                     }
