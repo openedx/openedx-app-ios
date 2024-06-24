@@ -6,19 +6,13 @@
 //
 
 import Foundation
-import Firebase
 import Core
+import FirebaseAnalytics
 
 private let MaxParameterValueCharacters = 100
 private let MaxNameValueCharacters = 40
 
 class FirebaseAnalyticsService: AnalyticsService {
-    // Init manager
-    public init(config: ConfigProtocol) {
-        guard config.firebase.enabled && config.firebase.isAnalyticsSourceFirebase else { return }
-
-        FirebaseApp.configure()
-    }
 
     func identify(id: String, username: String?, email: String?) {
         Analytics.setUserID(id)

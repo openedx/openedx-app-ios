@@ -93,7 +93,11 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
                         }
                         self.requestsToRetry.removeAll()
                     } else {
-                        NotificationCenter.default.post(name: .onTokenRefreshFailed, object: nil)
+                        NotificationCenter.default.post(
+                            name: .userLoggedOut,
+                            object: nil,
+                            userInfo: [Notification.UserInfoKey.isForced: true]
+                        )
                     }
                 }
             }

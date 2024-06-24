@@ -48,6 +48,7 @@ public extension DataLayer {
         public let childCount: Int
         public let children: [String]
         public let users: Users?
+        public let profileImage: ProfileImage?
         
         enum CodingKeys: String, CodingKey {
             case id = "id"
@@ -71,6 +72,7 @@ public extension DataLayer {
             case childCount = "child_count"
             case children = "children"
             case users
+            case profileImage = "profile_image"
         }
         
         public init(
@@ -94,7 +96,8 @@ public extension DataLayer {
             endorsedAt: String?,
             childCount: Int,
             children: [String],
-            users: Users?
+            users: Users?,
+            profileImage: ProfileImage?
         ) {
             self.id = id
             self.author = author
@@ -117,6 +120,7 @@ public extension DataLayer {
             self.childCount = childCount
             self.children = children
             self.users = users
+            self.profileImage = profileImage
         }
     }
 }
@@ -125,7 +129,7 @@ public extension DataLayer.Comments {
     var domain: UserComment {
         UserComment(
             authorName: author ?? DiscussionLocalization.anonymous,
-            authorAvatar: users?.userName?.profile?.image?.imageURLLarge ?? "",
+            authorAvatar: users?.userName?.profile?.image?.imageURLLarge ?? profileImage?.imageURLFull ?? "",
             postDate: Date(iso8601: createdAt),
             postTitle: "",
             postBody: rawBody,

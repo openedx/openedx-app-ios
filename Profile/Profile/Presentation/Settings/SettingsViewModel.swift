@@ -139,6 +139,11 @@ public class SettingsViewModel: ObservableObject {
         try? await downloadManager.cancelAllDownloading()
         router.showStartupScreen()
         analytics.userLogout(force: false)
+        NotificationCenter.default.post(
+            name: .userLoggedOut,
+            object: nil,
+            userInfo: [Notification.UserInfoKey.isForced: false]
+        )
     }
     
     func trackProfileVideoSettingsClicked() {
