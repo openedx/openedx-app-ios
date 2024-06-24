@@ -124,6 +124,8 @@ public protocol DownloadManagerProtocol {
     func resumeDownloading() throws
     func fileUrl(for blockId: String) -> URL?
     func isLargeVideosSize(blocks: [CourseBlock]) -> Bool
+    
+    func removeAppSupportDirectoryUnusedContent()
 }
 
 public enum DownloadManagerEvent {
@@ -274,11 +276,11 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteFile(blocks: [CourseBlock]) async {
         for block in blocks {
             do {
-                try persistence.deleteDownloadDataTask(id: block.id)
-                currentDownloadEventPublisher.send(.deletedFile(block.id))
                 if let fileURL = await fileUrl(for: block.id) {
                     try FileManager.default.removeItem(at: fileURL)
                 }
+                try persistence.deleteDownloadDataTask(id: block.id)
+                currentDownloadEventPublisher.send(.deletedFile(block.id))
             } catch {
                 debugLog("Error deleting file: \(error.localizedDescription)")
             }
@@ -470,6 +472,60 @@ public class DownloadManager: DownloadManagerProtocol {
             debugLog("SaveFile Error", error.localizedDescription)
         }
     }
+    
+    public func removeAppSupportDirectoryUnusedContent() {
+        deleteMD5HashedFolders()
+    }
+    
+    private func getApplicationSupportDirectory() -> URL? {
+        let fileManager = FileManager.default
+        do {
+            let appSupportDirectory = try fileManager.url(
+                for: .applicationSupportDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            )
+            return appSupportDirectory
+        } catch {
+            debugPrint("Error getting Application Support Directory: \(error)")
+            return nil
+        }
+    }
+    
+    private func isMD5Hash(_ folderName: String) -> Bool {
+        let md5Regex = "^[a-fA-F0-9]{32}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", md5Regex)
+        return predicate.evaluate(with: folderName)
+    }
+    
+    private func deleteMD5HashedFolders() {
+        guard let appSupportDirectory = getApplicationSupportDirectory() else {
+            return
+        }
+        
+        let fileManager = FileManager.default
+        do {
+            let folderContents = try fileManager.contentsOfDirectory(
+                at: appSupportDirectory,
+                includingPropertiesForKeys: nil,
+                options: []
+            )
+            for folderURL in folderContents {
+                let folderName = folderURL.lastPathComponent
+                if isMD5Hash(folderName) {
+                    do {
+                        try fileManager.removeItem(at: folderURL)
+                        debugPrint("Deleted folder: \(folderName)")
+                    } catch {
+                        debugPrint("Error deleting folder \(folderName): \(error)")
+                    }
+                }
+            }
+        } catch {
+            debugPrint("Error reading contents of Application Support directory: \(error)")
+        }
+    }
 }
 
 @available(iOSApplicationExtension, unavailable)
@@ -638,6 +694,9 @@ public class DownloadManagerMock: DownloadManagerProtocol {
         false
     }
 
+    public func removeAppSupportDirectoryUnusedContent() {
+        
+    }
 }
 #endif
 // swiftlint:enable file_length

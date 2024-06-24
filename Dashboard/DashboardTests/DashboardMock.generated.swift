@@ -2144,6 +2144,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		return __value
     }
 
+    open func removeAppSupportDirectoryUnusedContent() {
+        addInvocation(.m_removeAppSupportDirectoryUnusedContent)
+		let perform = methodPerformValue(.m_removeAppSupportDirectoryUnusedContent) as? () -> Void
+		perform?()
+    }
+
 
     fileprivate enum MethodType {
         case m_publisher
@@ -2160,6 +2166,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_fileUrl__for_blockId(Parameter<String>)
         case m_resumeDownloading
         case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
+        case m_removeAppSupportDirectoryUnusedContent
         case p_currentDownloadTask_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -2216,6 +2223,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_removeAppSupportDirectoryUnusedContent, .m_removeAppSupportDirectoryUnusedContent): return .match
             case (.p_currentDownloadTask_get,.p_currentDownloadTask_get): return Matcher.ComparisonResult.match
             default: return .none
             }
@@ -2237,6 +2246,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
             case .m_resumeDownloading: return 0
             case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
+            case .m_removeAppSupportDirectoryUnusedContent: return 0
             case .p_currentDownloadTask_get: return 0
             }
         }
@@ -2256,6 +2266,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
             case .m_resumeDownloading: return ".resumeDownloading()"
             case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
+            case .m_removeAppSupportDirectoryUnusedContent: return ".removeAppSupportDirectoryUnusedContent()"
             case .p_currentDownloadTask_get: return "[get] .currentDownloadTask"
             }
         }
@@ -2412,6 +2423,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
+        public static func removeAppSupportDirectoryUnusedContent() -> Verify { return Verify(method: .m_removeAppSupportDirectoryUnusedContent)}
         public static var currentDownloadTask: Verify { return Verify(method: .p_currentDownloadTask_get) }
     }
 
@@ -2460,6 +2472,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
             return Perform(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), performs: perform)
+        }
+        public static func removeAppSupportDirectoryUnusedContent(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_removeAppSupportDirectoryUnusedContent, performs: perform)
         }
     }
 

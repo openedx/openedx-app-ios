@@ -77,6 +77,7 @@ struct CourseUnitDropDownCell_Previews: PreviewProvider {
                     courseId: "123",
                     topicId: "1",
                     graded: false,
+                    due: Date(),
                     completion: 1,
                     type: .video,
                     displayName: "Lesson 1",

@@ -164,7 +164,6 @@
 		BA8FA6702AD59EA300EA029A /* MicrosoftAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */; };
 		BA981BCE2B8F5C49005707C2 /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */; };
 		BA981BD02B91ED50005707C2 /* FullScreenProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA981BCF2B91ED50005707C2 /* FullScreenProgressView.swift */; };
-		BAAD62C62AFCF00B000E6103 /* CustomDisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */; };
 		BAD9CA2F2B289B3500DE790A /* ajaxHandler.js in Resources */ = {isa = PBXBuildFile; fileRef = BAD9CA2E2B289B3500DE790A /* ajaxHandler.js */; };
 		BAD9CA332B28A8F300DE790A /* AjaxProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */; };
 		BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */; };
@@ -361,7 +360,6 @@
 		BA8FA66F2AD59EA300EA029A /* MicrosoftAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAuthProvider.swift; sourceTree = "<group>"; };
 		BA981BCD2B8F5C49005707C2 /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 		BA981BCF2B91ED50005707C2 /* FullScreenProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenProgressView.swift; sourceTree = "<group>"; };
-		BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureGroup.swift; sourceTree = "<group>"; };
 		BAD9CA2E2B289B3500DE790A /* ajaxHandler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ajaxHandler.js; sourceTree = "<group>"; };
 		BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjaxProvider.swift; sourceTree = "<group>"; };
 		BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementConfigTests.swift; sourceTree = "<group>"; };
@@ -751,7 +749,6 @@
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
 				BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */,
 				BA593F1A2AF8E487009ADB51 /* ScrollSlidingTabBar */,
-				BAAD62C52AFCF00B000E6103 /* CustomDisclosureGroup.swift */,
 				BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */,
 				02E93F862AEBAED4006C4750 /* AppReview */,
 				BA981BCF2B91ED50005707C2 /* FullScreenProgressView.swift */,
