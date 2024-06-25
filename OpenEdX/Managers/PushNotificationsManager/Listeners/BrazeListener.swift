@@ -10,8 +10,10 @@ import Foundation
 class BrazeListener: PushNotificationsListener {
     
     private let deepLinkManager: DeepLinkManager
+    private let segmentService: SegmentAnalyticsService?
     
-    init(deepLinkManager: DeepLinkManager) {
+    init(deepLinkManager: DeepLinkManager, segmentService: SegmentAnalyticsService?) {
+        self.segmentService = segmentService
         self.deepLinkManager = deepLinkManager
     }
     
@@ -24,6 +26,9 @@ class BrazeListener: PushNotificationsListener {
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
         guard let dictionary = userInfo as? [String: AnyHashable],
               shouldListenNotification(userinfo: userInfo) else { return }
+        
+        segmentService?.analytics?.receivedRemoteNotification(userInfo: userInfo)
+        
         let link = PushLink(dictionary: dictionary)
         deepLinkManager.processLinkFromNotification(link)
     }

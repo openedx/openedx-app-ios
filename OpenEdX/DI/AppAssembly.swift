@@ -177,7 +177,8 @@ class AppAssembly: Assembly {
                 deepLinkManager: r.resolve(DeepLinkManager.self)!,
                 storage: r.resolve(CoreStorage.self)!,
                 api: r.resolve(API.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                segmentService: r.resolve(SegmentAnalyticsService.self)
             )
         }.inObjectScope(.container)
 
