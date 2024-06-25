@@ -36,6 +36,7 @@
 
 "COURSE_CONTAINER.COURSE" =  "Курс";
 "COURSE_CONTAINER.VIDEOS" =  "Всі відео";
+"COURSE_CONTAINER.OFFLINE" = "Офлайн";
 "COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSIONS" =  "Дискусії";
 "COURSE_CONTAINER.HANDOUTS" =  "Матеріали";
@@ -124,3 +125,50 @@
 "COURSE.DUE_TOMORROW" = "Закінчується завтра";
 
 "COURSE.PROGRESS_COMPLETED" = "%@ з %@ завдань виконано";
+
+"COURSE.ALERT.CANCEL" = "Cкасувати";
+"COURSE.ALERT.CLOSE" = "Закрити";
+"COURSE.ALERT.REMOVE" = "Видалити";
+"COURSE.ALERT.DOWNLOAD" = "Завантажити";
+"COURSE.ALERT.TRY_AGAIN" = "Спробувати ще";
+
+"COURSE.ALERT.REMOVE_TITLE" = "Видалити автономний вміст?";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_TITLE" = "Підтвердити завантаження";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_TITLE" = "Завантажити на стільниковий зв'язок?";
+
+"COURSE.ALERT.REMOVE_DESCRIPTION" = "Видалення цього вмісту звільнить %@.";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_DESCRIPTION" = "Завантаження цього %@ вмісту збереже доступні блоки в автономному режимі.";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_DESCRIPTION" = "Завантаження цього вмісту використає %@ стільникових даних.";
+
+"COURSE.ERROR.DOWNLOAD_FAILED_TITLE" = "Помилка завантаження";
+"COURSE.ERROR.NO_INTERNET_CONNECTION_TITLE" = "Немає підключення до Інтернету";
+"COURSE.ERROR.WIFI_REQUIRED_TITLE" = "Потрібен Wi-Fi";
+
+"COURSE.ERROR.DOWNLOAD_FAILED_DESCRIPTION" = "На жаль, цей вміст не вдалося завантажити. Повторіть спробу пізніше або повідомте про цю проблему.";
+"COURSE.ERROR.NO_INTERNET_CONNECTION_DESCRIPTION" = "Для завантаження цього вмісту потрібне активне підключення до Інтернету. Підключіться до Інтернету та повторіть спробу.";
+"COURSE.ERROR.WIFI_REQUIRED_DESCRIPTION" = "Для завантаження цього вмісту потрібне активне з'єднання Wi-Fi. Підключіться до мережі Wi-Fi і повторіть спробу.";
+
+"COURSE.STORAGE_ALERT.TITLE" = "Пам'ять пристрою заповнена";
+"COURSE.STORAGE_ALERT.DESCRIPTION" = "На вашому пристрої недостатньо вільного місця для завантаження цього вмісту. Звільніть місце та повторіть спробу.";
+"COURSE.STORAGE_ALERT.USED_AND_FREE" = "%@ використано, %@ вільно";
+
+"COURSE.LARGEST_DOWNLOADS.TITLE" = "Найбільші завантаження";
+"COURSE.LARGEST_DOWNLOADS.DONE" = "Готово";
+"COURSE.LARGEST_DOWNLOADS.EDIT" = "Редагувати";
+"COURSE.LARGEST_DOWNLOADS.REMOVE_DOWNLOADS" = "Видалити всі завантаження";
+
+"COURSE.OFFLINE.VISIBLE" = "%@%% цього курсу видно на мобільному пристрої.";
+"COURSE.OFFLINE.DOWNLOADABLE" = "%@%% цього курсу можна завантажити.";
+"COURSE.OFFLINE.CAN_BE_COMPLETED" = "%@%% цього курсу можна пройти офлайн.";
+
+"COURSE.TOTAL_PROGRESS.DOWNLOADED" = "Завантажено";
+"COURSE.TOTAL_PROGRESS.DOWNLOADING" = "Завантаження";
+"COURSE.TOTAL_PROGRESS.READY_TO_DOWNLOAD" = "Готовий для завантаження";
+
+"COURSE.OFFLINE.YOU_CAN_DOWNLOAD" = "Ви можете завантажити вміст курсу в автономному режимі, щоб навчатися в дорозі, не вимагаючи активного підключення до Інтернету або використання мобільних даних.";
+"COURSE.OFFLINE.YOU_CANT_DOWNLOAD" = "Вміст цього курсу зараз недоступний для завантаження в режимі офлайн.";
+
+"OFFLINE.NOT_DOWNLOADED.TITLE" = "Цей компонент не завантажено";
+"OFFLINE.NOT_DOWNLOADED.DESCRIPTION" = "Ознайомтеся з іншими частинами цього курсу або завантажте це після повторного підключення.";
+"OFFLINE.NOT_AVALIABLE.TITLE" = "Цей компонент ще недоступний офлайн";
+"OFFLINE.NOT_AVALIABLE.DESCRIPTION" = "Ознайомтеся з іншими частинами цього курсу або перегляньте це, коли повторно підключитесь.";

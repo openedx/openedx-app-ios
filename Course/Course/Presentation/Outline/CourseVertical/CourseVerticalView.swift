@@ -82,48 +82,6 @@ public struct CourseVerticalView: View {
                                     }).accessibilityElement(children: .ignore)
                                         .accessibilityLabel(vertical.displayName)
                                         Spacer()
-                                        if let state = viewModel.downloadState[vertical.id] {
-                                            switch state {
-                                            case .available:
-                                                DownloadAvailableView()
-                                                    .accessibilityElement(children: .ignore)
-                                                    .accessibilityLabel(CourseLocalization.Accessibility.download)
-                                                    .onTapGesture {
-                                                        Task {
-                                                            await viewModel.onDownloadViewTap(
-                                                                blockId: vertical.id,
-                                                                state: state
-                                                            )
-                                                        }
-
-                                                    }
-                                            case .downloading:
-                                                DownloadProgressView()
-                                                    .accessibilityElement(children: .ignore)
-                                                    .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
-                                                    .onTapGesture {
-                                                        Task {
-                                                            await viewModel.onDownloadViewTap(
-                                                                blockId: vertical.id,
-                                                                state: state
-                                                            )
-                                                        }
-
-                                                    }
-                                            case .finished:
-                                                DownloadFinishedView()
-                                                    .accessibilityElement(children: .ignore)
-                                                    .accessibilityLabel(CourseLocalization.Accessibility.deleteDownload)
-                                                    .onTapGesture {
-                                                        Task {
-                                                            await viewModel.onDownloadViewTap(
-                                                                blockId: vertical.id,
-                                                                state: state
-                                                            )
-                                                        }
-                                                    }
-                                            }
-                                        }
                                         Image(systemName: "chevron.right")
                                             .padding(.vertical, 8)
                                     }

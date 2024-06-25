@@ -58,6 +58,7 @@ public protocol CourseAnalytics {
     func finishVerticalBackToOutlineClicked(courseId: String, courseName: String)
     func courseOutlineCourseTabClicked(courseId: String, courseName: String)
     func courseOutlineVideosTabClicked(courseId: String, courseName: String)
+    func courseOutlineOfflineTabClicked(courseId: String, courseName: String)
     func courseOutlineDatesTabClicked(courseId: String, courseName: String)
     func courseOutlineDiscussionTabClicked(courseId: String, courseName: String)
     func courseOutlineHandoutsTabClicked(courseId: String, courseName: String)
@@ -135,6 +136,7 @@ class CourseAnalyticsMock: CourseAnalytics {
     public func finishVerticalBackToOutlineClicked(courseId: String, courseName: String) {}
     public func courseOutlineCourseTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineVideosTabClicked(courseId: String, courseName: String) {}
+    public func courseOutlineOfflineTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineDatesTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineDiscussionTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineHandoutsTabClicked(courseId: String, courseName: String) {}

@@ -70,6 +70,8 @@ public class SettingsViewModel: ObservableObject {
     let analytics: ProfileAnalytics
     let coreAnalytics: CoreAnalytics
     let config: ConfigProtocol
+    let corePersistence: CorePersistenceProtocol
+    let connectivity: ConnectivityProtocol
     
     public init(
         interactor: ProfileInteractorProtocol,
@@ -77,7 +79,9 @@ public class SettingsViewModel: ObservableObject {
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         coreAnalytics: CoreAnalytics,
-        config: ConfigProtocol
+        config: ConfigProtocol,
+        corePersistence: CorePersistenceProtocol,
+        connectivity: ConnectivityProtocol
     ) {
         self.interactor = interactor
         self.downloadManager = downloadManager
@@ -85,6 +89,8 @@ public class SettingsViewModel: ObservableObject {
         self.analytics = analytics
         self.coreAnalytics = coreAnalytics
         self.config = config
+        self.corePersistence = corePersistence
+        self.connectivity = connectivity
         
         let userSettings = interactor.getSettings()
         self.userSettings = userSettings
@@ -137,6 +143,7 @@ public class SettingsViewModel: ObservableObject {
     func logOut() async {
         try? await interactor.logOut()
         try? await downloadManager.cancelAllDownloading()
+        corePersistence.deleteAllProgress()
         router.showStartupScreen()
         analytics.userLogout(force: false)
     }

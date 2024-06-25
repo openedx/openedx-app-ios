@@ -8,6 +8,7 @@
 import Alamofire
 import SwiftUI
 import Combine
+import SSZipArchive
 
 public enum DownloadState: String {
     case waiting
@@ -28,6 +29,7 @@ public enum DownloadState: String {
 
 public enum DownloadType: String {
     case video
+    case html, problem
 }
 
 public struct DownloadDataTask: Identifiable, Hashable {
@@ -43,6 +45,7 @@ public struct DownloadDataTask: Identifiable, Hashable {
     public var state: DownloadState
     public let type: DownloadType
     public let fileSize: Int
+    public var lastModified: String?
 
     public var fileSizeInMb: Double {
         Double(fileSize) / 1024.0 / 1024.0
@@ -64,7 +67,8 @@ public struct DownloadDataTask: Identifiable, Hashable {
         resumeData: Data?,
         state: DownloadState,
         type: DownloadType,
-        fileSize: Int
+        fileSize: Int,
+        lastModified: String
     ) {
         self.id = id
         self.courseId = courseId
@@ -78,6 +82,7 @@ public struct DownloadDataTask: Identifiable, Hashable {
         self.state = state
         self.type = type
         self.fileSize = fileSize
+        self.lastModified = lastModified
     }
 
     public init(sourse: CDDownloadData) {
@@ -93,6 +98,7 @@ public struct DownloadDataTask: Identifiable, Hashable {
         self.state = DownloadState(rawValue: sourse.state ?? "") ?? .waiting
         self.type = DownloadType(rawValue: sourse.type ?? "") ?? .video
         self.fileSize = Int(sourse.fileSize)
+        self.lastModified = sourse.lastModified
     }
 }
 
@@ -120,7 +126,8 @@ public protocol DownloadManagerProtocol {
     func deleteAllFiles() async
 
     func fileUrl(for blockId: String) async -> URL?
-
+    func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential]
+    
     func resumeDownloading() throws
     func fileUrl(for blockId: String) -> URL?
     func isLargeVideosSize(blocks: [CourseBlock]) -> Bool
@@ -152,6 +159,7 @@ public class DownloadManager: DownloadManagerProtocol {
     private var currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
     private let backgroundTaskProvider = BackgroundTaskProvider()
     private var cancellables = Set<AnyCancellable>()
+    private var failedDownloads: [DownloadDataTask] = []
 
     private var downloadQuality: DownloadQuality {
         appStorage.userSettings?.downloadQuality ?? .auto
@@ -172,6 +180,18 @@ public class DownloadManager: DownloadManagerProtocol {
         self.connectivity = connectivity
         self.backgroundTask()
         try? self.resumeDownloading()
+        
+        NotificationCenter.default.publisher(for: .tryDownloadAgain)
+            .compactMap { $0.object as? [DownloadDataTask] }
+            .sink { [weak self] downloads in
+                self?.tryDownloadAgain(downloads: downloads)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func tryDownloadAgain(downloads: [DownloadDataTask]) {
+        persistence.addToDownloadQueue(tasks: downloads)
+        try? newDownload()
     }
 
     // MARK: - Publishers
@@ -241,11 +261,11 @@ public class DownloadManager: DownloadManagerProtocol {
         try newDownload()
     }
 
-    public func cancelDownloading(task: DownloadDataTask) async throws {
+    public func cancelDownloading(task: DownloadDataTask) throws {
         downloadRequest?.cancel()
         do {
             try persistence.deleteDownloadDataTask(id: task.id)
-            if let fileUrl = await fileUrl(for: task.id) {
+            if let fileUrl = fileUrl(for: task.id) {
                 try FileManager.default.removeItem(at: fileUrl)
             }
             currentDownloadEventPublisher.send(.canceled(task))
@@ -277,12 +297,67 @@ public class DownloadManager: DownloadManagerProtocol {
                 if let fileURL = await fileUrl(for: block.id) {
                     try FileManager.default.removeItem(at: fileURL)
                 }
-                try persistence.deleteDownloadDataTask(id: block.id)
-                currentDownloadEventPublisher.send(.deletedFile(block.id))
             } catch {
                 debugLog("Error deleting file: \(error.localizedDescription)")
             }
+            try? persistence.deleteDownloadDataTask(id: block.id)
+            currentDownloadEventPublisher.send(.deletedFile(block.id))
         }
+    }
+    
+    public func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential] {
+        var updatedSequentials = sequentials
+
+        for i in 0..<updatedSequentials.count {
+            for j in 0..<updatedSequentials[i].childs.count {
+                for k in 0..<updatedSequentials[i].childs[j].childs.count {
+                    let block = updatedSequentials[i].childs[j].childs[k]
+                    if let fileUrl = fileUrl(for: block.id) {
+                        do {
+                            if fileUrl.lastPathComponent == "index.html" {
+                                let folderUrl = fileUrl.deletingLastPathComponent()
+                                let folderSize = try calculateFolderSize(at: folderUrl)
+                                updatedSequentials[i].childs[j].childs[k].actualFileSize = folderSize
+                            } else {
+                                let fileAttributes = try FileManager.default.attributesOfItem(atPath: fileUrl.path)
+                                if let fileSize = fileAttributes[.size] as? NSNumber {
+                                    let fileSizeInBytes = fileSize.intValue
+                                    updatedSequentials[i].childs[j].childs[k].actualFileSize = fileSizeInBytes
+                                }
+                            }
+                        } catch {
+                            debugLog("Failed to get file size for \(fileUrl): \(error)")
+                        }
+                    }
+                }
+            }
+        }
+
+        return updatedSequentials
+    }
+
+    private func calculateFolderSize(at url: URL) throws -> Int {
+        let fileManager = FileManager.default
+        let resourceKeys: [URLResourceKey] = [.isDirectoryKey, .fileSizeKey]
+        var totalSize: Int64 = 0
+
+        if let enumerator = fileManager.enumerator(
+            at: url,
+            includingPropertiesForKeys: resourceKeys,
+            options: [],
+            errorHandler: nil
+        ) {
+            for case let fileUrl as URL in enumerator {
+                let resourceValues = try fileUrl.resourceValues(forKeys: Set(resourceKeys))
+                if resourceValues.isDirectory == false {
+                    if let fileSize = resourceValues.fileSize {
+                        totalSize += Int64(fileSize)
+                    }
+                }
+            }
+        }
+
+        return Int(totalSize)
     }
 
     public func deleteAllFiles() async {
@@ -306,7 +381,7 @@ public class DownloadManager: DownloadManagerProtocol {
                     continuation.resume(returning: nil)
                     return
                 }
-                let path = self?.videosFolderUrl
+                let path = self?.filesFolderUrl
                 let fileName = data.fileName
                 continuation.resume(returning: path?.appendingPathComponent(fileName))
             }
@@ -317,9 +392,19 @@ public class DownloadManager: DownloadManagerProtocol {
         guard let data = persistence.downloadDataTask(for: blockId),
               data.url.count > 0,
               data.state == .finished else { return nil }
-        let path = videosFolderUrl
-        let fileName = data.fileName
-        return path?.appendingPathComponent(fileName)
+        let path = filesFolderUrl
+        switch data.type {
+        case .html, .problem:
+            if let folderUrl = URL(string: data.url) {
+                let folder = folderUrl.deletingPathExtension().lastPathComponent
+                let sfds = path?.appendingPathComponent(folder).appendingPathComponent("index.html")
+                return sfds
+            } else {
+                return nil
+            }
+        case .video:
+            return path?.appendingPathComponent(data.fileName)
+        }
     }
 
     // MARK: - Private Intents
@@ -328,12 +413,32 @@ public class DownloadManager: DownloadManagerProtocol {
         guard userCanDownload() else {
             throw NoWiFiError()
         }
+        
         guard let downloadTask = persistence.nextBlockForDownloading() else {
             isDownloadingInProgress = false
+            if !failedDownloads.isEmpty {
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .showDownloadFailed,
+                        object: self.failedDownloads
+                    )
+                    self.failedDownloads = []
+                }
+            }
+            return
+        }        
+        if !connectivity.isInternetAvaliable {
+            failedDownloads.append(downloadTask)
+            try cancelDownloading(task: downloadTask)
             return
         }
+        
         currentDownloadTask = downloadTask
-        try downloadFileWithProgress(downloadTask)
+        if downloadTask.type == .html || downloadTask.type == .problem {
+            try downloadHTMLWithProgress(downloadTask)
+        } else {
+            try downloadFileWithProgress(downloadTask)
+        }
         currentDownloadEventPublisher.send(.started(downloadTask))
     }
 
@@ -375,11 +480,70 @@ public class DownloadManager: DownloadManagerProtocol {
             let completed = Double(fractionCompleted * 100)
             debugLog(">>>>> Downloading", download.url, completed, "%")
         }
-
+        
         downloadRequest?.responseData { [weak self] data in
             guard let self else { return }
-            if let data = data.value, let url = self.videosFolderUrl {
+            if let error = data.error {
+                if error.asAFError?.isExplicitlyCancelledError == false {
+                    failedDownloads.append(download)
+                    try? newDownload()
+                    return
+                }
+            }
+            if let data = data.value, let url = self.filesFolderUrl {
                 self.saveFile(fileName: download.fileName, data: data, folderURL: url)
+                self.persistence.updateDownloadState(
+                    id: download.id,
+                    state: .finished,
+                    resumeData: nil
+                )
+                self.currentDownloadTask?.state = .finished
+                self.currentDownloadEventPublisher.send(.finished(download))
+                try? self.newDownload()
+            }
+        }
+    }
+
+    private func downloadHTMLWithProgress(_ download: DownloadDataTask) throws {
+        guard let url = URL(string: download.url) else {
+            return
+        }
+        
+        persistence.updateDownloadState(
+            id: download.id,
+            state: .inProgress,
+            resumeData: download.resumeData
+        )
+        self.isDownloadingInProgress = true
+        if let resumeData = download.resumeData {
+            downloadRequest = AF.download(resumingWith: resumeData)
+        } else {
+            downloadRequest = AF.download(url)
+        }
+        
+        downloadRequest?.downloadProgress { [weak self] prog in
+            guard let self else { return }
+            let fractionCompleted = prog.fractionCompleted
+            self.currentDownloadTask?.progress = fractionCompleted
+            self.currentDownloadTask?.state = .inProgress
+            self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
+            let completed = Double(fractionCompleted * 100)
+            debugLog(">>>>> Downloading", download.url, completed, "%")
+        }
+        
+        downloadRequest?.responseData { [weak self] data in
+            guard let self else { return }
+            if let error = data.error {
+                if error.asAFError?.isExplicitlyCancelledError == false {
+                    failedDownloads.append(download)
+                    try? newDownload()
+                    return
+                }
+            }
+            if let data = data.value, let url = self.filesFolderUrl,
+               let fileName = URL(string: download.url)?.lastPathComponent {
+                self.saveFile(fileName: fileName, data: data, folderURL: url)
+                self.unzipFile(url: url.appendingPathComponent(fileName))
                 self.persistence.updateDownloadState(
                     id: download.id,
                     state: .finished,
@@ -434,7 +598,7 @@ public class DownloadManager: DownloadManagerProtocol {
             .store(in: &cancellables)
     }
 
-    lazy var videosFolderUrl: URL? = {
+    var filesFolderUrl: URL? {
         let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let directoryURL = documentDirectoryURL.appendingPathComponent(folderPathComponent, isDirectory: true)
 
@@ -453,7 +617,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 return nil
             }
         }
-    }()
+    }
 
     private var folderPathComponent: String {
         if let id = appStorage.user?.id {
@@ -468,6 +632,33 @@ public class DownloadManager: DownloadManagerProtocol {
             try data.write(to: fileURL)
         } catch {
             debugLog("SaveFile Error", error.localizedDescription)
+        }
+    }
+
+    private func unzipFile(url: URL) {
+        let fileName = url.deletingPathExtension().lastPathComponent
+        guard let directoryURL = filesFolderUrl else {
+            return
+        }
+        let uniqueDirectory = directoryURL.appendingPathComponent(fileName, isDirectory: true)
+        
+        try? FileManager.default.removeItem(at: uniqueDirectory)
+       
+        do {
+            try FileManager.default.createDirectory(
+                at: uniqueDirectory,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
+        } catch {
+            debugLog("Error creating temporary directory: \(error.localizedDescription)")
+        }
+        SSZipArchive.unzipFile(atPath: url.path, toDestination: uniqueDirectory.path)
+
+        do {
+            try FileManager.default.removeItem(at: url)
+        } catch {
+            debugLog("Error removing file: \(error.localizedDescription)")
         }
     }
 }
@@ -558,6 +749,8 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     public init() {
         
     }
+    
+    public func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential] {[]}
 
     public var currentDownloadTask: DownloadDataTask? {
         return nil
@@ -582,7 +775,8 @@ public class DownloadManagerMock: DownloadManagerProtocol {
                     resumeData: nil,
                     state: .inProgress,
                     type: .video,
-                    fileSize: 0
+                    fileSize: 0,
+                    lastModified: ""
                 )
             )
         ).eraseToAnyPublisher()

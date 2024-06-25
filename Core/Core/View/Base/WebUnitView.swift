@@ -16,17 +16,39 @@ public struct WebUnitView: View {
 
     private var url: String
     private var injections: [WebviewInjection]?
+    private let connectivity: ConnectivityProtocol
+    private var blockID: String
+    @State private var isFileOpen: Bool = false
+    @State private var dataUrl: String?
+    @State private var fileUrl: String = ""
 
     public init(
         url: String,
+        dataUrl: String?,
         viewModel: WebUnitViewModel,
-        injections: [WebviewInjection]?
+        connectivity: ConnectivityProtocol,
+        injections: [WebviewInjection]?,
+        blockID: String
     ) {
         self._viewModel = .init(
             wrappedValue: viewModel
         )
         self.url = url
+        self.dataUrl = dataUrl
+        self.connectivity = connectivity
         self.injections = injections
+        self.blockID = blockID
+        
+        Task {
+            if dataUrl == nil {
+                await viewModel.updateCookies()
+            }
+        }
+        if !self.connectivity.isInternetAvaliable {
+            if let dataUrl {
+                self.url = dataUrl
+            }
+        }
     }
     
     @ViewBuilder
@@ -62,11 +84,14 @@ public struct WebUnitView: View {
             ZStack(alignment: .center) {
                 GeometryReader { reader in
                     ScrollView {
-                        if viewModel.cookiesReady {
+                        if viewModel.cookiesReady || dataUrl != nil {
                             WebView(
                                 viewModel: .init(
                                     url: url,
                                     baseURL: viewModel.config.baseURL.absoluteString,
+                                    openFile: { file in
+                                        self.fileUrl = file
+                                    },
                                     injections: injections
                                 ),
                                 isLoading: $isWebViewLoading,
@@ -74,6 +99,10 @@ public struct WebUnitView: View {
                                     await viewModel.updateCookies(
                                         force: true
                                     )
+                                },
+                                connectivity: connectivity,
+                                message: { message in
+                                    viewModel.syncManager.handleMessage(message: message, blockID: blockID)
                                 }
                             )
                             .frame(
@@ -85,6 +114,32 @@ public struct WebUnitView: View {
                     .introspect(.scrollView, on: .iOS(.v15...), customize: { scrollView in
                         scrollView.isScrollEnabled = false
                     })
+                    .onChange(of: self.fileUrl, perform: { file in
+                        if file != "" {
+                            self.isFileOpen = true
+                        }
+                    })
+                    .sheet(isPresented: $isFileOpen, onDismiss: { self.fileUrl = ""; isFileOpen = false }, content: {
+                        GeometryReader { reader2 in
+                            ZStack(alignment: .topTrailing) {
+                                ScrollView {
+                                    FileWebView(viewModel: FileWebView.ViewModel(url: fileUrl))
+                                        .frame(width: reader2.size.width, height: reader2.size.height)
+                                }
+                                Button(action: {
+                                    isFileOpen = false
+                                }, label: {
+                                    ZStack {
+                                        Circle().frame(width: 32, height: 32)
+                                            .foregroundColor(.white)
+                                            .shadow(color: .black.opacity(0.2), radius: 12)
+                                        Image(systemName: "xmark").renderingMode(.template)
+                                            .foregroundColor(.black)
+                                    }.padding(16)
+                                })
+                            }
+                        }
+                    })
                     if viewModel.updatingCookies || isWebViewLoading {
                         VStack {
                             ProgressBar(size: 40, lineWidth: 8)
@@ -94,9 +149,66 @@ public struct WebUnitView: View {
                 }
             }.onFirstAppear {
                 Task {
-                    await viewModel.updateCookies()
+                    if dataUrl == nil {
+                        await viewModel.updateCookies()
+                    }
                 }
             }
         }
+    }
+}
+
+import WebKit
+
+public struct FileWebView: UIViewRepresentable {
+    public func makeUIView(context: Context) -> WKWebView {
+        let webview = WKWebView()
+        webview.scrollView.bounces = false
+        webview.scrollView.alwaysBounceHorizontal = false
+        webview.scrollView.showsHorizontalScrollIndicator = false
+        webview.scrollView.isScrollEnabled = true
+        webview.configuration.suppressesIncrementalRendering = true
+        webview.isOpaque = false
+        webview.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        webview.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+        webview.backgroundColor = .clear
+        webview.scrollView.backgroundColor = UIColor.white
+        webview.scrollView.alwaysBounceVertical = false
+        webview.scrollView.layer.cornerRadius = 24
+        webview.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        if let url = URL(string: viewModel.url) {
+            
+            if let fileURL = URL(string: url.absoluteString) {
+                let fileAccessURL = fileURL.deletingLastPathComponent()
+                if let pdfData = try? Data(contentsOf: url) {
+                    webview.load(pdfData,
+                                 mimeType: "application/pdf",
+                                 characterEncodingName: "",
+                                 baseURL: fileAccessURL)
+                }
+            }
+        }
+        
+        return webview
+    }
+    
+    public func updateUIView(_ webview: WKWebView, context: Context) {
+
+    }
+    
+    public class ViewModel: ObservableObject {
+        
+        @Published var url: String
+        
+        public init(url: String) {
+            self.url = url
+        }
+    }
+        
+    @ObservedObject var viewModel: ViewModel
+    
+    public init(viewModel: ViewModel) {
+        self.viewModel = viewModel
     }
 }

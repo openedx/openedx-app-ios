@@ -37,6 +37,7 @@
 
 "COURSE_CONTAINER.HOME" =  "Home";
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
+"COURSE_CONTAINER.OFFLINE" =  "Offline";
 "COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSIONS" =  "Discussions";
 "COURSE_CONTAINER.HANDOUTS" =  "More";
@@ -125,3 +126,54 @@
 "COURSE.DUE_TOMORROW" = "Due Tomorrow";
 
 "COURSE.PROGRESS_COMPLETED" = "%@ of %@ assignments complete";
+
+"COURSE.ALERT.CANCEL" = "Cancel";
+"COURSE.ALERT.CLOSE" = "Close";
+"COURSE.ALERT.REMOVE" = "Remove";
+"COURSE.ALERT.DOWNLOAD" = "Download";
+"COURSE.ALERT.TRY_AGAIN" = "Try again";
+
+"COURSE.ALERT.REMOVE_TITLE" = "Remove Offline Content?";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_TITLE" = "Confirm Download";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_TITLE" = "Download on Cellular?";
+
+"COURSE.ALERT.REMOVE_DESCRIPTION" = "Removing this content will free up %@.";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_DESCRIPTION" = "Downloading this %@ of content will save available blocks offline.";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_DESCRIPTION" = "Downloading this content will use %@ of cellular data.";
+
+"COURSE.ERROR.DOWNLOAD_FAILED_TITLE" = "Download Failed";
+"COURSE.ERROR.NO_INTERNET_CONNECTION_TITLE" = "No Internet Connection";
+"COURSE.ERROR.WIFI_REQUIRED_TITLE" = "Wi-Fi Required";
+
+"COURSE.ERROR.DOWNLOAD_FAILED_DESCRIPTION" = "Unfortunately, this content failed to download. Please try again later or report this issue.";
+"COURSE.ERROR.NO_INTERNET_CONNECTION_DESCRIPTION" = "Downloading this content requires an active internet connection. Please connect to the internet and try again.";
+"COURSE.ERROR.WIFI_REQUIRED_DESCRIPTION" = "Downloading this content requires an active WiFi connection. Please connect to a WiFi network and try again.";
+
+"COURSE.STORAGE_ALERT.TITLE" = "Device Storage Full";
+"COURSE.STORAGE_ALERT.DESCRIPTION" = "Your device does not have enough free space to download this content. Please free up some space and try again.";
+"COURSE.STORAGE_ALERT.USED_AND_FREE" = "%@ used, %@ free";
+
+"COURSE.LARGEST_DOWNLOADS.TITLE" = "Largest Downloads";
+"COURSE.LARGEST_DOWNLOADS.DONE" = "Done";
+"COURSE.LARGEST_DOWNLOADS.EDIT" = "Edit";
+"COURSE.LARGEST_DOWNLOADS.REMOVE_DOWNLOADS" = "Remove all downloads";
+
+"COURSE.OFFLINE.VISIBLE" = "%@%% of this course is visible on mobile.";
+"COURSE.OFFLINE.DOWNLOADABLE" = "%@%% of this course is downloadable.";
+"COURSE.OFFLINE.CAN_BE_COMPLETED" = "%@%% of this course can be completed offline.";
+
+"COURSE.TOTAL_PROGRESS.DOWNLOADED" = "Downloaded";
+"COURSE.TOTAL_PROGRESS.DOWNLOADING" = "Downloading";
+"COURSE.TOTAL_PROGRESS.READY_TO_DOWNLOAD" = "Ready to Download";
+
+
+"COURSE.OFFLINE.DOWNLOAD_ALL" = "Download all";
+"COURSE.OFFLINE.CANCEL_COURSE_DOWNLOAD" = "Cancel Course Download";
+
+"COURSE.OFFLINE.YOU_CAN_DOWNLOAD" = "You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.";
+"COURSE.OFFLINE.YOU_CANT_DOWNLOAD" = "None of this course’s content is currently avaliable to download offline.";
+
+"OFFLINE.NOT_DOWNLOADED.TITLE" = "This component is not downloaded";
+"OFFLINE.NOT_DOWNLOADED.DESCRIPTION" = "Explore other parts of this course or download this when you reconnect.";
+"OFFLINE.NOT_AVALIABLE.TITLE" = "This component is not yet available offline";
+"OFFLINE.NOT_AVALIABLE.DESCRIPTION" = "Explore other parts of this course or view this when you reconnect.";

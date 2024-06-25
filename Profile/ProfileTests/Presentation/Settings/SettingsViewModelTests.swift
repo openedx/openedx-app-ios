@@ -37,7 +37,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(), 
+            connectivity: Connectivity()
         )
         
         await viewModel.logOut()
@@ -69,7 +70,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(), 
+            connectivity: Connectivity()
         )
         
         viewModel.trackProfileVideoSettingsClicked()
@@ -100,7 +102,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            connectivity: Connectivity()
         )
         
         viewModel.trackEmailSupportClicked()
@@ -131,7 +134,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            connectivity: Connectivity()
         )
         
         viewModel.trackCookiePolicyClicked()
@@ -162,7 +166,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            connectivity: Connectivity()
         )
         
         viewModel.trackPrivacyPolicyClicked()
@@ -193,7 +198,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock()
+            config:  ConfigMock(),
+            connectivity: Connectivity()
         )
         
         viewModel.trackProfileEditClicked()

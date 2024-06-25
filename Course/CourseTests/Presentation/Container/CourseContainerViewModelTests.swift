@@ -57,7 +57,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             studentUrl: "",
             webUrl: "",
             encodedVideo: nil,
-            multiDevice: true
+            multiDevice: true, 
+            offlineDownload: nil
         )
         let vertical = CourseVertical(
             blockId: "",
@@ -388,7 +389,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
 
         )
 
@@ -453,7 +455,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .inProgress,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000, 
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -483,11 +486,11 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
 
-        await viewModel.onDownloadViewTap(
-             chapter: chapter,
-             blockId: blockId,
-             state: .available
-         )
+        await viewModel.download(
+            state: .available,
+            blocks: [block],
+            sequentials: [sequential]
+        )
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -530,7 +533,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -609,11 +613,11 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
 
-        await viewModel.onDownloadViewTap(
-             chapter: chapter,
-             blockId: blockId,
-             state: .downloading
-         )
+        await viewModel.download(
+            state: .available,
+            blocks: [block],
+            sequentials: [sequential]
+        )
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -656,7 +660,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -735,11 +740,11 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates()
 
-        await viewModel.onDownloadViewTap(
-             chapter: chapter,
-             blockId: blockId,
-             state: .finished
-         )
+        await viewModel.download(
+            state: .available,
+            blocks: [block],
+            sequentials: [sequential]
+        )
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -783,7 +788,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -903,7 +909,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -967,7 +974,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .inProgress,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000,
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -1038,7 +1046,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -1102,7 +1111,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .finished,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000,
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -1172,7 +1182,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
         let block2 = CourseBlock(
             blockId: "123",
@@ -1194,7 +1205,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -1258,7 +1270,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .finished,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000,
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))

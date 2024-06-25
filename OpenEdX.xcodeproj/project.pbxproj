@@ -13,6 +13,7 @@
 		0219C67728F4347600D64452 /* Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0219C67628F4347600D64452 /* Course.framework */; };
 		0219C67828F4347600D64452 /* Course.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0219C67628F4347600D64452 /* Course.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E691F2AEFC3FB00FA0B59 /* MainScreenViewModel.swift */; };
+		025796D42C2B342100A60C03 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 025796D32C2B342100A60C03 /* ZipArchive */; };
 		025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025AD4AB2A6FB95C00AB8FA7 /* DatabaseManager.swift */; };
 		025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; };
 		025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -171,6 +172,7 @@
 				A51CDBED2B6D2BEE009B6D4E /* SegmentBraze in Frameworks */,
 				A51CDBEF2B6D2BEE009B6D4E /* SegmentBrazeUI in Frameworks */,
 				1924EDE8164C7AB17AD4946B /* Pods_App_OpenEdX.framework in Frameworks */,
+				025796D42C2B342100A60C03 /* ZipArchive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +412,7 @@
 				A51CDBEE2B6D2BEE009B6D4E /* SegmentBrazeUI */,
 				A5BD3E2F2B83B0F7006A8983 /* SegmentFirebase */,
 				A5462D9E2B865713003B96A5 /* Segment */,
+				025796D32C2B342100A60C03 /* ZipArchive */,
 			);
 			productName = OpenEdX;
 			productReference = 07D5DA3128D075AA00752FD9 /* OpenEdX.app */;
@@ -445,6 +448,7 @@
 				A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */,
 				A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */,
 				A5462D9D2B865713003B96A5 /* XCRemoteSwiftPackageReference "analytics-swift" */,
+				025796D22C2B342100A60C03 /* XCRemoteSwiftPackageReference "ZipArchive" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
 			projectDirPath = "";
@@ -1211,6 +1215,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		025796D22C2B342100A60C03 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ZipArchive/ZipArchive";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.5;
+			};
+		};
 		A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/braze-inc/braze-segment-swift";
@@ -1246,6 +1258,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		025796D32C2B342100A60C03 /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 025796D22C2B342100A60C03 /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
+		};
 		A51CDBEC2B6D2BEE009B6D4E /* SegmentBraze */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */;

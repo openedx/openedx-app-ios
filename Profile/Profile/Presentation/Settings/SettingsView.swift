@@ -250,7 +250,9 @@ struct SettingsView_Previews: PreviewProvider {
             router: router,
             analytics: ProfileAnalyticsMock(),
             coreAnalytics: CoreAnalyticsMock(),
-            config: ConfigMock()
+            config: ConfigMock(),
+            corePersistence: CorePersistenceMock(),
+            connectivity: Connectivity()
         )
         
         SettingsView(viewModel: vm)
