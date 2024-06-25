@@ -238,8 +238,6 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
     }
     
     public func showWebViewError() {
-        DispatchQueue.main.async {
-            self.webViewError = true
-        }
+        self.webViewError = true
     }
 }

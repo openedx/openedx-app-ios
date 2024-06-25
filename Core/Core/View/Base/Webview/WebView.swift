@@ -77,8 +77,8 @@ public struct WebView: UIViewRepresentable {
             webView.isHidden = false
             DispatchQueue.main.async {
                 self.parent.isLoading = false
+                self.parent.webViewNavDelegate?.showWebViewError()
             }
-            parent.webViewNavDelegate?.showWebViewError()
         }
         
         public func webView(
@@ -89,8 +89,8 @@ public struct WebView: UIViewRepresentable {
             webView.isHidden = false
             DispatchQueue.main.async {
                 self.parent.isLoading = false
+                self.parent.webViewNavDelegate?.showWebViewError()
             }
-            parent.webViewNavDelegate?.showWebViewError()
         }
         
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

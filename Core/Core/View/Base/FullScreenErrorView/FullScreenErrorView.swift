@@ -17,7 +17,7 @@ public struct FullScreenErrorView: View {
     }
     
     private let errorType: ErrorType
-    private var reloadAction: () -> Void = {}
+    private var action: () -> Void = {}
     
     public init(
         type: ErrorType
@@ -27,10 +27,10 @@ public struct FullScreenErrorView: View {
     
     public init(
         type: ErrorType,
-        reloadAction: @escaping () -> Void
+        action: @escaping () -> Void
     ) {
         self.errorType = type
-        self.reloadAction = reloadAction
+        self.action = action
     }
     
     public var body: some View {
@@ -71,9 +71,12 @@ public struct FullScreenErrorView: View {
                 }
                 
                 if errorType != .noInternet {
-                    UnitButtonView(type: .reload, action: {
-                        self.reloadAction()
-                    })
+                    UnitButtonView(
+                        type: .reload,
+                        action: {
+                            self.action()
+                        }
+                    )
                 }
                 Spacer()
             }
