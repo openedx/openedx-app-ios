@@ -164,7 +164,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
                                 yearOfBirth: 0,
                                 country: "",
                                 shortBiography: "",
-                                isFullProfile: false)
+                                isFullProfile: false,
+                                email: "")
     }
     
     func getMyProfileOffline() -> Core.UserProfile? {
@@ -182,7 +183,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
             of his music, writing and drawings, on film, and in interviews. His songwriting partnership with Paul McCartney
             remains the most successful in history
             """,
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
     }
     
@@ -201,7 +203,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
             of his music, writing and drawings, on film, and in interviews. His songwriting partnership with Paul McCartney
             remains the most successful in history
             """,
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
     }
     
@@ -224,7 +227,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
             yearOfBirth: 1970,
             country: "USA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
     }
     

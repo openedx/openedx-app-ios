@@ -17,11 +17,18 @@ public struct WebBrowser: View {
     private var url: String
     private var pageTitle: String
     private var showProgress: Bool
+    private let connectivity: ConnectivityProtocol
     
-    public init(url: String, pageTitle: String, showProgress: Bool = false) {
+    public init(
+        url: String,
+        pageTitle: String,
+        showProgress: Bool = false,
+        connectivity: ConnectivityProtocol
+    ) {
         self.url = url
         self.pageTitle = pageTitle
         self.showProgress = showProgress
+        self.connectivity = connectivity
     }
     
     public var body: some View {
@@ -57,10 +64,13 @@ public struct WebBrowser: View {
                 viewModel: .init(
                     url: url,
                     baseURL: "",
+                    openFile: {_ in},
                     injections: [.colorInversionCss, .readability, .accessibility]
                 ),
                 isLoading: $isLoading,
-                refreshCookies: {}
+                refreshCookies: {
+                },
+                connectivity: connectivity
             )
             .accessibilityIdentifier("web_browser")
         }
@@ -71,6 +81,6 @@ public struct WebBrowser: View {
 
 struct WebBrowser_Previews: PreviewProvider {
     static var previews: some View {
-        WebBrowser(url: "", pageTitle: "")
+        WebBrowser(url: "", pageTitle: "", connectivity: Connectivity())
     }
 }

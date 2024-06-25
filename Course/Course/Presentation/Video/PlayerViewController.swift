@@ -11,131 +11,17 @@ import SwiftUI
 import _AVKit_SwiftUI
 
 struct PlayerViewController: UIViewControllerRepresentable {
-    
-    var videoURL: URL?
-    var videoResolution: CGSize
-    var playerHolder: PlayerViewControllerHolder
-    var progress: ((Float) -> Void)
-    var seconds: ((Double) -> Void)
-    
-    init(
-        videoURL: URL?,
-        playerHolder: PlayerViewControllerHolder,
-        bitrate: CGSize,
-        progress: @escaping ((Float) -> Void),
-        seconds: @escaping ((Double) -> Void)
-    ) {
-        self.videoURL = videoURL
-        self.playerHolder = playerHolder
-        self.videoResolution = bitrate
-        self.progress = progress
-        self.seconds = seconds
-    }
-    
+    var playerController: AVPlayerViewController
+
     func makeUIViewController(context: Context) -> AVPlayerViewController {
-        context.coordinator.currentHolder = playerHolder
-        if playerHolder.isPlayingInPip {
-            return playerHolder.playerController
-        }
-        
-        let controller = playerHolder.playerController
-        controller.modalPresentationStyle = .fullScreen
-        controller.allowsPictureInPicturePlayback = true
-        controller.canStartPictureInPictureAutomaticallyFromInline = true
-        let player = AVPlayer()
-        controller.player = player
-        context.coordinator.setPlayer(player) { progress, seconds in
-            self.progress(progress)
-            self.seconds(seconds)
-        }
-        
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
         } catch {
             print(error.localizedDescription)
         }
         
-        return controller
+        return playerController
     }
     
-    func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {
-        let asset = playerController.player?.currentItem?.asset as? AVURLAsset
-        if asset?.url.absoluteString != videoURL?.absoluteString && !playerHolder.isPlayingInPip {
-            let player = context.coordinator.player(from: playerController)
-            player?.replaceCurrentItem(with: AVPlayerItem(url: videoURL!))
-            player?.currentItem?.preferredMaximumResolution = videoResolution
-            
-            context.coordinator.setPlayer(player) { progress, seconds in
-                self.progress(progress)
-                self.seconds(seconds)
-            }
-        }
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
-    
-    static func dismantleUIViewController(_ uiViewController: AVPlayerViewController, coordinator: Coordinator) {
-        coordinator.setPlayer(nil) { _, _ in }
-    }
-        
-    class Coordinator {
-        var currentPlayer: AVPlayer?
-        var observer: Any?
-        var cancellations: [AnyCancellable] = []
-        weak var currentHolder: PlayerViewControllerHolder?
-        
-        func player(from playerController: AVPlayerViewController) -> AVPlayer? {
-            var player = playerController.player
-            if player == nil {
-                player = AVPlayer()
-                player?.allowsExternalPlayback = true
-                playerController.player = player
-            }
-            return player
-        }
-        
-        func setPlayer(_ player: AVPlayer?, currentProgress: @escaping ((Float, Double) -> Void)) {
-            cancellations.removeAll()
-            if let observer = observer {
-                currentPlayer?.removeTimeObserver(observer)
-                if currentHolder?.isPlayingInPip == false {
-                    currentPlayer?.pause()
-                }
-            }
-            
-            let interval = CMTime(
-                seconds: 0.1,
-                preferredTimescale: CMTimeScale(NSEC_PER_SEC)
-            )
-            
-            observer = player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) {[weak player] time in
-                var progress: Float = .zero
-                let currentSeconds = CMTimeGetSeconds(time)
-                guard let duration = player?.currentItem?.duration else { return }
-                let totalSeconds = CMTimeGetSeconds(duration)
-                progress = Float(currentSeconds / totalSeconds)
-                currentProgress(progress, currentSeconds)
-            }
-            
-            player?.publisher(for: \.rate)
-                .sink {[weak self] rate in
-                    guard rate > 0 else { return }
-                    self?.currentHolder?.pausePipIfNeed()
-                }
-                .store(in: &cancellations)
-            currentHolder?.pipRatePublisher()?
-                .sink {[weak self] rate in
-                    guard rate > 0 else { return }
-                    if self?.currentHolder?.isPlayingInPip == false {
-                        self?.currentPlayer?.pause()
-                    }
-                }
-                .store(in: &cancellations)
-
-            currentPlayer = player
-            
-        }
-    }
+    func updateUIViewController(_ playerController: AVPlayerViewController, context: Context) {}
 }

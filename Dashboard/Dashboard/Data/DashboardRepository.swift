@@ -9,8 +9,11 @@ import Foundation
 import Core
 
 public protocol DashboardRepositoryProtocol {
-    func getMyCourses(page: Int) async throws -> [CourseItem]
-    func getMyCoursesOffline() throws -> [CourseItem]
+    func getEnrollments(page: Int) async throws -> [CourseItem]
+    func getEnrollmentsOffline() throws -> [CourseItem]
+    func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment
+    func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment
+    func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment
 }
 
 public class DashboardRepository: DashboardRepositoryProtocol {
@@ -27,39 +30,58 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         self.persistence = persistence
     }
     
-    public func getMyCourses(page: Int) async throws -> [CourseItem] {
+    public func getEnrollments(page: Int) async throws -> [CourseItem] {
         let result = try await api.requestData(
-            DashboardEndpoint.getMyCourses(username: storage.user?.username ?? "", page: page)
+            DashboardEndpoint.getEnrollments(username: storage.user?.username ?? "", page: page)
         )
             .mapResponse(DataLayer.CourseEnrollments.self)
             .domain(baseURL: config.baseURL.absoluteString)
-        persistence.saveMyCourses(items: result)
+        persistence.saveEnrollments(items: result)
         return result
         
     }
     
-    public func getMyCoursesOffline() throws -> [CourseItem] {
-        return try persistence.loadMyCourses()
+    public func getEnrollmentsOffline() throws -> [CourseItem] {
+        return try persistence.loadEnrollments()
     }
     
+    public func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment {
+        let result = try await api.requestData(
+            DashboardEndpoint.getPrimaryEnrollment(
+                username: storage.user?.username ?? "",
+                pageSize: pageSize
+            )
+        )
+            .mapResponse(DataLayer.PrimaryEnrollment.self)
+            .domain(baseURL: config.baseURL.absoluteString)
+        persistence.savePrimaryEnrollment(enrollments: result)
+        return result
+    }
+    
+    public func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment {
+        return try persistence.loadPrimaryEnrollment()
+    }
+    
+    public func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment {
+        let result = try await api.requestData(
+            DashboardEndpoint.getAllCourses(
+                username: storage.user?.username ?? "",
+                filteredBy: filteredBy,
+                page: page
+            )
+        )
+            .mapResponse(DataLayer.PrimaryEnrollment.self)
+            .domain(baseURL: config.baseURL.absoluteString)
+        return result
+    }
 }
 
+// swiftlint:disable all
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 class DashboardRepositoryMock: DashboardRepositoryProtocol {
-    func getCourseEnrollments(baseURL: String) async throws -> [CourseItem] {
-        do {
-            let courseEnrollments = try
-            DashboardRepository.CourseEnrollmentsJSON.data(using: .utf8)!
-                .mapResponse(DataLayer.CourseEnrollments.self)
-                .domain(baseURL: baseURL)
-            return courseEnrollments
-        } catch {
-            throw error
-        }
-    }
     
-    func getMyCourses(page: Int) async throws -> [CourseItem] {
+    func getEnrollments(page: Int) async throws -> [CourseItem] {
         var models: [CourseItem] = []
         for i in 0...10 {
             models.append(
@@ -68,20 +90,104 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
                     numPages: 1,
-                    coursesCount: 0
+                    coursesCount: 0,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }
         return models
     }
     
-    func getMyCoursesOffline() throws -> [CourseItem] { return [] }
+    func getEnrollmentsOffline() throws -> [CourseItem] { return [] }
+    
+    public func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment {
+        
+        var courses: [CourseItem] = []
+        for i in 0...10 {
+            courses.append(
+                CourseItem(
+                    name: "Course name \(i)",
+                    org: "Organization",
+                    shortDescription: "shortDescription",
+                    imageURL: "",
+                    hasAccess: true,
+                    courseStart: nil,
+                    courseEnd: nil,
+                    enrollmentStart: nil,
+                    enrollmentEnd: nil,
+                    courseID: "course_id_\(i)",
+                    numPages: 1,
+                    coursesCount: 0,
+                    progressEarned: 4,
+                    progressPossible: 10
+                )
+            )
+        }
+        
+        let futureAssignment = Assignment(
+            type: "Final Exam",
+            title: "Subsection 3",
+            description: "",
+            date: Date(),
+            complete: false, 
+            firstComponentBlockId: nil
+        )
+        
+        let primaryCourse = PrimaryCourse(
+            name: "Primary Course",
+            org: "Organization",
+            courseID: "123",
+            hasAccess: true,
+            courseStart: Date(),
+            courseEnd: Date(),
+            courseBanner: "https://thumbs.dreamstime.com/b/logo-edx-samsung-tablet-edx-massive-open-online-course-mooc-provider-hosts-online-university-level-courses-wide-117763805.jpg",
+            futureAssignments: [futureAssignment],
+            pastAssignments: [futureAssignment],
+            progressEarned: 2,
+            progressPossible: 5, 
+            lastVisitedBlockID: nil, 
+            resumeTitle: nil
+        )
+        return PrimaryEnrollment(primaryCourse: primaryCourse, courses: courses, totalPages: 1, count: 1)
+    }
+    
+    func getPrimaryEnrollmentOffline() async throws -> Core.PrimaryEnrollment {
+        Core.PrimaryEnrollment(primaryCourse: nil, courses: [], totalPages: 1, count: 1)
+    }
+    
+    func getAllCourses(filteredBy: String, page: Int) async throws -> Core.PrimaryEnrollment {
+        var courses: [CourseItem] = []
+        for i in 0...10 {
+            courses.append(
+                CourseItem(
+                    name: "Course name \(i)",
+                    org: "Organization",
+                    shortDescription: "shortDescription",
+                    imageURL: "",
+                    hasAccess: true,
+                    courseStart: nil,
+                    courseEnd: nil,
+                    enrollmentStart: nil,
+                    enrollmentEnd: nil,
+                    courseID: "course_id_\(i)",
+                    numPages: 1,
+                    coursesCount: 0,
+                    progressEarned: 4,
+                    progressPossible: 10
+                )
+            )
+        }
+        
+        return PrimaryEnrollment(primaryCourse: nil, courses: courses, totalPages: 1, count: 1)
+    }
 }
 #endif
+// swiftlint:enable all

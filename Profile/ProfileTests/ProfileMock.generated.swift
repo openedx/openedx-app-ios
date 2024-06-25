@@ -1585,6 +1585,20 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		return __value
     }
 
+    open func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential] {
+        addInvocation(.m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>.value(`sequentials`)))
+		let perform = methodPerformValue(.m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>.value(`sequentials`))) as? ([CourseSequential]) -> Void
+		perform?(`sequentials`)
+		var __value: [CourseSequential]
+		do {
+		    __value = try methodReturnValue(.m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>.value(`sequentials`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for updateUnzippedFileSize(for sequentials: [CourseSequential]). Use given")
+			Failure("Stub return value not specified for updateUnzippedFileSize(for sequentials: [CourseSequential]). Use given")
+		}
+		return __value
+    }
+
     open func resumeDownloading() throws {
         addInvocation(.m_resumeDownloading)
 		let perform = methodPerformValue(.m_resumeDownloading) as? () -> Void
@@ -1626,6 +1640,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
         case m_deleteAllFiles
         case m_fileUrl__for_blockId(Parameter<String>)
+        case m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>)
         case m_resumeDownloading
         case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
         case p_currentDownloadTask_get
@@ -1678,6 +1693,11 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
 				return Matcher.ComparisonResult(results)
 
+            case (.m_updateUnzippedFileSize__for_sequentials(let lhsSequentials), .m_updateUnzippedFileSize__for_sequentials(let rhsSequentials)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSequentials, rhs: rhsSequentials, with: matcher), lhsSequentials, rhsSequentials, "for sequentials"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_resumeDownloading, .m_resumeDownloading): return .match
 
             case (.m_isLargeVideosSize__blocks_blocks(let lhsBlocks), .m_isLargeVideosSize__blocks_blocks(let rhsBlocks)):
@@ -1703,6 +1723,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
             case .m_deleteAllFiles: return 0
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
+            case let .m_updateUnzippedFileSize__for_sequentials(p0): return p0.intValue
             case .m_resumeDownloading: return 0
             case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
             case .p_currentDownloadTask_get: return 0
@@ -1722,6 +1743,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
             case .m_deleteAllFiles: return ".deleteAllFiles()"
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
+            case .m_updateUnzippedFileSize__for_sequentials: return ".updateUnzippedFileSize(for:)"
             case .m_resumeDownloading: return ".resumeDownloading()"
             case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
             case .p_currentDownloadTask_get: return "[get] .currentDownloadTask"
@@ -1755,6 +1777,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func fileUrl(for blockId: Parameter<String>, willReturn: URL?...) -> MethodStub {
             return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>, willReturn: [CourseSequential]...) -> MethodStub {
+            return Given(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -1791,6 +1816,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             let willReturn: [URL?] = []
 			let given: Given = { return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (URL?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>, willProduce: (Stubber<[CourseSequential]>) -> Void) -> MethodStub {
+            let willReturn: [[CourseSequential]] = []
+			let given: Given = { return Given(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([CourseSequential]).self)
 			willProduce(stubber)
 			return given
         }
@@ -1878,6 +1910,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
         public static func deleteAllFiles() -> Verify { return Verify(method: .m_deleteAllFiles)}
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
+        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>) -> Verify { return Verify(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`))}
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
         public static var currentDownloadTask: Verify { return Verify(method: .p_currentDownloadTask_get) }
@@ -1922,6 +1955,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func fileUrl(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_fileUrl__for_blockId(`blockId`), performs: perform)
+        }
+        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>, perform: @escaping ([CourseSequential]) -> Void) -> Perform {
+            return Perform(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`), performs: perform)
         }
         public static func resumeDownloading(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_resumeDownloading, performs: perform)
@@ -3045,6 +3081,36 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 		perform?()
     }
 
+    open func showVideoSettings() {
+        addInvocation(.m_showVideoSettings)
+		let perform = methodPerformValue(.m_showVideoSettings) as? () -> Void
+		perform?()
+    }
+
+    open func showManageAccount() {
+        addInvocation(.m_showManageAccount)
+		let perform = methodPerformValue(.m_showManageAccount) as? () -> Void
+		perform?()
+    }
+
+    open func showDatesAndCalendar() {
+        addInvocation(.m_showDatesAndCalendar)
+		let perform = methodPerformValue(.m_showDatesAndCalendar) as? () -> Void
+		perform?()
+    }
+
+    open func showSyncCalendarOptions() {
+        addInvocation(.m_showSyncCalendarOptions)
+		let perform = methodPerformValue(.m_showSyncCalendarOptions) as? () -> Void
+		perform?()
+    }
+
+    open func showCoursesToSync() {
+        addInvocation(.m_showCoursesToSync)
+		let perform = methodPerformValue(.m_showCoursesToSync) as? () -> Void
+		perform?()
+    }
+
     open func showVideoQualityView(viewModel: SettingsViewModel) {
         addInvocation(.m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>.value(`viewModel`)))
 		let perform = methodPerformValue(.m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>.value(`viewModel`))) as? (SettingsViewModel) -> Void
@@ -3163,6 +3229,11 @@ open class ProfileRouterMock: ProfileRouter, Mock {
     fileprivate enum MethodType {
         case m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(Parameter<Core.UserProfile>, Parameter<UIImage?>, Parameter<((UserProfile?, UIImage?)) -> Void>)
         case m_showSettings
+        case m_showVideoSettings
+        case m_showManageAccount
+        case m_showDatesAndCalendar
+        case m_showSyncCalendarOptions
+        case m_showCoursesToSync
         case m_showVideoQualityView__viewModel_viewModel(Parameter<SettingsViewModel>)
         case m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(Parameter<DownloadQuality>, Parameter<((DownloadQuality) -> Void)?>, Parameter<CoreAnalytics>)
         case m_showDeleteProfileView
@@ -3193,6 +3264,16 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_showSettings, .m_showSettings): return .match
+
+            case (.m_showVideoSettings, .m_showVideoSettings): return .match
+
+            case (.m_showManageAccount, .m_showManageAccount): return .match
+
+            case (.m_showDatesAndCalendar, .m_showDatesAndCalendar): return .match
+
+            case (.m_showSyncCalendarOptions, .m_showSyncCalendarOptions): return .match
+
+            case (.m_showCoursesToSync, .m_showCoursesToSync): return .match
 
             case (.m_showVideoQualityView__viewModel_viewModel(let lhsViewmodel), .m_showVideoQualityView__viewModel_viewModel(let rhsViewmodel)):
 				var results: [Matcher.ParameterComparisonResult] = []
@@ -3304,6 +3385,11 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             switch self {
             case let .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case .m_showSettings: return 0
+            case .m_showVideoSettings: return 0
+            case .m_showManageAccount: return 0
+            case .m_showDatesAndCalendar: return 0
+            case .m_showSyncCalendarOptions: return 0
+            case .m_showCoursesToSync: return 0
             case let .m_showVideoQualityView__viewModel_viewModel(p0): return p0.intValue
             case let .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case .m_showDeleteProfileView: return 0
@@ -3329,6 +3415,11 @@ open class ProfileRouterMock: ProfileRouter, Mock {
             switch self {
             case .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit: return ".showEditProfile(userModel:avatar:profileDidEdit:)"
             case .m_showSettings: return ".showSettings()"
+            case .m_showVideoSettings: return ".showVideoSettings()"
+            case .m_showManageAccount: return ".showManageAccount()"
+            case .m_showDatesAndCalendar: return ".showDatesAndCalendar()"
+            case .m_showSyncCalendarOptions: return ".showSyncCalendarOptions()"
+            case .m_showCoursesToSync: return ".showCoursesToSync()"
             case .m_showVideoQualityView__viewModel_viewModel: return ".showVideoQualityView(viewModel:)"
             case .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics: return ".showVideoDownloadQualityView(downloadQuality:didSelect:analytics:)"
             case .m_showDeleteProfileView: return ".showDeleteProfileView()"
@@ -3368,6 +3459,11 @@ open class ProfileRouterMock: ProfileRouter, Mock {
 
         public static func showEditProfile(userModel: Parameter<Core.UserProfile>, avatar: Parameter<UIImage?>, profileDidEdit: Parameter<((UserProfile?, UIImage?)) -> Void>) -> Verify { return Verify(method: .m_showEditProfile__userModel_userModelavatar_avatarprofileDidEdit_profileDidEdit(`userModel`, `avatar`, `profileDidEdit`))}
         public static func showSettings() -> Verify { return Verify(method: .m_showSettings)}
+        public static func showVideoSettings() -> Verify { return Verify(method: .m_showVideoSettings)}
+        public static func showManageAccount() -> Verify { return Verify(method: .m_showManageAccount)}
+        public static func showDatesAndCalendar() -> Verify { return Verify(method: .m_showDatesAndCalendar)}
+        public static func showSyncCalendarOptions() -> Verify { return Verify(method: .m_showSyncCalendarOptions)}
+        public static func showCoursesToSync() -> Verify { return Verify(method: .m_showCoursesToSync)}
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>) -> Verify { return Verify(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`))}
         public static func showVideoDownloadQualityView(downloadQuality: Parameter<DownloadQuality>, didSelect: Parameter<((DownloadQuality) -> Void)?>, analytics: Parameter<CoreAnalytics>) -> Verify { return Verify(method: .m_showVideoDownloadQualityView__downloadQuality_downloadQualitydidSelect_didSelectanalytics_analytics(`downloadQuality`, `didSelect`, `analytics`))}
         public static func showDeleteProfileView() -> Verify { return Verify(method: .m_showDeleteProfileView)}
@@ -3398,6 +3494,21 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         }
         public static func showSettings(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showSettings, performs: perform)
+        }
+        public static func showVideoSettings(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showVideoSettings, performs: perform)
+        }
+        public static func showManageAccount(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showManageAccount, performs: perform)
+        }
+        public static func showDatesAndCalendar(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showDatesAndCalendar, performs: perform)
+        }
+        public static func showSyncCalendarOptions(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showSyncCalendarOptions, performs: perform)
+        }
+        public static func showCoursesToSync(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_showCoursesToSync, performs: perform)
         }
         public static func showVideoQualityView(viewModel: Parameter<SettingsViewModel>, perform: @escaping (SettingsViewModel) -> Void) -> Perform {
             return Perform(method: .m_showVideoQualityView__viewModel_viewModel(`viewModel`), performs: perform)

@@ -23,6 +23,7 @@ public struct NavigationBar: View {
     private let rightButtonType: ButtonType?
     private let rightButtonAction: (() -> Void)?
     @Binding private var rightButtonIsActive: Bool
+    @Environment (\.isHorizontal) private var isHorizontal
     
     public init(title: String,
                 titleColor: Color = Theme.Colors.navigationBarTintColor,
@@ -53,8 +54,9 @@ public struct NavigationBar: View {
             if leftButton {
                 VStack {
                     BackNavigationButton(color: leftButtonColor, action: leftButtonAction)
-                        .padding(8)
                         .backViewStyle()
+                        .padding(.leading, isHorizontal ? 48 : 0)
+                        .accessibilityIdentifier("back_button")
                 }
                 .frame(minWidth: 0,
                        maxWidth: .infinity,

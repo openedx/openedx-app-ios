@@ -43,18 +43,17 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             return 0.0
         }
         guard let index = courseViewModel.courseDownloadTasks.firstIndex(
-            where: { $0.id == currentDownloadTask.id }
+            where: { $0.id == currentDownloadTask.id && $0.type == .video }
         ) else {
             return 0.0
         }
         courseViewModel.courseDownloadTasks[index].progress = currentDownloadTask.progress
-        return courseViewModel
-            .courseDownloadTasks
-            .reduce(0) { $0 + $1.progress } / Double(courseViewModel.courseDownloadTasks.count)
+        let videoTasks = courseViewModel.courseDownloadTasks.filter { $0.type == .video }
+        return videoTasks.reduce(0) { $0 + $1.progress } / Double(videoTasks.count)
     }
 
     var downloadableVerticals: Set<VerticalsDownloadState> {
-        courseViewModel.downloadableVerticals
+        courseViewModel.downloadableVerticals.filter { $0.downloadableBlocks.contains { $0.type == .video } }
     }
 
     var allVideosDownloaded: Bool {
@@ -180,7 +179,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             let blocks = downloadableVerticals.filter { $0.state != .finished }.flatMap { $0.vertical.childs }
             await courseViewModel.download(
                 state: .available,
-                blocks: blocks
+                blocks: blocks.filter { $0.type == .video }, sequentials: []
             )
         } else {
             do {
@@ -188,7 +187,6 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             } catch {
                 debugLog(error)
             }
-
         }
     }
 

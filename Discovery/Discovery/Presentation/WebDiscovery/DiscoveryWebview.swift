@@ -87,11 +87,13 @@ public struct DiscoveryWebview: View {
                 WebView(
                     viewModel: .init(
                         url: URLString,
-                        baseURL: ""
+                        baseURL: "", 
+                        openFile: {_ in}
                     ),
                     isLoading: $isLoading,
                     refreshCookies: {},
-                    navigationDelegate: viewModel
+                    navigationDelegate: viewModel, 
+                    connectivity: viewModel.connectivity
                 )
                 .accessibilityIdentifier("discovery_webview")
                 
@@ -102,7 +104,7 @@ public struct DiscoveryWebview: View {
                             lineWidth: 8
                         )
                         .padding(.vertical, proxy.size.height / 2)
-                        .accessibilityIdentifier("progressbar")
+                        .accessibilityIdentifier("progress_bar")
                     }
                     .frame(width: proxy.size.width, height: proxy.size.height)
                 }

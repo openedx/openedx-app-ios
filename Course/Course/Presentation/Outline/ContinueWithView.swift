@@ -83,26 +83,30 @@ struct ContinueWithView_Previews: PreviewProvider {
                 id: "1",
                 courseId: "123",
                 graded: true,
+                due: Date(),
                 completion: 0,
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "2",
                 id: "2",
                 courseId: "123",
                 graded: true,
+                due: Date(),
                 completion: 0,
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
                 
             )
         ]

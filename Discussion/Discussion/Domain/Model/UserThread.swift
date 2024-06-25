@@ -49,7 +49,7 @@ public struct UserThread {
         renderedBody: String,
         voted: Bool,
         voteCount: Int,
-        courseID: String, 
+        courseID: String,
         type: PostType,
         title: String,
         pinned: Bool,

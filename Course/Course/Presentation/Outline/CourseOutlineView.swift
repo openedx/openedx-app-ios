@@ -13,7 +13,7 @@ import SwiftUIIntrospect
 
 public struct CourseOutlineView: View {
     
-    @ObservedObject private var viewModel: CourseContainerViewModel
+    @StateObject private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -30,6 +30,8 @@ public struct CourseOutlineView: View {
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
     
+    @State private var expandedChapters: [String: Bool] = [:]
+    
     public init(
         viewModel: CourseContainerViewModel,
         title: String,
@@ -41,7 +43,7 @@ public struct CourseOutlineView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self.viewModel = viewModel//StateObject(wrappedValue: { viewModel }())
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection
@@ -52,10 +54,8 @@ public struct CourseOutlineView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            // MARK: - Page name
             GeometryReader { proxy in
                 VStack(alignment: .center) {
-                    // MARK: - Page Body
                     RefreshableScrollViewCompat(action: {
                         await withTaskGroup(of: Void.self) { group in
                             group.addTask {
@@ -95,33 +95,11 @@ public struct CourseOutlineView: View {
                                 let sequential = chapter.childs[continueWith.sequentialIndex]
                                 let continueUnit = sequential.childs[continueWith.verticalIndex]
                                 
-                                // MARK: - ContinueWith button
                                 ContinueWithView(
                                     data: continueWith,
                                     courseContinueUnit: continueUnit
                                 ) {
-                                    var continueBlock: CourseBlock?
-                                    continueUnit.childs.forEach { block in
-                                        if block.id == continueWith.lastVisitedBlockId {
-                                            continueBlock = block
-                                        }
-                                    }
-                                    
-                                    viewModel.trackResumeCourseClicked(
-                                        blockId: continueBlock?.id ?? ""
-                                    )
-                                    
-                                    if let course = viewModel.courseStructure {
-                                        viewModel.router.showCourseUnit(
-                                            courseName: course.displayName,
-                                            blockId: continueBlock?.id ?? "",
-                                            courseID: course.id,
-                                            verticalIndex: continueWith.verticalIndex,
-                                            chapters: course.childs,
-                                            chapterIndex: continueWith.chapterIndex,
-                                            sequentialIndex: continueWith.sequentialIndex
-                                        )
-                                    }
+                                    viewModel.openLastVisitedBlock()
                                 }
                             }
                             
@@ -129,21 +107,19 @@ public struct CourseOutlineView: View {
                                 ? viewModel.courseVideosStructure
                                 : viewModel.courseStructure {
                                 
-                                // MARK: - Sections
-                                if viewModel.config.uiComponents.courseNestedListEnabled {
-                                    CourseStructureNestedListView(
-                                        proxy: proxy,
-                                        course: course,
-                                        viewModel: viewModel
-                                    )
-                                } else {
-                                    CourseStructureView(
-                                        proxy: proxy,
-                                        course: course,
-                                        viewModel: viewModel
-                                    )
+                                if !isVideo, let progress = course.courseProgress, progress.totalAssignmentsCount != 0 {
+                                    CourseProgressView(progress: progress)
+                                        .padding(.horizontal, 24)
+                                        .padding(.top, 16)
+                                        .padding(.bottom, 8)
                                 }
                                 
+                                // MARK: - Sections
+                                CustomDisclosureGroup(
+                                    course: course,
+                                    proxy: proxy,
+                                    viewModel: viewModel
+                                )
                             } else {
                                 if let courseStart = viewModel.courseStart {
                                     Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
@@ -211,19 +187,25 @@ public struct CourseOutlineView: View {
                 }
             }
         }
+        .onAppear {
+            Task {
+               await viewModel.updateCourseIfNeeded(courseID: courseID)
+            }
+        }
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
         )
         .sheet(isPresented: $showingDownloads) {
-            DownloadsView(manager: viewModel.manager)
+            DownloadsView(router: viewModel.router, manager: viewModel.manager)
         }
         .sheet(isPresented: $showingVideoDownloadQuality) {
             viewModel.storage.userSettings.map {
                 VideoDownloadQualityContainerView(
                     downloadQuality: $0.downloadQuality,
                     didSelect: viewModel.update(downloadQuality:),
-                    analytics: viewModel.coreAnalytics
+                    analytics: viewModel.coreAnalytics,
+                    router: viewModel.router
                 )
             }
         }
@@ -299,7 +281,8 @@ public struct CourseOutlineView: View {
                 content: {
                     WebBrowser(
                         url: url,
-                        pageTitle: CourseLocalization.Outline.certificate
+                        pageTitle: CourseLocalization.Outline.certificate, 
+                        connectivity: viewModel.connectivity
                     )
                 }
             )
@@ -344,6 +327,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
             courseEnd: nil,
             enrollmentStart: Date(),
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         Task {
@@ -363,7 +347,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 title: "Course title",
                 courseID: "",
                 isVideo: false,
-                selection: $selection, 
+                selection: $selection,
                 coordinate: .constant(0),
                 collapsed: .constant(false),
                 dateTabIndex: 2

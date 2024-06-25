@@ -156,7 +156,7 @@ struct CourseNavigationView_Previews: PreviewProvider {
             chapterIndex: 1,
             sequentialIndex: 1,
             verticalIndex: 1,
-            interactor: CourseInteractor.mock, 
+            interactor: CourseInteractor.mock,
             config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),

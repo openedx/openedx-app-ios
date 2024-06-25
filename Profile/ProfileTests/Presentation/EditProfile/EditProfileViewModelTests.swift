@@ -28,7 +28,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -65,7 +66,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -102,7 +104,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -134,7 +137,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -166,7 +170,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -198,7 +203,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -230,7 +236,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -262,7 +269,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -294,7 +302,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -330,7 +339,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -366,7 +376,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -401,7 +412,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -436,7 +448,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -484,7 +497,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -527,7 +541,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -583,7 +598,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -637,7 +653,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -675,7 +692,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -707,7 +725,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -738,7 +757,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
         
         let languages = [
@@ -775,7 +795,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))
@@ -806,7 +827,8 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(interactor, .getSpokenLanguages(willReturn: []))

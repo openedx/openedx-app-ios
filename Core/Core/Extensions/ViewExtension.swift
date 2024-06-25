@@ -154,7 +154,7 @@ public extension View {
                 .offset(y: 2)
                 .foregroundColor(color)
             self
-                .offset(y: 2)                
+                .offset(y: 2)
         }
     }
     
@@ -236,6 +236,22 @@ public extension View {
             .frame(height: 24)
             .padding(.horizontal, 8)
             .offset(y: topPadding)
+    }
+    
+    @ViewBuilder
+    private func onTapBackgroundContent(enabled: Bool, _ action: @escaping () -> Void) -> some View {
+        if enabled {
+            Color.clear
+                .frame(width: UIScreen.main.bounds.width * 2, height: UIScreen.main.bounds.height * 2)
+                .contentShape(Rectangle())
+                .onTapGesture(perform: action)
+        }
+    }
+
+    func onTapBackground(enabled: Bool, _ action: @escaping () -> Void) -> some View {
+        background(
+            onTapBackgroundContent(enabled: enabled, action)
+        )
     }
 }
 

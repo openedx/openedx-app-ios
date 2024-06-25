@@ -30,7 +30,8 @@ final class ProfileViewModelTests: XCTestCase {
             yearOfBirth: 2000,
             country: "Ua",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false, 
+            email: ""
         )
         
         Given(interactor, .getUserProfile(username: .value("Steve"), willReturn: user))
@@ -92,7 +93,6 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -107,7 +107,8 @@ final class ProfileViewModelTests: XCTestCase {
             yearOfBirth: 2000,
             country: "Ua",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
@@ -131,7 +132,6 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -146,7 +146,8 @@ final class ProfileViewModelTests: XCTestCase {
             yearOfBirth: 2000,
             country: "Ua",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         Given(connectivity, .isInternetAvaliable(getter: false))
@@ -169,7 +170,6 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -184,7 +184,8 @@ final class ProfileViewModelTests: XCTestCase {
             yearOfBirth: 2000,
             country: "Ua",
             shortBiography: "Bio",
-            isFullProfile: false
+            isFullProfile: false,
+            email: ""
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -209,7 +210,6 @@ final class ProfileViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let viewModel = ProfileViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
             router: router,
             analytics: analytics,
             config: ConfigMock(),
@@ -226,122 +226,5 @@ final class ProfileViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
-    }
-    
-    func testLogOutSuccess() async throws {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor,
-            downloadManager: DownloadManagerMock(),
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        await viewModel.logOut()
-        
-        Verify(router, .showStartupScreen())
-        XCTAssertFalse(viewModel.showError)
-    }
-    
-    func testTrackProfileVideoSettingsClicked() {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor,
-            downloadManager: DownloadManagerMock(),
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-        
-        viewModel.trackProfileVideoSettingsClicked()
-        
-        Verify(analytics, 1, .profileVideoSettingsClicked())
-    }
-    
-    func testTrackEmailSupportClicked() {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor, 
-            downloadManager: DownloadManagerMock(),
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-        
-        viewModel.trackEmailSupportClicked()
-        
-        Verify(analytics, 1, .emailSupportClicked())
-    }
-    
-    func testTrackCookiePolicyClicked() {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor, 
-            downloadManager: DownloadManagerMock(),
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-        
-        viewModel.trackCookiePolicyClicked()
-        
-        Verify(analytics, 1, .cookiePolicyClicked())
-    }
-    
-    func testTrackPrivacyPolicyClicked() {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor, 
-            downloadManager: DownloadManagerMock(),
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-        
-        viewModel.trackPrivacyPolicyClicked()
-        
-        Verify(analytics, 1, .privacyPolicyClicked())
-    }
-    
-    func testTrackProfileEditClicked() {
-        let interactor = ProfileInteractorProtocolMock()
-        let router = ProfileRouterMock()
-        let analytics = ProfileAnalyticsMock()
-        let connectivity = ConnectivityProtocolMock()
-        let viewModel = ProfileViewModel(
-            interactor: interactor, 
-            downloadManager: DownloadManagerMock(),
-            router: router,
-            analytics: analytics,
-            config: ConfigMock(),
-            connectivity: connectivity
-        )
-        
-        viewModel.trackProfileEditClicked()
-        
-        Verify(analytics, 1, .profileEditClicked())
     }
 }

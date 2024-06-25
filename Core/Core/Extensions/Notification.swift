@@ -9,6 +9,7 @@ import Foundation
 
 public extension Notification.Name {
     static let onCourseEnrolled = Notification.Name("onCourseEnrolled")
+    static let onblockCompletionRequested = Notification.Name("onblockCompletionRequested")
     static let onTokenRefreshFailed = Notification.Name("onTokenRefreshFailed")
     static let onActualVersionReceived = Notification.Name("onActualVersionReceived")
     static let onAppUpgradeAccountSettingsTapped = Notification.Name("onAppUpgradeAccountSettingsTapped")
@@ -17,4 +18,7 @@ public extension Notification.Name {
     static let onBlockCompletion = Notification.Name.init("onBlockCompletion")
     static let shiftCourseDates = Notification.Name("shiftCourseDates")
     static let profileUpdated = Notification.Name("profileUpdated")
+    static let getCourseDates = Notification.Name("getCourseDates")
+    static let showDownloadFailed = Notification.Name("showDownloadFailed")
+    static let tryDownloadAgain = Notification.Name("tryDownloadAgain")
 }

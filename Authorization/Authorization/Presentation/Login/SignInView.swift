@@ -27,7 +27,7 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.authBackground.swiftUIImage
+                ThemeAssets.headerBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
                     .accessibilityIdentifier("auth_bg_image")
@@ -144,7 +144,7 @@ public struct SignInView: View {
                                     HStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
                                             .padding(20)
-                                            .accessibilityIdentifier("progressbar")
+                                            .accessibilityIdentifier("progress_bar")
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(CoreLocalization.SignIn.logInBtn) {

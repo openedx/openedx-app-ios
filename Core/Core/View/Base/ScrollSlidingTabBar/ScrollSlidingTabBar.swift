@@ -49,6 +49,9 @@ public struct ScrollSlidingTabBar: View {
                 }
                 .onTapGesture {}
                 // Fix button tapable area bug – https://forums.developer.apple.com/forums/thread/745059
+                .onAppear {
+                        proxy.scrollTo(selection, anchor: .center)
+                }
                 .onChange(of: selection) { newValue in
                     withAnimation {
                         proxy.scrollTo(newValue, anchor: .center)
@@ -100,7 +103,7 @@ extension ScrollSlidingTabBar {
                             }
                             .accentColor(
                                 isSelected(index: obj.offset)
-                                ? Theme.Colors.white
+                                ? Theme.Colors.slidingSelectedTextColor
                                 : Theme.Colors.slidingTextColor
                             )
                         }

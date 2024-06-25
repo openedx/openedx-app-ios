@@ -8,6 +8,7 @@
 import Foundation
 import Core
 import Profile
+import Course
 
 public enum MainTab {
     case discovery
@@ -20,19 +21,28 @@ final class MainScreenViewModel: ObservableObject {
 
     private let analytics: MainScreenAnalytics
     let config: ConfigProtocol
+    let router: BaseRouter
+    let syncManager: OfflineSyncManagerProtocol
     let profileInteractor: ProfileInteractorProtocol
+    let courseInteractor: CourseInteractorProtocol
     var sourceScreen: LogistrationSourceScreen
 
     @Published var selection: MainTab = .dashboard
 
     init(analytics: MainScreenAnalytics,
          config: ConfigProtocol,
+         router: BaseRouter,
+         syncManager: OfflineSyncManagerProtocol,
          profileInteractor: ProfileInteractorProtocol,
+         courseInteractor: CourseInteractorProtocol,
          sourceScreen: LogistrationSourceScreen = .default
     ) {
         self.analytics = analytics
         self.config = config
+        self.router = router
+        self.syncManager = syncManager
         self.profileInteractor = profileInteractor
+        self.courseInteractor = courseInteractor
         self.sourceScreen = sourceScreen
     }
 
@@ -51,6 +61,37 @@ final class MainScreenViewModel: ObservableObject {
     }
     func trackMainProfileTabClicked() {
         analytics.mainProfileTabClicked()
+    }
+    
+    @MainActor
+    func showDownloadFailed(downloads: [DownloadDataTask]) async {
+        
+        if let sequentials = try? await courseInteractor.getSequentialsContainsBlocks(
+            blockIds: downloads.map {
+                $0.blockId
+            },
+            courseID: downloads.first?.courseId ?? ""
+        ) {
+            
+            router.presentView(
+                transitionStyle: .coverVertical,
+                view: DownloadErrorAlertView(
+                    errorType: .downloadFailed,
+                    sequentials: sequentials,
+                    tryAgain: {
+                        NotificationCenter.default.post(
+                            name: .tryDownloadAgain,
+                            object: downloads
+                        )
+                        self.router.dismiss(animated: true)
+                    },
+                    close: {
+                        self.router.dismiss(animated: true)
+                    }
+                ),
+                completion: {}
+            )
+        }
     }
 
     @MainActor

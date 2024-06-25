@@ -13,11 +13,18 @@ public struct CheckBoxView: View {
     @Binding private var checked: Bool
     private var text: String
     private var font: Font
+    private let color: Color
 
-    public init(checked: Binding<Bool>, text: String, font: Font = Theme.Fonts.labelLarge) {
+    public init(
+        checked: Binding<Bool>,
+        text: String,
+        font: Font = Theme.Fonts.labelLarge,
+        color: Color = Theme.Colors.textPrimary
+    ) {
         self._checked = checked
         self.text = text
         self.font = font
+        self.color = color
     }
 
     public var body: some View {
@@ -26,11 +33,11 @@ public struct CheckBoxView: View {
                 systemName: checked ? "checkmark.square.fill" : "square"
             )
             .foregroundColor(
-                checked ? Theme.Colors.accentXColor : Theme.Colors.textPrimary
+                checked ? Theme.Colors.accentXColor : color
             )
             Text(text)
                 .font(font)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(color)
         }
         .onTapGesture {
             withAnimation(.linear(duration: 0.1)) {

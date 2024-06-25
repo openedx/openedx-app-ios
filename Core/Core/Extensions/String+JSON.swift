@@ -8,7 +8,7 @@
 import Foundation
 
 public extension String {
-    public func jsonStringToDictionary() -> [String: Any]? {
+    func jsonStringToDictionary() -> [String: Any]? {
         guard let jsonData = self.data(using: .utf8) else {
             return nil
         }

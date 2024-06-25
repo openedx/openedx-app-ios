@@ -29,7 +29,7 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.authBackground.swiftUIImage
+                ThemeAssets.headerBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }

@@ -49,7 +49,7 @@ public final class MicrosoftAuthProvider {
                     continuation.resume(
                         returning: .success(
                             SocialAuthResponse(
-                                name: account.accountClaims?["name"] as? String ?? "" ,
+                                name: account.accountClaims?["name"] as? String ?? "",
                                 email: account.accountClaims?["email"] as? String ?? "",
                                 token: result.accessToken
                             )

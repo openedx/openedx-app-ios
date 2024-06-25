@@ -20,11 +20,11 @@ enum ProfileEndpoint: EndPointType {
     var path: String {
         switch self {
         case .getUserProfile(let username):
-            return "api/user/v1/accounts/\(username)"
+            return "/api/user/v1/accounts/\(username)"
         case .logOut:
-            return "oauth2/revoke_token/"
+            return "/oauth2/revoke_token/"
         case let .updateUserProfile(username, _):
-            return "api/user/v1/accounts/\(username)"
+            return "/api/user/v1/accounts/\(username)"
         case let .uploadProfilePicture(username, _):
             return "/api/user/v1/accounts/\(username)/image"
         case .deleteProfilePicture(username: let username):

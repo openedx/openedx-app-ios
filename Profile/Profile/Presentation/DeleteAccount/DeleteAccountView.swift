@@ -104,7 +104,7 @@ public struct DeleteAccountView: View {
                             ProgressBar(size: 40, lineWidth: 8)
                                 .padding(.top, 20)
                                 .padding(.horizontal)
-                                .accessibilityIdentifier("progressbar")
+                                .accessibilityIdentifier("progress_bar")
                         } else {
                             StyledButton(
                                 ProfileLocalization.DeleteAccount.comfirm,

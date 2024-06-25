@@ -282,7 +282,7 @@ public extension List {
                                                         onRefresh: @escaping OnRefresh,
                                                         @ViewBuilder progress:
                                                         @escaping RefreshProgressBuilder<Progress>) -> some View {
-        if #available(iOS 15.0, macOS 12.0, *) {
+        if #available(macOS 12.0, *) {
             self.refreshable {
                 await withCheckedContinuation { cont in
                     onRefresh {

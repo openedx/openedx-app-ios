@@ -27,10 +27,7 @@ public struct EncodedVideoPlayer: View {
     @State private var orientation = UIDevice.current.orientation
     @State private var isLoading: Bool = true
     @State private var isAnimating: Bool = false
-    @State private var isViewedOnce: Bool = false
-    @State private var currentTime: Double = 0
     @State private var isOrientationChanged: Bool = false
-    @State private var pause: Bool = false
     
     @State var showAlert = false
     @State var alertMessage: String? {
@@ -57,32 +54,13 @@ public struct EncodedVideoPlayer: View {
                 VStack(spacing: 10) {
                     HStack {
                         VStack {
-                            PlayerViewController(
-                                videoURL: viewModel.url,
-                                playerHolder: viewModel.controllerHolder,
-                                bitrate: viewModel.getVideoResolution(),
-                                progress: { progress in
-                                    if progress >= 0.8 {
-                                        if !isViewedOnce {
-                                            Task {
-                                                await viewModel.blockCompletionRequest()
-                                            }
-                                            isViewedOnce = true
-                                        }
-                                    }
-                                    if progress == 1 {
-                                        viewModel.router.presentAppReview()
-                                    }
-                                    
-                                }, seconds: { seconds in
-                                    currentTime = seconds
-                                })
+                            PlayerViewController(playerController: viewModel.controller)
                             .aspectRatio(16 / 9, contentMode: .fit)
                             .frame(minWidth: playerWidth(for: reader.size))
                             .cornerRadius(12)
                             .onAppear {
-                                if !viewModel.controllerHolder.isPlayingInPip,
-                                    !viewModel.controllerHolder.isOtherPlayerInPip {
+                                if !viewModel.isPlayingInPip,
+                                    !viewModel.isOtherPlayerInPip {
                                     viewModel.controller.player?.play()
                                 }
                             }
@@ -91,9 +69,9 @@ public struct EncodedVideoPlayer: View {
                             }
                         }
                         if isHorizontal {
-                            SubtittlesView(
+                            SubtitlesView(
                                 languages: viewModel.languages,
-                                currentTime: $currentTime,
+                                currentTime: $viewModel.currentTime,
                                 viewModel: viewModel,
                                 scrollTo: { date in
                                     viewModel.controller.player?.seek(
@@ -103,15 +81,15 @@ public struct EncodedVideoPlayer: View {
                                         )
                                     )
                                     viewModel.controller.player?.play()
-                                    pauseScrolling()
-                                    currentTime = (date.secondsSinceMidnight() + 1)
+                                    viewModel.pauseScrolling()
+                                    viewModel.currentTime = (date.secondsSinceMidnight() + 1)
                                 })
                         }
                     }
                     if !isHorizontal {
-                        SubtittlesView(
+                        SubtitlesView(
                             languages: viewModel.languages,
-                            currentTime: $currentTime,
+                            currentTime: $viewModel.currentTime,
                             viewModel: viewModel,
                             scrollTo: { date in
                                 viewModel.controller.player?.seek(
@@ -121,8 +99,8 @@ public struct EncodedVideoPlayer: View {
                                     )
                                 )
                                 viewModel.controller.player?.play()
-                                pauseScrolling()
-                                currentTime = (date.secondsSinceMidnight() + 1)
+                                viewModel.pauseScrolling()
+                                viewModel.currentTime = (date.secondsSinceMidnight() + 1)
                             })
                     }
                 }
@@ -134,14 +112,8 @@ public struct EncodedVideoPlayer: View {
             viewModel.controller.player?.allowsExternalPlayback = false
         }
         .onAppear {
+            viewModel.controller.player?.allowsExternalPlayback = true
             viewModel.controller.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
-    private func pauseScrolling() {
-        pause = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.pause = false
         }
     }
     
@@ -163,17 +135,10 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
     static var previews: some View {
         EncodedVideoPlayer(
             viewModel: EncodedVideoPlayerViewModel(
-                url: URL(string: "")!,
-                blockID: "",
-                courseID: "",
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
-                interactor: CourseInteractor(repository: CourseRepositoryMock()),
-                router: CourseRouterMock(),
-                appStorage: CoreStorageMock(),
                 connectivity: Connectivity(),
-                pipManager: PipManagerProtocolMock(),
-                selectedCourseTab: 0
+                playerHolder: PlayerViewControllerHolder.mock
             ),
             isOnScreen: true
         )

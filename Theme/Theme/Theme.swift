@@ -12,6 +12,7 @@ private var fontsParser = FontParser()
 
 public struct Theme {
     
+    // swiftlint:disable line_length
     public struct Colors {
         public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
         public private(set) static var accentXColor = ThemeAssets.accentXColor.swiftUIColor
@@ -36,6 +37,8 @@ public struct Theme {
         public private(set) static var snackbarInfoColor = ThemeAssets.snackbarInfoColor.swiftUIColor
         public private(set) static var snackbarTextColor = ThemeAssets.snackbarTextColor.swiftUIColor
         public private(set) static var styledButtonText = ThemeAssets.styledButtonText.swiftUIColor
+        public private(set) static var disabledButton = ThemeAssets.disabledButton.swiftUIColor
+        public private(set) static var disabledButtonText = ThemeAssets.disabledButtonText.swiftUIColor
         public private(set) static var textPrimary = ThemeAssets.textPrimary.swiftUIColor
         public private(set) static var textSecondary = ThemeAssets.textSecondary.swiftUIColor
         public private(set) static var textSecondaryLight = ThemeAssets.textSecondaryLight.swiftUIColor
@@ -65,9 +68,12 @@ public struct Theme {
         public private(set) static var infoColor = ThemeAssets.infoColor.swiftUIColor
         public private(set) static var irreversibleAlert = ThemeAssets.irreversibleAlert.swiftUIColor
         public private(set) static var slidingTextColor = ThemeAssets.slidingTextColor.swiftUIColor
+        public private(set) static var slidingSelectedTextColor = ThemeAssets.slidingSelectedTextColor.swiftUIColor
         public private(set) static var slidingStrokeColor = ThemeAssets.slidingStrokeColor.swiftUIColor
         public private(set) static var primaryHeaderColor = ThemeAssets.primaryHeaderColor.swiftUIColor
         public private(set) static var secondaryHeaderColor = ThemeAssets.secondaryHeaderColor.swiftUIColor
+        public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
+        public private(set) static var shade = ThemeAssets.shade.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -163,6 +169,7 @@ public struct Theme {
             self.irreversibleAlert = irreversibleAlert
         }
     }
+    // swiftlint:enable line_length
     
     // Use this structure where the computed Color.uiColor() extension is not appropriate.
     public struct UIColors {

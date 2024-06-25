@@ -21,6 +21,7 @@ protocol AnalyticsService {
     func logEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
 }
 
+// swiftlint:disable type_body_length file_length
 class AnalyticsManager: AuthorizationAnalytics,
                         MainScreenAnalytics,
                         DiscoveryAnalytics,
@@ -30,6 +31,7 @@ class AnalyticsManager: AuthorizationAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
                         WhatsNewAnalytics {
+    
     private var services: [AnalyticsService] = []
     
     // Init Analytics Manager
@@ -223,7 +225,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.name: EventBIValue.profileDeleteAccountClicked.rawValue,
             EventParamKey.category: EventCategory.profile
         ]
-        logEvent(.profileDeleteAccountClicked)
+        logEvent(.profileDeleteAccountClicked, parameters: parameters)
     }
     
     public func profileVideoSettingsClicked() {
@@ -329,9 +331,10 @@ class AnalyticsManager: AuthorizationAnalytics,
     public func userLogout(force: Bool) {
         let parameters = [
             EventParamKey.name: EventBIValue.userLogout.rawValue,
-            EventParamKey.category: EventCategory.profile
+            EventParamKey.category: EventCategory.profile,
+            EventParamKey.force: "\(force)"
         ]
-        logEvent(.userLogout, parameters: [EventParamKey.force: force])
+        logEvent(.userLogout, parameters: parameters)
     }
     
     // MARK: Course
@@ -500,6 +503,15 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.name: EventBIValue.courseOutlineVideosTabClicked.rawValue
         ]
         logEvent(.courseOutlineVideosTabClicked, parameters: parameters)
+    }
+    
+    func courseOutlineOfflineTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineOfflineTabClicked.rawValue
+        ]
+        logEvent(.courseOutlineOfflineTabClicked, parameters: parameters)
     }
     
     public func courseOutlineDatesTabClicked(courseId: String, courseName: String) {
@@ -779,3 +791,4 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.whatnewClose, parameters: parameters)
     }
 }
+// swiftlint:enable type_body_length file_length

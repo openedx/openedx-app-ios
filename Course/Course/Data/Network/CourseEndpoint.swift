@@ -24,7 +24,7 @@ enum CourseEndpoint: EndPointType {
     var path: String {
         switch self {
         case .getCourseBlocks:
-            return "/api/mobile/v3/course_info/blocks/"
+            return "/api/mobile/v4/course_info/blocks/"
         case .pageHTML(let url):
             return "/xblock/\(url)"
         case .blockCompletionRequest:
@@ -82,11 +82,11 @@ enum CourseEndpoint: EndPointType {
                 "username": userName,
                 "course_id": courseID,
                 "depth": "all",
-                "student_view_data": "video,discussion,html",
+                "student_view_data": "video,discussion,html,problem",
                 "nav_depth": "4",
                 "requested_fields": """
                 contains_gated_content,show_gated_sections,special_exam_info,graded,
-                format,student_view_multi_device,due,completion
+                format,student_view_multi_device,due,completion,assignment_progress
                 """,
                 "block_counts": "video"
             ]

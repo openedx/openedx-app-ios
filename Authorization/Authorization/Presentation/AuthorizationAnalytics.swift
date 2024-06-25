@@ -22,10 +22,10 @@ public enum AuthMethod: Equatable {
 }
 
 public enum SocialAuthMethod: String {
-    case facebook = "facebook"
-    case google = "google"
-    case microsoft = "microsoft"
-    case apple = "apple"
+    case facebook
+    case google
+    case microsoft
+    case apple
 }
 
 //sourcery: AutoMockable

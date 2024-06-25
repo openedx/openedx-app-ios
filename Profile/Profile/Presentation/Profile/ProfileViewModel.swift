@@ -22,79 +22,28 @@ public class ProfileViewModel: ObservableObject {
             }
         }
     }
-
-    private var cancellables = Set<AnyCancellable>()
-    
-    enum VersionState {
-        case actual
-        case updateNeeded
-        case updateRequired
-    }
-    
-    @Published var versionState: VersionState = .actual
-    @Published var currentVersion: String = ""
-    @Published var latestVersion: String = ""
     
     let router: ProfileRouter
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
     
     private let interactor: ProfileInteractorProtocol
-    private let downloadManager: DownloadManagerProtocol
     private let analytics: ProfileAnalytics
     
     public init(
         interactor: ProfileInteractorProtocol,
-        downloadManager: DownloadManagerProtocol,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         config: ConfigProtocol,
         connectivity: ConnectivityProtocol
     ) {
         self.interactor = interactor
-        self.downloadManager = downloadManager
         self.router = router
         self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
-        generateVersionState()
     }
-    
-    func openAppStore() {
-        guard let appStoreURL = URL(string: config.appStoreLink) else { return }
-        UIApplication.shared.open(appStoreURL)
-    }
-    
-    func generateVersionState() {
-        guard let info = Bundle.main.infoDictionary else { return }
-        guard let currentVersion = info["CFBundleShortVersionString"] as? String else { return }
-        self.currentVersion = currentVersion
-        NotificationCenter.default.publisher(for: .onActualVersionReceived)
-            .sink { [weak self] notification in
-                guard let latestVersion = notification.object as? String else { return }
-                DispatchQueue.main.async { [weak self] in
-                    self?.latestVersion = latestVersion
-                    
-                    if latestVersion != currentVersion {
-                        self?.versionState = .updateNeeded
-                    }
-                }
-            }.store(in: &cancellables)
-    }
-    
-    func contactSupport() -> URL? {
-        let osVersion = UIDevice.current.systemVersion
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        let deviceModel = UIDevice.current.model
-        let feedbackDetails = "OS version: \(osVersion)\nApp version: \(appVersion)\nDevice model: \(deviceModel)"
-        
-        let recipientAddress = config.feedbackEmail
-        let emailSubject = "Feedback"
-        let emailBody = "\n\n\(feedbackDetails)\n".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let emailURL = URL(string: "mailto:\(recipientAddress)?subject=\(emailSubject)&body=\(emailBody)")
-        return emailURL
-    }
-    
+      
     @MainActor
     public func getMyProfile(withProgress: Bool = true) async {
         do {
@@ -110,9 +59,7 @@ public class ProfileViewModel: ObservableObject {
             isShowProgress = false
         } catch let error {
             isShowProgress = false
-            if error.isUpdateRequeiredError {
-                self.versionState = .updateRequired
-            } else if error.isInternetError {
+            if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
@@ -120,47 +67,7 @@ public class ProfileViewModel: ObservableObject {
         }
     }
     
-    @MainActor
-    func logOut() async {
-        try? await interactor.logOut()
-        try? await downloadManager.cancelAllDownloading()
-        router.showStartupScreen()
-        analytics.userLogout(force: false)
-    }
-
-    func trackProfileVideoSettingsClicked() {
-        analytics.profileVideoSettingsClicked()
-    }
-    
-    func trackEmailSupportClicked() {
-        analytics.emailSupportClicked()
-    }
-    
-    func trackCookiePolicyClicked() {
-        analytics.cookiePolicyClicked()
-    }
-    
-    func trackTOSClicked() {
-        analytics.tosClicked()
-    }
-    
-    func trackFAQClicked() {
-        analytics.faqClicked()
-    }
-    
-    func trackDataSellClicked() {
-        analytics.dataSellClicked()
-    }
-    
-    func trackPrivacyPolicyClicked() {
-        analytics.privacyPolicyClicked()
-    }
-    
     func trackProfileEditClicked() {
         analytics.profileEditClicked()
-    }
-    
-    func trackLogoutClickedClicked() {
-        analytics.profileEvent(.userLogoutClicked, biValue: .userLogoutClicked)
     }
 }

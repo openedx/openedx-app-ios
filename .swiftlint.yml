@@ -24,8 +24,17 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Discovery/DiscoveryTests
   - Discussion/DiscussionTests
   - Profile/ProfileTests
+  - WhatsNew/WhatsNewTests
+  - Theme/ThemeTests
   - vendor
-#  - Source/ExcludedFolder
+  - Core/Core/SwiftGen
+  - Authorization/Authorization/SwiftGen
+  - Course/Course/SwiftGen
+  - Discovery/Discovery/SwiftGen
+  - Dashboard/Dashboard/SwiftGen
+  - Profile/Profile/SwiftGen
+  - WhatsNew/WhatsNew/SwiftGen
+  - Theme/Theme/SwiftGen
 #  - Source/ExcludedFile.swift
 #  - Source/*/ExcludedFile.swift # Exclude files with a wildcard
 #analyzer_rules: # Rules run by `swiftlint analyze` (experimental)

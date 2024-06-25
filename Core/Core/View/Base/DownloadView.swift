@@ -24,7 +24,6 @@ public struct DownloadAvailableView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
-                .foregroundColor(Theme.Colors.textPrimary)
         }
         .frame(width: 30, height: 30)
     }
@@ -41,6 +40,7 @@ public struct DownloadProgressView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
+                .foregroundStyle(Theme.Colors.snackbarErrorColor)
                 .foregroundColor(Theme.Colors.textPrimary)
         }
     }
@@ -52,11 +52,10 @@ public struct DownloadFinishedView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            CoreAssets.deleteDownloading.swiftUIImage.renderingMode(.template)
+            CoreAssets.deleteDownloading.swiftUIImage
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
-                .foregroundColor(Theme.Colors.textPrimary)
         }
         .frame(width: 30, height: 30)
     }

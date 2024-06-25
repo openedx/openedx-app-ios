@@ -32,6 +32,19 @@ public enum StreamingQuality: Codable {
     public var value: String? {
         return String(describing: self).components(separatedBy: "(").first
     }
+    
+    public var resolution: CGSize {
+        switch self {
+        case .auto:
+            return CGSize(width: 1280, height: 720)
+        case .low:
+            return CGSize(width: 640, height: 360)
+        case .medium:
+            return CGSize(width: 854, height: 480)
+        case .high:
+            return CGSize(width: 1280, height: 720)
+        }
+    }
 }
 
 public enum DownloadQuality: Codable, CaseIterable {

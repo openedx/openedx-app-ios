@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>due_in</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+        <string>%#@due_in@</string>
+        <key>due_in</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>zero</key>
+            <string>Today</string>
+            <key>one</key>
+            <string>Due in %d day</string>
+            <key>other</key>
+            <string>Due in %d days</string>
+        </dict>
+    </dict>
+    <key>past_due</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@past_due@</string>
+        <key>past_due</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>zero</key>
+            <string>Today</string>
+            <key>one</key>
+            <string>Due %d day ago</string>
+            <key>other</key>
+            <string>Due %d days ago</string>
+        </dict>
+	</dict>
+</dict>
+</plist>

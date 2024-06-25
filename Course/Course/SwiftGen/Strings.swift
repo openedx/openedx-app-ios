@@ -10,6 +10,14 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum CourseLocalization {
+  /// Plural format key: "%#@due_in@"
+  public static func dueIn(_ p1: Int) -> String {
+    return CourseLocalization.tr("Localizable", "due_in", p1, fallback: "Plural format key: \"%#@due_in@\"")
+  }
+  /// Plural format key: "%#@past_due@"
+  public static func pastDue(_ p1: Int) -> String {
+    return CourseLocalization.tr("Localizable", "past_due", p1, fallback: "Plural format key: \"%#@past_due@\"")
+  }
   public enum Accessibility {
     /// Cancel download
     public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
@@ -29,6 +37,110 @@ public enum CourseLocalization {
     public static let rotateDevice = CourseLocalization.tr("Localizable", "ALERT.ROTATE_DEVICE", fallback: "Rotate your device to view this video in full screen.")
     /// Turning off the switch will stop downloading and delete all downloaded videos for
     public static let stopDownloading = CourseLocalization.tr("Localizable", "ALERT.STOP_DOWNLOADING", fallback: "Turning off the switch will stop downloading and delete all downloaded videos for")
+  }
+  public enum Course {
+    /// Due Today
+    public static let dueToday = CourseLocalization.tr("Localizable", "COURSE.DUE_TODAY", fallback: "Due Today")
+    /// Due Tomorrow
+    public static let dueTomorrow = CourseLocalization.tr("Localizable", "COURSE.DUE_TOMORROW", fallback: "Due Tomorrow")
+    /// %@ of %@ assignments complete
+    public static func progressCompleted(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@ of %@ assignments complete")
+    }
+    public enum Alert {
+      /// Cancel
+      public static let cancel = CourseLocalization.tr("Localizable", "COURSE.ALERT.CANCEL", fallback: "Cancel")
+      /// Close
+      public static let close = CourseLocalization.tr("Localizable", "COURSE.ALERT.CLOSE", fallback: "Close")
+      /// Downloading this content will use %@ of cellular data.
+      public static func confirmDownloadCellularDescription(_ p1: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_DESCRIPTION", String(describing: p1), fallback: "Downloading this content will use %@ of cellular data.")
+      }
+      /// Download on Cellular?
+      public static let confirmDownloadCellularTitle = CourseLocalization.tr("Localizable", "COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_TITLE", fallback: "Download on Cellular?")
+      /// Downloading this %@ of content will save available blocks offline.
+      public static func confirmDownloadDescription(_ p1: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE.ALERT.CONFIRM_DOWNLOAD_DESCRIPTION", String(describing: p1), fallback: "Downloading this %@ of content will save available blocks offline.")
+      }
+      /// Confirm Download
+      public static let confirmDownloadTitle = CourseLocalization.tr("Localizable", "COURSE.ALERT.CONFIRM_DOWNLOAD_TITLE", fallback: "Confirm Download")
+      /// Download
+      public static let download = CourseLocalization.tr("Localizable", "COURSE.ALERT.DOWNLOAD", fallback: "Download")
+      /// Remove
+      public static let remove = CourseLocalization.tr("Localizable", "COURSE.ALERT.REMOVE", fallback: "Remove")
+      /// Removing this content will free up %@.
+      public static func removeDescription(_ p1: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE.ALERT.REMOVE_DESCRIPTION", String(describing: p1), fallback: "Removing this content will free up %@.")
+      }
+      /// Remove Offline Content?
+      public static let removeTitle = CourseLocalization.tr("Localizable", "COURSE.ALERT.REMOVE_TITLE", fallback: "Remove Offline Content?")
+      /// Try again
+      public static let tryAgain = CourseLocalization.tr("Localizable", "COURSE.ALERT.TRY_AGAIN", fallback: "Try again")
+    }
+    public enum Error {
+      /// Unfortunately, this content failed to download. Please try again later or report this issue.
+      public static let downloadFailedDescription = CourseLocalization.tr("Localizable", "COURSE.ERROR.DOWNLOAD_FAILED_DESCRIPTION", fallback: "Unfortunately, this content failed to download. Please try again later or report this issue.")
+      /// Download Failed
+      public static let downloadFailedTitle = CourseLocalization.tr("Localizable", "COURSE.ERROR.DOWNLOAD_FAILED_TITLE", fallback: "Download Failed")
+      /// Downloading this content requires an active internet connection. Please connect to the internet and try again.
+      public static let noInternetConnectionDescription = CourseLocalization.tr("Localizable", "COURSE.ERROR.NO_INTERNET_CONNECTION_DESCRIPTION", fallback: "Downloading this content requires an active internet connection. Please connect to the internet and try again.")
+      /// No Internet Connection
+      public static let noInternetConnectionTitle = CourseLocalization.tr("Localizable", "COURSE.ERROR.NO_INTERNET_CONNECTION_TITLE", fallback: "No Internet Connection")
+      /// Downloading this content requires an active WiFi connection. Please connect to a WiFi network and try again.
+      public static let wifiRequiredDescription = CourseLocalization.tr("Localizable", "COURSE.ERROR.WIFI_REQUIRED_DESCRIPTION", fallback: "Downloading this content requires an active WiFi connection. Please connect to a WiFi network and try again.")
+      /// Wi-Fi Required
+      public static let wifiRequiredTitle = CourseLocalization.tr("Localizable", "COURSE.ERROR.WIFI_REQUIRED_TITLE", fallback: "Wi-Fi Required")
+    }
+    public enum LargestDownloads {
+      /// Done
+      public static let done = CourseLocalization.tr("Localizable", "COURSE.LARGEST_DOWNLOADS.DONE", fallback: "Done")
+      /// Edit
+      public static let edit = CourseLocalization.tr("Localizable", "COURSE.LARGEST_DOWNLOADS.EDIT", fallback: "Edit")
+      /// Remove all downloads
+      public static let removeDownloads = CourseLocalization.tr("Localizable", "COURSE.LARGEST_DOWNLOADS.REMOVE_DOWNLOADS", fallback: "Remove all downloads")
+      /// Largest Downloads
+      public static let title = CourseLocalization.tr("Localizable", "COURSE.LARGEST_DOWNLOADS.TITLE", fallback: "Largest Downloads")
+    }
+    public enum Offline {
+      /// %@%% of this course can be completed offline.
+      public static func canBeCompleted(_ p1: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE.OFFLINE.CAN_BE_COMPLETED", String(describing: p1), fallback: "%@%% of this course can be completed offline.")
+      }
+      /// Cancel Course Download
+      public static let cancelCourseDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.CANCEL_COURSE_DOWNLOAD", fallback: "Cancel Course Download")
+      /// Download all
+      public static let downloadAll = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.DOWNLOAD_ALL", fallback: "Download all")
+      /// %@%% of this course is downloadable.
+      public static func downloadable(_ p1: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE.OFFLINE.DOWNLOADABLE", String(describing: p1), fallback: "%@%% of this course is downloadable.")
+      }
+      /// %@%% of this course is visible on mobile.
+      public static func visible(_ p1: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE.OFFLINE.VISIBLE", String(describing: p1), fallback: "%@%% of this course is visible on mobile.")
+      }
+      /// You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.
+      public static let youCanDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CAN_DOWNLOAD", fallback: "You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.")
+      /// None of this course’s content is currently avaliable to download offline.
+      public static let youCantDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CANT_DOWNLOAD", fallback: "None of this course’s content is currently avaliable to download offline.")
+    }
+    public enum StorageAlert {
+      /// Your device does not have enough free space to download this content. Please free up some space and try again.
+      public static let description = CourseLocalization.tr("Localizable", "COURSE.STORAGE_ALERT.DESCRIPTION", fallback: "Your device does not have enough free space to download this content. Please free up some space and try again.")
+      /// Device Storage Full
+      public static let title = CourseLocalization.tr("Localizable", "COURSE.STORAGE_ALERT.TITLE", fallback: "Device Storage Full")
+      /// %@ used, %@ free
+      public static func usedAndFree(_ p1: Any, _ p2: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE.STORAGE_ALERT.USED_AND_FREE", String(describing: p1), String(describing: p2), fallback: "%@ used, %@ free")
+      }
+    }
+    public enum TotalProgress {
+      /// Downloaded
+      public static let downloaded = CourseLocalization.tr("Localizable", "COURSE.TOTAL_PROGRESS.DOWNLOADED", fallback: "Downloaded")
+      /// Downloading
+      public static let downloading = CourseLocalization.tr("Localizable", "COURSE.TOTAL_PROGRESS.DOWNLOADING", fallback: "Downloading")
+      /// Ready to Download
+      public static let readyToDownload = CourseLocalization.tr("Localizable", "COURSE.TOTAL_PROGRESS.READY_TO_DOWNLOAD", fallback: "Ready to Download")
+    }
   }
   public enum Courseware {
     /// Back to outline
@@ -65,6 +177,8 @@ public enum CourseLocalization {
     public static let handoutsInDeveloping = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING", fallback: "Handouts In developing")
     /// Home
     public static let home = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HOME", fallback: "Home")
+    /// Offline
+    public static let offline = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.OFFLINE", fallback: "Offline")
     /// Videos
     public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.VIDEOS", fallback: "Videos")
   }
@@ -233,6 +347,20 @@ public enum CourseLocalization {
     public static let description = CourseLocalization.tr("Localizable", "NOT_AVALIABLE.DESCRIPTION", fallback: "Explore other parts of this course or view this on web.")
     /// This interactive component isn't available on mobile
     public static let title = CourseLocalization.tr("Localizable", "NOT_AVALIABLE.TITLE", fallback: "This interactive component isn't available on mobile")
+  }
+  public enum Offline {
+    public enum NotAvaliable {
+      /// Explore other parts of this course or view this when you reconnect.
+      public static let description = CourseLocalization.tr("Localizable", "OFFLINE.NOT_AVALIABLE.DESCRIPTION", fallback: "Explore other parts of this course or view this when you reconnect.")
+      /// This component is not yet available offline
+      public static let title = CourseLocalization.tr("Localizable", "OFFLINE.NOT_AVALIABLE.TITLE", fallback: "This component is not yet available offline")
+    }
+    public enum NotDownloaded {
+      /// Explore other parts of this course or download this when you reconnect.
+      public static let description = CourseLocalization.tr("Localizable", "OFFLINE.NOT_DOWNLOADED.DESCRIPTION", fallback: "Explore other parts of this course or download this when you reconnect.")
+      /// This component is not downloaded
+      public static let title = CourseLocalization.tr("Localizable", "OFFLINE.NOT_DOWNLOADED.TITLE", fallback: "This component is not downloaded")
+    }
   }
   public enum Outline {
     /// Certificate
