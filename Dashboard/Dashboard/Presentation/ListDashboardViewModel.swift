@@ -75,7 +75,7 @@ public class ListDashboardViewModel: ObservableObject {
                 }
                 fetchInProgress = false
             } else {
-                courses = try interactor.getEnrollmentsOffline()
+                courses = try await interactor.getEnrollmentsOffline()
                 self.nextPage += 1
                 fetchInProgress = false
             }

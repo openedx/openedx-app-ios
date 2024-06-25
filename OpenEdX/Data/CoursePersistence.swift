@@ -18,8 +18,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
         self.context = context
     }
     
-    public func loadEnrollments() throws -> [CourseItem] {
-        try context.performAndWait {
+    public func loadEnrollments() async throws -> [CourseItem] {
+        try await context.perform { [context] in
             let result = try? context.fetch(CDCourseItem.fetchRequest())
                 .map {
                     CourseItem(name: $0.name ?? "",
@@ -45,7 +45,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func saveEnrollments(items: [CourseItem]) {
-        context.performAndWait {
+        context.perform {[context] in
             for item in items {
                 let newItem = CDCourseItem(context: context)
                 newItem.name = item.name
@@ -70,8 +70,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func loadCourseStructure(courseID: String) throws -> DataLayer.CourseStructure {
-        try context.performAndWait {
+    public func loadCourseStructure(courseID: String) async throws -> DataLayer.CourseStructure {
+        try await context.perform {[context] in
             let request = CDCourseStructure.fetchRequest()
             request.predicate = NSPredicate(format: "id = %@", courseID)
             guard let structure = try? context.fetch(request).first else { throw NoCachedDataError() }
@@ -160,7 +160,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func saveCourseStructure(structure: DataLayer.CourseStructure) {
-        context.performAndWait {
+        context.perform {[context] in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let newStructure = CDCourseStructure(context: self.context)
             newStructure.certificate = structure.certificate?.url
@@ -261,7 +261,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func saveSubtitles(url: String, subtitlesString: String) {
-        context.performAndWait {
+        context.perform {[context] in
             let newSubtitle = CDSubtitle(context: context)
             newSubtitle.url = url
             newSubtitle.subtitle = subtitlesString
@@ -275,8 +275,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func loadSubtitles(url: String) -> String? {
-        context.performAndWait {
+    public func loadSubtitles(url: String) async -> String? {
+        await context.perform {[context] in
             let request = CDSubtitle.fetchRequest()
             request.predicate = NSPredicate(format: "url = %@", url)
             

@@ -18,8 +18,8 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         self.context = context
     }
     
-    public func loadEnrollments() throws -> [CourseItem] {
-        try context.performAndWait {
+    public func loadEnrollments() async throws -> [CourseItem] {
+        try await context.perform {[context] in
             let result = try? context.fetch(CDDashboardCourse.fetchRequest())
                 .map { CourseItem(name: $0.name ?? "",
                                   org: $0.org ?? "",
@@ -45,7 +45,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     
     public func saveEnrollments(items: [CourseItem]) {
         for item in items {
-            context.performAndWait {
+            context.perform {[context] in
                 let newItem = CDDashboardCourse(context: self.context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.name = item.name
@@ -69,8 +69,8 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
 
-    public func loadPrimaryEnrollment() throws -> PrimaryEnrollment {
-        try context.performAndWait {
+    public func loadPrimaryEnrollment() async throws -> PrimaryEnrollment {
+        try await context.perform {[context] in
             let request = CDMyEnrollments.fetchRequest()
             if let result = try context.fetch(request).first {
                 let primaryCourse = result.primaryCourse.flatMap { cdPrimaryCourse -> PrimaryCourse? in
@@ -150,10 +150,9 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     
     // swiftlint:disable function_body_length
     public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) {
-        context.performAndWait {
-            // Deleting all old data before saving new ones
-            clearOldEnrollmentsData()
-            
+        // Deleting all old data before saving new ones
+        clearOldEnrollmentsData()
+        context.perform {[context] in
             let newEnrollment = CDMyEnrollments(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 
@@ -232,7 +231,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     // swiftlint:enable function_body_length
     
     func clearOldEnrollmentsData() {
-        context.performAndWait {
+        context.perform {[context] in
             let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
             let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
 
