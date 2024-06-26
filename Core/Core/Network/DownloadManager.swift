@@ -8,7 +8,7 @@
 import Alamofire
 import SwiftUI
 import Combine
-import SSZipArchive
+import ZipArchive
 
 public enum DownloadState: String {
     case waiting

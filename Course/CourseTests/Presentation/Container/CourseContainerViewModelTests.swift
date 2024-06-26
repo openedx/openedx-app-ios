@@ -391,7 +391,6 @@ final class CourseContainerViewModelTests: XCTestCase {
             ),
             multiDevice: true,
             offlineDownload: nil
-
         )
 
         let vertical = CourseVertical(
@@ -439,7 +438,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true, 
+            isSelfPaced: true,
             courseProgress: nil
         )
 
@@ -455,16 +454,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .inProgress,
             type: .video,
-            fileSize: 1000, 
+            fileSize: 1000,
             lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -501,6 +502,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.sequentialsDownloadState[blockId], .downloading)
     }
+
     
     func testOnDownloadViewDownloadingTap() async {
         let interactor = CourseInteractorProtocolMock()
@@ -588,10 +590,12 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -715,10 +719,12 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -843,10 +849,12 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -980,10 +988,12 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -1117,10 +1127,12 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -1276,10 +1288,12 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,

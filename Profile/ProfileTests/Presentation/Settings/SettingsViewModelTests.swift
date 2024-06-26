@@ -37,7 +37,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(), 
+            config:  ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         
@@ -70,7 +71,8 @@ final class SettingsViewModelTests: XCTestCase {
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(), 
+            config:  ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         
@@ -103,6 +105,7 @@ final class SettingsViewModelTests: XCTestCase {
             analytics: analytics,
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         
@@ -135,6 +138,7 @@ final class SettingsViewModelTests: XCTestCase {
             analytics: analytics,
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         
@@ -167,6 +171,7 @@ final class SettingsViewModelTests: XCTestCase {
             analytics: analytics,
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         
@@ -199,6 +204,7 @@ final class SettingsViewModelTests: XCTestCase {
             analytics: analytics,
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         

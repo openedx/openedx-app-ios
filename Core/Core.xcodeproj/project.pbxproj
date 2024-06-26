@@ -81,6 +81,7 @@
 		02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */; };
 		02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833929B8A9AB00D33F33 /* DownloadManager.swift */; };
 		02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833B29B8C57800D33F33 /* DownloadView.swift */; };
+		02AA27942C2C1B88006F5B6A /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 02AA27932C2C1B88006F5B6A /* ZipArchive */; };
 		02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */; };
 		02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */; };
 		02B2B594295C5C7A00914876 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2B593295C5C7A00914876 /* Thread.swift */; };
@@ -410,6 +411,7 @@
 				C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */,
 				142EDD6C2B831D1400F9F320 /* BranchSDK in Frameworks */,
 				BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */,
+				02AA27942C2C1B88006F5B6A /* ZipArchive in Frameworks */,
 				E055A5392B18DC95008D9E5E /* Theme.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -959,6 +961,7 @@
 				BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */,
 				BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */,
 				142EDD6B2B831D1400F9F320 /* BranchSDK */,
+				02AA27932C2C1B88006F5B6A /* ZipArchive */,
 			);
 			productName = Core;
 			productReference = 0770DE0828D07831006D8A5D /* Core.framework */;
@@ -999,6 +1002,7 @@
 				BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */,
+				02AA27922C2C1B61006F5B6A /* XCRemoteSwiftPackageReference "ZipArchive" */,
 			);
 			productRefGroup = 0770DE0928D07831006D8A5D /* Products */;
 			projectDirPath = "";
@@ -2280,6 +2284,14 @@
 				minimumVersion = 1.8.0;
 			};
 		};
+		02AA27922C2C1B61006F5B6A /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ZipArchive/ZipArchive.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.5;
+			};
+		};
 		142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BranchMetrics/ios-branch-sdk-spm";
@@ -2311,6 +2323,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 025EF2F42971740000B838AB /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
 			productName = YouTubePlayerKit;
+		};
+		02AA27932C2C1B88006F5B6A /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02AA27922C2C1B61006F5B6A /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
 		};
 		142EDD6B2B831D1400F9F320 /* BranchSDK */ = {
 			isa = XCSwiftPackageProductDependency;
