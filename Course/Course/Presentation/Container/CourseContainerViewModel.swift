@@ -1040,7 +1040,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             if states.values.allSatisfy({ $0 == .available }) {
                 self.downloadAllButtonState = .start
             } else {
-                self.downloadAllButtonState = .cancel
+//                self.downloadAllButtonState = .cancel
             }
         }).store(in: &cancellables)
     }

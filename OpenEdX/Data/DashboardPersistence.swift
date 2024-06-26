@@ -72,29 +72,37 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         if let result = try context.fetch(request).first {
             let primaryCourse = result.primaryCourse.flatMap { cdPrimaryCourse -> PrimaryCourse? in
 
-                let futureAssignments = (cdPrimaryCourse.futureAssignments as? Set<CDAssignment> ?? [])
-                    .map { future in
-                        return Assignment(
-                            type: future.type ?? "",
-                            title: future.title ?? "",
-                            description: future.descript ?? "",
-                            date: future.date ?? Date(),
-                            complete: future.complete,
-                            firstComponentBlockId: future.firstComponentBlockId
-                        )
-                    }
-                
-                let pastAssignments = (cdPrimaryCourse.pastAssignments as? Set<CDAssignment> ?? [])
-                    .map { past in
-                        return Assignment(
-                            type: past.type ?? "",
-                            title: past.title ?? "",
-                            description: past.descript ?? "",
-                            date: past.date ?? Date(),
-                            complete: past.complete,
-                            firstComponentBlockId: past.firstComponentBlockId
-                        )
-                    }
+                guard let futureAssignmentsSet = cdPrimaryCourse.futureAssignments as? Set<CDAssignment> else {
+                    print("Error: futureAssignments is nil or not of expected type")
+                    return nil
+                }
+
+                let futureAssignments = futureAssignmentsSet.map { future in
+                    return Assignment(
+                        type: future.type ?? "",
+                        title: future.title ?? "",
+                        description: future.descript ?? "",
+                        date: future.date ?? Date(),
+                        complete: future.complete,
+                        firstComponentBlockId: future.firstComponentBlockId
+                    )
+                }
+
+                guard let pastAssignmentsSet = cdPrimaryCourse.pastAssignments as? Set<CDAssignment> else {
+                    print("Error: pastAssignments is nil or not of expected type")
+                    return nil
+                }
+
+                let pastAssignments = pastAssignmentsSet.map { past in
+                    return Assignment(
+                        type: past.type ?? "",
+                        title: past.title ?? "",
+                        description: past.descript ?? "",
+                        date: past.date ?? Date(),
+                        complete: past.complete,
+                        firstComponentBlockId: past.firstComponentBlockId
+                    )
+                }
 
                 return PrimaryCourse(
                     name: cdPrimaryCourse.name ?? "",

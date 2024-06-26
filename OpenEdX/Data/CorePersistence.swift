@@ -373,20 +373,28 @@ public class CorePersistence: CorePersistenceProtocol {
         fetchLimit: Int? = nil
     ) throws -> [CDDownloadData] {
         let request = CDDownloadData.fetchRequest()
+        
+        var predicates = [NSPredicate]()
+        
         if let predicate = predicate {
-            request.predicate = predicate.predicate
+            predicates.append(predicate.predicate)
         }
+        
+        if let userId = getUserId32() {
+            let userIdNumber = NSNumber(value: userId)
+            let userIdPredicate = NSPredicate(format: "userId == %@", userIdNumber)
+            predicates.append(userIdPredicate)
+        }
+        
+        if !predicates.isEmpty {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+        
         if let fetchLimit = fetchLimit {
             request.fetchLimit = fetchLimit
         }
-        let data = try context.fetch(request).filter {
-            guard let userId = getUserId32() else {
-                return true
-            }
-            debugLog(userId, "-userId-")
-            return $0.userId == userId
-        }
-        return data
+        
+        return try context.fetch(request)
     }
 
     private func getUserId32() -> Int32? {

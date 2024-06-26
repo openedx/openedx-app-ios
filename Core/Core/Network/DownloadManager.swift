@@ -602,6 +602,7 @@ public class DownloadManager: DownloadManagerProtocol {
 
     var filesFolderUrl: URL? {
         let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        guard let folderPathComponent else { return nil }
         let directoryURL = documentDirectoryURL.appendingPathComponent(folderPathComponent, isDirectory: true)
 
         if FileManager.default.fileExists(atPath: directoryURL.path) {
@@ -621,11 +622,11 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    private var folderPathComponent: String {
+    private var folderPathComponent: String? {
         if let id = appStorage.user?.id {
             return "\(id)_Files"
         }
-        return "Files"
+        return nil
     }
 
     private func saveFile(fileName: String, data: Data, folderURL: URL) {
