@@ -48,6 +48,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
         
         let enrollmentPublisher = NotificationCenter.default.publisher(for: .onCourseEnrolled)
         let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
+        let refreshEnrollmentsPublisher = NotificationCenter.default.publisher(for: .refreshEnrollments)
         
         enrollmentPublisher
             .sink { [weak self] _ in
@@ -62,6 +63,15 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 updateEnrollmentsIfNeeded()
+            }
+            .store(in: &cancellables)
+        
+        refreshEnrollmentsPublisher
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                Task {
+                    await self.getEnrollments()
+                }
             }
             .store(in: &cancellables)
     }

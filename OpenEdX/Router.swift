@@ -380,6 +380,10 @@ public class Router: AuthorizationRouter,
             lastVisitedBlockID: lastVisitedBlockID
         )
         navigationController.pushViewController(controller, animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            Container.shared.resolve(PushNotificationsManager.self)?.performRegistration()
+        }
     }
     
     public func getCourseScreensController(

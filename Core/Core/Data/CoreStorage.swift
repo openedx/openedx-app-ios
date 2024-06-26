@@ -10,6 +10,7 @@ import Foundation
 public protocol CoreStorage {
     var accessToken: String? {get set}
     var refreshToken: String? {get set}
+    var pushToken: String? {get set}
     var appleSignFullName: String? {get set}
     var appleSignEmail: String? {get set}
     var cookiesDate: String? {get set}
@@ -17,6 +18,7 @@ public protocol CoreStorage {
     var lastReviewDate: Date? {get set}
     var user: DataLayer.User? {get set}
     var userSettings: UserSettings? {get set}
+    var resetAppSupportDirectoryUserData: Bool? {get set}
     func clear()
 }
 
@@ -24,6 +26,7 @@ public protocol CoreStorage {
 public class CoreStorageMock: CoreStorage {
     public var accessToken: String?
     public var refreshToken: String?
+    public var pushToken: String?
     public var appleSignFullName: String?
     public var appleSignEmail: String?
     public var cookiesDate: String?
@@ -31,6 +34,7 @@ public class CoreStorageMock: CoreStorage {
     public var lastReviewDate: Date?
     public var user: DataLayer.User?
     public var userSettings: UserSettings?
+    public var resetAppSupportDirectoryUserData: Bool?
     public func clear() {}
     
     public init() {}

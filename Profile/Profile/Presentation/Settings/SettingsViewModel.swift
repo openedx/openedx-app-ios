@@ -146,6 +146,11 @@ public class SettingsViewModel: ObservableObject {
         corePersistence.deleteAllProgress()
         router.showStartupScreen()
         analytics.userLogout(force: false)
+        NotificationCenter.default.post(
+            name: .userLoggedOut,
+            object: nil,
+            userInfo: [Notification.UserInfoKey.isForced: false]
+        )
     }
     
     func trackProfileVideoSettingsClicked() {

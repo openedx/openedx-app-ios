@@ -25,4 +25,10 @@ class BrazeProvider: PushNotificationsProvider {
     
     func didFailToRegisterForRemoteNotificationsWithError(error: Error) {
     }
+    
+    func synchronizeToken() {
+    }
+    
+    func refreshToken() {
+    }
 }

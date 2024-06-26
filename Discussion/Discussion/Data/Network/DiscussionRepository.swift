@@ -32,9 +32,6 @@ public protocol DiscussionRepositoryProtocol {
     func followThread(following: Bool, threadID: String) async throws
     func createNewThread(newThread: DiscussionNewThread) async throws
     func readBody(threadID: String) async throws
-    func renameThreadUser(data: Data) async throws -> DataLayer.ThreadListsResponse
-    func renameUsers(data: Data) async throws -> DataLayer.CommentsResponse
-    func renameUsersInJSON(stringJSON: String) -> String
 }
 
 public class DiscussionRepository: DiscussionRepositoryProtocol {
@@ -66,21 +63,20 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         let threads = try await api.requestData(DiscussionEndpoint
             .getThreads(courseID: courseID, type: type, sort: sort, filter: filter, page: page))
         
-        return try await renameThreadUser(data: threads).domain
+        return try await renameThreadListUser(data: threads).domain
     }
 
     public func getThread(threadID: String) async throws -> UserThread {
         let thread = try await api.requestData(DiscussionEndpoint
             .getThread(threadID: threadID))
-            .mapResponse(DataLayer.ThreadList.self)
-        return thread.userThread
+        return try await renameThreadUser(data: thread).userThread
     }
 
     public func searchThreads(courseID: String, searchText: String, pageNumber: Int) async throws -> ThreadLists {
         let posts = try await api.requestData(DiscussionEndpoint.searchThreads(courseID: courseID,
                                                                                searchText: searchText,
                                                                                pageNumber: pageNumber))
-        return try await renameThreadUser(data: posts).domain
+        return try await renameThreadListUser(data: posts).domain
     }
     
     public func getTopics(courseID: String) async throws -> Topics {
@@ -158,7 +154,7 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         _ = try await api.request(DiscussionEndpoint.readBody(threadID: threadID))
     }
     
-    public func renameThreadUser(data: Data) async throws -> DataLayer.ThreadListsResponse {
+    private func renameThreadListUser(data: Data) async throws -> DataLayer.ThreadListsResponse {
         var modifiedJSON = ""
         let parsed = try data.mapResponse(DataLayer.ThreadListsResponse.self)
         
@@ -176,7 +172,25 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         }
     }
     
-    public func renameUsers(data: Data) async throws -> DataLayer.CommentsResponse {
+    private func renameThreadUser(data: Data) async throws -> DataLayer.ThreadList {
+        var modifiedJSON = ""
+        let parsed = try data.mapResponse(DataLayer.ThreadList.self)
+        
+        if let stringJSON = String(data: data, encoding: .utf8) {
+            modifiedJSON = renameUsersInJSON(stringJSON: stringJSON)
+            if let modifiedParsed = try modifiedJSON.data(using: .utf8)?.mapResponse(
+                DataLayer.ThreadList.self
+            ) {
+                return modifiedParsed
+            } else {
+                return parsed
+            }
+        } else {
+            return parsed
+        }
+    }
+    
+    private func renameUsers(data: Data) async throws -> DataLayer.CommentsResponse {
         var modifiedJSON = ""
         let parsed = try data.mapResponse(DataLayer.CommentsResponse.self)
         
@@ -192,7 +206,7 @@ public class DiscussionRepository: DiscussionRepositoryProtocol {
         }
     }
     
-    public func renameUsersInJSON(stringJSON: String) -> String {
+    private func renameUsersInJSON(stringJSON: String) -> String {
         var modifiedJSON = stringJSON
         let userNames = stringJSON.find(from: "\"users\":{\"", to: "\":{\"profile\":")
         if userNames.count >= 1 {
@@ -478,42 +492,6 @@ public class DiscussionRepositoryMock: DiscussionRepositoryProtocol {
     public func readBody(threadID: String) async throws {
         
     }
-    
-    public func renameThreadUser(data: Data) async throws -> DataLayer.ThreadListsResponse {
-        DataLayer.ThreadListsResponse(threads: [],
-                                           textSearchRewrite: "",
-                                      pagination: DataLayer.Pagination(next: "", previous: "", count: 0, numPages: 0) )
-    }
-    
-    public func renameUsers(data: Data) async throws -> DataLayer.CommentsResponse {
-        DataLayer.CommentsResponse(
-            comments: [
-                DataLayer.Comments(id: "", author: "Bill",
-                                   authorLabel: nil,
-                                   createdAt: "25.11.2043",
-                                   updatedAt: "25.11.2043",
-                                   rawBody: "Raw Body",
-                                   renderedBody: "Rendered body",
-                                   abuseFlagged: false,
-                                   voted: true,
-                                   voteCount: 2,
-                                   editableFields: [],
-                                   canDelete: true,
-                                   threadID: "",
-                                   parentID: nil,
-                                   endorsed: false,
-                                   endorsedBy: nil,
-                                   endorsedByLabel: nil,
-                                   endorsedAt: nil,
-                                   childCount: 0,
-                                   children: [],
-                                   users: nil)
-            ], pagination: DataLayer.Pagination(next: nil, previous: nil, count: 0, numPages: 0))
-    }
-    
-    public func renameUsersInJSON(stringJSON: String) -> String {
-        return stringJSON
-    }    
 }
 #endif
 // swiftlint:enable all
