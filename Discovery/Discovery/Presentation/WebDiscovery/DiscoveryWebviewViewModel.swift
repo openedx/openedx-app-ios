@@ -14,6 +14,8 @@ public class DiscoveryWebviewViewModel: ObservableObject {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
+    @Published var webViewError: Bool = false
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -246,5 +248,9 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     
     private func isValidAppURLScheme(_ url: URL) -> Bool {
         return url.scheme ?? "" == config.URIScheme
+    }
+    
+    public func showWebViewError() {
+        self.webViewError = true
     }
 }
