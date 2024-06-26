@@ -29,6 +29,7 @@ class PushNotificationsManager: NSObject {
     private let deepLinkManager: DeepLinkManager
     private let storage: CoreStorage
     private let api: API
+    
     private var providers: [PushNotificationsProvider] = []
     private var listeners: [PushNotificationsListener] = []
     
@@ -37,10 +38,16 @@ class PushNotificationsManager: NSObject {
     }
     
     // Init manager
-    public init(deepLinkManager: DeepLinkManager, storage: CoreStorage, api: API, config: ConfigProtocol) {
+    public init(
+        deepLinkManager: DeepLinkManager,
+        storage: CoreStorage,
+        api: API,
+        config: ConfigProtocol
+    ) {
         self.deepLinkManager = deepLinkManager
         self.storage = storage
         self.api = api
+        
         super.init()
         providers = providersFor(config: config)
         listeners = listenersFor(config: config)
@@ -129,6 +136,7 @@ extension PushNotificationsManager: UNUserNotificationCenterDelegate {
     ) async -> UNNotificationPresentationOptions {
         if UIApplication.shared.applicationState == .active {
             didReceiveRemoteNotification(userInfo: notification.request.content.userInfo)
+            return []
         }
         
         return [[.list, .banner, .sound]]
