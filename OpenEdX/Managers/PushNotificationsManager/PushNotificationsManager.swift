@@ -33,16 +33,16 @@ class PushNotificationsManager: NSObject {
     private var providers: [PushNotificationsProvider] = []
     private var listeners: [PushNotificationsListener] = []
     
-    
     public var hasProviders: Bool {
         providers.count > 0
     }
     
     // Init manager
-    public init(deepLinkManager: DeepLinkManager,
-                storage: CoreStorage,
-                api: API,
-                config: ConfigProtocol
+    public init(
+        deepLinkManager: DeepLinkManager,
+        storage: CoreStorage,
+        api: API,
+        config: ConfigProtocol
     ) {
         self.deepLinkManager = deepLinkManager
         self.storage = storage
