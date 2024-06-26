@@ -29,7 +29,6 @@ class PushNotificationsManager: NSObject {
     private let deepLinkManager: DeepLinkManager
     private let storage: CoreStorage
     private let api: API
-    private let segemntService: SegmentAnalyticsService?
     
     private var providers: [PushNotificationsProvider] = []
     private var listeners: [PushNotificationsListener] = []
@@ -43,13 +42,11 @@ class PushNotificationsManager: NSObject {
     public init(deepLinkManager: DeepLinkManager,
                 storage: CoreStorage,
                 api: API,
-                config: ConfigProtocol,
-                segmentService: SegmentAnalyticsService?
+                config: ConfigProtocol
     ) {
         self.deepLinkManager = deepLinkManager
         self.storage = storage
         self.api = api
-        self.segemntService = segmentService
         
         super.init()
         providers = providersFor(config: config)
@@ -59,7 +56,7 @@ class PushNotificationsManager: NSObject {
     private func providersFor(config: ConfigProtocol) -> [PushNotificationsProvider] {
         var pushProviders: [PushNotificationsProvider] = []
         if config.braze.pushNotificationsEnabled {
-            pushProviders.append(BrazeProvider(segmentService: segemntService))
+            pushProviders.append(BrazeProvider())
         }
         if config.firebase.cloudMessagingEnabled {
             pushProviders.append(FCMProvider(storage: storage, api: api))
@@ -70,7 +67,7 @@ class PushNotificationsManager: NSObject {
     private func listenersFor(config: ConfigProtocol) -> [PushNotificationsListener] {
         var pushListeners: [PushNotificationsListener] = []
         if config.braze.pushNotificationsEnabled {
-            pushListeners.append(BrazeListener(deepLinkManager: deepLinkManager, segmentService: segemntService))
+            pushListeners.append(BrazeListener(deepLinkManager: deepLinkManager))
         }
         if config.firebase.cloudMessagingEnabled {
             pushListeners.append(FCMListener(deepLinkManager: deepLinkManager))

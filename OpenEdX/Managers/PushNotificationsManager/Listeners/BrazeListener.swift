@@ -6,14 +6,13 @@
 //
 
 import Foundation
+import Swinject
 
 class BrazeListener: PushNotificationsListener {
     
     private let deepLinkManager: DeepLinkManager
-    private let segmentService: SegmentAnalyticsService?
     
-    init(deepLinkManager: DeepLinkManager, segmentService: SegmentAnalyticsService?) {
-        self.segmentService = segmentService
+    init(deepLinkManager: DeepLinkManager) {
         self.deepLinkManager = deepLinkManager
     }
     
@@ -27,7 +26,9 @@ class BrazeListener: PushNotificationsListener {
         guard let dictionary = userInfo as? [String: AnyHashable],
               shouldListenNotification(userinfo: userInfo) else { return }
         
-        segmentService?.analytics?.receivedRemoteNotification(userInfo: userInfo)
+        if let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
+            segmentService.analytics?.receivedRemoteNotification(userInfo: userInfo)
+        }
         
         let link = PushLink(dictionary: dictionary)
         deepLinkManager.processLinkFromNotification(link)
