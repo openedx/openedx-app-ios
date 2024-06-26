@@ -18,8 +18,8 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
         self.context = context
     }
     
-    public func loadDiscovery() throws -> [CourseItem] {
-        try context.performAndWait {
+    public func loadDiscovery() async throws -> [CourseItem] {
+        try await context.perform {[context] in
             let result = try? context.fetch(CDDiscoveryCourse.fetchRequest())
                 .map { CourseItem(name: $0.name ?? "",
                                   org: $0.org ?? "",
@@ -45,7 +45,7 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     
     public func saveDiscovery(items: [CourseItem]) {
         for item in items {
-            context.performAndWait {
+            context.perform {[context] in
                 let newItem = CDDiscoveryCourse(context: context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.name = item.name
@@ -69,8 +69,8 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
         }
     }
     
-    public func loadCourseDetails(courseID: String) throws -> CourseDetails {
-        try context.performAndWait {
+    public func loadCourseDetails(courseID: String) async throws -> CourseDetails {
+        try await context.perform {[context] in
             let request = CDCourseDetails.fetchRequest()
             request.predicate = NSPredicate(format: "courseID = %@", courseID)
             guard let courseDetails = try? context.fetch(request).first else { throw NoCachedDataError() }
@@ -92,7 +92,7 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     }
     
     public func saveCourseDetails(course: CourseDetails) {
-        context.performAndWait {
+        context.perform {[context] in
             let newCourseDetails = CDCourseDetails(context: self.context)
             newCourseDetails.courseID = course.courseID
             newCourseDetails.org = course.org
