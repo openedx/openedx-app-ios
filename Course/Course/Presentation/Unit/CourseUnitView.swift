@@ -189,7 +189,7 @@ public struct CourseUnitView: View {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView()
+                                FullScreenErrorView(type: .noInternet)
                             }
                             
                         } else {
@@ -219,7 +219,7 @@ public struct CourseUnitView: View {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView()
+                                FullScreenErrorView(type: .noInternet)
                             }
                         }
                         // MARK: Web
@@ -233,7 +233,7 @@ public struct CourseUnitView: View {
                                 )
                                 // not need to add frame limit there because we did that with injection
                             } else {
-                                NoInternetView()
+                                FullScreenErrorView(type: .noInternet)
                             }
                         } else {
                             EmptyView()
@@ -247,7 +247,7 @@ public struct CourseUnitView: View {
                                 Spacer()
                                     .frame(minHeight: 100)
                             } else {
-                                NoInternetView()
+                                FullScreenErrorView(type: .noInternet)
                             }
                         } else {
                             EmptyView()
@@ -275,7 +275,7 @@ public struct CourseUnitView: View {
                                 //No need iPad paddings there bacause they were added
                                 //to PostsView that placed inside DiscussionView
                             } else {
-                                NoInternetView()
+                                FullScreenErrorView(type: .noInternet)
                             }
                         } else {
                             EmptyView()
@@ -586,25 +586,3 @@ struct CourseUnitView_Previews: PreviewProvider {
 }
 //swiftlint:enable all
 #endif
-
-struct NoInternetView: View {
-        
-    var body: some View {
-        VStack(spacing: 28) {
-            Spacer()
-            CoreAssets.noWifi.swiftUIImage
-                .renderingMode(.template)
-                .foregroundStyle(Color.primary)
-                .scaledToFit()
-            Text(CoreLocalization.Error.Internet.noInternetTitle)
-                            .font(Theme.Fonts.titleLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
-            Text(CoreLocalization.Error.Internet.noInternetDescription)
-                .font(Theme.Fonts.bodyLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 50)
-            Spacer()
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
