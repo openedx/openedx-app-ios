@@ -18,7 +18,7 @@ public protocol DiscoveryAnalytics {
     func courseEnrollSuccess(courseId: String, courseName: String)
     func externalLinkOpen(url: String, screen: String)
     func externalLinkOpenAction(url: String, screen: String, action: String)
-    func discoveryEvent(event: AnalyticsEvent, biValue: EventBIValue)
+    func discoveryScreenEvent(event: AnalyticsEvent, biValue: EventBIValue)
 }
 
 #if DEBUG
@@ -31,6 +31,6 @@ class DiscoveryAnalyticsMock: DiscoveryAnalytics {
     public func courseEnrollSuccess(courseId: String, courseName: String) {}
     public func externalLinkOpen(url: String, screen: String) {}
     public func externalLinkOpenAction(url: String, screen: String, action: String) {}
-    public func discoveryEvent(event: AnalyticsEvent, biValue: EventBIValue) {}
+    public func discoveryScreenEvent(event: AnalyticsEvent, biValue: EventBIValue) {}
 }
 #endif

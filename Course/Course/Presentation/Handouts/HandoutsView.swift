@@ -54,7 +54,7 @@ struct HandoutsView: View {
                                         announcements: nil,
                                         router: viewModel.router,
                                         cssInjector: viewModel.cssInjector)
-                                    viewModel.analytics.trackCourseEvent(
+                                    viewModel.analytics.trackCourseScreenEvent(
                                         .courseHandouts,
                                         biValue: .courseHandouts,
                                         courseID: courseID
@@ -68,7 +68,7 @@ struct HandoutsView: View {
                                             announcements: viewModel.updates,
                                             router: viewModel.router,
                                             cssInjector: viewModel.cssInjector)
-                                        viewModel.analytics.trackCourseEvent(
+                                        viewModel.analytics.trackCourseScreenEvent(
                                             .courseAnnouncement,
                                             biValue: .courseAnnouncement,
                                             courseID: courseID

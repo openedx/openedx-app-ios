@@ -31,6 +31,7 @@ public protocol ConfigProtocol {
     var segment: SegmentConfig { get }
     var program: DiscoveryConfig { get }
     var URIScheme: String { get }
+    var fullStory: FullStoryConfig { get }
 }
 
 public enum TokenType: String {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 public enum AuthMethod: Equatable {
     case password
@@ -40,6 +41,7 @@ public protocol AuthorizationAnalytics {
     func forgotPasswordClicked()
     func resetPasswordClicked()
     func resetPassword(success: Bool)
+    func authTrackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue)
 }
 
 #if DEBUG
@@ -54,5 +56,6 @@ class AuthorizationAnalyticsMock: AuthorizationAnalytics {
     public func forgotPasswordClicked() {}
     public func resetPasswordClicked() {}
     public func resetPassword(success: Bool) {}
+    public func authTrackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {}
 }
 #endif

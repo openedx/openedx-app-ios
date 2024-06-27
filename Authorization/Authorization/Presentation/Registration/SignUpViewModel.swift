@@ -213,4 +213,11 @@ public class SignUpViewModel: ObservableObject {
     func trackCreateAccountClicked() {
         analytics.createAccountClicked()
     }
+    
+    func trackScreenEvent() {
+        analytics.authTrackScreenEvent(
+            .logistrationRegister,
+            biValue: .logistrationRegister
+        )
+    }
 }

@@ -247,6 +247,14 @@ class ConfigurationManager:
             scheme = ["msauth." + bundle_identifier]
             self.add_url_scheme(scheme, plist, False)
             self.add_application_query_schemes(["msauthv2", "msauthv3"], plist)
+            
+    def add_fullstory_config(self, config, plist):
+        fullstory = config.get('FULLSTORY', {})
+        enabled = fullstory.get('ENABLED')
+        orgID = fullstory.get('ORG_ID')
+
+        if enabled and orgID:
+            plist["FullStory"] = {"orgID": orgID}
 
     def update_info_plist(self, plist_data, plist_path):
         if not plist_path:
@@ -303,6 +311,7 @@ def process_plist_files(configuration_manager, plist_manager, config):
     configuration_manager.add_google_config(config, info_plist_content)
     configuration_manager.add_microsoft_config(config, info_plist_content)
     configuration_manager.add_branch_config(config, info_plist_content)
+    configuration_manager.add_fullstory_config(config, info_plist_content)
 
     configuration_manager.update_info_plist(info_plist_content, info_plist_path)
 

@@ -236,6 +236,9 @@ public struct EditProfileView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
+            .onFirstAppear {
+                viewModel.trackScreenEvent()
+            }
         }
     }
 }

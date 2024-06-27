@@ -212,6 +212,9 @@ public struct SignInView: View {
         .hideNavigationBar()
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
+        .onFirstAppear{
+            viewModel.trackScreenEvent()
+        }
     }
 
     @ViewBuilder
