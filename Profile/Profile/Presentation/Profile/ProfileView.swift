@@ -106,9 +106,9 @@ public struct ProfileView: View {
                     }
                 )
             },
-            color: Theme.Colors.secondaryButtonBGColor,
-            textColor: Theme.Colors.secondaryButtonTextColor,
-            borderColor: Theme.Colors.secondaryButtonBorderColor
+            color: Theme.Colors.background,
+            textColor: Theme.Colors.accentColor,
+            borderColor: Theme.Colors.accentColor
         ).padding(.all, 24)
     }
     
