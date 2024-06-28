@@ -1,6 +1,4 @@
 # Translation processing dependencies
 openedx-atlas==0.6.1
 localizable==0.1.3
-
-# Using `pbxproj==4.1.0` with the ( https://github.com/kronenthaler/mod-pbxproj/pull/353 ) patch to fix an exception when adding files
-https://github.com/kronenthaler/mod-pbxproj/archive/718ad1231147c276406343059d079d3326520867.zip
+pbxproj==4.2.0
