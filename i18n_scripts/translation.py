@@ -13,10 +13,12 @@ import os
 import re
 import sys
 from collections import defaultdict
+from contextlib import contextmanager
 from pathlib import Path
 
 import localizable
 from pbxproj import XcodeProject
+from pbxproj.pbxextensions import FileOptions
 
 LOCALIZABLE_FILES_TREE = '<group>'
 
@@ -41,6 +43,26 @@ def parse_arguments():
     parser.add_argument('--add-xcode-files', action='store_true',
                         help='Add the language files to the XCode project (only with --split).')
     return parser.parse_args()
+
+
+@contextmanager
+def change_directory(new_dir: Path):
+    """
+    Context manager to execute `os.chidir`.
+
+    Usage:
+
+    with change_directory('/some/path'):
+      do_stuff_here()
+
+    :param new_dir: Path
+    """
+    original_dir = os.getcwd()
+    try:
+        os.chdir(new_dir)
+        yield
+    finally:
+        os.chdir(original_dir)
 
 
 def get_modules_dir(override: Path = None) -> Path:
@@ -319,11 +341,32 @@ def add_translation_files_to_xcode(modules_dir: Path = None):
 
         for module_name, xcode_project in get_xcode_projects(modules_dir):
             module_path = modules_dir / module_name
-            for localizable_abs_path in list_translation_files(module_path):
-                localizable_relative_path = localizable_abs_path.relative_to(module_path / module_name)
-                print('  - Adding', localizable_relative_path)
-                xcode_project.add_file(localizable_relative_path, tree=LOCALIZABLE_FILES_TREE)
+            project_files_path = module_path / module_name  # e.g. openedx-app-ios/Authorization/Authorization
 
+            with change_directory(project_files_path):
+                for localizable_abs_path in list_translation_files(module_path):
+                    localizable_relative_path = localizable_abs_path.relative_to(module_path / module_name)
+                    language, _rest = str(localizable_relative_path).split('.lproj')  # e.g. `ar` or `fr-ca`
+                    print(f'  - Adding "{localizable_relative_path}" for the "{language}" language.')
+                    localizable_groups = xcode_project.get_groups_by_name(name='Localizable.strings',
+                                                                          section='PBXVariantGroup')
+                    if len(localizable_groups) != 1:
+                        # We need a single group. If many are found then, it's a problem.
+                        raise Exception(f'Error: Cannot find the Localizable.strings group, please add the English '
+                                        f'source translation strings with the name Localizable.strings. '
+                                        f'Results: "{localizable_groups}"')
+                    localizable_group = localizable_groups[0]
+
+                    xcode_project.add_file(
+                        str(localizable_relative_path),
+                        name=language,
+                        parent=localizable_group,
+                        force=False,
+                        tree=LOCALIZABLE_FILES_TREE,
+                        file_options=FileOptions(
+                            create_build_files=False,
+                        ),
+                    )
             xcode_project.save()
 
     except Exception as e:
@@ -342,7 +385,7 @@ def clean_translation_files(modules_dir: Path = None):
             module_path = modules_dir / module_name
             for localizable_abs_path in list_translation_files(module_path):
                 localizable_relative_path = localizable_abs_path.relative_to(module_path / module_name)
-                print('  - Removing', localizable_relative_path, 'file')
+                print(f'  - Removing "{localizable_relative_path}" file from file system')
                 localizable_abs_path.unlink()
 
             for file_ref in xcode_project.objects.get_objects_in_section('PBXFileReference'):
@@ -350,8 +393,12 @@ def clean_translation_files(modules_dir: Path = None):
                         not file_ref.path.startswith('en.lproj')
                         and re.match(r'\w+.lproj', file_ref.path)
                         and file_ref.sourceTree == LOCALIZABLE_FILES_TREE
+                        and getattr(file_ref, 'lastKnownFileType', None) == 'text.plist.strings'
                 ):
-                    xcode_project.remove_files_by_path(file_ref.path, tree=LOCALIZABLE_FILES_TREE)
+                    path = file_ref.path
+                    language, _rest = str(path).split('.lproj')  # e.g. `ar` or `fr-ca`
+                    print(f'  - Removing "{path}" from project resources for the "{language}" language.')
+                    xcode_project.remove_files_by_path(file_ref.path, tree=LOCALIZABLE_FILES_TREE, target_name=language)
 
             xcode_project.save()
     except Exception as e:
