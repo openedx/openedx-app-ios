@@ -152,6 +152,7 @@
 		02B6B3C828E1E68100232911 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BB20172BFCE7B200364948 /* CustomDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureGroup.swift; sourceTree = "<group>"; };
 		02C355382C08DCD700501342 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		02C3553A2C08DCE000501342 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		02D4FC2D2BBD7C9C00C47748 /* MessageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSectionView.swift; sourceTree = "<group>"; };
 		02E3803D2BFF9F0A00815AFA /* CourseProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressView.swift; sourceTree = "<group>"; };
 		02F0144E28F46474002E513D /* CourseContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerView.swift; sourceTree = "<group>"; };
@@ -636,6 +637,16 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		0289F8E928E1C3510064F8F3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		023812E3297AC8EA0087098F /* CourseTests */ = {
 			isa = PBXNativeTarget;
@@ -644,6 +655,7 @@
 				EBA99FC2A045E19AF88DF2E7 /* [CP] Check Pods Manifest.lock */,
 				023812E0297AC8EA0087098F /* Sources */,
 				023812E1297AC8EA0087098F /* Frameworks */,
+				023812E2297AC8EA0087098F /* Resources */,
 				92C3B3183886DDECE1CBAC22 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -661,6 +673,7 @@
 			buildConfigurationList = 0289F8F528E1C3510064F8F3 /* Build configuration list for PBXNativeTarget "Course" */;
 			buildPhases = (
 				B2836B9489F24D888A56D857 /* [CP] Check Pods Manifest.lock */,
+				0289F8E928E1C3510064F8F3 /* Headers */,
 				0289F90028E1C3B60064F8F3 /* SwiftGen */,
 				0289F8EA28E1C3510064F8F3 /* Sources */,
 				0289F8EB28E1C3510064F8F3 /* Frameworks */,
@@ -715,6 +728,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		023812E2297AC8EA0087098F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0289F8EC28E1C3510064F8F3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -922,7 +942,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				02B6B3B328E1C49400232911 /* en */,
-				02ED50CF29A64BB6008341CD,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -931,7 +950,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				02C355382C08DCD700501342 /* en */,
-				02C3553A2C08DCE000501342,
+				02C3553A2C08DCE000501342 /* uk */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";

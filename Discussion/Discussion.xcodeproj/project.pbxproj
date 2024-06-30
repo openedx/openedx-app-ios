@@ -107,6 +107,7 @@
 		02D1267528F76F5D00C8E689 /* DiscussionTopicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicsView.swift; sourceTree = "<group>"; };
 		02D1267728F76FF200C8E689 /* DiscussionTopicsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicsViewModel.swift; sourceTree = "<group>"; };
 		02E4F18029A8C2FD00F31684 /* DiscussionSearchTopicsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionSearchTopicsViewModelTests.swift; sourceTree = "<group>"; };
+		02ED50D129A64BBF008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		02F175382A4DD5AA0019CD70 /* DiscussionAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionAnalytics.swift; sourceTree = "<group>"; };
 		02F28A5D28FF23E700AFDE1B /* ThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
 		02F28A5F28FF23F300AFDE1B /* ThreadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewModel.swift; sourceTree = "<group>"; };
@@ -501,6 +502,7 @@
 				D42AB95EE00BC248888BC25A /* [CP] Check Pods Manifest.lock */,
 				0240D8CB2987FE1F003CFE50 /* Sources */,
 				0240D8CC2987FE1F003CFE50 /* Frameworks */,
+				0240D8CD2987FE1F003CFE50 /* Resources */,
 				3607DC97DFD36C230ED0AB74 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -560,6 +562,13 @@
 				0218195D28F7349B00202564 /* swiftgen.yml in Resources */,
 				0218196028F734CD00202564 /* Localizable.strings in Resources */,
 				02426DE42983DD4D00B31E6C /* Localizable.stringsdict in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0240D8CD2987FE1F003CFE50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,7 +732,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				0218196128F734CD00202564 /* en */,
-				02ED50D029A64BBF008341CD,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -732,7 +740,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				02426DE52983DD4D00B31E6C /* en */,
-				02ED50D129A64BBF008341CD,
+				02ED50D129A64BBF008341CD /* uk */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
