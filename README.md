@@ -32,9 +32,16 @@ Then, to get the latest translations for all languages use the following command
 ```bash
 make pull_translations
 ```
+
 This command runs [`atlas pull`](https://github.com/openedx/openedx-atlas) to download the latest translations files from the [openedx/openedx-translations](https://github.com/openedx/openedx-translations) repository. These files contain the latest translations for all languages. In the [openedx/openedx-translations](https://github.com/openedx/openedx-translations) repository each language's translations are saved as a single file e.g. `I18N/I18N/uk.lproj/Localization.strings` ([example](https://github.com/openedx/openedx-translations/blob/6448167e9695a921f003ff6bd8f40f006a2d6743/translations/openedx-app-ios/I18N/I18N/uk.lproj/Localizable.strings)). After these are pulled, each language's translation file is split into the App's modules e.g. `Discovery/Discovery/uk.lproj/Localization.strings`.
    
   After this command is run the application can load the translations by changing the device (or the emulator) language in the settings.
+
+**Note:** This command modifies the XCode project files which fails the build so it's required to clean the translations files before committing using the following command:
+
+```
+make clean_translations
+```
 
 ### Using custom translations
 
@@ -55,7 +62,7 @@ Additional arguments can be passed to `atlas pull`. Refer to the [atlas document
 	
 Translations are managed in the [open-edx/openedx-translations](https://app.transifex.com/open-edx/openedx-translations/dashboard/) Transifex project.
 
-To translate the app join the [Transifex project](https://app.transifex.com/open-edx/openedx-translations/dashboard/) and add your translations `openedx-app-ios` resource: https://app.transifex.com/open-edx/openedx-translations/openedx-app-ios/ (the link will start working after the [pull request #442](https://github.com/openedx/openedx-app-ios/pull/422) is merged)
+To translate the app join the [Transifex project](https://app.transifex.com/open-edx/openedx-translations/dashboard/) and add your translations to the [`openedx-app-ios`](https://app.transifex.com/open-edx/openedx-translations/openedx-app-ios/) resource.
 
 Once the resource is both 100% translated and reviewed the [Transifex integration](https://github.com/apps/transifex-integration) will automatically push it to the [openedx-translations](https://github.com/openedx/openedx-translations) repository and developers can use the translations in their app.
 
