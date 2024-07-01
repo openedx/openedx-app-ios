@@ -1,4 +1,4 @@
-name: Validate translations
+name: Test Makefile
 
 on:
   workflow_dispatch:
@@ -16,17 +16,17 @@ jobs:
     strategy:
       matrix:
         case:
-          - name: Test clean_translations
+          - name: clean_translations
             command: |
               make clean_translations
 
-          - name: Test extract_translations
+          - name: extract_translations
             command: |
               make extract_translations
               echo "Ensure combined localization file exists"
               test -f I18N/I18N/en.lproj/Localizable.strings
 
-          - name: Test pull_translations
+          - name: pull_translations
             command:
               make pull_translations
               echo "Files are split properly"
@@ -42,16 +42,8 @@ jobs:
         with:
           python-version: 3.11
 
-
       - name: Install translations requirements
         run: make translation_requirements
-
-      - name: SwiftLint
-        run:
-          bundle exec fastlane linting
-
-      - name: Run tests
-        run: bundle exec fastlane unit_tests
 
       - name: "${{ matrix.case.name }}"
         run: "${{ matrix.case.command }}"
