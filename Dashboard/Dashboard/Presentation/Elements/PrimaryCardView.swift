@@ -73,7 +73,7 @@ public struct PrimaryCardView: View {
                 assignments
             }
         }
-        .background(Theme.Colors.background)
+        .background(Theme.Colors.courseCardBackground)
         .cornerRadius(8)
         .shadow(color: Theme.Colors.courseCardShadow, radius: 4, x: 0, y: 3)
         .padding(20)

@@ -72,6 +72,7 @@ public struct Theme {
         public private(set) static var primaryHeaderColor = ThemeAssets.primaryHeaderColor.swiftUIColor
         public private(set) static var secondaryHeaderColor = ThemeAssets.secondaryHeaderColor.swiftUIColor
         public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
+        public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
