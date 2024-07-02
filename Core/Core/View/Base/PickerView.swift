@@ -64,7 +64,7 @@ public struct PickerView: View {
                             .stroke(lineWidth: 1)
                             .fill(config.error == "" ?
                                   Theme.Colors.textInputStroke
-                                  : Theme.Colors.alert)
+                                  : Theme.Colors.irreversibleAlert)
                     )
                     .shake($config.shake)
                 Text(config.error == "" ? config.field.instructions
@@ -72,7 +72,7 @@ public struct PickerView: View {
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(config.error == ""
                                  ? Theme.Colors.textPrimary
-                                 : Theme.Colors.alert)
+                                 : Theme.Colors.irreversibleAlert)
                 .accessibilityIdentifier("\(config.field.name)_instructions_text")
             }
         }

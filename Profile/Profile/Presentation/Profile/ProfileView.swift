@@ -106,7 +106,7 @@ public struct ProfileView: View {
                     }
                 )
             },
-            color: .clear,
+            color: Theme.Colors.background,
             textColor: Theme.Colors.accentColor,
             borderColor: Theme.Colors.accentColor
         ).padding(.all, 24)

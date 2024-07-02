@@ -30,7 +30,7 @@ struct ProgressLineView: View {
                     Rectangle()
                         .foregroundStyle(Theme.Colors.cardViewStroke)
                     Rectangle()
-                        .foregroundStyle(Theme.Colors.accentColor)
+                        .foregroundStyle(Theme.Colors.accentButtonColor)
                         .frame(width: geometry.size.width * progressValue)
                 }.frame(height: height)
         }

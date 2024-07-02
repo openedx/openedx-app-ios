@@ -75,23 +75,23 @@ public struct UnitButtonView: View {
                     case .first:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .rotationEffect(Angle.degrees(nextButtonDegrees))
                         }.padding(.horizontal, 16)
                     case .next, .nextBig:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
                             if type != .nextBig {
                                 Spacer()
                             }
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .rotationEffect(Angle.degrees(nextButtonDegrees))
                                 .padding(.trailing, 20)
                         }
@@ -99,19 +99,19 @@ public struct UnitButtonView: View {
                         HStack {
                             if isVerticalNavigation {
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
+                                    .foregroundColor(Theme.Colors.accentColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.leading, 20)
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .rotationEffect(Angle.degrees(90))
                                     .padding(.trailing, 20)
-                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
+                                    .foregroundColor(Theme.Colors.accentColor)
                             } else {
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .padding(.leading, 20)
-                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
+                                    .foregroundColor(Theme.Colors.accentColor)
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.secondaryButtonTextColor)
+                                    .foregroundColor(Theme.Colors.accentColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.trailing, 20)
                             }
@@ -119,22 +119,22 @@ public struct UnitButtonView: View {
                     case .last:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .padding(.leading, 8)
                                 .font(Theme.Fonts.labelLarge)
                                 .scaledToFit()
                             Spacer()
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .padding(.trailing, 8)
                         }
                     case .finish:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                         }.padding(.horizontal, 16)
                     case .reload, .custom:
                         VStack(alignment: .center) {
@@ -163,7 +163,7 @@ public struct UnitButtonView: View {
                             Theme.Shapes.buttonShape
                                 .fill(type == .previous
                                       ? Theme.Colors.background
-                                      : Theme.Colors.accentButtonColor)
+                                      : Theme.Colors.accentColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 .overlay(
                                     Theme.Shapes.buttonShape
@@ -174,8 +174,7 @@ public struct UnitButtonView: View {
                                             miterLimit: 1)
                                         )
                                         .foregroundColor(
-                                            type == .previous ? Theme.Colors.secondaryButtonBorderColor
-                                            : Theme.Colors.accentButtonColor
+                                            Theme.Colors.accentColor
                                         )
                                 )
                                 

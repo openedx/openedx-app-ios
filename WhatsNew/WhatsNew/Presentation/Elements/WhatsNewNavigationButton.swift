@@ -50,7 +50,7 @@ struct WhatsNewNavigationButton: View {
                 Theme.Shapes.buttonShape
                     .fill(
                         type == .previous
-                        ? Theme.Colors.background
+                        ? Theme.Colors.secondaryButtonBGColor
                         : Theme.Colors.accentButtonColor
                     )
             )

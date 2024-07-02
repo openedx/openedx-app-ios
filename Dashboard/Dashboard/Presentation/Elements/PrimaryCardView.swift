@@ -73,7 +73,7 @@ public struct PrimaryCardView: View {
                 assignments
             }
         }
-        .background(Theme.Colors.background)
+        .background(Theme.Colors.courseCardBackground)
         .cornerRadius(8)
         .shadow(color: Theme.Colors.courseCardShadow, radius: 4, x: 0, y: 3)
         .padding(20)
@@ -206,12 +206,12 @@ public struct PrimaryCardView: View {
                 }
                 .padding(.top, 8)
                 .padding(.bottom, selected ? 10 : 0)
-            }.background(selected ? Theme.Colors.accentColor : .clear)
+            }.background(selected ? Theme.Colors.accentButtonColor : .clear)
         })
     }
     
     private func foregroundColor(_ selected: Bool) -> SwiftUI.Color {
-        return selected ? Theme.Colors.primaryButtonTextColor : Theme.Colors.textPrimary
+        return selected ? Theme.Colors.white : Theme.Colors.textPrimary
     }
     
     private var courseBanner: some View {
