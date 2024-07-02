@@ -17,12 +17,14 @@ public struct DiscussionTopicsView: View {
     private let courseID: String
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var viewHeight: CGFloat
     @State private var runOnce: Bool = false
     
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
+        viewHeight: Binding<CGFloat>,
         viewModel: DiscussionTopicsViewModel,
         router: DiscussionRouter
     ) {
@@ -30,6 +32,7 @@ public struct DiscussionTopicsView: View {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
         self.router = router
     }
     
@@ -42,7 +45,8 @@ public struct DiscussionTopicsView: View {
                     }) {
                         DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed
+                            collapsed: $collapsed,
+                            viewHeight: $viewHeight
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         // MARK: - Search fake field
@@ -222,6 +226,7 @@ struct DiscussionView_Previews: PreviewProvider {
             courseID: "",
             coordinate: .constant(0),
             collapsed: .constant(false),
+            viewHeight: .constant(0),
             viewModel: vm,
             router: router
         )
@@ -233,6 +238,7 @@ struct DiscussionView_Previews: PreviewProvider {
             courseID: "",
             coordinate: .constant(0),
             collapsed: .constant(false),
+            viewHeight: .constant(0),
             viewModel: vm,
             router: router
         )

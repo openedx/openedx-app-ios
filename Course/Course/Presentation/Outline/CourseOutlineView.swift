@@ -29,6 +29,7 @@ public struct CourseOutlineView: View {
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var viewHeight: CGFloat
     
     @State private var expandedChapters: [String: Bool] = [:]
     
@@ -40,6 +41,7 @@ public struct CourseOutlineView: View {
         selection: Binding<Int>,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
+        viewHeight: Binding<CGFloat>,
         dateTabIndex: Int
     ) {
         self.title = title
@@ -49,6 +51,7 @@ public struct CourseOutlineView: View {
         self._selection = selection
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
         self.dateTabIndex = dateTabIndex
     }
     
@@ -68,7 +71,8 @@ public struct CourseOutlineView: View {
                     }) {
                         DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed
+                            collapsed: $collapsed,
+                            viewHeight: $viewHeight
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         VStack(alignment: .leading) {
@@ -85,49 +89,67 @@ public struct CourseOutlineView: View {
                                 .padding(.horizontal, 16)
                             }
                             
-                            downloadQualityBars
+                            if isVideo,
+                               viewModel.isShowProgress == false {
+                                downloadQualityBars(proxy: proxy)
+                            }
                             certificateView
                             
-                            if let continueWith = viewModel.continueWith,
-                               let courseStructure = viewModel.courseStructure,
+                            if viewModel.courseStructure == nil,
+                               viewModel.isShowProgress == false,
                                !isVideo {
-                                let chapter = courseStructure.childs[continueWith.chapterIndex]
-                                let sequential = chapter.childs[continueWith.sequentialIndex]
-                                let continueUnit = sequential.childs[continueWith.verticalIndex]
-                                
-                                ContinueWithView(
-                                    data: continueWith,
-                                    courseContinueUnit: continueUnit
-                                ) {
-                                    viewModel.openLastVisitedBlock()
-                                }
-                            }
-                            
-                            if let course = isVideo
-                                ? viewModel.courseVideosStructure
-                                : viewModel.courseStructure {
-                                
-                                if !isVideo, let progress = course.courseProgress, progress.totalAssignmentsCount != 0 {
-                                    CourseProgressView(progress: progress)
-                                        .padding(.horizontal, 24)
-                                        .padding(.top, 16)
-                                        .padding(.bottom, 8)
-                                }
-                                
-                                // MARK: - Sections
-                                CustomDisclosureGroup(
-                                    course: course,
-                                    proxy: proxy,
-                                    viewModel: viewModel
+                                FullScreenErrorView(
+                                    type: .noCourseware(
+                                        error: CourseLocalization.Error.coursewareUnavailable,
+                                        image: CoreAssets.information.swiftUIImage
+                                    )
                                 )
+                                .frame(maxWidth: .infinity)
+                                .frame(height: proxy.size.height - viewHeight)
                             } else {
-                                if let courseStart = viewModel.courseStart {
-                                    Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.top, 100)
+                                if let continueWith = viewModel.continueWith,
+                                   let courseStructure = viewModel.courseStructure,
+                                   !isVideo {
+                                    let chapter = courseStructure.childs[continueWith.chapterIndex]
+                                    let sequential = chapter.childs[continueWith.sequentialIndex]
+                                    let continueUnit = sequential.childs[continueWith.verticalIndex]
+                                    
+                                    ContinueWithView(
+                                        data: continueWith,
+                                        courseContinueUnit: continueUnit
+                                    ) {
+                                        viewModel.openLastVisitedBlock()
+                                    }
                                 }
+                                
+                                if let course = isVideo
+                                    ? viewModel.courseVideosStructure
+                                    : viewModel.courseStructure {
+                                    
+                                    if !isVideo,
+                                       let progress = course.courseProgress,
+                                       progress.totalAssignmentsCount != 0 {
+                                        CourseProgressView(progress: progress)
+                                            .padding(.horizontal, 24)
+                                            .padding(.top, 16)
+                                            .padding(.bottom, 8)
+                                    }
+                                    
+                                    // MARK: - Sections
+                                    CustomDisclosureGroup(
+                                        course: course,
+                                        proxy: proxy,
+                                        viewModel: viewModel
+                                    )
+                                } else {
+                                    if let courseStart = viewModel.courseStart {
+                                        Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.top, 100)
+                                    }
+                                }
+                                Spacer(minLength: 200)
                             }
-                            Spacer(minLength: 200)
                         }
                         .frameLimit(width: proxy.size.width)
                     }
@@ -232,9 +254,8 @@ public struct CourseOutlineView: View {
     }
     
     @ViewBuilder
-    private var downloadQualityBars: some View {
-        if isVideo,
-           let courseVideosStructure = viewModel.courseVideosStructure,
+    private func downloadQualityBars(proxy: GeometryProxy) -> some View {
+        if let courseVideosStructure = viewModel.courseVideosStructure,
            viewModel.hasVideoForDowbloads() {
             VStack(spacing: 0) {
                 CourseVideoDownloadBarView(
@@ -260,6 +281,16 @@ public struct CourseOutlineView: View {
                     }
                 }
             }
+        } else {
+            FullScreenErrorView(
+                type: .noVideos(
+                    error: CourseLocalization.Error.videosUnavailable,
+                    image: CoreAssets.noVideos.swiftUIImage
+                )
+            )
+            .frame(maxWidth: .infinity)
+            .frame(height: proxy.size.height - viewHeight)
+            Spacer(minLength: -200)
         }
     }
     @ViewBuilder
@@ -350,6 +381,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 selection: $selection,
                 coordinate: .constant(0),
                 collapsed: .constant(false),
+                viewHeight: .constant(0),
                 dateTabIndex: 2
             )
             .preferredColorScheme(.light)
@@ -363,6 +395,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
                 selection: $selection,
                 coordinate: .constant(0),
                 collapsed: .constant(false),
+                viewHeight: .constant(0),
                 dateTabIndex: 2
             )
             .preferredColorScheme(.dark)
