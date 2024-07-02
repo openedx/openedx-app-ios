@@ -435,13 +435,15 @@ public class Router: AuthorizationRouter,
         handouts: String?,
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
-        cssInjector: CSSInjector
+        cssInjector: CSSInjector,
+        type: HandoutsItemType
     ) {
         let view = HandoutsUpdatesDetailView(
             handouts: handouts,
             announcements: announcements,
             router: router,
-            cssInjector: cssInjector
+            cssInjector: cssInjector,
+            type: type
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)

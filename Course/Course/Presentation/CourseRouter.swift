@@ -46,7 +46,8 @@ public protocol CourseRouter: BaseRouter {
         handouts: String?,
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
-        cssInjector: CSSInjector
+        cssInjector: CSSInjector,
+        type: HandoutsItemType
     )
     
     func showCourseComponent(
@@ -103,7 +104,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         handouts: String?,
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
-        cssInjector: CSSInjector
+        cssInjector: CSSInjector,
+        type: HandoutsItemType
     ) {}
     
     public func showCourseComponent(
