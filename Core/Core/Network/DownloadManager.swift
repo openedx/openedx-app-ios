@@ -274,7 +274,6 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     public func deleteFile(blocks: [CourseBlock]) async {
-        print("!!! deleteFile(blocks: count = \(blocks.count)")
         for block in blocks {
             do {
                 if let fileURL = await fileUrl(for: block.id) {
