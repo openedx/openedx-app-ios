@@ -232,9 +232,9 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {
         downloadRequest?.cancel()
-        let downloaded = await getDownloadTasksForCourse(courseId).filter { $0.state == .finished }
+        let downloaded = await getDownloadTasksForCourse(courseId)
         let blocksForDelete = blocks.filter {  block in
-            downloaded.first(where: { $0.blockId == block.id }) == nil
+            downloaded.first(where: { $0.blockId == block.id }) != nil
         }
         await deleteFile(blocks: blocksForDelete)
         downloaded.forEach {
@@ -246,10 +246,10 @@ public class DownloadManager: DownloadManagerProtocol {
     public func cancelDownloading(task: DownloadDataTask) async throws {
         downloadRequest?.cancel()
         do {
-            try persistence.deleteDownloadDataTask(id: task.id)
             if let fileUrl = await fileUrl(for: task.id) {
                 try FileManager.default.removeItem(at: fileUrl)
             }
+            try persistence.deleteDownloadDataTask(id: task.id)
             currentDownloadEventPublisher.send(.canceled(task))
         } catch {
             NSLog("Error deleting file: \(error.localizedDescription)")
@@ -274,6 +274,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     public func deleteFile(blocks: [CourseBlock]) async {
+        print("!!! deleteFile(blocks: count = \(blocks.count)")
         for block in blocks {
             do {
                 if let fileURL = await fileUrl(for: block.id) {
@@ -414,10 +415,10 @@ public class DownloadManager: DownloadManagerProtocol {
     private func cancel(tasks: [DownloadDataTask]) async {
         for task in tasks {
             do {
-                try persistence.deleteDownloadDataTask(id: task.id)
                 if let fileUrl = await fileUrl(for: task.id) {
                     try FileManager.default.removeItem(at: fileUrl)
                 }
+                try persistence.deleteDownloadDataTask(id: task.id)
             } catch {
                 debugLog("Error deleting file: \(error.localizedDescription)")
             }
