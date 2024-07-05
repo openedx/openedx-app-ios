@@ -57,3 +57,5 @@
 "POST_TYPE.DISCUSSION" = "дискусія";
 
 "ANONYMOUS" = "Анонім";
+
+"ERROR.UNABLE_TO_LOAD_COURSE_CONTENT" = "Unable to load course content.\nTry again later.";

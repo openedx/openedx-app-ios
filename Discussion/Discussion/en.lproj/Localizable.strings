@@ -47,7 +47,7 @@
 "COMMENT.REPORT" = "Report";
 "COMMENT.UNREPORT" = "Unreport";
 "COMMENT.FOLLOW" = "Follow";
-"COMMENT.UNFOLLOW" = "Unfollow";
+"COMMENT.UNFOLLOW" = "Unfollow";//
 
 "RESPONSE.COMMENTS_RESPONSES" = "Comment";
 "RESPONSE.ALERT.COMMENT_ADDED" = "Comment added";
@@ -61,3 +61,5 @@
 "SEARCH.EMPTY_DESCRIPTION" = "Start typing to find the topics";
 
 "ANONYMOUS" = "Anonymous";
+
+"ERROR.UNABLE_TO_LOAD_COURSE_CONTENT" = "Unable to load course content.\nTry again later.";

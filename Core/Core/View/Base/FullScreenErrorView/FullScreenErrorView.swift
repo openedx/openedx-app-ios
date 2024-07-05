@@ -39,88 +39,73 @@ public struct FullScreenErrorView: View {
     }
     
     public var body: some View {
-        switch errorType {
-        case .noVideos(error: let error, image: let image),
-                .noHandouts(error: let error, image: let image),
-                .noAnnouncements(error: let error, image: let image),
-                .noCourseDates(error: let error, image: let image),
-                .noCourseware(error: let error, image: let image):
-            GeometryReader { proxy in
-                VStack(spacing: 20) {
-                    Spacer()
-                    image
-                        .resizable()
-                        .renderingMode(.template)
-                        .foregroundStyle(Theme.Colors.textSecondary)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 72, maxHeight: 80)
-                    
-                    Text(error)
-                        .font(Theme.Fonts.labelLarge)
-                        .foregroundColor(Theme.Colors.textPrimary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 50)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: proxy.size.height)
-                .background(
-                    Theme.Colors.background
+        VStack(spacing: 20) {
+            Spacer()
+            switch errorType {
+            case .noVideos(error: let error, image: let image),
+                    .noHandouts(error: let error, image: let image),
+                    .noAnnouncements(error: let error, image: let image),
+                    .noCourseDates(error: let error, image: let image),
+                    .noCourseware(error: let error, image: let image):
+                image
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundStyle(Theme.Colors.textSecondary)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 72, maxHeight: 80)
+                
+                Text(error)
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 50)
+            case .noInternet,
+                    .noInternetWithReload:
+                CoreAssets.noWifi.swiftUIImage
+                    .renderingMode(.template)
+                    .foregroundStyle(Theme.Colors.textSecondary)
+                    .scaledToFit()
+                
+                Text(CoreLocalization.Error.Internet.noInternetTitle)
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                
+                Text(CoreLocalization.Error.Internet.noInternetDescription)
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 50)
+            case .generic:
+                CoreAssets.notAvaliable.swiftUIImage
+                    .renderingMode(.template)
+                    .foregroundStyle(Theme.Colors.textSecondary)
+                    .scaledToFit()
+                
+                Text(CoreLocalization.View.Snackbar.tryAgainBtn)
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                
+                Text(CoreLocalization.Error.unknownError)
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 50)
+                
+            }
+            if errorType == .noInternetWithReload || errorType == .generic {
+                UnitButtonView(
+                    type: .reload,
+                    action: {
+                        self.action()
+                    }
                 )
             }
-        default:
-            GeometryReader { proxy in
-                VStack(spacing: 20) {
-                    Spacer()
-                    switch errorType {
-                    case .noInternet, .noInternetWithReload:
-                        CoreAssets.noWifi.swiftUIImage
-                            .renderingMode(.template)
-                            .foregroundStyle(Theme.Colors.textSecondary)
-                            .scaledToFit()
-                        
-                        Text(CoreLocalization.Error.Internet.noInternetTitle)
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                        
-                        Text(CoreLocalization.Error.Internet.noInternetDescription)
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 50)
-                    case .generic:
-                        CoreAssets.notAvaliable.swiftUIImage
-                            .renderingMode(.template)
-                            .foregroundStyle(Theme.Colors.textSecondary)
-                            .scaledToFit()
-                        
-                        Text(CoreLocalization.View.Snackbar.tryAgainBtn)
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                        
-                        Text(CoreLocalization.Error.unknownError)
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 50)
-                    default: EmptyView()
-                    }
-                    
-                    if errorType != .noInternet {
-                        UnitButtonView(
-                            type: .reload,
-                            action: {
-                                self.action()
-                            }
-                        )
-                    }
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: proxy.size.height)
-                .background(
-                    Theme.Colors.background
-                )
-            }
+            Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            Theme.Colors.background
+        )
     }
 }
 

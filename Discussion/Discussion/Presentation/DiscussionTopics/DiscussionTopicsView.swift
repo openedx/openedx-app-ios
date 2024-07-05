@@ -54,37 +54,39 @@ public struct DiscussionTopicsView: View {
                             bannerDiscussionsDisabled
                         }
                         
-                        HStack(spacing: 11) {
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(Theme.Colors.textInputTextColor)
-                                .padding(.leading, 16)
-                                .padding(.top, 1)
-                            Text(DiscussionLocalization.Topics.search)
-                                .foregroundColor(Theme.Colors.textInputTextColor)
-                                .font(Theme.Fonts.bodyMedium)
-                            Spacer()
-                        }
-                        .frame(minHeight: 48)
-                        .background(
-                            Theme.Shapes.textInputShape
-                                .fill(Theme.Colors.textInputBackground)
-                        )
-                        .overlay(
-                            Theme.Shapes.textInputShape
-                                .stroke(lineWidth: 1)
-                                .fill(Theme.Colors.textInputUnfocusedStroke)
-                        )
-                        .onTapGesture {
-                            viewModel.router.showDiscussionsSearch(
-                                courseID: courseID,
-                                isBlackedOut: viewModel.isBlackedOut
+                        if let topics = viewModel.discussionTopics, topics.count > 0 {
+                            HStack(spacing: 11) {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
+                                    .padding(.leading, 16)
+                                    .padding(.top, 1)
+                                Text(DiscussionLocalization.Topics.search)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
+                                    .font(Theme.Fonts.bodyMedium)
+                                Spacer()
+                            }
+                            .frame(minHeight: 48)
+                            .background(
+                                Theme.Shapes.textInputShape
+                                    .fill(Theme.Colors.textInputBackground)
                             )
+                            .overlay(
+                                Theme.Shapes.textInputShape
+                                    .stroke(lineWidth: 1)
+                                    .fill(Theme.Colors.textInputUnfocusedStroke)
+                            )
+                            .onTapGesture {
+                                viewModel.router.showDiscussionsSearch(
+                                    courseID: courseID,
+                                    isBlackedOut: viewModel.isBlackedOut
+                                )
+                            }
+                            .frameLimit(width: proxy.size.width)
+                            .padding(.horizontal, 24)
+                            .padding(.top, 10)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(DiscussionLocalization.Topics.search)
                         }
-                        .frameLimit(width: proxy.size.width)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 10)
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel(DiscussionLocalization.Topics.search)
                         
                         // MARK: - Page Body
                         VStack {
@@ -160,7 +162,16 @@ public struct DiscussionTopicsView: View {
                                                 }
                                             }
                                         }
-                                        
+                                    } else if viewModel.isShowProgress == false {
+                                        FullScreenErrorView(
+                                            type: .noCourseDates(
+                                                error: DiscussionLocalization.Error.unableToLoadCourseContent,
+                                                image: CoreAssets.information.swiftUIImage
+                                            )
+                                        )
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: proxy.size.height - viewHeight)
+                                        Spacer(minLength: -200)
                                     }
                                     Spacer(minLength: 200)
                                 }

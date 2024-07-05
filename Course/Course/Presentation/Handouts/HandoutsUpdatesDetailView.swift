@@ -120,7 +120,8 @@ public struct HandoutsUpdatesDetailView: View {
             .padding(.top, 8)
             .frame(
                 maxHeight: .infinity,
-                alignment: .topLeading)
+                alignment: .topLeading
+            )
             .onRightSwipeGesture {
                 router.back()
             }
