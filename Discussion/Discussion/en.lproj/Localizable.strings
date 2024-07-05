@@ -47,7 +47,7 @@
 "COMMENT.REPORT" = "Report";
 "COMMENT.UNREPORT" = "Unreport";
 "COMMENT.FOLLOW" = "Follow";
-"COMMENT.UNFOLLOW" = "Unfollow";//
+"COMMENT.UNFOLLOW" = "Unfollow";
 
 "RESPONSE.COMMENTS_RESPONSES" = "Comment";
 "RESPONSE.ALERT.COMMENT_ADDED" = "Comment added";
