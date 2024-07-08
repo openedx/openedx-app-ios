@@ -352,7 +352,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadFileWithProgress(_ download: DownloadDataTask) throws {
-        guard let url = URL(string: download.url) else {
+        guard let url = URL(string: download.url), let folderURL = self.videosFolderUrl else {
             return
         }
 
@@ -362,10 +362,14 @@ public class DownloadManager: DownloadManagerProtocol {
             resumeData: download.resumeData
         )
         self.isDownloadingInProgress = true
+        let destination: DownloadRequest.Destination = { _, _ in
+            let file = folderURL.appendingPathComponent(download.fileName)
+            return (file, [.createIntermediateDirectories, .removePreviousFile])
+        }
         if let resumeData = download.resumeData {
-            downloadRequest = AF.download(resumingWith: resumeData)
+            downloadRequest = AF.download(resumingWith: resumeData, to: destination)
         } else {
-            downloadRequest = AF.download(url)
+            downloadRequest = AF.download(url, to: destination)
         }
 
         downloadRequest?.downloadProgress { [weak self]  prog in
@@ -378,19 +382,16 @@ public class DownloadManager: DownloadManagerProtocol {
             debugLog(">>>>> Downloading", download.url, completed, "%")
         }
 
-        downloadRequest?.responseData { [weak self] data in
+        downloadRequest?.responseData { [weak self] _ in
             guard let self else { return }
-            if let data = data.value, let url = self.videosFolderUrl {
-                self.saveFile(fileName: download.fileName, data: data, folderURL: url)
-                self.persistence.updateDownloadState(
-                    id: download.id,
-                    state: .finished,
-                    resumeData: nil
-                )
-                self.currentDownloadTask?.state = .finished
-                self.currentDownloadEventPublisher.send(.finished(download))
-                try? self.newDownload()
-            }
+            self.persistence.updateDownloadState(
+                id: download.id,
+                state: .finished,
+                resumeData: nil
+            )
+            self.currentDownloadTask?.state = .finished
+            self.currentDownloadEventPublisher.send(.finished(download))
+            try? self.newDownload()
         }
     }
 
