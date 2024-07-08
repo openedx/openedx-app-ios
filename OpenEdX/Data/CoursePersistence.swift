@@ -35,7 +35,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
                                numPages: Int($0.numPages),
                                coursesCount: Int($0.courseCount),
                                progressEarned: 0,
-                               progressPossible: 0)}
+                               progressPossible: 0)
+                }
             if let result, !result.isEmpty {
                 return result
             } else {
