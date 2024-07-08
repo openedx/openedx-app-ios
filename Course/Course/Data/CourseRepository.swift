@@ -221,8 +221,9 @@ public class CourseRepository: CourseRepositoryProtocol {
            let fileUrl = offlineData.fileUrl,
            let lastModified = offlineData.lastModified,
            let fileSize = offlineData.fileSize {
+            let fullUrl = fileUrl.starts(with: "http") ? fileUrl : config.baseURL.absoluteString + fileUrl
             offlineDownload = OfflineDownload(
-                fileUrl: config.baseURL.absoluteString + fileUrl,
+                fileUrl: fullUrl,
                 lastModified: lastModified,
                 fileSize: fileSize
             )

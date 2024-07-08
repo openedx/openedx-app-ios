@@ -51,12 +51,16 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
                     progressJson: progressJson
                 )
             )
-            message.webView?.evaluateJavaScript("markProblemCompleted('\(progressJson)')")
+            var correctedProgressJson = progressJson
+            correctedProgressJson = correctedProgressJson.removingPercentEncoding ?? correctedProgressJson
+            message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')")
         } else if let offlineProgress = persistence.loadProgress(for: blockID) {
-            message.webView?.evaluateJavaScript("markProblemCompleted('\(offlineProgress.progressJson)')")
+            var correctedProgressJson = offlineProgress.progressJson
+            correctedProgressJson = correctedProgressJson.removingPercentEncoding ?? correctedProgressJson
+            message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')")
         }
         
-        Task {
+        Task(priority: .low) {
             await syncOfflineProgress()
         }
     }
