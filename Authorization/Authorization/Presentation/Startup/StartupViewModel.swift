@@ -33,4 +33,8 @@ public class StartupViewModel: ObservableObject {
             analytics.trackEvent(.logistrationExploreAllCourses, biValue: .logistrationExploreAllCourses)
         }
     }
+    
+    func trackScreenEvent() {
+        analytics.trackScreenEvent(.logistration, biValue: .logistration)
+    }
 }

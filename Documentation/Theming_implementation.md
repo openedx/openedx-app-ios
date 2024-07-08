@@ -45,9 +45,11 @@ project_config:
         config1: # Build Configuration name in project
             app_bundle_id: "bundle.id.app.new1" # Bundle ID to be set
             product_name: "Mobile App Name1" # App Name to be set
+            env_config: 'prod' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.yaml defines)
         config2: # Build Configuration name in project
             app_bundle_id: "bundle.id.app.new2" # Bundle ID to be set
             product_name: "Mobile App Name2" # App Name to be set
+            env_config: 'dev' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.yaml defines)
 ```
 ### Assets
 The config `whitelabel.yaml` can contain a few Asset items (every added Xcode project can have its own Assets). 

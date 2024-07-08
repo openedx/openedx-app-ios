@@ -367,5 +367,9 @@ public class EditProfileViewModel: ObservableObject {
     func trackProfileEditDoneClicked() {
         analytics.profileEditDoneClicked()
     }
+    
+    func trackScreenEvent() {
+        analytics.profileScreenEvent(.profileEdit, biValue: .profileEdit)
+    }
 }
 // swiftlint:enable type_body_length
