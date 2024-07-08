@@ -14,13 +14,24 @@ public enum DiscoveryWebviewType: Equatable {
     case discovery
     case courseDetail(String)
     case programDetail(String)
+    
+    var rawValue: String {
+        switch self {
+        case .discovery:
+            return "discovery"
+        case .courseDetail(let value):
+            return "courseDetail(\(value))"
+        case .programDetail(let value):
+            return "programDetail(\(value))"
+        }
+    }
 }
 
 public struct DiscoveryWebview: View {
     @State private var searchQuery: String = ""
     @State private var isLoading: Bool = true
     
-    @ObservedObject private var viewModel: DiscoveryWebviewViewModel
+    @StateObject private var viewModel: DiscoveryWebviewViewModel
     private var router: DiscoveryRouter
     private var discoveryType: DiscoveryWebviewType
     public var pathID: String
@@ -70,80 +81,86 @@ public struct DiscoveryWebview: View {
         discoveryType: DiscoveryWebviewType = .discovery,
         pathID: String = ""
     ) {
-        self.viewModel = viewModel
+        self._viewModel = .init(wrappedValue: viewModel)
         self.router = router
         self._searchQuery = State<String>(initialValue: searchQuery ?? "")
         self.discoveryType = discoveryType
         self.pathID = pathID
-        
-        if let url = URL(string: URLString) {
-            viewModel.request = URLRequest(url: url)
-        }
     }
     
     public var body: some View {
         GeometryReader { proxy in
-            VStack(alignment: .center) {
-                WebView(
-                    viewModel: .init(
-                        url: URLString,
-                        baseURL: "", 
-                        openFile: {_ in}
-                    ),
-                    isLoading: $isLoading,
-                    refreshCookies: {},
-                    navigationDelegate: viewModel, 
-                    connectivity: viewModel.connectivity
-                )
-                .accessibilityIdentifier("discovery_webview")
-                
-                if isLoading || viewModel.showProgress {
-                    HStack(alignment: .center) {
-                        ProgressBar(
-                            size: 40,
-                            lineWidth: 8
-                        )
-                        .padding(.vertical, proxy.size.height / 2)
-                        .accessibilityIdentifier("progress_bar")
+            ZStack(alignment: .center) {
+                VStack(alignment: .center) {
+                    WebView(
+                        viewModel: .init(
+                            url: URLString,
+                            baseURL: ""
+                        ),
+                        isLoading: $isLoading,
+                        refreshCookies: {},
+                        navigationDelegate: viewModel,
+                        webViewType: discoveryType.rawValue
+                    )
+                    .accessibilityIdentifier("discovery_webview")
+                    
+                    if isLoading || viewModel.showProgress {
+                        HStack(alignment: .center) {
+                            ProgressBar(
+                                size: 40,
+                                lineWidth: 8
+                            )
+                            .padding(.vertical, proxy.size.height / 2)
+                            .accessibilityIdentifier("progress_bar")
+                        }
+                        .frame(width: proxy.size.width, height: proxy.size.height)
                     }
-                    .frame(width: proxy.size.width, height: proxy.size.height)
-                }
-                
-                // MARK: - Show Error
-                if viewModel.showError {
-                    VStack {
-                        SnackBarView(message: viewModel.errorMessage)
+                    
+                    // MARK: - Show Error
+                    if viewModel.showError {
+                        VStack {
+                            SnackBarView(message: viewModel.errorMessage)
+                        }
+                        .padding(.bottom, 20)
+                        .transition(.move(edge: .bottom))
+                        .onAppear {
+                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                                viewModel.errorMessage = nil
+                            }
+                        }
                     }
-                    .padding(.bottom, 20)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
+                    
+                    if !viewModel.userloggedIn, !isLoading {
+                        LogistrationBottomView { buttonAction in
+                            switch buttonAction {
+                            case .signIn:
+                                viewModel.router.showLoginScreen(sourceScreen: sourceScreen)
+                            case .register:
+                                viewModel.router.showRegisterScreen(sourceScreen: sourceScreen)
+                            }
                         }
                     }
                 }
                 
-                if !viewModel.userloggedIn, !isLoading {
-                    LogistrationBottomView { buttonAction in
-                        switch buttonAction {
-                        case .signIn:
-                            viewModel.router.showLoginScreen(sourceScreen: sourceScreen)
-                        case .register:
-                            viewModel.router.showRegisterScreen(sourceScreen: sourceScreen)
+                if viewModel.webViewError {
+                    FullScreenErrorView(
+                        type: viewModel.connectivity.isInternetAvaliable ? .generic : .noInternetWithReload
+                    ) {
+                        if viewModel.connectivity.isInternetAvaliable {
+                            viewModel.webViewError = false
+                            NotificationCenter.default.post(
+                                name: Notification.Name(discoveryType.rawValue),
+                                object: nil
+                            )
                         }
                     }
                 }
             }
-            
-            // MARK: - Offline mode SnackBar
-            OfflineSnackBarView(
-                connectivity: viewModel.connectivity,
-                reloadAction: {
-                    NotificationCenter.default.post(
-                        name: .webviewReloadNotification,
-                        object: nil
-                    )
-                })
+            .onFirstAppear {
+                if let url = URL(string: URLString) {
+                    viewModel.request = URLRequest(url: url)
+                }
+            }
         }
         .navigationBarHidden(viewModel.sourceScreen == .default && discoveryType == .discovery)
         .navigationTitle(CoreLocalization.Mainscreen.discovery)
