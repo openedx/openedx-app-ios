@@ -203,6 +203,10 @@ class AppAssembly: Assembly {
             FirebaseAnalyticsService()
         }.inObjectScope(.container)
         
+        container.register(FullStoryAnalyticsService.self) { r in
+            FullStoryAnalyticsService()
+        }.inObjectScope(.container)
+        
         container.register(PipManagerProtocol.self) { r in
             let config = r.resolve(ConfigProtocol.self)!
             return PipManager(

@@ -314,7 +314,6 @@
 				02B6B3B528E1D10700232911 /* Domain */,
 				02EAE2CA28E1F0A700529644 /* Presentation */,
 				97EA4D822B84EFA900663F58 /* Managers */,
-				97CA95212B875EA200A9EDEA /* Views */,
 				02B6B3B428E1C49400232911 /* Localizable.strings */,
 				02C355372C08DCD700501342 /* Localizable.stringsdict */,
 			);
@@ -529,13 +528,20 @@
 			path = Mock;
 			sourceTree = "<group>";
 		};
-		97CA95212B875EA200A9EDEA /* Views */ = {
+		9784D4752BF39EEF00AFEFFF /* CalendarSyncProgressView */ = {
 			isa = PBXGroup;
 			children = (
 				97C99C352B9A08FE004EEDE2 /* CalendarSyncProgressView.swift */,
+			);
+			path = CalendarSyncProgressView;
+			sourceTree = "<group>";
+		};
+		9784D4762BF39EFD00AFEFFF /* DatesSuccessView */ = {
+			isa = PBXGroup;
+			children = (
 				97CA95242B875EE200A9EDEA /* DatesSuccessView.swift */,
 			);
-			path = Views;
+			path = DatesSuccessView;
 			sourceTree = "<group>";
 		};
 		97EA4D822B84EFA900663F58 /* Managers */ = {
@@ -586,6 +592,8 @@
 		BAD9CA482B2C88D500DE790A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				9784D4762BF39EFD00AFEFFF /* DatesSuccessView */,
+				9784D4752BF39EEF00AFEFFF /* CalendarSyncProgressView */,
 				02D4FC2C2BBD7C7500C47748 /* MessageSectionView */,
 				BAC0E0D92B32F0A2006B68A9 /* CourseVideoDownloadBarView */,
 				BA58CF622B471047005B102E /* VideoDownloadQualityBarView */,

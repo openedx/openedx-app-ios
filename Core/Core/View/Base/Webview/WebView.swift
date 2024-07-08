@@ -17,6 +17,8 @@ public protocol WebViewNavigationDelegate: AnyObject {
         shouldLoad request: URLRequest,
         navigationAction: WKNavigationAction
     ) async -> Bool
+    
+    func showWebViewError()
 }
 
 public struct WebView: UIViewRepresentable {
@@ -39,17 +41,20 @@ public struct WebView: UIViewRepresentable {
     var webViewNavDelegate: WebViewNavigationDelegate?
     
     var refreshCookies: () async -> Void
+    var webViewType: String?
 
     public init(
         viewModel: ViewModel,
         isLoading: Binding<Bool>,
         refreshCookies: @escaping () async -> Void,
-        navigationDelegate: WebViewNavigationDelegate? = nil
+        navigationDelegate: WebViewNavigationDelegate? = nil,
+        webViewType: String? = nil
     ) {
         self.viewModel = viewModel
         self._isLoading = isLoading
         self.refreshCookies = refreshCookies
         self.webViewNavDelegate = navigationDelegate
+        self.webViewType = webViewType
     }
 
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
@@ -70,6 +75,10 @@ public struct WebView: UIViewRepresentable {
         
         public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             webView.isHidden = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+                self.parent.webViewNavDelegate?.showWebViewError()
+            }
         }
         
         public func webView(
@@ -78,6 +87,10 @@ public struct WebView: UIViewRepresentable {
             withError error: Error
         ) {
             webView.isHidden = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+                self.parent.webViewNavDelegate?.showWebViewError()
+            }
         }
         
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -172,7 +185,7 @@ public struct WebView: UIViewRepresentable {
         
         private func addObservers() {
             cancellables.removeAll()
-            NotificationCenter.default.publisher(for: .webviewReloadNotification, object: nil)
+            NotificationCenter.default.publisher(for: Notification.Name(parent.webViewType ?? ""), object: nil)
                 .sink { [weak self] _ in
                     self?.reload()
                 }
@@ -188,8 +201,16 @@ public struct WebView: UIViewRepresentable {
         fileprivate var webview: WKWebView?
         
         @objc private func reload() {
-            parent.isLoading = true
-            webview?.reload()
+            DispatchQueue.main.async {
+                self.parent.isLoading = true
+            }
+            if webview?.url?.absoluteString.isEmpty ?? true,
+               let url = URL(string: parent.viewModel.url) {
+                let request = URLRequest(url: url)
+                webview?.load(request)
+            } else {
+                webview?.reload()
+            }
         }
 
         public func userContentController(
